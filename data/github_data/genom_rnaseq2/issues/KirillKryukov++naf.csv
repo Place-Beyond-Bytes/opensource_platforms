@@ -1,0 +1,48 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzOTM1MjA2NTg=,Use conan to download zstd,OPEN,2018-12-21T16:40:16Z,2019-10-22T00:46:35Z,,It would be nice to use [conan](https://conan.io) and potentially `CMake` to package `naf`. There is already a [conan package for zstd](https://github.com/bincrafters/conan-zstd). This will make it possible to easily port the package to different operating systems (such as OSX and Windows). I might help with a PR if appreciated.,Fohlen,https://github.com/KirillKryukov/naf/issues/1
+MDU6SXNzdWU0NDY2NDI5NTE=,Performance on large files - avoid spilling to disk,OPEN,2019-05-21T14:11:27Z,2021-12-30T18:54:14Z,,"Looking through the source code and specifications document, I've noticed that both compress and decompression spill to disk for large files. This is particularly problematic in the decompression scenario due to the high temporary disk usage.
+
+Have you considered extending the file format to support multiple blocks? For example:
+
+Header = format descriptor, format version, sequence type, flags, name separator, line length
+
+DataBlock = Number of sequences, IDs, Comments, Lengths, Mask, Sequence, Quality
+
+And the overall structure:
+
+Header, Title, [DataBlock]+
+
+Then you could stream NAF files with no disk usage and a fixed memory overhead. There is a slight compression penalty to having multiple data block but that will be trivially low for large data blocks. Both BAM and CRAM uses variants of this blocked compression approach.",d-cameron,https://github.com/KirillKryukov/naf/issues/4
+MDU6SXNzdWU2MzQzMDg2OTM=,multiple input files,CLOSED,2020-06-08T07:44:52Z,2021-05-17T23:24:01Z,2021-05-17T23:24:01Z,"the ability to compress and uncompress more than 1 file at a time would be very useful.
+e.g.being able to compress all files with suffix .fasta : 
+$ naf ./*.fasta > .
+Adding an option to keep or remove the old fasta after compression could also be helpful, (default to keep them), and a similar flag for keep or remove .naf version after decompression.",only1chunts,https://github.com/KirillKryukov/naf/issues/7
+MDU6SXNzdWU3MTk3MjM5NzE=,Function to compress / decompress sequence only,OPEN,2020-10-12T23:03:39Z,2021-12-02T07:55:32Z,,"Is there or could there be a function to compress / decompress sequence only? I have a format I'm using as a replacement for FASTA now, and using zstd as the sequence compression (seq ID's are not compressed). If you could expose a function to do compression/decompression or point me to the right place, I could include naf as an option there.
+
+Thanks",jguhlin,https://github.com/KirillKryukov/naf/issues/10
+I_kwDOCZyVhs4-bRAq,bioconda installation ,CLOSED,2021-11-08T11:28:24Z,2021-11-26T09:07:30Z,2021-11-18T01:52:12Z,"Hi Kirill,
+
+would it be possible to add NAF to bioconda?
+(I guess it would be highly used by the community after a while, for example in pipelines)
+
+Best regards,
+Diogo",pratas,https://github.com/KirillKryukov/naf/issues/12
+I_kwDOCZyVhs5tRftw,Docker image in kubernetes cluster issue,OPEN,2023-08-02T14:28:43Z,2023-08-07T02:31:56Z,,"I am trying to use the latest docker image quay.io/biocontainers/naf:1.3.0--hec16e2b_3 to compress and decompress within a nextflow pipeline. I am running the pipeline in a Kubernetes cluster and I keep getting the error: Illegal instruction (core dumped), and terminated with an error exit status (132).
+
+The commands I am running are:
+## compress
+mkdir mytemp
+  ennaf -o GSM461177_1.trimmed.naf --temp-dir mytemp GSM461177_1.fastqsanger 
+
+I've also tried to build my own image and this works locally, but throws the same error when run in the cluster. 
+Could you assist.
+
+Thanks
+",karegapauline,https://github.com/KirillKryukov/naf/issues/17
+I_kwDOCZyVhs55HSPG,decompress error,OPEN,2023-12-08T05:28:09Z,2023-12-09T09:51:48Z,,"command:
+```
+unnaf --fastq fastq.gz.naf |gzip - >fastq.gz.naf.gz
+unnaf error: can't allocate 35115481985 bytes
+```
+file size:
+fastq.gz.naf 43G",ruizgo,https://github.com/KirillKryukov/naf/issues/18

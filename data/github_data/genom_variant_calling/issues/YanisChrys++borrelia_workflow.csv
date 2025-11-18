@@ -1,0 +1,26 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5NzM2MDIxNjM=,Extraction of singletons incorrect,CLOSED,2021-08-18T12:16:17Z,2021-09-22T12:34:51Z,2021-09-22T12:34:51Z,"https://github.com/YanisChrys/borrelia_workflow/blob/da58b96677640b813342316d4568c8d0a1d6e8c3/snakefiles/mapping2.smk#L49
+
+Use flags (excluding all of these):
+- read paired (0x1)
+- read unmapped (0x4)
+
+So `-G 5`
+
+Also check if it's necessary to exclude:
+- not primary alignment
+- read fails platform/vendor quality checks
+- read is PCR or optical duplicate
+- supplementary alignment",Nardus,https://github.com/YanisChrys/borrelia_workflow/issues/2
+MDU6SXNzdWU5NzM2MDU5NTk=,Extraction of paired reads should include mapped only,CLOSED,2021-08-18T12:20:49Z,2021-09-22T12:34:45Z,2021-09-22T12:34:45Z,"https://github.com/YanisChrys/borrelia_workflow/blob/da58b96677640b813342316d4568c8d0a1d6e8c3/snakefiles/mapping2.smk#L49
+
+Use flags (*including* all of these):
+- read paired (0x1)
+- read mapped in proper pair (0x2)
+
+So `-f 3`
+
+Also check for duplicates, in which case secondary alignments will need to be excluded (`-F 2048`)",Nardus,https://github.com/YanisChrys/borrelia_workflow/issues/3
+MDU6SXNzdWU5NzM2MTkxMDk=,Fasta creation should account for dual-strain infections,CLOSED,2021-08-18T12:35:50Z,2021-09-22T12:34:38Z,2021-09-22T12:34:38Z,"https://github.com/YanisChrys/borrelia_workflow/blob/da58b96677640b813342316d4568c8d0a1d6e8c3/snakefiles/create_fasta.smk#L35
+
+Try adding `--use-iupac-sample` to all `FastaAlternateReferenceMaker` calls",Nardus,https://github.com/YanisChrys/borrelia_workflow/issues/4

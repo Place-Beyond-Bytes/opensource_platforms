@@ -1,0 +1,92 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MjA0MzczNA==,Import initial codebase,CLOSED,2014-12-15T21:51:12Z,2014-12-15T22:45:58Z,2014-12-15T22:45:58Z,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/1
+MDU6SXNzdWU1MjA0Mzc1OQ==,Configure Travis CI for continuous integration builds,OPEN,2014-12-15T21:51:27Z,2014-12-15T21:51:27Z,,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/2
+MDU6SXNzdWU1MjA0Mzc4OA==,Add Travis CI badge to readme,OPEN,2014-12-15T21:51:40Z,2014-12-15T21:51:40Z,,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/3
+MDU6SXNzdWU1NDcwNzY2NQ==,Could not find or load main class org.nmdp.ngs.tools.InterleaveFastq3,CLOSED,2015-01-18T19:49:22Z,2015-01-19T03:33:35Z,2015-01-19T03:33:35Z,"``` bash
+$ ./nextflow run assemble.nf 
+N E X T F L O W  ~  version 0.11.4
+[warm up] executor > local
+[34/3b930e] Submitted process > fastqToSsake (1)
+[0d/71a26b] Submitted process > interleave (1)
+Error executing process > 'interleave (1)'
+
+Caused by:
+  Process 'interleave (1)' terminated with an error exit status
+
+Command executed:
+
+  ngs-interleave-fastq3 -1 example_R1.fq.gz -2 example_R2.fq.gz -p example.paired.fq.gz -u example.unpaired.fq.gz
+
+Command exit status:
+  1
+
+Command output:
+  Error: Could not find or load main class org.nmdp.ngs.tools.InterleaveFastq3
+
+Work dir:
+  /Users/xxx/working/flow/work/0d/71a26b2599fe85cd3fec8fe5d2241b
+
+Tip: when you have fixed the problem you can continue the execution appending to the nextflow command line the option '-resume'
+
+WARN: Killing pending processes (1)
+```
+",N/A,https://github.com/nmdp-bioinformatics/flow/issues/7
+MDU6SXNzdWU1ODMwNDYxMg==,Warning: Dynamic output file name has to be defined using a closure,CLOSED,2015-02-20T03:00:21Z,2015-02-20T03:16:54Z,2015-02-20T03:16:54Z,"Current version of nextflow gives warnings
+
+``` bash
+$ ./nextflow run assemble.nf
+N E X T F L O W  ~  version 0.12.3
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.ssake.fa.gz""` with `file { ""$s.ssake.fa.gz"" }`
+[warm up] executor > local
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.ssake.reformatted.fa.gz""` with `file { ""$s.ssake.reformatted.fa.gz"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.ssake.d/$s.contigs""` with `file { ""$s.ssake.d/$s.contigs"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.contigs.bwa.sorted.bam""` with `file { ""$s.contigs.bwa.sorted.bam"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.contigs.bwa.sorted.vcf.gz""` with `file { ""$s.contigs.bwa.sorted.vcf.gz"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.paired.fq.gz""` with `file { ""$s.paired.fq.gz"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.reads.bwa.sorted.bam""` with `file { ""$s.reads.bwa.sorted.bam"" }`
+WARN: Dynamic output file name has to be defined using a closure -- Replace `file ""$s.reads.bwa.sorted.vcf.gz""` with `file { ""$s.reads.bwa.sorted.vcf.gz"" }`
+```
+",N/A,https://github.com/nmdp-bioinformatics/flow/issues/9
+MDU6SXNzdWU3MTM4MTM5OQ==,SSAKE hangs when .command.out reaches 64k in size,CLOSED,2015-04-27T19:39:12Z,2015-04-27T19:43:04Z,2015-04-27T19:43:04Z,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/14
+MDU6SXNzdWU3MTYzMzE3Ng==,"Typo in readme, > netflow.config",CLOSED,2015-04-28T16:11:47Z,2015-04-28T21:47:25Z,2015-04-28T21:47:25Z,,heuermh,https://github.com/nmdp-bioinformatics/flow/issues/16
+MDU6SXNzdWU3MTkyNjgyNw==,Tutorial data is not accessible when running from github repo with docker,CLOSED,2015-04-29T16:43:09Z,2015-05-21T23:11:06Z,2015-05-21T23:11:06Z,"See
+http://www.nextflow.io/docs/latest/sharing.html#bootstrap-data
+",N/A,https://github.com/nmdp-bioinformatics/flow/issues/18
+MDU6SXNzdWU3MjIwMDgwOQ==,Error response from daemon: Cannot start container,CLOSED,2015-04-30T15:50:15Z,2015-05-14T18:36:38Z,2015-05-14T18:36:38Z,"```
+Apr-30 10:46:11.162 [Thread-4] ERROR nextflow.processor.TaskProcessor - Error executing process > 'reformat (67)'
+
+Caused by:
+  Process 'reformat (67)' terminated with an error exit status
+
+Command executed:
+
+  zcat 1367-0038-2_S72_L001.ssake.fa.gz | sed -e 's/a/A/g' -e 's/c/C/g' -e 's/g/G/g' -e 's/t/T/g' -e 's/n/N/g' -e 's/^>.*/>reformatted:500/' | gzip -c > 1367-0038-2_S72_
+L001.ssake.reformatted.fa.gz
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  time=""2015-04-30T10:46:10-05:00"" level=fatal msg=""Error response from daemon: Cannot start container 806b3ae4ccd69b92eb7d23d13099e43b217f1bc1c02cbd977ed5e8322c71cfaf: 
+Error getting container 806b3ae4ccd69b92eb7d23d13099e43b217f1bc1c02cbd977ed5e8322c71cfaf from driver devicemapper: Error mounting '/dev/mapper/docker-202:1-666771-806b3a
+e4ccd69b92eb7d23d13099e43b217f1bc1c02cbd977ed5e8322c71cfaf' on '/var/lib/docker/devicemapper/mnt/806b3ae4ccd69b92eb7d23d13099e43b217f1bc1c02cbd977ed5e8322c71cfaf': no su
+ch file or directory"" 
+
+Work dir:
+  /mnt/nextflow/work/8c/3a1f113d3efbe87dd91e6d55108052
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named: '.command.sh'
+nextflow.exception.ProcessFailedException: Process 'reformat (67)' terminated with an error exit status
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.7.0_79]
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57) ~[na:1.7.0_79]
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:1.7.0_79]
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:526) ~[na:1.7.0_79]
+```
+",N/A,https://github.com/nmdp-bioinformatics/flow/issues/20
+MDU6SXNzdWU3NjQ1MDYzOA==,"Copy contigs, alignment files, and variant calls to final directories",CLOSED,2015-05-14T18:37:32Z,2015-05-15T16:49:37Z,2015-05-15T16:49:37Z,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/21
+MDU6SXNzdWU3NjQ1MDgxMw==,Wrap assembler calls in timeout-without-failure mechanism,CLOSED,2015-05-14T18:38:06Z,2015-05-14T20:48:47Z,2015-05-14T20:48:47Z,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/22
+MDU6SXNzdWU3OTEzMjAxMA==,Update readme doc with docker instructions/example,CLOSED,2015-05-21T19:35:54Z,2015-05-21T23:34:32Z,2015-05-21T23:34:32Z,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/26
+MDU6SXNzdWU5MDc5MTgyNw==,Add ifEmpty check to reference channel,OPEN,2015-06-24T22:17:56Z,2015-06-24T22:28:14Z,,,N/A,https://github.com/nmdp-bioinformatics/flow/issues/34

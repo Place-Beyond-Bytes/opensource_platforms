@@ -1,0 +1,267 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2ODQzMTEyNDA=,Issues with pwd in bash script,CLOSED,2020-08-24T02:13:51Z,2020-08-26T19:05:12Z,2020-08-26T19:05:12Z,"Hi!
+
+I'm having a little trouble getting your pipeline to run on my computer and I was wondering if you could tweak a couple things to make your code a bit more robust just in case somebody runs into similar issues (I also have yet to successfully make it through the entire pipeline, just so you know! Still fixing issues).
+
+A significant and yet trivial-seeming issue is that I do most of my work in dropbox which has spaces in their file folder name (e.g. ""Dropbox (XXX Lab)"" is a directory). This brings up the issue in your script SingleCellHMM_MW.bash in line 18:
+`${PL:=${CURDIR}/scripts}`
+The variable PL becomes incomplete when dealing with these spaces. Perhaps it would be possible to make a version of the script that can deal with spaces in the directory name? I realize the best solution would be to have no spaces in the Dropbox directory, but alas... Unfortunately this spacing issue causes the program to crash whenever `pwd` or the variable `$PL` is called.
+
+Another small thing, is that the pipeline crashed once because I had not installed Bedtools. Do you think it would be possible to add this to your list of required tools to have installed before running the pipeline?
+
+Considering the length of time this pipeline takes to run, I have also been running `snakemake --rerun-incomplete` without deleting the intermediate files. I am not entirely clear whether or not this is messing up anything in the pipeline - are there checkpoints where you would recommend deleting specific files or directories before attempting to rerun from where the pipeline crashed? I realize there may be a long and complicated answer to this question.
+
+Thanks so much for your help!
+Zoe",14zac2,https://github.com/fw262/TAR-scRNA-seq/issues/2
+MDU6SXNzdWU3MzgyMTY4OTU=,Error reading TAR_reads.bed file in calcHMMrefFlat,CLOSED,2020-11-07T10:37:04Z,2020-11-22T10:40:30Z,2020-11-22T10:40:30Z,"Hi,
+
+I'm running into the following error when running the pipeline on my single-cell dataset: 
+
+```
+rule calcHMMrefFlat:
+    input: TAR_reads.bed.gz
+    output: TAR_reads.bed.gz.noDir.refFlat.refFlat, TAR_reads.bed.gz.withDir.refFlat.refFlat
+    jobid: 0
+
+Error in read.table(file = file, header = header, sep = sep, quote = quote,  :
+  no lines available in input
+Calls: read.delim -> read.table
+```
+
+The TAR_reads.bed.gz file is empty which suggests that the problem lies in the calcHMMbed step.  
+
+I've set the following parameters in the config.yaml file which, except expectedCells, should be the same as the default. 
+
+```
+GLOBAL:
+    allowed_mismatch: 10 # outFilterMismatchNmax parameter for STAR alignment
+    BC_range: # barcode range
+        first: 1
+        last: 16
+    UMI_range: # unique molecular identifier range
+        first: 17
+        last: 28 # 28 for v3, up to 26 for v2
+
+expectedCells: 25000
+MERGEBP: 500
+THRESH: 10000000
+```
+
+Any suggestions as to what might be causing the error?
+
+Many thanks,
+
+Dan
+
+",dkeitley,https://github.com/fw262/TAR-scRNA-seq/issues/3
+MDU6SXNzdWU3NTk1NDMwMTQ=,temp2.txt no such file or directory,CLOSED,2020-12-08T15:31:43Z,2021-02-01T18:21:34Z,2021-02-01T18:21:34Z,"Hi Michael,
+
+Sorry to open another issue. 
+
+I just tried running the pipeline on my own samples and am getting an error relating to the temp2.txt file that's produced in the getCellsList rule. 
+
+
+```
+[Sat Dec  5 18:39:43 2020]                                                                                                                                      rule getCellsList:                                                                                                                                                  input: results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_gene_dge.summary.txt                                                                                         output: results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_cellList.txt
+    jobid: 1739
+    wildcards: path=results_out/SIGAA9_S22_L002, sample=SIGAA9_S22_L002
+
+cut: temp2.txt: No such file or directory
+[Sat Dec  5 18:39:43 2020]
+Finished job 2375.
+506 of 2514 steps (20%) done
+[Sat Dec  5 18:39:43 2020]
+Error in rule getCellsList:
+    jobid: 1739
+    output: results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_cellList.txt
+    shell:
+
+                sed '/^#/ d' < results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_gene_dge.summary.txt > temp.txt
+                tail -n +3 temp.txt > temp2.txt
+                cut -f1 temp2.txt > results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_cellList.txt
+                rm temp.txt
+                rm temp2.txt
+
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job getCellsList since they might be corrupted:
+results_out/SIGAA9_S22_L002/SIGAA9_S22_L002_cellList.txt
+INFO    2020-12-05 18:39:45     SamToFastq      Processed     3,000,000 records.  Elapsed time: 00:00:23s.  Time for last 1,000,000:    6s.  Last read position: */*
+```
+
+I tried leaving out this sample and running on the rest but I'm still getting the same error. It works fine running on a single sample, so I'm not sure if it's an issue with certain fastq files or if it's due to something else...?
+
+Any suggestions would be much appreciated.
+
+Many thanks,
+
+Dan
+
+
+
+
+",dkeitley,https://github.com/fw262/TAR-scRNA-seq/issues/4
+MDU6SXNzdWU5MDY4MDA0OTY=,Cellranger vs STAR pipeline,CLOSED,2021-05-30T15:57:10Z,2021-06-01T14:24:06Z,2021-06-01T14:24:06Z,"Hi Michael, 
+
+I managed to get the original pipeline working on my dataset, but I've since noticed that you've updated the workflow to accept alignment files from cellranger. Since I'm using 10X data, I was just wondering whether this means I should now re-run the pipeline and if so, whether there are any steps I can avoid repeating? I'm working with a large number of samples so am wondering what the implications are if I keep with the results from the original STAR alignment and integrated the non-annotated TARs with the cellranger counts from the annotated genes...?
+
+Best wishes,
+
+Dan
+
+
+",dkeitley,https://github.com/fw262/TAR-scRNA-seq/issues/7
+MDU6SXNzdWU5MTc2NjQxMzA=,Processing TAR-scRNA-seq outputs,OPEN,2021-06-10T18:16:25Z,2021-06-21T13:32:46Z,,"Hi Michael,
+
+Sorry for all the questions. This might be a bit naive. 
+
+I was just wondering how you went about processing the matrices outputted from the pipeline to construct a counts matrix...? Did you use standard functions to aggregate the matrices across the different directories (e.g. something like `read10Counts` from _DropletUtils_)? ",dkeitley,https://github.com/fw262/TAR-scRNA-seq/issues/8
+MDU6SXNzdWU5OTQyMjc4OTE=,Error creating DigitalExpression and previous bam files are returned empty,OPEN,2021-09-12T18:35:48Z,2021-10-01T20:35:17Z,,"Hii
+While running the Snakemake pipeline, the script stops at
+INFO    2021-09-12 23:40:09     BarcodeListRetrieval    Looking for the top 5000 cell barcodes
+INFO    2021-09-12 23:40:09     BarcodeListRetrieval    Selected 0 core barcodes
+ERROR   2021-09-12 23:40:09     DigitalExpression       Running digital expression without somehow selecting a set of barcodes to process no longer supported.
+
+And all the bam files generated in the previous steps are empty. I don't understand why or where I've been going wrong. Can I get help please?",Prakrithi-P,https://github.com/fw262/TAR-scRNA-seq/issues/9
+I_kwDODSEcIM48lp3Z,fail to create scTAR_cellranger env,OPEN,2021-10-05T16:01:06Z,2021-11-01T14:10:25Z,,"Hi, 
+I am trying to get the fromcellranger pipeline to work on MacOS Catalina 10.15.7
+When I run 
+conda env create -f scTAR_cellranger.yml
+(after modifying the yml file prefix to /home/miniconda3/envs/scTAR_cellranger)
+I get the following error message:
+----------------------------
+Collecting package metadata (repodata.json): done
+Solving environment: failed
+
+ResolvePackageNotFound: 
+  - libtiff==4.2.0=hdc55705_0
+  - _openmp_mutex==4.5=1_gnu
+  - xorg-libxrender==0.9.10=h7f98852_1003
+  - xorg-libxext==1.3.4=h7f98852_1
+  - make==4.3=hd18ef5c_1
+  - curl==7.76.1=h979ede3_1
+  - c-ares==1.17.1=h7f98852_1
+  - libxcb==1.13=h7f98852_1003
+  - libgcc-devel_linux-64==9.3.0=h7864c58_19
+  - readline==8.0=he28a2e2_2
+  - gfortran_impl_linux-64==9.3.0=hc4a2995_19
+  - pthread-stubs==0.4=h36c2ea0_1001
+  - xz==5.2.5=h516909a_1
+  - xorg-kbproto==1.0.7=h7f98852_1002
+  - libcurl==7.76.1=hc4aaa36_1
+  - cairo==1.16.0=h6cf1ce9_1008
+  - ucsc-gtftogenepred==377=h0b8a92a_4
+  - tk==8.6.10=h21135ba_1
+  - binutils_linux-64==2.35=h67ddf6f_30
+  - libuuid==2.32.1=h7f98852_1000
+  - xorg-libxau==1.0.9=h7f98852_0
+  - libnghttp2==1.43.0=h812cca2_0
+  - libgomp==9.3.0=h2828fa1_19
+  - libstdcxx-devel_linux-64==9.3.0=hb016644_19
+  - xorg-renderproto==0.11.1=h7f98852_1002
+  - libedit==3.1.20191231=he28a2e2_2
+  - htslib==1.12=h9093b5e_1
+  - gxx_linux-64==9.3.0=h3fbe746_30
+  - zstd==1.4.9=ha95c52a_0
+  - mysql-connector-c==6.1.11=h6eb9d5d_1007
+  - icu==68.1=h58526e2_0
+  - libxml2==2.9.10=h72842e0_4
+  - perl==5.32.0=h36c2ea0_0
+  - libgfortran-ng==9.3.0=hff62375_19
+  - jpeg==9d=h36c2ea0_0
+  - pcre2==10.36=h032f7d1_1
+  - lz4-c==1.9.3=h9c3ff4c_0
+  - gfortran_linux-64==9.3.0=hdc58fab_30
+  - pcre==8.44=he1b5a44_0
+  - fribidi==1.0.10=h36c2ea0_0
+  - gcc_linux-64==9.3.0=hf25ea35_30
+  - gcc_impl_linux-64==9.3.0=h70c0ae5_19
+  - samtools==1.12=h9aed4be_1
+  - pixman==0.40.0=h36c2ea0_0
+  - bzip2==1.0.8=h7f98852_4
+  - xorg-libx11==1.7.0=h7f98852_0
+  - bedtools==2.30.0=h7d7f7ad_1
+  - libiconv==1.16=h516909a_0
+  - openssl==1.1.1k=h7f98852_0
+  - libev==4.33=h516909a_1
+  - libglib==2.68.1=h3e27bee_0
+  - xorg-libxdmcp==1.1.3=h7f98852_0
+  - openjdk==10.0.2=h14c3975_1015
+  - gxx_impl_linux-64==9.3.0=hd87eabc_19
+  - ca-certificates==2020.12.5=ha878542_0
+  - xorg-xproto==7.0.31=h7f98852_1007
+  - ncurses==6.2=h58526e2_4
+  - libwebp-base==1.2.0=h7f98852_2
+  - gettext==0.19.8.1=h0b5b191_1005
+  - xorg-libsm==1.2.3=hd9c2040_1000
+  - harfbuzz==2.8.0=h83ec7ef_1
+  - krb5==1.17.2=h926e7f8_0
+  - pango==1.48.4=hb8ff022_0
+  - libgcc-ng==9.3.0=h2828fa1_19
+  - libdeflate==1.7=h7f98852_5
+  - _libgcc_mutex==0.1=conda_forge
+  - gsl==2.6=he838d99_2
+  - r-base==4.0.3=h349a78a_8
+  - ld_impl_linux-64==2.35.1=hea4e1c9_2
+  - xorg-libice==1.0.10=h7f98852_0
+  - xorg-libxt==1.2.1=h7f98852_2
+  - libstdcxx-ng==9.3.0=h6de172a_19
+  - sed==4.8=he412f7d_0
+  - libffi==3.3=h58526e2_2
+  - bwidget==1.9.14=ha770c72_0
+  - binutils_impl_linux-64==2.35.1=h193b22a_2
+  - xorg-xextproto==7.3.0=h7f98852_1002
+  - tktable==2.10=hb7b940f_3
+  - libgfortran5==9.3.0=hff62375_19
+  - zlib==1.2.11=h516909a_1010
+  - expat==2.3.0=h9c3ff4c_0
+  - fontconfig==2.13.1=hba837de_1005
+  - graphite2==1.3.13=h58526e2_1001
+  - freetype==2.10.4=h0708190_1
+  - libopenblas==0.3.12=pthreads_h4812303_1
+  - libpng==1.6.37=h21135ba_2
+  - libssh2==1.9.0=ha56f1ee_6
+ 
+--------------------------------------
+
+any idea about what is wrong?
+I tried to run snakemake without creating the scTAR_cellranger environment but I get a bunch of errors
+for example after doing
+conda activate snakemake
+snakemake -j
+I get:
+The flag 'directory' used in rule getMatsSteps is only valid for outputs, not inputs.
+Building DAG of jobs...
+MissingInputException in line 99 of /Users/perrylabmac/TAR-scRNA-seq/from_cellranger/Snakefile:
+Missing input files for rule convertToRefFlat:
+/Users/perrylabmac/Musca_ref_genome_Cellranger/genes/genes.gtf
+
+thanks!
+
+Antoine",adonatiucsd,https://github.com/fw262/TAR-scRNA-seq/issues/10
+I_kwDODSEcIM49oz43,Applicability of from_cellranger codes on 10X Visium ST-Seq bams,OPEN,2021-10-23T08:06:27Z,2022-01-11T12:15:45Z,,"Hey Michael,
+I would like to know if the from_cellranger codes can be applied to 10X Visium ST-Seq bams using the correponding refrence datasets. I anticipate it wold work, since the chemistries are quiet similar to that of 10X chromium V3. Just wanted to make sure.
+
+Thanks,
+Prakrithi",Prakrithi-P,https://github.com/fw262/TAR-scRNA-seq/issues/11
+I_kwDODSEcIM5DNfny,Availability of matrices utilized in the manuscript?,OPEN,2022-02-08T18:24:44Z,2022-02-08T18:38:09Z,,"Hi! I was wondering if the uTAR/aTAR/gene expression matrices utilized for the generation of figures in the manuscript were publicly/readily available, particularly for the human PBMC data? Wanted to make sure they weren't already distributed before I attempt to install and run the existing pipeline.",diegoalexespi,https://github.com/fw262/TAR-scRNA-seq/issues/12
+I_kwDODSEcIM5EA0UT,Error in rule MergeBamAlignment,OPEN,2022-02-17T09:15:09Z,2022-03-01T10:06:02Z,,"The following error occurred when I used the test data to run ''snakemake -R --until getMats -j [# cores]''. May I ask what might be the problem
+![A7742%O0TALM3`2XC(RH1VU](https://user-images.githubusercontent.com/75734083/154443658-0c32244d-9e50-4521-804b-e71376865fa0.png)
+@fw262 ",HUPINLI,https://github.com/fw262/TAR-scRNA-seq/issues/13
+I_kwDODSEcIM5N2xD2,Is there any way to run the pipeline faster? ,OPEN,2022-07-15T15:58:55Z,2022-07-18T14:22:01Z,,"Hi,
+
+Thank you for this helpful tool!
+I found it very slow to run on a single 10x scRNAseq dataset. I used 16 cores. After almost three days, I only get chr3.bed after generating`_split.sorted.bed.gz`. So I think it will be at least 14 or 21 days for the pipeline to finish, which is not affordable. Could you please provide any good suggestion? Thank you!
+
+Best,
+Min",genecell,https://github.com/fw262/TAR-scRNA-seq/issues/14
+I_kwDODSEcIM5SoXy0,Is there any chance running this pipeline totally without 'REFGTF'?,CLOSED,2022-09-26T15:48:04Z,2022-10-12T02:40:55Z,2022-10-12T02:40:55Z,"Hi all, 
+
+I'm dealing with a strange species which has no gtf at all. Is there any chance running this pipeline totally without 'REFGTF'?
+
+",buhanfeng,https://github.com/fw262/TAR-scRNA-seq/issues/17
+I_kwDODSEcIM6UeqAW,uTAR-aTAR read alignment ratio,OPEN,2024-08-28T05:12:12Z,2024-08-29T17:41:12Z,,"Hi !
+Thanks for the amazing pipeline! I remember reading before, but couldn't find the details now, so here I am. What is the number in the TAR read before _0 or after the strand? Is it the number of reads mapping to that region? I tried calculating it from the BAM but it din't add up to that number. Also I need  to calculate the alignment ratio of uTARs and aTARs , but the intermediate bam files (*merged.bam and combined.bam) have been deleted so I can't directly calculate the read alignement ratio for those. Was wondering if I could use the numbers on the TAR IDs to calculate this.
+
+Thanks and regards,
+Prakrithi",Prakrithi-P,https://github.com/fw262/TAR-scRNA-seq/issues/18

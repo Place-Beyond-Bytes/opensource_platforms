@@ -1,0 +1,91 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjE0Mzk0NDg=,Report specific insertion codons,CLOSED,2018-09-18T19:02:03Z,2019-10-18T18:08:04Z,2019-10-18T18:08:04Z,"Currently, hivmmer reports the frequency of an insertion of any codon. Instead, report the frequency of each specific codon that was inserted.",mhowison,https://github.com/kantorlab/hivmmer/issues/1
+MDU6SXNzdWUzNzI1ODA2NzQ=,Validate hxb2 coordinates,CLOSED,2018-10-22T15:55:32Z,2020-02-28T00:56:59Z,2020-02-28T00:56:59Z,"In some edges cases, the output will no longer be in hxb2 coordinates. This can happen if:
+
+1. The sample has zero coverage at a site.
+2. The sample has 100% deletions at a site.
+
+In both cases, the site will be dropped in the hmmsearch1 pHMM, and the resulting hmmsearch2 alignment is no longer in hxb2 coordinates. As a workaround, the hmmsearch1 results can be used, as these are in hxb2 coordinates based on the way the reference pHMM is constructed by `hivmmer-trim-reference`.
+
+For a longer-term solution, the final results should be aligned back against hxb2 to validate the coordinates.",mhowison,https://github.com/kantorlab/hivmmer/issues/2
+MDU6SXNzdWU0MzI3MDgyNjk=,Subtype C,CLOSED,2019-04-12T19:17:01Z,2020-02-28T00:56:33Z,2020-02-28T00:56:33Z,"Hey everyone,
+
+How hard would it be to implement support for subtype C? I'm happy to do this if you could all point me at what would have to happen to add support. I looked through the code and it looks like it would be pretty straightforward, but was wondering what you think.",roryk,https://github.com/kantorlab/hivmmer/issues/3
+MDU6SXNzdWU0NTE2MTAxODc=,What should I be using as a reference?,CLOSED,2019-06-03T17:51:05Z,2020-05-06T20:30:29Z,2020-02-28T00:57:50Z,"I'm having trouble getting the reference to work--can you help me figure out how to specify one of the pre-built alignments? 
+
+Thank you!",drescs,https://github.com/kantorlab/hivmmer/issues/4
+MDU6SXNzdWU0NTMyMTgxNDY=,support for Gag?,CLOSED,2019-06-06T20:13:54Z,2020-02-28T00:58:15Z,2020-02-28T00:58:15Z,"I noticed that there is no option to specify ""gag"" as the region. I made my own reference (thanks for the help with that) for gag but seems a region must be specified from pol, int, or env. It looks like maybe this is only used for noting what gene a codon is in--if that is the case, can I just use int as the region, or is there more going on here? Or can I change the code to add ""gag"" as an option for the reference?
+
+Thank you!
+Sara",drescs,https://github.com/kantorlab/hivmmer/issues/5
+MDU6SXNzdWU0ODQ2OTg5MTc=,Add QC stage for filtering on quality score and read length,CLOSED,2019-08-23T20:28:26Z,2019-10-18T18:07:56Z,2019-10-18T18:07:55Z,"Default settings per the Winnipeg consensus:
+- filter out reads with mean quality score <25
+- filter out reads with length < 75",mhowison,https://github.com/kantorlab/hivmmer/issues/6
+MDU6SXNzdWU0OTk2MTQzNjE=,Determine optimal alignment score threshold,CLOSED,2019-09-27T19:33:09Z,2019-10-19T02:02:07Z,2019-10-19T02:02:07Z,,mhowison,https://github.com/kantorlab/hivmmer/issues/7
+MDU6SXNzdWU1MDkyMzgxMDQ=,Include prepackaged pHMMs for whole genome,CLOSED,2019-10-18T18:14:58Z,2020-02-28T00:58:25Z,2020-02-28T00:58:25Z,,mhowison,https://github.com/kantorlab/hivmmer/issues/8
+MDU6SXNzdWU1MDkyNDIxNzg=,Reimplement hivmmer wrapper in Python to support whole genome,CLOSED,2019-10-18T18:23:54Z,2020-02-28T00:58:34Z,2020-02-28T00:58:34Z,"* Switch from hmmsearch to hmmscan using e-value thresholds determined in #7
+* Run hmmscan against prepackaged pHMMs in #8  
+* Use multiprocessing to run hmmscans in parallel",mhowison,https://github.com/kantorlab/hivmmer/issues/9
+MDU6SXNzdWU1NDkwMzM3NzQ=,improve consistency of whole genome coverage,CLOSED,2020-01-13T16:14:01Z,2020-02-28T00:58:43Z,2020-02-28T00:58:43Z,,mhowison,https://github.com/kantorlab/hivmmer/issues/10
+MDU6SXNzdWU1ODQ0MjA2Nzg=,Add minimum coverage threshold when calling consensus sequence,OPEN,2020-03-19T13:40:36Z,2020-03-19T13:40:52Z,,,mhowison,https://github.com/kantorlab/hivmmer/issues/11
+MDU6SXNzdWU2MDcwMDcwMDM=,Reference enquiry,OPEN,2020-04-26T13:00:02Z,2020-05-18T12:33:42Z,,"I downloaded the docker version for hivmmer and I noticed that the latest docker version is 0.1.2, will the latest version (0.2.0) be on docker anytime soon?
+
+Also, I noticed that I should be building my own profile Hidden Markov Model but I am unable to figure out how to do so using hivmmer. I tried building a pHMM file for a multiple sequence alignment amino acid sequences using hmmer but it is not working either, it is only working for DNA sequences.
+
+I also read that you have some prepackaged profile Hidden Markov Models for the pol region in version 0.1.2, how can I use them? 
+",nadine-zakkak,https://github.com/kantorlab/hivmmer/issues/12
+MDU6SXNzdWU3MDE5MDIwODc=,Fix handling of deletions in consensus.py,OPEN,2020-09-15T12:50:27Z,2020-09-15T12:50:27Z,,"Problem: Deletions are coded as an empty string """" in the codons.tsv file. As a result, if a deletion is present above the threshold frequency, it will cause the analysis of ambiguous nucleotides to fail, and no output for that HXB2 coordinate.
+Solution: remove deletions prior to calculating ambiguous nucleotides.",mhowison,https://github.com/kantorlab/hivmmer/issues/13
+MDU6SXNzdWU3MjI3MTI2NzQ=,access to aavf file,OPEN,2020-10-15T22:19:44Z,2020-10-15T22:19:44Z,,"Hi, using the current hivmmer version, I obtained amino acid frequency table as xlsx file. Is there a way to access aavf file as what the tool previously provided? I am interested in getting the information on ALT_FREQ column for each position. Thanks!",jihe-liu,https://github.com/kantorlab/hivmmer/issues/14
+MDU6SXNzdWU3NTAwMzMwNTU=,Instruction to build a pHMM reference ,OPEN,2020-11-24T20:29:20Z,2020-11-24T20:29:20Z,,"Hi, I am analyzing subtype C sequence with hivmmer. Is there an instruction on how to build pHMM reference with my own sequence? Thanks!",jihe-liu,https://github.com/kantorlab/hivmmer/issues/15
+I_kwDOB0NQBM5OZd37,Does hivmmer accept fastq.gz files as input?,OPEN,2022-07-22T18:23:40Z,2022-07-22T18:24:53Z,,"Hi hivmmer team,
+
+Thanks for this great tool.
+
+I am wondering if hivmmer accepts fastq.gz files as input?
+
+Thanks in advance!",LilyYe98,https://github.com/kantorlab/hivmmer/issues/16
+I_kwDOB0NQBM5W6pi-,How to use pre-packaged reference files with --ref,OPEN,2022-11-21T16:17:07Z,2024-11-20T02:44:30Z,,"How do I use the pre-packaged reference files with the --ref option? I installed via conda, and I can see inside the hivmmer-0.2.1 source folder the `.hmm.` files. 
+
+I have tried pointing to the files directly but get error
+`Error: File existence/permissions problem in trying to open HMM file`",mbyott,https://github.com/kantorlab/hivmmer/issues/17
+I_kwDOB0NQBM5hfpcC,hivmmer fails on report generation,OPEN,2023-03-22T12:35:49Z,2024-11-20T03:50:18Z,,"Hi,
+I'm running hivmmer using the conda environment as detailed in the manual, but it fails on report generation:
+
+_hivmmer -o /home/jpflorido/GBPA/tmp/VIH/himmer/ -t 12 DRR030218_1.fastq DRR030218_2.fastq
+Creating output directories in:                                                                                                                                                                                    
+/home/jpflorido/GBPA/tmp/VIH/himmer                                                                                                                                                                                
+Running PEAR on FASTQ inputs:
+/home/jpflorido/GBPA/tmp/VIH/DRR030218_1.fastq
+/home/jpflorido/GBPA/tmp/VIH/DRR030218_2.fastq
+Filtering and deduplicating PEAR sequences
+Translating deduplicated sequences to amino acid sequences
+Copying pHMM references
+Aligning gag with hmmsearch
+Aligning pol with hmmsearch
+Aligning vif with hmmsearch
+Aligning vpr with hmmsearch
+Aligning tat with hmmsearch
+Aligning vpu with hmmsearch
+Aligning env with hmmsearch
+Aligning nef with hmmsearch
+Extracting codons from hmmsearch alignments
+Merging codons across genes
+Generating consensus sequences
+Generating AA table
+Identifying DRMs in AA table
+Plotting WGS coverage
+Plotting PRRT coverage
+Plotting DRMs/SDRMs
+Compiling PDF report
+Traceback (most recent call last):
+  File ""/home/jpflorido/miniconda3/envs/hivmmer/bin/hivmmer"", line 139, in <module>
+    ""report"", ""report.pdf"")
+  File ""/home/jpflorido/miniconda3/envs/hivmmer/lib/python3.7/site-packages/hivmmer/report.py"", line 258, in compile
+    run([""tectonic"", texfile], stdout=f, stderr=f, check=True)
+  File ""/home/jpflorido/miniconda3/envs/hivmmer/lib/python3.7/subprocess.py"", line 512, in run
+    output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['tectonic', 'report/report.tex']' returned non-zero exit status 1._
+
+Any suggestions?
+Thanks",jpflorido,https://github.com/kantorlab/hivmmer/issues/18

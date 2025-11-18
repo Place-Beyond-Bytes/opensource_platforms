@@ -1,0 +1,1886 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNDkxNTgzMjI=,Unable to convert some PDB files,CLOSED,2016-04-18T13:56:56Z,2016-04-26T07:06:19Z,2016-04-25T21:05:52Z,"I observe some problems with making PDB files SimRNA ready. E.g., for this command:
+
+`yapdb_parser.py --get_simrna_ready pdb-clean.pdb`
+
+I get an error:
+
+```
+HEADER Generated with yapdb_parser, version: unknown (https://github.com/m4rx9/rna-pdb-tools) Mon Apr 18 15:53:52 2016
+/usr/lib/python2.7/dist-packages/Bio/PDB/StructureBuilder.py:85: PDBConstructionWarning: WARNING: Chain A is discontinuous at line 635.
+  PDBConstructionWarning)
+Traceback (most recent call last):
+  File ""/home/fstefaniak/gitlab/coarse-grain-potential/other/rna-pdb-tools/yapdb_parser.py"", line 135, in <module>
+    s.get_simrna_ready()
+  File ""/home/fstefaniak/gitlab/coarse-grain-potential/other/rna-pdb-tools/pdb_parser_lib.py"", line 666, in get_simrna_ready
+    x = r[""O5'""]
+  File ""/usr/lib/python2.7/dist-packages/Bio/PDB/Entity.py"", line 38, in __getitem__
+    return self.child_dict[id]
+KeyError: ""O5'""
+```
+
+This seems to happen quite frequently in my dataset :frowning: 
+
+Input pdb file attached (zipped)
+[a.zip](https://github.com/m4rx9/rna-pdb-tools/files/223878/a.zip)
+",filipsPL,https://github.com/mmagnus/rna-tools/issues/1
+MDU6SXNzdWUxNzgxMDY5MTE=,rna_calc_rmsd -m align0 (0 cycles of refinment),OPEN,2016-09-20T16:16:46Z,2016-12-01T17:26:20Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/2
+MDU6SXNzdWUxNzgxMTQzNTI=,simrna ready (order of atoms as in SimRNA),CLOSED,2016-09-20T16:47:59Z,2016-09-21T21:08:16Z,2016-09-21T21:07:06Z,"`--get_simrna_ready` will do the job.
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/3
+MDU6SXNzdWUxNzg2NDIyMjE=,"make a script to ""install"" tools in ./bin",CLOSED,2016-09-22T15:29:14Z,2016-09-23T20:52:43Z,2016-09-23T20:52:25Z,"install_links_bin.sh
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/4
+MDU6SXNzdWUxOTE3MjQ5OTU=,ImportError: No module named Bio.PDB.PDBParser,CLOSED,2016-11-25T15:31:27Z,2016-11-26T08:01:36Z,2016-11-25T15:41:57Z,"```
+➜  rna_calc_rmsd git:(master) ✗ ./test.sh
+./rna_calc_rmsd_all_vs_all.py -i test_data -o test_output/rmsd_calc_dir.tsv
+Traceback (most recent call last):
+  File ""./rna_calc_rmsd_all_vs_all.py"", line 18, in <module>
+    import Bio.PDB.PDBParser
+ImportError: No module named Bio.PDB.PDBParser
+```
+
+biopython==1.68",Astha08,https://github.com/mmagnus/rna-tools/issues/7
+MDU6SXNzdWUxOTE3NDkyNTQ=,Collect test_data in one place (root folder),OPEN,2016-11-25T18:04:57Z,2017-07-05T21:09:17Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/8
+MDU6SXNzdWUxOTE3NjE2NTI=,rna_calc_inf -s '(((...)))' or -f <file with ss>,OPEN,2016-11-25T20:23:37Z,2016-11-26T07:56:41Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/9
+MDU6SXNzdWUxOTM1MjU5OTI=, 'A:101-112>A:1-12' should keep unselected part how it was,CLOSED,2016-12-05T15:21:13Z,2016-12-12T15:08:17Z,2016-12-12T15:08:17Z,"rna-pdb-tools.py --edit 'A:101-112>A:1-12'   1duq_clean.pdb > out.pdb
+
+
+```
+[mm] md_1duq_clx rna-pdb-tools.py --edit 'A:101-112>A:1-12'   1duq_clean.pdb
+HEADER Generated with rna-pdb-tools
+HEADER ver d7ddcd3-dirty
+HEADER https://github.com/mmagnus/rna-pdb-tools
+HEADER Mon Dec  5 16:19:11 2016
+HEADER --edit A:101-112>A:1-12
+ATOM      1  C5'   G A   1      -2.025 -12.938 -25.736  1.00 51.75           C
+ATOM      2  O5'   G A   1      -0.927 -12.042 -25.952  1.00 59.57           O
+ATOM      3  C4'   G A   1      -1.560 -14.345 -25.435  1.00 47.97           C
+ATOM      4  O4'   G A   1      -0.661 -14.800 -26.487  1.00 54.11           O
+ATOM      5  C3'   G A   1      -0.766 -14.509 -24.160  1.00 45.24           C
+ATOM      6  O3'   G A   1      -1.653 -14.659 -23.049  1.00 52.74           O
+ATOM      7  C2'   G A   1       0.039 -15.775 -24.448  1.00 47.65           C
+ATOM      8  O2'   G A   1      -0.680 -16.977 -24.193  1.00 30.92           O
+ATOM      9  C1'   G A   1       0.360 -15.603 -25.939  1.00 38.10           C
+ATOM     10  N1    G A   1       5.410 -15.771 -25.563  1.00 27.76           N
+ATOM     11  C2    G A   1       4.486 -16.724 -25.220  1.00 27.44           C
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/10
+MDU6SXNzdWUxOTM3NjQ2OTY=,"from cogent.app.vienna_package import RNAfold, RNAsubopt",CLOSED,2016-12-06T12:52:04Z,2017-03-25T15:35:26Z,2017-03-25T15:35:26Z,"```
+calmeida@chianti:~/Software/rna-pdb-tools/rna_pdb_tools$ python Seq.py
+Traceback (most recent call last):
+  File ""Seq.py"", line 1, in <module>
+    from cogent.app.vienna_package import RNAfold, RNAsubopt
+ImportError: No module named cogent.app.vienna_package
+```
+",calmeidaa,https://github.com/mmagnus/rna-tools/issues/11
+MDU6SXNzdWUxOTQ0NDc4NDY=,rna_helix_vis - cylinder should be built around helix axis not the first bp and the last,OPEN,2016-12-08T21:22:02Z,2016-12-08T21:22:42Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/14
+MDU6SXNzdWUxOTUwMzU0ODc=,"get preview of the file, 1 line per reside...",CLOSED,2016-12-12T17:28:58Z,2016-12-12T17:53:19Z,2016-12-12T17:53:08Z,"but as first line of resides (P) for example
+
+P very often is not there... so maybe C4' ?
+```
+[mq] nm_1nuj_clx grep ""C4'""  1nuj_clean_renumber.pdb
+ATOM      3  C4'   C A   1      10.215  56.966  26.477  1.00 27.42           C
+ATOM     21  C4'   G A   2       4.135  55.424  26.339  1.00 28.44           C
+ATOM     44  C4'   G A   3      -0.298  51.138  25.958  1.00 28.70           C
+ATOM     67  C4'   A A   4      -1.221  45.215  24.832  1.00 34.52           C
+ATOM     89  C4'   C A   5       1.667  40.064  23.577  1.00 41.30           C
+ATOM    109  C4'   C A   6       6.539  36.662  24.299  1.00 40.54           C
+ATOM    129  C4'   G A   7      10.254  31.982  27.534  1.00 33.80           C
+ATOM    152  C4'   A A   8      15.462  32.374  30.637  1.00 28.61           C
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/15
+MDU6SXNzdWUxOTUwNzMwNTA=,but in multiple edit.. 2x prints,CLOSED,2016-12-12T20:10:35Z,2016-12-13T15:52:51Z,2016-12-13T15:52:51Z,"```
+ATOM   1042  N4    C B 238      40.545  41.583  31.567  1.00 40.00      B    N
+ATOM   1042  N4    C B  49      40.545  41.583  31.567  1.00 40.00      B    N
+ATOM   1043  C5    C B 238      42.135  43.179  30.779  1.00 40.00      B    C
+ATOM   1043  C5    C B  49      42.135  43.179  30.779  1.00 40.00      B    C
+ATOM   1044  C6    C B 238      42.355  44.245  30.005  1.00 40.00      B    C
+ATOM   1044  C6    C B  49      42.355  44.245  30.005  1.00 40.00      B    C
+TER
+END
+[mq] nm_1ykq_clx rna --edit 'A:101-111>A:1-11,B:201-238>B:12-49' 1ykq_rpr.pdb
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/16
+MDU6SXNzdWUxOTU1MTQ5NTk=,--get_seq should check for breaks in numbering and give 1-14 16-29 etc,OPEN,2016-12-14T12:10:43Z,2016-12-14T12:10:43Z,,"```
+[mq] struc_clx$ rna-pdb-tools.py --get_seq 1x9k_rnakbnm_decoy0084_amb_clx.pdb
+> 1x9k_rnakbnm_decoy0084_amb_clx.pdb  :1-65
+UCGCAGUCCUAUUAAUAGAGAAGCGAGGCAGAGAAACACACGAUCGUGGUACAUUACCUGCC
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/17
+MDU6SXNzdWUxOTU2NDM5MTk=,"remove space from target,fn,inf_all,inf_stack,inf_WC,inf_nWC,SNS_WC,PPV_WC,SNS_nWC,PPV_nWC",CLOSED,2016-12-14T20:58:32Z,2016-12-14T21:12:19Z,2016-12-14T21:12:19Z,.. from rna_calc_inf.py,mmagnus,https://github.com/mmagnus/rna-tools/issues/18
+MDU6SXNzdWUxOTYwOTkxMDA=,rna_calc_inf.py WARNING: nWC has more than one values,CLOSED,2016-12-16T16:32:20Z,2016-12-16T16:57:42Z,2016-12-16T16:57:42Z,"```
+out: WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+```
+
+```
+struc/1i6uD_M425.pdb.outCR
+D    3   D   35          bp G C                  WW_cis   0.6988
+D    4   D   34          bp C G                  WW_cis   0.6867
+D    6   D   32          bp C G                  WW_cis   0.7157
+D    7   D   31          bp G C                  WW_cis   0.7663
+D    8   D   30          bp G C                  WW_cis   0.7601
+D   12   D   27          bp G C                  WW_cis   0.7890
+D   15   D   22          bp U A                  WW_cis   0.8047
+D   16   D   21          bp C G                  WW_cis   0.7254
+D   17   D   20          bp U G                 SW_tran   0.6507                 WW_tran   0.6433
+
+WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+compare:
+1i6uD_M1.pdb.outCR     1i6uD_M425.pdb.outCR
+```
+take only the last line :-) solution!
+```
+[mq] 1i6uD$ git:(master) ✗ clarna_compare.py -iref 1i6uD_M1.pdb.outCR -ichk struc/1i6uD_M425.pdb.outCR
+WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+WARNING: nWC has more than one values struc/1i6uD_M425.pdb.outCR:  ['SW_tran', 'WW_tran']
+1i6uD_M1.pdb.outCR                         1i6uD_M425.pdb.outCR      0.707      0.000      0.756      0.500      0.571      1.000      0.250      1.000
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/19
+MDU6SXNzdWUxOTYwOTk0MzE=,rna_calc_inf - re-analyze target error,CLOSED,2016-12-16T16:33:48Z,2016-12-16T16:38:48Z,2016-12-16T16:38:48Z,"```
+Elapsed Time: 0:01:42 ETA: 0:05:58clarna_app::cmd clarna_compare.py -iref struc/1i6uD_M1.pdb.outCR -ichk struc/1i6uD_M156.pdb.outCR
+Traceback (most recent call last):
+  File ""/home/mqapRNA/mqaprna_env/mqapRNA/lib/ClaRNA_play/clarna_compare.py"", line 1074, in <module>
+    anal_clarna.get_outdata()
+  File ""/home/mqapRNA/mqaprna_env/mqapRNA/lib/ClaRNA_play/clarna_compare.py"", line 536, in get_outdata
+    self.refdata = rdt.readData(self.refflnm)
+  File ""/home/mqapRNA/mqaprna_env/mqapRNA/lib/ClaRNA_play/clarna_compare.py"", line 307, in readData
+    title = dlist[0].split()
+IndexError: list index out of range
+Exception in thread Thread-3:
+Traceback (most recent call last):
+  File ""/usr/lib/python2.7/threading.py"", line 810, in __bootstrap_inner
+    self.run()
+  File ""/usr/lib/python2.7/threading.py"", line 763, in run
+    self.__target(*self.__args, **self.__kwargs)
+  File ""/usr/lib/python2.7/multiprocessing/pool.py"", line 380, in _handle_results
+    task = get()
+TypeError: ('__init__() takes at least 3 arguments (1 given)', <class 'subprocess.CalledProcessError'>, ())``
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/20
+MDU6SXNzdWUxOTYxMDQ5OTQ=,rna_calc_inf - if empty file (outCR) re-run ClaRNA,CLOSED,2016-12-16T16:55:27Z,2016-12-16T16:56:57Z,2016-12-16T16:56:57Z,"We want something like this:
+
+```
+[mq] 1i6uD$ git:(master) ✗ rm struc/1i6uD_M81.pdb.outCR
+[mq] 1i6uD$ git:(master) ✗ touch struc/1i6uD_M81.pdb.outCR
+[mq] 1i6uD$ git:(master) ✗ rna_calc_inf.py -t struc/1i6uD_M1.pdb struc/*.pdb
+ 98% (495 of 501) |#################################################################################################################################################################################################   | Elapsed Time: 0:00:13 ETA: 0:00:00csv was created!  inf.csv
+[mq] 1i6uD$ git:(master) ✗ head struc/1i6uD_M81.pdb.outCR
+Classifier: Clarna
+chains:  D 1 37
+D    2   D   36          bp G C                  WW_cis   0.8892
+D    3   D   35          bp G C                  WW_cis   0.6209
+D    4   D   35          bp C C                  HW_cis   0.6542
+D    5   D   33          bp C G                  WW_cis   0.6761
+D    6   D   32          bp C G                  WW_cis   0.9068
+D    7   D   31          bp G C                  WW_cis   0.8068
+D    8   D   30          bp G C                  WW_cis   0.7452
+D   12   D   27          bp G C                  WW_cis   0.8767
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/21
+MDU6SXNzdWUxOTgzNzk2MjU=,cluster_load,CLOSED,2017-01-02T20:51:15Z,2017-01-02T21:01:20Z,2017-01-02T21:01:20Z,"get stats of cpus per user 
+
+`{'deepak': 160, 'azyla': 8, 'magnus': 749}`",mmagnus,https://github.com/mmagnus/rna-tools/issues/24
+MDU6SXNzdWUyMDEyOTUyMzQ=,Config settings for VARNA (!),CLOSED,2017-01-17T14:08:58Z,2017-03-05T12:37:32Z,2017-03-05T12:37:32Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/25
+MDU6SXNzdWUyMDY1MjcwMzc=,--target_ignore_selection A/48/OP2+B,CLOSED,2017-02-09T14:55:03Z,2017-02-09T14:59:59Z,2017-02-09T14:59:59Z,```rna_calc_rmsd.py -t ~/projekty/ATOM/cube2U_ATOM_moderna.pdb ~/projekty/ATOM/v1/*AA.pdb  --target_selection A:1-48+B:1-48+C:1-48+D:1-48+E:1-48+F:1-48  --model_selection A:1-48+B:1-48+C:1-48+D:1-48+E:1-48+F:1-48 --target_ignore_selection A/48/OP2+B/48/OP2+C/48/OP2+D/48/OP2+E/48/OP2+F/48/OP2```,mmagnus,https://github.com/mmagnus/rna-tools/issues/26
+MDU6SXNzdWUyMTE5NDY5Mjg=,merge rna puzzle ready with simrna ready,CLOSED,2017-03-05T11:34:24Z,2017-03-05T12:36:13Z,2017-03-05T12:36:13Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/27
+MDU6SXNzdWUyMTg5NDk0MzU=,fix issue with multilines alignments,CLOSED,2017-04-03T14:21:37Z,2017-04-04T10:56:16Z,2017-04-04T10:56:16Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/28
+MDU6SXNzdWUyMTkyNzA4ODU=,"in rnapuzzle_ready mode, start chains from A.. (B,C,D etc)",CLOSED,2017-04-04T14:32:10Z,2017-05-19T14:31:36Z,2017-05-19T14:31:36Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/29
+MDU6SXNzdWUyMjg0NjgzNzI=,get_rnapuzzle_ready: how to deal with `Alternate location indicator`?,CLOSED,2017-05-13T11:49:14Z,2018-12-10T22:12:34Z,2018-12-10T22:12:34Z,"```
+ATOM    473  C2 B  G A  20       5.813 -49.943 -35.201  0.39 81.31           C
+ATOM    474  N2 A  G A  20      -1.838 -51.308 -33.038  0.61 80.31           N
+ATOM    475  N2 B  G A  20       5.260 -49.743 -36.405  0.39 84.44           N
+ATOM    476  N3 A  G A  20       0.286 -52.154 -32.851  0.61 68.56           N
+ATOM    477  N3 B  G A  20       7.116 -49.855 -35.066  0.39 87.91           N
+ATOM    478  C4 A  G A  20       1.172 -52.569 -31.933  0.61 68.54           C
+```
+
+4qln_solution_rpr.pdb",mmagnus,https://github.com/mmagnus/rna-tools/issues/30
+MDU6SXNzdWUyMjg1NzEwNjI=,"Seq: contextfold hardcoded path, move it to settings",CLOSED,2017-05-14T21:20:31Z,2017-05-19T15:10:33Z,2017-05-19T15:10:33Z,"```
+ if method == ""contextfold"":
+            ### !!! hardcoded path ### to fix ###
+            cmd = ""cd /home/magnus/work/opt/ContextFold_1_00 && java -cp bin contextFold.app.Predict in:"" + self.seq
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/31
+MDU6SXNzdWUyMjg3MjgxMTg=,HEADER ver None,CLOSED,2017-05-15T14:11:41Z,2017-05-15T15:18:29Z,2017-05-15T15:18:29Z,"```
+==> 19_RW3D_4_rpr.pdb <==
+HEADER Generated with rna-pdb-tools
+HEADER ver None
+HEADER https://github.com/mmagnus/rna-pdb-tools
+HEADER Mon May 15 16:05:18 2017
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/32
+MDU6SXNzdWUyMjg3ODEzMDQ=,19_5t5a_solution_0_rpr.pdb - fix missing O2',CLOSED,2017-05-15T17:07:49Z,2017-05-15T18:07:46Z,2017-05-15T18:07:46Z,"```
+[mm] rpr$ rna_pdb_tools.py --get_rnapuzzle_ready 19_5t5a_solution_0_rpr.pdb
+HEADER Generated with rna-pdb-tools
+HEADER ver 060b3ab-dirty
+HEADER https://github.com/mmagnus/rna-pdb-tools
+HEADER Mon May 15 19:05:47 2017
+chain: <Chain id=A>
+p_missing False
+o2p_missing False
+chain: <Chain id=B>
+p_missing False
+o2p_missing False
+REMARK 000 Missing atoms:
+REMARK 000  + O2' B <Residue C het=  resseq=14 icode= > residue # 14
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/33
+MDU6SXNzdWUyMjg3ODE2Njc=,start using logging!,CLOSED,2017-05-15T17:09:18Z,2017-05-15T18:07:46Z,2017-05-15T18:07:46Z,"-v for utils, to see more logs",mmagnus,https://github.com/mmagnus/rna-tools/issues/34
+MDU6SXNzdWUyMjg4MTYwODU=,rna_calc_rmsd.py - print method,CLOSED,2017-05-15T19:19:15Z,2017-05-19T15:03:58Z,2017-05-19T15:03:58Z,"```rmsd_calc_rmsd_to_target
+--------------------------------------------------------------------------------
+ method:
+```
+should be `method: all-atom rmsd`",mmagnus,https://github.com/mmagnus/rna-tools/issues/35
+MDU6SXNzdWUyMjg4Mjg2NDE=,mis-align atom names after rpr-ing,CLOSED,2017-05-15T20:04:35Z,2017-05-17T20:15:28Z,2017-05-17T20:15:28Z,"```==> 18_YagoubAli_1_rpr.pdb <==
+HEADER Generated with rna-pdb-tools
+HEADER ver ea5e310-dirty
+HEADER https://github.com/mmagnus/rna-pdb-tools
+HEADER Mon May 15 22:00:21 2017
+ATOM      1  P     G A   1       0.320  -0.214  -0.720  1.00 11.89           P
+ATOM      2  OP1   G A   1      -0.058   0.685  -1.838  1.00 14.35           O
+ATOM      3  OP2   G A   1       0.003  -1.650  -0.777  1.00 12.68           O
+ATOM      4  O5'   G A   1       1.876  -0.119  -0.420  1.00 10.34           O
+ATOM      5 C5'    G A   1       2.521   1.250  -0.274  1.00  0.00
+ATOM      6 C4'    G A   1       3.945   0.962   0.133  1.00  0.00
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/37
+MDU6SXNzdWUyMjkyNzc2OTQ=,rna_calc_rmsd.py: round this 9.11688807516e-15 to zero ;-),CLOSED,2017-05-17T08:40:41Z,2017-05-19T15:03:58Z,2017-05-19T15:03:58Z,"```
+[mm] rpr$ git:(master) ✗ rna_calc_rmsd.py -t 4_0_solution_3V7E_rpr.pdb *.pdb
+rmsd_calc_rmsd_to_target
+--------------------------------------------------------------------------------
+ method:
+# of models: 31
+4_0_solution_3V7E_rpr.pdb 9.11688807516e-15 2704
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/38
+MDU6SXNzdWUyMjk3MDc1NDQ=,IOError: [Errno 32] Broken pipe for prints,CLOSED,2017-05-18T15:09:14Z,2017-05-19T14:31:36Z,2017-05-19T14:31:36Z,"```
+[mm] rp07$ git:(master) ✗ rna_pdb_tools.py --rpr 7_Chen_10_rpr.pdb | head
+HEADER Generated with rna-pdb-tools
+HEADER ver v0.99-14-gca9e840-dirty
+HEADER https://github.com/mmagnus/rna-pdb-tools
+HEADER Thu May 18 17:08:03 2017
+ATOM      1 P      G A   1      32.587 -18.404 -15.718  1.00  0.00           P
+ATOM      2  OP1   G A   1      32.796 -19.508 -16.690  1.00  0.00           O
+ATOM      3  OP2   G A   1      31.326 -17.604 -15.754  1.00  0.00           O
+ATOM      4  O5'   G A   1      32.761 -19.019 -14.260  1.00  0.00           O
+ATOM      5  C5'   G A   1      33.715 -20.052 -14.011  1.00  0.00           C
+ATOM      6  C4'   G A   1      33.576 -20.519 -12.596  1.00  0.00           C
+Traceback (most recent call last):
+  File ""/home/magnus/work/src/rna-pdb-tools/bin/rna_pdb_tools.py"", line 166, in <module>
+    print(s.get_text())
+IOError: [Errno 32] Broken pipe
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/39
+MDU6SXNzdWUyMjk3NTIxMjA=,add secondary structure analyzers,CLOSED,2017-05-18T17:42:25Z,2017-06-12T07:52:15Z,2017-06-12T07:52:15Z,e.g. py3dna,mmagnus,https://github.com/mmagnus/rna-tools/issues/40
+MDU6SXNzdWUyMjk3NjA2NTY=,rnastruc_inspect_pdb.py 3b4c_1.pdb ,OPEN,2017-05-18T18:14:31Z,2017-07-13T12:52:26Z,,"```rnastruc_inspect_pdb.py 3b4c_1.pdb 
+
+magnus@maximus:~/rna_only_v2-1st.nmr-SHIT$ rnastruc_inspect_pdb.py 3b4c_1.pdb 
+> 3b4c_1
+
+> 3b4c_1
+A
+moderna_source_1.7.1/moderna -- magnus favored moderna!
+x3dna	GCGCCGGACUUAAAGCCAUa
+moder	GCGCC.GGACUUAAAGCCAU
+3AD
+3AD 	 -1 	 A 	 18 	 ! 	 PDB abbreviation: NOT FOUND, but geometry matches to DA Imposing PDB abbreviation: DA 
+GLP
+GLP 	 201 	 A 	 16 	 ! 	 glucosamine 6-phosphate.
+3AD   -1  on chain A [#21] assigned to: a
+missing ' P  ' atom : residue name '3AD', chain A, number [  -1 ]
+missing ' OP1' atom : residue name '3AD', chain A, number [  -1 ]
+missing ' OP2' atom : residue name '3AD', chain A, number [  -1 ]
+missing ' P  ' atom : residue name '3AD', chain A, number [  -1 ]
+missing ' O3'' atom : residue name '3AD', chain A, number [  -1 ]
+pyars	aGCGCCUGGACUUAAAGCCAU?
+bte  	GCGCCGGACUUAAAGCCAU
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/41
+MDU6SXNzdWUyMjk3OTEyODE=,test.sh -- logging is triggered?,CLOSED,2017-05-18T20:12:54Z,2017-07-05T21:08:44Z,2017-07-05T21:08:43Z,"```
+2017-05-18 22:12:15,964 - rna-pdb-tools - DEBUG - o2p_missing: <Residue G het=  resseq=53 icode= > True N9
+2017-05-18 22:12:15,965 - rna-pdb-tools - DEBUG - o2p_missing: <Residue G het=  resseq=53 icode= > True OP1
+2017-05-18 22:12:15,965 - rna-pdb-tools - DEBUG - o2p_missing: <Residue G het=  resseq=53 icode= > True OP2
+2017-05-18 22:12:15,965 - rna-pdb-tools - DEBUG - o2p_missing: True
+2017-05-18 22:12:15,967 - rna-pdb-tools - DEBUG - fixing o2p for
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/42
+MDU6SXNzdWUyMjk5MzM5MzQ=,get_seq: chains are not in the order as in the file,CLOSED,2017-05-19T10:24:15Z,2017-05-19T14:39:24Z,2017-05-19T14:39:24Z,"```> 2_bujnicki_1_rpr A:1-15
+CCGGAGGAACUACUG
+> 2_bujnicki_1_rpr C:1-15
+CCGGAGGAACUACUG
+> 2_bujnicki_1_rpr B:1-10
+CCGGCAGCCU
+> 2_bujnicki_1_rpr E:1-15
+CCGGAGGAACUACUG
+> 2_bujnicki_1_rpr D:1-10
+CCGGCAGCCU
+> 2_bujnicki_1_rpr G:1-15
+CCGGAGGAACUACUG
+> 2_bujnicki_1_rpr F:1-10
+CCGGCAGCCU
+> 2_bujnicki_1_rpr H:1-10
+CCGGCAGCCU
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/43
+MDU6SXNzdWUyMzAwMDUwNjk=,"in RNApuzzle ready, add an option `--dont_rename_chains`",CLOSED,2017-05-19T15:11:52Z,2017-06-24T08:41:12Z,2017-06-24T08:41:12Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/44
+MDU6SXNzdWUyMzAxNDYwOTg=,work on a list of files: rna_pdb_tools.py --delete B:67-75 --inplace *.pdb,CLOSED,2017-05-20T10:54:09Z,2017-05-20T20:03:21Z,2017-05-20T20:03:21Z,"e.g.
+```
+rna_pdb_tools.py --delete B:67-75 --inplace *.pdb #45
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/45
+MDU6SXNzdWUyMzAzMzI4MTY=,Generated PDB files have incompatible HEADER line,CLOSED,2017-05-22T09:16:56Z,2017-06-26T21:04:12Z,2017-06-26T21:04:12Z,"The effort to have normalized PDB files of RNAPuzzles models is amazing, thanks for that! I have just a small comment and feature request. In generated PDB files you are using `HEADER` lines to provide some comments. But `HEADER` is actually [a well-structured entry](http://www.wwpdb.org/documentation/file-format-content/format33/sect2.html#HEADER). This behaviour breaks current PDB parsers which make use of the `HEADER` line. Additionally, `HEADER` is allowed to be present only once in a file.
+
+In my opinion it would be better to facilitate some PDB field that has a free-text form. For example, [KEYWDS](http://www.wwpdb.org/documentation/file-format-content/format33/sect2.html#KEYWDS) seems to be a good fit:
+
+> The KEYWDS record contains a set of terms relevant to the entry. Terms in the KEYWDS record provide a simple means of categorizing entries and may be used to generate index files. __This record addresses some of the limitations found in the classification field of the HEADER record__. It provides the opportunity to add further annotation to the entry in a concise and computer-searchable fashion.",tzok,https://github.com/mmagnus/rna-tools/issues/48
+MDU6SXNzdWUyMzA3NjAyNjM=,Seq.py - report an error if no correct method is chosen,CLOSED,2017-05-23T15:56:38Z,2017-07-24T16:57:48Z,2017-07-24T16:57:48Z," ```
+   def predict_ss(self, method=""RNAfold"", constraints='', verbose=False):
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/49
+MDU6SXNzdWUyMzEzMjgxNzk=,"Delete Nt ""yg"" after  -get_rnapuzle_ready",CLOSED,2017-05-25T12:38:28Z,2017-07-24T17:25:21Z,2017-07-24T17:25:21Z,"Nt was deleted after use -get_rnapuzle_ready
+[YG_missing.pse.zip](https://github.com/mmagnus/rna-pdb-tools/files/1028962/YG_missing.pse.zip)
+",Aazyla,https://github.com/mmagnus/rna-tools/issues/50
+MDU6SXNzdWUyMzEzMjkwMjc=,--get_rnapuzzle_ready and --renumber_residues don't like each other,CLOSED,2017-05-25T12:42:25Z,2017-07-24T17:44:20Z,2017-07-24T17:44:20Z,program stop when i use --get_rnapuzzle_ready and --renumber_residues  in one command line,Aazyla,https://github.com/mmagnus/rna-tools/issues/51
+MDU6SXNzdWUyMzQzMjc1MTY=,Fix Useless Use of ls * in the docs,CLOSED,2017-06-07T20:09:52Z,2017-06-15T06:51:44Z,2017-06-15T06:51:44Z,"Change all 
+
+     for f in `ls *`; do
+
+to 
+
+     for f in *; do
+
+ http://porkmail.org/era/unix/award.html
+
+https://bioinformatics.stackexchange.com/questions/528/how-to-extract-rna-sequence-and-secondary-structure-restrains-from-a-pdb-file/533?noredirect=1#comment983_533",mmagnus,https://github.com/mmagnus/rna-tools/issues/52
+MDU6SXNzdWUyMzc0NzM0ODM=,--get_rnapuzzle_ready made nanotube from rybosime ,CLOSED,2017-06-21T09:37:42Z,2017-06-21T12:10:27Z,2017-06-21T12:10:27Z,"![screenshot from 2017-06-21 11-35-13](https://user-images.githubusercontent.com/23722070/27377666-eccaa6a6-5675-11e7-8c26-ea37c11ee3b0.png)
+
+
+[1VQO_0.txt](https://github.com/mmagnus/rna-pdb-tools/files/1091050/1VQO_0.txt)
+",Aazyla,https://github.com/mmagnus/rna-tools/issues/53
+MDU6SXNzdWUyNTQ0MTg2NTc=, FIX this commit rna_pdb_tools_lib.py - TER      24        G A  37 -> TER for now,CLOSED,2017-08-31T17:57:47Z,2018-02-12T12:54:41Z,2018-02-12T12:54:41Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/56
+MDU6SXNzdWUyNzE4MzcwOTU=,find_seq should give back a list of hits,OPEN,2017-11-07T13:48:24Z,2018-03-06T15:41:22Z,,"```
+    def find_seq(self, seq, verbose=False):
+        """"""Find seq (also subsequences) and reverse in the alignment.
+
+        Args:
+
+          seq (str): seq is upper()
+          verbose (bool): be verbose
+
+        ::
+
+            seq = ""ggaucgcugaacccgaaaggggcgggggacccagaaauggggcgaaucucuuccgaaaggaagaguaggguuacuccuucgacccgagcccgucagcuaaccucgcaagcguccgaaggagaauc""
+            hit = a.find_seq(seq, verbose=False)
+            ggaucgcugaacccgaaaggggcgggggacccagaaauggggcgaaucucuuccgaaaggaagaguaggguuacuccuucgacccgagcccgucagcuaaccucgcaagcguccgaaggagaauc
+            Match: AL939120.1/174742-174619
+            ID: AL939120.1/174742-174619
+            Name: AL939120.1
+            Description: AL939120.1/174742-174619
+            Number of features: 0
+            /start=174742
+            /end=174619
+            /accession=AL939120.1
+            Per letter annotation for: secondary_structure
+            Seq('CCAGGUAAGUCGCC-G-C--ACCG---------------GUCA-----------...GGA', SingleLetterAlphabet())
+            GGAUCGCUGAACCCGAAAGGGGCGGGGGACCCAGAAAUGGGGCGAAUCUCUUCCGAAAGGAAGAGUAGGGUUACUCCUUCGACCCGAGCCCGUCAGCUAACCUCGCAAGCGUCCGAAGGAGAAUC
+
+        """"""
+        seq = seq.replace('-', '').upper()
+        for s in self.io:
+            seq_str = str(s.seq).replace('-', '').upper()
+            if verbose:
+                print(seq_str)
+            if seq_str.find(seq) > -1 or seq.find(seq_str) > -1:
+                print('Match:', s.id)
+                print(s)
+                print(seq)
+                return s
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/57
+MDU6SXNzdWUyNzE4NDAzMzI=,"rename chains, use syntax A>B",OPEN,2017-11-07T13:58:29Z,2018-03-06T15:40:56Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/58
+MDU6SXNzdWUyNzE4NDYxMjI=,"rna_calc_inf.py: WC (AU, GC) canonical change annotation, make it more clear",OPEN,2017-11-07T14:15:47Z,2018-03-06T15:40:45Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/59
+MDU6SXNzdWUyNzg2Nzg1MzE=,rna_compare.py: calc RMSD and INF in one script to one csv file,OPEN,2017-12-02T11:59:54Z,2018-03-06T15:40:30Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/60
+MDU6SXNzdWUyNzkwNDgyMTg=,PDB files are getting truncated,CLOSED,2017-12-04T16:00:17Z,2018-03-06T15:51:04Z,2018-03-06T15:51:04Z,"For many PDB files, after using rna_pdb_tools (in both: command line and as python module) I get the truncated pdb file. Like:
+
+`./rna_pdb_toolsx.py --get_rnapuzzle_ready rna.pdb  > out.pdb`
+
+(for input and output see [pdbs.zip](https://github.com/mmagnus/rna-pdb-tools/files/1527778/pdbs.zip))
+
+The input file is generated by chimera (mol2 file) and then converted to pdb by openbabel. Both pymol and chimera open and interpret the input pdb files correctly.
+
+
+
+
+",filipsPL,https://github.com/mmagnus/rna-tools/issues/61
+MDU6SXNzdWUyODYwODg1MDQ=,GC SS_cons2 is not correctly parsed,OPEN,2018-01-04T19:26:47Z,2018-01-04T19:27:16Z,,"```python
+[mm] rna-search-with-a-new-alphabet$ python test.py
+Traceback (most recent call last):
+  File ""test.py"", line 3, in <module>
+    a = RNAalignment('RF01074.txt')
+  File ""/home/magnus/work-src/rna-pdb-tools/rna_pdb_tools/utils/rna_alignment/rna_alignment.py"", line 408, in __init__
+    self.copy_ss_cons_to_all()
+  File ""/home/magnus/work-src/rna-pdb-tools/rna_pdb_tools/utils/rna_alignment/rna_alignment.py"", line 554, in copy_ss_cons_to_all
+    'Please check if all your sequences and ss lines are of the same length!')
+Exception: Please check if all your sequences and ss lines are of the same length!
+```
+
+[RF01074.stockholm.txt](https://github.com/mmagnus/rna-pdb-tools/files/1604465/RF01074.stockholm.txt)
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/62
+MDU6SXNzdWUyOTU1NDIxNDM=,"If there is chain A already, rename chains will not work",CLOSED,2018-02-08T14:56:29Z,2018-02-12T12:47:34Z,2018-02-12T12:47:34Z,"```
+[mm] rp21$ git:(master) ✗ rna_pdb_toolsx.py --inplace --rpr 21_solution_2_rpr.pdb
+  0% (0 of 1) |                                                                                          | Elapsed Time: 0:00:00 ETA:  --:--:--Traceback (most recent call last):
+  File ""/home/magnus/work-src/rna-pdb-tools/bin/rna_pdb_toolsx.py"", line 283, in <module>
+    verbose=args.verbose)
+  File ""/Users/magnus/work-src/rna-pdb-tools/rna_pdb_tools/rna_pdb_tools_lib.py"", line 954, in get_rnapuzzle_ready
+    chain.id = new_chains.pop(0)
+  File ""/home/magnus/work/opt/miniconda2/lib/python2.7/site-packages/Bio/PDB/Entity.py"", line 92, in id
+    "" this entity."".format(self._id, value, value))
+ValueError: Cannot change id from `A` to `A`. The id `A` is already used for a sibling of this entity.
+[mm] rp21$ git:(master) ✗ rna_pdb_toolsx.py --inplace --rpr --dont_rename_chains 21_solution_2_rpr.pdb
+  0% (0 of 1) |                                                                                          | Elapsed Time: 0:00:00 ETA:  --:--:--
+````",mmagnus,https://github.com/mmagnus/rna-tools/issues/63
+MDU6SXNzdWUzMTEyMzgwMTE=,Vienna RNA: use as a library not like os.system,OPEN,2018-04-04T13:49:22Z,2018-04-04T13:49:41Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/64
+MDU6SXNzdWUzMjEyMDAwMjE=,PyMOL4RNA: ss_all: name file as PyMOL name,CLOSED,2018-05-08T14:02:28Z,2018-05-08T14:11:58Z,2018-05-08T14:11:58Z,"<img width=""448"" alt=""screen shot 2018-05-08 at 4 01 52 pm"" src=""https://user-images.githubusercontent.com/118740/39761754-3306720c-52d9-11e8-8415-6935004af39d.png"">
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/65
+MDU6SXNzdWUzNTE1NDMyNTc=,"Unable to parse a stockholm format file using rna-pdb-tools, but can do so using biopython",CLOSED,2018-08-17T10:33:18Z,2018-11-09T19:45:34Z,2018-11-09T19:39:12Z,"[IE2.gissd.sto.txt](https://github.com/mmagnus/rna-pdb-tools/files/2296880/IE2.gissd.sto.txt)
+
+I'm able to parse this file using SeqIO module in Biopython but not by RNAalignment from rna-pdb-tools. I need this because of some other functionalities in RNAalignment that I'd like to use. Please check and let me know if there is a bug here or the problem is with formatting of the file.
+
+The error that I get is:
+`Traceback (most recent call last):
+  File ""map_consensus_remove_gaps.py"", line 27, in <module>
+    test = ra.RNAalignment('alignment_files/' + file_name)
+  File ""/usr/local/lib/python2.7/dist-packages/rna_pdb_tools/utils/rna_alignment/rna_alignment.py"", line 419, in __init__
+    seq_id, seq_seq = seq.split()
+ValueError: need more than 0 values to unpack` ",thedjofsis,https://github.com/mmagnus/rna-tools/issues/66
+MDU6SXNzdWUzNTE1NDUxNTU=,remove_gaps() is not removing every gap present,CLOSED,2018-08-17T10:39:58Z,2018-11-09T19:44:47Z,2018-11-09T19:24:48Z,"I apologize in advance if this is more related to the biology of RNA but I'm trying the following steps:
+1. Load the file attached using RNAalignment
+2. Copy consensus secondary structure to all
+3. Iterate of each record and do record.remove_gaps()
+4. tried step 3 with the all possible parameters from the documentation
+5. writing the sequence and the mapped structure (after converting them into string) to a file
+
+The final file has an issue that sometimes in the sequences, some gaps stay (a '.' in the primary sequence) which I checked a few times and can be removed actually because that position is never paired or anything (since we are preserving only canonical pairs)
+Please let me know how can this be fixed.
+
+[IA1.gissd.sto.txt](https://github.com/mmagnus/rna-pdb-tools/files/2296896/IA1.gissd.sto.txt)
+",thedjofsis,https://github.com/mmagnus/rna-tools/issues/67
+MDU6SXNzdWUzNzQ5OTYzNTE=,mcfold with constraints in the console,CLOSED,2018-10-29T12:40:44Z,2018-10-29T12:41:21Z,2018-10-29T12:41:21Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/68
+MDU6SXNzdWUzNzQ5OTY4MDM=,Clean up various systems of tests in the package,OPEN,2018-10-29T12:41:59Z,2020-06-26T12:19:05Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/69
+MDU6SXNzdWUzODk0NzUwNjc=,minor issue with progressbar,CLOSED,2018-12-10T20:34:02Z,2019-04-18T09:57:12Z,2019-04-18T09:57:12Z,Got `TypeError: __init__() got an unexpected keyword argument 'max_value'` when I run rna_calc_inf.py. Solved it by changing `max_value` to `maxval`.,kekexinz,https://github.com/mmagnus/rna-tools/issues/70
+MDU6SXNzdWUzOTYyNjAxNDg=,Handle input/K.pdb,CLOSED,2019-01-06T13:53:12Z,2020-11-24T11:45:39Z,2020-11-24T11:45:39Z,"```
+[mm] rna_pdb_tools$ git:(pre-release) ✗ rna_pdb_toolsx.py --no_hr --rpr input/K.pdb
+Traceback (most recent call last):
+  File ""/home/magnus/work-src/rna-pdb-tools/bin/rna_pdb_toolsx.py"", line 320, in <module>
+    verbose=args.verbose)
+  File ""/Users/magnus/work-src/rna-pdb-tools/rna_pdb_tools/rna_pdb_tools_lib.py"", line 1078, in get_rnapuzzle_ready
+    r_atoms = [r[""O4'""], r[""C4'""], r[""C3'""]]
+  File ""/usr/local/lib/python2.7/site-packages/Bio/PDB/Entity.py"", line 41, in __getitem__
+    return self.child_dict[id]
+KeyError: ""O4'""
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/71
+MDU6SXNzdWUzOTYyOTE1MzI=,clanstix with smart group name picking ,CLOSED,2019-01-06T20:29:33Z,2019-01-09T10:37:52Z,2019-01-09T10:37:37Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/72
+MDU6SXNzdWU0MDYyODU0ODc=,--split-alt-locations,OPEN,2019-02-04T11:26:12Z,2020-02-18T13:54:20Z,,"- [ ] add documentation on this function
+- [ ] rna_pdb_toolsx.py --split-alt-locations trna_rpr_x_rpr_ref.pdb > trna_rpr_x_rpr2_ref.pdb this give a file with two models, but the models should have removed A and B annotation",mmagnus,https://github.com/mmagnus/rna-tools/issues/73
+MDU6SXNzdWU0MzI4NjUwNTI=,`--compact` is missing (?),CLOSED,2019-04-13T16:10:56Z,2019-04-21T11:11:42Z,2019-04-21T11:11:42Z,"```
+rna_pdb_toolsx.py --get_seq --uniq '[:5]' --compact --chain-first * | sort
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/77
+MDU6SXNzdWU0MzM0OTI3NTE=,Cannot install,CLOSED,2019-04-15T21:47:30Z,2020-03-30T15:21:53Z,2020-03-30T15:21:53Z,"Hi Marcin,
+I wanted to use your lib, however it's impossible to install it (at least on macOS using instructions in docs). I think it's mostly due to your lib rename (from rna_pdb_tools to rna_tools). It seems like you over-engineered the whole installation process. I suggest you taking a look at standard setup tools and using simple `setup.py` to be able to install your library like any standard Python package.",marrrcin,https://github.com/mmagnus/rna-tools/issues/78
+MDU6SXNzdWU0MzQ2ODcyMTU=,Documentation does not compile for rna-tools,CLOSED,2019-04-18T09:57:01Z,2019-05-04T09:32:11Z,2019-05-04T09:32:11Z,Fix http://rna-tools.rtfd.io,mmagnus,https://github.com/mmagnus/rna-tools/issues/81
+MDU6SXNzdWU0Mzc5NjcxNzg=,--rpr fix TER and atom numbering,CLOSED,2019-04-27T17:43:07Z,2019-04-27T21:30:47Z,2019-04-27T21:30:47Z,"```
+ATOM    386  C6    C A  18     246.161 253.255  59.362  1.00  0.00           C
+TER     387        C A  18
+ATOM    387  P     G B   1     254.203 255.559  71.356  1.00  0.00           P
+ATOM    388  OP1   G B   1     255.587 255.729  71.850  1.00  0.00           O
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/84
+MDU6SXNzdWU0NDA4OTkwOTc=,Merge RNAseq with RNAseq from the alignment module,OPEN,2019-05-06T21:19:33Z,2019-05-14T17:57:29Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/85
+MDU6SXNzdWU0NDQwNDc1ODM=,"UNK should be ? or something, not k",OPEN,2019-05-14T17:54:58Z,2019-05-14T17:57:21Z,,"UNK should be ? or something, not k
+
+```
+> v:191-206 209-223 225-239 241-257 259-272 274-288 290-304 306-322 324-340 342-358 360-371 373-390 392-406 408-422 424-442 444-465 467-490 492-507 509-530 532-548 550-566 569-580 584-636 640-653 663-675 679-689 706-734 738-739 741-757 759-776 778-795 797-820
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+```
+
+in 5gm6-pdb-bundle",mmagnus,https://github.com/mmagnus/rna-tools/issues/86
+MDU6SXNzdWU0NDUxNTY1Mjg=,dot2ct():,CLOSED,2019-05-16T20:57:06Z,2019-05-25T06:53:08Z,2019-05-25T06:53:08Z,create a function for dot2ct based on rna_dot2ct.py,mmagnus,https://github.com/mmagnus/rna-tools/issues/88
+MDU6SXNzdWU0NDg4MjEzNTc=,Clanstixs problem with group and coloring,CLOSED,2019-05-27T12:03:50Z,2019-05-29T20:53:38Z,2019-05-29T20:53:38Z,"
+     python rna_clanstix.py matrix.txt --groups 400:seq1+400:seq2+400:seq3+400:seq4 --output matrix_clans.dat
+
+The groups defined are not getting colored differently.
+
+Please help fix the issue",iswaryapj,https://github.com/mmagnus/rna-tools/issues/91
+MDU6SXNzdWU0NDk1MjU3NjE=,run clanstixs in multi processor,CLOSED,2019-05-28T23:50:28Z,2019-06-05T07:57:03Z,2019-06-05T07:57:03Z,"Is it possible to make clanstixs work with multiprocessor.
+It was taking 1 hr and 30 minutes for 1600*1600 matrix.
+There are needs to do it for bigger matrices.
+So making clanstixs faster by multiprocessors will save a lot of time.
+
+Thanks in advance
+Best,
+Iswarya",iswaryapj,https://github.com/mmagnus/rna-tools/issues/92
+MDU6SXNzdWU0NDk2Mzc5Mjk=,Python3 for everything!,CLOSED,2019-05-29T07:18:21Z,2020-01-07T13:11:24Z,2020-01-07T13:11:24Z,"- [x] most of the stuff done
+- [x] problem with progressbar module
+- [x] fix problem with biopython",mmagnus,https://github.com/mmagnus/rna-tools/issues/93
+MDU6SXNzdWU0NDk2NDcwNDk=,Fix all underscores into dashes in arguments,CLOSED,2019-05-29T07:41:19Z,2019-05-29T07:43:05Z,2019-05-29T07:43:05Z,"
+      -dont_fix_missing_atoms -> --dont-fix-missing-atoms",mmagnus,https://github.com/mmagnus/rna-tools/issues/94
+MDU6SXNzdWU0NTIyNzUzMzc=,code with new Feature for parallel processing and pvalue matrix ,CLOSED,2019-06-05T01:26:40Z,2019-06-05T07:52:31Z,2019-06-05T07:52:31Z,"Here is my edited code for multi processing and pvalue matrix :)
+It you would like can upgrade it.
+
+Best
+Iswarya
+
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+""""""rna_clanstix - a tool for visualizing RNA 3D structures based on pairwise structural similarity with Clans.
+
+We hacked Clans thus instead of BLAST-based distances between sequences, you can analyze distances between structures described as p-values of rmsd (based on the method from the Dokholyan lab.)
+
+Quickref::
+
+      rna_clanstix.py --groups-auto 10 --color-by-homolog --shape-by-source  thf_ref_mapping_pk_refX.txt input2.clans
+
+Running Clans:
+To run CLANS you need to have Java 1.4 or better installed (java can be downloaded HERE). For full functionality you will also need the NCBI BLAST,PSI-BLAST and formatdb executables (NCBI). For command line parameters and basic help please refer to the README file.
+(source: http://www.eb.tuebingen.mpg.de/research/departments/protein-evolution/software/clans.html)
+
+.. image:: ../../rna_tools/tools/clanstix/doc/yndSrLTb7l.gif
+
+The RMSDs between structures are converted into p-values based on the method from the Dokholyan lab or some hacky way developed by mmagnus .
+
+Color groups
+---------------------------------------
+You can color your groups:
+
+.. image:: ../../rna_tools/tools/clanstix/doc/rna_clanstix.png
+
+To get colors, run a cmd like this::
+
+   rna_clastix.py rnapz17_matrix_farfar_HelSeedCst.txt --groups 20:seq1+20+20+20+20+20+20:seq10
+
+where with the ``+`` sign you separate groups. Each group has to have a number of structures. Optionally it can have a name, e.g., ``20:seq1``, use ``:`` as a separator. If a provided name is ``native`` then this group will be shown as starts.
+
+Get inspiration for more colors (http://www.rapidtables.com/web/color/RGB_Color.htm)
+
+How to use ClanstixRNA?
+----------------------------------------
+
+1. Get a matrix of distances, save it as e.g. matrix.txt (see Comment below)
+2. run ClanstixRNA on this matrix to get an input file to Clans (e.g. clans_rna.txt)::
+
+     rna_clanstix.py test_data/matrix.txt # clans.input will be created by default
+
+3. open CLANS and click File -> Load run and load clans_run.txt
+4. You're done! :-)
+
+Comment: To get this matrix you can use for example another tool from the rna-pdb-tools packages::
+
+     rna_calc_rmsd_all_vs_all.py -i rp18 -o rp18_rmsd.csv
+     rna_clastix.py --groups 1:native+5:3dRNA+
+           5:Chen+3:Dokh+5:Feng+5:LeeASModel+
+           5:Lee+5:RNAComposer+10:RW3D+5:Rhiju+
+           1:YagoubAli+3:SimRNA  rp18_rmsd.csv clans.in
+
+     rna_clastix.py --groups 100+100+100+100+100+100+100+100+100+100+1:native  rp18_rmsd.csv
+
+where ``rp18`` is a folder with structure and ``rp18_rmsd.csv`` is a matrix of all-vs-all rmsds.
+
+.. image:: ../../rna_tools/tools/clanstix/doc/rp18_clanstix.png
+
+Hajdin, C. E., Ding, F., Dokholyan, N. V, & Weeks, K. M. (2010). On the significance of an RNA tertiary structure prediction. RNA (New York, N.Y.), 16(7), 1340–9. doi:10.1261/rna.1837410
+
+An output of this tool can be viewed using CLANS.
+
+Frickey, T., & Lupas, A. (2004). CLANS: a Java application for visualizing protein families based on pairwise similarity. Bioinformatics (Oxford, England), 20(18), 3702–4. doi:10.1093/bioinformatics/bth444
+""""""
+
+import argparse
+import rna_tools.tools.rmsd_signif.rnastruc_pred_signif as pv
+import numpy as np
+import math
+import logging
+import time
+
+logging.basicConfig(level=logging.INFO,
+                format='%(message)s',
+                datefmt='%m-%d %H:%M',
+                filename='rna_clanstix.log',
+                filemode='w')
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter('%(message)s')
+console.setFormatter(formatter)
+logging.getLogger('').addHandler(console)
+
+log = logging.getLogger()
+log.setLevel(logging.INFO)
+
+
+class RNAStructClans:
+    """"""Clans run.
+
+    Usage::
+
+        >>> f = open('matrix.txt')
+        >>> ids = f.readline().replace('#','').split()
+        >>> c = RNAStructClans(n=len(ids)) # 200?
+        >>> c.add_ids(ids)
+        >>> c.dist_from_matrix(f)
+        >>> print(c.txt)
+    """"""
+
+    def __init__(self, n=10, dotsize=10):
+        self.n = n
+        self.comment = ''
+        #cluster2d=false
+        self.txt = """"""sequences=%i
+<param>
+maxmove=0.1
+pval=%s
+usescval=false
+complexatt=true
+cooling=1.0
+currcool=1.0
+attfactor=10.0
+attvalpow=1
+repfactor=10.0
+repvalpow=1
+dampening=1.0
+minattract=1.0
+cluster2d=true
+blastpath=''
+formatdbpath=''
+showinfo=false
+zoom=0.9
+dotsize=%s
+ovalsize=10
+groupsize=4
+usefoldchange=false
+avgfoldchange=false
+colorcutoffs=0.0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;
+colorarr=(230;230;230):(207;207;207):(184;184;184):(161;161;161):(138;138;138):(115;115;115):(92;92;92):(69;69;69):(46;46;46):(23;23;23):
+</param>"""""" % (n, args.pvalue, str(dotsize))
+
+    def add_ids(self, ids):
+        t = '\n<seq>\n'
+        for i in ids:
+            t += '>' + i + '\n'
+            t += 'X' + '\n'
+        t += '</seq>\n'
+        if len(ids) != self.n:
+            # print 'n != ids'
+            raise Exception('n != ids')
+        self.txt += t
+
+    def dist_from_matrix(self, lines,pmat=['0'],use_pv=False, debug=False):
+        if debug:
+            print('Everything but the dists are generated. Use it to edit the original clans input file.')
+            return # for some hardcore debugging ;-)
+        t = '\n<hsp>\n'
+        myp = ''
+        c = 0
+        c2 = 0
+        for l in lines:
+            for rmsd in l:
+            #for rmsd in l.split():
+                if c != c2:
+                    if use_pv:
+                        dist = pv.get_p_value(rmsd, 1 * 38)[0]  # r.get_rmsd_to(r2), 3)
+                    else:
+                        # 1e-06 10-1 = 9 10-10 0
+                        dist = '1.0E-' + str(max - int(float(rmsd)))
+                    myp += ' ' + str(dist) 
+                    t += str(c) + ' ' + str(c2) + ':' + str(dist) + '\n'
+                else :
+                    myp += ' ' + '0.0'
+                c2 += 1
+            myp += '\n'
+            c2 = 0
+            c += 1
+
+        t += '</hsp>\n'
+
+        self.comment = '# max: %f min (non-zero): %f\n' % (max, min)
+        self.comment += '# 1/4 ' + str((max - min) / 4) + ' ' + str(round((max - min) / 4, 0)) + '\n'
+        self.comment += '# 1/2 ' + str((max - min) / 2) + ' ' + str(round((max - min) / 2, 0)) + '\n'
+        self.comment += '# 1/3 ' + str(((max - min) / 4 ) * 3 ) + ' ' + str(round(((max - min) / 4) * 3, 0)) + '\n'
+        for i in range(1,20):
+            self.comment += '# connected points with RMSD lower than %iA 1.0E-%i\n' % (i, math.ceil(matrix.max()) - i)
+        if pmat[0]=='1':
+            with open('pMatrix.txt', 'w') as f:
+                f.write(myp)
+        return t
+
+def check_symmetric(a, rtol=1e-05, atol=1e-08):
+    """"""
+    https://stackoverflow.com/questions/42908334/checking-if-a-matrix-is-symmetric-in-numpy
+    """"""
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+
+def get_parser():
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('matrixfn', help=""matrix"")
+
+    parser.add_argument('--groups-auto', help=""define into how many groups make automatically"", type=int)
+
+    parser.add_argument('--color-by-homolog', help=""color the same homolog in the same way"", action='store_true')
+    parser.add_argument('--one-target', help=""color the same homolog in the same way"", action='store_true')
+
+    parser.add_argument('--shape-by-source', help=""shape points based on source, SimRNA vs Rosetta (Rosetta models have 'min' in name'"",
+                        action='store_true')
+
+    parser.add_argument('--debug', action='store_true')
+
+    parser.add_argument('--size', type=int, default=8)
+
+    parser.add_argument('--dont-calc', action='store_true', help=""A simple and dirty trick to get ""
+                        ""generates everything but the main distances from the matrix""
+                        ""useful if you want to run the script to generate different settings, such as""
+                        ""colors, groups etc. Run the script and then replace parts of the original ""
+                        ""file with the matrix"")
+
+    parser.add_argument('--groups', help=""groups, at the moment up to 7 groups can be handle""
+                        ""--groups 1:native+100:zmp+100:zaa+100:zbaa+100:zcp+100:znc""
+                        ""--groups 1:native+100:nats+100:hom1+100:hom2+100:hom3+100:hom4""
+                        ""native will light green""
+                        ""zmp will be forest green""
+                        ""(easy to be changed in the future)"")
+
+    parser.add_argument('--use-pvalue', action='store_true', help="""")
+
+    parser.add_argument('--pvalue', default=""1.0E-15"", help=""set p-value for clans.input, default: 1.0E-15"")
+
+    parser.add_argument('--output', help=""input file for clans, e.g., clans.input"", default=""clans.input"")
+    parser.add_argument('--outpmatrix', type=int, default=0, help=""If 1, p value matrix will be output in pmatrix.txt file,""
+                        ""If 0, no p matrix output file"")
+    return parser
+
+import multiprocessing as mp
+from multiprocessing import *
+import dill
+import parmap
+from pathos.multiprocessing import ProcessingPool    
+# main
+if __name__ == '__main__':
+    parser = get_parser()
+    args = parser.parse_args()
+    debug = args.debug  # as a short cut later
+    outpmatrix=args.outpmatrix
+    f = open(args.matrixfn)
+    # OK, check if there is a header = the line with '#'
+    headers = f.readline()
+    if headers.strip().startswith('#'):
+        # if yes, then split remove # and split into lists
+        ids = headers.replace('#', '').split()
+    else:
+        # if no, then make a list form [0, # of items in the first line]
+        ids = [str(i) for i in range(0, len(headers.split()))]
+        f.seek(0)
+
+    logging.info(time.strftime(""%Y-%m-%d %H:%M:%S""))
+    rmsds = []
+    for l in f:
+            #for rmsd in map(float,l.split()):  # map(float, s.split())
+			rmsds.append(map(float,l.split()))
+    #print rmsds
+    # warning:
+    # eh, this matrix is not really used by clanstix main engine
+    # it's used to calc min and max value of a matrix
+    matrix = np.loadtxt(args.matrixfn)
+    global max
+    max = int(math.floor(matrix.max())) 
+    global min
+    min = matrix[matrix>0].min()
+    if check_symmetric(matrix):
+        if args.debug: print('Matrix is symmetrical! ', matrix.shape)
+    else:
+        raise Exception('Matrix is not symmetrical! Check your matrix', matrix.shape)
+
+    # keep dot quite big by default,
+    # but if you use dotsize then keep this one 0
+    dotsize =  8
+    if args.groups_auto or args.groups:
+        dotsize =  0
+    print 1
+    c = RNAStructClans(n=len(ids), dotsize=dotsize)  # 200?
+    c.add_ids(ids)
+    if debug:
+        print('dist_from_matrix...')
+    #pool = mp.Pool(mp.cpu_count())
+    pool = ProcessingPool(mp.cpu_count()) #nodes=4)
+    #results = pool.starmap(c.dist_from_matrix, [(row, 4, 8) for row in data])
+    x=pool.map(c.dist_from_matrix,[rmsds], [str(outpmatrix)])
+    #x=parmap.map(c.dist_from_matrix,[rmsds],outpmatrix,args.use_pvalue, args.dont_calc)
+    pool.close()
+    print 2
+    s=''
+    for i in x:
+        s=s.join(i) 
+    if debug:
+        print('process the matrix')
+    #
+    # DEFINE GROUPS
+    #
+    # 1+20+20+20+20+20
+    seqgroups = ''
+    #colors = ['0;255;102;255', # ligthgreen 1
+    #          '0;102;0;255', # forest 2
+    # A list of colors used later ....
+    colors = [
+              '255;102;102;255', # red 3
+              '51;51;255;255', # blue 4
+              '0;255;255;255', # light blue +1
+              '180;38;223;255', # violet 5
+              '64;64;64;255', # grey 6
+              '255;128;0;255', # orange 7
+              '128;0;128;255', # purple 8
+              '0;128;128;255', # Teal 9
+              '128;0;0;255', # maroon 10
+              '0;255;255;255',  # cyjan
+              '240;230;140;255', #khaki
+              '210;105;30;255', # chocolate
+               ]
+
+    # This is pretty much the same list as above, but in here I have more distinguishable colors,
+    # as I should be used with less number of groups
+    colors_homologs = [
+              '255;102;102;255', # red 3
+              '51;51;255;255', # blue 4
+              '64;64;64;255', # grey 6
+              '128;0;128;255', # purple 8
+              '128;0;0;255', # maroon 10
+              '0;255;255;255',  # cyjan
+              '237;41;57;255', # red
+              #'210;105;30;255', # chocolate
+               ]
+
+    # OK, this is the trick
+    # if args.groups_auto is on, then you built args.groups automatically,
+    # and then just simply run the next if as it was args.groups in the arguments
+    # pretty cool ;-)
+    if args.groups_auto:
+        # arsg_groups = ''
+        from collections import OrderedDict
+        # collect groups
+        #groups = []
+        groups = OrderedDict()
+        for i in ids:
+            #
+            # collect homologs gmp_
+            # simrna and farna
+
+            group_name = i[:args.groups_auto]
+            if group_name in groups:
+                groups[group_name] += 1
+            else:
+                groups[group_name] = 1
+        groups_str = ''
+        for g in groups:
+            groups_str += str(groups[g]) + ':' + g + '+'
+        #
+        # this is the trick, you
+        args.groups = groups_str[:-1]
+        print(groups_str)
+        # change this to get 1:hccp+10:zmp+10:xrt
+
+    if args.groups:
+        # this is a manual way how to do it
+        groups = args.groups.split('+')
+        seqgroups = '<seqgroups>\n'
+        curr_number = 0
+        homologs_colors = {}
+        if args.debug: print(args.groups)
+        for index, group in enumerate(groups):
+            # parse groups
+            # type and size will be changed for native
+            size = args.size
+            dottype = 0
+            color = '' # use for diff color selection if tar
+            if ':' in group:
+                nstruc, name = group.split(':')
+                if name == 'native':
+                    dottype = 8
+                    size = 20
+                    color = '0;128;128;255' # olive
+
+                if 'solution' in name:
+                    dottype = 8
+                    size = 30  # solution is bigger
+                    color = '0;128;128;255' # olive
+
+                if args.one_target: # target is target, dont distinguish it
+                    if 'tar' in name and 'tar_min' not in name: # SimRNA
+                        dottype = 7
+                        size = size # 7  # size of SimRNA reference seq points
+                        color = '0;255;102;255' # ligthgreen 1
+
+                    if 'tar_min' in name:
+                        dottype = 9
+                        size = size # 7 # size of Rosetta reference seq points
+                        color = '0;102;0;255' # forest 2
+                else:
+                    if 'tar' in name: # SimRNA
+                        size = size #8  # size of SimRNA reference seq points
+                        dottype = 0
+                        color = '0;255;102;255' # ligthgreen 1
+
+                if args.shape_by_source:
+                    # Rosetta models are diamond now
+                    if 'min' in name:
+                        dottype = 2
+
+                # color by homolog
+                if args.color_by_homolog:
+                    # 10:gxx_6bd266+10:gxx_min.ou+10:gbaP_d2b57+10:gbaP_min.o+10:gbx_00de79+10:gbx_min.ou+10:gapP_d9d22+10:gapP_min.o+10:gmp_faa97e+10:gmp_min.ou
+                    tmp = name.split('_')
+                    homolog_name = tmp[0]
+                    if debug: 'homolog_name', homolog_name
+                    # ignore tar and solution, their colors are defined above ^
+                    ## [mm] simrna5x100farna5x100$ git:(master) ✗ rna_clastix.py --groups-auto 8 --color-by-homolog --shape-by-source rp14sub_ref_mapping_refX.txt input2.clans --debug
+                    ## 2019-01-09 12:23:21
+                    ## 100:tar_min.+100:tar_rp14+1:solution+100:cy2_min.+100:cy2_r14a+100:aj6_min.+100:aj6_r14a
+                    ## {'cy2': '210;105;30;255'}
+                    ## {'cy2': '210;105;30;255'}
+                    ## {'cy2': '210;105;30;255', 'aj6': '0;255;255;255'}
+                    ## {'cy2': '210;105;30;255', 'aj6': '0;255;255;255'}
+                    ## # max: 18.000000 min (non-zero): 0.810000
+                    if homolog_name == 'tar' or homolog_name.startswith('solution'):
+                        pass
+                    else:
+                        if homolog_name in homologs_colors:
+                            color = homologs_colors[homolog_name]
+                        else:
+                            homologs_colors[homolog_name] = colors_homologs.pop()
+                            color = homologs_colors[homolog_name]
+                        if debug: print(homologs_colors)
+            else:
+                nstruc = group
+                name = 'foo'
+
+            # color is set in the args.color_by_homologs
+
+            # craft seqgroups
+            seqgroups += ""name=%s\n"" % name
+            seqgroups += ""type=%i\n"" % dottype
+            # color hack
+            if color:  # this color is fixed for native right now
+                seqgroups += ""color=%s\n"" % color
+            else:
+                seqgroups += ""color=%s\n"" % colors[index]
+
+            # color hack
+            seqgroups += ""size=%i\n"" % size
+            seqgroups += ""hide=0\n""
+            if debug:
+                print('name: ' + name + ' ' + colors[index])
+            # get numbers - convert nstruc into numbers in Clans format 0;1; etc.
+            # remember: it starts from 0
+            # --groups 1:hccp+10:zmp+10:xrt
+            # hccp
+            # [0]
+            # zmp
+            # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            # xrt
+            # [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+            numbers = range(curr_number, curr_number + int(nstruc))  # 0, 1
+            curr_number = curr_number + int(nstruc)
+            seqgroups += ""numbers=%s;\n"" % ';'.join([str(number) for number in numbers])
+        seqgroups += '</seqgroups>\n'
+    #print c.txt
+    with open(args.output, 'w') as f:
+        f.write(c.txt)
+        #for i_x in y:
+        f.write(s)
+        #f.write(str(x))
+        f.write(seqgroups)
+        f.write(c.comment)
+    print(c.comment)
+    logging.info(time.strftime(""%Y-%m-%d %H:%M:%S""))
+    if debug:
+        print(seqgroups)",iswaryapj,https://github.com/mmagnus/rna-tools/issues/95
+MDU6SXNzdWU0NjAyMjAxODQ=,"Clanstix: no multiprocessing, empty scores",CLOSED,2019-06-25T05:41:12Z,2019-06-25T06:07:58Z,2019-06-25T06:07:58Z,"```
+</seq>
+
+<hsp>
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/97
+MDU6SXNzdWU0OTk5MzE2ODE=,--un-nmr should start from 1 ;-),CLOSED,2019-09-29T15:22:53Z,2019-09-29T15:43:02Z,2019-09-29T15:43:02Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/98
+MDU6SXNzdWU1MDk4NTU4NzM=,a new format for rna_pdb_toolsx.py --get-seq,CLOSED,2019-10-21T09:54:01Z,2019-12-16T12:55:24Z,2019-12-16T12:55:24Z,"instead of 
+
+```
+# solution_5iem
+> A:1-57
+GGGAUCUGUCACCCCAUUGAUCGCCUUCGGGCUGAUCUGGCUGGCUAGGCGGGUCCC
+# solution_5lys
+> A:24-48 60-87 101-101
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcu
+> B:24-48 60-87 102-102
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcu
+# solution_5lyu
+> A:23-48 60-87 102-102
+GGGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcl
+> B:23-48 60-87
+GGGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCc
+# solution_5lyv
+> A:24-48 60-86 101-102
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcx
+> B:24-48 60-86 101-101 103-103
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcl
+
+```
+
+get this
+
+```
+> solution_5iem A:1-57
+GGGAUCUGUCACCCCAUUGAUCGCCUUCGGGCUGAUCUGGCUGGCUAGGCGGGUCCC
+> solution_5lys A:24-48 60-87 101-101
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcu
+> solution_5lys B:24-48 60-87 102-102
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcu
+> solution_5lyu A:23-48 60-87 102-102
+GGGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcl
+> solution_5lyu B:23-48 60-87
+GGGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCc
+> solution_5lyv A:24-48 60-86 101-102
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcx
+> solution_5lyv B:24-48 60-86 101-101 103-103
+GGGAUCUGUCACCCCAUUGAUCGCCGGCUGAUCUGGCUGGCUAGGCGGGUCCcl
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/100
+MDU6SXNzdWU1NjQ1OTMxMDQ=,rna_calc_rmsd.py: sort the csv file according to rmsd,CLOSED,2020-02-13T10:43:15Z,2020-02-18T13:53:29Z,2020-02-18T13:53:29Z,"```
+rna_calc_rmsd.py -t 21_solution_2_rpr.pdb *.pdb
+method: all-atom-built-in
+# of models: 55
+21_3dRNA_1_rpr.pdb 12.09 881
+21_3dRNA_2_rpr.pdb 12.41 881
+```
+
+the simplest would be to add --sort and sort with Pandas the rmsd csv file.",mmagnus,https://github.com/mmagnus/rna-tools/issues/101
+MDU6SXNzdWU1NjUxODM1OTE=,rna_calc_inf.py: must use stacking otherwise there is an error in inf_all,CLOSED,2020-02-14T08:45:06Z,2020-02-16T17:26:08Z,2020-02-16T17:26:08Z,"inf_all should be 1, but is 0.570, because stacking not used for calculations
+
+```
+(base) [dhcp177-lan203] rna_calc_inf$ git:(master) ✗ ./rna_calc_inf.py -t ../rna_calc_rmsd/test_data/pistol/clusters/5k7c_clean_onechain_renumber_as_puzzle_srr.pdb -f ../rna_calc_rmsd/test_data/pistol/clusters/*.pdb --no-stacking -pr --debug
+Namespace(debug=True, files=['../rna_calc_rmsd/test_data/pistol/clusters/5k7c_clean_onechain_renumber_as_puzzle_srr.pdb', '../rna_calc_rmsd/test_data/pistol/clusters/pistol_thrs0.50A_clust01-000001_AA.pdb', '../rna_calc_rmsd/test_data/pistol/clusters/pistol_thrs0.50A_clust02-000001_AA.pdb', '../rna_calc_rmsd/test_data/pistol/clusters/pistol_thrs0.50A_clust03-000001_AA.pdb'], force=True, method='clarna', no_stacking=True, nt=3, out_fn='inf.csv', print_results=True, sort_results=False, ss='', target_fn='../rna_calc_rmsd/test_data/pistol/clusters/5k7c_clean_onechain_renumber_as_puzzle_srr.pdb', verbose=False)
+100% (4 of 4) |############################################################################################################################################| Elapsed Time: 0:00:18 ETA:  00:00:00csv was created!  inf.csv
+                                              target                                                 fn  inf_all  inf_stack  inf_WC  inf_nWC  sns_WC  ppv_WC  sns_nWC  ppv_nWC
+0  5k7c_clean_onechain_renumber_as_puzzle_srr.pdb...  5k7c_clean_onechain_renumber_as_puzzle_srr.pdb...    0.570      0.000   1.000      1.0   1.000   1.000      1.0      1.0
+1  5k7c_clean_onechain_renumber_as_puzzle_srr.pdb...       pistol_thrs0.50A_clust01-000001_AA.pdb.outCR    0.366      0.000   0.874      0.0   0.944   0.810      0.0      0.0
+2  5k7c_clean_onechain_renumber_as_puzzle_srr.pdb...       pistol_thrs0.50A_clust02-000001_AA.pdb.outCR    0.366      0.000   0.865      0.0   0.889   0.842      0.0      0.0
+3  5k7c_clean_onechain_renumber_as_puzzle_srr.pdb...       pistol_thrs0.50A_clust03-000001_AA.pdb.outCR    0.351      0.134   0.772      0.0   0.833   0.714      0.0      0.0
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/102
+MDU6SXNzdWU1NzIwNTM1Njc=,question on additional constraints,CLOSED,2020-02-27T12:34:53Z,2020-07-15T09:29:23Z,2020-07-15T08:36:23Z,"Dear Developer Team,
+
+First of all, many thanks for excellent toolkit. 
+We have experimental evidence that certain RNA regions are in close proximity to each other and I would like to incorporate this in the structure model.
+I attached a hypothetical example with the modified (left) and original (right) structure.
+![modified_vs_original_structure](https://user-images.githubusercontent.com/351654/75445541-b80e7b00-59b9-11ea-8d96-2ebe7b3b20a3.png)
+
+Can you please help me with that?
+
+Many thanks in advance.",ahorvath,https://github.com/mmagnus/rna-tools/issues/103
+MDU6SXNzdWU1ODc2NDY2NTY=, rna_pdb_toolsx.py --get-seq should warn that it does not work for proteins,CLOSED,2020-03-25T12:01:40Z,2021-02-02T13:31:44Z,2021-02-02T13:31:44Z,"```
+(base) [mx] cwc2-ddg$ rna_pdb_toolsx.py --get-seq cwc2_u6.pdb
+# cwc2_u6
+>V:1-10 16-86
+GUUCGCGAAGCUUCGUGGACAUUUGGUCAAUUUGAAACAAUACAGAGAUGAUCAGCAGUUCCCCUGCAUAAGGAUGAACCG
+>M:3-254 1000-1000
+rpgpsraslnlsuruuorreoanryureneprnsprnyeaynrgelroeaunonusrysrgypnpynueesueeasytssuyossurusseopuupeysuaugruaupseyguseaprguptyyeyregssnsrurlyyepyaunrssusoaneurgegelerguypepgegrlursnsyelsesrnanaueasuatrnnruuuorpsupppgguyryuulspanupopoaansgunuuusuurunttlsuen
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/104
+MDU6SXNzdWU2MDc1MzcyMTE=,where is --get_simrna_ready ?,CLOSED,2020-04-27T13:11:34Z,2020-04-28T10:32:22Z,2020-04-28T10:32:22Z,"Hi! Is there still an option to have `--get_simrna_ready`? Some time (commits) ago there was a syntax available: `yapdb_parser.py --get_simrna_ready` and now I can't see this option in `rna_pdb_toolsx.py`.
+
+thanks!",filipsPL,https://github.com/mmagnus/rna-tools/issues/106
+MDU6SXNzdWU4Njc1MTY0MTA=,rna_calc_inf.do_job in Jupyter Notebook: NameError: name 'args' is not defined,CLOSED,2021-04-26T09:58:43Z,2021-05-12T08:02:59Z,2021-05-12T08:02:58Z,"Dear mmagnus,
+
+first I wanted to thank you for developing such a great package of tool for RNA analysis.
+
+I am currently trying to calculate the INF of an unsolvated tRNA pdb with the 'rna_calc_in.do_job()' tool using Jupyter Notebook. However, when compiling my code, I get the following error: **NameError**: name 'args' is not defined. (I am attaching a screencapture of my code and the whole error message). Nevertheless, when checking the documentation, I do not know what args is or how I should define it. If you know, could you please tell me how to solve this error?
+
+I am using Python 3.9.4, jupyter core  4.7.1 and jupyter-notebook  6.3.0.
+
+Sorry for bothering you and thanks in advance for your help.
+
+Best regards,
+Maria Gonzalez Viegas
+
+![mariagviegas_26 04 2021](https://user-images.githubusercontent.com/83213019/116063826-b1df6180-a685-11eb-84ef-3848fd30f68e.PNG)
+",mariagviegas,https://github.com/mmagnus/rna-tools/issues/110
+MDU6SXNzdWU5NjEwMzUwMzU=,mq: farna problem with csv headers,CLOSED,2021-08-04T20:55:34Z,2021-11-01T10:58:52Z,2021-08-05T19:16:59Z,"  ```
+(py37) [mx] FARNA$ git:(master) ✗ ./test.sh
+  id,fn,farna_rna_base_axis,farna_rna_backbone_backbone,farna_rna_base_stack_axis,farna_rna_base_stagger,farna_rna_base_stack,farna_rna_base_pair,farna_rna_repulsive,farna_rna_vdw,farna_rna_base_backbone,farna_score_lowres,farna_rna_data_backbone,farna_linear_chainbreak,farna_rna_rg,farna_atom_pair_constraint
+  1,3e5f_output4_01-000001_AA+ResnShift.pdb,-290.936,3.121,-13.566,-0.392,12.402,-178.387,-21.268,-80.734,-12.981,-16.63,17.498,0.0,0.0
+  id,fn,farna_atom_pair_constraint_hires,farna_score_hires,farna_hbond_sr_bb_sc,farna_linear_chainbreak_hires,farna_fa_intra_rep,farna_rna_sugar_close,farna_hbond_sc,farna_lk_nonpolar,farna_fa_atr,farna_fa_elec_rna_phos_phos,farna_ch_bond,farna_fa_rep,farna_hbond_lr_bb_sc,farna_geom_sol,farna_rna_torsion
+  1,3e5f_output4_01-000001_AA+ResnShift.pdb,-99.377,-180.445,25.058,2.078,-6.92,-1.698,29.894,0.0,4.553,-118.462,-17.696,49.496,-0.706,-2.292,-70.999,188.76,0.0,0.0,0.0,0.0,0.0,0.0
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/113
+MDU6SXNzdWU5NjMyNjA3MjM=,mqaprnascore.py: progress to ignored + new files (now it's only to new files),CLOSED,2021-08-07T16:22:52Z,2021-08-08T13:37:05Z,2021-08-08T13:37:05Z,"```
+[------------                                                                    ]    407 15.5 % 2626 10
+True 1y26_wSS_wRestrs_all_trafl_thrs4.00A_clust1356-000001_AA.pdb {'FARNA_hires': ['56.009', '-214.074', '55.427', '7.493', '-1.432', '-10.211', '112.624', '0.0', '16.035', '-127.648', '-23.611', '64.91', '-15.18', '-4.51', '-61.213', '257.4', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0'], 'length': 0}
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/114
+MDU6SXNzdWU5ODQxNTAxNDc=,Missing rna_clashscore.py,CLOSED,2021-08-31T18:10:29Z,2021-11-01T10:58:36Z,2021-09-06T09:16:14Z,"Installing with ""pip install -e git+http://github.com/mmagnus/rna-tools.git#egg=rna-tools""
+Got an error: 
+```No such file or directory: '/home/user/folder/src/rna-tools/rna_tools/tools/mq/ClashScore/rna_clashscore.py```
+Fixed by renaming rna_mq_clashscore.py -> rna_clashscore.py  (is it ok?)",febos,https://github.com/mmagnus/rna-tools/issues/115
+I_kwDOAgkJL84852lU, rna_pdb_toolsx.py ->  rna_pdb_tools.py,OPEN,2021-10-09T20:30:56Z,2022-09-12T14:16:42Z,,"- [ ] change tests
+- [ ] change docs
+- [ ] change READMEs",mmagnus,https://github.com/mmagnus/rna-tools/issues/116
+I_kwDOAgkJL8496l6-,add --mdr get structures ready for MD ,CLOSED,2021-10-28T17:40:41Z,2021-10-28T19:10:58Z,2021-10-28T19:10:58Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/117
+I_kwDOAgkJL849-CHq,mq: review farfar2 wrapper,CLOSED,2021-10-29T15:12:33Z,2021-11-01T10:58:06Z,2021-10-31T18:58:59Z,Hmm.. maybe keep farfar2 and farna as seperate modules?,mmagnus,https://github.com/mmagnus/rna-tools/issues/118
+I_kwDOAgkJL84-DQXA,mq: upload the final model,OPEN,2021-11-01T10:59:34Z,2022-09-12T14:42:03Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/119
+I_kwDOAgkJL84-RS5o,fix doc compilation,CLOSED,2021-11-04T12:40:21Z,2022-09-12T14:16:06Z,2022-09-12T14:16:06Z,,mmagnus,https://github.com/mmagnus/rna-tools/issues/120
+I_kwDOAgkJL84-YTR-,"select_fragment.py wil not work with digit chains, e.g. 6",OPEN,2021-11-06T17:32:31Z,2021-11-06T17:32:31Z,,"      selection = OrderedDict()
+      for i in l: # ['A', '1-10', '15', '25-30', 'B', '1-10']
+          if i in string.ascii_letters: # or string.digits:
+              if verbose: print('chain', i)
+              chain_curr = i
+              continue
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/121
+I_kwDOAgkJL84-b801,pymol_preview_generator.py: checking the len will not work for pse files ,OPEN,2021-11-08T14:23:58Z,2021-11-08T14:23:58Z,,"        # if something short
+        sh = ''
+        # aaa this will not work for pse files (!)
+        #if len(open(file).readlines()) < args.detailed:
+        #    sh = ' show sticks; ' # lines;
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/122
+I_kwDOAgkJL85AWHZH,rna-tools --fetch rp12,OPEN,2021-12-14T09:52:47Z,2021-12-14T09:52:47Z,,fetch rna puzzles 12 structures,mmagnus,https://github.com/mmagnus/rna-tools/issues/123
+I_kwDOAgkJL85AtoYa,web [for online version],OPEN,2021-12-21T10:57:25Z,2022-08-04T11:29:05Z,,"- [X] prototype the server <2021-12-10 Fri>
+- [X] domain rna-tools.online <2021-12-14 Tue>
+- [X] see it running for cheap/free somewhere else (aws? django?) <2021-12-14 Tue>
+- [X] drag and drop more files ! <2021-12-16 Thu>
+- [X] test simple processing [keep db-based system aside for now] KISS
+- [X] submit proposal <2021-12-20 Mon>
+- [X] add files to log preview <2021-12-21 Tue>
+- [X] reset button to empty folder <2021-12-21 Tue>
+- [x] add min https://github.com/sunandanmukherjee/QRNAS/issues/5
+- [x] add opemm based min
+- [x] mq: rasp, simplify the output add mini plot there
+- [x] add pre/well everywhere in the scripts
+- [ ] #progress write more advanced output visualisations, plots, csv, JSmol
+- [ ] https://rna-tools.online/tools/rpr/fba7119e 
+
+http://rna-tools.online",mmagnus,https://github.com/mmagnus/rna-tools/issues/124
+I_kwDOAgkJL85Ge3Ri,"md min, use 10A padding",OPEN,2022-03-27T11:34:53Z,2022-09-12T14:41:47Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/125
+I_kwDOAgkJL85HKhSo,missing /rna_tools/tools/clarna_play/ClaRNAlib/*,CLOSED,2022-04-06T02:51:55Z,2022-07-21T20:50:22Z,2022-07-21T20:50:11Z,"Hi. I use `rna_calc_inf.py -t native_1fir.pdb pred_1fir.pdb  -m 1` and the output `inf.csv` shows such error..
+```python
+target,fn,inf_all,inf_stack,inf_WC,inf_nWC,sns_WC,ppv_WC,sns_nWC,ppv_nWC
+sv:,""['library',"",""'/user/pengzhangzhi/anaconda3/envs/torch/lib/python3.8/site-packages/rna_tools/tools/clarna_play/ClaRNAlib/lib/classifier.bp.json.gz',"",""'does',"",""'not',"",'exists'],,,,
+```
+`native_1fir.pdb` and ` pred_1fir.pdb` are identical. I receive no errors computing the RMSD.
+
+I use `pip install rna-tools` to install this wrapper. 
+
+For the reproducibility, I open source the two file as follows.
+
+ #### native_1fir.pdb
+ATOM      1  C1' G    1        -23.549  28.964  36.523  0.00  0.00              
+ATOM      1  C4' G    1        -24.956  30.055  34.985  0.00  0.00              
+ATOM      1  O5' G    1        -24.311  29.438  32.723  0.00  0.00              
+ATOM      1  N91 G    1        -22.489  28.185  35.905  0.00  0.00              
+ATOM      1  C1' C    2        -19.493  32.172  37.630  0.00  0.00              
+ATOM      1  C4' C    2        -20.899  33.946  37.030  0.00  0.00              
+ATOM      1  O5' C    2        -21.598  33.400  34.816  0.00  0.00              
+ATOM      1  N91 C    2        -18.966  31.180  36.686  0.00  0.00              
+ATOM      1  C1' C    3        -14.078  33.717  37.492  0.00  0.00              
+ATOM      1  C4' C    3        -15.095  35.763  37.921  0.00  0.00              
+ATOM      1  O5' C    3        -16.792  36.062  36.330  0.00  0.00              
+ATOM      1  N91 C    3        -14.379  32.859  36.345  0.00  0.00              
+ATOM      1  C1' C    4         -9.126  34.553  34.891  0.00  0.00              
+ATOM      1  C4' C    4         -9.462  36.677  35.788  0.00  0.00              
+ATOM      1  O5' C    4        -11.641  37.526  35.316  0.00  0.00              
+ATOM      1  N91 C    4        -10.131  33.959  34.009  0.00  0.00              
+ATOM      1  C1' G    5         -5.883  34.251  30.414  0.00  0.00              
+ATOM      1  C4' G    5         -5.284  36.423  31.091  0.00  0.00              
+ATOM      1  O5' G    5         -7.307  37.523  31.808  0.00  0.00              
+ATOM      1  N91 G    5         -7.285  33.933  30.184  0.00  0.00              
+ATOM      1  C1' A    7         -8.248  34.277  19.722  0.00  0.00              
+ATOM      1  C4' A    7         -5.954  34.043  19.281  0.00  0.00              
+ATOM      1  O5' A    7         -5.424  35.838  20.859  0.00  0.00              
+ATOM      1  N91 A    7         -9.063  34.553  20.895  0.00  0.00              
+ATOM      1  C1' U    8         -3.703  39.232  14.558  0.00  0.00              
+ATOM      1  C4' U    8         -5.272  37.605  13.999  0.00  0.00              
+ATOM      1  O5' U    8         -5.130  35.996  15.727  0.00  0.00              
+ATOM      1  N91 U    8         -2.743  39.059  15.644  0.00  0.00              
+ATOM      1  C1' A    9         -0.198  35.752   8.006  0.00  0.00              
+ATOM      1  C4' A    9         -2.521  35.683   8.035  0.00  0.00              
+ATOM      1  O5' A    9         -2.394  35.820  10.426  0.00  0.00              
+ATOM      1  N91 A    9          0.900  36.524   8.533  0.00  0.00              
+ATOM      1  C1' C    11         1.560  28.445  12.612  0.00  0.00              
+ATOM      1  C4' C    11        -0.489  27.767  13.455  0.00  0.00              
+ATOM      1  O5' C    11        -2.155  28.122  11.831  0.00  0.00              
+ATOM      1  N91 C    11         1.864  29.687  11.922  0.00  0.00              
+ATOM      1  C1' U    12         3.925  31.283  17.216  0.00  0.00              
+ATOM      1  C4' U    12         2.542  29.841  18.423  0.00  0.00              
+ATOM      1  O5' U    12         0.353  30.064  17.479  0.00  0.00              
+ATOM      1  N91 U    12         3.336  32.153  16.188  0.00  0.00              
+ATOM      1  C1' C    13         4.263  36.245  18.463  0.00  0.00              
+ATOM      1  C4' C    13         3.305  35.606  20.505  0.00  0.00              
+ATOM      1  O5' C    13         2.562  33.409  21.186  0.00  0.00              
+ATOM      1  N91 C    13         3.269  36.412  17.410  0.00  0.00              
+ATOM      1  C1' A    14         4.799  42.247  17.810  0.00  0.00              
+ATOM      1  C4' A    14         4.929  41.629  20.059  0.00  0.00              
+ATOM      1  O5' A    14         3.105  40.228  20.846  0.00  0.00              
+ATOM      1  N91 A    14         3.638  41.880  17.017  0.00  0.00              
+ATOM      1  C1' G    15         1.428  45.927  16.785  0.00  0.00              
+ATOM      1  C4' G    15         2.540  46.817  18.636  0.00  0.00              
+ATOM      1  O5' G    15         2.298  45.209  20.400  0.00  0.00              
+ATOM      1  N91 G    15         0.575  44.756  16.887  0.00  0.00              
+ATOM      1  C1' C    17        -2.893  55.762  26.063  0.00  0.00              
+ATOM      1  C4' C    17        -3.835  53.910  25.091  0.00  0.00              
+ATOM      1  O5' C    17        -2.170  52.210  25.141  0.00  0.00              
+ATOM      1  N91 C    17        -1.972  56.068  27.183  0.00  0.00              
+ATOM      1  C1' G    18        -7.291  54.773  18.302  0.00  0.00              
+ATOM      1  C4' G    18        -5.437  54.139  19.531  0.00  0.00              
+ATOM      1  O5' G    18        -6.045  54.956  21.648  0.00  0.00              
+ATOM      1  N91 G    18        -8.448  55.588  18.636  0.00  0.00              
+ATOM      1  C1' G    19        -4.037  57.229  12.650  0.00  0.00              
+ATOM      1  C4' G    19        -2.998  55.144  12.961  0.00  0.00              
+ATOM      1  O5' G    19        -3.430  54.126  15.126  0.00  0.00              
+ATOM      1  N91 G    19        -4.511  58.147  13.679  0.00  0.00              
+ATOM      1  C1' A    21         0.016  45.725  10.926  0.00  0.00              
+ATOM      1  C4' A    21         0.691  47.816  10.133  0.00  0.00              
+ATOM      1  O5' A    21        -0.667  48.508   8.282  0.00  0.00              
+ATOM      1  N91 A    21        -1.131  45.098  10.290  0.00  0.00              
+ATOM      1  C1' G    22         4.965  43.353  10.774  0.00  0.00              
+ATOM      1  C4' G    22         5.527  44.279   8.700  0.00  0.00              
+ATOM      1  O5' G    22         3.550  45.152   7.649  0.00  0.00              
+ATOM      1  N91 G    22         3.880  42.390  10.893  0.00  0.00              
+ATOM      1  C1' A    23         8.843  39.410  12.429  0.00  0.00              
+ATOM      1  C4' A    23        10.085  40.582  10.829  0.00  0.00              
+ATOM      1  O5' A    23         8.585  40.826   8.975  0.00  0.00              
+ATOM      1  N91 A    23         7.551  38.830  12.090  0.00  0.00              
+ATOM      1  C1' G    24        10.460  34.212  13.294  0.00  0.00              
+ATOM      1  C4' G    24        12.511  34.982  12.475  0.00  0.00              
+ATOM      1  O5' G    24        11.932  36.417  10.637  0.00  0.00              
+ATOM      1  N91 G    24         9.304  34.452  12.456  0.00  0.00              
+ATOM      1  C1' C    25         9.074  29.543  11.255  0.00  0.00              
+ATOM      1  C4' C    25        11.388  29.228  11.287  0.00  0.00              
+ATOM      1  O5' C    25        12.505  31.039  10.183  0.00  0.00              
+ATOM      1  N91 C    25         8.429  30.574  10.457  0.00  0.00              
+ATOM      1  C1' A    26         6.285  27.613   6.915  0.00  0.00              
+ATOM      1  C4' A    26         7.912  26.023   7.462  0.00  0.00              
+ATOM      1  O5' A    26        10.074  26.991   7.586  0.00  0.00              
+ATOM      1  N91 A    26         6.662  28.956   6.482  0.00  0.00              
+ATOM      1  C1' C    28         7.357  29.909  -3.471  0.00  0.00              
+ATOM      1  C4' C    28         6.559  27.742  -3.837  0.00  0.00              
+ATOM      1  O5' C    28         7.551  26.203  -2.268  0.00  0.00              
+ATOM      1  N91 C    28         8.398  30.130  -2.473  0.00  0.00              
+ATOM      1  C1' A    29        11.605  31.544  -6.772  0.00  0.00              
+ATOM      1  C4' A    29        10.557  29.923  -8.093  0.00  0.00              
+ATOM      1  O5' A    29        10.171  27.971  -6.739  0.00  0.00              
+ATOM      1  N91 A    29        11.959  31.307  -5.388  0.00  0.00              
+ATOM      1  C1' G    30        16.254  32.437  -7.547  0.00  0.00              
+ATOM      1  C4' G    30        15.972  31.410  -9.623  0.00  0.00              
+ATOM      1  O5' G    30        14.909  29.268  -9.325  0.00  0.00              
+ATOM      1  N91 G    30        16.183  31.733  -6.276  0.00  0.00              
+ATOM      1  C1' A    31        21.968  32.633  -5.907  0.00  0.00              
+ATOM      1  C4' A    31        22.011  32.715  -8.247  0.00  0.00              
+ATOM      1  O5' A    31        20.473  31.005  -8.931  0.00  0.00              
+ATOM      1  N91 A    31        21.255  31.525  -5.277  0.00  0.00              
+ATOM      1  C1' C    32        25.931  28.877  -3.938  0.00  0.00              
+ATOM      1  C4' C    32        26.823  30.043  -5.743  0.00  0.00              
+ATOM      1  O5' C    32        25.569  29.887  -7.793  0.00  0.00              
+ATOM      1  N91 C    32        24.865  27.874  -3.905  0.00  0.00              
+ATOM      1  C1' U    33        26.671  23.429  -4.240  0.00  0.00              
+ATOM      1  C4' U    33        28.741  24.464  -4.536  0.00  0.00              
+ATOM      1  O5' U    33        28.670  26.121  -6.268  0.00  0.00              
+ATOM      1  N91 U    33        25.491  23.659  -5.075  0.00  0.00              
+ATOM      1  C1' U    35        23.397  17.531  -6.045  0.00  0.00              
+ATOM      1  C4' U    35        22.606  19.049  -7.658  0.00  0.00              
+ATOM      1  O5' U    35        24.263  20.796  -7.734  0.00  0.00              
+ATOM      1  N91 U    35        24.386  17.945  -5.047  0.00  0.00              
+ATOM      1  C1' U    36        20.082  17.818  -0.749  0.00  0.00              
+ATOM      1  C4' U    36        18.759  18.313  -2.627  0.00  0.00              
+ATOM      1  O5' U    36        20.045  19.792  -3.987  0.00  0.00              
+ATOM      1  N91 U    36        21.360  18.493  -0.500  0.00  0.00              
+ATOM      1  C1' A    38        22.303  24.915   5.723  0.00  0.00              
+ATOM      1  C4' A    38        20.330  25.008   6.940  0.00  0.00              
+ATOM      1  O5' A    38        18.596  24.966   5.335  0.00  0.00              
+ATOM      1  N91 A    38        22.392  25.245   4.307  0.00  0.00              
+ATOM      1  C1' C    40        22.152  34.600   1.015  0.00  0.00              
+ATOM      1  C4' C    40        22.835  35.543   3.050  0.00  0.00              
+ATOM      1  O5' C    40        21.645  34.338   4.736  0.00  0.00              
+ATOM      1  N91 C    40        21.021  33.674   0.985  0.00  0.00              
+ATOM      1  C1' U    41        18.231  37.123  -1.879  0.00  0.00              
+ATOM      1  C4' U    41        19.401  38.831  -0.786  0.00  0.00              
+ATOM      1  O5' U    41        19.538  38.280   1.527  0.00  0.00              
+ATOM      1  N91 U    41        17.588  35.998  -1.197  0.00  0.00              
+ATOM      1  C1' G    42        13.447  38.159  -3.355  0.00  0.00              
+ATOM      1  C4' G    42        14.082  40.376  -2.970  0.00  0.00              
+ATOM      1  O5' G    42        15.153  40.632  -0.843  0.00  0.00              
+ATOM      1  N91 G    42        13.393  37.099  -2.354  0.00  0.00              
+ATOM      1  C1' A    43         8.329  37.301  -3.491  0.00  0.00              
+ATOM      1  C4' A    43         8.296  39.567  -4.056  0.00  0.00              
+ATOM      1  O5' A    43         9.487  40.609  -2.273  0.00  0.00              
+ATOM      1  N91 A    43         8.709  36.870  -2.144  0.00  0.00              
+ATOM      1  C1' G    44         3.803  36.410  -2.514  0.00  0.00              
+ATOM      1  C4' G    44         2.735  38.258  -3.446  0.00  0.00              
+ATOM      1  O5' G    44         3.892  40.041  -2.407  0.00  0.00              
+ATOM      1  N91 G    44         4.486  36.415  -1.226  0.00  0.00              
+ATOM      1  C1' G    45         0.163  35.352   2.205  0.00  0.00              
+ATOM      1  C4' G    45        -1.416  35.587   0.495  0.00  0.00              
+ATOM      1  O5' G    45        -0.732  37.574  -0.587  0.00  0.00              
+ATOM      1  N91 G    45         1.217  36.309   2.503  0.00  0.00              
+ATOM      1  C1' A    50       -18.271  37.931  15.601  0.00  0.00              
+ATOM      1  C4' A    50       -17.413  37.710  13.451  0.00  0.00              
+ATOM      1  O5' A    50       -15.198  38.489  13.638  0.00  0.00              
+ATOM      1  N91 A    50       -17.540  38.577  16.685  0.00  0.00              
+ATOM      1  C1' G    51       -22.478  41.378  16.247  0.00  0.00              
+ATOM      1  C4' G    51       -22.470  41.010  13.939  0.00  0.00              
+ATOM      1  O5' G    51       -20.230  41.185  13.122  0.00  0.00              
+ATOM      1  N91 G    51       -21.222  41.650  16.928  0.00  0.00              
+ATOM      1  C1' G    52       -23.450  45.804  17.934  0.00  0.00              
+ATOM      1  C4' G    52       -24.793  46.019  16.035  0.00  0.00              
+ATOM      1  O5' G    52       -23.419  45.409  14.193  0.00  0.00              
+ATOM      1  N91 G    52       -21.996  45.726  17.891  0.00  0.00              
+ATOM      1  C1' G    53       -21.453  50.857  19.925  0.00  0.00              
+ATOM      1  C4' G    53       -23.545  51.330  19.022  0.00  0.00              
+ATOM      1  O5' G    53       -23.750  50.442  16.810  0.00  0.00              
+ATOM      1  N91 G    53       -20.267  50.428  19.196  0.00  0.00              
+ATOM      1  C1' C    56       -12.893  62.288  11.575  0.00  0.00              
+ATOM      1  C4' C    56       -15.195  62.115  11.836  0.00  0.00              
+ATOM      1  O5' C    56       -15.641  62.176  14.175  0.00  0.00              
+ATOM      1  N91 C    56       -11.969  62.346  12.688  0.00  0.00              
+ATOM      1  C1' A    57       -10.499  57.513  12.278  0.00  0.00              
+ATOM      1  C4' A    57       -12.196  56.866  10.809  0.00  0.00              
+ATOM      1  O5' A    57       -14.271  57.720  11.656  0.00  0.00              
+ATOM      1  N91 A    57       -10.674  58.054  13.618  0.00  0.00              
+ATOM      1  C1' G    59        -6.792  45.195  15.483  0.00  0.00              
+ATOM      1  C4' G    59        -9.025  45.052  14.825  0.00  0.00              
+ATOM      1  O5' G    59        -9.097  46.790  13.139  0.00  0.00              
+ATOM      1  N91 G    59        -5.911  46.315  15.191  0.00  0.00              
+ATOM      1  C1' U    60        -6.651  48.867  19.587  0.00  0.00              
+ATOM      1  C4' U    60        -7.545  46.768  20.156  0.00  0.00              
+ATOM      1  O5' U    60        -9.435  47.137  18.794  0.00  0.00              
+ATOM      1  N91 U    60        -6.568  49.485  18.269  0.00  0.00              
+ATOM      1  C1' C    61       -11.667  51.503  23.633  0.00  0.00              
+ATOM      1  C4' C    61       -10.191  50.577  25.176  0.00  0.00              
+ATOM      1  O5' C    61        -9.307  48.571  24.306  0.00  0.00              
+ATOM      1  N91 C    61       -11.994  50.942  22.326  0.00  0.00              
+ATOM      1  C1' C    62       -17.434  49.816  25.528  0.00  0.00              
+ATOM      1  C4' C    62       -16.091  49.894  27.440  0.00  0.00              
+ATOM      1  O5' C    62       -14.102  48.655  26.992  0.00  0.00              
+ATOM      1  N91 C    62       -16.922  49.177  24.307  0.00  0.00              
+ATOM      1  C1' C    63       -21.212  46.284  25.573  0.00  0.00              
+ATOM      1  C4' C    63       -20.880  46.477  27.879  0.00  0.00              
+ATOM      1  O5' C    63       -18.574  46.118  28.482  0.00  0.00              
+ATOM      1  N91 C    63       -20.174  45.855  24.626  0.00  0.00              
+ATOM      1  C1' U    64       -23.031  41.009  24.012  0.00  0.00              
+ATOM      1  C4' U    64       -23.809  41.157  26.213  0.00  0.00              
+ATOM      1  O5' U    64       -22.076  42.065  27.631  0.00  0.00              
+ATOM      1  N91 U    64       -21.622  41.357  23.752  0.00  0.00              
+ATOM      1  C1' G    65       -21.897  36.197  21.884  0.00  0.00              
+ATOM      1  C4' G    65       -23.470  35.720  23.550  0.00  0.00              
+ATOM      1  O5' G    65       -22.727  36.833  25.542  0.00  0.00              
+ATOM      1  N91 G    65       -20.622  36.826  22.207  0.00  0.00              
+ATOM      1  C1' U    66       -18.481  32.296  20.060  0.00  0.00              
+ATOM      1  C4' U    66       -20.580  31.307  20.429  0.00  0.00              
+ATOM      1  O5' U    66       -21.181  32.106  22.604  0.00  0.00              
+ATOM      1  N91 U    66       -17.808  33.135  21.064  0.00  0.00              
+ATOM      1  C1' U    67       -14.451  29.861  20.920  0.00  0.00              
+ATOM      1  C4' U    67       -15.869  28.102  20.299  0.00  0.00              
+ATOM      1  O5' U    67       -17.791  27.918  21.757  0.00  0.00              
+ATOM      1  N91 U    67       -14.686  30.722  22.087  0.00  0.00              
+ATOM      1  C1' C    68        -9.658  27.362  23.166  0.00  0.00              
+ATOM      1  C4' C    68       -10.489  25.369  22.240  0.00  0.00              
+ATOM      1  O5' C    68       -12.827  25.396  22.745  0.00  0.00              
+ATOM      1  N91 C    68       -10.475  28.146  24.098  0.00  0.00              
+ATOM      1  C1' G    69        -7.349  26.646  28.042  0.00  0.00              
+ATOM      1  C4' G    69        -7.098  24.456  27.280  0.00  0.00              
+ATOM      1  O5' G    69        -9.160  23.632  26.391  0.00  0.00              
+ATOM      1  N91 G    69        -8.617  27.303  28.275  0.00  0.00              
+ATOM      1  C1' G    70        -7.171  27.028  33.688  0.00  0.00              
+ATOM      1  C4' G    70        -6.105  24.967  33.455  0.00  0.00              
+ATOM      1  O5' G    70        -7.346  23.652  31.858  0.00  0.00              
+ATOM      1  N91 G    70        -8.541  27.141  33.239  0.00  0.00              
+ATOM      1  C1' G    71       -10.041  27.703  38.685  0.00  0.00              
+ATOM      1  C4' G    71        -8.265  26.237  39.107  0.00  0.00              
+ATOM      1  O5' G    71        -8.316  24.498  37.464  0.00  0.00              
+ATOM      1  N91 G    71       -11.005  27.427  37.632  0.00  0.00              
+ATOM      1  C1' C    72       -14.526  26.961  40.954  0.00  0.00              
+ATOM      1  C4' C    72       -13.090  26.097  42.555  0.00  0.00              
+ATOM      1  O5' C    72       -11.579  24.490  41.588  0.00  0.00              
+ATOM      1  N91 C    72       -14.874  26.394  39.668  0.00  0.00              
+ATOM      1  C1' G    73       -19.292  25.225  41.283  0.00  0.00              
+ATOM      1  C4' G    73       -18.753  25.238  43.535  0.00  0.00              
+ATOM      1  O5' G    73       -16.926  23.779  43.850  0.00  0.00              
+ATOM      1  N91 G    73       -18.936  24.356  40.172  0.00  0.00              
+ATOM      1  C1' C    74       -23.189  21.917  40.030  0.00  0.00              
+ATOM      1  C4' C    74       -24.075  22.730  42.042  0.00  0.00              
+ATOM      1  O5' C    74       -22.354  22.373  43.663  0.00  0.00              
+ATOM      1  N91 C    74       -21.931  21.182  39.942  0.00  0.00              
+ATOM      1  C1' C    75       -24.015  18.930  48.349  0.00  0.00              
+ATOM      1  C4' C    75       -24.010  18.376  46.120  0.00  0.00              
+ATOM      1  O5' C    75       -25.259  19.556  44.434  0.00  0.00              
+ATOM      1  N91 C    75       -24.951  19.159  49.435  0.00  0.00              
+ATOM      1  C1' A    76       -21.615  13.544  51.242  0.00  0.00              
+ATOM      1  C4' A    76       -20.694  13.232  49.104  0.00  0.00              
+ATOM      1  O5' A    76       -22.260  14.246  47.601  0.00  0.00              
+ATOM      1  N91 A    76       -22.957  14.091  51.419  0.00  0.00              
+
+#### pred_1fir.pdb
+ATOM      1  C1' G    1        -29.773   1.195  26.474  0.00  0.00              
+ATOM      1  C4' G    1        -28.843  -0.729  25.656  0.00  0.00              
+ATOM      1  O5' G    1        -26.962  -1.128  26.737  0.00  0.00              
+ATOM      1  N91 G    1        -29.090   2.209  27.385  0.00  0.00              
+ATOM      1  C1' C    2        -29.508   5.213  22.598  0.00  0.00              
+ATOM      1  C4' C    2        -29.347   3.526  20.902  0.00  0.00              
+ATOM      1  O5' C    2        -27.701   2.185  21.704  0.00  0.00              
+ATOM      1  N91 C    2        -28.522   5.774  23.833  0.00  0.00              
+ATOM      1  C1' C    3        -27.111  10.107  20.938  0.00  0.00              
+ATOM      1  C4' C    3        -27.703   9.047  18.615  0.00  0.00              
+ATOM      1  O5' C    3        -27.374   6.574  18.740  0.00  0.00              
+ATOM      1  N91 C    3        -26.302   9.688  22.138  0.00  0.00              
+ATOM      1  C1' C    4        -22.617  13.372  20.735  0.00  0.00              
+ATOM      1  C4' C    4        -23.269  13.514  18.055  0.00  0.00              
+ATOM      1  O5' C    4        -24.284  11.357  17.095  0.00  0.00              
+ATOM      1  N91 C    4        -22.316  12.033  21.605  0.00  0.00              
+ATOM      1  C1' G    5        -17.677  13.552  21.113  0.00  0.00              
+ATOM      1  C4' G    5        -17.971  14.364  18.923  0.00  0.00              
+ATOM      1  O5' G    5        -19.372  13.347  17.343  0.00  0.00              
+ATOM      1  N91 G    5        -17.903  12.214  21.532  0.00  0.00              
+ATOM      1  C1' A    7         -8.439   7.624  22.040  0.00  0.00              
+ATOM      1  C4' A    7         -7.367   9.419  21.600  0.00  0.00              
+ATOM      1  O5' A    7         -8.432  10.270  19.809  0.00  0.00              
+ATOM      1  N91 A    7         -9.563   6.906  21.599  0.00  0.00              
+ATOM      1  C1' U    8         -1.598   9.605  18.068  0.00  0.00              
+ATOM      1  C4' U    8         -2.019   8.157  19.681  0.00  0.00              
+ATOM      1  O5' U    8         -3.184   8.473  21.121  0.00  0.00              
+ATOM      1  N91 U    8         -1.845  10.751  18.170  0.00  0.00              
+ATOM      1  C1' A    9          6.152   8.738  20.538  0.00  0.00              
+ATOM      1  C4' A    9          4.647   7.460  21.502  0.00  0.00              
+ATOM      1  O5' A    9          2.287   7.976  21.469  0.00  0.00              
+ATOM      1  N91 A    9          6.269   9.757  20.017  0.00  0.00              
+ATOM      1  C1' C    11         3.577  13.007  28.483  0.00  0.00              
+ATOM      1  C4' C    11         2.118  11.307  29.276  0.00  0.00              
+ATOM      1  O5' C    11         2.385   9.395  27.881  0.00  0.00              
+ATOM      1  N91 C    11         4.306  13.021  27.182  0.00  0.00              
+ATOM      1  C1' U    12         0.231  17.011  25.858  0.00  0.00              
+ATOM      1  C4' U    12        -1.373  15.959  27.370  0.00  0.00              
+ATOM      1  O5' U    12        -1.600  13.463  27.545  0.00  0.00              
+ATOM      1  N91 U    12         0.964  16.133  24.895  0.00  0.00              
+ATOM      1  C1' C    13        -1.321  17.826  20.782  0.00  0.00              
+ATOM      1  C4' C    13        -3.550  18.342  21.767  0.00  0.00              
+ATOM      1  O5' C    13        -4.111  17.231  23.482  0.00  0.00              
+ATOM      1  N91 C    13        -0.768  16.548  20.569  0.00  0.00              
+ATOM      1  C1' A    14        -1.563  18.772  14.784  0.00  0.00              
+ATOM      1  C4' A    14        -3.426  19.762  15.541  0.00  0.00              
+ATOM      1  O5' A    14        -4.541  18.876  17.527  0.00  0.00              
+ATOM      1  N91 A    14        -1.155  17.521  14.898  0.00  0.00              
+ATOM      1  C1' G    15        -3.220  15.682  10.819  0.00  0.00              
+ATOM      1  C4' G    15        -4.287  17.845  10.235  0.00  0.00              
+ATOM      1  O5' G    15        -5.298  18.383  12.005  0.00  0.00              
+ATOM      1  N91 G    15        -3.366  14.696  11.910  0.00  0.00              
+ATOM      1  C1' C    17       -11.104  12.578   2.156  0.00  0.00              
+ATOM      1  C4' C    17       -10.781  13.185   3.801  0.00  0.00              
+ATOM      1  O5' C    17       -10.033  14.895   4.885  0.00  0.00              
+ATOM      1  N91 C    17       -11.120  12.845   1.642  0.00  0.00              
+ATOM      1  C1' G    18        -5.268   8.830   0.135  0.00  0.00              
+ATOM      1  C4' G    18        -5.558  10.795   1.712  0.00  0.00              
+ATOM      1  O5' G    18        -6.871  12.483   1.785  0.00  0.00              
+ATOM      1  N91 G    18        -5.695   8.394  -0.779  0.00  0.00              
+ATOM      1  C1' G    19         2.149   9.599   1.256  0.00  0.00              
+ATOM      1  C4' G    19         1.679   9.731   0.972  0.00  0.00              
+ATOM      1  O5' G    19         0.333  10.957  -0.081  0.00  0.00              
+ATOM      1  N91 G    19         1.863  10.196   0.953  0.00  0.00              
+ATOM      1  C1' A    21         3.333   8.926  10.724  0.00  0.00              
+ATOM      1  C4' A    21         4.479   9.928   9.336  0.00  0.00              
+ATOM      1  O5' A    21         5.536   8.837   8.050  0.00  0.00              
+ATOM      1  N91 A    21         3.666   7.689  11.312  0.00  0.00              
+ATOM      1  C1' G    22         3.561  16.454  11.589  0.00  0.00              
+ATOM      1  C4' G    22         5.797  15.753  10.530  0.00  0.00              
+ATOM      1  O5' G    22         7.149  13.520  10.437  0.00  0.00              
+ATOM      1  N91 G    22         3.137  15.761  12.581  0.00  0.00              
+ATOM      1  C1' A    23         5.009  19.477  16.128  0.00  0.00              
+ATOM      1  C4' A    23         6.840  19.987  14.455  0.00  0.00              
+ATOM      1  O5' A    23         8.090  18.728  13.525  0.00  0.00              
+ATOM      1  N91 A    23         4.802  18.446  16.696  0.00  0.00              
+ATOM      1  C1' G    24         5.683  21.518  21.218  0.00  0.00              
+ATOM      1  C4' G    24         7.234  23.021  20.040  0.00  0.00              
+ATOM      1  O5' G    24         8.828  21.953  18.512  0.00  0.00              
+ATOM      1  N91 G    24         5.755  20.079  21.074  0.00  0.00              
+ATOM      1  C1' C    25         7.141  20.013  25.808  0.00  0.00              
+ATOM      1  C4' C    25         8.120  22.194  25.722  0.00  0.00              
+ATOM      1  O5' C    25         9.576  22.479  23.859  0.00  0.00              
+ATOM      1  N91 C    25         7.448  18.929  24.957  0.00  0.00              
+ATOM      1  C1' A    26         9.403  15.549  28.509  0.00  0.00              
+ATOM      1  C4' A    26         9.618  17.397  29.690  0.00  0.00              
+ATOM      1  O5' A    26        10.668  19.504  28.658  0.00  0.00              
+ATOM      1  N91 A    26         9.808  15.484  27.368  0.00  0.00              
+ATOM      1  C1' C    28        19.471  11.404  26.016  0.00  0.00              
+ATOM      1  C4' C    28        19.516  10.739  28.121  0.00  0.00              
+ATOM      1  O5' C    28        18.650  12.543  29.802  0.00  0.00              
+ATOM      1  N91 C    28        19.007  12.612  25.624  0.00  0.00              
+ATOM      1  C1' A    29        23.396  13.602  23.743  0.00  0.00              
+ATOM      1  C4' A    29        24.216  12.410  25.369  0.00  0.00              
+ATOM      1  O5' A    29        23.104  13.078  27.582  0.00  0.00              
+ATOM      1  N91 A    29        22.466  14.661  23.999  0.00  0.00              
+ATOM      1  C1' G    30        26.678  17.438  21.786  0.00  0.00              
+ATOM      1  C4' G    30        28.162  16.296  22.872  0.00  0.00              
+ATOM      1  O5' G    30        27.740  15.776  25.234  0.00  0.00              
+ATOM      1  N91 G    30        25.647  17.948  22.408  0.00  0.00              
+ATOM      1  C1' A    31        27.762  22.728  20.744  0.00  0.00              
+ATOM      1  C4' A    31        29.880  22.161  20.297  0.00  0.00              
+ATOM      1  O5' A    31        30.141  20.967  21.776  0.00  0.00              
+ATOM      1  N91 A    31        26.832  22.547  21.814  0.00  0.00              
+ATOM      1  C1' C    32        28.238  28.177  23.161  0.00  0.00              
+ATOM      1  C4' C    32        30.350  28.331  21.925  0.00  0.00              
+ATOM      1  O5' C    32        31.246  26.682  22.192  0.00  0.00              
+ATOM      1  N91 C    32        27.641  27.412  24.010  0.00  0.00              
+ATOM      1  C1' U    33        28.445  30.820  27.904  0.00  0.00              
+ATOM      1  C4' U    33        29.720  31.949  26.513  0.00  0.00              
+ATOM      1  O5' U    33        30.766  31.130  25.333  0.00  0.00              
+ATOM      1  N91 U    33        28.345  29.723  28.163  0.00  0.00              
+ATOM      1  C1' U    35        30.043  29.725  37.276  0.00  0.00              
+ATOM      1  C4' U    35        30.708  29.446  35.515  0.00  0.00              
+ATOM      1  O5' U    35        31.933  31.152  33.450  0.00  0.00              
+ATOM      1  N91 U    35        29.971  30.221  37.303  0.00  0.00              
+ATOM      1  C1' U    36        23.856  29.269  38.344  0.00  0.00              
+ATOM      1  C4' U    36        24.635  27.902  37.453  0.00  0.00              
+ATOM      1  O5' U    36        26.776  28.865  36.179  0.00  0.00              
+ATOM      1  N91 U    36        24.164  30.132  38.105  0.00  0.00              
+ATOM      1  C1' A    38        18.260  29.476  33.501  0.00  0.00              
+ATOM      1  C4' A    38        17.389  28.152  34.047  0.00  0.00              
+ATOM      1  O5' A    38        18.692  27.349  34.857  0.00  0.00              
+ATOM      1  N91 A    38        19.047  29.735  33.160  0.00  0.00              
+ATOM      1  C1' C    40        19.456  28.138  22.783  0.00  0.00              
+ATOM      1  C4' C    40        17.342  29.380  22.623  0.00  0.00              
+ATOM      1  O5' C    40        15.950  28.703  24.437  0.00  0.00              
+ATOM      1  N91 C    40        19.713  27.075  23.439  0.00  0.00              
+ATOM      1  C1' U    41        20.637  24.673  17.969  0.00  0.00              
+ATOM      1  C4' U    41        19.040  26.160  17.231  0.00  0.00              
+ATOM      1  O5' U    41        17.341  26.439  18.668  0.00  0.00              
+ATOM      1  N91 U    41        20.626  23.913  18.974  0.00  0.00              
+ATOM      1  C1' G    42        20.972  19.389  16.960  0.00  0.00              
+ATOM      1  C4' G    42        20.302  20.434  14.799  0.00  0.00              
+ATOM      1  O5' G    42        19.148  21.917  14.518  0.00  0.00              
+ATOM      1  N91 G    42        20.443  19.312  18.014  0.00  0.00              
+ATOM      1  C1' A    43        19.325  13.960  17.059  0.00  0.00              
+ATOM      1  C4' A    43        19.406  14.284  14.406  0.00  0.00              
+ATOM      1  O5' A    43        18.530  16.485  13.189  0.00  0.00              
+ATOM      1  N91 A    43        18.408  14.593  17.866  0.00  0.00              
+ATOM      1  C1' G    44        16.957  10.530  18.752  0.00  0.00              
+ATOM      1  C4' G    44        17.318   9.330  16.484  0.00  0.00              
+ATOM      1  O5' G    44        17.135  10.200  14.734  0.00  0.00              
+ATOM      1  N91 G    44        16.307  11.516  18.952  0.00  0.00              
+ATOM      1  C1' G    45        12.774   8.636  20.150  0.00  0.00              
+ATOM      1  C4' G    45        13.272   6.654  19.252  0.00  0.00              
+ATOM      1  O5' G    45        13.987   6.576  17.618  0.00  0.00              
+ATOM      1  N91 G    45        12.503   9.662  19.473  0.00  0.00              
+ATOM      1  C1' A    50        -7.990  -3.313  18.903  0.00  0.00              
+ATOM      1  C4' A    50        -5.763  -3.256  18.683  0.00  0.00              
+ATOM      1  O5' A    50        -4.989  -1.001  17.875  0.00  0.00              
+ATOM      1  N91 A    50        -8.737  -2.329  18.384  0.00  0.00              
+ATOM      1  C1' G    51       -10.250  -6.990  15.645  0.00  0.00              
+ATOM      1  C4' G    51        -8.229  -7.823  15.699  0.00  0.00              
+ATOM      1  O5' G    51        -6.203  -6.073  15.993  0.00  0.00              
+ATOM      1  N91 G    51       -10.396  -5.624  15.333  0.00  0.00              
+ATOM      1  C1' G    52       -12.419  -7.150  10.827  0.00  0.00              
+ATOM      1  C4' G    52       -10.873  -8.944  10.631  0.00  0.00              
+ATOM      1  O5' G    52        -8.363  -8.674  11.352  0.00  0.00              
+ATOM      1  N91 G    52       -11.940  -5.810  10.793  0.00  0.00              
+ATOM      1  C1' G    53       -14.110  -4.937   5.947  0.00  0.00              
+ATOM      1  C4' G    53       -13.630  -7.093   5.160  0.00  0.00              
+ATOM      1  O5' G    53       -11.478  -7.981   5.822  0.00  0.00              
+ATOM      1  N91 G    53       -13.174  -3.996   6.335  0.00  0.00              
+ATOM      1  C1' C    56        -5.086   0.563  -5.777  0.00  0.00              
+ATOM      1  C4' C    56        -6.006  -1.152  -5.969  0.00  0.00              
+ATOM      1  O5' C    56        -8.136  -0.741  -6.009  0.00  0.00              
+ATOM      1  N91 C    56        -5.546   1.660  -5.757  0.00  0.00              
+ATOM      1  C1' A    57        -3.711   3.159  -1.275  0.00  0.00              
+ATOM      1  C4' A    57        -3.135   0.805  -0.577  0.00  0.00              
+ATOM      1  O5' A    57        -4.885  -0.657  -1.526  0.00  0.00              
+ATOM      1  N91 A    57        -4.936   3.861  -1.735  0.00  0.00              
+ATOM      1  C1' G    59        -4.488   7.850  10.987  0.00  0.00              
+ATOM      1  C4' G    59        -4.635   5.433  10.933  0.00  0.00              
+ATOM      1  O5' G    59        -3.235   4.663   9.383  0.00  0.00              
+ATOM      1  N91 G    59        -4.127   8.864  10.128  0.00  0.00              
+ATOM      1  C1' U    60        -8.370   8.818   7.813  0.00  0.00              
+ATOM      1  C4' U    60        -9.677   7.890   9.399  0.00  0.00              
+ATOM      1  O5' U    60        -8.913   6.057   9.454  0.00  0.00              
+ATOM      1  N91 U    60        -7.105   8.513   7.128  0.00  0.00              
+ATOM      1  C1' C    61       -13.939   5.457   5.544  0.00  0.00              
+ATOM      1  C4' C    61       -14.408   7.487   6.108  0.00  0.00              
+ATOM      1  O5' C    61       -12.675   8.143   7.635  0.00  0.00              
+ATOM      1  N91 C    61       -13.017   4.767   6.119  0.00  0.00              
+ATOM      1  C1' C    62       -17.737   1.122   7.592  0.00  0.00              
+ATOM      1  C4' C    62       -19.035   3.131   7.331  0.00  0.00              
+ATOM      1  O5' C    62       -17.528   4.901   8.011  0.00  0.00              
+ATOM      1  N91 C    62       -16.491   1.223   7.992  0.00  0.00              
+ATOM      1  C1' C    63       -19.061  -1.702  11.330  0.00  0.00              
+ATOM      1  C4' C    63       -20.939  -0.429  11.090  0.00  0.00              
+ATOM      1  O5' C    63       -20.275   1.788  10.949  0.00  0.00              
+ATOM      1  N91 C    63       -17.794  -1.062  11.499  0.00  0.00              
+ATOM      1  C1' U    64       -18.332  -4.001  15.113  0.00  0.00              
+ATOM      1  C4' U    64       -20.533  -3.760  15.057  0.00  0.00              
+ATOM      1  O5' U    64       -21.133  -1.854  14.690  0.00  0.00              
+ATOM      1  N91 U    64       -17.472  -2.976  15.097  0.00  0.00              
+ATOM      1  C1' G    65       -15.902  -4.854  20.268  0.00  0.00              
+ATOM      1  C4' G    65       -18.238  -5.589  20.773  0.00  0.00              
+ATOM      1  O5' G    65       -19.992  -3.975  20.021  0.00  0.00              
+ATOM      1  N91 G    65       -15.680  -3.583  19.808  0.00  0.00              
+ATOM      1  C1' U    66       -13.116  -1.942  24.316  0.00  0.00              
+ATOM      1  C4' U    66       -14.259  -3.464  25.226  0.00  0.00              
+ATOM      1  O5' U    66       -16.223  -3.355  24.749  0.00  0.00              
+ATOM      1  N91 U    66       -13.507  -1.098  23.505  0.00  0.00              
+ATOM      1  C1' U    67       -12.189   2.514  27.698  0.00  0.00              
+ATOM      1  C4' U    67       -12.637   1.046  29.225  0.00  0.00              
+ATOM      1  O5' U    67       -14.406  -0.270  29.023  0.00  0.00              
+ATOM      1  N91 U    67       -12.806   2.661  26.758  0.00  0.00              
+ATOM      1  C1' C    68       -12.807   7.462  29.169  0.00  0.00              
+ATOM      1  C4' C    68       -12.524   6.543  31.163  0.00  0.00              
+ATOM      1  O5' C    68       -13.622   4.503  31.458  0.00  0.00              
+ATOM      1  N91 C    68       -13.639   7.105  28.234  0.00  0.00              
+ATOM      1  C1' G    69       -15.833  12.696  29.138  0.00  0.00              
+ATOM      1  C4' G    69       -15.071  12.854  31.295  0.00  0.00              
+ATOM      1  O5' G    69       -15.138  10.912  32.154  0.00  0.00              
+ATOM      1  N91 G    69       -16.488  11.607  28.497  0.00  0.00              
+ATOM      1  C1' G    70       -20.332  15.176  28.086  0.00  0.00              
+ATOM      1  C4' G    70       -19.626  16.122  30.000  0.00  0.00              
+ATOM      1  O5' G    70       -19.001  14.629  31.565  0.00  0.00              
+ATOM      1  N91 G    70       -20.571  13.737  27.848  0.00  0.00              
+ATOM      1  C1' G    71       -25.702  14.569  27.550  0.00  0.00              
+ATOM      1  C4' G    71       -25.568  16.328  29.077  0.00  0.00              
+ATOM      1  O5' G    71       -24.277  16.025  30.922  0.00  0.00              
+ATOM      1  N91 G    71       -25.357  13.214  27.721  0.00  0.00              
+ATOM      1  C1' C    72       -30.892  11.916  28.051  0.00  0.00              
+ATOM      1  C4' C    72       -31.343  14.115  28.531  0.00  0.00              
+ATOM      1  O5' C    72       -30.172  15.167  29.903  0.00  0.00              
+ATOM      1  N91 C    72       -30.125  11.144  28.745  0.00  0.00              
+ATOM      1  C1' G    73       -33.774   8.629  28.051  0.00  0.00              
+ATOM      1  C4' G    73       -35.574  10.382  27.628  0.00  0.00              
+ATOM      1  O5' G    73       -35.273  11.886  28.653  0.00  0.00              
+ATOM      1  N91 G    73       -32.749   8.493  28.891  0.00  0.00              
+ATOM      1  C1' C    74       -36.031   8.704  32.826  0.00  0.00              
+ATOM      1  C4' C    74       -37.721   8.806  31.740  0.00  0.00              
+ATOM      1  O5' C    74       -37.586   9.739  31.917  0.00  0.00              
+ATOM      1  N91 C    74       -35.093   9.647  33.533  0.00  0.00              
+ATOM      1  C1' C    75       -38.036   5.406  37.594  0.00  0.00              
+ATOM      1  C4' C    75       -38.814   5.096  36.469  0.00  0.00              
+ATOM      1  O5' C    75       -38.314   5.967  36.001  0.00  0.00              
+ATOM      1  N91 C    75       -37.228   6.484  38.042  0.00  0.00              
+ATOM      1  C1' A    76       -41.570   2.947  35.569  0.00  0.00              
+ATOM      1  C4' A    76       -42.352   2.862  34.664  0.00  0.00              
+ATOM      1  O5' A    76       -41.690   3.979  34.281  0.00  0.00              
+ATOM      1  N91 A    76       -41.392   3.030  35.657  0.00  0.00              
+",pengzhangzhi,https://github.com/mmagnus/rna-tools/issues/126
+I_kwDOAgkJL85ICNXb,rna_minimize.py with build in --mdr,OPEN,2022-04-19T15:39:28Z,2022-09-12T14:41:36Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/127
+I_kwDOAgkJL85LvxRN,web: better info when rmsd is not calculated,CLOSED,2022-06-14T13:30:23Z,2022-06-14T20:03:24Z,2022-06-14T20:03:24Z,https://rna-tools.online/tools/calc-rmsd/c4fa8e85,mmagnus,https://github.com/mmagnus/rna-tools/issues/128
+I_kwDOAgkJL85MlvR0,Make it possible for RNAStructure to get initialized with a file,OPEN,2022-06-26T15:55:45Z,2022-07-08T11:50:01Z,,"Hi, I'm working on an API where I need to get the sequence out of a .pdb file. The way the code base is set up now you need to have a local copy of the file, which would mean that you have to upload it twice in an API environment. First, the user uploads it to the server and then I would need to save it locally so I can provide a path to the RNAStructure class. I took out the parsing part of the code and implemented it, but if you would like I could create a PR for supporting this functionality and maybe a bit of a cleanup. ",valentin994,https://github.com/mmagnus/rna-tools/issues/129
+I_kwDOAgkJL85M5GxX,moderna missing data if installed with pip,CLOSED,2022-06-30T12:06:24Z,2022-07-21T19:12:48Z,2022-07-21T19:12:48Z,"```
+  File ""/Users/magnus/miniconda3/bin/rna_pdb_toolsx.py"", line 643, in <module>
+    from rna_tools.tools.mini_moderna3.moderna import *
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/__init__.py"", line 28, in <module>
+    from rna_tools.tools.mini_moderna3.moderna.commands import *
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/commands.py"", line 36, in <module>
+    from rna_tools.tools.mini_moderna3.moderna.RNAModel import RnaModel
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/RNAModel.py"", line 17, in <module>
+    from rna_tools.tools.mini_moderna3.moderna.ModernaStructure import ModernaStructure
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/ModernaStructure.py"", line 19, in <module>
+    from rna_tools.tools.mini_moderna3.moderna.RNAResidue import RNAResidue
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/RNAResidue.py"", line 9, in <module>
+    from rna_tools.tools.mini_moderna3.moderna.sequence.ModernaAlphabet import alphabet
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/sequence/ModernaAlphabet.py"", line 168, in <module>
+    alphabet = Alphabet()
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/sequence/ModernaAlphabet.py"", line 100, in __init__
+    self.parse_alphabet_table()
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/sequence/ModernaAlphabet.py"", line 111, in parse_alphabet_table
+    raise AlphabetError('File does not exist: %s ' % self.table_path)
+rna_tools.tools.mini_moderna3.moderna.util.Errors.AlphabetError: File does not exist: /Users/magnus/miniconda3/lib/python3.8/site-packages/rna_tools/tools/mini_moderna3/moderna/data/modification_names_table
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/130
+I_kwDOAgkJL85OTbMW,clarna_app - NameError: name 'ClaRNA_play_path' is not defined,OPEN,2022-07-21T19:36:56Z,2022-07-21T19:36:56Z,,"```
+(base) ubuntu@ip-172-31-0-216:~/rna-tools/rna_tools/tools/clarna_app$ ./test.sh
+../../input/pistol_thrs0.50A_clust99-000001_AA.pdb
+Traceback (most recent call last):
+  File ""./clarna_app.py"", line 171, in <module>
+    mdb = get_dot_bracket_from_ClaRNAoutput(fn_out, args.verbose) # multie line dot bracket
+  File ""./clarna_app.py"", line 63, in get_dot_bracket_from_ClaRNAoutput
+    cmd = ClaRNA_play_path + '/lib/ClaRNAwd_to_vienaSS/ClaRNAwd_output_parser_get_SS ' + inCR
+NameError: name 'ClaRNA_play_path' is not defined
+data/cl.txt
+# 500
+  source target      n
+0    U21    A61  0.816
+````",mmagnus,https://github.com/mmagnus/rna-tools/issues/131
+I_kwDOAgkJL85PLrSh,rna_calc_inf web view,CLOSED,2022-08-04T11:10:39Z,2022-08-05T08:33:04Z,2022-08-05T08:33:04Z,instead of progress bar just put names of files,mmagnus,https://github.com/mmagnus/rna-tools/issues/132
+I_kwDOAgkJL85Pntn_,for VARNA vis use varnaapi,OPEN,2022-08-11T11:11:21Z,2022-08-11T11:12:43Z,,"https://pypi.org/project/varnaapi/
+https://htyao.gitlab.io/varna-api/",mmagnus,https://github.com/mmagnus/rna-tools/issues/133
+I_kwDOAgkJL85P5zQ4,binaries for Colab,OPEN,2022-08-16T15:46:00Z,2022-08-16T15:46:28Z,,"Even after 
+
+```
+(base) ➜  rasp-fd-1.0 git:(master) ✗ arch
+i386
+(base) ➜  rasp-fd-1.0 git:(master) ✗ make
+cd src/pdb-library; make CFLAG=
+g++  -c pdb.cpp -o pdb.o
+g++  -c model.cpp -o model.o
+g++  -c chain.cpp -o chain.o
+g++  -c residue.cpp -o residue.o
+```
+
+does not work at Colab:
+
+```
+ /bin/bash: /usr/local/lib/python3.7/dist-packages/opt/rasp-fd-1.0//bin/rasp_fd: cannot execute binary file: Exec format error
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/134
+I_kwDOAgkJL85RxmZx,"rna_pdb_tools.py --rpr 1ehz.pdb --replace-hetatm KeyError: ""C3'""",OPEN,2022-09-13T20:13:52Z,2022-09-13T20:19:36Z,,"```
+rna_pdb_tools.py --rpr 1ehz.pdb --replace-hetatm
+Traceback (most recent call last):
+  File ""/Users/magnus/miniconda3/bin/rna_pdb_tools.py"", line 7, in <module>
+    exec(compile(f.read(), __file__, 'exec'))
+  File ""/Users/magnus/work/src/rna-tools/rna_tools/rna_pdb_tools.py"", line 466, in <module>
+    remarks = s.get_rnapuzzle_ready(args.renumber_residues, fix_missing_atoms=fix_missing_atom,
+  File ""/Users/magnus/work/src/rna-tools/rna_tools/rna_tools_lib.py"", line 1325, in get_rnapuzzle_ready
+    r_atoms = [r[""C3'""], r[""C2'""], r[""C1'""]]
+  File ""/Users/magnus/miniconda3/lib/python3.8/site-packages/Bio/PDB/Entity.py"", line 45, in __getitem__
+    return self.child_dict[id]
+KeyError: ""C3'""
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/135
+I_kwDOAgkJL85hCtYR,--get-seq should be fasta fasta,OPEN,2023-03-16T19:01:52Z,2024-03-05T02:03:19Z,,"```
+(base) ➜  R1117 git:(master) ✗ rna_pdb_tools.py --get-seq R1117TS470_4.pdb
+# R1117TS470_4
+>0:1-30
+UUGGGUUCCCUCACCCCAAUCAUAAAAAGG
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/136
+I_kwDOAgkJL85qCRpo,calc rmsd: show rmsd without pandas and any other options,OPEN,2023-06-28T13:43:24Z,2024-03-05T02:03:33Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/137
+I_kwDOAgkJL85qCR2V,"calc rmsd, target and the rest, without -t ?",OPEN,2023-06-28T13:43:43Z,2023-06-28T13:44:23Z,,,mmagnus,https://github.com/mmagnus/rna-tools/issues/138
+I_kwDOAgkJL85rhKy3,fix rpr for 1ehz [trna],CLOSED,2023-07-13T22:39:56Z,2023-07-13T22:53:17Z,2023-07-13T22:53:17Z,"![sc 2023-07-13 at 18 39 12](https://github.com/mmagnus/rna-tools/assets/118740/0f193c84-a1a1-411a-966b-f914d90e873b)
+",mmagnus,https://github.com/mmagnus/rna-tools/issues/139
+I_kwDOAgkJL85rxn6M,rna std add gaps and modified residues to output,OPEN,2023-07-17T16:49:38Z,2023-09-28T23:55:57Z,,"     AAA----GGGG
+
+and
+
+     gAAAAA",mmagnus,https://github.com/mmagnus/rna-tools/issues/140
+I_kwDOAgkJL85srZwP,rna_pdb_inspect.py,OPEN,2023-07-26T22:51:28Z,2023-09-27T20:01:36Z,,"```
+   2 of chains: A  
+    1 of RNA chains: A
+    wrong atom order in residue of chain A resid 1 P O5'
+    wrong atom order in residue of chain A resid 1 OP1 C5'
+    wrong atom order in residue of chain A resid 1 OP2 C4'
+    wrong atom order in residue of chain A resid 1 O5' O4'
+    wrong atom order in residue of chain A resid 1 C5' C3'
+    wrong atom order in residue of chain A resid 1 C4' O3'
+    wrong atom order in residue of chain A resid 1 O4' C2'
+    wrong atom order in residue of chain A resid 1 C3' O2'
+    wrong atom order in residue of chain A resid 1 O3' C1'
+    wrong atom order in residue of chain A resid 1 C2' N9
+    wrong atom order in residue of chain A resid 1 O2' C8
+    wrong atom order in residue of chain A resid 1 C1' N7
+    wrong atom order in residue of chain A resid 1 N9 C5
+    wrong atom order in residue of chain A resid 1 C8 C6
+    wrong atom order in residue of chain A resid 1 N7 O6
+    wrong atom order in residue of chain A resid 1 C5 N1
+    wrong atom order in residue of chain A resid 1 C6 C2
+    wrong atom order in residue of chain A resid 1 O6 N2
+    wrong atom order in residue of chain A resid 1 N1 N3
+    wrong atom order in residue of chain A resid 1 C2 C4
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/141
+I_kwDOAgkJL85tcOOP,rna_pdb_tools.py: command not found,CLOSED,2023-08-04T05:56:42Z,2023-08-14T17:41:25Z,2023-08-14T09:36:11Z,"Hi,
+I have been tryimg to setup the rna-tools on my system. I have installed it using pip, but I cannot run the rna_pdb_tools.py command on terminal. I am always getting, rna_pdb_tools.py: command not found error.
+Do I need to change the shebang on the top of the .py files to make it work. I have followed the instructions from here: https://rna-tools.readthedocs.io/en/latest/install-dev.html",akashbahai,https://github.com/mmagnus/rna-tools/issues/142
+I_kwDOAgkJL85xSlY9,--rpr function causes signififant change in the coordinates,CLOSED,2023-09-18T11:07:58Z,2023-09-19T02:06:24Z,2023-09-19T02:06:23Z,"Hi,
+I noticed that if a PDB file has a few missing atoms and then one uses --rpr function to get the file ready for rna-puzzles then the resultant PDB file has significant differences from the original.
+
+Example: Here, I have a pdb file old.pdb, and then I used rna_pdb_tools to create a new old_rpr.pdb file. Now if one calculates the rmsd `(rna_calc_rmsd.py --model-selection A:2-50 --target-selection A:2-50 -t old.pdb old_rpr.pdb)`  between these two files, it is 3.38. Is this by design?
+
+I came across this problem, when I was calculating the rmsd of native against raw model files and rpr-processed model files. For most cases, the rmsd is same, but in cases of missing atoms in the model file, the processed rpr files are different so rmsd is also different (and the differences can be significant).
+
+[old_rpr.txt](https://github.com/mmagnus/rna-tools/files/12647049/old_rpr.txt)
+[old.txt](https://github.com/mmagnus/rna-tools/files/12647050/old.txt)
+",akashbahai,https://github.com/mmagnus/rna-tools/issues/143
+I_kwDOAgkJL85yWKT6,rna_pdb_tools.py with fetch for given residue,OPEN,2023-09-28T23:52:23Z,2023-09-28T23:55:33Z,,"```
+(base) ➜  endo rna_pdb_tools.py --extract A:1-25+B:30-57 1jj2.pdb | head
+REMARK 250 Model edited with rna-tools
+REMARK 250  ver 3.13.8+3.g841dfbbe.dirty
+REMARK 250  https://github.com/mmagnus/rna-tools
+REMARK 250  Thu Sep 28 19:45:32 2023
+HEADER extract A:1-25+B:30-57
+ATOM  61620  N   GLY A   1      89.775 118.239  69.951  1.00 23.62           N
+ATOM  61621  CA  GLY A   1      90.149 119.530  70.592  1.00 23.37           C
+ATOM  61622  C   GLY A   1      90.279 120.676  69.608  1.00 22.98           C
+ATOM  61623  O   GLY A   1      89.760 120.620  68.500  1.00 21.09           O
+ATOM  61624  N   ARG A   2      90.973 121.730  70.018  1.00 22.94           N
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/144
+I_kwDOAgkJL85yWKrk,rna_pdb_tools.py with fetch cif files as well,OPEN,2023-09-28T23:55:05Z,2023-09-28T23:55:24Z,,"```
+(base) ➜  endo wget https://files.rcsb.org/download/1jj2.cif
+--2023-09-28 19:54:13--  https://files.rcsb.org/download/1jj2.cif
+Resolving files.rcsb.org (files.rcsb.org)... 128.6.159.157, 128.6.159.100, 132.249.213.241, ...
+Connecting to files.rcsb.org (files.rcsb.org)|128.6.159.157|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/octet-stream]
+Saving to: ‘1jj2.cif’
+
+1jj2.cif                                    [ <=>                                                                          ]  11,29M  68,3MB/s    in 0,2s
+
+2023-09-28 19:54:14 (68,3 MB/s) - ‘1jj2.cif’ saved [11842546]
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/145
+I_kwDOAgkJL856kJqy,`rna_pdb_tools.py  --get-ss` causes NameError.,CLOSED,2023-12-26T10:55:29Z,2024-01-11T23:06:55Z,2024-01-11T23:03:33Z,"After installation, when I run `rna_pdb_tools.py  --get-ss 1KPD.pdb`, I got an error.
+
+- version: 3.20
+- error command:  `rna_pdb_tools.py  --get-ss 1KPD.pdb`
+
+The error log is as following:
+```
+$ rna_pdb_tools.py  --get-ss '/large/otgk/rPKExtractor/pdb/1KPD.pdb'
+Traceback (most recent call last):
+  File ""/large/otgk/app/rna-tools/3.20/rna_tools/rna_pdb_tools.py"", line 401, in <module>
+    p = x3DNA(f)
+        ^^^^^^^^
+  File ""/home/otgk/.conda/envs/pkextractor/lib/python3.11/site-packages/rna_tools/tools/rna_x3dna/rna_x3dna.py"", line 79, in __init__
+    self.run_x3dna(show_log)
+  File ""/home/otgk/.conda/envs/pkextractor/lib/python3.11/site-packages/rna_tools/tools/rna_x3dna/rna_x3dna.py"", line 125, in run_x3dna
+    if args.verbose: print(f'cmd: {cmd}')
+       ^^^^
+NameError: name 'args' is not defined
+```
+
+As for this error log, I checked the `rna_tools/tools/rna_x3dna/rna_x3dna.py` and found that
+the function `run_x3dna(self, show_log=False)` should have `arg` argument.
+
+I modified the `run_x3dna(self, show_log=False) and class x3DNA(object)` as follows:
+
+- ↓line 76 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+
+```line 76 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+# def __init__(self, pdbfn, show_log=False):
+def __init__(self, pdbfn, args, show_log=False):
+```
+
+ - ↓line 79 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+``` line 79 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+# self.run_x3dna(show_log)
+self.run_x3dna(show_log, verbose)
+```
+
+ - ↓line 115 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+```line 115 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+# def run_x3dna(self, show_log=False):
+def run_x3dna(self, verbose, show_log=False):
+```
+
+
+ - ↓line 125 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+```line 125 of rna_tools/tools/rna_x3dna/rna_x3dna.py
+# if args.verbose: print(f'cmd: {cmd}')
+ if verbose: print(f'cmd: {cmd}')
+```
+
+ - ↓line 401 of rna_tools/rna_pdb_tools.py
+```line 401 of rna_tools/rna_pdb_tools.py
+# p = x3DNA(f)
+p = x3DNA(f, args.verbose)
+```
+
+
+
+then, 
+```
+rna_pdb_tools.py  --get-ss '/large/otgk/rPKExtractor/pdb/1KPD.pdb'
+```
+may work.
+
+(I have another trouble about X3DNA, so it still remains `x3dna not found!` error. )
+",TakumiOtagaki,https://github.com/mmagnus/rna-tools/issues/146
+I_kwDOAgkJL859t0Zu,rna_pdb_tools.py -- TypeError when running --edit option,CLOSED,2024-01-31T02:33:23Z,2024-03-05T02:02:45Z,2024-03-05T01:57:54Z,"When running a command: `rna_pdb_tools.py --edit ""A:1651-1656>A:1-6,A:2004-2006>A:1-3"" pdbs/7RQB_1_1A.pdb` I encountered the following error:
+```
+Traceback (most recent call last):
+  File ""/home/marek/anaconda3/envs/rna-tools/bin/rna_pdb_tools.py"", line 844, in <module>
+    output = edit_pdb(f, args)
+             ^^^^^^^^^^^^^^^^^
+  File ""/home/marek/anaconda3/envs/rna-tools/lib/python3.12/site-packages/rna_tools/rna_tools_lib.py"", line 2012, in edit_pdb
+    output += edits
+TypeError: can only concatenate str (not ""list"") to str
+```
+
+I did some debugging and fixed the issue, but unfortunately, I have no permission to publish a hotfix branch or create a PR. The problem is with the line indicated in the error (`rna_tools_lib.py:2012`). I think that this might be an artifact from the past. The easiest fix I found was just to remove this line (`output += edits`), as it's not needed.
+I think that you wanted to keep the command in the output file, but it is actually already added in line `rna_tools_lib.py:1999`.
+",mjustynaPhD,https://github.com/mmagnus/rna-tools/issues/147
+I_kwDOAgkJL86X9GR2,cif2pdb - rename in the fancy way only to A?,OPEN,2024-09-26T02:51:49Z,2024-09-26T02:52:02Z,,"```
+rh:~$ rna_pdb_tools.py --cif2pdb 4v6x.cif
+Warning: some of the chains in this mmCIF file has chain names with more char than 1, e.g. AB, and the PDB format needs single-letter code, e.g. A.
+rna chain A -> A # of atoms: 38377 4v6x_B2_nA_fCIF.pdb
+rna chain B -> B # of atoms: 1604 4v6x_BC_nB_fCIF.pdb
+rna chain C -> C # of atoms: 84946 4v6x_A5_nC_fCIF.pdb
+rna chain D -> D # of atoms: 2578 4v6x_A7_nD_fCIF.pdb
+rna chain E -> E # of atoms: 3334 4v6x_A8_nE_fCIF.pdb
+```",mmagnus,https://github.com/mmagnus/rna-tools/issues/148

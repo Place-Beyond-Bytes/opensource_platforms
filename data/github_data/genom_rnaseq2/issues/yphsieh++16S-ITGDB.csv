@@ -1,0 +1,123 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFQnoqs5YT0-9,Plugin error from feature-classifier: pop from empty list!,OPEN,2022-12-07T10:38:31Z,2023-02-20T22:18:32Z,,"Hello,
+
+We have been wanting to give 16S-ITGDB a shot using QIIME2, but are unfortunately running into some issues. 
+First off, your trained classifier is unfortunately not compatible with qiime2 versions from 2021. So, we decided to use the raw sequence and taxonomy files to train our own feature classifier. We followed all the steps required (according to https://docs.qiime2.org/2020.2/tutorials/feature-classifier/) and manage to generate a classifier file. However, for some reason it does not seem to work. If we try to run QIIME2 using this classifier we get the error message: 
+
+```
+Traceback (most recent call last):
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2cli/commands.py"", line 339, in __call__
+    results = action(**arguments)
+  File ""<decorator-gen-205>"", line 2, in classify_sklearn
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/qiime2/sdk/action.py"", line 245, in bound_callable
+    outputs = self._callable_executor_(scope, callable_args,
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/qiime2/sdk/action.py"", line 391, in _callable_executor_
+    output_views = self._callable(**view_args)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/classifier.py"", line 215, in classify_sklearn
+    reads = _autodetect_orientation(
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/classifier.py"", line 170, in _autodetect_orientation
+    result = list(zip(*predict(first_n_reads, classifier, confidence=0.)))
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/_skl.py"", line 46, in predict
+    for calculated in workers(jobs):
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/parallel.py"", line 1043, in __call__
+    if self.dispatch_one_batch(iterator):
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/parallel.py"", line 861, in dispatch_one_batch
+    self._dispatch(tasks)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/parallel.py"", line 779, in _dispatch
+    job = self._backend.apply_async(batch, callback=cb)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/_parallel_backends.py"", line 208, in apply_async
+    result = ImmediateResult(func)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/_parallel_backends.py"", line 572, in __init__
+    self.results = batch()
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/parallel.py"", line 262, in __call__
+    return [func(*args, **kwargs)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/joblib/parallel.py"", line 262, in <listcomp>
+    return [func(*args, **kwargs)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/_skl.py"", line 54, in _predict_chunk
+    return _predict_chunk_with_conf(pipeline, separator, confidence, chunk)
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/_skl.py"", line 81, in _predict_chunk_with_conf
+    classes = [cls for cls in classes if cls[0].pop(0) == level]
+  File ""/opt/conda/envs/qiime2-2022.2/lib/python3.8/site-packages/q2_feature_classifier/_skl.py"", line 81, in <listcomp>
+    classes = [cls for cls in classes if cls[0].pop(0) == level]
+IndexError: pop from empty list
+
+Plugin error from feature-classifier:
+
+  pop from empty list
+```
+
+We have successfully obtained a trained classifier before using raw SILVA files, so it's unlikely that we are doing something wrong and so more likely that there might be something wrong/missing with your sequence and/or taxonomy files. 
+
+Do you have any idea what might be going on and how it could be fixed? ",MalbertRogers,https://github.com/yphsieh/16S-ITGDB/issues/1
+I_kwDOFQnoqs5ZU0FC,compatibility with R at the end of dada2 pipeline,CLOSED,2022-12-15T15:23:47Z,2023-02-21T14:12:04Z,2023-02-21T14:12:03Z,"Hello, 
+I just processed my 16s data with the dada2 pipeline and I am at the Assign Taxonomy step. I was trying to use the ITGDB database to assign taxonomy but I am getting errors that the file is not in the correct file format for the assignTaxonomy function. 
+Do you know if I can make this work in R studio using this function? 
+Thank you!",callmcgovern,https://github.com/yphsieh/16S-ITGDB/issues/2
+I_kwDOFQnoqs5c2NhQ,Using QIIME2 classifier with QIIME2-2022-2,OPEN,2023-01-26T07:14:15Z,2023-02-20T22:17:55Z,,"Dear Authors,
+
+I got a problem using the classifier shared  ( taxa_itgdb_qiime2.qza ).
+
+In fact, the scikit-learn version is not the same between the QIIME2 2022 and QIIME2 2020 :
+
+""ValueError: The scikit-learn version (0.23.1) used to generate this artifact does not match the current version of scikit-learn installed (0.24.1). Please retrain your classifier for your current deployment to prevent data-corruption errors.""
+
+I tried to rebuild the classifier but I am not sure which classifier you used to generate the initial pre-fitted classifier ( naives-bayes? sklearn?). An other issue is which files should and I used to build the classifier  The TAXA (taxa_itgdb_...) files or the SEQ (seq_itgdb_...) files? Do you have a qiime2 command line to share, showing how to build this classifier ?
+
+Many thanks
+
+Best regards
+",GEbiotech,https://github.com/yphsieh/16S-ITGDB/issues/3
+I_kwDOFQnoqs5dmL2O,Python imports,OPEN,2023-02-03T18:46:57Z,2023-02-17T20:25:13Z,,"Hi,
+
+there is a problem with your python imports in your main.py
+
+You are Importing ""seq_Integration.py"" and ""taxa_Integration.py"",
+but those files have a small i in their names, so they need to be
+
+from seq_integration import *
+from taxa_integration import *
+
+Best Eric",ericbrzoska,https://github.com/yphsieh/16S-ITGDB/issues/4
+I_kwDOFQnoqs5h9pEX,Using Qiime1.9,OPEN,2023-03-28T09:26:11Z,2023-04-28T02:24:46Z,,"Dear authors,
+I would like to thank you for this study, I think it is interesting and hope it will gain success soon.
+I have a question for you: I read that you have formatted ITGDB for many pipelines (great!) but I was wondering which files would be better for me to use in Qiime1.9. I am aware that theoretically Qiime2 has replaced Qiime1.9, but I am curious about using your database on Q1.9 anyway.
+Thanks in advance,
+
+Chiara",bioinfogini,https://github.com/yphsieh/16S-ITGDB/issues/5
+I_kwDOFQnoqs5j5bXB,Confusing taxonomy,OPEN,2023-04-20T04:56:51Z,2023-04-28T02:11:54Z,,"Hi guys! First of all thank you for doing this work. I think  compiling and curating these databasets is really useful and would have been difficult. I have used this databases to do taxonomy assignation using QIIME2, it produced really nice results. But I have been trying to figure out some taxonomic classifications. The next line is a confusing classification that I can't understand:
+
+HE584614.1.1460	bacteria;proteobacteria;gammaproteobacteria;enterobacterales;enterobacteriaceae;escherichia-shigella;**streptomyces_sp.**
+
+The streptomyces taxonomy is not like that and there a few lines with classifications similar to that one. I would like to know where this IDs and classification came from?
+
+I searched by ID in SILVA, GreenGenes and RPD. However, I didn't find this classification. I suspect it's from RPD but I don't know where to look to keep searching.
+
+Maybe can you help me telling me where can I find this IDs? ",Setis09,https://github.com/yphsieh/16S-ITGDB/issues/6
+I_kwDOFQnoqs5sTuUO,kraken2 or krakenUniq,OPEN,2023-07-23T12:25:23Z,2024-06-01T23:31:30Z,,"Hi!
+
+Thanks for this effort! I use kraken2 or krakenUniq with 16S databases. Any idea on how can i integrate this DB with these classifiers?",pedrocr83,https://github.com/yphsieh/16S-ITGDB/issues/7
+I_kwDOFQnoqs51O9Yx,one genbank accession is mapped to two different taxonomies,OPEN,2023-10-29T05:52:36Z,2023-10-29T06:29:08Z,,"```
+$ grep 'AJ560634' taxa_itgdb_taxa.txt
+```
+
+The result is
+```
+AJ560634        k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Enterobacterales; f__Morganellaceae; g__Photorhabdus; s__temperata
+AJ560634.1.1516 k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Enterobacterales; f__Morganellaceae; g__Photorhabdus; s__thracensis
+```
+
+According to https://www.ncbi.nlm.nih.gov/nuccore/AJ560634, it should be ""Photorhabdus thracensis""
+
+
+```
+$ grep 'DQ026646' taxa_itgdb_taxa.txt
+```
+
+The result is
+```
+DQ026646        k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Streptomycetales; f__Streptomycetaceae; g__Streptomyces; s__lavendulae
+DQ026646.1.1528 k__Bacteria; p__Actinobacteriota; c__Actinobacteria; o__Streptomycetales; f__Streptomycetaceae; g__Streptomyces; s__netropsis
+```
+
+According to https://www.ncbi.nlm.nih.gov/nuccore/DQ026646, it should be ""Streptomyces colombiensis""
+",billzt,https://github.com/yphsieh/16S-ITGDB/issues/8

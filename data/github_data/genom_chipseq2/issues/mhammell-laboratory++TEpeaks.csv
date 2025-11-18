@@ -1,0 +1,123 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MTcwMDg3MDM=,Please tag a release,CLOSED,2019-11-04T08:23:54Z,2023-03-22T13:26:37Z,2021-12-13T23:10:22Z,Could you tag a release?,dpryan79,https://github.com/mhammell-laboratory/TEpeaks/issues/1
+MDU6SXNzdWU1MjAwMDA3MTg=,Segfault if there are more read 1 than read 2 entries for a pair,OPEN,2019-11-08T12:57:05Z,2021-12-13T23:10:57Z,,"Currently if an aligner produces more alignments for read 1 than read 2 then TEpeaks will segfault. The following will patch that:
+
+```
+--- a/src/TEToolkit/Parser.cpp
++++ b/src/TEToolkit/Parser.cpp
+@@ -245,7 +245,8 @@ void process_aligned_fragment(global_context_t<T> * global_context, thread_conte
+             //get the first alignment of the first segment
+             cur_read1 = (bam1_t *)read_pair->first_reads[k];
+             
+-            if (read_pair->second_reads.size() > 0) {
++            cur_read2 = NULL;
++            if (read_pair->second_reads.size() > k) {
+                 //the first alignment of the second segment
+                 cur_read2 = (bam1_t *)read_pair->second_reads[k];
+             }
+```
+
+I'm not entirely sure why this scenario would arise, but one of our post-docs just managed to trigger it using a BAM file produced by STAR 2.6.0c",dpryan79,https://github.com/mhammell-laboratory/TEpeaks/issues/2
+MDU6SXNzdWU2MDY1MzQ4NzQ=,ATAC-seq data,OPEN,2020-04-24T19:31:32Z,2024-03-27T11:38:32Z,,"Hello,
+I was wondering if TEpeaks would work for ATAC-seq peaks? Have you ever tried it?
+Thank you
+Rita",RRebo,https://github.com/mhammell-laboratory/TEpeaks/issues/3
+I_kwDODAmhZs5AUUjf,Compile TEpeaks,OPEN,2021-12-13T21:55:28Z,2023-11-24T10:42:08Z,,"Hello authors @olivertam @yingjin07 
+
+ I followed the READme instruction and tried to compile TEpeaks on Linux systems, I tried gcc version 4.8, 7.1 and 9.3, they all hit the similar errors:
+
+$ make -f Makefile.LINUX
+ ......
+ /risapps/rhel7/gcc/7.1.0/include/c++/7.1.0/bits/stl_construct.h:98: undefined reference to `Interval::~Interval()'
+/tmp/ccVw2Eh4.o: In function `Candidate_Peaks::build_tree(std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::vector<std::pair<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::vector<std::pair<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > > >)':
+/risapps/rhel7/tepeaks/0.1/src/TEToolkit/Candidate_Peaks.cpp:300: undefined reference to `Interval::~Interval()'
+/tmp/ccVw2Eh4.o: In function `void std::_Destroy<Interval>(Interval*)':
+/risapps/rhel7/gcc/7.1.0/include/c++/7.1.0/bits/stl_construct.h:98: undefined reference to `Interval::~Interval()'
+/tmp/ccVw2Eh4.o:/risapps/rhel7/gcc/7.1.0/include/c++/7.1.0/bits/stl_construct.h:98: more undefined references to `Interval::~Interval()' follow
+collect2: error: ld returned 1 exit status
+make: *** [src/TEToolkit/Candidate_Peaks.o] Error 1
+
+My guess is Inteval() function needs to be implemented? 
+
+I see an executable in git clone repository. Is this the compiled execuatable that ready for use on linux?
+-rwxr-xr-x 1 ris_hpc_apps rists 9973384 Dec 13 15:30 TEpeaks
+
+$ ./TEpeaks -h
+Error: invalid command -h
+TEpeaks 0.1
+
+Usage: TEpeaks <CMD> [arguments] ..
+
+Where <CMD> can be one of:
+
+    narrow         Call puntate peaks 
+Running TEpeaks <CMD> without arguments prints usage information for <CMD>
+
+Please advise and thank you for your help.
+Regards,
+Rong",ryao-mdanderson,https://github.com/mhammell-laboratory/TEpeaks/issues/4
+I_kwDODAmhZs5Vjr5b,Species parameter question,CLOSED,2022-11-04T01:04:18Z,2023-03-22T13:26:05Z,2023-03-22T13:25:16Z,"Hello
+The arguments - --species=STRING  just mm9, does that means when I mapping I must use mm9, is that OK I mapping use mm10 to get the BAM file then I use TEpeaks use    -s mm?",sixingchen718,https://github.com/mhammell-laboratory/TEpeaks/issues/6
+I_kwDODAmhZs5VvtRz,How long I need to run the TEpeaks program,CLOSED,2022-11-07T15:41:52Z,2023-03-22T13:24:58Z,2023-03-22T13:24:58Z,"Hello,
+
+May I ask how long I need to run the TEpeaks program, normally I run the MACS2 for just around 30min， but the TEpeaks still running after four days, I don't know do I need to continue to wait or stop the program, is that normal?
+
+here is my code:
+TEpeaks narrow \
+        -t /home/sixing/TF/chip/mapping/36.bam /home/sixing/TF/chip/mapping/361.bam \
+        -c /home/sixing/TF/chip/mapping/37.bam /home/sixing/TF/chip/mapping/371.bam \
+        -s mm -i 20 \
+        -o TEpeaks -n H3K9me3_WT
+
+look forward your response,
+regards,
+Sixing",sixingchen718,https://github.com/mhammell-laboratory/TEpeaks/issues/7
+I_kwDODAmhZs5hedXz,0 peaks in the output,OPEN,2023-03-22T09:25:42Z,2023-03-22T15:33:53Z,,"Dear TEpeaks authors!
+Thank you for such an important tool. Unfortunately, I ran into difficulties using it. When I run the program, I get 0 peaks in the output, despite the fact that when processing simply with macs2, hundreds of peaks are obtained. Could you please tell what  may be a reason. The program is called as follows:
+
+`./TEpeaks narrow -t b1.bam -c c1.bam -o test_tepeaks_rat -n test --threads 10  -p 0.00001 -s dm`
+
+Bam files are not sorted and are obtained using bowtie2 with -k 99 option.
+In the logs, I see a lot of  messages: ""INFO a read failed"". The mapping summary at looks like this:
+```
+	INFO	#1 tag size = 49
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total tags in treatment: 20920409
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total multi tags in treatment: 5393806
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total unique tags in treatment: 15526603
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total tags in control: 22408126
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total multi tags in control: 5477154
+Tue Mar 21 20:12:50 2023
+	INFO	#1 total unique tags in control: 16930972
+Tue Mar 21 20:12:50 2023
+	INFO	#2 user defined maximum in treatment and control 1
+Tue Mar 21 20:12:50 2023
+	INFO	#2 filter out redundant tags/fragments ...
+Tue Mar 21 20:29:37 2023
+	INFO	#2  total tags after removing duplicates in treatment: 17093493
+Tue Mar 21 20:29:37 2023
+	INFO	#2  total tags after removing duplicates in control: 16250788
+```
+Then, during peak calling step there are a lot of messages `""INFO	num_chroms per thread 0""`. At the and i see:
+```
+	INFO	candidate peak file name test_tepeaks_rat/CG1603_candidatePeaks.txt
+Tue Mar 21 20:29:45 2023
+	INFO	candidate peaks size 0
+Tue Mar 21 20:29:45 2023
+	INFO	#4 Call peaks for repetitive regions...
+Tue Mar 21 20:29:45 2023
+	INFO	Read in candidate peaks ... test_tepeaks_rat/CG1603_candidatePeaks.txt
+Warning: No peaks found in peak file.
+```
+Thank you in advance!
+",natashaklmnk,https://github.com/mhammell-laboratory/TEpeaks/issues/8
+I_kwDODAmhZs57VFrp,Segmentation fault (core dumped),OPEN,2024-01-07T13:14:43Z,2024-03-07T20:26:12Z,,"Hi, 
+I installed TEpeaks via conda and encountered the core dumped error when using the command line:
+```
+TEpeaks narrow -t ip.bam -c in.bam -o name -s species -i 20 -n chip -g 1246422469
+```
+How could I solve this problem? Thanks.",Simple53,https://github.com/mhammell-laboratory/TEpeaks/issues/9

@@ -1,0 +1,817 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMDYzNzIxMzE=,Release tags,OPEN,2015-09-14T15:54:33Z,2015-09-14T15:54:33Z,,"Hello,
+
+can you please tag your releases?
+
+Thanks in advance,
+  Oliver
+",stolpeo,https://github.com/dkoboldt/varscan/issues/1
+MDU6SXNzdWUxMTIyODE5NjE=,A bug about version 2.3.8,OPEN,2015-10-20T03:51:21Z,2015-11-16T08:14:26Z,,"Exception in thread ""main"" java.lang.NumberFormatException: For input string: ""156051AAA>E;BBEEDDEEEEBEEEDEECEDE'@CD?CEEEEEE@DEDEEEEDEDEEEEE>C@FDE:EC6CEEEEFDEEECD/EBDEEEDDEEEEECADEDDDADDB""
+    at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+    at java.lang.Integer.parseInt(Integer.java:492)
+    at java.lang.Integer.parseInt(Integer.java:527)
+    at net.sf.varscan.Somatic.<init>(Somatic.java:1026)
+    at net.sf.varscan.VarScan.somatic(VarScan.java:298)
+    at net.sf.varscan.VarScan.main(VarScan.java:199)
+HI ,I meet this error , what happened ???
+
+thank you !
+",WinterLi1993,https://github.com/dkoboldt/varscan/issues/2
+MDU6SXNzdWUxMjAyOTQ3MjQ=,a small problem of latest version of varscan2,OPEN,2015-12-03T23:19:54Z,2016-01-29T15:45:04Z,,"Dear varscan2 developpers,
+
+I am using the laterest varscan2 2.4.1, and after I use the false positive filter, I found the column names of the output have an ""extra tab""  between ""mmqs_diff"" and ""ref_avg_rl"" which result in some problems in downstream analyses. I am wondering could you please help fix this problem, many thanks:)
+
+Yours,
+Ying
+",dingying85,https://github.com/dkoboldt/varscan/issues/3
+MDU6SXNzdWUxMjk3Mjk0NjQ=,indel missing that colsing snv,OPEN,2016-01-29T10:43:49Z,2016-11-04T20:22:23Z,,"![image](https://cloud.githubusercontent.com/assets/8581547/12673417/932f9934-c6b7-11e5-9438-69586e46937d.png)
+As  the picture show, the sample have snv and indel so close. but the varscan's somatic( version 2.3.9 case control)only have the snv result. missing the indel result. can you have a look the bug?
+
+yuting
+",welyt,https://github.com/dkoboldt/varscan/issues/4
+MDU6SXNzdWUxMzM4MzY0NDQ=,Somatic input ready loop is too aggressive when I/O is slow,OPEN,2016-02-15T22:51:22Z,2016-02-15T22:51:22Z,,"We're using varscan's somatic caller in a production pipeline, where both the normal and tumor inputs are provided through via bash's `<(samtools mpileup ...)` syntax, as recommended.  samtools' own input is read over the network, and we've noticed in cases where the network is under slow, the somatic caller sometimes aborts the run, reporting ""Input file(s) were not ready for parsing after 100 5-second cycles! Pileup output may be invalid or too slow.""  We're in the ""too slow"" case.
+
+mpileup will eventually succeed (it does under better network conditions), just not in the time that the somatic caller allows.  It would be helpful if this code could more carefully check for the cases of invalid cases, and otherwise allow for slow inputs, to avoid failing an entire pipeline because of temporary I/O degradation.
+",brettcs,https://github.com/dkoboldt/varscan/issues/5
+MDU6SXNzdWUxMzY1ODMyMzk=,Somatic Status assignment,OPEN,2016-02-26T03:12:08Z,2016-02-26T03:15:54Z,,"![image](https://cloud.githubusercontent.com/assets/8022125/13342024/a3854a68-dc0b-11e5-865f-9362ca6ffce7.png)
+
+I am using VarScan v2.3 somatic module to call snps in Normal Tumor pair through the following command:
+samtools mpileup -f hg19.fa -B -C50 -q 10 -Q 15 normal.bam tumor.bam | java -jar VarScan.jar somatic NormalTumorPair.varscan --mpileup 1 --strand-filter 1 
+
+I have noticed, as the image above indicates that there are several snps that have variant_p_val =1 and somtic_p_val < 0.05 and are being called ""Germline"" (red streak in top left corner of graph). Is the somatic status call not based on pvalue?
+",rdali,https://github.com/dkoboldt/varscan/issues/6
+MDU6SXNzdWUxMzY3MzA1Mjc=,VarScan copynumber outputName,OPEN,2016-02-26T15:42:24Z,2017-11-09T08:47:30Z,,"Code:
+        String outputName = ""output"";
+
+```
+    if(args.length >= 3 && !args[2].startsWith(""-""))
+    {
+        outputName = args[2];
+    }
+```
+
+if using it like that ""samtools mpileup -q 1 -f ref.fa normal.bam tumor.bam |  java -jar VarScan.jar copynumber $outPrefix --mpileup 1"", the ""outputName"" will always be ""output"".  So, args[2] should be args[1] which refers to ""$outPrefix"".
+
+But if using it like that ""USAGE: java -jar VarScan.jar copynumber [normal-tumor.mpileup] [Opt: output] OPTIONS\n"",  the args[2] is right.
+
+And if like that ""java -jar VarScan.jar copynumber normal.pileup tumor.pileup output.basename"", what is going to be? Oh, this one will use the another constructor. Anyway, it's OK.
+
+so, if the program allows the pipe from command line, I think this issue should be fixed.
+",mxqian,https://github.com/dkoboldt/varscan/issues/7
+MDU6SXNzdWUxMzg3NzM2ODM=,VCF format problem VarScan2.41.0,OPEN,2016-03-06T09:24:44Z,2018-08-20T10:34:08Z,,"Hi,
+
+I ran the following code but output was in VarScan format. 
+
+TuncBook-Pro:blackhole morova$ java -jar ~/varscan/VarScan.v2.4.1.jar somatic normal/normal.mpileup tumor/tumor.mpileup --output-vcf 1
+
+This is my header info from the output of the following command. 
+chrom   position    ref var normal_reads1   normal_reads2   normal_var_freq normal_gt   tumor_reads1    tumor_reads2    tumor_var_freq  tumor_gt    somatic_status  variant_p_value somatic_p_value tumor_reads1_plus   tumor_reads1_minus  tumor_reads2_plus   tumor_reads2_minus  normal_reads1_plus  normal_reads1_minus normal_reads2_plus  normal_reads2_minus
+
+Please help me,
+
+Best,
+
+Tunc
+",mortunco,https://github.com/dkoboldt/varscan/issues/8
+MDU6SXNzdWUxNjQzNzIyMDg=,Default p-value threshold,OPEN,2016-07-07T18:07:40Z,2021-03-09T16:16:10Z,,"When running a calling command like `mpileup2cns` without specifying the `--p-value` argument, VarScan outputs 
+
+> Warning: No p-value threshold provided, so p-values will not be calculated
+
+It appears, though, that VarScan _does_ calculate p-values for variants (they are in VCF output) and filters variants on a default threshold of 0.01. The warning should be changed or removed because it mistakenly suggests that variants will not be filtered on a p-value when the argument is not provided.
+
+Also, the [manual](http://dkoboldt.github.io/varscan/using-varscan.html) states that the default p-value threshold for calling commands is 0.99. This should be updated to 0.01 or the true default threshold should be changed to 0.99.
+",haydenm,https://github.com/dkoboldt/varscan/issues/9
+MDU6SXNzdWUxNjY4ODU5NjI=,varscan fpfilter input,OPEN,2016-07-21T18:25:18Z,2018-03-22T12:26:43Z,,"Hello!
+What for do we have to use [bam-readcount](https://github.com/genome/bam-readcount)? If I am right, varscan already gets this info from input BAMs and stores it in it's VCF!
+",serge2016,https://github.com/dkoboldt/varscan/issues/10
+MDU6SXNzdWUxNjkzODc0MDE=,No versioned source repository?,OPEN,2016-08-04T14:25:49Z,2016-12-04T07:19:12Z,,"It looks like the repository is only being used to keep snapshots as JAR files. Is there anywhere I can checkout the source to see version history? For example, I want to see when default parameters changed and why.
+",sambrightman,https://github.com/dkoboldt/varscan/issues/11
+MDU6SXNzdWUxNzE4Mjg2NDY=,No explicit license statement any more,CLOSED,2016-08-18T06:41:49Z,2016-12-04T07:29:05Z,2016-11-01T19:26:53Z,"Hi,
+
+the old webseite was specifying a non-profit license (Non-Profit Open Software License 3.0).  I can not find any license statement on the Github pages.  I formerly several times tried to seek contact about the licensing since I would like to distribute varscan in Debian main.  Unfortunately the non-profit restrictions conflicts with the Debian Free Software Guidelines and makes the software non-free.
+
+If no license is specified at all as it is now from a distribution point of view its is non-free as well since we do not have any explicite permission to distribute the code.
+
+It would be great if you would consider a free license like GPL, BSD or similar.
+
+Thanks for considering
+
+```
+ Andreas.
+```
+",tillea,https://github.com/dkoboldt/varscan/issues/12
+MDU6SXNzdWUxNzY0MTMzNDM=,Old info on http://dkoboldt.github.io/varscan/,OPEN,2016-09-12T15:55:58Z,2016-09-12T15:55:58Z,,"Hello.
+The info on the [page](http://dkoboldt.github.io/varscan/) is outdated:
+
+> Installing VarScan
+> The new release (VarScan 2) is written in Java and thus runs on any operating system (Linux, UNIX, Mac OSX, even Windows) through the Java Virtual Machine. To install it, you must download the VarScan JAR file from SourceForge.
+
+And the latest release (2.4.2) is available on https://github.com/dkoboldt/varscan/releases
+",serge2016,https://github.com/dkoboldt/varscan/issues/13
+MDU6SXNzdWUxNzgyOTc0NDQ=,how to  output wildtype  site via VarScan with SNP calling ?,CLOSED,2016-09-21T09:45:51Z,2016-11-01T19:23:08Z,2016-11-01T19:23:08Z,"HI,
+    I wanna use VarScan to produce calls at variant sites and confident reference sites, but I can not find any parameters . 
+",WinterLi1993,https://github.com/dkoboldt/varscan/issues/14
+MDU6SXNzdWUxODY0MzQxODc=,Slash is incorrect alternate allele separator,OPEN,2016-11-01T00:13:02Z,2016-11-01T00:13:02Z,,"In varscan 2.4.2 somatic call VCF output file, a ""/"" instead of comma is used to separate multiple alternate alleles.  I thought I read in the release notes that this had been fixed in 2.4.2, but the problem is still there.
+",tedtoal,https://github.com/dkoboldt/varscan/issues/15
+MDU6SXNzdWUxODY0MzQzOTI=,"Deletion uses ""-"" in Alt field",OPEN,2016-11-01T00:14:44Z,2016-11-01T21:34:48Z,,"Varscan 2.4.2 somatic VCF indel output file uses dashes in the Alt field, which should never appear as they are considered invalid characters in that field.  For example, a single deletion might show up as Ref=C, Alt=-T, when actually there should be two Ref bases given and only the T given for Alt, if I understand what is happening.
+",tedtoal,https://github.com/dkoboldt/varscan/issues/16
+MDU6SXNzdWUxODY0MzQ2Njk=,VCF and tab interconversion,CLOSED,2016-11-01T00:17:15Z,2016-11-01T19:32:44Z,2016-11-01T19:20:29Z,"I wanted to separate LOF and somatic HC and germline using processSomatic, but it requires a tabular input whereas I had generated VCF files.  I want those VCF files and I want VCF files with LOF separated.  It would be nice if all varscan commands that read tab-separated variant files could also read VCF files, and all commands that write files could write both kinds.  Also, it would be very nice if there were a ""null"" command that could simply read a file in one format and output it in the other.
+",tedtoal,https://github.com/dkoboldt/varscan/issues/17
+MDU6SXNzdWUxODkxMzY3MDU=,indel immediately following SNV is not called,OPEN,2016-11-14T15:12:03Z,2016-11-14T15:12:03Z,,"Hi,
+I have a situation where there is an indel immediately after a SNV and the indel does not get called. This sample has been run a few times and in some cases the alignment is such that the indel preceeds the SNV (due to the sequence in this region both are equivalent), and in this case VarScan calls both the indel and the SNV fine. I have attached the relevant lines from the mpileup file where the indel is not being called. 
+
+Thank you.
+Natalie
+
+[snipet.mpileup.txt](https://github.com/dkoboldt/varscan/files/589638/snipet.mpileup.txt)
+",nstickle,https://github.com/dkoboldt/varscan/issues/18
+MDU6SXNzdWUyMTAwNDM5ODI=,Infering population parameters from pooled samples,OPEN,2017-02-24T13:07:25Z,2017-02-25T22:42:27Z,,"Hello,
+I have HiSeq data from some yeast experimental populations and I would like to compare population parameters between populations (samples). For example, I would like to estimate genetic diversity, or be able to biuld a side freqeuncy spectrum. Maybe using something like Lynch et al. analyses: https://doi.org/10.1093/gbe/evu085 or Ferretti et al work: http://onlinelibrary.wiley.com/doi/10.1111/mec.12522/abstract
+
+However, I am wondering how to normilise the samples to be able to compare between them (for instance diversity). I'm especially consern about differences in coverage between samples. I see, with VarScan I can set min number of supporting reads, freqeuncy, quality, etc, but the presition to detect for instance singlotons (or in general low freq variants) will depend on coverage.
+Could someone give me some thints of that?
+Thanks a lot in advance,
+
+/Sergio Tusso",situssog,https://github.com/dkoboldt/varscan/issues/19
+MDU6SXNzdWUyMTQyMjQ5NTQ=,MinMMQSdiff,OPEN,2017-03-14T22:24:38Z,2017-03-14T22:24:38Z,,"Hi,
+After applying fpfilter to my somatic variant calls, some of them are filtered out with `MinMMQSdiff` tag. I can't find the explanatory header row regarding this filter. The closest one is this one:
+
+> ##FILTER=<ID=MMQSdiff,Description=""Mismatch quality sum difference (ref - var) > 50"">
+
+What does `MinMMQSdiff`  mean? Also which fields of the `bam-readcount` file are used to apply this filter?
+
+Thank you in advance,
+Iran",iranmdl,https://github.com/dkoboldt/varscan/issues/20
+MDU6SXNzdWUyMjIyMzg0Njg=,Erroneous flags are passing silently.,OPEN,2017-04-17T21:35:49Z,2017-04-17T21:35:49Z,,"My students working with VarScan constantly missing variatns, just providing erroneous flags (say, --min-var-frequency instead of --min-var-qreq). And it passes silently, without any warning. Can you please add this check, just to make the VarScan yell at user if it provides unexisted flags? It can save a lot of time and efforts.
+
+Best,
+Mike",mikeraiko,https://github.com/dkoboldt/varscan/issues/21
+MDU6SXNzdWUyMzE3NTc0OTM=,VCF output for varscan somatic not working,OPEN,2017-05-26T23:47:13Z,2022-08-28T01:15:49Z,,"Hi, 
+I am trying to run varscan 2.4.2 in somatic mode:
+```
+java -jar /opt/varscan/VarScan.v2.4.2.jar somatic \
+normal.pileup tumor.pileup \
+/opt/varscan/output/normal-tumor. \
+--min-coverage 3 --min-var-freq 0.01 \
+--p-value 0.10 --somatic-p-value 0.05 --strand-filter 0 \
+--output_vcf 1
+```
+
+but the output is still the Varscan output.
+Am I missing something? 
+Thanks in advance for your help
+",kmavrommatis,https://github.com/dkoboldt/varscan/issues/22
+MDU6SXNzdWUyNDgzMzA2NDQ=,"the num of  +-strand diff greatly（Strand read counts: ref/fwd, ref/rev, var/fwd, var/rev）",CLOSED,2017-08-07T07:39:25Z,2017-08-09T12:29:48Z,2017-08-09T12:29:48Z,"i use the somatic command to call mutations, the num of  forward and reverse strands diff greatly, the forward is usually much more than the reverse , and the total depth is also much less than other tools(eg. vardict), nearly half of the vardict's total depth(eg. 1560-804,1272-581)
+# ref/fwd         ref/rev         var/fwd         var/rev"">
+664     84      510     71
+125     22      194     19
+232     2       90      1
+231     18      91      3
+207     21      67      8
+153     24      49      7
+152     24      49      7
+139     18      47      3
+307     14      266     16
+1068    89      1005    69
+892     136     945     127
+1       0       1578    292
+1129    69      1096    57
+796     22      702     19
+2       0       1568    152
+596     28      574     29
+89      2       117     5
+752     79      734     88
+696     79      730     54
+1128    80      1022    72
+1183    70      1041    67
+1049    63      923     56
+559     106     445     86
+113     54      129     48
+170     3       121     1
+512     49      14      0
+229     2       197     2
+760     67      683     74
+
+thanks a lot for your help",liufengxia99,https://github.com/dkoboldt/varscan/issues/23
+MDU6SXNzdWUyNTIzODQ1MDg=,min-mmqs-diff does not accept negative values. ,OPEN,2017-08-23T19:04:22Z,2017-08-23T19:04:22Z,,"Setting min-mmqs-diff as a negative value like -2, throws the following error:
+
+Input Parameter Threw Exception: For input string: ""true""
+java.lang.NumberFormatException: For input string: ""true""
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:76)
+	at java.lang.Integer.parseInt(Integer.java:592)
+	at java.lang.Integer.parseInt(Integer.java:627)
+	at net.sf.varscan.FpFilter.<init>(FpFilter.java:202)
+	at net.sf.varscan.VarScan.fpfilter(VarScan.java:335)
+	at net.sf.varscan.VarScan.main(VarScan.java:174)",santanasantosl,https://github.com/dkoboldt/varscan/issues/24
+MDU6SXNzdWUyNjYxMTU1MjE=,sanity error when running bcftools stats on varscan data,OPEN,2017-10-17T13:01:48Z,2017-10-17T13:12:25Z,,"Dear,
+I ran varscan mpileup2cns (v2.4.3) on some data and when analysing the vcf with bcftools stats got an error
+
+```
+$ bcftools stats --fasta-ref   Ref.fasta variants.vcf.gz  > vcf.stats
+Sanity check failed, the reference sequence differs: NC_030973.1:129900+2 .. G vs Y
+samtools faidx R64_SEUB3.0_merged.fasta NC_030973.1:129900-129902
+```
+
+After inspecting this closely (https://github.com/samtools/bcftools/issues/691#issuecomment-337218492) @pd3 came to the conclusion that varscan is not handling IUPAC ref bases as it should and should have made **CAC** out of the reference **CAY** bases instead of the returned **CAG**.
+
+Could you please confirm and maybe fix this IUPAC replacement case for the ref field?
+Thanks in advance
+
+```
+## reference info
+samtools faidx R64_SEUB3.0_merged.fasta NC_030973.1:129900-129902
+NC_030973.1:129900-129902
+CAY
+
+$ tabix variants.vcf.gz NC_030973.1:129900-129902
+NC_030973.1	129900	.	CAG	C	.	PASS	ADP=22;WT=0;HET=1;HOM=0;NC=0 GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR	0/1:49:33:22:10:13:48.15%:1.1242E-5:23:12:6:4:3:10
+```",splaisan,https://github.com/dkoboldt/varscan/issues/25
+MDU6SXNzdWUyNjcwMjQ4Nzc=,Java version required is not listed,OPEN,2017-10-19T23:57:52Z,2017-10-19T23:57:52Z,,Does Varscan2 work with Java 1.8 or only Java 1.7?,lachlansimpson,https://github.com/dkoboldt/varscan/issues/26
+MDU6SXNzdWUyNjk5NzA2MzI=,typos in doc,OPEN,2017-10-31T14:05:35Z,2017-11-09T06:00:08Z,,"Thanks Dan for the great tool,
+
+I just noticed what I think are typos in the accompanying doc
+bash variables with $ in front and spaces at either sides of the '=' sign
+
+Best
+Stephane
+
+```
+http://dkoboldt.github.io/varscan/somatic-calling.html
+
+Do NOT use any of the variant- or consensus-calling parameters. You just want the raw pileup output. This Perl snippet shows you how to pipe input from SAMtools into VarScan:
+$normal_pileup = ""samtools mpileup -f $reference $normal_bam"";
+$tumor_pileup = ""samtools mpileup -f $reference $tumor_bam"";
+
+To limit the pileup to reads with mapping quality > 0 (recommended), use this variation:
+$normal_pileup = ""samtools mpileup -q 1 -f $reference $normal_bam"";
+$tumor_pileup = ""samtools mpileup -q 1 -f $reference $tumor_bam"";
+
+Next, issue a system call that pipes input from these commands into VarScan :
+bash -c \""java -jar VarScan.jar somatic <\($normal_pileup\) <\($tumor_pileup\) output
+```
+",splaisan,https://github.com/dkoboldt/varscan/issues/27
+MDU6SXNzdWUyNzIwOTMxNjM=,State Location of Output,OPEN,2017-11-08T07:00:10Z,2017-11-08T07:00:10Z,,The user manual doesn't explain where the output goes. Is it saved to a file or printed to the terminal?,DarioS,https://github.com/dkoboldt/varscan/issues/28
+MDU6SXNzdWUyNzI0NDEyMjM=,Enable Multiple CPUs To Be Used,OPEN,2017-11-09T05:00:17Z,2017-11-09T05:00:17Z,,The input data could simply be split by chromosomes and each one run on a separate CPU or thread.,DarioS,https://github.com/dkoboldt/varscan/issues/29
+MDU6SXNzdWUyNzI3ODU4NTg=,Redundant Processing To Get SNPs and Indels,OPEN,2017-11-10T01:00:22Z,2017-11-10T01:00:22Z,,"I notice that the intermediate results of `mpileup2snp` and `mpileup2indel` are the same.
+
+```
+96222 variant positions (87240 SNP, 8982 indel)
+5920 were failed by the strand-filter
+81814 variant positions reported (81814 SNP, 0 indel)
+```
+
+versus
+
+```
+96222 variant positions (87240 SNP, 8982 indel)
+5920 were failed by the strand-filter
+8488 variant positions reported (0 SNP, 8488 indel)
+```
+
+Why not just have one function to avoid unnecessarily reprocessing the same data twice? Something such as `samtools mpileup -f hg38/all.fa sample.bam | mpileup2variants --snp-vcf aSample.snp.vcf --indel-vcf aSample.indel.vcf` would be efficient.",DarioS,https://github.com/dkoboldt/varscan/issues/30
+MDU6SXNzdWUyNzMzNjU1NDg=,typos returning fpfilter counts,OPEN,2017-11-13T09:43:24Z,2017-11-13T09:44:53Z,,"A number of lines report 'minimim' instead of 'minimum'.
+this is very minor and can probably be fixed easily.
+best
+
+> Loading readcounts from varscan_somatic/tumour.indel.counts...
+> Parsing variants from varscan_somatic/varscan_somatic_mpileup_normal-tumor.indel...
+> 10062 variants in input file
+> 4384 had a bam-readcount result
+> 4318 had reads1>=2
+> 1501 passed filters
+> 8561 failed filters
+>         5678 failed because no readcounts were returned
+>         135 failed minimim variant count < 3
+>         13 failed minimum variant freq < 0.05
+>         0 failed minimum strandedness < 0.0
+>         16 failed minimum reference readpos < 0.2
+>         10 failed minimum variant readpos < 0.15
+>         8 failed minimum reference dist3 < 0.2
+>         10 failed minimum variant dist3 < 0.15
+>         411 failed maximum reference MMQS > 50
+>         172 failed maximum variant MMQS > 100
+>         90 failed maximum MMQS diff (var - ref) > 50
+>         260 failed maximum mapqual diff (ref - var) > 10
+>         133 failed minimim ref mapqual < 20
+>         478 failed minimim var mapqual < 30
+>         0 failed minimim ref basequal < 15
+>         0 failed minimim var basequal < 30
+>         90 failed maximum RL diff (ref - var) > 0.05
+",splaisan,https://github.com/dkoboldt/varscan/issues/31
+MDU6SXNzdWUyODIzMTk4Njk=,varscan copynumber running problem,OPEN,2017-12-15T04:55:29Z,2017-12-22T06:46:40Z,,"Hi, 
+I am running Varscan copynumber using the default settings. But met this error message.
+Normal Pileup: normal.mpileup 
+Tumor Pileup: tumor.mpileup 
+Min coverage: 10 
+Min avg qual: 15 
+P-value thresh: 0.01 
+Exception in thread ""main"" java.lang.ArrayIndexOutOfBoundsException: 5 
+at net.sf.varscan.Copynumber.<init>(Copynumber.java:693) 
+at net.sf.varscan.VarScan.copynumber(VarScan.java:328) 
+at net.sf.varscan.VarScan.main(VarScan.java:209)
+
+My command line is: java -jar ../../../software/VarScan.v2.3.9.jar copynumber normal.mpileup tumor.mpileup 007_008_glio 
+I have no idea what has caused the problem.
+
+Thank you in advance.
+",jinxinhao0627,https://github.com/dkoboldt/varscan/issues/32
+MDU6SXNzdWUyOTgzMjI1NTM=,Please use Git repository properly,OPEN,2018-02-19T15:49:26Z,2018-07-18T09:55:44Z,,"Hi,
+currently this Git repository just stores binary JAR files.  The intention of a Git repository is rather to store source code to enable inspecting diffs.  The release process of this source is than handled by release tags in the Github interface.
+Thanks for considering, Andreas.",tillea,https://github.com/dkoboldt/varscan/issues/33
+MDU6SXNzdWUzMTE1NTY0OTg=,"varscan somatic terminates without error, sometimes with an error",OPEN,2018-04-05T10:31:24Z,2019-04-14T14:09:53Z,,"When I run varscan somatic using a reference genome with a large number of contigs (>2000) the program completes without error, but does not output data in the outfile files for all the contigs.  All the contigs are present in the two mpileup files.
+
+Sometimes I see a java error in the output:
+---
+Somatic p-value:        0.05
+Warning:
+java.lang.NullPointerException
+        at net.sf.varscan.Somatic.comparePositions(Somatic.java:1669)
+        at net.sf.varscan.Somatic.<init>(Somatic.java:1244)
+        at net.sf.varscan.VarScan.somatic(VarScan.java:281)
+        at net.sf.varscan.VarScan.main(VarScan.java:199)
+16410533 positions in tumor
+---
+
+The maximum reported contigs appears to be ~170.
+
+Thanks.",IanCodes,https://github.com/dkoboldt/varscan/issues/34
+MDU6SXNzdWUzMjg2MjM5OTI=,varscan appears to throw out reverse reads,OPEN,2018-06-01T18:50:02Z,2018-06-01T18:50:02Z,,"I am calling mutations with varscan2. The samtools mpileup I generate reports 140 reads, half of them on the reverse strand. Varscan appears to ignore these reverse reads - the AD reported is 70 and the ADF:ADR is 2:0 when according to the pileup it should be 2:2.",graft,https://github.com/dkoboldt/varscan/issues/35
+MDU6SXNzdWUzMzMwNzU3OTc=,Can it call variants on tetraploid species?,OPEN,2018-06-17T16:42:51Z,2018-06-17T16:42:51Z,,,afzm,https://github.com/dkoboldt/varscan/issues/36
+MDU6SXNzdWUzNzY5ODAyOTU=,how to create the site list files for bam-read-count for the indels called by varscan2,OPEN,2018-11-02T21:56:41Z,2022-07-07T13:52:49Z,,"HI Varscan developper,
+
+In order to use the false positive filter, i will need to run the bam-read-count on the called mutations, I know I can generate the positions for the snp for bam-read-count, however, how to generate the files from indel calls, which coordinates should be used? Thanks. 
+
+Yours,
+Ying ",dingying85,https://github.com/dkoboldt/varscan/issues/37
+MDU6SXNzdWUzNzczOTg0NTI=,somaticfilter default --min-reads2 value error,OPEN,2018-11-05T13:24:32Z,2018-11-05T13:25:00Z,,"Hi
+
+I've noticed that the --min-reads2 default value in somaticfilter appears to be 4 and not 2 as stated in the manual. Thought it might be helpful to other users to let you know.
+
+Best regards,
+Georgette ",GeorgetteTanner,https://github.com/dkoboldt/varscan/issues/38
+MDU6SXNzdWUzODIwNjkwMzk=,Suggestions for using Varscan2  on tumor only samples ?,OPEN,2018-11-19T06:03:35Z,2022-09-26T07:37:08Z,,"Are there any recommendations on how to run varscan2 to find mutations on tumor only samples (i.e. without a matched normal available). 
+Would running it in 'germline' mode, but allowing more flexible thresholds be sufficient ?
+Would applying filters like processSomatic (or somaticFilter) make sense?
+Any other suggestions?
+Thanks in advance",kmavrommatis,https://github.com/dkoboldt/varscan/issues/39
+MDU6SXNzdWUzODQ5NTk5MDg=,False Positive SNP Calls,OPEN,2018-11-27T19:54:26Z,2018-11-27T19:54:26Z,,"I have discovered that under certain conditions, a SNP is called where a single base deletion is actually present. This occurs about 30% of the time, and only for deletions, not for single base additions. An example would be the following:
+
+$ varscan mpileup2snp A62_tmp.pileup --output-vcf 1 > A62_snp.varscan
+$ varscan mpileup2indel A62_tmp.pileup --output-vcf 1 > A62_indel.varscan
+
+Consider the following lines from the SNP and indel files, respectively:
+UFC4000096	4536607	.	A	C	.	PASS	ADP=752;WT=0;HET=1;HOM=0;NC=0	GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR	0/1:45:753:752:21:13:38.24%:2.9583E-5:29:25:11:10:12:1
+
+UFC4000096	4536606	.	CA	C	.	PASS	ADP=729;WT=0;HET=0;HOM=1;NC=0	GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR	1/1:255:729:729:24:702:96.56%:0E0:45:50:17:7:579:123
+
+The reference sequence (with relevant bases in small case):
+4536601  CCTCAcaAAAACAAACTATTAGGTTAAACAAAAGCTAAACAAATTAAGTACTGATAATTG
+
+A typical read covering the affected bases (small case and underscore):
+>M01380:2107:18862:17614
+AAAATGACTATCTATATAAACAAATAGCCATGTTAACATTAAGTTCTGTC
+TATACAGACTATCCATAAAGAATGTTCAGATGACATACACACCATTACCG
+CATATCATTTAGATATATTGATATACCTCAc_AAAACAAACTATTAGGTT
+AAACAAAAGCTAAACAAATTAAGTACTGATAATTGACTTACCGGTGTACA
+TCAAAAGAATCATATACATATGTAGAAGTGACAGAAGGGAGTCATTGTTA
+TGCAAACTAAGCTTCTGGCAATTATGCTTGCAGCACCTGTGGTATTCAGT
+TC
+
+A cursory inspection of the stacked reads in Tablet verify that the 96.5% coverage predicted by the indel file is correct.",eckofoid,https://github.com/dkoboldt/varscan/issues/40
+MDU6SXNzdWU0MDA5MzcxODQ=,Varscan trio de novo mutation calling too slow,OPEN,2019-01-19T00:23:51Z,2019-01-19T00:25:31Z,,"Hi,
+
+I am using Varscan trio function to call de novo mutation. However, I found Varscan trio function is running too slow. It's unable to call per chromosome in parallel because each trio run takes a huge amount of virtual memory (approximately 50 GB). It would down the server if doing per chromosome in parallel.
+
+Is there any better way to run varscan trio function?
+
+Thanks,
+
+Shan",shannjiang,https://github.com/dkoboldt/varscan/issues/41
+MDU6SXNzdWU0MTg3NTc1OTQ=,MNV or two SNV,OPEN,2019-03-08T11:56:33Z,2022-09-08T22:11:01Z,,"How does Varscan (v2.4.3) determine that two consecutive SNVs are part of the same event and call the variants as a MNV?
+
+I have multiple examples where BAM files (which have gone through differing preprocessing/alignment steps) have resulted in different descriptions of the same variants.
+
+There are two adjacent SNVs on the same strand. In one BAM file varscan calls this as a MNV, but in another it calls it as two SNVs.
+Variants are called as SNVs even with near identical MAFs (40.11% and 40.17%) and similar read counts. 
+
+I am using varscan v2.4.3 and the mpileup2cns command:
+` samtools mpileup -f genome/grch37.fa -B -d 500000 -q 1 input.bam |
+java -Xmx12030m -jar /usr/bin/VarScan.v2.4.3.jar mpileup2cns --min-coverage 10 --min-reads2 5 --min_avg_qual 15 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.05 --strand-filter 0 --output-vcf 1 --variants`
+",aledj2,https://github.com/dkoboldt/varscan/issues/42
+MDU6SXNzdWU0Mjk3MTQzNTc=,Ambiguous allele (UIPAC) not properly handled according to VCF specs 4.3,OPEN,2019-04-05T11:43:31Z,2022-02-25T18:57:05Z,,"The Human Decoy Sequences ([hs37d5](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz)) prepared according to [README]
+contains ambiguous IUPAC references.
+In particular it has some S (C or G).
+ 
+The VCF 4.3 [specs](https://samtools.github.io/hts-specs/VCFv4.3.pdf) prescribe that a caller outputs the first base, but not the IUPAC ambiguous base:
+
+> REF - reference base(s): Each base must be one of A,C,G,T,N (case insensitive).
+> [...]
+> If the reference sequence contains IUPAC ambiguity codes not allowed by this specification (such as R = A/G), the ambiguous reference base must be reduced to a concrete base by using the one that is first alphabetically (thus R as a reference base is converted to A in VCF.)
+
+For example, I should *not* be seeing a call such as:
+```
+hs37d5  33184489        .       S       C       .       PASS    DP=33;SS=1;SSC=0;GPV=1.3852e-19;SPV=1   GT:GQ:DP:RD:AD:FREQ:DP4 1/1:.:10:0:10:100%:0,0,9,1 1/1:.:23:0:23:100%:0,0,23,0
+```
+Here the S should have been interpreted as C. Therefore there should have been no call.
+
+This bug causes false positives and, more importantly, causes downstream tools to fail, such as **igvtools**",huguesfontenelle,https://github.com/dkoboldt/varscan/issues/43
+MDU6SXNzdWU0NDUzNjU0MzA=,Mergesegments.pl output question,OPEN,2019-05-17T10:05:22Z,2019-05-17T10:05:22Z,,"Good afternoon.
+
+First of all, thanks for the software provided. 
+
+I have what must be a really dumb question about the output of the _mergesegments.pl_ script, but I have not been able to find it here or in the Biostars corresponding topics.
+
+What is the exact meaning of the seg_mean column (col. 4)? Is it an average of the CN of an specific region when comparing the tumor and the normal sample?
+
+Thanks in advance for the confirmation!",JuanmaMedina,https://github.com/dkoboldt/varscan/issues/44
+MDU6SXNzdWU0NzY0NjM5OTQ=,pileup2snp output,OPEN,2019-08-03T15:50:59Z,2019-08-03T15:50:59Z,,"I have a question regarding the output of the tool varscan pileup2snp. The input is the pileup file generated by samtools mpileup without reference. One particular line from the input is
+
+`1   16259813    N   80  G$g$aaGAGAaggaAGGaaGaGAgaAGaAgAAGGaAAAAAGAAaaGAaGgGgAGaGAGAgGggGAAAAgAAGgggAGGGAA^]G    BBCDigfDIHEHDgBJGDHDlkHcBJEJ]J/H?JiJmJIjJJFkJG^F?<JlFIJmJDJACJIEeJCJEJCDCHHHH>F@
+`
+So there are 80 reads covering this position, there is an N, since we don't have a reference. As I understand it, there are basically two nucleotides (G and A) found in this position. In the output there are these corresponding two lines
+
+`Chrom   Position    ... VarAllele`
+`1       16259813    ...      A`
+`1       16259813    ...      A`
+
+This is confusing to me, since I expect a G instead of the second A. Can anybody help me understand this issue? Thx.
+
+The output file was generated by
+`varscan pileup2snp pileup.tsv --min-coverage 10 --min-base-qual 30 --output-vcf 1 > output.txt
+`",Eugene79,https://github.com/dkoboldt/varscan/issues/45
+MDU6SXNzdWU0ODI5NjI5NDM=,"varscan report wrong DP related values, almost 50% off",OPEN,2019-08-20T16:29:28Z,2020-05-21T00:09:54Z,,"Hi,
+
+I just found a wired issue with varscan and it happened to both 2.4.4 and 2.4.3. Basically the varscan vcf files have wrong DP related values, about 50% off the values reported by IGV or Mutect2 vcf files.
+
+Here is the varscan 2.4.4 vcf for EGFR L858R:
+
+chr7	55259515	.	T	G	.	VarBaseQual	ADP=1191;WT=0;HET=1;HOM=0;NC=0;ANN=G|missense_variant|MODERATE|EGFR|EGFR|transcript|NM_005228.3|protein_coding|21/28|c.2573T>G|p.L858R|2819/5600|2573/3633|858/1210||,G|sequence_feature|LOW|EGFR|EGFR|helix:combinatorial_evidence_used_in_manual_assertion|NM_005228.3|protein_coding|21/28|c.2573T>G||||||,G|upstream_gene_variant|MODIFIER|EGFR-AS1|EGFR-AS1|transcript|NR_047551.1|pseudogene||n.-2873A>C|||||2873|	GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR	0/1:27:1191:**1191**:**1179**:**12**:1.01%:1.6693E-3:53:54:**1013**:**166**:**11**:**1**
+
+Here is gatk Mutect2 vcf for the same variant:
+
+chr7	55259515	.	T	G	.	PASS	AC=1;AF=0.500;AN=2;CONTQ=93;ClippingRankSum=0.125;DP=2318;ECNT=2;FS=0.000;GERMQ=93;LikelihoodRankSum=-1.190;MBQ=20,20;MFRL=172,176;MMQ=60,60;MPOS=37;MQ=60.00;MQRankSum=0.000;POPAF=7.30;ROQ=77;ReadPosRankSum=0.086;SEQQ=28;SOR=0.615;STRANDQ=31;TLOD=6.62;UNIQ_ALT_READ_COUNT=26;ANN=G|missense_variant|MODERATE|EGFR|EGFR|transcript|NM_005228.3|protein_coding|21/28|c.2573T>G|p.L858R|2819/5600|2573/3633|858/1210||,G|sequence_feature|LOW|EGFR|EGFR|helix:combinatorial_evidence_used_in_manual_assertion|NM_005228.3|protein_coding|21/28|c.2573T>G||||||,G|upstream_gene_variant|MODIFIER|EGFR-AS1|EGFR-AS1|transcript|NR_047551.1|pseudogene||n.-2873A>C|||||2873|	GT:AD:AF:DP:F1R2:F2R1:SB	0/1:**2146**,**26**:9.246e-03:2172:**1016**,**11**:**1122**,**14**:1029,1117,13,13
+
+When I look at the bam file in IGV, the DP numbers from IGV are almost identical to the values from Mutect2 vcf.
+
+Any explanation?
+
+Thanks,
+
+Ying
+
+",yingchen69,https://github.com/dkoboldt/varscan/issues/46
+MDU6SXNzdWU1MDAwNzQ4Mzk=,Commas in the vcf-files_FILTER field,OPEN,2019-09-30T06:22:27Z,2019-09-30T06:56:08Z,,"Hi!
+This issue concerns the resulting vcf-file of fp-filter.
+Could you, please, **replace commas in the FILTER field (column) with ';'** . The programs combining vcf-files (for example, CombineVariants(GATK)) don't process filter records separated by commas.
+
+
+Thank you.
+Best wishes,
+Liliya",golubnikova,https://github.com/dkoboldt/varscan/issues/47
+MDU6SXNzdWU1MDA4NjIzNzI=,Missing filters in VarScan fpfilter output VCF header,OPEN,2019-10-01T12:27:46Z,2022-02-03T18:58:00Z,,"Hello, there are VCF header lines from FpFilter.java file from VarScan.v2.4.4.source.jar - looks like this is fpfilter source.
+```
+String vcfHeaderInfo = """";
+vcfHeaderInfo = ""##FILTER=<ID=VarCount,Description=\""Fewer than "" + minVarCount + "" variant-supporting reads\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarFreq,Description=\""Variant allele frequency below "" + minVarFreq + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarReadPos,Description=\""Relative average read position < "" + minVarReadPos + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarDist3,Description=\""Average distance to effective 3' end < "" + minVarDist3 + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarMMQS,Description=\""Average mismatch quality sum for variant reads > "" + maxVarMMQS + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarMapQual,Description=\""Average mapping quality of variant reads < "" + minVarMapQual + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=VarBaseQual,Description=\""Average base quality of variant reads < "" + minVarBaseQual + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=Strand,Description=\""Strand representation of variant reads < "" + minStrandedness + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=RefMapQual,Description=\""Average mapping quality of reference reads < "" + minRefMapQual + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=RefBaseQual,Description=\""Average base quality of reference reads < "" + minRefBaseQual + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=MMQSdiff,Description=\""Mismatch quality sum difference (ref - var) > "" + maxMMQSdiff + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=MapQualDiff,Description=\""Mapping quality difference (ref - var) > "" + maxMapQualDiff + ""\"">"";
+vcfHeaderInfo += ""\n##FILTER=<ID=ReadLenDiff,Description=\""Average supporting read length difference (ref - var) > "" + maxReadLenDiff + ""\"">"";
+```
+But there are actual filtering lines:
+```
+failReason += ""RefReadPos"";
+failReason += ""RefDist3"";
+failReason += ""RefMapQual"";
+failReason += ""RefMMQS"";
+failReason += ""RefAvgRL"";
+failReason += ""SomaticP"";
+failReason += ""VarCount"";
+failReason += ""VarFreq"";
+failReason += ""VarReadPos"";
+failReason += ""VarDist3"";
+failReason += ""VarMMQS"";
+failReason += ""VarMapQual"";
+failReason += ""RefBaseQual"";
+failReason += ""VarBaseQual"";
+failReason += ""VarAvgRL"";
+failReason += ""Strand"";
+failReason += ""MaxBAQdiff"";
+failReason += ""MMQSdiff"";
+failReason += ""MinMMQSdiff"";
+failReason += ""MapQualDiff"";
+failReason += ""ReadLenDiff"";
+failReason = ""NoReadCounts"";
+```
+Looks like `RefReadPos`, `RefDist3`, `RefMMQS`, `RefAvgRL`, `SomaticP`, `VarAvgRL`, `MaxBAQdiff`, `MinMMQSdiff` and `NoReadCounts` are missing from header. Some VCF-processing programs want all filter to be listed in VCF-header.
+And using commas as separators as described [here](https://github.com/dkoboldt/varscan/issues/47) is a problem too - better to change them to semicolon.",Stikus,https://github.com/dkoboldt/varscan/issues/48
+MDU6SXNzdWU1MDgyODk5NDk=,Varscan mpileup2cns error: `Input file(s) were not ready for parsing after 100 5-second cycles`. ,OPEN,2019-10-17T07:31:22Z,2019-10-17T07:31:22Z,,"In case anyone has the same issue `Input file(s) were not ready for parsing after 100 5-second cycles`. 
+It could be because of a void mpileup. See [Biostars question](https://www.biostars.org/p/7912/) and the answer of Pierre Lindenbaum. 
+
+For me, mpileup output was void because it considered my reads were abnormal (option -A corrected that)
+
+Could be good to check if the mpileup is void!",besnarda,https://github.com/dkoboldt/varscan/issues/49
+MDU6SXNzdWU1MTAzOTgwNDg=,0 had sufficient coverage for comparison,OPEN,2019-10-22T02:40:44Z,2023-08-31T13:43:44Z,,"I ran VarScan2 on my paired pileup files, and I do not think there are problems with the input files (please see attached a part of the input files), but I really do not understand why it gave me output like: **0 had sufficient coverage for comparison**
+
+
+java -jar ~/Downloads/varscan-master/VarScan.v2.4.4.jar somatic ~/normal.pileup ~/tumor.pileup --output-snp ~/snp.vcf --output-indel ~/indel.vcf --min-coverage-tumor 8 --output-vcf 1 --min-var-freq 0.075 --strand-filter 1
+
+65821 positions in tumor
+65821 positions shared in normal
+**0 had sufficient coverage for comparison**
+0 were called Reference
+0 were mixed SNP-indel calls and filtered
+0 were removed by the strand filter
+0 were called Germline
+0 were called LOH
+0 were called Somatic
+0 were called Unknown
+0 were called Variant
+
+[normal.pileup.txt](https://github.com/dkoboldt/varscan/files/3753640/normal.pileup.txt)
+[tumor.pileup.txt](https://github.com/dkoboldt/varscan/files/3753641/tumor.pileup.txt)
+
+I tried other versions of VarScan2 and get the same result. Can you please help me check what caused the problem? Thanks very much for your time!",jingmeng-bioinformatics,https://github.com/dkoboldt/varscan/issues/50
+MDU6SXNzdWU1NTU0OTQ2MzY=,"filtering error - ""Too many parsing exceptions encountered""",OPEN,2020-01-27T10:50:28Z,2022-06-01T12:04:12Z,,"I'm trying to filter a snp file using the command
+
+```
+ java -jar ~/VarScan.v2.3.9.jar filter  VariantsCalling/1.varScan.snp –-indel-file VariantsCalling/1.varScan.indel –-output-file VariantsCalling/1.varScan.filtered.snp
+```
+
+But I encounter the error
+
+```
+Min coverage:   10
+Min reads2:     2
+Min strands2:   1
+Min var freq:   0.2
+Min avg qual:   15
+P-value thresh: 0.1
+Reading input from VariantsCalling/1.varScan.snp
+Chrom   Position        Ref     Var     Cons:Cov:Reads1:Reads2:Freq:P-value     StrandFilter:R1+:R1-:R2+:R2-:pval       SamplesRef      SamplesHet      SamplesHom      SamplesNC       Cons:Cov:Reads1:Reads2:Freq:P-value
+Parsing Exception on line:
+chr10   12258038        C       T       T:49:0:49:100%:3.925E-29        Pass:0:0:17:32:1E0      0       0       1       0       T:49:0:49:100%:3.925E-29
+For input string: ""T:49:0:49:100%:3.925E-29""
+Parsing Exception on line:
+chr10   24381890        T       G       G:10:0:10:100%:5.4125E-6        Pass:0:0:0:10:1E0       0       0       1       0       G:10:0:10:100%:5.4125E-6
+For input string: ""G:10:0:10:100%:5.4125E-6""
+Parsing Exception on line:
+chr10   26931820        C       G       G:48:0:48:100%:1.554E-28        Pass:0:0:38:10:1E0      0       0       1       0       G:48:0:48:100%:1.554E-28
+For input string: ""G:48:0:48:100%:1.554E-28""
+Parsing Exception on line:
+chr10   42135550        G       T       T:11:0:11:100%:1.4176E-6        Pass:0:0:2:9:1E0        0       0       1       0       T:11:0:11:100%:1.4176E-6
+For input string: ""T:11:0:11:100%:1.4176E-6""
+Parsing Exception on line:
+chr10   55848987        C       G       S:56:43:13:23.21%:5.5625E-5     Pass:0.0:39:4:0:13:1.2593E-9    0       1       0       0       S:56:43:13:23.21%:5.5625E-5
+For input string: ""S:56:43:13:23.21%:5.5625E-5""
+Too many parsing exceptions encountered; exiting
+```
+
+any ideas, what I'm doing wrong?
+
+thanks
+",yeroslaviz,https://github.com/dkoboldt/varscan/issues/51
+MDU6SXNzdWU2MTQ5MDkwNjA=,"2.4.4 ""release"" is actually source",OPEN,2020-05-08T18:31:49Z,2022-07-08T04:02:42Z,,"If you check it against the the 2.4.4 source, the only difference is the internal file name.",flowers9,https://github.com/dkoboldt/varscan/issues/52
+MDU6SXNzdWU2MjI2Njc5NDE=,Strand filter applied when outputting to tabular format but not VCF,OPEN,2020-05-21T17:45:29Z,2020-05-21T17:45:29Z,,"The [2.4.0 release notes](https://github.com/dkoboldt/varscan/blob/master/VarScan.v2.4.0.description.txt) state:
+>2.) Improved parameter-handling logic for two flags (--validation and --strand-filter), which previously were
+sometimes considered ""turned on"" if the user provided them, even if the value provided was a zero.
+
+This means that even though the default is to have the strand filter turned off (`--strand-filter 0`), it may get applied in prior versions, with variants ""strand filtered"" erroneously.  This was ""fixed"" in `2.4.0`.  Nonetheless, we found that this ""fix"" gets rolled back in `2.4.1` and `2.4.2`, and then re-applied in `2.4.3`.  Likely this fix got rolled back along with the changes with ""the way `normal_reads2` are counted"".  From the [2.4.0 release notes ](https://github.com/dkoboldt/varscan/blob/master/VarScan.v2.4.0.description.txt):
+> 1.) A correction in the way normal_reads2 values are counted when the mutation allele is not observed. Prior
+to this fix, a non-reference base would be counted as a variant allele even if it didn't match the actual mutation
+allele called in the tumor. Now, only observations of the tumor variant allele will be counted and go into the FET.
+
+Nonetheless, we found a variant that is strand-filtered when outputting to the tabular Varscan2 format, but not when to VCF (using `--output-vcf`).  Strand-filtering is turned off (the default).  I examined this across versions of Vascan2, and it's consistent, and is not related to the strand filter fix in 2.4.0.
+
+```
+VarScan.v2.3.7.out_tab.log:1 were removed by the strand filter
+VarScan.v2.3.7.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.3.8.out_tab.log:1 were removed by the strand filter
+VarScan.v2.3.8.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.3.9.out_tab.log:1 were removed by the strand filter
+VarScan.v2.3.9.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.4.0.out_tab.log:1 were removed by the strand filter
+VarScan.v2.4.0.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.4.1.out_tab.log:1 were removed by the strand filter
+VarScan.v2.4.1.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.4.2.out_tab.log:1 were removed by the strand filter
+VarScan.v2.4.2.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.4.3.out_tab.log:1 were removed by the strand filter
+VarScan.v2.4.3.out_vcf.log:0 were removed by the strand filter
+VarScan.v2.4.4.out_tab.log:1 were removed by the strand filter
+VarScan.v2.4.4.out_vcf.log:0 were removed by the strand filter
+```",nh13,https://github.com/dkoboldt/varscan/issues/53
+MDU6SXNzdWU2NjI4MDIyNDc=,Malformed VCF output,OPEN,2020-07-21T09:32:39Z,2020-07-21T10:14:43Z,,"I am running Varscan 2.4.4 (mpileup2cns) using pile-ups computed with samtools 1.9. It is RNA-seq data that has been processed following the GATK4 best-practices for calling variants on RNA-seq datasets. The execution completes fine but VCF output is malformed as it contains IUPAC codes in the REF column. The reference genome contains IUPAC codes but none of the reads do, would it be possible to not report variants called on these? ",jfnavarro,https://github.com/dkoboldt/varscan/issues/54
+MDU6SXNzdWU3MDYzNjMwNjk=,NumberFormatException in varscan somatic,OPEN,2020-09-22T13:00:22Z,2021-12-30T02:50:37Z,,"Hello,
+
+I am using Varscan somatic 2.4.4 to call variants with this command and got an error.
+
+This is the command:
+`varscan somatic /path/to/mpileup /path/to/output --mpileup 1 --output-vcf --tumor-purity 1`
+
+This is the error message
+
+```
+[mpileup] 2 samples in 2 input files
+Input Parameter Threw Exception: For input string: ""true""
+java.lang.NumberFormatException: For input string: ""true""
+at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:2043)
+at sun.misc.FloatingDecimal.parseDouble(FloatingDecimal.java:110)
+at java.lang.Double.parseDouble(Double.java:538)
+at net.sf.varscan.Somatic.<init>(Somatic.java:171)
+at net.sf.varscan.VarScan.somatic(VarScan.java:277)
+at net.sf.varscan.VarScan.main(VarScan.java:199)
+Window size: 10
+Window SNPs: 3
+Indel margin: 3
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+Input stream not ready, waiting for 5 seconds...
+ERROR: Gave up waiting after 500 seconds...
+```
+
+",Jasondai9,https://github.com/dkoboldt/varscan/issues/55
+MDU6SXNzdWU3MDg2MTAwNTY=,mpileup2snp do not detect all snps,OPEN,2020-09-25T03:22:02Z,2020-09-25T03:22:02Z,,"I have two samples names TL & TU. The coverage of bam looked like this.
+![Screen Shot 2020-09-25 at 11 01 01 AM](https://user-images.githubusercontent.com/5105121/94222110-17684580-ff1f-11ea-8b9b-c52bfc48c077.png)
+After running mpileup2snp using this command: samtools mpileup -B -f ~/source/bySpecies/danRer7/danRer7.fa TL_sorted.bam | java -jar ~/software/VarScan.v2.4.2.jar mpileup2snp - --min-freq-for-hom 1.0 > TL_varscan_output.txt
+The output have few snps in this regions.
+TL:
+![Screen Shot 2020-09-25 at 11 01 18 AM](https://user-images.githubusercontent.com/5105121/94222912-3b2c8b00-ff21-11ea-90ff-52a5704b55cc.png)
+TU:
+![Screen Shot 2020-09-25 at 11 01 30 AM](https://user-images.githubusercontent.com/5105121/94222919-3ec01200-ff21-11ea-95b4-28207ac278dd.png)
+
+
+",wwang-chcn,https://github.com/dkoboldt/varscan/issues/56
+MDU6SXNzdWU3NTA3MjE1NTA=,Not filtering reverse strand's strand bias,OPEN,2020-11-25T11:06:06Z,2020-11-25T11:06:06Z,,"Hello,
+
+I don't know if someone else have seen this problem, but when reviewing my variant calling results, I saw that when strand bias was occurring in the reverse strand, this was not being considered as strand bias. The command I was running was:
+
+`varscan mpileup2cns sample.mpileup --min-coverage 10 --min-reads2 5 --min-avg-qual 20 --min-var-freq 0.25 --p-value 0.99 --output-vcf 1 --vcf-sample-list sample_name.list --variants --strand-filter 1 2> sample.varscan2.log | bgzip -c > sample.vcf.gz`
+
+And the resulting .vcf.gz file contains a lot of lines like:
+
+`EU044832.1      377     .       T       G       .       PASS    ADP=146;WT=0;HET=0;HOM=1;NC=0   GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:146:146:0:146:100%:9.8E-1:0:65:0:0:119:27`
+`EU044832.1      1094    .       C       T       .       PASS    ADP=16;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:16:16:0:16:100%:9.8E-1:0:41:0:0:12:4`
+`EU044832.1      1130    .       C       T       .       PASS    ADP=13;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:13:13:0:13:100%:9.8E-1:0:35:0:0:8:5`
+`EU044832.1      1223    .       A       G       .       PASS    ADP=11;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:11:11:0:11:100%:9.8E-1:0:38:0:0:0:11`
+`EU044832.1      1232    .       T       C       .       PASS    ADP=11;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:11:11:0:11:100%:9.8E-1:0:38:0:0:0:11`
+`EU044832.1      1256    .       T       C       .       PASS    ADP=11;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:11:11:0:11:100%:9.8E-1:0:34:0:0:0:11`
+`EU044832.1      2582    .       A       G       .       PASS    ADP=40;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:40:40:0:40:100%:9.8E-1:0:38:0:0:0:40`
+`EU044832.1      2594    .       C       T       .       PASS    ADP=40;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:40:40:0:40:100%:9.8E-1:0:37:0:0:0:40`
+`EU044832.1      2597    .       C       T       .       PASS    ADP=40;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:40:40:0:40:100%:9.8E-1:0:36:0:0:0:40`
+`EU044832.1      2609    .       G       A       .       PASS    ADP=40;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:40:40:0:40:100%:9.8E-1:0:38:0:0:0:40`
+`EU044832.1      2657    .       C       T       .       PASS    ADP=40;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:40:40:0:40:100%:9.8E-1:0:34:0:0:0:40`
+`EU044832.1      2897    .       A       G       .       PASS    ADP=24;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:24:24:0:24:100%:9.8E-1:0:38:0:0:0:24`
+`EU044832.1      2915    .       A       C       .       PASS    ADP=24;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:24:24:0:24:100%:9.8E-1:0:38:0:0:0:24`
+`EU044832.1      2930    .       A       C       .       PASS    ADP=24;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:0:24:24:0:24:100%:9.8E-1:0:38:0:0:0:24`
+
+You can see that there are a lot of variants only called in the reverse strand.
+
+So we (me and @saramonzon) looked into the code (VarScan.v2.4.4.source.jar) and we saw that in the `CallMpileup.java` in the line 685 you have:
+
+`if(strandFilter && variantFlag && (allReads1plus > 0 || allReads1minus > 0 || allReads2plus > 0 || allReads2plus > 0))`
+
+I suppose that the line, in order to filter reverse strand's strand bias, should be:
+
+`if(strandFilter && variantFlag && (allReads1plus > 0 || allReads1minus > 0 || allReads2plus > 0 || allReads2minus > 0))`
+
+Also, we have tested this change to see it that could correct the error and we saw that for the FisherTest, when calculating the expected value for plus and minus (line 475):
+
+`int expReads1 = (reads1 + reads2) / 2;`
+
+When reads2 is odd, the decimal that is lost generates a diffrence in the expected reads for reads1 and reads2, which in the test reaches a significant value. We've seen that this could be fixed increasing the parameter strandPvalueThreshold to 0.05. We would like to know if it would be possible to set this parameter to be modified in the command line when running varscan mpileup2cns.
+
+Please, let me know if i'm wrong or if you don't understand something. Thank you very much in advance.",svarona,https://github.com/dkoboldt/varscan/issues/57
+MDU6SXNzdWU3ODQ4MDM5ODk=,how to pipe the denovo trio calling?,CLOSED,2021-01-13T05:36:28Z,2021-01-13T06:31:59Z,2021-01-13T06:31:59Z,"Running trios pipeline
+```
+#Create a three-sample mpileup
+samtools mpileup -B -q 1 \
+-f ref.fasta \
+dad.bam mom.bam child.bam >trio.mpileup
+
+#Run VarScan trio
+varscan trio trio.mpileup trio.mpileup.output \
+      --min-coverage 10 --min-var-freq 0.20 --p-value 0.05 \ 
+      -adj-var-freq 0.05 -adj-p-value 0.15
+```
+
+Is it fine to pipe the command as follows:
+`samtools mpileup -B -q 1 -f ref.fasta dad.bam mom.bam child.bam | varscan trio trio.mpileup.output --min-coverage 10 --min-var-freq 0.20 --p-value 0.05 -adj-var-freq 0.05 -adj-p-value 0.15`
+",snijesh,https://github.com/dkoboldt/varscan/issues/58
+MDU6SXNzdWU3ODQ4MDQzODk=,How to pipe deovo trio with samtool mpileup?,OPEN,2021-01-13T05:37:28Z,2021-02-08T07:58:21Z,,"Running trios pipeline
+```
+#Create a three-sample mpileup
+samtools mpileup -B -q 1 \
+-f ref.fasta \
+dad.bam mom.bam child.bam >trio.mpileup
+
+#Run VarScan trio
+varscan trio trio.mpileup trio.mpileup.output \
+      --min-coverage 10 --min-var-freq 0.20 --p-value 0.05 \ 
+      -adj-var-freq 0.05 -adj-p-value 0.15
+```
+
+Is it fine to pipe the command as follows:
+`samtools mpileup -B -q 1 -f ref.fasta dad.bam mom.bam child.bam | varscan trio - trio.mpileup.output --min-coverage 10 --min-var-freq 0.20 --p-value 0.05 -adj-var-freq 0.05 -adj-p-value 0.15`
+",snijesh,https://github.com/dkoboldt/varscan/issues/59
+MDU6SXNzdWU3OTYzNDI5Mjg=,"error download jar, corrupt or incomplete",CLOSED,2021-01-28T20:32:55Z,2021-01-29T10:47:13Z,2021-01-29T10:47:13Z,"I am downloading the jar file and trying to run it and getting the below. I also tried 2.4.4 as well with the same result. I tried on centos 7 and 8. Thank you :).
+
+
+    wget https://github.com/dkoboldt/varscan/blob/master/VarScan.v2.4.3.jar.... download is 86932 in size
+
+    java -jar VarScan.v2.4.3.jar
+    Error: Invalid or corrupt jarfile VarScan.v2.4.3.jar
+
+    java cp VarScan.v2.4.3.jar
+    Error: Could not find or load main class cp
+
+A previous download from last year of that same jar is 115272 in size.
+
+",cmccabe0728,https://github.com/dkoboldt/varscan/issues/60
+MDU6SXNzdWU4Mzc1NzIxOTg=,Reads supporting a variant,OPEN,2021-03-22T10:26:06Z,2021-03-22T10:26:06Z,,"Hi,
+
+Can VarScan report the specific read IDs that support each variant in addition to just the number of reads?
+
+If not, is that a feature that could be implemented?
+
+Many thanks,",biounix,https://github.com/dkoboldt/varscan/issues/61
+I_kwDOAnJXF85CfpWK,log4j,OPEN,2022-01-26T23:12:14Z,2022-01-26T23:12:14Z,,"Does VarScan2 have the log4j vulnerability? If so, is there a plan to update with a fix?",myourshaw,https://github.com/dkoboldt/varscan/issues/62
+I_kwDOAnJXF85D7Jj1,two mutations on  one pos   can't  call out,OPEN,2022-02-16T06:02:21Z,2022-02-16T06:05:00Z,,"https://www.biostars.org/p/9507347/
+is it possible to call all situatons ？",user-tq,https://github.com/dkoboldt/varscan/issues/63
+I_kwDOAnJXF85a4xBC,filter for pielup2cns not working,OPEN,2023-01-09T02:25:36Z,2023-01-12T03:00:48Z,,,zoeward-nz,https://github.com/dkoboldt/varscan/issues/64
+I_kwDOAnJXF85ox06C,Why genotype and depth representations are inconsistent,OPEN,2023-06-15T01:50:15Z,2023-06-15T01:50:15Z,,"![image](https://github.com/dkoboldt/varscan/assets/25705121/b5e78020-49b7-4307-b804-c3369cee5325)
+
+
+form the picture，According to the depth，the normal seem GT is 0/0 ，but file is 1/1，why？ ",fjptwenger,https://github.com/dkoboldt/varscan/issues/65
+I_kwDOAnJXF85-FVj-,varscan2 output can't be fed to snpEff. ID column missing?,OPEN,2024-02-02T16:46:11Z,2024-02-02T16:51:37Z,,"anyone has encountered [this error](https://github.com/pcingola/SnpEff/issues/267#issuecomment-736928876) while running snpEff using a somatic varscan output?
+
+apparently, there is column missing in the output of varscan.
+
+thank you for any hint on how to solve.
+
+EDIT, in case it is needed, here the code:
+
+```
+java -Xmx8g -jar /home/user/genomics/snpEff/snpEff.jar \
+        -c /home/user/genomics/snpEff/snpEff.config \
+        -v database \
+        /home/user/data-02/comparison_results/varscan_results/somatic/varscan_output.txt.indel \
+        > my_annotations
+```
+`-v database` is a database that is precompiled. nothing exotic there.",gabrielet,https://github.com/dkoboldt/varscan/issues/66
+I_kwDOAnJXF85_okbp,how to filter using vcf from multiple samples generated by mpileup2somatic,OPEN,2024-02-19T01:59:02Z,2024-02-19T01:59:02Z,,"We conduct mpileup2somatic call variants from 17 sample(the first one is normal sample, the others are somatic samples)
+Now, we want to filter the vcf using varscan , but seems the vcf file of multiple samples could not been uesd as input file directly?",weiydcn,https://github.com/dkoboldt/varscan/issues/67

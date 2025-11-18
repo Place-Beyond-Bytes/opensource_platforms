@@ -1,0 +1,1933 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3OTE0NTc0ODk=,Sequence download,CLOSED,2021-01-21T20:08:44Z,2021-03-09T14:00:44Z,2021-03-09T14:00:44Z,"I've read a bit through the nextstrain docs and found the following statement (see [here](https://docs.nextstrain.org/en/latest/guides/share/download-data.html):
+> We make it possible to download the derived data behind the visualisations on nextstrain.org for your own further analysis. We’ve made the decision not to make the sequence data downloadable as a lot of the original data sources have data sharing restrictions which this would violate. The genbank & GISAID accessions, if applicable, are contained in the metadata download should you wish to access the original sequence data.
+
+In other words, seems like only genbank and GISAID are sources for sequences, and this will definitely be a subset. In case GISAID should provide additional ones to genbank, one has to apply for access [here](https://www.gisaid.org/registration/register/).
+
+Finally, I went through the nextstrain visualizations, and actually the names like `Spain/M-20224207/2020` seem to be the official ones. Hence, the FASTA headers that we get from genbank should be fine, as they contain these names as well.",johanneskoester,https://github.com/IKIM-Essen/uncovar/issues/2
+MDU6SXNzdWU3OTE0NTkyMjM=,Comparison with top sequence hit at variant resolution,CLOSED,2021-01-21T20:11:40Z,2022-01-21T16:21:36Z,2022-01-21T16:21:36Z,"Once you have added the sourmash based selection of the closest accession/sequence, I plan to do the following:
+
+1. map the sequence against the Wuhan reference with the minimap2 assembly-mapping mode.
+2. Infer a VCF from the minimap2 output via paftools.
+3. Create one of the variant reports I've shown you with the sample variants AND the variants of the closest sequence, thereby visualizing individual differences in the matrix.",johanneskoester,https://github.com/IKIM-Essen/uncovar/issues/3
+MDU6SXNzdWU3OTE5OTQ4MzU=,Move additional js into separate file ,CLOSED,2021-01-22T13:13:07Z,2021-01-27T13:47:27Z,2021-01-27T13:47:27Z,"In order to stop the need of manually updating the javascript file of the variant report with every update of rust-bio-tools (like [here](https://github.com/koesterlab/snakemake-workflow-sars-cov2/pull/6)), the additional script in [custom-table-report.js](https://github.com/koesterlab/snakemake-workflow-sars-cov2/blob/ab69904d17513cceb2d3ec31d2db63e95cf4f658/resources/custom-table-report.js) should be moved to a separate file that can be passed on to the report with `-l`.",fxwiegand,https://github.com/IKIM-Essen/uncovar/issues/5
+MDU6SXNzdWU4MDgzMDkwOTI=,Quast can't process empty raGOO outputs,CLOSED,2021-02-15T08:25:31Z,2021-02-22T13:10:17Z,2021-02-22T13:10:17Z,"Problem: Currently, we filter out the Chr0 contigs from the raGOO output. The Chr0 contig may be the only contig raGOO can produce. Thus the quast_after rule gets an empty FASTA/bam file. Quast cannot handle this (see below).
+
+Log:
+/local/data/snakemake-workflow-sars-cov2/.snakemake/conda/0ecedea3/bin/quast.py --threads 1 -o results/quast-after/E-21-21207 -r resources/genomes/main.fasta --bam results/ordered-contigs/E-21-21207.bam results/ordered-contigs/E-21-21207.fasta
+
+Version: 5.0.2
+
+System information:
+  OS: Linux-5.4.0-65-generic-x86_64-with-debian-bullseye-sid (linux_64)
+  Python version: 3.7.9
+  CPUs number: 64
+
+Started: 2021-02-15 07:50:02
+
+Logging to /local/data/snakemake-workflow-sars-cov2/results/quast-after/E-21-21207/quast.log
+NOTICE: Output directory already exists and looks like a QUAST output dir. Existing results can be reused (e.g. previously generated alignments)!
+
+CWD: /local/data/snakemake-workflow-sars-cov2
+Main parameters: 
+  MODE: default, threads: 1, minimum contig length: 500, minimum alignment length: 65, \
+  ambiguity: one, threshold for extensive misassembly size: 1000
+
+Reference:
+  /local/data/snakemake-workflow-sars-cov2/resources/genomes/main.fasta ==> main
+
+Contigs:
+  Pre-processing...
+WARNING: Skipping E_21_21207 because it doesn't contain contigs >= 500 bp.
+
+
+2021-02-15 07:50:03
+Running Reads analyzer...
+WARNING: Previous try of BWA compilation was unsuccessful! For forced retrying, please remove /local/data/snakemake-workflow-sars-cov2/.snakemake/conda/0ecedea3/lib/python3.7/site-packages/quast_libs/bwa/make.failed and restart QUAST. 
+Failed reads analysis
+
+ERROR! None of the assembly files contains correct contigs. Please, provide different files or decrease --min-contig threshold.
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/38
+MDU6SXNzdWU4MDgzMTMzMjM=,Jupyter permission error,OPEN,2021-02-15T08:30:15Z,2021-12-02T07:15:35Z,,"Person 1 has initiated the first run of the workflow. The Nbconvert (Jupyter Notebook) template has S permissions for/from it. Others who start the workflow cannot use this template, and the error below occurs.
+
+Permission of .snakemake/conda/04ed4593/share/jupyter/nbconvert/templates/html:
+drwx--S--- 2 alex covidseq 4.0K Feb 9 22:56 html
+
+Error:
+PermissionError: [Errno 13] Permission denied: '/.snakemake/conda/04ed4593/share/jupyter/nbconvert/templates/html/conf.json'
+
+Possible solution: Usage of scripts instead of notebooks.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/39
+MDU6SXNzdWU4MDgzMjYyNTY=,Include RKI quality criteria,CLOSED,2021-02-15T08:45:39Z,2021-12-02T18:42:06Z,2021-12-02T18:42:06Z,"- Quality criteria raw data
+  - Illumina
+    - [x] Length of acceptable reads ≥ 30bp
+    - [x] Average quality of acceptable reads (PHRED) ≥ 20
+  - ONT
+    - [x] Length of acceptable read ≥ 200 bp (currently no applicable)
+    - [x] Average quality of acceptable reads (PHRED) ≥ 10 (currently no applicable)
+- Quality criteria reconstructed genome sequences
+  - [x] Identity to NC_045512.2: ≥ 90%.
+  - [x] Proportion N in the reconstructed genome: ≤ 5%
+  - [x] Minimum local sequencing depth without filtering PCR duplicates: 20
+  - [x] Minimum local sequencing depth after filtering of PCR duplicates: 10 (currently no applicable)
+  - [x] Informative allele frequency: ≥ 90%
+  - [ ] Frameshift mutations: special safeguard
+
+
+We must ensure that the quality of the raw data and the reconstructed genome sequences meet the requirements of the RKI. 
+
+These can be found here: https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/DESH/Qualitaetskriterien.pdf?__blob=publicationFile
+
+or here:
+[Qualitaetskriterien.pdf](https://github.com/koesterlab/snakemake-workflow-sars-cov2/files/5980401/Qualitaetskriterien.pdf)
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/40
+MDU6SXNzdWU4MDgzNTc3MjI=,Data input handling and archive,CLOSED,2021-02-15T09:26:01Z,2021-02-17T06:34:54Z,2021-02-17T06:34:54Z,implement pre- and post-processing for correct input und output ordering,alethomas,https://github.com/IKIM-Essen/uncovar/issues/41
+MDU6SXNzdWU4MDgzNTkyMjg=,Rethink parallelization and core/thread usage,OPEN,2021-02-15T09:28:02Z,2021-12-02T07:16:10Z,,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/42
+MDU6SXNzdWU4MDg3MzQ5NTk=,Sample sheet handling,CLOSED,2021-02-15T18:11:38Z,2021-11-05T09:07:28Z,2021-11-05T09:07:28Z,"- [x] Sample sheet should grow organically with each run
+- [x] Extend sheet with column run id (date of the run)
+- [x] Integrate run id in workflow
+- [ ] Secure sample sheet with version control in git (think about how we want to realize this)
+
+See [snakedeploy.readthedocs.io](snakedeploy.readthedocs.io) and https://github.com/snakemake/snakedeploy/pull/8",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/45
+MDU6SXNzdWU4MDg3MzgzNDQ=,Update MultiQC input,CLOSED,2021-02-15T18:18:06Z,2021-03-01T19:50:11Z,2021-02-22T13:10:33Z,"- Mark duplicates from Picard
+- maybe Kallisto",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/46
+MDU6SXNzdWU4MDg3NDYzMjU=,Custom summary table in Snakemake report for virologist,CLOSED,2021-02-15T18:35:10Z,2021-03-15T14:39:24Z,2021-03-15T14:39:24Z,"Use the 
+
+- existing analyse_contigs.py script and
+- the [rbt](https://github.com/rust-bio/rust-bio-tools) csv-report subcommand 
+
+to generate an interactive summary report of the following structure:
+
+![image](https://user-images.githubusercontent.com/46334240/107982490-727d0080-6fc4-11eb-84a1-be268c24efd0.png)
+
+For information about the mutations, the subclonal .bcf file (in results/calls/ref~main/) can be used. 
+Necessary information from this file is:
+
+- [x] HGVSp from the ANN field
+
+Additional, useful information we could to virologists are:
+
+- [x] IMPACT from the ANN field
+- [x] Allele frequency (AF) from the ANN field
+
+The output from the rbt output should be integrated into the Snakemake report.
+Moreover, a rule to produce the Snakemake report (for the current run) should be added.
+
+1. Generate csv file for table displayed above.
+2. Use RBT csv-report
+3. Integrate csv-report in Snakemake report",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/47
+MDU6SXNzdWU4MDg3NDg1MDk=,Updating of pangolin database,CLOSED,2021-02-15T18:39:45Z,2021-02-17T16:04:46Z,2021-02-17T16:04:46Z,"Add a rule to automatically using the newest pangolin database, when a run is started.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/48
+MDU6SXNzdWU4MDg3NTA2Njc=,Slow GitHub actions,CLOSED,2021-02-15T18:44:31Z,2021-02-22T18:50:46Z,2021-02-22T18:50:46Z,"Improve the performance of the GitHub actions, for example by
+
+- [x] improving caching. Cach certain resources (e.g. index of the human genome), that take a long time to calculate.
+- [x] check out rerunning only changed code parts.
+- [x] check out checkout@v2 action
+- [x] check out upload-artifact@v2 for fetching the Snakmake report
+- [x] check out Snakemake action
+- [x] check out use cache-hit to skip the download of test data
+- [x] check out unit tests `snakemake --generate-unit-tests`
+
+The [GitHub-hosted runners](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources) have the following hardware specification for Windows and Linux virtual machines:
+- 2-core CPU
+- 7 GB of RAM memory
+- 14 GB of SSD disk space
+
+- [x] use `--cores 2`",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/49
+MDU6SXNzdWU4MDg3NTE0MjQ=,Usage of strain genomes for Kallisto,CLOSED,2021-02-15T18:46:06Z,2021-05-06T17:55:57Z,2021-05-06T17:55:57Z,"- [x] Add rules, that extract the propper strain genomes (e.g. the oldest know genome of a lineage) from the GISAID data report.
+- [x] Download the metadata automatically.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/50
+MDU6SXNzdWU4MDkxMjgwNDM=,Output generating for RKI,CLOSED,2021-02-16T09:16:29Z,2021-02-25T14:18:03Z,2021-02-25T14:18:03Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/51
+MDU6SXNzdWU4MDk0NDc1Njc=,Rename raGOO output,CLOSED,2021-02-16T16:15:18Z,2021-03-01T19:50:01Z,2021-02-22T13:10:17Z,"Currently, each non Chr0 contig from raGOO is named `>NC_045512.2_RaGOO`. Change this to the actual sample name.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/55
+MDU6SXNzdWU4MTAwMDkzMjY=,Solution for handling empty contig files,CLOSED,2021-02-17T09:27:50Z,2021-02-17T14:48:49Z,2021-02-17T14:47:29Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/57
+MDU6SXNzdWU4MTAxOTkxMjc=,Check difference of unpolished and polished contigs,CLOSED,2021-02-17T13:46:51Z,2021-09-08T12:52:09Z,2021-09-08T12:52:09Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/59
+MDU6SXNzdWU4MTAyNDkxOTI=,Add date folders for results,CLOSED,2021-02-17T14:46:55Z,2021-03-01T08:45:21Z,2021-03-01T08:45:21Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/60
+MDU6SXNzdWU4MTAyNzY2OTc=,Add rule to save results (of current run),CLOSED,2021-02-17T15:18:13Z,2021-03-02T09:49:08Z,2021-03-02T09:49:08Z,"by zipping the results of the current run and moving the zip to the archive.
+Maybe also make a copy of the workflow itself.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/61
+MDU6SXNzdWU4MTA4NjU3NDg=,Pangolin 2.3.0 is failing,CLOSED,2021-02-18T08:13:28Z,2021-02-18T15:25:03Z,2021-02-18T15:25:03Z,"#56 introduced a rule to update pangolin with pangolin --update. 
+This updates data for pangolin (pangoLEARN) and pangolin its to the newest version.
+
+However, the 2.3.0 version of pangolin seems to render our workflow unfuctional.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/62
+MDU6SXNzdWU4MTEyNTUwMzY=,Unit tests are not functioning,CLOSED,2021-02-18T16:24:03Z,2021-05-03T05:30:47Z,2021-05-03T05:30:47Z,"See https://github.com/koesterlab/snakemake-workflow-sars-cov2/runs/1928205192?check_suite_focus=true#step:10:120
+
+```
+Generating unit tests for each rule...
+Generating unit test for rule all: .tests/unit/test_all.py.
+Traceback (most recent call last):
+  File ""/opt/conda/envs/snakemake/lib/python3.9/site-packages/snakemake/__init__.py"", line 691, in snakemake
+    success = workflow.execute(
+  File ""/opt/conda/envs/snakemake/lib/python3.9/site-packages/snakemake/workflow.py"", line 808, in execute
+    unit_tests.generate(
+  File ""/opt/conda/envs/snakemake/lib/python3.9/site-packages/snakemake/unit_tests/__init__.py"", line 89, in generate
+    copy_files(job.input, ""data"")
+  File ""/opt/conda/envs/snakemake/lib/python3.9/site-packages/snakemake/unit_tests/__init__.py"", line 81, in copy_files
+    shutil.copytree(f, target)
+  File ""/opt/conda/envs/snakemake/lib/python3.9/shutil.py"", line 557, in copytree
+    return _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,
+  File ""/opt/conda/envs/snakemake/lib/python3.9/shutil.py"", line 458, in _copytree
+    os.makedirs(dst, exist_ok=dirs_exist_ok)
+  File ""/opt/conda/envs/snakemake/lib/python3.9/os.py"", line 225, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '.tests/unit/all/data/results/vcf-report'
+```",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/65
+MDU6SXNzdWU4MTE4MjAzODc=,BWA (map_reads rule) throws core dumped,CLOSED,2021-02-19T08:36:53Z,2021-02-22T13:10:17Z,2021-02-22T13:10:17Z,"Error:
+
+```
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[M::process] read 69456 sequences (10000175 bp)...
+/usr/bin/bash: line 1: 1612154 Segmentation fault      (core dumped) bwa mem -t 1 results/bwa/index/ref~E-21-21207.fasta results/nonhuman-reads/E-21-21207.1.fastq.gz results/nonhuman-reads/E-21-21207.2.fastq.gz
+     1612155 Done                    | samtools sort -T results/mapped/ref~E-21-21207/E-21-21207.tmp -o results/mapped/ref~E-21-21207/E-21-21207.bam -
+
+```",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/67
+MDU6SXNzdWU4MTE5MjY0NjM=,Verification of non sars-cov-2 lineage calls,CLOSED,2021-02-19T11:02:06Z,2021-03-03T21:09:49Z,2021-03-03T21:09:49Z,"- [x] Simulate reads from one or preferably several arbitrary non sars-cov-2 coronaviruses.
+- [x] Run each of these as individual samples through the pipeline.
+- [x] Expected outcome: the pipeline does not return any sars-cov-2 lineage calls, neither Pangolin nor Kallisto. If it doesn't, we'll have to look again where it goes awry.
+
+Such a test case would be very important now. It could be that a patient is tested positive for sars-cov-2 (possibly even falsely), but at the same time or exclusively has a normal cold.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/68
+MDU6SXNzdWU4MTYyNDIxOTY=,NbConvertApp: Notebook JSON is invalid: Additional properties are not allowed ('id' was unexpected),OPEN,2021-02-25T09:15:20Z,2021-12-02T07:15:35Z,,"Not a real problem per se, rather annoying
+
+```
+[Thu Feb 25 09:14:22 2021]
+rule call_strains_kallisto:
+    input: results/quant/E-21-20803
+    output: results/tables/strain-calls/E-21-20803.strains.kallisto.tsv
+    log: logs/call-strains/E-21-20803.log
+    jobid: 254
+    wildcards: sample=E-21-20803
+
+Activating conda environment: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/b0c2901e
+[NbConvertApp] ERROR | Notebook JSON is invalid: Additional properties are not allowed ('id' was unexpected)
+
+Failed validating 'additionalProperties' in code_cell:
+
+On instance['cells'][0]:
+{'cell_type': 'code',
+ 'execution_count': None,
+ 'id': 'roman-indie',
+ 'metadata': {'tags': ['snakemake-job-properties']},
+ 'outputs': ['...0 outputs...'],
+ 'source': '\n'
+           '######## snakemake preamble start (automatically inserted, do '
+           'n...'}
+```
+
+```
+[Thu Feb 25 09:14:27 2021]
+rule plot_strains_kallisto:
+    input: results/tables/strain-calls/E-21-20803.strains.kallisto.tsv
+    output: results/plots/strain-calls/E-21-20803.strains.kallisto.svg
+    log: logs/plot-strains-kallisto/E-21-20803.log
+    jobid: 258
+    wildcards: sample=E-21-20803
+
+Activating conda environment: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/b0c2901e
+[NbConvertApp] ERROR | Notebook JSON is invalid: Additional properties are not allowed ('id' was unexpected)
+
+Failed validating 'additionalProperties' in code_cell:
+
+On instance['cells'][0]:
+{'cell_type': 'code',
+ 'execution_count': None,
+ 'id': 'listed-summer',
+ 'metadata': {'tags': ['snakemake-job-properties']},
+ 'outputs': ['...0 outputs...'],
+ 'source': '\n'
+           '######## snakemake preamble start (automatically inserted, do '
+           'n...'}
+```",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/78
+MDU6SXNzdWU4MTY0NzgzMDU=,Make pipeline oxford nanopore ready,CLOSED,2021-02-25T14:17:20Z,2021-12-02T18:42:07Z,2021-12-02T18:42:07Z,"- [ ] Add flag in sample sheet, from which sequencer the samples are from.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/80
+MDU6SXNzdWU4MTkyODY4MzI=,Check captions for report,CLOSED,2021-03-01T21:13:17Z,2021-03-02T10:20:31Z,2021-03-02T10:20:31Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/86
+MDU6SXNzdWU4MTk5MTU5MDg=,AttributeError [...]: 'Conda' object has no attribute 'info',CLOSED,2021-03-02T11:13:49Z,2021-03-05T09:00:09Z,2021-03-05T09:00:09Z,"The following doesn't happen with `--cores=1` or when using `snakemake v5.32.0`.
+
+```
+Building DAG of jobs...
+Updating job cat_genomes.
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Singularity containers: ignored
+Job counts:
+	count	jobs
+	3	plot_strains_kallisto
+	3	plot_strains_pangolin
+	1	test_non_cov2
+	7
+Select jobs to execute...
+
+[Tue Mar  2 11:11:16 2021]
+rule plot_strains_kallisto:
+    input: results/test-cases/tables/strain-calls/non-cov2-NC_006213.strains.kallisto.tsv
+    output: results/test-cases/plots/strain-calls/non-cov2-NC_006213.strains.kallisto.svg
+    log: logs/test-cases/plot-strains-kallisto/non-cov2-NC_006213.log
+    jobid: 197
+    wildcards: date=test-cases, sample=non-cov2-NC_006213
+
+[Tue Mar  2 11:11:16 2021]
+rule plot_strains_pangolin:
+    input: results/test-cases/tables/strain-calls/non-cov2-NC_019843.strains.pangolin.csv
+    output: results/test-cases/plots/strain-calls/non-cov2-NC_019843.strains.pangolin.svg
+    log: logs/test-cases/plot-strains-pangolin/non-cov2-NC_019843.log
+    jobid: 194
+    wildcards: date=test-cases, sample=non-cov2-NC_019843
+
+[Tue Mar  2 11:11:16 2021]
+Error in rule plot_strains_pangolin:
+    jobid: 194
+    output: results/test-cases/plots/strain-calls/non-cov2-NC_019843.strains.pangolin.svg
+    log: logs/test-cases/plot-strains-pangolin/non-cov2-NC_019843.log (check log file(s) for error message)
+    conda-env: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/b0c2901e
+
+RuleException:
+AttributeError in line 153 of /home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/strain_calling.smk:
+'Conda' object has no attribute 'info'
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2326, in run_wrapper
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/strain_calling.smk"", line 153, in __rule_plot_strains_pangolin
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/deployment/conda.py"", line 512, in shellcmd
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/deployment/conda.py"", line 508, in bin_path
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/deployment/conda.py"", line 505, in prefix_path
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/thomas/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2357, in run_wrapper
+Activating conda environment: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/b0c2901e
+[Tue Mar  2 11:11:22 2021]
+Finished job 197.
+1 of 7 steps (14%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/log/2021-03-02T111114.848118.snakemake.log
+```",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/89
+MDU6SXNzdWU4MjIwOTg0MjY=,(Method) Profiling,CLOSED,2021-03-04T12:44:12Z,2021-05-03T05:32:52Z,2021-05-03T05:32:52Z,"Determine reoccurring contigs after assembly / before raGOO.
+Blast? Compare contigs over all runs.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/92
+MDU6SXNzdWU4MjIxMTQxMjg=,GSS/CRAM/VCF for displaying custom data track on genome browser,CLOSED,2021-03-04T13:04:19Z,2021-03-15T14:42:49Z,2021-03-15T14:42:49Z,See: https://genome.ucsc.edu/cgi-bin/hgCustom?hgsid=1048176583_hQprznMLYn1KxFe74RWv4tYvIEuf,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/93
+MDU6SXNzdWU4MjI4MDYzNDg=,ModuleNotFoundError: No module named 'snakemake_wrapper_utils',CLOSED,2021-03-05T06:56:48Z,2021-03-05T08:59:43Z,2021-03-05T08:59:43Z,"When using wrappers with `get_java_opts` from` snakemake_wrapper_utils.java` sometimes fail. Applies to rules like `quast_unpolished_contigs` and `mark_duplicates`
+
+
+<details>
+<summary>Failed rules</summary>
+
+```
+[Fri Mar  5 06:47:39 2021]
+rule quast_unpolished_contigs:
+    input: resources/genomes/main.fasta, results/2021-02-27/aligned-unpolished-contigs/10667.bam, results/2021-02-27/assembly/10667/10667.contigs.fa
+    output: results/2021-02-27/quast-unpolished/10667/report.tsv
+    log: logs/2021-02-27/quast/10667.log
+    jobid: 183
+    wildcards: date=2021-02-27, sample=10667
+    threads: 8
+
+Activating conda environment: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/d99362c6
+Activating conda environment: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550
+Traceback (most recent call last):
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmpilinfg0h.wrapper.py"", line 12, in <module>
+    from snakemake_wrapper_utils.java import get_java_opts
+ModuleNotFoundError: No module named 'snakemake_wrapper_utils'
+
+[Fri Mar  5 06:47:50 2021]
+Error in rule mark_duplicates:
+    jobid: 635
+    output: results/2021-02-27/dedup/ref~29450/29450.bam, results/2021-02-27/qc/dedup/ref~29450/29450.metrics.txt
+    log: logs/2021-02-27/picard/dedup/ref~29450/29450.log (check log file(s) for error message)
+    conda-env: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550
+
+RuleException:
+CalledProcessError in line 74 of /home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk:
+Command 'source /home/thomas/mambaforge/bin/activate '/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550'; set -euo pipefail;  python /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmpilinfg0h.wrapper.py' returned non-zero exit status 1.
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2319, in run_wrapper
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk"", line 74, in __rule_mark_duplicates
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2350, in run_wrapper
+Job failed, going on with independent jobs.
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver.Run Snakemake with --verbose to see the full solver output for debugging the problem.
+Traceback (most recent call last):
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmptj8mdb_x.wrapper.py"", line 12, in <module>
+    from snakemake_wrapper_utils.java import get_java_opts
+ModuleNotFoundError: No module named 'snakemake_wrapper_utils'
+
+[Fri Mar  5 06:47:50 2021]
+Error in rule mark_duplicates:
+    jobid: 691
+    output: results/2021-02-27/dedup/ref~29452/29452.bam, results/2021-02-27/qc/dedup/ref~29452/29452.metrics.txt
+    log: logs/2021-02-27/picard/dedup/ref~29452/29452.log (check log file(s) for error message)
+    conda-env: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550
+
+RuleException:
+CalledProcessError in line 74 of /home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk:
+Command 'source /home/thomas/mambaforge/bin/activate '/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550'; set -euo pipefail;  python /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmptj8mdb_x.wrapper.py' returned non-zero exit status 1.
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2319, in run_wrapper
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk"", line 74, in __rule_mark_duplicates
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2350, in run_wrapper
+Job failed, going on with independent jobs.
+Select jobs to execute...
+Failed to solve scheduling problem with ILP solver. Falling back to greedy solver.Run Snakemake with --verbose to see the full solver output for debugging the problem.
+Traceback (most recent call last):
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmp5z9qokl3.wrapper.py"", line 12, in <module>
+    from snakemake_wrapper_utils.java import get_java_opts
+ModuleNotFoundError: No module named 'snakemake_wrapper_utils'
+
+[Fri Mar  5 06:47:53 2021]
+Error in rule mark_duplicates:
+    jobid: 747
+    output: results/2021-02-27/dedup/ref~29454/29454.bam, results/2021-02-27/qc/dedup/ref~29454/29454.metrics.txt
+    log: logs/2021-02-27/picard/dedup/ref~29454/29454.log (check log file(s) for error message)
+    conda-env: /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550
+
+RuleException:
+CalledProcessError in line 74 of /home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk:
+Command 'source /home/thomas/mambaforge/bin/activate '/home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/conda/121c7550'; set -euo pipefail;  python /home/thomas/repos/snakemake-workflow-sars-cov2/.snakemake/scripts/tmp5z9qokl3.wrapper.py' returned non-zero exit status 1.
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2319, in run_wrapper
+  File ""/home/thomas/repos/snakemake-workflow-sars-cov2/workflow/rules/read_mapping.smk"", line 74, in __rule_mark_duplicates
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/thomas/mambaforge/envs/snakemake5/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 2350, in run_wrapper
+Job failed, going on with independent jobs.
+Select jobs to execute...
+```
+
+</details>
+
+But then, when executing `quast_unpolished_contigs` literally as the next job it works:
+
+```
+[Fri Mar  5 06:47:54 2021]
+rule quast_unpolished_contigs:
+    input: resources/genomes/main.fasta, results/2021-02-27/aligned-unpolished-contigs/29404.bam, results/2021-02-27/assembly/29404/29404.contigs.fa
+    output: results/2021-02-27/quast-unpolished/29404/report.tsv
+    log: logs/2021-02-27/quast/29404.log
+    jobid: 213
+    wildcards: date=2021-02-27, sample=29404
+    threads: 8
+
+Removing temporary output file results/2021-02-27/aligned-unpolished-contigs/10667.bam.
+[Fri Mar  5 06:47:54 2021]
+Finished job 183.
+96 of 907 steps (11%) done
+```",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/94
+MDU6SXNzdWU4MjQ0NDk3MTk=,Adjust plots,CLOSED,2021-03-08T11:03:50Z,2021-03-09T08:23:12Z,2021-03-09T08:23:12Z,Summary plot to see the results of all samples in one plot,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/95
+MDU6SXNzdWU4MjQ2NDA3ODQ=,Simulate mixtures for Kallisto and pangolin,CLOSED,2021-03-08T14:53:19Z,2021-06-25T07:45:14Z,2021-06-25T07:45:14Z,"Simulate mixtures of Covid genomes, e.g. 1.1.7 and something else.
+Check if Kallisto asserts the number of reads correctly.
+For 100+ mixtures ",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/97
+MDU6SXNzdWU4MzQ5MzU1MDI=,No dryrun possible,CLOSED,2021-03-18T15:20:47Z,2021-04-29T11:06:36Z,2021-04-29T11:06:36Z,"Currently, on a fresh workdir, there is no dryrun possible because you will get the following error:
+```
+InputFunctionException in line 35 of /home/johannes/scms/snakemake-workflow-sars-cov2/workflow/rules/variant_report.smk:
+Error:
+  FileNotFoundError: [Errno 2] No such file or directory: 'results/2021-01-01/tables/strain-calls/a.strains.pangolin.csv'
+Wildcards:
+  date=2021-01-01
+  target=a
+  filter=low-impact
+Traceback:
+  File ""/home/johannes/scms/snakemake-workflow-sars-cov2/workflow/rules/variant_report.smk"", line 49, in <lambda>
+  File ""/home/johannes/scms/snakemake-workflow-sars-cov2/workflow/rules/common.smk"", line 316, in get_strain
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 610, in read_csv
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 462, in _read
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 819, in __init__
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 1050, in _make_engine
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 1867, in __init__
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/parsers.py"", line 1362, in _open_handles
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/pandas/io/common.py"", line 642, in get_handle
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 136, in run_jobs
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 145, in run
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 156, in _run
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 176, in printjob
+  File ""/home/johannes/.local/opt/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/executors/__init__.py"", line 162, in printjob
+  ```
+
+This happens because you try to read the contents of the pangolin calls for the params [here](https://github.com/koesterlab/snakemake-workflow-sars-cov2/blob/master/workflow/rules/variant_report.smk#L49). In dryrun, this file is naturally not yet present.
+You need to move this logic into the actual job, e.g. inside the shell command or by moving the shell command into a script that parses the strain calls before invoking the shell command.",johanneskoester,https://github.com/IKIM-Essen/uncovar/issues/106
+MDU6SXNzdWU4NDMyMTA2MzA=,fix update-sample-sheet.py,CLOSED,2021-03-29T10:06:08Z,2021-04-08T11:49:19Z,2021-04-08T11:49:19Z,"Currently the is_amplicon flag does not work as supposed. Incoming samples won't get a flag, existing samples get a float number. 
+
+Also editing the existing sample sheet would help to not rerun all the existing samples (?)
+
+- [x] flag incoming samples
+- [x] do not touch existing samples
+- [x] edit and not replace the sample sheet to not rerun all samples
+- [x] include check for duplications and automatically add _2",alethomas,https://github.com/IKIM-Essen/uncovar/issues/110
+MDU6SXNzdWU4NDMyMTE1MDY=,intragrate metaspades,CLOSED,2021-03-29T10:07:02Z,2021-04-01T08:29:06Z,2021-04-01T08:29:06Z,"- [x] integrated is_amplicon flag
+- [x] fixed reports",alethomas,https://github.com/IKIM-Essen/uncovar/issues/111
+MDU6SXNzdWU4NDMyMTI1ODg=,Pre QC of reads,CLOSED,2021-03-29T10:08:12Z,2021-12-16T07:11:26Z,2021-12-16T07:11:26Z,- [x] check if incoming samples are empty and exclude them from transfer,alethomas,https://github.com/IKIM-Essen/uncovar/issues/112
+MDU6SXNzdWU4NDMyMTY5OTg=,Update GISAID data,CLOSED,2021-03-29T10:13:03Z,2021-04-13T12:07:06Z,2021-04-13T12:07:06Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/113
+MDU6SXNzdWU4NTc3MjcxMDc=,Update readme,CLOSED,2021-04-14T09:51:09Z,2021-05-03T05:33:51Z,2021-05-03T05:33:51Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/128
+MDU6SXNzdWU4NTk0NjIxNzk=,Rewrite virologist report,CLOSED,2021-04-16T05:15:26Z,2021-05-11T16:56:46Z,2021-05-11T16:56:46Z,"Structure output generation with pandas, get rid of dictionaries, join dataframes",alethomas,https://github.com/IKIM-Essen/uncovar/issues/134
+MDU6SXNzdWU4NTk4NTcxMTE=,Include ORF1ab splitup,CLOSED,2021-04-16T14:16:38Z,2022-01-21T16:21:36Z,2022-01-21T16:21:36Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/135
+MDU6SXNzdWU4NTk5NDM4ODM=,Show lineage defining variants in table report,CLOSED,2021-04-16T15:51:49Z,2022-01-21T16:21:37Z,2022-01-21T16:21:37Z,"* [ ] basic support (PR #131)
+* [ ] incorporate information about uncovered areas",johanneskoester,https://github.com/IKIM-Essen/uncovar/issues/136
+MDU6SXNzdWU4NjExMDU0ODY=,Test Haploflow,CLOSED,2021-04-19T09:31:35Z,2021-05-04T15:18:18Z,2021-05-04T15:18:18Z,"- [x] make conda package
+- [ ] run workflow with Haploflow ",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/139
+MDU6SXNzdWU4NjQ4MDM2NDU=,Test RagTag,CLOSED,2021-04-22T10:43:39Z,2021-05-03T16:43:36Z,2021-05-03T16:43:36Z,Folker suspected that the 40k contigs are generated by erroneous behaviour of raGOO. The raGOO successor [RagTag](https://github.com/malonge/RaGOO) should be tested with the samples that produced the 40k contigs.,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/142
+MDU6SXNzdWU4NjQ5MDIyMDY=,Pipeline execution automation and distribution via web gui,OPEN,2021-04-22T12:40:15Z,2021-12-02T07:14:27Z,,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/143
+MDU6SXNzdWU4NzY3NjE4ODE=,Integrate conservative amplicon primer clipping,CLOSED,2021-05-05T19:20:25Z,2021-05-13T19:52:32Z,2021-05-13T19:52:32Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/152
+MDU6SXNzdWU4Nzc1NDU5NjI=,Coverage per base before clipping vs. after clipping,CLOSED,2021-05-06T14:15:10Z,2021-08-20T14:08:18Z,2021-08-20T14:08:18Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/154
+MDU6SXNzdWU4Nzc2MzgwNzE=,Check pangolin calls with normal assembly vs. pseudo-assembly,CLOSED,2021-05-06T15:34:42Z,2021-12-02T07:17:07Z,2021-12-02T07:17:07Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/155
+MDU6SXNzdWU4NzkyMzEyMzM=,missing temp file causing errors for past samples,CLOSED,2021-05-07T15:38:24Z,2021-05-10T04:53:19Z,2021-05-10T04:53:18Z,"```
+InputFunctionException in line 92 of /local/data/snakemake-workflow-sars-cov2/workflow/rules/generate_output.smk:
+Error:
+  WorkflowError:
+    File results/2021-03-13/rki-filter/2021-03-13.txt cannot be opened, since it does not exist.
+Wildcards:
+  date=2021-03-13
+Traceback:
+  File ""/local/data/snakemake-workflow-sars-cov2/workflow/rules/generate_output.smk"", line 99, in <lambda>
+  File ""/local/data/snakemake-workflow-sars-cov2/workflow/rules/common.smk"", line 29, in get_samples_for_date
+  File ""/home/alex/anaconda3/envs/snakemake/lib/python3.9/contextlib.py"", line 117, in __enter__
+```",alethomas,https://github.com/IKIM-Essen/uncovar/issues/157
+MDU6SXNzdWU4ODMzNzg2MzM=,Pseudoassembly Fallback,CLOSED,2021-05-10T04:57:06Z,2021-05-17T13:22:01Z,2021-05-17T13:22:01Z,"Pseudoassembly with variant calls was introduced with #158. The pseudoassembly should be integrated as a fallback. In other words, it should be used for samples for which the primary assembly does not meet the RKI criteria.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/159
+MDU6SXNzdWU4OTEzMjU0ODU=,Plot of # primers before and after clipping,CLOSED,2021-05-13T19:54:02Z,2021-06-07T05:42:05Z,2021-06-07T05:42:05Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/162
+MDU6SXNzdWU4OTUxNTMxNTk=,Let Pangolin call on normal- AND on pseudo-assembly,CLOSED,2021-05-19T08:32:49Z,2021-12-15T12:27:57Z,2021-12-15T12:27:57Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/166
+MDU6SXNzdWU5MDI3NTUyNDE=,Run Workflow without the need of a rki result,CLOSED,2021-05-26T17:59:51Z,2021-12-16T16:10:27Z,2021-12-16T16:10:27Z,,alethomas,https://github.com/IKIM-Essen/uncovar/issues/168
+MDU6SXNzdWU5MzU1NjEyNjU=,Include scorpio_call / scorpio_support / note from pangolin in overview table,CLOSED,2021-07-02T08:52:22Z,2021-12-17T08:05:15Z,2021-12-17T08:05:15Z,"scorpio_call
+If a query is assigned a constellation by scorpio this call is output in this column. The full set of constellations searched by default can be found at the constellations repository.
+
+scorpio_support
+The support score is the proportion of defining variants which have the alternative allele in the sequence.
+
+scorpio_conflict
+The conflict score is the proportion of defining variants which have the reference allele in the sequence. Ambiguous/other non-ref/alt bases at each of the variant positions contribute only to the denominators of these scores
+
+note
+If any conflicts from the decision tree, this field will output the alternative assignments. If the sequence failed QC this field will describe why. If the sequence met the SNP thresholds for scorpio to call a constellation, it’ll describe the exact SNP counts of Alt, Ref and Amb (Alternative, reference and ambiguous) alleles for that call.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/176
+MDU6SXNzdWU5NzU2NDQ5MTg=,Add RKI exclusion flag,CLOSED,2021-08-20T14:07:53Z,2021-12-15T11:16:27Z,2021-12-15T11:16:26Z,"Currently, all resulting samples that pass the final QC filter are included in the ""RKI"" files, the`results/rki/{date}_uk-essen_rki.fasta` and `results/rki/{date}_uk-essen_rki.csv` in rule `rki_report`.
+
+We need to add a flag within the `samples.csv to` exclude such files from the ""RKI"" files. The flag should be named something like `include_in_high_genome_summary` and should be either `0` or `1`.
+
+Maybe the rule `rki_filter` can be a good starting point.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/202
+MDU6SXNzdWU5ODEwMDQxODA=,Add list of tools and paper in readme of README.md,CLOSED,2021-08-27T08:26:10Z,2021-10-01T12:05:22Z,2021-10-01T12:05:22Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/205
+MDU6SXNzdWU5ODEwMTU5Nzc=,Check if stdout redirection is really necessary for assemblers,CLOSED,2021-08-27T08:41:43Z,2021-12-17T08:05:23Z,2021-12-17T08:05:23Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/206
+MDU6SXNzdWU5ODEwMzY4OTU=,Add docstrings for helpers in common.smk,CLOSED,2021-08-27T09:06:42Z,2021-12-02T07:18:17Z,2021-12-02T07:18:17Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/207
+MDU6SXNzdWU5ODEwNjQyODY=,Merge kraken and krona rules with inheritance ,OPEN,2021-08-27T09:39:58Z,2021-12-02T07:14:28Z,,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/208
+MDU6SXNzdWU5ODI3MDY3MzM=,Check if the pangolin call on the pseudoassembly is working correctly,CLOSED,2021-08-30T11:51:17Z,2021-12-15T12:27:57Z,2021-12-15T12:27:57Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/211
+MDU6SXNzdWU5ODUxNjcxMjI=,Rethink extraction of reference genomes from GISAID,CLOSED,2021-09-01T13:39:24Z,2021-12-02T09:05:06Z,2021-12-02T09:05:06Z,"Problem
+The extraction of the SARS-CoV-2 lineage reference genomes takes about 10 min, even though we vectorised the writing processes. Thus, the ""problem"" probably relates to the read-in of the provision file from GISAID.
+Moreover, the script contains a bug, where a file called "".fasta"" is created by the script.
+
+Please fix this bug and do some research, if we can speed up the extraction of SARS-CoV-2 lineage reference genomes from the GISAID provision data dump.
+
+File: `snakemake-workflow-sars-cov2/workflow/scripts/extract-strains-from-gisaid-provision.py`",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/225
+MDU6SXNzdWU5ODUxODMzNTk=,Refactor fasta parser and file writer in generate-rki-output.py ,CLOSED,2021-09-01T13:53:55Z,2021-10-12T07:18:40Z,2021-10-12T07:18:40Z,"fasta parser with [pysam](https://pysam.readthedocs.io/en/latest/api.html) 
+writer with [pandas](https://pandas.pydata.org/docs/) / [csv](https://docs.python.org/3/library/csv.html)
+
+File: https://github.com/koesterlab/snakemake-workflow-sars-cov2/edit/cleanup/workflow/scripts/generate-rki-output.py",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/226
+MDU6SXNzdWU5ODUyMTA0NTg=,Replace fasta parsa in mask-contigs.py,CLOSED,2021-09-01T14:15:34Z,2021-12-02T18:42:07Z,2021-12-02T18:42:07Z,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/227
+MDU6SXNzdWU5ODUyMTA4MTY=,Refactor plot-call-error,OPEN,2021-09-01T14:15:50Z,2021-12-02T07:14:29Z,,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/228
+MDU6SXNzdWU5ODUyMTU0MTM=,Add copyright preamble in each .smk and .py file,CLOSED,2021-09-01T14:19:38Z,2021-09-30T09:09:58Z,2021-09-30T09:09:58Z,1. Search for a GitHub Action a script that adds a preamble in .py and .smk files,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/229
+MDU6SXNzdWU5ODUyMjc0Njk=,Clean up plot-primer-clipping.py,OPEN,2021-09-01T14:29:48Z,2022-03-01T15:03:49Z,,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/230
+MDU6SXNzdWU5OTA5NDY0MjY=,Rule extract_strain_genomes_from_gisaid missing environment,CLOSED,2021-09-08T09:46:21Z,2021-09-08T12:16:47Z,2021-09-08T12:16:47Z,,AKBrueggemann,https://github.com/IKIM-Essen/uncovar/issues/234
+MDU6SXNzdWU5OTExMDUyMjM=,Include preprocessing script as .smk module,CLOSED,2021-09-08T12:52:44Z,2021-09-21T14:23:27Z,2021-09-21T14:23:27Z,"Add a new `workflow/rules/preprocessing.smk` and use the existing preprocessing scrip (preprocessing/update-sample-sheet.py) with a rule. 
+
+Goal: run `snakemake --cores all --use-conda config/pep/samples.csv` to execute the python script and update the sample.csv file ",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/237
+MDU6SXNzdWU5OTEyMzU2Nzg=,Kallisto plots are not working on the production server,OPEN,2021-09-08T14:59:19Z,2021-12-02T07:15:36Z,,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/238
+I_kwDOE7-yYs47W1_1,Github Actions Caching,OPEN,2021-09-14T10:16:25Z,2021-12-02T07:16:11Z,,,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/243
+I_kwDOE7-yYs47W2Bm,Try out unit tests,OPEN,2021-09-14T10:16:32Z,2021-12-02T07:14:29Z,,This could be interesting https://snakemake.readthedocs.io/en/stable/snakefiles/testing.html?highlight=unit,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/244
+I_kwDOE7-yYs48qqZ4,Problem: workflow stops if one sample doesn't meet fast_pe requirements,CLOSED,2021-10-06T08:48:45Z,2021-12-17T08:03:56Z,2021-12-17T08:03:56Z," If the quality of one sample does not meet the required phred score, the fast_pe is empty and the workflow stops. This should be fixed, so that the workflow is still working, even if one sample can't be taken into account. ",AKBrueggemann,https://github.com/IKIM-Essen/uncovar/issues/303
+I_kwDOE7-yYs494WzD,Standardisation of colour schemes used in plots,OPEN,2021-10-28T07:39:36Z,2022-03-01T15:02:27Z,,e.g. `turbo` for sequential data. See https://vega.github.io/vega/docs/schemes/ and https://altair-viz.github.io/user_guide/customization.html#customizing-colors for more info.,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/312
+I_kwDOE7-yYs4-N0Eg,think about regex instead of splitting,OPEN,2021-11-03T16:24:41Z,2021-11-03T16:24:41Z,,"think about regex instead of splitting
+
+https://github.com/koesterlab/snakemake-workflow-sars-cov2/blob/66ab12115814597a569a9662cba51ac679b1a81d/workflow/scripts/plot-variants-over-time.py#L48
+
+```python
+
+import sys
+
+sys.stderr = open(snakemake.log[0], ""w"")
+
+import altair as alt
+import pandas as pd
+import pysam
+
+AA_ALPHABET_TRANSLATION = {
+    ""Gly"": ""G"",
+    ""Ala"": ""A"",
+    ""Leu"": ""L"",
+    ""Met"": ""M"",
+    ""Phe"": ""F"",
+    ""Trp"": ""W"",
+    ""Lys"": ""K"",
+    ""Gln"": ""Q"",
+    ""Glu"": ""E"",
+    ""Ser"": ""S"",
+    ""Pro"": ""P"",
+    ""Val"": ""V"",
+    ""Ile"": ""I"",
+    ""Cys"": ""C"",
+    ""Tyr"": ""Y"",
+    ""His"": ""H"",
+    ""Arg"": ""R"",
+    ""Asn"": ""N"",
+    ""Asp"": ""D"",
+    ""Thr"": ""T"",
+}
+
+
+def get_calls():
+    variants = []
+    for file, date, sample in zip(
+        snakemake.input.bcf, snakemake.params.dates, snakemake.params.samples
+    ):
+        with pysam.VariantFile(file, ""rb"") as infile:
+            for record in infile:
+                vaf = record.samples[0][""AF""][0]
+                for ann in record.info[""ANN""]:
+                    ann = ann.split(""|"")
+                    hgvsp = ann[11]
+                    enssast_id = ann[6]
+                    feature = ann[3]
+                    orf = ann[3]
+                    if hgvsp:
+                        # TODO think about regex instead of splitting
+                        enssast_id, alteration = hgvsp.split("":"", 1)
+                        _prefix, alteration = alteration.split(""."", 1)
+                        for triplet, amino in AA_ALPHABET_TRANSLATION.items():
+                            alteration = alteration.replace(triplet, amino)
+
+                        variants.append(
+                            {
+                                ""feature"": feature,
+                                ""alteration"": alteration,
+                                ""vaf"": vaf,
+                                ""date"": date,
+                                ""sample"": sample,
+                                ""orf"": orf,
+                            }
+                        )
+    variants_df = pd.DataFrame(variants)
+    variants_df = variants_df[variants_df[""orf""] == snakemake.wildcards.ORFNAME]
+    return variants_df
+
+
+def plot_variants_over_time(sm_output, sm_output_table):
+    calls = get_calls()
+
+    # write out as table
+    calls.to_csv(sm_output_table)
+
+    if len(calls) > 0:
+        # get occurrences
+        calls[""total occurrence""] = calls.groupby(""alteration"", as_index=False)[
+            ""alteration""
+        ].transform(lambda s: s.count())
+
+        # mask low occurrences
+        calls.loc[calls[""total occurrence""] < 10, ""alteration""] = ""other (< 10 occ.)""
+
+    calls.rename(columns={""alteration"": ""Alteration"", ""date"": ""Date""}, inplace=True)
+
+    area_plot = (
+        alt.Chart(calls)
+        .mark_bar(opacity=0.8)
+        .encode(
+            x=alt.X(""Date:O""),
+            y=alt.Y(
+                ""count()"",
+                stack=""normalize"",
+                axis=alt.Axis(format=""%""),
+                title=""Fraction in Run"",
+            ),
+            stroke=""Alteration"",
+            color=alt.Color(
+                ""Alteration"",
+                scale=alt.Scale(scheme=""tableau10""),
+                legend=alt.Legend(orient=""top""),
+            ),
+        )
+    ).properties(width=800)
+
+    area_plot.save(sm_output)
+
+
+plot_variants_over_time(snakemake.output[0], snakemake.output[1])
+
+```
+
+3cf749603e795566bdcc3f52dd7bf36e35accc4f",github-actions,https://github.com/IKIM-Essen/uncovar/issues/316
+I_kwDOE7-yYs4-a1R-,Workflow stops if a fraction of the samples does not meet required number of reads,CLOSED,2021-11-08T09:37:15Z,2021-12-01T15:02:01Z,2021-12-01T15:02:01Z,"The samples 164036 and 164617 from 2021-11-05 do not meet the required number of reads and are very small. Workflow stops completely because of this. Rule assembly_spades creates empty fasta file, so that rule quast fails. Should be fixed, so that samples that don't meet a specific number of reads/ a specific length are not processed further.",AKBrueggemann,https://github.com/IKIM-Essen/uncovar/issues/318
+I_kwDOE7-yYs4-estP,Make name of files contained in the final report more descriptive,CLOSED,2021-11-09T06:23:58Z,2021-12-16T07:16:55Z,2021-12-16T07:16:55Z,e.g. in section 1. Overview  `qc_data.html` -> `overview_table.html`,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/321
+I_kwDOE7-yYs4-etJj,Make names of rules more descriptive,CLOSED,2021-11-09T06:26:54Z,2021-12-17T08:03:39Z,2021-12-17T08:03:39Z,e.g. in `generate_output.smk`: `rule virologist_report` -> `overview_table`,thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/322
+I_kwDOE7-yYs4-lucI,"WorkflowError(""For PEP support, please install peppy."") when running workflow",CLOSED,2021-11-10T16:55:40Z,2022-02-18T05:56:34Z,2022-02-18T05:56:34Z,Problem occurs with python version 3.10.0 -> manually downgrading to python version 3.9.7 fixes the problem for now,lenakinzel,https://github.com/IKIM-Essen/uncovar/issues/325
+I_kwDOE7-yYs4-samq,Update and fix schema validation,CLOSED,2021-11-12T10:53:07Z,2021-12-14T13:17:24Z,2021-12-14T13:17:24Z,"Currently, we use a non-valid JSON Schema version, see below. Moreover, the `/config/config.yaml` and the `config/pep/samples.csv` should be checked, whether all necessary information is mapped in the schemas.
+
+```python
+No validator found for JSON Schema version identifier 'https://json-schema.org/draft-06/schema#'
+Defaulting to validator for JSON Schema version 'http://json-schema.org/draft-07/schema#'
+Note that schema file may not be validated correctly.
+No validator found for JSON Schema version identifier 'https://json-schema.org/draft-06/schema#'
+Defaulting to validator for JSON Schema version 'http://json-schema.org/draft-07/schema#'
+Note that schema file may not be validated correctly.
+```
+
+For more information of schema validation see https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html?highlight=schema#validation",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/326
+I_kwDOE7-yYs4-8z1X,Make the incoming and archive structure data-handling optional,CLOSED,2021-11-17T13:24:25Z,2022-02-16T15:36:05Z,2022-02-16T15:36:05Z,"Add ad flag to the config sheet which can be set to `True` or `False`. 
+
+If is it set to `True`, the workflow should archive its results and needs the incoming, archive and data directories.
+
+If set to `False` one should just need  to fill out the sample sheet and manually and no moving or archive files should happen.
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/327
+I_kwDOE7-yYs4_QBtG,Jupyter Notebook CI fail,CLOSED,2021-11-23T11:45:09Z,2021-11-26T14:26:54Z,2021-11-26T14:26:54Z,"For CI log see https://github.com/IKIM-Essen/uncovar/runs/4291269611?check_suite_focus=true#step:7:689
+
+```pytohn
+[Mon Nov 22 19:54:14 2021]
+rule call_strains_kallisto:
+    input: results/benchmarking/quant/non-cov2-NC_006213, results/benchmarking/nonhuman-reads/non-cov2-NC_006213.1.fastq.gz
+    output: results/benchmarking/tables/strain-calls/non-cov2-NC_006213.strains.kallisto.tsv
+    log: logs/benchmarking/call-strains/non-cov2-NC_006213.log
+    jobid: 210
+    wildcards: date=benchmarking, sample=non-cov2-NC_006213
+
+Activating conda environment: /github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948
+[NbConvertApp] ERROR | Notebook JSON is invalid: Additional properties are not allowed ('id' was unexpected)
+
+Failed validating 'additionalProperties' in code_cell:
+
+On instance['cells'][0]:
+{'cell_type': 'code',
+ 'execution_count': None,
+ 'id': '1b1e65a0',
+ 'metadata': {'tags': ['snakemake-job-properties']},
+ 'outputs': ['...0 outputs...'],
+ 'source': '\n'
+           '######## snakemake preamble start (automatically inserted, do '
+           'n...'}
+[NbConvertApp] ERROR | Notebook JSON is invalid: Additional properties are not allowed ('id' was unexpected)
+
+Failed validating 'additionalProperties' in code_cell:
+
+On instance['cells'][0]:
+{'cell_type': 'code',
+ 'execution_count': None,
+ 'id': 'e05e13d4',
+ 'metadata': {'tags': ['snakemake-job-properties']},
+ 'outputs': ['...0 outputs...'],
+ 'source': '\n'
+           '######## snakemake preamble start (automatically inserted, do '
+           'n...'}
+Traceback (most recent call last):
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/traitlets/traitlets.py"", line 537, in get
+    value = obj._trait_values[self.name]
+KeyError: 'kernel_dirs'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/bin/jupyter-nbconvert"", line 11, in <module>
+    sys.exit(main())
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_core/application.py"", line 264, in launch_instance
+    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/traitlets/config/application.py"", line 846, in launch_instance
+    app.start()
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/nbconvertapp.py"", line 361, in start
+    self.convert_notebooks()
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/nbconvertapp.py"", line 533, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/nbconvertapp.py"", line 498, in convert_single_notebook
+    output, resources = self.export_single_notebook(notebook_filename, resources, input_buffer=input_buffer)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/nbconvertapp.py"", line 427, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/exporters/exporter.py"", line 186, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/exporters/exporter.py"", line 204, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/exporters/notebook.py"", line 32, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/exporters/exporter.py"", line 143, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/exporters/exporter.py"", line 323, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/preprocessors/base.py"", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py"", line 80, in preprocess
+    with self.setup_kernel():
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/contextlib.py"", line 113, in __enter__
+    return next(self.gen)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbclient/client.py"", line 460, in setup_kernel
+    self.start_new_kernel(**kwargs)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbclient/util.py"", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbclient/util.py"", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/asyncio/base_events.py"", line 616, in run_until_complete
+    return future.result()
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbclient/client.py"", line 416, in async_start_new_kernel
+    await ensure_async(self.km.start_kernel(extra_arguments=self.extra_arguments, **kwargs))
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/nbclient/util.py"", line 96, in ensure_async
+    result = await obj
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/manager.py"", line 657, in start_kernel
+    kernel_cmd, kw = self.pre_start_kernel(**kw)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/manager.py"", line 292, in pre_start_kernel
+    kernel_cmd = self.format_kernel_cmd(extra_arguments=extra_arguments)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/manager.py"", line 210, in format_kernel_cmd
+    cmd = self.kernel_spec.argv + extra_arguments
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/manager.py"", line 114, in kernel_spec
+    self._kernel_spec = self.kernel_spec_manager.get_kernel_spec(self.kernel_name)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/kernelspec.py"", line 228, in get_kernel_spec
+    resource_dir = self._find_spec_directory(kernel_name.lower())
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/kernelspec.py"", line 204, in _find_spec_directory
+    for kernel_dir in [kd for kd in self.kernel_dirs if os.path.isdir(kd)]:
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/traitlets/traitlets.py"", line 577, in __get__
+    return self.get(obj, cls)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/traitlets/traitlets.py"", line 540, in get
+    default = obj.trait_defaults(self.name)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/traitlets/traitlets.py"", line 1580, in trait_defaults
+    return self._get_trait_default_generator(names[0])(self)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/jupyter_client/kernelspec.py"", line 158, in _kernel_dirs_default
+    dirs.append(os.path.join(get_ipython_dir(), 'kernels'))
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/site-packages/IPython/paths.py"", line 70, in get_ipython_dir
+    os.makedirs(ipdir)
+  File ""/github/workspace/.tests/.snakemake/conda/ef3802cb519924eb937d04e949367948/lib/python3.8/os.py"", line 223, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/github/home/.ipython'
+```
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/332
+I_kwDOE7-yYs4_RbPN,Change multiqc rules back to MultiQC wrapper once v1.11 is released,CLOSED,2021-11-23T17:17:23Z,2022-01-19T14:47:55Z,2022-01-19T14:47:55Z,"Change multiqc rules back to MultiQC wrapper once v1.11 is released
+
+https://github.com/IKIM-Essen/uncovar/blob/2fdb1279e1c4fc34b211ae6cbf48c0115a0a88d7/workflow/rules/qc.smk#L19
+
+```python
+
+        ""0.69.0/bio/fastqc""
+
+
+# TODO: Change multiqc rules back to MultiQC wrapper once v1.11 is released
+from os import path
+
+
+rule multiqc:
+    input:
+        expand_samples_for_date(
+
+```
+
+7052a4cdb2c256b9ccba5d0594b6286e6aa9310e",github-actions,https://github.com/IKIM-Essen/uncovar/issues/333
+I_kwDOE7-yYs4_T8wi,Make Sending Lab column in RKI report csv adjustable via the config file,CLOSED,2021-11-24T09:31:33Z,2022-03-01T17:55:39Z,2022-03-01T17:55:39Z,"Make Sending Lab column in RKI csv adjustable via the config file. Add ad new parameter to the rule rki_report (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/rules/generate_output.smk#L83), which replaces the hardcoded Sending Lab number from UK-Essen. 
+https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/generate-rki-output.py#L25
+
+Moreover, we can use the date of the current run (`wildcards.date`) to refill the column `DATE_DRAW` (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/generate-rki-output.py#L26).",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/334
+I_kwDOE7-yYs4_ZS4D, Using the Snakemake Workflow Catalogue as deployment results in SyntaxError,CLOSED,2021-11-25T13:32:05Z,2021-12-07T08:08:40Z,2021-12-07T08:08:40Z,"When using the Snakemake Workflow Catalogue (thus `snakedeploy`)  for ""installing"" UnCoVar, the following error occurs:
+```python
+SyntaxError in line 14 of /Users/btf/Projects/uncovar-snakedeploy/workflow/Snakefile:
+invalid syntax (Snakefile, line 14)
+```
+
+This can be solved by removing the quotes in the Sankefile, line 13 and change 
+```python
+""github(""IKIM-Essen/uncovar"", path=""workflow/Snakefile"", tag=""v0.3.0"")""
+```
+to
+```python
+github(""IKIM-Essen/uncovar"", path=""workflow/Snakefile"", tag=""v0.3.0"")
+```
+
+This problem is already known (see https://github.com/snakemake/snakedeploy/issues/22) and will be fixed soon (see https://github.com/snakemake/snakedeploy/pull/23) 😊",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/336
+I_kwDOE7-yYs4_aTZY,Include scorpio_call  in overview table,CLOSED,2021-11-25T18:45:50Z,2021-12-15T12:26:07Z,2021-12-15T12:26:07Z,"The rule output of `pangolin` (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/rules/strain_calling.smk#L124) is a CSV that contains a column called `scorpio_call`. This column contains the ""clear name"" of the called lineage, e.g. Delta (B.1.617.2-like).
+
+Add a new column in the overview table, directly next to the original Lineage Call Column, which is created by the rule `virologist_report` (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/rules/generate_output.smk#L107). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/337
+I_kwDOE7-yYs4_gEbe,Fix aggregation of sample in variants and lineages over time plot ,CLOSED,2021-11-28T16:10:19Z,2022-03-01T15:01:29Z,2022-03-01T15:01:29Z,"Currently lineages (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/plot-lineages-over-time.py#L33) and variants (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/plot-variants-over-time.py#L86) below a certain fixed, absolute threshold (10 occurrences) and masked and aggregated together.
+
+This results in non-expressive figures, e.g.
+![image](https://user-images.githubusercontent.com/46334240/143776220-914e0079-9ca3-47a0-a26b-597ce9a2491c.png)
+
+Change this absolute threshold, e.g. to a relative one. However, feel free to think about how this problem can be solved without any threshold. 
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/339
+I_kwDOE7-yYs4_gEtE,Fix update_sample_sheet.py,OPEN,2021-11-28T16:14:32Z,2021-12-02T07:15:07Z,,"Currently, the update_sample_sheet script checks if the workdir has a specific naming pattern. Since we integrate the script in the workflow itself, this can be removed. (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/update-sample-sheet.py#L46)
+
+Moreover, the scripts fails, if the data and archive directory do not exist. Add the functionality to create the directory, if the do not exist.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/340
+I_kwDOE7-yYs4_jC1s,Standardise nomenclature of variants of concern and Variants of interest,CLOSED,2021-11-29T15:07:34Z,2022-01-03T14:31:20Z,2022-01-03T14:31:20Z,"In the config.yaml, the ""variants to be highlighted"" are called `variants of concern` (https://github.com/IKIM-Essen/uncovar/blob/master/config/config.yaml#L89).
+
+In the report, the ""variants to be highlighted"" are called"" `Variants of interest`(https://github.com/IKIM-Essen/uncovar/blob/master/workflow/scripts/generate-overview-table.py#L206).
+
+This non-uniform nomenclature is confusing and wrong to use for single Mutations.
+
+We should rename it in something like `Mutation Profiles of VOC/VOIs`. Maybe we should even split the `Variants of interest` into `Variants of Concern`, `Variants of Interest`, `Variants Under Monitoring` and find an automated way to get the latest Variants of something. Maybe pangolin repo offers VOCs, VOIs, and VUMs.
+
+Who definitions are: (https://www.who.int/en/activities/tracking-SARS-CoV-2-variants/)
+
+**Variants of Concern (VOC)**
+A SARS-CoV-2 variant that meets the definition of a VOI (see below) and, through a comparative assessment, has been demonstrated to be associated with one or more of the following changes at a degree of global public health significance: 
+
+- Increase in transmissibility or detrimental change in COVID-19 epidemiology; OR
+- Increase in virulence or change in clinical disease presentation; OR
+- Decrease in effectiveness of public health and social measures or available diagnostics, vaccines, therapeutics. 
+
+**Variants of Interest (VOI)**
+A SARS-CoV-2 variant : 
+
+- with genetic changes that are predicted or known to affect virus characteristics such as transmissibility, disease severity, immune escape, diagnostic or therapeutic escape; AND 
+- Identified to cause significant community transmission or multiple COVID-19 clusters, in multiple countries with increasing relative prevalence alongside increasing number of cases over time, or other apparent epidemiological impacts to suggest an emerging risk to global public health.  
+
+**Variants Under Monitoring (VUM)**
+A SARS-CoV-2 variant with genetic changes that are suspected to affect virus characteristics with some indication that it may pose a future risk, but evidence of phenotypic or epidemiological impact is currently unclear, requiring enhanced monitoring and repeat assessment pending new evidence.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/344
+I_kwDOE7-yYs4_n8eO,Add plot of of found mutations,OPEN,2021-11-30T16:29:06Z,2021-12-06T11:30:23Z,,"Add plot of found mutations per sample in a new page of the Snakemake report.
+
+The mutations should be shown as Nucleotide Mutations and Amionacid Mutations. Please also include insertion, deletions etc. See the screenshot below as a reference.
+
+![image](https://user-images.githubusercontent.com/46334240/144087101-3ccf3093-b08c-4f78-9f73-804a87bb43e7.png)
+
+ P.S.: This should happen asap. The virology is expecting this plot within the next report (02.12.2021). It should be included in the one after (09.12) at least.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/345
+I_kwDOE7-yYs4_ul1m,Multi-lineage Indication,OPEN,2021-12-02T06:27:41Z,2021-12-02T07:19:39Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+In the overview table, add an indicator for questioning the single pangolin call pangolin and indicate to look at the Kallisto call for the sample. The Kallisto call could show multi-lineage samples. Maybe use ML; a threshold is not recommended.
+
+- [ ] Contact Johannes Köester to clarify what to do. 
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Currently, the Kallisto calls are kind of neglected, even though they could indicate a multi-lineage infection.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/351
+I_kwDOE7-yYs4_unAD,Patient vs. Environmental Sample Execution ,CLOSED,2021-12-02T06:36:14Z,2022-01-03T15:44:55Z,2022-01-03T15:44:55Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add a flag in the config file for the execution of only Kallisto and the variant calling. 
+
+Maybe we add several target rules in the Snakefile, which can be activated by querying the flag in the config file. That could be not so messy as including if statements in the snakemake_report rule. Moreover, that adds flexibility for the later addition of the ""environmental"" path.
+
+Name this flag, e.g. `execution_mode`. Allowed values could be `patient` and `environmental`.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Environmental samples don't need the single genome assembly and all the associated steps with it.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/352
+I_kwDOE7-yYs4_unqe,Multiple Outbreak Links,OPEN,2021-12-02T06:40:58Z,2021-12-06T11:37:28Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add multiple outbreak links in the lineage column of the overview table
+
+To include
+- [ ] outbreak.info 
+- [ ] covariants.org
+
+Moreover,
+
+- [ ] ask Folker which other sides to include  
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Addressees of the workflow should be able to collect from different sources to the called lineage easily.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/353
+I_kwDOE7-yYs4_uoSO,Documentation,CLOSED,2021-12-02T06:45:27Z,2021-12-06T14:55:37Z,2021-12-06T14:55:37Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add an implementation of a documentation tool, e.g. Sphinx, GitBook, Doxygen, MkDocs or Documize
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Starting documentation, because the termini in the report are hard to understand and need a proper definition. Moreover, the workflow gets more complex and thus need to be documented.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/354
+I_kwDOE7-yYs4_uoyt,Test Cases for Varlociraptor of ONT Data,CLOSED,2021-12-02T06:49:02Z,2021-12-23T16:31:41Z,2021-12-23T16:31:41Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Create test cases for Varlociraptor variant calling to improve the variant calling on ONT data.
+
+- [ ] Get Varlociraptor Link from Johannes
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+The variant calling with Varlociraptor is not 100% sufficient. Some of the VoIs are not shown in the overview table
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/355
+I_kwDOE7-yYs4_upr-,Parallel Analysis of same Technology,CLOSED,2021-12-02T06:55:14Z,2022-01-03T13:17:48Z,2022-01-03T13:17:48Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add a flag for parallel data analysis, which was created with different sequencing kits but on the sample technology.
+
+- [ ] Discuss how to implement this. Config? Sample Sheet?
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+For the paper, we need a report (for showcasing) that contains sample sequenced Illumina with Nimagen primers, Illumina with Revelo primers, Illumina with Illumina primers and ONT with ARTIC kit.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/356
+I_kwDOE7-yYs4_up4h,Docstrings in common.smk,OPEN,2021-12-02T06:56:33Z,2021-12-02T06:56:33Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add docstrings in helper functions in `common.smk`.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Documentation and clarity.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/357
+I_kwDOE7-yYs4_uq_8,Tooltip in Overview Table,OPEN,2021-12-02T07:03:33Z,2022-01-13T08:56:35Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+* UnCoVar version: 0.3.1
+* OS: Linux
+* Snakemake version: 6.12.1
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+The tooltip of the column `Variants of Interest`of the overview table is broken. For each, it always shows the mutations of all variants of interest of the sample and is not reduced to the gene.
+
+See: https://github.com/IKIM-Essen/uncovar/blob/master/resources/report-table-formatter.js#L14
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+`snakemake --cores all --use-conda`
+
+See `results/reports/{date}.zip`
+
+## Logs
+<!-- Any terminal output to help explain your problem. -->
+None
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+![image](https://user-images.githubusercontent.com/46334240/144374078-2dbcf8d3-d4ed-4e6b-a0bd-4753db2b2775.png)
+
+![image](https://user-images.githubusercontent.com/46334240/144374162-44aabf5f-6b0f-4e84-a9ec-1b9e50031322.png)
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/358
+I_kwDOE7-yYs4_usYi,Publish Container to Quay.io,OPEN,2021-12-02T07:11:38Z,2021-12-06T11:33:34Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+* UnCoVar version: 0.3.1
+* OS: Linux
+* Snakemake version: 6.12.1
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+Currently, the GitHub action for releasing a container image of UnCoVar dependencies is not functioning correctly. That is maybe due to die build size. I once measured it; 100 GB. That is problematic because the GitHub Action runners only provided 60 GB of disk space.
+
+The associated action: https://github.com/IKIM-Essen/uncovar/blob/master/.github/workflows/release-please.yml#L137
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+https://github.com/IKIM-Essen/uncovar/runs/4366292602?check_suite_focus=true
+
+## Logs
+<!-- Any terminal output to help explain your problem. -->
+https://github.com/IKIM-Essen/uncovar/runs/4366292602?check_suite_focus=true
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/359
+I_kwDOE7-yYs4_u0O6,Ion Torrent,CLOSED,2021-12-02T07:57:08Z,2021-12-09T10:49:26Z,2021-12-09T10:49:26Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add a path for ion torrent single end sequencing data. 
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Collab with Darmstadt wastewater.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/361
+I_kwDOE7-yYs4_x4Rx,Kallisto Consensus Sequences,OPEN,2021-12-02T22:31:48Z,2021-12-02T22:37:19Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Use consensus sequences of the lineages as references for Kallisto calling.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Currently, we are downloading all SARS-CoV-2 genomes from GISAID`s EpiCoV database. However, we only use the first occurrence of each lineage as reference genomes (for later quantification with Kallisto). One could argue, that the first occurrence of the lineage is not representative for this lineage, as the first sequence is most likely ""badly"" assembled and contains usually lots of N´s.
+
+As we have **all** SARS-CoV-2 genomes over **all** lineages ever commit to GISAID available, we could create consensus sequences for all lineages by taking all genomes of this lineage into account.
+
+This can be done in two steps:
+1. We would have to adjust the `extract-strains-from-gisaid-provision.py`. We don't only write out the oldest sequence per lineage but all of them into a structure like this:
+```
+resources
+└── genomes
+    ├── B.1-genomes
+    │   ├── sequence-1.fasta
+    │   ├── sequence-2.fasta
+    │   ├── ...
+    ├── B.1.1.7-genomes
+    │   ├── sequence-1.fasta
+    │   ├── sequence-2.fasta
+    │   ├── ...
+    └── B.1.167.2-genomes
+    │   ├── sequence-1.fasta
+    │   ├── sequence-2.fasta
+    │   ├── ...
+    └── ...
+```
+Of course, the naming has to be adjusted.
+Moreover, this has to be done fast. Test if `ThreadPoolExecutor` from `concurrent.futures` can be a solution to this. 
+
+2. Then we create consensus sequences from theses `.fasta.
+
+3. Feed them into the `cat_genomes` rule. 
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/371
+I_kwDOE7-yYs4_5Vyw,Loading of Coverage Plots,CLOSED,2021-12-06T10:42:34Z,2022-03-21T07:56:54Z,2022-03-21T07:56:54Z,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+* UnCoVar version: 0.4.1
+* OS: Linux
+* Snakemake version: 6.12.1
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+The coverages plot takes ages to load. (https://github.com/IKIM-Essen/uncovar/blob/master/workflow/rules/generate_output.smk#L27 and https://github.com/IKIM-Essen/uncovar/blob/master/workflow/rules/generate_output.smk#L47)
+
+Somehow store the plots more efficiently, so that they are loaded faster when viewing them in the report.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+Normal execution of the workflow.
+
+## Logs
+<!-- Any terminal output to help explain your problem. -->
+None
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/375
+I_kwDOE7-yYs4_6aMD,Complete Documentation,OPEN,2021-12-06T15:21:06Z,2022-03-01T14:58:58Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+We have documentation of the workflow now 🎉  See. https://ikim-essen.github.io/uncovar/
+
+But it's still empty 😔 @alethomas, @AKBrueggemann, @lenakinzel and everyone else: Please feel free to lent and hand and fill out a topic:
+
+- [x] index.md
+- [ ] getting-started.md
+- [ ]  user-guide
+   - [ ] index.md
+   - [ ] installation.md
+   - [ ] configuration.md
+   - [ ] create-your-analysis.md
+   - [ ] share-your-results.md
+   - [ ] customize-your-analysis.md
+   - [ ] faqs.md
+- [ ] dev-guide
+   - [ ] index.md
+   - [ ] pre-analysis.md
+   - [ ] sequence-preprocessing.md
+   - [ ] initial-quality-control.md
+   - [ ] assembly.md
+   - [ ] final-quality-control.md
+   - [ ] lineage-calling.md
+   - [ ] reporting.md
+   - [ ] ci-cd.md
+   - [ ] tests.md
+   - [ ] variant-calling.md
+   - [ ] contributing.md
+   - [ ] faqs.md
+- [ ] about
+   - [ ] team.md
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Need better documentation!
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/376
+I_kwDOE7-yYs5ABcPQ,Add a rule for converting bed to bedpe files,CLOSED,2021-12-08T08:02:53Z,2022-02-02T09:46:57Z,2022-02-02T09:46:57Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Currently, the workflow requires a [`.bedpe`](https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bed-format) file for primer clipping. Create a rule which changes [`.bed`](https://software.broadinstitute.org/software/igv/BED) files to `.bedpe` files.
+
+Moreover, we should have a default primer.bed file in the resources, e.g. from ARTIC https://github.com/artic-network/artic-ncov2019/tree/master/primer_schemes/nCoV-2019/V3. This should be defined as the default primer clipping file.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+`.bedpe` is not a common format. As far as I can tell the primers are mostly distributed as a `.bed` files.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+None
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+None",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/381
+I_kwDOE7-yYs5ACwVp,Add flag if covid is not detected,OPEN,2021-12-08T14:21:15Z,2022-01-11T16:48:33Z,,"
+
+## Feature Request
+
+Currently SARS-CoV-2 negative samples pass through the workflow without any further notification
+
+## Motivation
+
+make SARS-CoV-2 negative samples more visible
+
+## Alternatives
+
+None
+
+## Additional context
+
+None
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/384
+I_kwDOE7-yYs5AjaGn,Remove found species from overview table,OPEN,2021-12-17T08:51:28Z,2021-12-17T08:51:28Z,,"## Feature Request
+
+As the species overview is not of the greatest interest anymore, we should think about excluding it to a separate table in the report. 
+
+## Motivation
+
+Cleaning up the overview table and only show the most relevant information
+
+## Alternatives
+
+Collapsible columns,...
+
+## Additional context",alethomas,https://github.com/IKIM-Essen/uncovar/issues/415
+I_kwDOE7-yYs5Ay4GG,Add CoVarPlot,OPEN,2021-12-22T18:30:43Z,2021-12-22T18:30:43Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add CoVarPlots (Coverage Variant Plots for viral whole-genome sequencing).
+
+https://github.com/Psy-Fer/CoVarPlot
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Nice to have ;)
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+Do nothing.
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+![image](https://user-images.githubusercontent.com/46334240/147138913-4758b20a-cd79-4c36-964c-f15e46fdb58b.png)
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/430
+I_kwDOE7-yYs5A1qqi,Implement automatic primer resources for ARTIC v3 + v4,OPEN,2021-12-23T15:29:22Z,2021-12-23T15:29:22Z,,"## Feature Request
+
+For running several different kits we need to implement different primer resources including the different ARTIC versions
+
+## Motivation
+
+none
+
+## Alternatives
+
+none
+
+## Additional context
+
+none
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/432
+I_kwDOE7-yYs5CdPgF,Question: anonynmous file,CLOSED,2022-01-26T12:24:16Z,2022-02-15T14:44:03Z,2022-02-15T14:44:03Z,"https://github.com/IKIM-Essen/uncovar/blob/e844fc40923fcaa8c680079a05cd09173027fb00/workflow/rules/long_read.smk#L55
+
+can this anonynmous addressing of the file cause problems, when were removing it with the next rule?",alethomas,https://github.com/IKIM-Essen/uncovar/issues/456
+I_kwDOE7-yYs5DQEjE,Reduced size of variants over time plot,OPEN,2022-02-09T09:38:45Z,2022-02-09T09:38:45Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+- UnCoVar version: 0.13.2
+- OS: GitHub Runner
+- Snakemake version: github-action/v1.24.0
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+The agenda of the variants over time plots is so large, that the main plot is reduced in size.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+This is, for example, for variants-ORF1ab-over-time.svg with the CI data the case.
+
+See https://github.com/IKIM-Essen/uncovar/suites/5170544594/artifacts/156821233.
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+![image](https://user-images.githubusercontent.com/46334240/153167379-17dee152-6a0a-47da-b83a-1992e10ec4fc.png)
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/468
+I_kwDOE7-yYs5DQFWw,MultiQC naming,OPEN,2022-02-09T09:41:50Z,2022-02-09T09:41:50Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+ - UnCoVar version: 0.13.2
+ - OS: GitHub Runner
+ - Snakemake version: github-action/v1.24.0
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+The sample names of the CI data do not match up and result in a not confusing plot in multiqc.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+
+See https://github.com/IKIM-Essen/uncovar/suites/5170544594/artifacts/156821233.
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+<img width=""1114"" alt=""image"" src=""https://user-images.githubusercontent.com/46334240/153169009-4e8f6a60-be42-4267-b08a-73e529b0a536.png"">
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/469
+I_kwDOE7-yYs5DQGkg,VOC similarity table,CLOSED,2022-02-09T09:46:19Z,2022-03-07T06:31:53Z,2022-03-07T06:31:49Z,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+ - UnCoVar version: 0.13.2
+- OS: GitHub Runner
+- Snakemake version: github-action/v1.24.0
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+In the new VoC similarity table for the Illumina sample, the VoC with the highest similarity is 20A S 126A. According to CoV Lineages, this is Kongo (B.1.620). 
+
+21K Omicron is rated with 54% similarity for the Nanopore sample. 
+
+However, that is surprising because these test samples come from simulated reads of a B.1.1.7 genome (at Illumina) or were downloaded from EMBL-EBI a long time ago (~October) (at Nanopore). 
+
+The Jaccard indices are currently only defined in the numerator via the lineage-defining variants. This creates a bias. One could also include in the numerator the variants that explicitly do not belong to a lineage. For such variants, one must of course work with a different weight, namely 1 - PROB_PRESENT.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+See https://github.com/IKIM-Essen/uncovar/suites/5170544594/artifacts/156821233.
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+![image](https://user-images.githubusercontent.com/46334240/153170568-e0dce143-d2c0-4dbb-9ebc-97e5a2546f5a.png)
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/470
+I_kwDOE7-yYs5DQH5e,To many Ns in final sequnces,OPEN,2022-02-09T09:51:26Z,2022-03-01T14:56:54Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+ - UnCoVar version: 0.13.2
+ - OS: GitHub Runner
+ - Snakemake version: github-action/v1.24.0
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+It is suspected, that the final sequences contain too many Ns, regardless of coverage in the raw data.
+We need to check the whole process for generating sequences, which includes amount others preprocessing, assembly, scaffolding, masking.
+
+We can use sample `17655` from 2022-01-28 as a starting point.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+N/A
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+N/A
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/471
+I_kwDOE7-yYs5EHe9h,Ability to identify the ORF1ab mutations as mutations of the individual functional proteins,CLOSED,2022-02-18T10:39:53Z,2022-03-04T06:08:21Z,2022-03-04T06:08:21Z,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+ORF1ab is the polyprotein that is split into the individual functional proteins, e.g. nsp6. 
+Add a way to additionally identify the ORF1ab mutations as mutations of the individual functional proteins. 
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+This would be helpful for potential users, as one can then immediately see if a mutation possibly affects an important function.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+Request directly from virology.",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/482
+I_kwDOE7-yYs5EfBRj,Add variant overview plot ,OPEN,2022-02-24T08:09:08Z,2022-03-14T13:10:25Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add a plot that contains the following:
+- The ORFS / genes of the SARS-CoV-2 Genome. See Example [1] below.
+- The protein products of the SARS-CoV-2 genomes. See Example [1] below.
+- The amplicon section. See Example [2] below.
+- The Coverage.  See Example [2] below.
+- Indication of Varaints. See Example [2] below.
+
+Use https://github.com/koesterlab/datavzrd for that. Realise the link to corresponding tables by clicking on the respective variants.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Request from Folker
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+Just including the CoVarPlot #430
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+[1]
+![image](https://user-images.githubusercontent.com/46334240/155482938-198ff957-e429-482d-8d61-5fe7c1cb671a.png)
+https://link.springer.com/article/10.1007/s00705-022-05385-y
+
+[2]
+![image](https://user-images.githubusercontent.com/46334240/155483015-fd991097-2984-44bb-bd7a-618afe0c613f.png)
+https://github.com/Psy-Fer/CoVarPlot
+
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/485
+I_kwDOE7-yYs5Eg7Ky,Add CI check for VOC table,OPEN,2022-02-24T16:18:03Z,2022-02-24T16:18:03Z,,"## Feature Request
+
+to be sure the generation of the VOC table is functioning properly we could implement a check to see if the input sample strain is called correctly in the VOC table as most similar strain
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/486
+I_kwDOE7-yYs5FDm7p,Make number of lineages configurable in VOC table,OPEN,2022-03-03T15:45:44Z,2022-03-03T15:45:44Z,,"## Feature Request
+
+No hard coding for the number of shown lineages in the VOC table
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/494
+I_kwDOE7-yYs5FITWE,Replace outdated df.append ,CLOSED,2022-03-04T16:07:24Z,2022-07-13T10:17:46Z,2022-07-13T10:17:46Z,"## Feature Request
+
+The commonly used method for generating a pandas DataFrame is outdated and has to be replaced in all scripts
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/496
+I_kwDOE7-yYs5FpEeE,Add a minimum percentage of SARS-CoV-2 in the sample as criteria to create a pseudo assembly,OPEN,2022-03-14T13:38:36Z,2022-03-14T13:38:36Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add a minimum percentage of SARS-CoV-2 in the sample as criteria to create a pseudo assembly.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+It is confusing to have a pseudo assembly if there is no SARS-CoV-2 in the sample.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+<img width=""1423"" alt=""Screenshot 2022-03-14 at 14 36 24"" src=""https://user-images.githubusercontent.com/46334240/158183444-702e7c3a-7781-4972-a4ca-20522dd7f6e8.png"">
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/497
+I_kwDOE7-yYs5F_SNB,Primer clipping,CLOSED,2022-03-19T09:12:46Z,2022-03-22T09:44:02Z,2022-03-22T09:44:01Z,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+- UnCoVar version: v0.13.2
+- OS: Linux
+- Snakemake version: 6.10.0
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+
+The primer clipping doesn't seem to work. Can see from 3. Sequencing Details -> 4. Correct Amplicon Primer Clipping.
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+See run from 2022-03-18.
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+![2bdec83c22862194c5fcf4bb9197f82719600aea065e2c899f789017fdfb3c4a (1)](https://user-images.githubusercontent.com/46334240/159115157-37c76e62-7380-430e-a4a2-6fd3a9df478d.png)
+
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/502
+I_kwDOE7-yYs5GC0Ib,Add more Illumina sequences to the CI environment,OPEN,2022-03-21T09:58:37Z,2022-03-21T09:58:37Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+From @folker in #446: 
+
+> we might want to add a few more illumina sequences to the CI environment
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+?
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+See PR #446 ",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/504
+I_kwDOE7-yYs5GMoB0,Adjust structure of workflow for snakedeploy,OPEN,2022-03-23T07:21:19Z,2022-03-23T07:21:26Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Resources essential for the workflow must be placed under `workflow/resources`. Access to these files must be done with `workflow.source_path(""../resources/some-resource.txt"")`.
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Snakedeploy doesn't work with v0.14.0
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+N/A
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+N/A
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/506
+I_kwDOE7-yYs5GOcx0,newly initialized repo can't handle empty sample sheet,OPEN,2022-03-23T14:20:51Z,2022-03-23T14:20:51Z,,"## Bug Report
+
+If you clone the repo and remove the dummy lines from the sample sheet you won't be able to automatically update it. Either we should be able to deal with an empty or header-only sample sheet or remove the dummy lines automatically",alethomas,https://github.com/IKIM-Essen/uncovar/issues/508
+I_kwDOE7-yYs5GOdfW,automatically generate folders for data handling,OPEN,2022-03-23T14:23:03Z,2022-03-23T14:23:03Z,,"## Feature Request
+
+In a newly cloned repo the data structure isn't completed automatically. `data`, `../incoming` and `../archive` have to be generated manually
+
+## Motivation
+
+Convenience
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/509
+I_kwDOE7-yYs5GTkj4,generate report without found species diversity,OPEN,2022-03-24T13:41:00Z,2022-03-24T13:41:00Z,,"## Feature Request
+
+When running uncovar with non SARS-CoV-2 samples or negative controls, the report generation of fastQC can't handle an empty kraken report and the run fails
+
+## Motivation
+
+Also use UnCoVar for negative controls properly
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/514
+I_kwDOE7-yYs5GheGp,Add csv table in report of all kallisto calls,OPEN,2022-03-28T09:49:04Z,2022-03-28T10:00:20Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+Add csv table in report of all kallisto calls
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+Needed for ww.
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+Maximum likelihood?
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+N/A",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/517
+I_kwDOE7-yYs5Ghek8,Include coverage plots in wastewater report,OPEN,2022-03-28T09:50:40Z,2022-03-28T09:50:40Z,,"## Version
+
+<!-- Note the UnCoVar version for which you experience the bug.
+Please only report bugs of the **latest release of UnCoVar**.
+If possible, please check whether the bug has been already fixed in the master branch. -->
+
+- UnCoVar version: 0.15.0
+- Snakemake version: 7.3
+
+## Bug Report
+
+<!-- A clear and concise description of what the bug is. -->
+
+## Minimal Example
+
+<!-- Add a minimal example for reproducing the bug.
+That includes the executed command and a reference to the used sample.  -->
+
+## Logs
+
+<!-- Any terminal output to help explain your problem. -->
+
+## Additional context
+
+<!-- Add any other context about the problem here. -->
+",thomasbtf,https://github.com/IKIM-Essen/uncovar/issues/518
+I_kwDOE7-yYs5IoMAJ,fix: squeeze is deprecated,CLOSED,2022-04-28T10:02:59Z,2022-05-13T11:13:07Z,2022-05-13T11:13:07Z,"## Feature Request
+
+squeeze is deprecated and should be replaced
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/530
+I_kwDOE7-yYs5JYKqZ,Add a first init rule,OPEN,2022-05-10T12:20:23Z,2022-05-10T12:20:23Z,,"## Feature Request
+
+Add a rule to initialize all downloads for databases, producing indices., create folders etc.
+
+## Motivation
+
+Easier usage when disconnected from first run with data that should be analysed
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/537
+I_kwDOE7-yYs5JciUX,master and dev branch,OPEN,2022-05-11T08:37:15Z,2022-05-11T08:38:06Z,,"## Feature Request
+
+splitup feature updates and version updated by using two different branches
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+add branch protection for dev branch
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/538
+I_kwDOE7-yYs5PAyxC,Remove Masked polished sequence from reporting. RKI Only,OPEN,2022-08-02T09:58:47Z,2022-08-02T09:59:42Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/556
+I_kwDOE7-yYs5T0ja6,remove once pangolin 4.1.3 is available in bioconda,CLOSED,2022-10-12T14:07:45Z,2023-10-25T09:04:11Z,2023-10-25T09:04:11Z,"https://github.com/IKIM-Essen/uncovar/blob/a0b6fd0557b7e6cb3aeddd22e6a3350560c18415/workflow/envs/pangolin.yaml#L7
+
+```yaml
+
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - pangolin =4.1.2
+  - tabulate <0.9 # TODO remove once pangolin 4.1.3 is available in bioconda
+
+```",github-actions,https://github.com/IKIM-Essen/uncovar/issues/569
+I_kwDOE7-yYs5T0jcc,-Oz generates a .vcf.gz!!,OPEN,2022-10-12T14:07:49Z,2022-10-12T14:07:50Z,,"https://github.com/IKIM-Essen/uncovar/blob/a0b6fd0557b7e6cb3aeddd22e6a3350560c18415/workflow/rules/variant_calling.smk#L103
+
+```python
+
+    conda:
+        ""../envs/bcftools.yaml""
+    shell:
+        ""bcftools view -Oz -o {output} {input} 2> {log}""  # TODO -Oz generates a .vcf.gz!!
+
+
+rule render_scenario:
+
+```",github-actions,https://github.com/IKIM-Essen/uncovar/issues/570
+I_kwDOE7-yYs504Rmx,Add rules for generating report only with qc measures,OPEN,2023-10-25T09:05:11Z,2023-10-25T09:05:11Z,,"## Feature Request
+
+<!-- A clear and concise description of the feature proposal. -->
+
+## Motivation
+
+<!-- Please describe the motivation for this proposal. -->
+
+## Alternatives
+
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+## Additional context
+
+<!-- Add any other context or screenshots about the feature request here. -->
+",alethomas,https://github.com/IKIM-Essen/uncovar/issues/606
+I_kwDOE7-yYs6ar-Az,keep until https://github.com/bioconda/bioconda-recipes/pull/42192 and we can pin to 4.3.1 above...,OPEN,2024-10-17T16:31:30Z,2024-10-17T16:31:30Z,,"https://github.com/IKIM-Essen/uncovar/blob/b8c5c449f81ba9c08bcdb68a099318eca1e64066/workflow/envs/pangolin.yaml#L7
+
+```yaml
+
+  - nodefaults
+dependencies:
+  - pangolin =4.3
+  - snakemake-minimal=7.24.0 # TODO keep until https://github.com/bioconda/bioconda-recipes/pull/42192 and we can pin to 4.3.1 above
+
+```",github-actions,https://github.com/IKIM-Essen/uncovar/issues/670
+I_kwDOE7-yYs6dbFm-,Ragtag fails randomly,OPEN,2024-11-07T14:02:01Z,2024-11-07T14:02:01Z,,"```
+Error in rule order_contigs:
+    jobid: 75
+    input: results/benchmarking/contigs/checked/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta, resources/genomes/main.fasta
+    output: results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta
+    log: logs/benchmarking/ragtag/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.log (check log file(s) for error details)
+    conda-env: /github/workspace/.tests/.snakemake/conda/6ade157fc4182193208fad759df30bbf_
+    shell:
+        (ragtag.py scaffold -C -w -o results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold resources/genomes/main.fasta results/benchmarking/contigs/checked/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta && mv results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.fasta results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta) > logs/benchmarking/ragtag/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.log 2>&1
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+Logfile logs/benchmarking/ragtag/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.log:
+================================================================================
+Wed Nov  6 14:09:38 2024 --- VERSION: RagTag v2.1.0
+Wed Nov  6 14:09:38 2024 --- CMD: ragtag.py scaffold -C -w -o results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold resources/genomes/main.fasta results/benchmarking/contigs/checked/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta
+Wed Nov  6 14:09:38 2024 --- WARNING: Without '-u' invoked, some component/object AGP pairs might share the same ID. Some external programs/databases don't like this. To ensure valid AGP format, use '-u'.
+Wed Nov  6 14:09:38 2024 --- INFO: Mapping the query genome to the reference genome
+Wed Nov  6 14:09:38 2024 --- INFO: Running: minimap2 -x asm5 -t 1 /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/resources/genomes/main.fasta /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/checked/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta > /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.asm.paf 2> /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.asm.paf.log
+Wed Nov  6 14:09:38 2024 --- INFO: Finished running : minimap2 -x asm5 -t 1 /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/resources/genomes/main.fasta /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/checked/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold.fasta > /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.asm.paf 2> /github/workspace/.tests/.snakemake/shadow/tmpb54bkjv2/results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.asm.paf.log
+Wed Nov  6 14:09:38 2024 --- INFO: Reading whole genome alignments
+Wed Nov  6 14:09:38 2024 --- INFO: Filtering and merging alignments
+Traceback (most recent call last):
+  File ""/github/workspace/.tests/.snakemake/conda/6ade157fc4182193208fad759df30bbf_/bin/ragtag_scaffold.py"", line 577, in <module>
+    main()
+  File ""/github/workspace/.tests/.snakemake/conda/6ade157fc4182193208fad759df30bbf_/bin/ragtag_scaffold.py"", line 488, in main
+    raise RuntimeError(""There are no useful alignments. Check output alignment files."")
+RuntimeError: There are no useful alignments. Check output alignment files.
+mv: cannot stat 'results/benchmarking/contigs/ordered-unfiltered/read-sample-B-1-351_READ_NUMBER_100_READ_LENGTH_100_STATE_scaffold/ragtag.scaffold.fasta': No such file or directory
+```",johanneskoester,https://github.com/IKIM-Essen/uncovar/issues/680

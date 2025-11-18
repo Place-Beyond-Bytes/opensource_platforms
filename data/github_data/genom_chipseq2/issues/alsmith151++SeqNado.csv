@@ -1,0 +1,148 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5NTA1NjczMDQ=,Chromsizes specification issue,CLOSED,2021-07-22T11:38:30Z,2022-11-18T18:17:39Z,2022-11-18T18:17:39Z,"Mapping ChIP-seq data using hg38 (using the databank UCSC indices), and it seems to have an issue converting bed to bigbed, possibly missing “chrEBV” in chrom.sizes?? Error message is below.
+ 
+
+2021-07-22 12:22:59,297 INFO main control - {""task"": ""'convert_bed_to_bigbed'"", ""task_status"": ""update"", ""task_total"": 1, ""task_completed"": 0,
+
+""task_completed_percent"": 0.0}
+
+2021-07-22 12:22:59,297 ERROR main task -  \
+
+                                             Exception #1 \
+
+                                               'builtins.OSError(Job 2487560 has non-zero exitStatus 255: hasExited=True,  wasAborted=Falsehas
+
+Signal=True, terminatedSignal='unknown
+
+signal?!'  \
+
+                                             statement = cat peaks/homer/ChIP-SEM-MYB_MYB_homer.bed                     | sort -k1,1 -k2,2n > peaks/homer/ChIP-SEM-MYB_MYB_homer.bed.tmp                     && bedToBigBed peaks/homer/ChIP-SEM-MYB_MYB_homer.bed.tmp chrom_sizes.txt.tmp peaks/homer/ChIP-SEM-MYB_MYB_homer.bigBed \
+
+                                              stderr = chrEBV is not found in chromosome sizes file \
+
+                                             )' raised in ... \
+
+                                                Task = def convert_bed_to_bigbed(...): \
+
+                                                Job  = [peaks/homer/ChIP-SEM-MYB_MYB_homer.bed -> peaks/homer/ChIP-SEM-MYB_MYB_homer.bigBed] \
+
+                                              \
+
+                                             Traceback (most recent call last): \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/ruffus/task.py"", line 712, in run_pooled_job_without_exceptions \
+
+                                                 return_value = job_wrapper(params, user_defined_work_func, \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/ruffus/task.py"", line 545, in job_wrapper_io_files \
+
+                                                 ret_val = user_defined_work_func(*params) \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/ngs_pipeline/pipeline_atac_chipseq.py"", line 600, in convert_bed_to_bigbed \
+
+                                                 P.run( \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/cgatcore/pipeline/execution.py"", line 1223, in run \
+
+                                                 benchmark_data = r.run(statement_list) \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/cgatcore/pipeline/execution.py"", line 803, in run \
+
+                                                 stdout, stderr, resource_usage = self.queue_manager.collect_single_job_from_cluster( \
+
+                                               File ""/home/j/jharman/.conda/envs/ngs/lib/python3.8/site-packages/cgatcore/pipeline/cluster.py"", line 145, in collect_single_job_from_cluster \
+
+                                                 raise OSError(error_msg) \
+
+                                             OSError: Job 2487560 has non-zero exitStatus 255: hasExited=True,  wasAborted=FalsehasSignal=True, terminatedSignal='unknown signal?!'  \
+
+                                             statement = cat peaks/homer/ChIP-SEM-MYB_MYB_homer.bed                     | sort -k1,1 -k2,2n > peaks/homer/ChIP-SEM-MYB_MYB_homer.bed.tmp                     && bedToBigBed peaks/homer/ChIP-SEM-MYB_MYB_homer.bed.tmp chrom_sizes.txt.tmp peaks/homer/ChIP-SEM-MYB_MYB_homer.bigBed \
+
+                                              stderr = chrEBV is not found in chromosome sizes file \",alsmith151,https://github.com/alsmith151/SeqNado/issues/15
+MDU6SXNzdWU5NTE3ODM1NjY=,Hg38 bigwig generation - difference in default behaviour for deeptools and homer,CLOSED,2021-07-23T17:46:31Z,2021-10-04T15:18:36Z,2021-10-04T15:18:36Z,"Creating bigwigs in hg38 with homer and deeptools results in Homer tracks showing regions of absent signal, whereas normal signal is found with deeptools. These regions are not overlapping blacklist. Looking at hg19 mapping does not show this loss of signal.
+
+I believe this is because hg38 mapping has a much higher level of multimapping compared with hg19. By default Homer retains uniquely mapped reads, and multimapping regions are lost. Adding the -keepAll parameter to homer tag directory generation fixes this issue.
+
+Is this a parameter that we want used by default? Or maybe the template config files should have these written in?
+
+Example tracks attached illustrating the issue. 1st track shows DeepTools, 2nd track shows Homer, 3rd track shows Homer with the -keepAll parameter.
+![Screenshot 2021-07-23 at 18 45 15](https://user-images.githubusercontent.com/22264529/126821246-fbda2221-aeba-48f6-ac75-c0d2c2f69454.png)
+",JoeHarman,https://github.com/alsmith151/SeqNado/issues/16
+MDU6SXNzdWU5NTI5OTUyMjQ=,UCSC hubs custom parameters,CLOSED,2021-07-26T14:58:16Z,2024-02-03T09:38:30Z,2024-02-03T09:38:30Z,,alsmith151,https://github.com/alsmith151/SeqNado/issues/17
+I_kwDODg6-RM49ntaN,Blacklist missing parameter access,CLOSED,2021-10-22T17:50:04Z,2022-11-18T18:17:21Z,2022-11-18T18:17:21Z,"Problem running rna pipeline.
+Blacklist parameter not recognised.",JoeHarman,https://github.com/alsmith151/SeqNado/issues/21
+I_kwDODg6-RM49oUOF,STAR command does not account for paired end data,CLOSED,2021-10-22T22:06:17Z,2022-01-14T18:01:35Z,2022-01-14T18:01:35Z,"The STAR commands generated by the pipeline are written out in single end mode (Unless I've missed a pipeline flag?)
+
+The --readFilesIn parameter uses "","" to imply fastq files that are concatenated (i.e, lanes), while "" "" is used to seperate read 1 and read 2.
+
+Such that this command (as the pipeline uses):
+
+`STAR --genomeDir /project/milne_group/shared/custom_genomes/mm10/TetR_Chr8/star --readFilesIn trimmed/RNA-TetO-MYB-TA2-4_R1_val_1.fq,trimmed/RNA-TetO-MYB-TA2-4_R2_val_2.fq --readFilesCommand cat --outSAMtype BAM Unsorted --runThreadN 4 --outFileNamePrefix bam/RNA-TetO-MYB-TA2-4`
+
+Should be (for paired end):
+
+`STAR --genomeDir /project/milne_group/shared/custom_genomes/mm10/TetR_Chr8/star --readFilesIn trimmed/RNA-TetO-MYB-TA2-4_R1_val_1.fq trimmed/RNA-TetO-MYB-TA2-4_R2_val_2.fq --readFilesCommand cat --outSAMtype BAM Unsorted --runThreadN 4 --outFileNamePrefix bam/RNA-TetO-MYB-TA2-4`
+
+I think this should be a simple fix, unless it needs to be conditional on single/paired end input??",JoeHarman,https://github.com/alsmith151/SeqNado/issues/22
+I_kwDODg6-RM5czd_l,Remove pysam dependency in package,CLOSED,2023-01-25T17:09:13Z,2023-03-17T16:48:27Z,2023-03-17T16:48:27Z,,alsmith151,https://github.com/alsmith151/SeqNado/issues/29
+I_kwDODg6-RM5k4xIt,Fastq names must have fastq for design to work,CLOSED,2023-05-02T15:07:11Z,2024-01-18T13:54:29Z,2024-01-18T13:54:29Z,,alsmith151,https://github.com/alsmith151/SeqNado/issues/60
+I_kwDODg6-RM5k4xSZ,Naming convention is still very strict,CLOSED,2023-05-02T15:07:33Z,2023-08-08T14:22:59Z,2023-08-08T14:22:59Z,,alsmith151,https://github.com/alsmith151/SeqNado/issues/61
+I_kwDODg6-RM5mLji_,Updated profiles,CLOSED,2023-05-17T17:01:13Z,2023-08-08T17:11:56Z,2023-08-08T17:11:56Z,"* Add singularity prefix to stop everyone downloading the container all the time
+* Update default-resources in profile",alsmith151,https://github.com/alsmith151/SeqNado/issues/69
+I_kwDODg6-RM5p0i42,New cluster singularity issue,CLOSED,2023-06-26T18:49:32Z,2024-02-03T09:34:06Z,2024-02-03T09:33:38Z,"WorkflowError:
+Failed to pull singularity image from library://asmith151/seqnado/seqnado_pipeline:latest:
+FATAL:   Unable to get library client configuration: remote has no library client (see https://apptainer.org/docs/user/latest/endpoint.html#no-default-remote)
+
+Fix:
+
+apptainer remote add --no-login SylabsCloud cloud.sylabs.io
+apptainer remote use SylabsCloud
+",alsmith151,https://github.com/alsmith151/SeqNado/issues/77
+I_kwDODg6-RM5p0zOy,Spaces in design file leads to strange bugs,CLOSED,2023-06-26T19:27:46Z,2024-01-18T13:54:08Z,2024-01-18T13:54:08Z,"Building DAG of jobs...
+
+InputFunctionException in rule fastqc_raw in file /project/milne_group/adopicof/software/MambaForge/envs/seqnado/lib/python3.11/site-packages/seqnado/workflow/rules/qc.smk, line 4:
+
+Error:
+
+  TypeError: stat: path should be string, bytes, os.PathLike or integer, not float
+
+Wildcards:
+
+  sample=H3K27ac_DMSO_H3K27ac_1.fastq.gz
+
+  read=1
+
+Traceback:
+
+  File ""/project/milne_group/adopicof/software/MambaForge/envs/seqnado/lib/python3.11/site-packages/seqnado/workflow/rules/qc.smk"", line 6, in <lambda>
+
+  File ""/project/milne_group/adopicof/software/MambaForge/envs/seqnado/lib/python3.11/site-packages/seqnado/utils.py"", line 191, in translate_fq_files
+
+  File ""/project/milne_group/adopicof/software/MambaForge/envs/seqnado/lib/python3.11/site-packages/seqnado/utils_chipseq.py"", line 164, in translation
+
+  File ""/project/milne_group/adopicof/software/MambaForge/envs/seqnado/lib/python3.11/site-packages/seqnado/utils_chipseq.py"", line 155, in _translate_ip_samples
+
+  File ""<frozen genericpath>"", line 19, in exists",alsmith151,https://github.com/alsmith151/SeqNado/issues/78
+I_kwDODg6-RM5sGMEK,Blacklist not being added when using seqnado-config,CLOSED,2023-07-20T09:30:22Z,2023-07-20T15:35:55Z,2023-07-20T15:35:55Z,Cookiecutter is not inserting blacklist key even when provided.,alsmith151,https://github.com/alsmith151/SeqNado/issues/79
+I_kwDODg6-RM5-JXC7,ChIP inputs not recognised,CLOSED,2024-02-03T09:27:26Z,2024-02-05T15:54:26Z,2024-02-05T15:54:26Z,"with input present in design, inputs are not mapped or used for peak calling",CChahrour,https://github.com/alsmith151/SeqNado/issues/125
+I_kwDODg6-RM5-Jbsr,profile permissions on install,CLOSED,2024-02-03T10:16:00Z,2024-04-01T16:01:46Z,2024-04-01T16:01:46Z,profile scripts are not executable on install,CChahrour,https://github.com/alsmith151/SeqNado/issues/129
+I_kwDODg6-RM5-RdHK,concatenate lanes,OPEN,2024-02-05T13:06:46Z,2024-02-26T09:43:47Z,,add concatenate lanes into seqnado,CChahrour,https://github.com/alsmith151/SeqNado/issues/133
+I_kwDODg6-RM6AXwXD,Easier GEO submission/ Reporting Summary,OPEN,2024-02-26T09:42:56Z,2024-11-08T12:50:58Z,,"Process the stats in such a way as to make them easier for a GEO submission and/or Nature Reporting Summary
+
+- [x]  MD5 checksums
+- [ ] #215
+- [x] Create a summary of the run parameters in an easy to copy format",alsmith151,https://github.com/alsmith151/SeqNado/issues/143
+I_kwDODg6-RM6Al2XF,editable preset genomes ,OPEN,2024-02-27T19:07:10Z,2024-02-29T10:47:40Z,,make preset reference genome editable and fastqscreen conf,CChahrour,https://github.com/alsmith151/SeqNado/issues/150
+I_kwDODg6-RM6CJtgW,Seacr support ,CLOSED,2024-03-13T10:01:55Z,2024-04-01T16:00:47Z,2024-04-01T16:00:47Z,Add support for Seacr peak caller,alsmith151,https://github.com/alsmith151/SeqNado/issues/153
+I_kwDODg6-RM6DxqF_,split deseq to get norm factors,CLOSED,2024-03-27T13:37:54Z,2024-11-06T11:13:53Z,2024-11-06T11:13:53Z,,CChahrour,https://github.com/alsmith151/SeqNado/issues/164
+I_kwDODg6-RM6D0ozW,Add Salmon quant,CLOSED,2024-03-27T18:36:54Z,2024-03-28T15:51:11Z,2024-03-28T15:51:11Z,,CChahrour,https://github.com/alsmith151/SeqNado/issues/165
+I_kwDODg6-RM6D0pRV,Fix se bigwig extend reads for scale,CLOSED,2024-03-27T18:37:14Z,2024-03-28T16:17:55Z,2024-03-28T16:17:55Z,,CChahrour,https://github.com/alsmith151/SeqNado/issues/166
+I_kwDODg6-RM6D62Mz,add macs se option,CLOSED,2024-03-28T13:25:24Z,2024-03-28T16:05:12Z,2024-03-28T16:05:12Z,,CChahrour,https://github.com/alsmith151/SeqNado/issues/168
+I_kwDODg6-RM6EqN2d,pileup method defualt in config,CLOSED,2024-04-04T14:22:39Z,2024-05-31T15:14:10Z,2024-05-31T15:14:10Z,,CChahrour,https://github.com/alsmith151/SeqNado/issues/175
+I_kwDODg6-RM6FGpaC,Merged pileups/peaks not being generated ,CLOSED,2024-04-09T10:22:29Z,2024-04-26T10:16:48Z,2024-04-26T10:16:48Z,Need to update outputs to allow for merging,alsmith151,https://github.com/alsmith151/SeqNado/issues/178
+I_kwDODg6-RM6Ifltl,mamba recipe errors,OPEN,2024-05-10T15:51:31Z,2024-05-10T16:05:35Z,,,CChahrour,https://github.com/alsmith151/SeqNado/issues/187
+I_kwDODg6-RM6ap3A0,Update Apptainer Container,OPEN,2024-10-17T12:56:09Z,2024-10-17T12:56:25Z,,"To Add:
+
+- [ ] bioconda::qualimap ",alsmith151,https://github.com/alsmith151/SeqNado/issues/208
+I_kwDODg6-RM6bhsGX,Add Seacr peak caller to config options,CLOSED,2024-10-23T17:14:44Z,2024-11-05T13:01:27Z,2024-11-05T13:01:27Z,,alsmith151,https://github.com/alsmith151/SeqNado/issues/209
+I_kwDODg6-RM6dl5sX,Extract stats into a format that works for a reporting summary e.g. number of reads raw/mapped/filtered,OPEN,2024-11-08T12:50:58Z,2024-11-08T12:50:58Z,,,alsmith151,https://github.com/alsmith151/SeqNado/issues/215

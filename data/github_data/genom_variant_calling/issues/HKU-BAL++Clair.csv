@@ -1,0 +1,703 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MzQxODE2NDk=,Support for 'N' bases,CLOSED,2019-12-06T17:59:11Z,2019-12-09T05:36:48Z,2019-12-09T05:34:35Z,"I'm seeing an error that looks like it involves 'N' bases (see stack trace below). Not sure if the Ns are in the ref genome (we're using b37) or the BAM file, but either way this is a showstopper since we can't guarantee that either will never have a N. 
+
+Here's the stack trace:
+
+    Traceback (most recent call last):
+      File ""/opt/clair/clair/../clair.py"", line 93, in <module>
+        main()
+      File ""/opt/clair/clair/../clair.py"", line 87, in main
+        submodule.main()
+      File ""/opt/clair/dataPrepScripts/ExtractVariantCandidates.py"", line 450, in main
+        make_candidates(args)
+      File ""/opt/clair/dataPrepScripts/ExtractVariantCandidates.py"", line 290, in make_candidates
+        base = BASE2ACGT[SEQ[query_position]]
+    KeyError: 'N'
+
+Really awesome work otherwise! I think your approach has a lot of advantages over the DeepVariant method (which seems a lot just like an improved VQSR), I'm pretty excited about Clair in general!",brendanofallon,https://github.com/HKU-BAL/Clair/issues/6
+MDU6SXNzdWU1NDEzMTA0NTc=,About execution error,CLOSED,2019-12-21T10:17:45Z,2019-12-23T09:21:59Z,2019-12-23T09:21:59Z,"Hello.
+
+I have experiences with Clairvoyante and Clair v1.
+I'm trying to use Clair v2. I installed Clair using Docker, Conda with virual environment as your suggestion.
+But I got same error messages from running Clair.
+
+> Delay 0 seconds before starting variant calling ...
+>Traceback (most recent call last):
+>  File ""/home/macarima/bioapps/Clair/clair/../clair.py"", line 93, in <module>
+>    main()
+>  File ""/home/macarima/bioapps/Clair/clair/../clair.py"", line 87, in main
+>    submodule.main()
+>  File ""/home/macarima/bioapps/Clair/dataPrepScripts/ExtractVariantCandidates.py"", line 454, in main
+>    make_candidates(args)
+>  File ""/home/macarima/bioapps/Clair/dataPrepScripts/ExtractVariantCandidates.py"", line 349, in make_candidates
+>    zero_based_position - (0 if reference_start is None else (reference_start - 1))
+>  File ""/home/macarima/bioapps/Clair/dataPrepScripts/ExtractVariantCandidates.py"", line 27, in evc_base_from
+>    return base if base == ""N"" else BASE2ACGT[base]
+>KeyError: 'a'
+>samtools view: writing to standard output failed: Broken pipe
+>samtools view: error closing standard output: -1
+>ExtractVariantCandidates.py or GetTruth.py exited with exceptions. Exiting...
+
+Clair is installed on Ubuntu 16.04 with CUDA 10.
+My genome file is repeat masked (soft mask).
+
+How can I care this error? May I ask your help?
+
+Thank you.
+
+With best regards,
+Hui-Su Kim",macarima,https://github.com/HKU-BAL/Clair/issues/9
+MDU6SXNzdWU1NTEwNjU3NTU=,Per-read SNPs,CLOSED,2020-01-16T21:29:08Z,2020-02-08T17:10:37Z,2020-02-08T17:10:37Z,"Hi @aquaskyline ,
+
+Does Clair have the functionality to also output per-read SNPs (or variants)?
+
+Best,
+Vahid.",vahidAK,https://github.com/HKU-BAL/Clair/issues/13
+MDU6SXNzdWU1NTU5MzIwNjI=,Alarm,CLOSED,2020-01-28T01:29:46Z,2020-02-13T04:42:27Z,2020-02-13T04:42:27Z,"Hi, I'm getting a rare issue in a small GRCh38 contig (chrUn_KI270336v1) that is making my WDl pipe fall over. In this instance nothing has mapped, but I don't think that that is the issue.
+
+`No read has been process, either the genome region you specified has no read cover, or please check the correctness of your BAM input (/working/genomeinfo/cromwell-dev/cromwell-executions/ONT/7de38df6-2b8b-4c07-b082-8d014fc06cb5/call-clair/shard-136/inputs/1486994909/sampleID.bam).
+INFO:tensorflow:Restoring parameters from /reference/software/claire/claire-2.0.6/ont/model
+Restoring parameters from /reference/software/claire/claire-2.0.6/ont/model
+Calling variants ...
+Processed 0 tensors
+Total time elapsed: 0.00 s
+[INFO] Using 9 CPU threads
+Delay 2 seconds before starting variant calling ...
+/var/spool/PBS/mom_priv/jobs/10425955.hpcpbs02.SC: line 25: 13868 Alarm clock             clair.py callVarBam --threads 10 --chkpnt_fn /reference/software/claire/claire-2.0.6/ont/model --ref_fn /working/genomeinfo/cromwell-dev/cromwell-executions/ONT/7de38df6-2b8b-4c07-b082-8d014fc06cb5/call-clair/shard-136/inputs/862458108/GCA_000001405.15_GRCh38_no_alt_analysis_set.fa --bam_fn /working/genomeinfo/cromwell-dev/cromwell-executions/ONT/7de38df6-2b8b-4c07-b082-8d014fc06cb5/call-clair/shard-136/inputs/1486994909/sampleID.bam --ctgName chrUn_KI270336v1 --sampleName chrUn_KI270336v1_name --call_fn chrUn_KI270336v1.vcf`
+
+I think it comes from line 203 of https://github.com/HKU-BAL/Clair/blob/90dc1a9c47c1d346b834f0ea54d2e185779f1c8a/clair/callVarBam.py . What is the purpose of the alarm here? It's possible that if my server is smashed that 2 seconds is simply not enough for network lag etc.
+
+What would you suggest as a work around?
+
+Thanks in advance,
+Liam",shimbalama,https://github.com/HKU-BAL/Clair/issues/14
+MDU6SXNzdWU1NjIyNDkxODA=,"How to handle such ""duplicate"" calls?",CLOSED,2020-02-09T22:19:12Z,2020-04-16T13:07:57Z,2020-04-16T13:07:57Z,"Hi, 
+
+I am using Clair on my raw ONT reads (human), and found the following two calls that I don't know how to handle. They essentially differ by 1 base. So I hope there's a ""merge"" module in Clair to post process such ""duplicated"" calls.
+
+```
+chr1	25808786	.	GGAGGTGAGGACAGCTGGGGTGCGACGTGGGGCCCCTCC	G	691	.	.	GT:GQ:DP:AF	0/1:691:31:0.2258
+chr1	25808787	.	GAGGTGAGGACAGCTGGGGTGCGACGTGGGGCCCCTCCGC	G	582	.	.	GT:GQ:DP:AF	0/1:582:31:0.3548
+```
+
+<img width=""927"" alt=""Screen Shot 2020-02-09 at 5 16 59 PM"" src=""https://user-images.githubusercontent.com/16310888/74111098-03263280-4b60-11ea-8d37-580af9df07dd.png"">
+
+Unfortunately, I cannot share the data.
+
+Thanks!",SHuang-Broad,https://github.com/HKU-BAL/Clair/issues/15
+MDU6SXNzdWU1NjMwNjc4NzM=,VCF reporting for haploid samples,CLOSED,2020-02-11T09:19:05Z,2020-04-24T04:38:37Z,2020-04-24T04:38:37Z,"Hi, I recently ran a bacterial sample (nanopore sequenced) through Clair CallVarBam to find variants in a gyrA gene. I used the --haploid flag and the resulting vcf file is shown below. My question is why the genotype (GT) is still reported as 1/1 (suggesting diploidity, no?) instead of only 1? Maybe I misunderstand how the genoype is reported or that the data has evidence that suggests diploidity. Thanks in advance. 
+
+##fileformat=VCFv4.1
+##FILTER=<ID=PASS,Description=""All filters passed"">
+##FILTER=<ID=LowQual,Description=""Confidence in this variant being real is below calling threshold."">
+##ALT=<ID=DEL,Description=""Deletion"">
+##ALT=<ID=INS,Description=""Insertion of novel sequence"">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description=""Type of structural variant"">
+##INFO=<ID=LENGUESS,Number=.,Type=Integer,Description=""Best guess of the indel length"">
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype"">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=""Genotype Quality"">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description=""Read Depth"">
+##FORMAT=<ID=AF,Number=1,Type=Float,Description=""Estimated allele frequency in the range (0,1)"">
+##contig=<ID=gyrA>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SAMPLE
+gyrA	262	.	G	A	1015	.	.	GT:GQ:DP:AF	1/1:1015:188:0.7713
+gyrA	491	.	T	TC	516	.	.	GT:GQ:DP:AF	1/1:516:188:0.1596",OscarAspelin,https://github.com/HKU-BAL/Clair/issues/17
+MDU6SXNzdWU1NjUyNTk3MTc=,SNP/indel tag in vcf,CLOSED,2020-02-14T11:11:32Z,2020-02-19T08:10:00Z,2020-02-19T08:10:00Z,"Hi,
+I would like to ask if there is an option to add a type of variant tag to the vcf file, so I can select the indels easily? If not, do you plan to implement it? 
+Thanks a lot in advance, 
+Anna
+",pristanna,https://github.com/HKU-BAL/Clair/issues/18
+MDU6SXNzdWU1NzI5NTkzNjA=,Somatic and germline,CLOSED,2020-02-28T19:30:22Z,2020-03-02T10:46:09Z,2020-03-02T10:46:09Z,"Hi @aquaskyline ,
+The variants detected by Clair from a tumor sample would be all germline and somatic variants in that tumor sample? is that right?
+
+Thanks,
+Vahid.",vahidAK,https://github.com/HKU-BAL/Clair/issues/19
+MDU6SXNzdWU1ODIyMzMxMTQ=,train clair with single strands?,CLOSED,2020-03-16T11:56:23Z,2022-01-22T00:13:26Z,2022-01-22T00:13:26Z,"Good morning, 
+
+I wanted to let you know that after the release of the latest trained models for ONT with coverage up to 550, Clair is performing really well. 
+I am using ONT to sequence a single gene with a PCR approach and Clair found only one false positive SNV. This particular false positive can be easily identified when looking at strands separately in the bam file, as it is present only in one of the two strands. The same is true for basically all the false positive indels called.
+I was wondering if it could be worth trying to train the models with single strand data.
+
+Kind regards",marcotoffoli,https://github.com/HKU-BAL/Clair/issues/22
+MDU6SXNzdWU1ODI4ODAxMDQ=,Output monomorphic sites when used with Known variant vcf,CLOSED,2020-03-17T09:37:45Z,2020-03-31T04:51:45Z,2020-03-31T04:51:45Z,"Hi,
+would it be possible to force the output of sites that are 0/0 when given a vcf file with know variants? This would be extremly helpful.
+Thanks!",jd3234,https://github.com/HKU-BAL/Clair/issues/23
+MDU6SXNzdWU1ODkzODYxMTQ=,--haploid setting less sensitive than default,CLOSED,2020-03-27T20:06:08Z,2020-04-24T15:09:10Z,2020-04-24T15:09:10Z,"Hello,
+I'm not sure if this is intended behavior, but the `--haploid` flag appears to be significantly less sensitive at detecting variants than the default setting. Looking at the code in call_var.py it appears to be because of this snippet: 
+```python
+        if output_config.is_haploid_mode_enabled:
+            if (
+                is_hetero_SNP or is_hetero_ACGT_Ins or is_hetero_InsIns or
+                is_hetero_ACGT_Del or is_hetero_DelDel or is_insertion_and_deletion
+            ):
+                return (
+                    (True, False, False, False, False, False, False, False, False, False),
+                    (reference_base_ACGT, reference_base_ACGT)
+                )
+```
+Which based on the later return statement in that function,
+
+```python
+    return (
+        (
+            is_reference, is_homo_SNP, is_hetero_SNP,
+            is_homo_insertion, is_hetero_ACGT_Ins, is_hetero_InsIns,
+            is_homo_deletion, is_hetero_ACGT_Del, is_hetero_DelDel,
+            is_insertion_and_deletion
+        ),
+        (reference_base, alternate_base)
+    )
+```
+, seems to be returning that anytime there is a hetereozygous variant it defaults to reporting the reference variant when in `--haploid` mode.
+
+My expectation was that `--haploid` mode would be *more* sensitive at detecting low frequency variants rather than defaulting to the reference more frequently. If this is intended behavior it may be worth clarifying what `--haploid` mode is doing behind the scenes and what assumptions it's making in the `--help` statement.
+Thanks!",NatPRoach,https://github.com/HKU-BAL/Clair/issues/24
+MDU6SXNzdWU1OTAyMDY5MzU=,Coverage is less than igv show,CLOSED,2020-03-30T11:16:50Z,2020-04-24T04:36:05Z,2020-04-24T04:36:04Z,"Hi Ruibang
+
+I use callVarBam with `--haploid` option to call variants in a small genome (29K). I find the DP in the output VCF is lower than the bam file coverage show in IGV or the result of pysam `pysam.PileupColumn.nsegments` (440 vs 479 on the test site). I have tried both `--stop_consider_left_edge` and `--pysam_for_all_indel_bases` but not work. Do you have any idea?",zhenLiuXplr,https://github.com/HKU-BAL/Clair/issues/25
+MDU6SXNzdWU1OTMyNzgwOTQ=,Can I use the model training on PacBio CCS data for PacBio non-CCS data?,CLOSED,2020-04-03T10:22:09Z,2020-04-08T11:05:17Z,2020-04-08T11:05:17Z,"Hello,
+
+After your suggestion to switch to Clair, I'm exploring the option. However, I see that for PacBio there is only a trained model for CCS data. Since I have some slightly older PacBio data which is not CCS, I'm concerned that this model will not be appropriate for my data, which has a much higher error rate (~15%) than CCS data.
+
+My instinct is that I can't use this model for my non-CCS PacBio data, but I would appreciate your opinion.
+
+Best,
+
+Phil",flashton2003,https://github.com/HKU-BAL/Clair/issues/26
+MDU6SXNzdWU1OTcxNTk0NDY=,Interpretation of quality scores,CLOSED,2020-04-09T09:46:29Z,2020-04-24T04:35:51Z,2020-04-24T04:35:51Z,"Hello,
+
+I see in the clair pre-print that quality scores are defined as follows:
+
+""The variant quality is calculated as the square of the Phred score of the distance between the largest and the second-largest likelihood values.""
+
+Currently, I'm interpreting this as:
+
+If a variant has a quality of 400, then there is a 1 in 100 chance (sqrt(400) = 20, phred score 20 = 1 in 100) that the selected variant was chosen when in reality, the ""second choice"" variant should have been chosen.
+
+Is this interpretation anywhere near the truth?
+
+Thanks,
+
+Phil",flashton2003,https://github.com/HKU-BAL/Clair/issues/27
+MDU6SXNzdWU2MjAxOTQxNTg=,wget '500 Internal Server Error' when downloading training models,CLOSED,2020-05-18T13:06:13Z,2020-05-20T06:06:07Z,2020-05-20T06:06:07Z,"Installation went well, but when I try wget of the different training models I get the following error:
+`
+--2020-05-18 15:02:24--  http://www.bio8.cs.hku.hk/clair_models/pacbio/ccs/15.tar
+Resolving www.bio8.cs.hku.hk (www.bio8.cs.hku.hk)... 147.8.179.16
+Connecting to www.bio8.cs.hku.hk (www.bio8.cs.hku.hk)|147.8.179.16|:80... connected.
+HTTP request sent, awaiting response... 500 Internal Server Error
+2020-05-18 15:02:24 ERROR 500: Internal Server Error.
+`
+
+Regards.",frabanal,https://github.com/HKU-BAL/Clair/issues/28
+MDU6SXNzdWU2MjQ1ODM1Mjk=,Trouble when reproduce the ,CLOSED,2020-05-26T03:53:20Z,2020-06-26T14:42:02Z,2020-06-26T14:42:02Z,"Great Job!
+
+I am running Clair on HG002 [bam file](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/Ultralong_OxfordNanopore/final/ultra-long-ont_GRCh38_reheader.bam) and estimate its performance against [Truth Variants](ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/AshkenazimTrio/HG002_NA24385_son/NISTv3.3.2/GRCh38) by vcfeval in RTG tools. But the performance I got is really poor. The performance index are like around 10%. Even after I remove GA4GH low complexity regions from GIAB's high-confidence regions as described in Supplementary information, the index are still very low. 
+So could you please help to provide an script to reproduce you results  or give me some advice?
+Many thanks!",snower2010,https://github.com/HKU-BAL/Clair/issues/29
+MDU6SXNzdWU2Mjk1NzE3ODU=,Guppy base called using flipflop model,CLOSED,2020-06-02T23:07:49Z,2020-06-08T05:29:11Z,2020-06-08T05:29:11Z,"Hi @aquaskyline 
+Can we use Clair ONT model on base called reads using the guppy flipflop model?
+
+Thanks,
+Vahid.",vahidAK,https://github.com/HKU-BAL/Clair/issues/30
+MDU6SXNzdWU2MzgzNDE0Mzk=,clair can not find model.meta,CLOSED,2020-06-14T12:20:15Z,2020-06-26T14:41:53Z,2020-06-26T14:41:53Z,"Hi
+
+I tried `clair.py callVarBamParallel` but script said as below:
+```
+[ERROR] file ~/FDA_SNVcall_challenge/clair/models/model.meta not found
+(clair-env) [@gc015 clair]$ ls models/model.meta
+models/model.meta
+(clair-env) [@gc015 clair]$ ls models/model.*
+models/model.data-00000-of-00001  models/model.index  models/model.meta
+```
+directory:
+```
+(clair-env) [@gc015 clair]$ tree
+.
+├── 122HD34.tar
+├── call
+├── cmd_gen.sh
+├── command.sh
+└── models
+    ├── model.data-00000-of-00001
+    ├── model.index
+    └── model.meta
+```
+my script:
+(in this script, `$CLAIR` is not used)
+```cmd_gen.sh 
+#! /bin/bash
+CLAIR=""~/anaconda2/envs/clair-env/bin/clair.py""
+MODEL=""~/FDA_SNVcall_challenge/clair/models/model""
+BAM_FILE_PATH=""~/FDA_SNVcall_challenge/FDA_data/sam/HG002_GM24385_1_2_3_Guppy_3.6.0_prom.bam""
+REFERENCE_FASTA_FILE_PATH=""~/FDA_SNVcall_challenge/FDA_data/hg38.fa""
+SAMPLE_NAME=""HG002""
+OUTPUT_PREFIX=""call/hg002""
+mkdir -p call
+clair.py callVarBamParallel \
+--chkpnt_fn ""$MODEL"" \
+--ref_fn ""$REFERENCE_FASTA_FILE_PATH"" \
+--bam_fn ""$BAM_FILE_PATH"" \
+--threshold 0.2 \
+--sampleName ""$SAMPLE_NAME"" \
+--output_prefix ""$OUTPUT_PREFIX"" > command.sh
+```
+
+I'm not sure why clair could not find `model.meta`.
+Can anyone solve this?",harazono,https://github.com/HKU-BAL/Clair/issues/31
+MDU6SXNzdWU2NjYxMjM0OTI=,An error when run it.,CLOSED,2020-07-27T09:13:14Z,2020-08-13T08:43:50Z,2020-08-13T08:43:50Z,"Hi:
+I have installed Clair by anaconda3.
+When I want to run the clairDemo.sh, I meet an error:
+from clair.model import Clair
+ImportError: cannot import name 'Clair' from 'clair.model' (unknown location)
+
+Could you help me with this?
+Thank",ERICBJ2020,https://github.com/HKU-BAL/Clair/issues/32
+MDU6SXNzdWU2NjgzMDIxMTg=,Error when take the output vcf as input for VariantQC,CLOSED,2020-07-30T02:12:57Z,2020-08-13T08:43:41Z,2020-08-13T08:43:41Z,"Hi Ruibang,
+
+Clair is great and I have sucessfully run it and Got output vcf. But I occured an ERROR when take this vcf as input for VariantQC(https://github.com/BimberLab/DISCVRSeq).
+
+The ERROR is as followings: ""UNEXPECTED ERROR: The provided VCF file is malformed at approximately line number 2964659: unparsable vcf record with allele GBG, for input source: /input/clair.vcf.gz""
+
+It maybe related to the this issue https://github.com/BimberLab/DISCVRSeq/issues/63.
+
+Could you please give me some clues to avoid this error?
+
+Many thanks!",snower2010,https://github.com/HKU-BAL/Clair/issues/33
+MDU6SXNzdWU2NzU1MDk3MDg=,Number of needed tensors to be processed,CLOSED,2020-08-08T11:19:42Z,2020-08-14T13:26:37Z,2020-08-14T13:26:37Z,"Dear Clair team
+
+It would be great if `Clair` prints the number of needed tensors to be processed, maybe like this `Processed 5000 out of 1000000 tensors`. This can help me to know how much time it needs to finish. 
+
+```
+Delay 7 seconds before starting variant calling ...
+[INFO] Using 3 CPU threads
+INFO:tensorflow:Restoring parameters from /Volumes/sina2tb/model
+Restoring parameters from /Volumes/sina2tb/model
+Calling variants ...
+Processed 1000 tensors
+Processed 2000 tensors
+Processed 3000 tensors
+Processed 4000 tensors
+Processed 5000 tensors
+```
+
+Regards,
+Sina
+",sinamajidian,https://github.com/HKU-BAL/Clair/issues/34
+MDU6SXNzdWU2ODE3Mjk1MTY=,KeyError: '*T',CLOSED,2020-08-19T10:29:26Z,2020-08-31T16:31:40Z,2020-08-31T16:31:40Z,"Hi,
+Thank you for a really nice program.
+With the release of GIAB 4.x truth sets they seem to have introduced the ""*"" allele for deletions overlapping a position. Is there any plans to incorporate this in Clair? It is currently throwing a ""KeyError: '*T'"" when you create the tensors for training.",loof91,https://github.com/HKU-BAL/Clair/issues/35
+MDU6SXNzdWU2ODQ1NjA3Nzc=,Installing without conda nor docker,CLOSED,2020-08-24T10:37:16Z,2020-09-01T07:08:21Z,2020-09-01T07:08:21Z,"Hi,
+
+Is it possible to install Clair via make or pip instead of Conda? I have a ""base"" docker container where we actively avoid using Conda and I would like to add Clair to the docker. 
+
+Thanks a lot for any advice or pointers!",arturo-opsetmoen-amador,https://github.com/HKU-BAL/Clair/issues/36
+MDU6SXNzdWU2OTUyODY4NjM=,GVCF output,CLOSED,2020-09-07T17:04:34Z,2022-04-28T02:20:26Z,2020-11-27T07:53:08Z,"Hello,
+
+Would be possible to add a GVCF output to Clair? GLnexus could be used on the output GVCFs to make a joint VCF afterwards.
+
+Thank you for your help.
+
+Best regards,
+Guillaume ",GuillaumeHolley,https://github.com/HKU-BAL/Clair/issues/38
+MDU6SXNzdWU3MzAwMTUyNjE=,trained clair model taking long time to run,CLOSED,2020-10-27T01:04:10Z,2020-11-04T02:50:10Z,2020-11-04T02:50:10Z,"Hi,
+
+I've trained a clair model but the calling seem to take >5hrs to run (I stopped the job)
+with one of your provided models it was ~1hr for the same chunk of data.
+
+Do you have any insight why this could be the case?
+
+Thanks",kevyin,https://github.com/HKU-BAL/Clair/issues/39
+MDU6SXNzdWU3MzA0MDc3OTQ=,clarification on -dcov option,CLOSED,2020-10-27T12:30:07Z,2020-11-04T02:50:18Z,2020-11-04T02:50:18Z,"When I use callVarBam.py with the default dcov option at 250, I get variants called with depth of 500 and higher. 
+
+Is this correct? if so, can someone explain to me what dcov actually does?
+
+",marcotoffoli,https://github.com/HKU-BAL/Clair/issues/40
+MDU6SXNzdWU3MzE2NjQwNzk=,PacBio Subread Data,CLOSED,2020-10-28T17:51:46Z,2020-11-09T03:25:31Z,2020-11-09T03:25:31Z,"Hi, 
+I see that you uploaded a trained model for CLR data and I was wondering what threshold would be adequate to run for usual circumstances. You have 0.2 for PacBio CSS data, was wondering if this applies for subread data as well ? 
+
+If there is a separate model for subread data could it be uploaded ?
+
+Thank you 
+
+",agos316,https://github.com/HKU-BAL/Clair/issues/41
+MDU6SXNzdWU3MzM0NDcyNTI=,Memory problem,CLOSED,2020-10-30T19:11:25Z,2020-11-09T03:25:43Z,2020-11-09T03:25:43Z,"Hi,
+I am running Clair in in ONT data (45X) as specified in  _Call variants in a chromosome_ section and only chromosomes 18, 19,20,21,22,X and Y finished. 
+
+The computation of these jobs spent around 60G of ram and more than 18 hours. However, none of the other chromosomes finished because they required more than 60G when they already run 20h. 
+
+Is there any way to solve this memory problem? 
+
+Thanks for you time,",Francesc-Muyas,https://github.com/HKU-BAL/Clair/issues/42
+MDU6SXNzdWU3MzU1OTMwMzI=,clair and ONT samples aligned with hg19,CLOSED,2020-11-03T19:51:09Z,2020-11-04T05:50:12Z,2020-11-04T05:50:12Z,"Hi all,
+
+My team recently has started to  run clair on samples that were aligned with a hg19 reference.   Unfortunately this reference does not  have the prefix of ""chr""  in front of the numbers on the header lines indicating the start of the chromosome region.  Eg.:
+**_>22 CM000684.1 Homo sapiens chromosome 22, GRCh37 primary reference assembly
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+..._**
+
+This is correctly reflected in the generated BAMs.
+ **_7923634f-8126-4e55-be50-3e9cb09f7964    0       22       10001   1       106S15M1D5M1D11M1D5M..._**
+
+But the Clair keeps complaining with the error:
+."".**_..
+No read has been process, either the genome region you specified has no read cover, or please check the correctness of your BAM input...._**
+
+I have tried a few things but it seems that Clair requires a bam to contain chromosome names containing ""chr"".
+
+Please comment if this is correct or not and any solution that can be suggested.
+thanks",sbilobram,https://github.com/HKU-BAL/Clair/issues/43
+MDU6SXNzdWU3MzkzODAzMDc=,Bioconda Installation Issues - Error: samtoolssamtools: error while loading shared libraries: libcrypto.so.1.0.0,CLOSED,2020-11-09T21:36:02Z,2020-11-27T07:53:47Z,2020-11-27T07:53:47Z,"After following the **Option 1** installation instructions on the [README.md](https://github.com/HKU-BAL/Clair#installation), I attempted to run the [demo](https://github.com/HKU-BAL/Clair#installation) and received the following error messages (samtoolssamtools: error while loading shared libraries: libcrypto.so.1.0.0): 
+
+<img width=""1769"" alt=""Screen Shot 2020-11-09 at 1 30 09 PM"" src=""https://user-images.githubusercontent.com/43304373/98598700-b490fa80-228f-11eb-9c17-50b77386dfe1.png"">
+
+I've noticed similar problems in other issues such as [1](https://github.com/jkkbuddika/RNA-Seq-Data-Analyzer/issues/3), and [2](https://github.com/PacificBiosciences/pbbioconda/issues/85), and was wondering if there were any quick fixes possible with Clair. 
+
+Operating on Linux CentOS 7 aarch64. Clair version 2.1.1 was installed. ",zhemingfan,https://github.com/HKU-BAL/Clair/issues/44
+MDU6SXNzdWU3NDY0ODg5MTE=,SNV force calling,CLOSED,2020-11-19T11:19:23Z,2020-12-16T04:27:55Z,2020-12-16T04:27:55Z,"Hello,
+is there a way to perform SNV force calling using Clair?
+E.g.: I did variant calling for 7 different genotypes. Afterwards I removed Indels and filtered for quality and AF ending up with 7 VCF files. After that, I merged the files using bcftools merge.
+Now I want to use this VCF to do a force calling of this list of SNVs.
+Many thanks,
+Paul
+",vollrath-p,https://github.com/HKU-BAL/Clair/issues/45
+MDU6SXNzdWU3NDkwNzYxMzk=,filtering an ONT VCF Clair generated callset from a bi-modal result,CLOSED,2020-11-23T19:45:03Z,2020-12-16T04:27:42Z,2020-12-16T04:27:42Z,"The documentation does well to suggest a quality cutoff point ""_The best quality cutoff is usually the valley between two peaks plus 50_.""  
+It looks like the example used in the documentation to illustrate is usingst the MEDIAN point between the valley.  In the histograms an Rscript I am using to produce the histograms  draws the MEAN point.  (although it could be scripted to generate the median I suppose).
+Just to be clear, the approximate centerpoint (median) +50, between the peaks  is your suggestioin for a cut-off. Right?",sbilobram,https://github.com/HKU-BAL/Clair/issues/46
+MDU6SXNzdWU3NDk5MjA4NDA=,Source of input BAM file?,CLOSED,2020-11-24T17:54:09Z,2020-12-16T04:27:29Z,2020-12-16T04:27:29Z,"Hi HKU-BAL, 
+
+I have gotten promising results from using Clairvoyante for variant detection in my Oxford Nanopore seq data.
+I am moving forward to install Clair now.
+
+Can you provide guidance on the proper workflow for producing the BAM files for Clair/Clairvoyante input?
+
+In particular, I wonder if any polishing step should be performed prior to variant detection.
+
+I see the ONT training sets were made using minimap2.
+
+Would I need to make a new training set / model if I wanted to use bam files that were produced from the medaka workflow (which presumably adds some polishing)?
+
+Thanks for any guidance and suggestions you can provide.
+Chris
+
+",ChristopherRichie,https://github.com/HKU-BAL/Clair/issues/47
+MDU6SXNzdWU3Njc0NjU2OTI=,Specific use case,CLOSED,2020-12-15T11:01:07Z,2020-12-19T15:05:27Z,2020-12-19T15:05:27Z,"Hello, 
+
+I would like to know if Clair would be suitable for the following use case: 
+- I have a haploid genome of 100 Mb on which I mapped illumina 250 pb reads. Then I did a SNP call with DeepVariant. 
+Now I want to know what threshold of GQ to use to filter my variants. Note, that the genome is variant dense. For DeepVariant it mattered, and I had to change the training model otherwise it was not calling the SNPs.
+
+It happens that now I have a phased diploid assembly of the genome, from pacbio HiFi. 
+
+My logic is the following:
+map the phased diploid pacbio HiFi genome on the haploid reference, and check if the SNPs called with illumina correspond to a heterozygous site in the phased diploid HiFi assembly. That sounds simple, but it turns out that most tools are not used to check for SNPs with a coverage of 2x (of course, when mapping the HiFi assembly the coverage is max 2X), hence they return nothing.
+
+Would Clair be able to do that? Basically calling a SNP with support from a single sequence out of 2? 
+Example
+
+haploid genome: ATGGCGTA
+snp call                AT**C**GCGTA
+hifi assemble:     ATGGCGTAblablabla
+                             AT**C**GCGTAblablabla
+
+would Clair reports the G-C heteorzygous site? 
+
+Thanks a lot",N/A,https://github.com/HKU-BAL/Clair/issues/48
+MDU6SXNzdWU3NzAzMjUwNjM=,quality threshold advice,CLOSED,2020-12-17T19:54:37Z,2021-01-21T02:58:21Z,2021-01-21T02:58:21Z,"Hi folks,
+
+I need to set up clair to run on a large set of samples and I would prefer to not manually check the score distribution each time to find the quality threshold.  We are running R9 chemistry promethion flowcells and every sample that we manually check  ends up with a threshold of 750.      Is it safe to use a fixed threshold like this when the same library construction/chemistry/sequencer combination is applied to all samples?
+
+thanks,
+Richard
+",RichardCorbett,https://github.com/HKU-BAL/Clair/issues/49
+MDU6SXNzdWU3NzM3MjU2NjA=,Clair and Clairvoyante having trouble with bam file from human transcript alignments,CLOSED,2020-12-23T12:41:22Z,2020-12-23T15:21:48Z,2020-12-23T15:21:48Z,"Hello,
+
+thank you for all of your hard work to make Clair, and its predecessor Clairvoyante. I have used both to successfully call human genome variants for a particular gene with ONT data from PCR amplification of this gene from genomic DNA.
+
+However, when I try the exact same workflow with cDNA for this gene, using an approproiately modified reference, bedfile, and contig name, I always get the error: 
+`No read has been process, either the genome region you specified has no read cover, or please check the correctness of your BAM input`
+
+I have sorted and indexed my bamfile, and I know that my bamfile is fine for the provided reference and bedifle, as bedtools intersect works as expected, and so does IGV using this bamfile and the reference transcript (from which I created a .genome file for IGV).
+
+Please could you tell me what might be going on?
+
+Thank you,
+Ali",rainwala,https://github.com/HKU-BAL/Clair/issues/50
+MDU6SXNzdWU3ODMxMzEwOTk=,Automatically call SNPs for all contigs in fasta file?,CLOSED,2021-01-11T07:18:37Z,2021-01-21T02:58:05Z,2021-01-21T02:58:05Z,"Hi, I have a question regarding the enforced argument to always supply the contig name for SNP calling. Sometimes, one might have a fragmented but still high quality assembly that can be used for SNP calling. In that case, one would have to run SNP calling several times. I guess one alternative would be to concatenate all contigs (but that might affect the performance). A desirable feature would be to have Clair automatically call SNPs for all contigs unless a contig name was provided!",OscarAspelin,https://github.com/HKU-BAL/Clair/issues/51
+MDU6SXNzdWU3ODU2MTIyNDk=,model quantization experiments,CLOSED,2021-01-14T03:06:44Z,2021-01-19T06:54:10Z,2021-01-19T06:54:09Z,"Hello,
+
+I am planning to do some experiments with model quantization both by post-training and retraining approach. The end goal is to reduce the size of the model to fit on an accelerator with smaller on-chip memory.  Currently, the size of the model (checkpoint files) is around 15MB, and I think it can potentially come down by 4x by fixed-point representation quantization for example.
+
+I was hoping to get some inputs to achieve this without impacting the accuracy of variant calling. Please let me know if you have any recommendations based on your expertise so far.
+
+Thanks,
+Ram",ramcn,https://github.com/HKU-BAL/Clair/issues/52
+MDU6SXNzdWU4MDEyNDUzNDk=,Demo Error: Missing testingData,CLOSED,2021-02-04T12:37:05Z,2021-03-04T01:55:09Z,2021-03-04T01:55:09Z,"At `clairDemo.sh`, `wget 'http://www.bio8.cs.hku.hk/testingData.tar'`, but this link is down - 404 Not Found.",Eurus-Holmes,https://github.com/HKU-BAL/Clair/issues/53
+MDU6SXNzdWU4MjIzOTU5MTc=,"Any chance of a clair model trained on guppy >=3.6.0, and on guppy 4.4.2 with bonito?",CLOSED,2021-03-04T18:36:42Z,2021-06-10T02:33:07Z,2021-06-10T02:33:07Z,"Hi there,
+
+I noticed that your models for ONT variant calling are at least two major basecaller updates behind the state of the art. When we tested clair on some in-house GM24385 data, we actually saw a drop in variant call accuracy when using guppy-bonito basecalls, despite an increase in raw read accuracy.
+
+Is there any likelihood of newer models being produced for the newer, more accurate basecalling?",oneillkza,https://github.com/HKU-BAL/Clair/issues/54
+MDU6SXNzdWU4NTQyNzcwOTU=,ValueError: invalid literal for int() with base 10: 'CCA',CLOSED,2021-04-09T08:00:45Z,2021-04-15T14:12:14Z,2021-04-15T14:12:14Z,"Hi,
+
+I am training a model on multiple individuals. At step [8-create-splited-binaries-using-the-tensor2bin-submodule](https://github.com/HKU-BAL/Clair/blob/master/docs/TRAIN.md#8-create-splited-binaries-using-the-tensor2bin-submodule), I get the error `ValueError: invalid literal for int() with base 10: 'CCA'.`
+
+error code:
+```
+8. Create splitted binaries using the Tensor2Bin submodule
+
+Loading the dataset ...
+Traceback (most recent call last):
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/clair.py"", line 94, in <module>
+    main()
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/clair.py"", line 88, in main
+    submodule.main()
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/dataPrepScripts/Tensor2Bin.py"", line 63, in main
+    Run(args)
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/dataPrepScripts/Tensor2Bin.py"", line 25, in Run
+    is_allow_duplicate_chr_pos=args.allow_duplicate_chr_pos
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/clair/utils.py"", line 138, in get_training_array
+    Y = variant_map_from(var_fn, tree, is_tree_empty)
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/clair/utils.py"", line 127, in variant_map_from
+    Y[key] = output_labels_from_vcf_columns(columns)
+  File ""/home/kewinogink/anaconda3/envs/clair-env/bin/clair/task/main.py"", line 53, in output_labels_from_vcf_columns
+    genotype_1, genotype_2 = int(columns[4]), int(columns[5])
+ValueError: invalid literal for int() with base 10: 'CCA'
+
+```
+I have checked and it is due to that in the `all_var_prefixed` file there are 7 columns instead of 6 when training only on 1 sample: the random prefix is now the first column, followed by the other 6 ones.
+
+one sample
+```
+gzip -fdc all_var_prefixed | head -5
+CHR1 18 ACC CCA 1 1
+CHR1 83 AGC AC 1 1
+CHR1 109 G C 0 1
+CHR1 115 C G 0 1
+CHR1 136 G A 1 1
+```
+
+multiple samples
+```
+gzip -fdc train_clair_output/var/all_var_prefixed | head -5
+xtBOD CHR1 485 TCA CCA 0 0
+xtBOD CHR1 501 CTC CC 0 0
+xtBOD CHR1 509 G A 0 0
+xtBOD CHR1 519 C T 0 0
+xtBOD CHR1 530 A G 1 1
+
+```
+My question is what I should do. Did I somehow make a mistake with these prefixes? What should the all_var_prefixed look like? 
+
+Best,
+
+Kewin",KewinOgink,https://github.com/HKU-BAL/Clair/issues/55
+MDU6SXNzdWU4NTk4MTA2Mzk=,Quality cut off determination for CLR data,CLOSED,2021-04-16T13:21:55Z,2022-01-22T00:13:39Z,2022-01-22T00:13:39Z,"Hi, 
+
+I have used the model for PacBio subread data that you provided within the issues forum. I have a question regarding the quality distribution for this and choosing the cutoff, as the distribution is different from ONT, CSS, and Illumina Data. 
+
+Is there any way to determine this ?
+
+",agos316,https://github.com/HKU-BAL/Clair/issues/56
+MDU6SXNzdWU4NjA0MjMzNzA=,problem during training,CLOSED,2021-04-17T14:31:40Z,2021-06-10T02:28:49Z,2021-06-10T02:28:49Z,"Hi,
+    I am training Clair on NA12878 following the training tutorial:
+```
+CLAIR=""/home/user/miniconda3/envs/clair-env/bin/clair.py""
+PYPY=""/home/user/miniconda3/envs/clair-env/bin/pypy3""
+
+VCF_FILE_PATH=""/homeb/data/NA12878-SNP/HG001_GRCh38_GIAB_highconf_CG-IllFB-IllGATKHC-Ion-10X-SOLID_CHROM1-X_v.3.3.2_highconf_PGandRTGphasetransfer.vcf.gz""
+BAM_FILE_PATH=""/homeb/data/NA12878-SNP/reads2ref.sort.bam""
+REFERENCE_FILE_PATH=""/homeb/data/NA12878-SNP/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna"" 
+
+DATASET_FOLDER_PATH=""/homeb/data/NA12878-SNP/train_output""
+DEPTHS=(1.000 0.800 0.600 0.400 0.200)
+SUBSAMPLED_BAMS_FOLDER_PATH=""/homeb/data/NA12878-SNP/subsample_bams""
+CHR_PREFIX=""chr""
+CHR=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X)
+THREADS=40
+THREADS_LOW=20
+DEPTHS_PER_SAMPLE=${#DEPTHS[@]}
+ESTIMATED_SPLIT_NO_OF_LINES=$((180000 * $DEPTHS_PER_SAMPLE))
+MINIMUM_COVERAGE=4
+VARIANT_FOLDER_PATH=""${DATASET_FOLDER_PATH}/var""
+CANDIDATE_FOLDER_PATH=""${DATASET_FOLDER_PATH}/can""
+TENSOR_VARIANT_FOLDER_PATH=""${DATASET_FOLDER_PATH}/tensor_var""
+TENSOR_CANDIDATE_FOLDER_PATH=""${DATASET_FOLDER_PATH}/tensor_can""
+TENSOR_PAIR_FOLDER_PATH=""${DATASET_FOLDER_PATH}/tensor_pair""
+SHUFFLED_TENSORS_FOLDER_PATH=""${DATASET_FOLDER_PATH}/all_shuffled_tensors""
+BINS_FOLDER_PATH=""${DATASET_FOLDER_PATH}/all_bins""
+
+mkdir ${DATASET_FOLDER_PATH}
+cd ${DATASET_FOLDER_PATH}
+mkdir ${VARIANT_FOLDER_PATH}
+mkdir ${CANDIDATE_FOLDER_PATH}
+mkdir ${TENSOR_VARIANT_FOLDER_PATH}
+mkdir ${TENSOR_CANDIDATE_FOLDER_PATH}
+mkdir ${TENSOR_PAIR_FOLDER_PATH}
+mkdir ${SHUFFLED_TENSORS_FOLDER_PATH}
+mkdir ${BINS_FOLDER_PATH}
+
+for j in ""${!DEPTHS[@]}""
+do
+  cd ${TENSOR_VARIANT_FOLDER_PATH}
+  mkdir ${DEPTHS[j]}
+
+  cd ${TENSOR_CANDIDATE_FOLDER_PATH}
+  mkdir ${DEPTHS[j]}
+
+  cd ${TENSOR_PAIR_FOLDER_PATH}
+  mkdir ${DEPTHS[j]}
+done
+
+cd ${DATASET_FOLDER_PATH}
+
+parallel --joblog ./get_truth.log -j${THREADS} \
+""${PYPY} ${CLAIR} GetTruth \
+--vcf_fn ${VCF_FILE_PATH} \
+--var_fn ${VARIANT_FOLDER_PATH}/var_{1} \
+--ref_fn ${REFERENCE_FILE_PATH} \
+--ctgName ${CHR_PREFIX}{1}"" ::: ${CHR[@]}
+
+# merge all truth variants into a single file (named all_var)
+cat ${VARIANT_FOLDER_PATH}/var_* > ${VARIANT_FOLDER_PATH}/all_var
+
+parallel --joblog ./evc.log -j${THREADS} \
+""${PYPY} ${CLAIR} ExtractVariantCandidates \
+--bam_fn ${BAM_FILE_PATH} \
+--ref_fn ${REFERENCE_FILE_PATH} \
+--can_fn ${CANDIDATE_FOLDER_PATH}/can_{1} \
+--ctgName ${CHR_PREFIX}{1} \
+--gen4Training"" ::: ${CHR[@]}
+
+
+parallel --joblog ./create_tensor_var.log -j${THREADS} \
+""${PYPY} ${CLAIR} CreateTensor \
+--bam_fn ${SUBSAMPLED_BAMS_FOLDER_PATH}/{1}.bam \
+--ref_fn ${REFERENCE_FILE_PATH} \
+--can_fn ${VARIANT_FOLDER_PATH}/var_{2} \
+--minCoverage ${MINIMUM_COVERAGE} \
+--tensor_fn ${TENSOR_VARIANT_FOLDER_PATH}/{1}/tensor_var_{2} \
+--ctgName ${CHR_PREFIX}{2}"" ::: ${DEPTHS[@]} ::: ${CHR[@]}
+
+parallel --joblog ./create_tensor_can.log -j${THREADS} \
+""${PYPY} ${CLAIR} CreateTensor \
+--bam_fn ${SUBSAMPLED_BAMS_FOLDER_PATH}/{1}.bam \
+--ref_fn ${REFERENCE_FILE_PATH} \
+--can_fn ${CANDIDATE_FOLDER_PATH}/can_{2} \
+--minCoverage ${MINIMUM_COVERAGE} \
+--tensor_fn ${TENSOR_CANDIDATE_FOLDER_PATH}/{1}/tensor_can_{2} \
+--ctgName ${CHR_PREFIX}{2}"" ::: ${DEPTHS[@]} ::: ${CHR[@]}
+
+parallel --joblog ./create_tensor_pair.log -j${THREADS} \
+""${PYPY} ${CLAIR} PairWithNonVariants \
+--tensor_can_fn ${TENSOR_CANDIDATE_FOLDER_PATH}/{1}/tensor_can_{2} \
+--tensor_var_fn ${TENSOR_VARIANT_FOLDER_PATH}/{1}/tensor_var_{2} \
+--output_fn ${TENSOR_PAIR_FOLDER_PATH}/{1}/tensor_pair_{2} \
+--amp 2"" ::: ${DEPTHS[@]} ::: ${CHR[@]}
+
+ls tensor_pair/*/tensor_pair* | \
+parallel --joblog ./uncompress_tensors.log -j${THREADS_LOW} -N2 \
+--line-buffer --shuf --verbose --compress stdbuf -i0 -o0 -e0 pigz -p4 -dc ::: | \
+parallel --joblog ./round_robin_cat.log -j${THREADS} \
+--line-buffer --pipe -N1000 --no-keep-order --round-robin --compress \
+""split - -l ${ESTIMATED_SPLIT_NO_OF_LINES} --filter='shuf | pigz -p4 > \$FILE.gz' -d ${SHUFFLED_TENSORS_FOLDER_PATH}/split_{#}_""
+
+ls ${SHUFFLED_TENSORS_FOLDER_PATH}/split_* | \
+parallel --joblog ./tensor2Bin.log -j${THREADS_LOW} \
+""python ${CLAIR} Tensor2Bin \
+--tensor_fn {} \
+--var_fn ${VARIANT_FOLDER_PATH}/all_var \
+--bin_fn ${BINS_FOLDER_PATH}/{/.}.bin \
+--allow_duplicate_chr_pos""
+
+cd ${DATASET_FOLDER_PATH}
+python ${CLAIR} CombineBins
+
+MODEL_NAME=""NA12878_20X_WGS_ONT_GRCh38_Guppy4_20210416""
+MODEL_FOLDER_PATH=""/homeb/data/NA12878-SNP/trained_model/${MODEL_NAME}""
+TENSOR_FILE_PATH=""${BINS_FOLDER_PATH}/tensor.bin""
+
+mkdir ${MODEL_FOLDER_PATH}
+
+export CUDA_VISIBLE_DEVICES=""0""
+
+python $CLAIR train \
+--bin_fn ""$TENSOR_FILE_PATH"" \
+--ochk_prefix ""${MODEL_FOLDER_PATH}/model""
+```
+
+It shows the error ```[E::hts_open_format] Failed to open file /homeb/data/NA12878-SNP/subsample_bams/1.000.bam
+samtools view: failed to open ""/homeb/data/NA12878-SNP/subsample_bams/1.000.bam"" for reading: No such file or directory``` at the step of ""Create tensors for truth variants using the CreateTensor submodule"". Can you give me some suggestions?
+
+Thanks
+Neng Huang",huangnengCSU,https://github.com/HKU-BAL/Clair/issues/57
+MDU6SXNzdWU5MDkwNTUwMzc=,sars-cov2 model,CLOSED,2021-06-02T03:40:50Z,2022-01-22T00:13:17Z,2022-01-22T00:13:17Z,"Hi all,
+
+Just wondering is there is a pre-trained model for sars-cov2 anywhere?
+
+Liam",shimbalama,https://github.com/HKU-BAL/Clair/issues/59
+MDU6SXNzdWU5MjM1NTQ2ODQ=,Models for guppy v5 basecalled Nanopore data,CLOSED,2021-06-17T07:13:01Z,2022-01-22T00:15:18Z,2022-01-22T00:15:18Z,"Hello,
+
+Guppy v5 basecaller for Nanopore data seems to give a significant boost to consensus genome accuracy. See [here](https://twitter.com/rrwick/status/1402522207755005956).
+
+Do you have any plans to train a model on readsets generated with this new data?
+
+[Guppy v5 release note](https://community.nanoporetech.com/posts/guppy-v5-0-7-release-note) (nanopore community site, login required).
+
+Thanks!
+
+Phil
+
+",flashton2003,https://github.com/HKU-BAL/Clair/issues/60
+MDU6SXNzdWU5MjcyMzk5Mjg=,ONT R9.4.1 vs R10.3,CLOSED,2021-06-22T13:32:41Z,2021-06-22T13:34:28Z,2021-06-22T13:34:28Z,"Hello!
+
+Clair3 has been working great, and thank you guys for sharing such solid tech. 
+
+This is mainly a question, but:
+
+I've processed a few PromethION and minION samples through clair3, but those were run using R9.4.1. 
+My team is interested in ONT tech, and want to try it out, but will likely use their newer flowcells the R10.3. 
+
+Based on this, is it a bad idea to continue using the existing ONT models in Clair3 to do variant calling? Or would creating a new model trained with these flowcells be the correct step? ",fidibidi,https://github.com/HKU-BAL/Clair/issues/61
+MDU6SXNzdWU5NjI4MDEzMjk=,HETEROSNP is not defined in the header,CLOSED,2021-08-06T14:43:00Z,2021-10-21T05:28:28Z,2021-10-21T05:28:28Z,"When using 
+vcfcat ${OUTPUT_PREFIX}.*.vcf | bcftools sort -m 2G | bgziptabix snp_and_indel.vcf.gz
+
+to concatenate the vcf file generated from CallVarBamParallel, it raised the following error:
+
+[W::vcf_parse] INFO '.,HETEROSNP' is not defined in the header, assuming Type=String
+[E::bcf_hdr_parse_line] Could not parse the header line: ""##INFO=<ID=.,HETEROSNP,Number=1,Type=String,Description=""Dummy"">""
+[E::vcf_parse] Could not add dummy header for INFO '.,HETEROSNP'
+",champ1994,https://github.com/HKU-BAL/Clair/issues/62
+MDU6SXNzdWU5NjQ1ODA3MjU=,Which Reference to use during Training?,CLOSED,2021-08-10T04:20:43Z,2021-10-21T05:26:59Z,2021-10-21T05:26:59Z,"![clair](https://user-images.githubusercontent.com/36463244/128807499-c6b619aa-4bf2-4399-89ce-7e0f6100811b.png)
+
+In the highlighted portion 
+""REFERENCE_FILE_PATH=""[YOUR_FASTA_FILE_PATH]""                   # e.g. hg001.fasta""
+
+The reference should be the standard GRCh38 or GRCh37 fasta file OR as mentioned in the example part the fasta seq of the sample being trained ??",champ1994,https://github.com/HKU-BAL/Clair/issues/63
+I_kwDOCm3tjM48Odw3,downsampled BAM cannot download,CLOSED,2021-09-29T02:57:34Z,2022-04-10T02:24:59Z,2022-04-10T02:24:59Z,"I cannot open the downsampled BAM download page。
+http://www.bio8.cs.hku.hk/clairvoyante/orginalData_hg003/illumina/HG003.GRCh38.60x.1.bam
+
+How can I still get this file？
+Thankyou",shiying-sxu,https://github.com/HKU-BAL/Clair/issues/64
+I_kwDOCm3tjM5B_U3O,Clair force calling using callVarBam calls more number of variants than included in a vcf file. ,CLOSED,2022-01-18T16:33:21Z,2022-01-31T01:37:26Z,2022-01-31T01:37:26Z,"Hello,
+The vcf file I used for force calling had 57 million SNVs for whole genome variant calling. Force calling using callVarBam and vcf provided with --call_fn resulted in calling 322 million SNVs. Does force calling mean calling those variants in the vcf file plus additional variants or something is wrong? Normally force calling should only call variants at sites provided in the vcf file. I used the following script:
+
+python clair.py callVarBam --chkpnt_fn ""/clair/ont/model"" --ref_fn ""ref.fasta"" --bam_fn ""alignment.bam"" --threshold ""0.2"" --minCoverage ""4"" --pypy ""pypy3"" --samtools ""samtools"" --delay ""10"" --threads ""4"" --sampleName ""sample1"" --vcf_fn ""all_merged.vcf"" --ctgName ""$CONTIG_NAME"" --call_fn ""input.vcf""
+
+Any help please?",teketelah,https://github.com/HKU-BAL/Clair/issues/65
+I_kwDOCm3tjM5CtyTm,error using on HPC,OPEN,2022-01-31T11:19:48Z,2024-01-20T05:00:48Z,,"Hi, I have been using Clair with demo test-data, but run into issue as follows: Do you know what causing this issue ? I have installed via conda under virtual environment, but I made some changes such as updating samtools since it is not supporting under libcrypt.so version.
+
+`Delay 0 seconds before starting variant calling ...
+taskset: failed to set pid 0's affinity: Invalid argument call_variant.py exited with exceptions. Exiting...`",myonaung,https://github.com/HKU-BAL/Clair/issues/66
+I_kwDOCm3tjM5Grh1H,cram file support ?,CLOSED,2022-03-30T03:27:29Z,2022-04-10T02:26:41Z,2022-04-10T02:26:41Z,Does Clair support cram files as input? Thank you.,YanfengJi,https://github.com/HKU-BAL/Clair/issues/67
+I_kwDOCm3tjM5a3pR6,Running issue!!,OPEN,2023-01-08T14:40:13Z,2023-01-08T14:41:04Z,,"Dear,
+I trying to run the Clair using docker 
+
+Here is my command 
+docker run -v '/home/gsh/nanocaller/input':'/input/' -v '/home/gsh/nanocaller/output':'/output/'-it hkubal/clair3:latest /opt/bin/run_clair3.sh -b /input/filtered-minmap_rsvrbv_n1_24hpi-soreted_1m.bam -f /input/KT992094.1.fasta  -output /output   --threads=5 --platform=ont --model_path=/opt/models/r941_prom_hac_g360+g422
+
+I am getting this error and I am not sure what is the problem 
+
+<img width=""1626"" alt=""Screenshot 2023-01-08 at 17 06 28"" src=""https://user-images.githubusercontent.com/52241597/211202350-41ae5fd0-190b-476f-a5ef-594283e54cbf.png"">
+
+Thanks in advance, 
+",g-s-2018,https://github.com/HKU-BAL/Clair/issues/69

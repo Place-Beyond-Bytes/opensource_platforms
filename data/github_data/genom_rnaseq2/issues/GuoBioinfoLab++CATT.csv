@@ -1,0 +1,438 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MDAzMjQ3NzY=,Use of CATT for non-human T cell receptor sequence,OPEN,2019-09-30T14:44:16Z,2019-10-25T04:32:16Z,,"Hello,
+I really like the way you are using these tools to characterize T cell receptor sequence in Human, I have pulled the Docker image and try to use it for non-human sample i.e. pig. I am interested in characterizing **T cell receptor sequence for Pig**. Can you please let me know if I can **change reference seq** in your docker image/ Dockerfile, that would be very helpful and much appreciated. 
+
+With Regards, 
+Dharm",Dharmendra-G-1,https://github.com/GuoBioinfoLab/CATT/issues/1
+MDU6SXNzdWU1ODI4Mzg0NzM=,Dockerfile?,OPEN,2020-03-17T08:24:02Z,2020-03-17T08:24:02Z,,可否方便提供一下CATT的docker file? 国内从dockerhub上拉取镜像非常慢，我考虑拿到dockerfile后自己在阿里云上面制作。或者：将dockerhub上的镜像同步一份到阿里云上，方便国内用户使用,wangshun1121,https://github.com/GuoBioinfoLab/CATT/issues/2
+MDU6SXNzdWU1OTI5ODQ4MzE=,human gdTRC support?,OPEN,2020-04-02T23:46:58Z,2020-06-12T02:10:42Z,,"Hi,
+
+Possibly the same as to Dharamendra's question: Is it similarly straightforward to add support for human gamma delta TCRs?
+
+Best regards,
+Don",dchutc,https://github.com/GuoBioinfoLab/CATT/issues/3
+MDU6SXNzdWU2MjQxMzA1MTc=,Use of CATT in the computer cluster with Singularity tool,CLOSED,2020-05-25T08:19:41Z,2020-06-09T01:41:58Z,2020-06-09T01:41:58Z,"Hello,
+I want to run CATT in the computer cluster, because I am not familiar with Julia, so I have chosen to run it in Docker, however, the cluster doesn't support Docker, but supports Singularity. After build image with command ""singularity build CATT.sif docker://guobioinfolab/catt:latest”，I use the command "" /path/to/CATT.sif catt -h"" to test whether it works, as so far, everything is OK, but when I try to run test example ""/path/to/CATT.sif catt -f testSample.fq -o testSampleOutput"",  it raise the error ""
+Traceback (most recent call last):
+  File ""/usr/bin/catt"", line 48, in <module>
+    with open(""/home/feifei/config.jl"", ""w"") as handle:
+IOError: [Errno 30] Read-only file system: '/home/feifei/config.jl' ""
+I try to change the file permission in the image, it is failed.
+Could you give me some advice to address this problem? 
+Thanks!
+
+System : CentOS Linux release 7.7.1908 (Core)
+Singularity version: 3.2.0",liyongzheng1,https://github.com/GuoBioinfoLab/CATT/issues/4
+MDU6SXNzdWU2NDg1NjQyOTg=,Help running with paired end reads,CLOSED,2020-06-30T23:31:04Z,2021-09-22T22:15:23Z,2020-08-03T07:55:08Z,"Hi,
+
+Very eager to try this out! Apologies in advance; I'm a beginner.
+
+I've managed to get the docker image running and can successfully run the testSample.fq
+
+I'm now trying to run my own data which is paired end and am getting a load error.
+
+Here's what I'm running:
+
+docker run -it --rm -v $PWD:/output -w /output -u $UID guobioinfolab/catt \
+> catt --f1 /Users/XXX/Documents/CATT/PT1_S5_L001_R1_001.fastq --f2 /Users/XXX/Documents/CATT/PT1_S5_L001_R2_001.fastq -o PT1
+
+Here's the output:
+
+[ Info: 2020-06-30 23:13:01] Program start
+[ Info: 2020-06-30 23:13:02] Handing Paired-end sample: /Users/XXX/Documents/CATT/PT1_S5_L001_R1_001.fastq
+[ Info: 2020-06-30 23:13:02] Aligning
+ERROR: LoadError: failed process: Process(`/home/feifei/bwa-0.7.17/bwa mem -v 1 -t 4 -k 8 -A 1 -B 2 -L 0 -T 12 /home/feifei/resource/TR/hs/TRB/TRBV-gai6-DNA.fa /Users/XXX/Documents/CATT/PT1_S5_L001_R1_001.fastq`, ProcessExited(1)) [1]
+error(::String, ::Base.Process, ::String, ::Int64, ::String) at ./error.jl:42
+pipeline_error at ./process.jl:785 [inlined]
+pipeline_error(::Base.ProcessChain) at ./process.jl:798
+#run#515(::Bool, ::Function, ::Base.CmdRedirect) at ./process.jl:726
+run at ./process.jl:724 [inlined]
+map2align(::String, ::String, ::Cmd, ::String, ::Int64, ::Int64) at /home/feifei/catt.jl:39
+(::getfield(Main, Symbol(""##99#101"")){Dict{String,Any}})() at ./task.jl:259
+
+...and 3 more exception(s).
+
+Stacktrace:
+ [1] sync_end(::Array{Any,1}) at ./task.jl:226
+ [2] #input_convert#98(::String, ::Function, ::Dict{String,Any}, ::String) at ./task.jl:245
+ [3] (::getfield(Main, Symbol(""#kw##input_convert"")))(::NamedTuple{(:input_file2,),Tuple{String}}, ::typeof(input_convert), ::Dict{String,Any}, ::String) at ./none:0
+ [4] proc(::Dict{String,Any}) at /home/feifei/catt.jl:761
+ [5] top-level scope at /home/feifei/catt.jl:823
+ [6] include at ./boot.jl:326 [inlined]
+ [7] include_relative(::Module, ::String) at ./loading.jl:1038
+ [8] include(::Module, ::String) at ./sysimg.jl:29
+ [9] exec_options(::Base.JLOptions) at ./client.jl:267
+ [10] _start() at ./client.jl:436
+in expression starting at /home/feifei/catt.jl:822
+
+Any help would be greatly appreciated!",JFavaloro,https://github.com/GuoBioinfoLab/CATT/issues/5
+MDU6SXNzdWU2NjU3OTQ5NDg=,Example output file for immunarch,CLOSED,2020-07-26T14:44:08Z,2020-08-03T07:54:57Z,2020-08-03T07:54:57Z,"Hi, thank you for creating CATT, I was impressed by your benchmarks and would like to create a parser for your amazing software tool in our repository https://github.com/immunomind/immunarch Can you provide an example of the output file of CATT please?
+
+Immunarch issue to track the parser development: immunomind/immunarch#90
+
+Thank you so much!
+
+Best regards,
+Vadim",vadimnazarov,https://github.com/GuoBioinfoLab/CATT/issues/6
+MDU6SXNzdWU2NzE2NzIzNTk=,BioAlignments issue,OPEN,2020-08-02T19:12:04Z,2020-08-05T12:33:47Z,,"Hello,
+
+I'm getting this issue for some of my Fastq files.
+
+[ Info: 2020-08-02 07:06:27] Program start
+[ Info: 2020-08-02 07:06:28] Handing Paired-end sample: /projects/b1042/MeeksLab/abacus/6/62C51828A4DD56C3C570218C79F140DB_1_val_
+1.fq.gz
+[ Info: 2020-08-02 07:06:28] Aligning
+[ Info: 2020-08-02 07:35:48] Reading aligned results
+ERROR: LoadError: BioAlignments.SAM.Reader file format error on line 1 ~>""D00760:3""
+Stacktrace:
+ [1] error(::Type, ::String, ::Int64, ::String, ::String) at ./error.jl:42
+ [2] _read!(::BioAlignments.SAM.Reader, ::BioCore.Ragel.State{BufferedStreams.BufferedInputStream{IOStream}}, ::BioAlignments.SAM.Record) at /home/kam9898/.julia/packages/BioCore/YBJvb/src/ReaderHelper.jl:164
+ [3] read!(::BioAlignments.SAM.Reader, ::BioAlignments.SAM.Record) at /home/kam9898/.julia/packages/BioCore/YBJvb/src/ReaderHelper.jl:134
+ [4] tryread!(::BioAlignments.SAM.Reader, ::BioAlignments.SAM.Record) at /home/kam9898/.julia/packages/BioCore/YBJvb/src/IO.jl:73
+ [5] iterate at /home/kam9898/.julia/packages/BioCore/YBJvb/src/IO.jl:84 [inlined]
+ [6] read_alignrs(::Dict{String,Any}, ::Array{Any,1}, ::Array{Any,1}, ::String) at /projects/b1042/MeeksLab/catt/CATT/catt.jl:230
+ [7] mainflow(::Dict{String,Any}, ::Array{Any,1}, ::Array{Any,1}, ::String, ::String) at /projects/b1042/MeeksLab/catt/CATT/catt.jl:700
+ [8] proc(::Dict{String,Any}) at /projects/b1042/MeeksLab/catt/CATT/catt.jl:764
+ [9] top-level scope at /projects/b1042/MeeksLab/catt/CATT/catt.jl:825
+ [10] include at ./boot.jl:328 [inlined]
+ [11] include_relative(::Module, ::String) at ./loading.jl:1105
+ [12] include(::Module, ::String) at ./Base.jl:31
+ [13] exec_options(::Base.JLOptions) at ./client.jl:287
+ [14] _start() at ./client.jl:460
+in expression starting at /projects/b1042/MeeksLab/catt/CATT/catt.jl:824
+
+
+
+This is the command I used:
+for prefix in $(ls /projects/b1042/MeeksLab/abacus/6/62C*gz | rev | cut -c 14- | rev | uniq)
+do
+        /projects/b1042/MeeksLab/catt/CATT/./catt --f1 ${prefix}1_val_1.fq.gz --f2 ${prefix}2_val_2.fq.gz -o $prefix -t 4
+done
+",code12412f,https://github.com/GuoBioinfoLab/CATT/issues/7
+MDU6SXNzdWU2NzM5MTIzOTY=,UndefVarError: x not defined,CLOSED,2020-08-05T23:33:09Z,2020-08-12T07:09:10Z,2020-08-12T07:09:10Z,"Hi, 
+
+I tried running CATT on the testSample.fq; and I am getting the following error: 
+
+catt -f testSample.fq -o testSampleOutput -t 4
+[ Info: 2020-08-05 19:19:42] Program start
+[ Info: 2020-08-05 19:19:42] Handing Single-end sample: testSample.fq
+[ Info: 2020-08-05 19:19:42] Aligning
+[ Info: 2020-08-05 19:19:50] Reading aligned results
+[ Info: 2020-08-05 19:20:02] Processing both mapped reads
+[ Info: 2020-08-05 19:20:03] Sequence error rate: 0.0076
+[ Info: 2020-08-05 19:20:03] Adaptive kmer length 23
+[ Info: 2020-08-05 19:20:03] Search Range: 1326
+[ Info: 2020-08-05 19:20:03] Searching from full candidate reads
+[ Info: 2020-08-05 19:20:03] Directly found 675
+[ Info: 2020-08-05 19:20:03] Break partital reads into kmer
+[ Info: 2020-08-05 19:20:03] There are 651 reads left
+ERROR: LoadError: TaskFailedException:
+UndefVarError: x not defined
+Stacktrace:
+ [1] Composition(::BioSequences.EveryMerIterator{Mer{DNAAlphabet{2},23},LongSequence{DNAAlphabet{4}}}) at /gpfs/home/nadorb01/.julia/packages/BioSequences/k4j4J/src/composition.jl:80
+ [2] composition(::BioSequences.EveryMerIterator{Mer{DNAAlphabet{2},23},LongSequence{DNAAlphabet{4}}}) at /gpfs/home/nadorb01/.julia/packages/BioSequences/k4j4J/src/composition.jl:92
+ [3] (::var""#143#144""{Int64})(::Myread) at ./none:0
+ [4] iterate at ./generator.jl:47 [inlined]
+ [5] mapfoldl_impl(::Function, ::Function, ::NamedTuple{(),Tuple{}}, ::Base.Generator{Array{Myread,1},var""#143#144""{Int64}}) at ./reduce.jl:55
+ [6] depcature at ./reduce.jl:72 [inlined]
+ [7] macro expansion at /home/common_scripts/CATT/catt.jl:419 [inlined]
+ [8] (::var""#94#threadsfor_fun#149""{Array{Myread,1},Int64,Array{Int64,1},Array{Composition{Mer{DNAAlphabet{2},23}},1},UnitRange{Int64}})(::Bool) at ./threadingconstructs.jl:61
+ [9] (::var""#94#threadsfor_fun#149""{Array{Myread,1},Int64,Array{Int64,1},Array{Composition{Mer{DNAAlphabet{2},23}},1},UnitRange{Int64}})() at ./threadingconstructs.jl:28
+Stacktrace:
+ [1] wait(::Task) at ./task.jl:251
+ [2] macro expansion at ./threadingconstructs.jl:69 [inlined]
+ [3] bbk(::Array{Myread,1}, ::Int64) at /home/common_scripts/CATT/catt.jl:418
+ [4] catt(::Array{Myread,1}, ::Array{Myread,1}, ::String, ::Dict{String,Any}, ::String) at /home/common_scripts/CATT/catt.jl:469
+ [5] mainflow(::Dict{String,Any}, ::Array{Any,1}, ::Array{Any,1}, ::String, ::String) at /home/common_scripts/CATT/catt.jl:682
+ [6] proc(::Dict{String,Any}) at /home/common_scripts/CATT/catt.jl:779
+ [7] top-level scope at /home/common_scripts/CATT/catt.jl:806
+ [8] include at ./boot.jl:328 [inlined]
+ [9] include_relative(::Module, ::String) at ./loading.jl:1105
+ [10] include(::Module, ::String) at ./Base.jl:31
+ [11] exec_options(::Base.JLOptions) at ./client.jl:287
+ [12] _start() at ./client.jl:460
+in expression starting at /home/common_scripts/CATT/catt.jl:805
+
+Unfortunately, our cluster does not support Docker. Any idea what the problem might be?
+I am using:
+python 3.7.1
+julia> Pkg.status()
+    Status `~/.julia/environments/v1.3/Project.toml`
+  [00701ae9] BioAlignments v2.0.0
+  [7e6ae17a] BioSequences v2.0.5
+  [336ed68f] CSV v0.7.7
+  [a93c6f00] DataFrames v0.21.6
+  [864edb3b] DataStructures v0.17.20
+  [c2308a5c] FASTX v1.1.3
+  [92fee26a] GZip v0.5.1
+  [d759349c] XAM v0.2.6
+  [ade2ca70] Dates 
+  [8ba89e20] Distributed 
+  [9a3f8284] Random 
+  [cf7118a7] UUIDs 
+
+Thanks!",BettinaNa,https://github.com/GuoBioinfoLab/CATT/issues/8
+MDU6SXNzdWU2NzQzMjIzMzc=,support of different genome builds,OPEN,2020-08-06T13:39:29Z,2020-08-06T13:39:29Z,,"Hi, 
+I was wondering whether you are planning to support different genome builds in the future? I would be specifically interested in hg38/GRCh38. 
+Thanks!",BettinaNa,https://github.com/GuoBioinfoLab/CATT/issues/9
+MDU6SXNzdWU2NzcyMjA2MTc=,Chromium 10X,OPEN,2020-08-11T21:50:30Z,2020-09-27T20:02:25Z,,"Hi, congratulations for the project, great job.
+I have some questions regarding the analysis of Chromium 10X format data.
+
+From the documentations:
+catt --tenX --f1 R1 --f2 R2 -o outputName
+
+Chromium 10X output consists of 6 FASTQ files split into two sequencing lanes L001 and L002, each with 2 reads of R1 (barcodes), R2 (cDNA sequences), I1 (illumina lane info); are catt R1 and R2 argument operators for the script or shall I substitute them with the 2 + 2 *.fastq.gz file names? If this is the case, what syntax please?  I have tentatively tried to run (from the folder where I have the 6 FASTQ files)
+
+catt --tenX --f1 R1 --f2 R2 -o outputName
+
+and also
+
+catt --tenX --f1 sample_L001_R1_001.fastq.gz --f2 sample_L001_R2_001.fastq.gz -o outputName
+
+but in both cases I have the following error message:
+
+Program start
+ERROR: LoadError: MethodError: no method matching split(::Array{String,1}, ::Char)
+Closest candidates are:
+  split(::T, ::AbstractChar; limit, keepempty) where T<:AbstractString at strings/util.jl:387
+  split(::T, ::Any; limit, keepempty) where T<:AbstractString at strings/util.jl:379
+  split(::CategoricalValue{String,R} where R<:Integer, ::Any; kwargs...) at deprecated.jl:70
+Stacktrace:
+ [1] split_10X(::Array{String,1}, ::Array{String,1}) at ./CATT/catt.jl:634
+ [2] proc(::Dict{String,Any}) at ./CATT/catt.jl:721
+ [3] top-level scope at ./CATT/catt.jl:806
+ [4] include(::Function, ::Module, ::String) at ./Base.jl:380
+ [5] include(::Module, ::String) at ./Base.jl:368
+ [6] exec_options(::Base.JLOptions) at ./client.jl:296
+ [7] _start() at ./client.jl:506
+in expression starting at ./CATT/catt.jl:805
+
+Any suggestions to resolve this issue please?
+Thank you in advance for your help!
+
+Sara",SaraValpione,https://github.com/GuoBioinfoLab/CATT/issues/10
+MDU6SXNzdWU4NjU5OTgzMTE=,Issue with mouse reference,OPEN,2021-04-23T10:55:20Z,2021-09-22T22:14:24Z,,"Hello,
+
+I have pulled the Docker Image and try to use the tool to characterize T cell receptor sequences in single-cell RNAseq data. It works fine on human data but for mouse samples I’m getting this Error message:
+
+[ Info: 2021-04-23 10:25:40] Program start
+[ Info: 2021-04-23 10:25:41] Handing Paired-end sample: A1-MAA000510-3_8_M-1-1_R1_001.fastq
+[ Info: 2021-04-23 10:25:42] Aligning
+ERROR: LoadError: failed processes:
+  Process(`/home/feifei/bwa-0.7.17/bwa mem -v 1 -t 4 -k 8 -A 1 -B 2 -L 0 -T 12 /home/feifei/resource/TR/ms/TRBV-CDR3.fa A1-MAA000510-3_8_M-1-1_R1_001.fastq`, ProcessExited(1)) [1]
+  Process(`/home/feifei/samtools-1.10/samtools view -h -F 2308`, ProcessExited(1)) [1]
+error(::String) at ./error.jl:33
+pipeline_error(::Base.ProcessChain) at ./process.jl:803
+#run#515(::Bool, ::Function, ::Base.CmdRedirect) at ./process.jl:726
+run at ./process.jl:724 [inlined]
+map2align(::String, ::String, ::Cmd, ::String, ::Int64, ::Int64) at /home/feifei/catt.jl:39
+(::getfield(Main, Symbol(""##99#101"")){Dict{String,Any}})() at ./task.jl:259
+
+...and 3 more exception(s).
+
+Stacktrace:
+ [1] sync_end(::Array{Any,1}) at ./task.jl:226
+ [2] #input_convert#98(::String, ::Function, ::Dict{String,Any}, ::String) at ./task.jl:245
+ [3] (::getfield(Main, Symbol(""#kw##input_convert"")))(::NamedTuple{(:input_file2,),Tuple{String}}, ::typeof(input_convert), ::Dict{String,Any}, ::String) at ./none:0
+ [4] proc(::Dict{String,Any}) at /home/feifei/catt.jl:761
+ [5] top-level scope at /home/feifei/catt.jl:823
+ [6] include at ./boot.jl:326 [inlined]
+ [7] include_relative(::Module, ::String) at ./loading.jl:1038
+ [8] include(::Module, ::String) at ./sysimg.jl:29
+ [9] exec_options(::Base.JLOptions) at ./client.jl:267
+ [10] _start() at ./client.jl:436
+in expression starting at /home/feifei/catt.jl:822
+
+
+The command I use is:
+catt --sc --species ms --f1 inputFile1 --f2 inputFile2 -o outputName
+
+Any suggestions to resolve this issue?
+Thank you in advance for your help!
+",kachri,https://github.com/GuoBioinfoLab/CATT/issues/11
+I_kwDOCRoDL85EyJjs,ERROR: LoadError: ArgumentError: provide a valid sink argument,OPEN,2022-02-28T11:49:53Z,2022-02-28T11:49:53Z,,"Hi,
+
+I encountered this error when running CATT for the first time:
+
+![image](https://user-images.githubusercontent.com/13835031/155978431-31486769-62f3-408c-84a0-d1e4a599d1cc.png)
+
+However, a quick Google search revealed an easy solution. I only had to change line 587 of `catt.jl`:
+
+    tab = CSV.read(""$PATH2CATT/prob.csv"",DataFrame)",Rmulet,https://github.com/GuoBioinfoLab/CATT/issues/12
+I_kwDOCRoDL85FKd7u,LoadError: ArgumentError: ,OPEN,2022-03-05T14:58:10Z,2022-03-05T14:58:10Z,,"We are stucked in the first attempt to run the sample file in CATT. 
+Getting this error message repeatedly---------_""ERROR: LoadError: ArgumentError: Distributed not found in path
+while loading /home/hem/Documents/sra_study/CATT/CATT/catt.jl, in expression starting on line 8""   
+ the command we submitted was the same as described in CATT github tutorial----""catt -f testSample.fq -o output -t 2""
+
+",HemuGU,https://github.com/GuoBioinfoLab/CATT/issues/13
+I_kwDOCRoDL85PVznz,ERROR: LoadError: UndefVarError: @spawn not defined,OPEN,2022-08-07T20:34:19Z,2022-08-07T20:34:19Z,,"I got an error in the first test to run your sample file in CATT.
+
+WARNING: both Threads and Distributed export ""@spawn""; uses of it in module Main must be qualified
+ERROR: LoadError: UndefVarError: @spawn not defined
+in expression starting at /scratch1/vahed/data/tools/CATT/catt.jl:175
+in expression starting at /scratch1/vahed/data/tools/CATT/catt.jl:144",Mohammad-Vahed,https://github.com/GuoBioinfoLab/CATT/issues/14
+I_kwDOCRoDL85wYhks,Loaderror,OPEN,2023-09-07T09:26:15Z,2024-03-18T13:12:32Z,,"Hi,
+
+I am experiencing a problem when running the CATT Docker image. The test sample runs fine, but other .fq files fail at the Aligning stage with a LoadError. The files seem to be normal, but they cannot be opened. What could be the cause of this problem?",km-2021,https://github.com/GuoBioinfoLab/CATT/issues/15
+I_kwDOCRoDL85yBM2n,ERROR: LoadError: TaskFailedException,CLOSED,2023-09-26T07:52:17Z,2023-11-02T06:21:59Z,2023-11-02T06:21:59Z,"I am experiencing a problem with the git-installed CATT resource folder. How to fix it ?
+
+$ catt -f testSample.fq -o testSampleOutput -t 2
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.01 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Pack forward-only FASTA... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index ./resource/TR/hs/TRBV.fa
+[main] Real time: 0.322 sec; CPU: 0.015 sec
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Pack forward-only FASTA... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index ./resource/TR/hs/TRBJ.fa
+[main] Real time: 0.305 sec; CPU: 0.004 sec
+[ Info: 2023-09-26 15:41:18] Program start
+[ Info: 2023-09-26 15:41:19] Handing Single-end sample: testSample.fq
+[ Info: 2023-09-26 15:41:19] Aligning
+ERROR: LoadError: TaskFailedException
+
+    nested task error: failed processes:
+      Process(`/path/to/samtools sort -O SAM -t AS -l 0 -@ 4`, ProcessSignaled(13)) [0]
+      Process(`/path/to/samtools view -F 2308`, ProcessSignaled(13)) [0]
+      Process(`tail -r`, ProcessExited(1)) [1]
+      Process(`/path/to/samtools view -h -T /path/to/CATT/resource/TR/hs/TRB/TRBV-gai6-DNA.fa`, ProcessExited(1)) [1]
+    
+    Stacktrace:
+     [1] pipeline_error(procs::Base.ProcessChain)
+       @ Base ./process.jl:578
+     [2] run(::Base.CmdRedirect; wait::Bool)
+       @ Base ./process.jl:480
+     [3] run
+       @ ./process.jl:477 [inlined]
+     [4] map2align(input_file::String, ref::String, fasta_flag::Cmd, prefix::String, threads::Int64, score::Int64)
+       @ Main /path/to/CATT/catt.jl:43
+     [5] (::var""#93#95""{Dict{String, Any}, Vector{Any}, Cmd, String, Int64})()
+       @ Main ./task.jl:514
+
+...and 1 more exception.
+
+Stacktrace:
+ [1] sync_end(c::Channel{Any})
+   @ Base ./task.jl:445
+ [2] macro expansion
+   @ ./task.jl:477 [inlined]
+ [3] input_convert(args::Dict{String, Any}, input_file::String; input_file2::Nothing)
+   @ Main /path/to/CATT/catt.jl:143
+ [4] input_convert(args::Dict{String, Any}, input_file::String)
+   @ Main /path/to/CATT/catt.jl:134
+ [5] proc(args::Dict{String, Any})
+   @ Main /path/to/CATT/catt.jl:767
+ [6] top-level scope
+   @ /path/to/CATT/catt.jl:785
+in expression starting at /path/to/CATT/catt.jl:784",songofbin,https://github.com/GuoBioinfoLab/CATT/issues/16
+I_kwDOCRoDL857PQKk,Potential bug when using paired-end files,OPEN,2024-01-05T16:02:39Z,2024-11-05T10:26:01Z,,"Hi,
+I found some weird behaviour when running paired-end data.
+
+To test some stuff, I created some simulated datasets where I know all the parameters like repertoire size, size of each clonotype, V gene, J gene etc.
+I created the fastq's as paired-end seq files
+and ran catt with the following command `catt --f1 test_R1.fastq --f2 test_R2.fastq -o test_out -t 20`. 
+
+The unintended behaviour I experienced can nicely be seen in one of my samples with a repertoire of one clonotype with 10.000 clones.
+Catt returns 3 clones with exactly equal NNseq:
+`AAseq,NNseq,Prob,Vregion,Jregion,Dregion,Frequency
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*02,TRBJ2-1*01,TRBD1*01,6727
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*06,TRBJ2-1*01,TRBD1*01,6727
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*03,TRBJ2-1*01,TRBD1*01,6546`
+
+When combining the ""different"" clonotypes into one the frequencies sum up to 20.000 clones instead of 10.000.
+So, it seems like catt is counting each clone twice
+
+I thus merged the paired end files to a single file using pear and repeated the analysis. 
+This returned the same results as the paired-end run, only the frequencies are different.
+`AAseq,NNseq,Prob,Vregion,Jregion,Dregion,Frequency
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*06,TRBJ2-1*01,TRBD1*01,3379
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*02,TRBJ2-1*01,TRBD1*01,3348
+CSARGDRGLSYNEQFF,TGCAGTGCTCGGGGGGACAGGGGGCTATCCTACAATGAGCAGTTCTTC,0.00016,TRBV20-1*03,TRBJ2-1*01,TRBD1*01,3273
+`
+For the merged ""single-end"" files the clones sum up to the expected 10.000. 
+What confuses me a little though that the counts aren't exactly half of the ones in the paired-end run
+
+I guess that there must be some issue when counting the frequency for the paired-end samples.
+
+Would be awesome if you could have a look!
+Thanks!
+ 
+",mapo9,https://github.com/GuoBioinfoLab/CATT/issues/17
+I_kwDOCRoDL86GQBWr, LoadError: TaskFailedException,OPEN,2024-04-19T08:03:30Z,2024-04-19T08:03:30Z,,"Hello,
+
+I'm unable to run catt tool. I've set the samtools and bwa paths correctly but the error persists
+[ Info: 2024-04-19 00:57:59] Program start
+[ Info: 2024-04-19 00:57:59] Handing Single-end sample: testSample.fq
+[ Info: 2024-04-19 00:57:59] Aligning
+ERROR: LoadError: TaskFailedException
+
+    nested task error: failed processes:
+      Process(`bwa mem -v 0 -SP -t 4 -k 10 -A 1 -B 2 -L 0 -T 12 /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/resource/TR/hs/TRB/TRBJ-gai3-DNA.fa testSample.fq`, ProcessExited(1)) [1]
+      Process(`samtools sort -O SAM -t AS -l 0 -@ 4`, ProcessExited(1)) [1]
+      Process(`samtools view -F 2308`, ProcessExited(1)) [1]
+      Process(`samtools view -h -T /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/resource/TR/hs/TRB/TRBJ-gai3-DNA.fa`, ProcessExited(1)) [1]
+
+    Stacktrace:
+     [1] pipeline_error(procs::Base.ProcessChain)
+       @ Base ./process.jl:578
+     [2] run(::Base.CmdRedirect; wait::Bool)
+       @ Base ./process.jl:480
+     [3] run
+       @ ./process.jl:477 [inlined]
+     [4] map2align(input_file::String, ref::String, fasta_flag::Cmd, prefix::String, threads::Int64, score::Int64)
+       @ Main /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:44
+     [5] (::var""#94#96""{Dict{String, Any}, Vector{Any}, Cmd, String, Int64})()
+       @ Main ./task.jl:514
+Stacktrace:
+ [1] sync_end(c::Channel{Any})
+   @ Base ./task.jl:445
+ [2] macro expansion
+   @ ./task.jl:477 [inlined]
+ [3] input_convert(args::Dict{String, Any}, input_file::String; input_file2::Nothing)
+   @ Main /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:144
+ [4] input_convert(args::Dict{String, Any}, input_file::String)
+   @ Main /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:135
+ [5] proc(args::Dict{String, Any})
+   @ Main /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:768
+ [6] top-level scope
+   @ /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:786
+in expression starting at /project/ypatel_840/pjaiswal/TCR_project/cat/CATT/catt.jl:785
+
+Could you please help me how to resolve this?
+
+
+",pooja185,https://github.com/GuoBioinfoLab/CATT/issues/18
+I_kwDOCRoDL86GQc5D,Question on the running speed,OPEN,2024-04-19T08:57:48Z,2024-05-06T10:18:32Z,,"@aqzas @Huffyphenix ，
+I am using CATT to extract TCR/BCR information from data from scRNA-seq of immune cells, involving more than 100 datasets. Your article gives a performance comparison of each tool, but is there any comparison in terms of task run speed? This will help me a lot, thanks!",xuezhang335,https://github.com/GuoBioinfoLab/CATT/issues/19
+I_kwDOCRoDL86dDcqC,nested task error: AssertionError: Multiple concurrent writes to Dict detected!,OPEN,2024-11-05T09:36:07Z,2024-12-05T02:11:39Z,,"你好，catt在Ubuntu中似乎不支持多线程，否则会报错，请问如何解决？
+
+运行“catt -f testSample.fq -o testSampleOutput -t 2”
+出现报错：ERROR: LoadError: TaskFailedException
+    nested task error: AssertionError: Multiple concurrent writes to Dict detected!
+Stacktrace:
+ [1] threading_run(fun::var""#137#threadsfor_fun#199""{var""#137#threadsfor_fun#158#200""{DefaultDict{DNAKmer{23}, Int64, Int64}, Vector{Myread}, Vector{Regex}, Vector{Regex}, Vector{Int64}, Vector{Int64}, Vector{Regex}, Vector{Regex}, UnitRange{Int64}}}, static::Bool)
+   @ Base.Threads ./threadingconstructs.jl:172
+ [2] macro expansion
+   @ ./threadingconstructs.jl:220 [inlined]
+ [3] catt(Vpart::Vector{Myread}, Jpart::Vector{Myread}, tmp_name::String, args::Dict{String, Any}, outfix::String)
+   @ Main /path/to/CATT/catt.jl:557
+ [4] mainflow(parsed_args::Dict{String, Any}, vbam::Vector{Any}, jbam::Vector{Any}, tmp_name::String, outfix::String)
+   @ Main /path/to/CATT/catt.jl:700
+ [5] proc(args::Dict{String, Any})
+   @ Main /path/to/CATT/catt.jl:768
+ [6] top-level scope
+   @ /path/to/CATT/catt.jl:785
+in expression starting at /path/to/CATT/catt.jl:784
+
+运行“catt -f testSample.fq -o testSampleOutput -t 1”则无报错。
+
+",songofbin,https://github.com/GuoBioinfoLab/CATT/issues/20

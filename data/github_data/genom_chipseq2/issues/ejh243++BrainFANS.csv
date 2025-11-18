@@ -1,0 +1,2442 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOCxwUgs5D733j,ATAC: Filename 9_countMTReads.sh bug,CLOSED,2022-02-16T09:35:08Z,2022-06-29T09:37:16Z,2022-03-29T08:06:31Z,countMTReads.txt not outputting with filename,aspides-js,https://github.com/ejh243/BrainFANS/issues/4
+I_kwDOCxwUgs5EfShl,alignment tmp files failing deletion,CLOSED,2022-02-24T09:28:28Z,2022-02-24T09:38:38Z,2022-02-24T09:38:38Z,samtools.tmp files output to the rawdatadir are not being deleted by the script,aspides-js,https://github.com/ejh243/BrainFANS/issues/5
+I_kwDOCxwUgs52HwdF,create logFiles folder,CLOSED,2023-11-07T16:23:24Z,2024-06-06T18:30:10Z,2024-06-06T18:30:10Z,Write a small sh sript to set up new user with logFiles folders,ejh243,https://github.com/ejh243/BrainFANS/issues/6
+I_kwDOCxwUgs52HwzB,create new data folders script,CLOSED,2023-11-07T16:24:06Z,2024-03-08T14:18:17Z,2024-03-08T14:18:17Z,"Add a bash script to initiate a new data folder with 0_meta, 1_rae and other sub folders",ejh243,https://github.com/ejh243/BrainFANS/issues/7
+I_kwDOCxwUgs52fICy,Update DNAm processing scripts to use MSET,CLOSED,2023-11-10T15:45:59Z,2024-05-15T17:37:18Z,2024-05-15T17:37:18Z,Update DNAm processing scripts to take MSET object if gds does not exist.,ejh243,https://github.com/ejh243/BrainFANS/issues/8
+I_kwDOCxwUgs58UwjM,[Code Refactor]: Shebang lines,CLOSED,2024-01-17T09:54:17Z,2024-03-08T13:44:31Z,2024-03-08T12:28:08Z,"# Problem
+
+In a large quantity of scripts (examples):
+
+```shell
+general/jobSubmission/copyFiles.sh
+integrative/chromHMM/jobSubmission/4_chmmCompareModels.sh
+array/SNPArray/jobSubmission/formatforQTLs.sh
+```
+
+The shebang is given as:
+```shell
+#!/usr/bin/sh
+```
+or
+```shell
+#!/bin/sh
+```
+
+## Why this is a problem
+
+Bash has many built-ins that POSIX shell does not. This includes (but is not limited to) `source`, arrays and `mapfile`. In the vast majority of cases `source` is being used in these scripts that use `#!/bin/sh` in the shebang. 
+
+On many systems (including the HPC at UoE), there is a symbolic link between /bin/sh and /bin/bash. This means that if any issues arise during runtime of these scripts (related to POSIX shell not interpreting these commands), bash will be called to interpret the line instead.
+
+The problem comes when the script is ran on a different machine/system where this is not the case. Such a machine/system would not be able to interpret these commands correctly which can result in unwanted behaviour. It is best to state your intentions in the shebang of an executable file.
+
+If you are not using any bash built-ins in your script, then this is not an issue.
+
+## Fix
+Run these commands to convert all instances of `#!/bin/sh` (or `#!/usr/bin/sh`) to `#!/bin/bash` in your project:
+
+```shell
+list_of_shell_scripts=$(find . -type f -name *.sh)
+
+for file in ""${list_of_shell_scripts}""; do
+  # Using '@' delimiter to avoid excessive escaping of '/' characters
+  sed -i 's@#!/bin/sh@#!/bin/bash@' $file
+  sed -i 's@#!/usr/bin/sh@#!/bin/bash@' $file
+done
+```
+
+ 
+",sof202,https://github.com/ejh243/BrainFANS/issues/9
+I_kwDOCxwUgs58U23c,Unneeded change directory commands,CLOSED,2024-01-17T10:07:14Z,2024-01-23T16:19:50Z,2024-01-23T16:19:50Z,"# Problem
+
+Many scripts have one of their first lines as:
+```shell
+cd ${SLURM_SUBMIT_DIR}
+```
+
+The value of the variable `${SLURM_SUBMIT_DIR}` is set to the present working directory of the user at the time of job submission. Upon job submission, the job will already be in this directory as a part of the initialisation.
+
+This is a very useful feature of SLURM workload manager. However, in the majority of cases, this 'change directory' command is one of the first lines in the script (before any other 'change directory' commands). This makes these lines useless and slightly confusing (as they imply that the initial directory of the script is *not* where the user submits it from, which is false).
+
+There is no actual error that occurs when running this command at the top of your script, thus this is of low importance. ",sof202,https://github.com/ejh243/BrainFANS/issues/10
+I_kwDOCxwUgs58U_Y9,[Code Refactor]: `Change directory` (cd) error handling,CLOSED,2024-01-17T10:25:49Z,2024-03-15T10:24:07Z,2024-03-15T10:24:07Z,"# Problem
+
+The vast majority of scripts do not have any error handling/catching for `cd` (change directory) commands. For example:
+
+```shell
+cd ${META_DIR}
+cd ATACseq/MRC/0_metadata
+```
+
+For the majority of cases, this will work just as intended. However, one must consider the case where this command has a non-zero exit code. Cases where this could occur include:
+
+- The source file containing this variable (${META_DIR}) is renamed (source file is not sourced)
+- The variable (${META_DIR}) points to the wrong directory
+- The directory (ATACseq/MRC/0_metadata) is moved/deleted
+- The directory (ATACseq/MRC/0_metadata) is renamed
+
+In these cases this line will throw an error. However, by default, shell scripts continue even if an error occurs. This means that unwanted behaviour can arise if this error is not handled. Consider the following scenario:
+
+```shell
+# Removes the text files in a temporary directory of the metadata directory
+cd ${META_DIR}\temp
+rm -f *.txt
+```
+ 
+If the `cd` command fails (for whatever reason), then the `rm` command will still be ran, likely in the wrong directory. This could end up removing files that the developer did not intend.
+
+## Solution 1
+
+During general debugging, the developer can add the following shell option to the top of their script:
+
+```shell
+set -e
+```
+
+This will result in the shell script automatically exiting upon receiving any error code. Which can be very useful when testing and debugging scripts. However, this should not be relied upon in final builds as having this shell option set will result in the script terminating for less serious errors and warnings (which can happen as a result of external programs). 
+
+## Solution 2
+
+For a final build, the recommended way to handle `cd` errors is to employ the following:
+
+```shell
+cd ${META_DIR} || exit 1
+```
+
+This approach will result in the script terminating if  `cd ${META_DIR}` returns a non-zero exit code (*i.e.* the `cd` command fails). This is more specific error handling to [solution one](#solution1). As an added bonus, this allows the user to give a specific error message if they so wish (to give more information to the user). For example
+
+```shell
+cd ${META_DIR} || {>&2 echo \
+""Check the config file to ensure META_DIR is pointing to the correct directory. \
+Currently this points to: ${META_DIR}."" 
+exit 1}
+```
+
+Which can help with fixing the error in the future.
+\
+Note: `>&2` here will result in the echo statement to be written to the error file of the job instead of the log file.
+",sof202,https://github.com/ejh243/BrainFANS/issues/11
+I_kwDOCxwUgs588ztl,Templates,CLOSED,2024-01-23T15:17:18Z,2024-01-23T16:09:03Z,2024-01-23T16:09:03Z,"In order to implement a workflow that is user friendly, we should have templates for issues, discussions and pull requests on GitHub. This will make these actions more accessible to those who are less familiar with the development process.",sof202,https://github.com/ejh243/BrainFANS/issues/12
+I_kwDOCxwUgs589Vlb,[Code Refactor]: Unnecessary change directory command,CLOSED,2024-01-23T16:19:01Z,2024-03-15T10:24:07Z,2024-03-15T10:24:07Z,"### Contact Details
+
+s.o.fletcher@exeter.ac.uk
+
+### Path to affected file
+
+```shell
+BrainFANS/integrative/chromHMM/jobSubmission/runChromatinStateEnrichments.sh
+```
+
+
+### Type of refactor
+
+Code optimisation, Code understandability improvement
+
+### Description of required code refactor
+
+Currently, line 29 reads: `cd $SLURM_SUBMIT_DIR`
+
+Considering that this is the first `cd` command in this script, this command is not doing anything and therefore can be removed to increase understandability.",sof202,https://github.com/ejh243/BrainFANS/issues/14
+I_kwDOCxwUgs5897FN,[Enhancement suggestion]: How to contribute,CLOSED,2024-01-23T17:27:49Z,2024-01-24T10:55:31Z,2024-01-24T10:55:31Z,"### Contact Details
+
+s.o.fletcher@exeter.ac.uk
+
+### Enhancement suggestion
+
+My suggestion for an enhancement is to add a markdown file that will detail how to contribute to this repository. This should make it easier for others to know how to contribute effectively. ",sof202,https://github.com/ejh243/BrainFANS/issues/15
+I_kwDOCxwUgs58-AWX,[Code Refactor]: .gitignore has lots of redundant lines,CLOSED,2024-01-23T17:39:44Z,2024-02-16T15:28:18Z,2024-02-16T15:28:18Z,"### Contact Details
+
+s.o.fletcher@exeter.ac.uk
+
+### Path to affected file
+
+```shell
+BrainFANS/.gitignore
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Currently the .gitignore file has many lines that are doing the same thing or doing nothing. 
+For example:
+Line 16: `JobSubmissionScripts/`
+
+This folder doesn't exist in the repository, and thus does not need to be in this file.
+",sof202,https://github.com/ejh243/BrainFANS/issues/17
+I_kwDOCxwUgs59DM9X,[Documentation Fault]: Several issues in development pipeline file,CLOSED,2024-01-24T10:50:01Z,2024-02-13T09:34:58Z,2024-02-13T09:34:58Z,"### Contact Details
+
+s.o.fletcher@exeter.ac.uk
+
+### Fault type
+
+Spelling error, Incorrect information given
+
+### Please describe the fault in detail
+
+On the development-pipeline.md file, there are multiple spelling mistakes, and lots of poor wording.
+
+Also, in section 5, there is no need to use `git checkout` here and you should be pulling and pushing on the development branch (not pulling the master branch).
+
+Adding more images to explain the pipeline instead of purely words should aid in understanding also.
+
+The file is also rather long, a contents section would help with navigation.
+",sof202,https://github.com/ejh243/BrainFANS/issues/18
+I_kwDOCxwUgs59EU0q,[Enhancement suggestion]: Example data/vignette of the input files needed,CLOSED,2024-01-24T13:36:41Z,2024-02-19T09:01:39Z,2024-02-19T09:01:39Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Hi, 
+
+It's my first time trying to run the neural neuralCellComposition analysis (DNAm/analysis/neuralCellComposition) and have noticed a series of Rscripts that require different arguments i.e. path to folder with array annotation files - what should these annotation files look like? i.e path to csv file with reference panels specified - is there a specific format for the csv file? 
+
+Also looking into the fitModelsAll.r, and apologies if I'm missing something, but there seem to be some pre-requisite input files needed:  
+```
+crosshyb<-read.csv(file.path(refPath, ""CrossHybridisingProbesPriceORWeksberg.csv""), row.names = 1)
+probes<-read.csv(file.path(refPath, ""SNPsinProbesAnno.csv""), row.names = 1)
+``` 
+
+Should there be a config file where I load in my own input files? 
+Thank you!",SziKayLeung,https://github.com/ejh243/BrainFANS/issues/20
+I_kwDOCxwUgs59htUp,[Documentation Fault]: Build out documentation,CLOSED,2024-01-29T17:02:51Z,2024-02-16T15:28:19Z,2024-02-16T15:28:19Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Page removal required, New page required
+
+### Please describe the fault in detail
+
+The website has now been initially deployed, now pages need to be added to build out the documentation.
+
+Pages needed are:
+- How to contribute to the repository [done, just needs refactoring]
+- How to contribute to the documentation
+- How to run the website locally
+- Landing pages for documentation and analyses pages",sof202,https://github.com/ejh243/BrainFANS/issues/21
+I_kwDOCxwUgs59xiG7,[Enhancement suggestion]: Update DNAm QC pipeline to process EPIC V2,CLOSED,2024-01-31T13:48:25Z,2024-04-29T14:05:16Z,2024-04-29T14:05:16Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Add capability to pipeline to process idats from EPIC V2. ",ejh243,https://github.com/ejh243/BrainFANS/issues/22
+I_kwDOCxwUgs59xkbB,[Enhancement suggestion]: Adapt DNAm QC pipeline to process data from single tissue type,CLOSED,2024-01-31T13:53:33Z,2024-07-10T12:28:12Z,2024-07-10T12:28:11Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+- Identify which parts of the QC pipeline are only relevant for cell type specific datasets
+- Recode these bits so they can be run optionally.
+- Then need a flag in the config file to turn this on and off.
+
+@alicemfr would you like to take a go at this?",ejh243,https://github.com/ejh243/BrainFANS/issues/23
+I_kwDOCxwUgs59xm9x,[Bug]: Sex check fails on EPICV2,CLOSED,2024-01-31T13:58:52Z,2024-06-11T16:31:53Z,2024-06-11T16:31:53Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+The hard coded thresholds for deciding whether a sample is male or female causes only one sex to be predicted. This is a consequence of a change in the probes on the different versions of the array. 
+
+These thresholds either need to be calculated more intelligently or array specific thresholds used. 
+
+@ew367 Something to look at once your updates to pipeline are complete.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/24
+I_kwDOCxwUgs59xsjR,[Code Refactor]: Run scripts from data folder rather than scripts folder,CLOSED,2024-01-31T14:09:16Z,2024-06-10T19:22:11Z,2024-06-10T19:22:11Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+Multiple files affected including: 
+https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/preprocessing/jobSubmission/1_runDNAmQC.sh
+https://github.com/ejh243/BrainFANS/tree/master/array/SNPArray/jobSubmission/*
+https://github.com/ejh243/BrainFANS/tree/master/sequencing/ATACSeq/jobSubmission/*
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Currently we submit scripts for execution from the scripts folder and provide a path to the relevant config files. Instead we want each data folder to have the relevant config files and execute scripts from there. Means we can have standardized config file names/paths that don't need to be explicitly specified.
+
+Actions include:
+
+- Config files will need a scripts path variable (this should be consistent across modalities)
+- Changes to relevant READMEs to include how to create config file and where it should be located
+- Changes to developers/user documentation for data management to include location of config file
+- Changes to paths in any script that executes scripts, mainly job submission scripts or wrapper scripts. This will mainly be bash scripts but there may be others affected.",ejh243,https://github.com/ejh243/BrainFANS/issues/25
+I_kwDOCxwUgs5-EgrE,[Enhancement suggestion]: Create README file template for projects/pipelines,CLOSED,2024-02-02T14:50:20Z,2024-11-05T10:03:51Z,2024-11-05T10:03:51Z,"### Contact Details
+
+m.flores-payan@exeter.ac.uk
+
+### Enhancement suggestion
+
+Create a README.md file template that can be used to document a pipeline or a project in order to facilitate their use by others in the group. ",marinafloresp,https://github.com/ejh243/BrainFANS/issues/28
+I_kwDOCxwUgs5-ZvT4,[Enhancement suggestion]: create standalone script to run basic checks pre QC (e.g. config file and samplesheets formatted correctly),CLOSED,2024-02-06T12:35:16Z,2024-06-11T16:36:49Z,2024-06-11T16:36:49Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+1. after loading config file, stop script with error message if not formatted correctly (e.g. arrayType != ""V1""|""V2"")
+2. check samplesheet contains same column names as the scripts need to run. give warning if sex/geno info etc is missing",ew367,https://github.com/ejh243/BrainFANS/issues/32
+I_kwDOCxwUgs5-Z1uH,[Enhancement suggestion]: create basic technical QC or 'full' QC options for running DNAm QC pipeline,CLOSED,2024-02-06T12:49:21Z,2024-09-23T10:53:30Z,2024-09-23T10:53:29Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Have different options for running a quicker version of the QC or full version of the QC
+
+**quicker technical only version**: intensities/bscon/PCA of control-probe intensities/detection p value/count number of missing values
+e.g. for collaborators data we are not involved in analysing/initally checking that the experiment as worked
+**outputs**: html QC report, csv file of QC metrics
+
+**Full version:** run above and then additionally run: Horvaths epigenetic age/Cortical Clock Age/check effect of normalisation/predict sex/check duplicate samples using SNPs on array/compare to external snp data
+**outputs:** as above, plus: updated gds file containing normalised beta values, QC rdata object containing QCmetrics, snpCor, betas.pca, ctrl.pca, pFOut, geno.mat, betas.rs, rsbetas, samplesPassFail csv file, html QC report",ew367,https://github.com/ejh243/BrainFANS/issues/33
+I_kwDOCxwUgs5-hzNL,[Documentation Fault]: Code review guide,CLOSED,2024-02-07T11:17:33Z,2024-02-16T15:49:07Z,2024-02-16T15:49:07Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+Now that code reviews are a requirement before a pull request can be completed (at least into a development branch or the master branch), I think it would be a good idea to create a code review guide. Examples of what to look for and best practices should also be implemented into this guide. ",sof202,https://github.com/ejh243/BrainFANS/issues/34
+I_kwDOCxwUgs5-q-Bs,[Bug]: GDS file never reloaded; always recreated,CLOSED,2024-02-08T13:28:11Z,2024-06-06T18:29:21Z,2024-06-06T18:29:21Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+When GDS file already exists, ""loadDataGDS.r"" fails to find it due to renaming that occurs at end of script: 
+`file.rename(gdsFile.sub, gdsFile)`
+
+The renaming means that `if(file.exists(gdsFile.sub))` is FALSE instead of TRUE. 
+May be fixed by changing gdsFile.sub to gdsFile i.e. `if(file.exists(gdsFile))`.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",alicemfr,https://github.com/ejh243/BrainFANS/issues/37
+I_kwDOCxwUgs5-zPw0,[Enhancement suggestion]: adapt DNAm QC pipeline to work with 450k data,CLOSED,2024-02-09T15:26:42Z,2024-02-26T12:06:02Z,2024-02-26T12:06:02Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Adapt loadGDS, and calcQCmetrics scripts to be compatible with 450k methylation array data",ew367,https://github.com/ejh243/BrainFANS/issues/38
+I_kwDOCxwUgs5_EKyS,[Bug]: GDS object permisions,CLOSED,2024-02-13T08:48:33Z,2024-05-15T18:08:31Z,2024-05-15T18:08:31Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+I can't load a gds object into R that has been created by someone else. I get Permission denied. We need to change the file permissions after creation. This might apply to some other elements of the QC too. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/39
+I_kwDOCxwUgs5_0zHt,[Enhancement suggestion]: Add link to q&a section of GitHub to issues page,CLOSED,2024-02-20T14:44:32Z,2024-02-21T10:12:12Z,2024-02-21T10:12:12Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Currently, if someone has a question about the various pipelines within this repository, they might think to ask their question via opening an issue. None of the current issue templates really fit the 'question' category. We can either add a new issue template specifically for asking general questions or redirect such users to the q&a section of github. 
+
+I feel like the latter is better as question based issues are unlikely to be closed until a long time has passed since an answer was given (see #20). The q&a section was also designed for exactly this.",sof202,https://github.com/ejh243/BrainFANS/issues/40
+I_kwDOCxwUgs5_07Yz,[Enhancement suggestion]: edit loadGDS.r script to add manifest data to fData node in GDS file for hm450k and epicv2 array data,OPEN,2024-02-20T14:59:24Z,2024-02-20T14:59:24Z,,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+the current version of script does not add in chr info etc to the gds object for 450k and epicv2 data, which requires manifest files to be loaded in later in the pipeline for these data types",ew367,https://github.com/ejh243/BrainFANS/issues/42
+I_kwDOCxwUgs5_7ncV,[Bug]: CRLF used in array\SNPArray\PennCNVEURonly.sh,CLOSED,2024-02-21T10:07:10Z,2024-05-15T10:23:10Z,2024-05-15T10:23:10Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Windows EOL is used in the file:
+array/SNPArray/PennCNVEURonly.sh
+
+All other files in the repository use \n (LF) EOL. But this file uses \r\n (CRLF) EOL. 
+
+When ran on any linux system (which the pipeline is designed for), the character ^M will be placed onto the end of every line that is read by the bash interpreter (which can lead to unwanted behaviour).
+
+### How can the bug be reproduced?
+
+Run this file on any linux machine, you will see errors for most lines.
+
+Ignore the error commands associated with the inability to open files (this is due to no configuration file being inputted for this run).
+
+### Relevant log output
+
+```shell
+: No such file or directorycd: /
+: No such file or directorycd: SNPdata/Merged
+PennCNVEURonly.sh: line 8: $'\r': command not found
+grep: PredictedPopulations.csv: No such file or directory
+tail: cannot open 'EURSamplesTmp.txt' for reading: No such file or directory
+PennCNVEURonly.sh: line 12: $'\r': command not found
+: No such file or directory cd: /SNPdata/CNV
+PennCNVEURonly.sh: line 15: $'\r': command not found
+PennCNVEURonly.sh: line 17: /compile_pfb.pl: No such file or directory
+PennCNVEURonly.sh: line 18: $'\r': command not found
+: No such file or directory cd: /SNPdata/CNV
+: No such file or directory cd: PennCNVOutput
+: No such file or directory cd: ..
+PennCNVEURonly.sh: line 24: $'\r': command not found
+: No such file or directory cd: PennCNVInput/
+PennCNVEURonly.sh: line 27: /detect_cnv.pl: No such file or directory
+PennCNVEURonly.sh: line 27: $'\r': command not found
+PennCNVEURonly.sh: line 28: $'\r': command not found
+PennCNVEURonly.sh: line 30: /filter_cnv.pl: No such file or directory
+PennCNVEURonly.sh: line 31: $'\r': command not found
+PennCNVEURonly.sh: line 32: $'\r': command not found
+PennCNVEURonly.sh: line 33: $'\r': command not found
+PennCNVEURonly.sh: line 34: $'\r': command not found
+PennCNVEURonly.sh: line 35: $'\r': command not found
+```
+",sof202,https://github.com/ejh243/BrainFANS/issues/43
+I_kwDOCxwUgs5_9IE8,[Bug]: Outdated LDSC scripts,CLOSED,2024-02-21T13:14:30Z,2024-05-09T13:09:09Z,2024-05-09T13:09:08Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Affected file: integrative/chromHMM/jobSubmission/runLDSCNeuralPeaks.sh
+
+Currently this file expects the user to run this script from the root of this repository and on line 43 we have:
+> 43 source LDScoreRegression/runPartionedHeritabilityOnPeaks.sh
+
+Which does not exist. 
+
+further:
+> 40 source activate ldsc
+
+Is an old way of activating conda environments and should be changed to `conda activate path/to/env`. The addition of a file path here will reduce errors associated with different users using the script. The file path can be added into the configuration file.
+
+
+
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/44
+I_kwDOCxwUgs5_9KDB,[Code Refactor]: Out of date LDSC scripts,CLOSED,2024-02-21T13:18:20Z,2024-05-09T13:09:09Z,2024-05-09T13:09:09Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+integrative/chromHMM/jobSubmission/runPartionedHeritabilityOnPeaks.sh
+integrative/chromHMM/processing/createAnnotationFiles.R
+```
+
+
+### Type of refactor
+
+Edge case error handling, Code readability improvement
+
+### Description of required code refactor
+
+Multiple lines have unneeded semi colons, for example:
+> 6  for chr in {1..22};
+
+Line 16 is written incorrectly and is too specific to a past project
+> 16 gwastraits=($ls ${LDREFPATH}/gwas_traits/Anorexia*.gz)
+
+Should be:
+
+> 16 gwastraits=$(ls ${LDREFPATH}/gwas_traits/Anorexia*.gz)
+
+Also lots of lines are pointing towards specific old directories, this should be replaced with a configuration file.
+
+The R script needs refactoring as it is very repetitive (needs some functions and rework)
+",sof202,https://github.com/ejh243/BrainFANS/issues/45
+I_kwDOCxwUgs5_9LMI,[Enhancement suggestion]:  No config file template given for LDSC scripts,CLOSED,2024-02-21T13:20:10Z,2024-05-09T13:09:09Z,2024-05-09T13:09:09Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+There is no configuration file template given for the script:
+integrative/chromHMM/jobSubmission/runLDSCNeuralPeaks.sh
+
+Adding one will assist users in correctly using this script.",sof202,https://github.com/ejh243/BrainFANS/issues/46
+I_kwDOCxwUgs5_9f67,[Bug]: use of -s in basic tests will not work with globs,CLOSED,2024-02-21T13:58:54Z,2024-09-10T15:23:34Z,2024-09-10T15:23:34Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+In the following files:
+sequencing/BSSeq/preprocessing/progressReport.sh
+sequencing/ChIPSeq/preprocessing/progressReport.sh
+sequencing/ChIPSeq/preprocessing/calcENCODEQCMetrics.sh
+sequencing/ChIPSeq/preprocessing/calcFrip.sh
+
+Some variation on the following is used:
+> 47 if [ -s ${PEAKDIR}/${sampleName}*Peak.filt ]
+
+A glob is being used within this basic test. This will become a problem if the glob ever returns multiple files as the line will evaluate to:
+> if [ -s file1 file2 ]
+
+Which cannot be interpreted. 
+
+If only one file is supposed to be found, then remove the glob and put the full file name. If multiple files are indeed expected to be found then these lines should be changed to:
+
+
+> for file in  ${PEAKDIR}/${sampleName}*Peak.filt; do
+if [ -s $file ]; then
+~ code block ~
+fi
+done
+
+Which will no longer result in any errors
+
+### How can the bug be reproduced?
+
+Try the following commands:
+
+```console
+mkdir basic-test-error
+cd basic-test-error
+touch file1.txt file2.txt
+
+# Returns error
+if [ -s *.txt ]; then echo ""words""; fi
+
+cd ..
+rm -r basic-test-error
+``` 
+
+
+### Relevant log output
+
+```shell
+-bash: [: file1.txt: binary operator expected
+```
+",sof202,https://github.com/ejh243/BrainFANS/issues/47
+I_kwDOCxwUgs6AMHoB,[Enhancement suggestion]: edit DNAm QC pipeline to work with blood data,CLOSED,2024-02-23T09:03:20Z,2024-09-20T09:36:19Z,2024-09-20T09:36:19Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+adapt the cluerCellType sections of the QC pipeline to work with blood data. e.g. run blood cell type deconvolution and make the brain cell type specific parts optional",ew367,https://github.com/ejh243/BrainFANS/issues/48
+I_kwDOCxwUgs6AY6zK,[Enhancement suggestion]: adapt QC pipeliene to handle different formating of sex info in sampleSheet,OPEN,2024-02-26T12:04:50Z,2024-09-23T10:44:01Z,,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+The current pipeline assumes that the 'Sex' column in the samplesheet is only ever coded as 'F' or 'M'. To make the pipeline more user friendly/adaptable it would be good to change the code to also accept 'female' and 'male', for all options to be case insensitive, and to produce and error and stop running if sex is formatted as anything different (e.g. 0/1)",ew367,https://github.com/ejh243/BrainFANS/issues/49
+I_kwDOCxwUgs6AY_vB,[Enhancement suggestion]: add script to start of DNAm QC pipeline to check formating of config files and sample sheet,CLOSED,2024-02-26T12:14:50Z,2024-09-20T15:28:50Z,2024-06-11T16:35:20Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+config file: perform initial checks that all necessary parameters are defined, and conform to standardised input (e.g. arrayType is V1/V2/hm450k)
+
+samplesheet: perform initial checks that columns contain valid and correctly formatted names",ew367,https://github.com/ejh243/BrainFANS/issues/50
+I_kwDOCxwUgs6AZD9b,[Enhancement suggestion]: add new post normalisation script that recalculates predicted values,OPEN,2024-02-26T12:23:55Z,2024-02-26T12:43:38Z,,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+create a new script that recalculates DNAm predicted variables (e.g. DNAmAge, CorticalClockAge, Smoking score (for blood data), CETYGO scores) post normalisation and outputs a trimmed down csv file containing only covariates for downstream analysis and removing cols used only for QC (e.g. x.cp)
+
+Potenially add section to config.r file for user to define covariates to include",ew367,https://github.com/ejh243/BrainFANS/issues/51
+I_kwDOCxwUgs6AZGfP,[Enhancement suggestion]: add script to ensure user has all R packages pre installed,CLOSED,2024-02-26T12:29:22Z,2024-06-10T19:22:11Z,2024-06-10T19:22:11Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+add script at the beginning that checks if user has the necessary R packages installed, and in the correct versions. If not, install them prior to running the QC pipeline",ew367,https://github.com/ejh243/BrainFANS/issues/52
+I_kwDOCxwUgs6Az-Cq,[Bug]: LDSC colinearity/unused column,CLOSED,2024-02-29T12:08:45Z,2024-05-09T13:09:09Z,2024-05-09T13:09:09Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+This particular line:
+> 80 overlapany<-in.region(snpRegions, allReg)
+
+in integrative/chromHMM/createAnnotationFiles.r
+
+is unused in the output annotation file, making the line unused throughout the entire file.
+
+This means that a previous bedr line:
+
+> 52 allReg<-bedr.merge.region(bedr.sort.region(c(allRegions.atac, totalRegions.atac, neunRegions.atac, soxRegions.atac, allRegions.5hmc, totalRegions.5hmc, neunRegions.5hmc, soxRegions.5hmc,dnegRegions.5hmc)))
+
+uses unnecessary computing power (as the result of this command is also unused in the output).
+
+However, If the line was used in the annotation file, it is not necessarily non-colinear with the other columns being added to the annotation file. This is bad as collinearity in annotation columns will result in ldsc throwing an error (presumably due to some matrix manipulation in the calculation process).
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/53
+I_kwDOCxwUgs6A68ki,[Documentation Fault]: Code review updates,CLOSED,2024-03-01T09:04:15Z,2024-03-08T14:17:38Z,2024-03-08T14:17:38Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect information given
+
+### Please describe the fault in detail
+
+After lots of consideration and a bit of research, I have decided that my pages on 'what to look for in a code review' are frankly terrible. There is too many things to look for, lots of overlap and some generally bad advice.
+
+Here is a list of changes I hope to make:
+- Discourage nit (picking). This is generally non-constructive and draws the developer away from the actual problems in the code
+- Merge the readability, understandability and maintainability into one section. Yes there are subtle differences between these. But all of these are motivated by the same idea: your code will at some point be worked on by someone else, make it easier for them (or it might just end up getting scrapped).
+- Documentation: This section is not entirely useless, but doesn't really need to be on this page. I'll just remove it.
+- Style: The only thing that matters is keeping consistency. Again, nits about style really aren't that helpful and usually just discourages people.
+- DRY: Although this is a great principle, you shouldn't be implementing this wherever you and whenever you can. Only apply this principle when things become a problem (repeating some line of code 3-4 times, instead of 'maybe twice in the future')
+
+These changes should help code reviews be a little easier on the reviewer and hopefully less harsh on the reviewee. The code review section is never going to be perfect, but hopefully it can become a good starting point for developers.",sof202,https://github.com/ejh243/BrainFANS/issues/55
+I_kwDOCxwUgs6A90ib,[Documentation Fault]: Poor explanation of what to do before making a PR,CLOSED,2024-03-01T15:55:40Z,2024-03-08T15:46:24Z,2024-03-08T15:46:23Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect information given
+
+### Please describe the fault in detail
+
+The last section on the contribution guide is a bit misinformed. Currently it states that you should use `git pull` periodically if you are working with other people on the same branch.
+
+However, you should also be using git fetch and merging from the master branch before submitting the PR. This is because doing so will allow the developer to see if their changes result in merge conflicts. Resolving merge conflicts can be easier in a text editor if there are lots of them. In fact, sometimes you **cannot** even resolve conflicts on GitHub. 
+
+We should be encouraging completing this master branch merge just before submitting the PR to avoid such messy merge conflicts (though this likely won't be necessary if the PR only adds new files or only changes a single file).",sof202,https://github.com/ejh243/BrainFANS/issues/57
+I_kwDOCxwUgs6A91nK,[Documentation Fault]: Add section on merge conflicts,CLOSED,2024-03-01T15:58:07Z,2024-03-08T15:46:24Z,2024-03-08T15:46:24Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+Currently there is no advice given for how to handle merge conflicts. For now developers should go to here: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-on-github.
+
+But I want a guide that is integrated with the rest of the gh-pages for some simplicity.",sof202,https://github.com/ejh243/BrainFANS/issues/58
+I_kwDOCxwUgs6BagFt,[Bug]: load R functions package command does not work,CLOSED,2024-03-06T10:53:12Z,2024-03-08T11:40:23Z,2024-03-08T11:40:11Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+When loading internal R library in [load GDS script](https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/preprocessing/loadDataGDS.r) on line 37  (and possibly others) relative path no longer works. 
+
+
+
+
+### How can the bug be reproduced?
+
+`devtools::load_all(path = ""../functionsR"")`
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/60
+I_kwDOCxwUgs6Bao05,[Bug]: Add sample colnames to gds betas obj when merging gds files,CLOSED,2024-03-06T11:12:00Z,2024-04-29T14:05:16Z,2024-04-29T14:05:16Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+colnames are missing when merging gds objects
+
+### How can the bug be reproduced?
+
+In [loadDataGDS.r](https://github.com/ejh243/BrainFANS/blob/ec3a9b062b7c25915d15d9f9be7616360d57c035/array/DNAm/preprocessing/loadDataGDS.r#L156) colnames are not updated from gds objects that need to be merged. 
+
+`listBetas[[2]][1:4,1:4]`
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/61
+I_kwDOCxwUgs6CTcTz,[Documentation Fault]: Create a script to set up everything required to run a pipeline,CLOSED,2024-03-14T11:41:31Z,2024-11-05T10:02:18Z,2024-11-05T10:02:18Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+In order to make a pipeline (or script) useful for users other than the developer, a script should be created in order to be run before a pipeline (or script) to ensure that all modules/libraries/directories are installed or created as required.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/72
+I_kwDOCxwUgs6DTneC,[Enhancement suggestion]:  Add GitHub workflows to lint code,CLOSED,2024-03-22T17:17:27Z,2024-04-26T09:56:38Z,2024-04-26T09:56:38Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+It might need some tweaking, but I think it would be beneficial to implement linters into the GitHub workflows for this repository, specifically for shell scripts and R scripts. This should catch some common errors in a pull request before a code review takes place.
+
+The main problem that will likely be when the linters pick things up that we care less about (like style, or not following source commands *etc.*). These should be avoidable with some tweaks to the `yml` files that execute the workflows.",sof202,https://github.com/ejh243/BrainFANS/issues/76
+I_kwDOCxwUgs6DyJg_,[Enhancement suggestion]: add option to DNAm QC pipeline to run CETYGO deconvolution on normalised data,OPEN,2024-03-27T14:29:59Z,2024-03-27T14:29:59Z,,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+add parameter to config file and check to CETYGOdeconvolution.r script to optionally load normalised beta matrix instead of raw betas",ew367,https://github.com/ejh243/BrainFANS/issues/83
+I_kwDOCxwUgs6DzceI,[Enhancement suggestion]: add check that sampleSheet Sentrix_ID col is not in scientific notation,OPEN,2024-03-27T16:51:36Z,2024-09-23T13:16:13Z,,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+the sentrix_ID col is often coerced into scientific notation by excel. This causes errors in the QC.rmd script.
+
+possible solutions - extract sentrix_ID from basename
+add a check before running calcQCmetrics script",ew367,https://github.com/ejh243/BrainFANS/issues/84
+I_kwDOCxwUgs6Enksa,[Documentation Fault]: Incorrect reason for merge conflict,CLOSED,2024-04-04T09:26:03Z,2024-05-09T13:04:52Z,2024-05-09T13:04:52Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect information given
+
+### Please describe the fault in detail
+
+On the merge conflict page, it is stated that there is a merge conflict because the commit histories don't line up. This is almost correct, but it is missing the key detail that the commits (that cause the merge conflict) also change the same lines.",sof202,https://github.com/ejh243/BrainFANS/issues/85
+I_kwDOCxwUgs6EnqQN,[Documentation Fault]: Remove delimiters<> [] (),CLOSED,2024-04-04T09:37:23Z,2024-04-30T13:30:09Z,2024-04-30T13:30:08Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Rewording required
+
+### Please describe the fault in detail
+
+As other developers have worked through the 'How to contribute guide', it came to my attention that code blocks of the form:
+
+```bash
+git branch <your-branch>
+```
+
+were interpreting the <>s literally. As such, these need to be removed to improve understandability.",sof202,https://github.com/ejh243/BrainFANS/issues/87
+I_kwDOCxwUgs6EntnO,[Documentation Fault]: New branch creation guidance,CLOSED,2024-04-04T09:43:33Z,2024-05-09T13:06:15Z,2024-05-09T13:06:15Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect/outdated information given, Rewording required
+
+### Please describe the fault in detail
+
+The pages of the contributions guide that detail creating a new branch are outdated. Currently they ask that the developer should be creating a feature branch off of one of the development branches. This is no longer the flow we are pushing for and it should be reflected on these pages. For the most part, PRs will be between a feature branch and the master branch. The exception to this will be larger features like new pipelines (*etc.*) that might be the stem of other sub branches.",sof202,https://github.com/ejh243/BrainFANS/issues/88
+I_kwDOCxwUgs6Envz_,[Documentation Fault]: GitHub account creation page,CLOSED,2024-04-04T09:47:53Z,2024-04-15T15:31:45Z,2024-04-15T15:31:45Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+@NiCl2 suggested that a (hidden) page should be created that details how to set up an account for GitHub and start contributing. This step was assumed completed in step one of the contribution guide, which is not the most accessible.
+
+This page should explain the basic signup process (which should be very quick) and include a section on Git PATs (or using ssh authentication).",sof202,https://github.com/ejh243/BrainFANS/issues/89
+I_kwDOCxwUgs6EnxK3,[Documentation Fault]: Add information on forking,CLOSED,2024-04-04T09:50:35Z,2024-04-30T13:10:22Z,2024-04-30T13:10:22Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Rewording required
+
+### Please describe the fault in detail
+
+Currently the contributions guide assumes the developer is a contributor. This may not be the case for all developers. Several pages should also include steps for using forks as well.",sof202,https://github.com/ejh243/BrainFANS/issues/90
+I_kwDOCxwUgs6EnyQ4,[Documentation Fault]: Git workflow overview,CLOSED,2024-04-04T09:52:46Z,2024-04-30T12:56:47Z,2024-04-30T12:56:47Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+A new page should be created for developers to get an overview of our contributions workflow. This should be a quick summary (without any explanation of why or how). This page can then be linked in a CONTRIBUTING page.",sof202,https://github.com/ejh243/BrainFANS/issues/91
+I_kwDOCxwUgs6Ey76_,[Documentation Fault]: Commit message advice is poor,CLOSED,2024-04-05T12:42:11Z,2024-04-05T14:58:44Z,2024-04-05T14:58:44Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Rewording required
+
+### Please describe the fault in detail
+
+I'm fine with the current guidance on the way to write commit messages, I just think it should be more accommodating for different developers. Currently it assumes that the user is creating the commit with the `-m` flag in the terminal (whilst they might prefer to use a text editor). I also think that users should be able to create longer commit messages by giving a commit a description. This is not to be used as a way of creating an incredibly long commit message. But allows developers to explain intentions behind a commit, or perhaps any problems that the commit could cause (*etc.*).",sof202,https://github.com/ejh243/BrainFANS/issues/99
+I_kwDOCxwUgs6E0ICA,[Documentation Fault]: Deleting remote branches stored in .git folder,CLOSED,2024-04-05T15:06:37Z,2024-04-30T12:54:51Z,2024-04-30T12:54:51Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+On the last page of the contributions guide (step 6), it states that the feature branch can be deleted with `git branch -d feature-branch`. This is true, but if you type `git branch -a` after doing this, you will still see the upstream version of the branch under: `remotes/origin/feature-branch`. As well as deleting the local version of the branch, you need to also use `git remote prune origin` to remove any stale branches that haven't been deleted.",sof202,https://github.com/ejh243/BrainFANS/issues/101
+I_kwDOCxwUgs6E-HKR,[Documentation Fault]: Pull request review via gh cli tool,CLOSED,2024-04-08T10:50:08Z,2024-04-30T12:15:30Z,2024-04-30T12:15:30Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+A very simple option for quickly switching over to the latest version of a pull request can be done via the GitHub CLI tool. Currently the page detailing how to view a PR locally does not cover this method, adding it in could be helpful to some users. This way all you'd need to do is copy and paste a single command that can be found on the pull request page.",sof202,https://github.com/ejh243/BrainFANS/issues/103
+I_kwDOCxwUgs6HD-af,[Bug]: Add check for genotype IID column,CLOSED,2024-04-26T14:57:21Z,2024-04-30T15:06:41Z,2024-04-30T15:06:41Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+in [array/DNAm/preprocessing/calcQCMetrics.r](https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/preprocessing/calcQCMetrics.r#L251) if Genotype.IID is missing from the sample sheet then it can't do the check against external SNP data and an error appears. Suggestion is to add as a check before executing, otherwise print a helpful error message.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/105
+I_kwDOCxwUgs6HQEWG,[Bug]: array version libary load,CLOSED,2024-04-29T14:01:33Z,2024-06-11T16:33:37Z,2024-06-11T16:33:37Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+In array/DNAm/preprocessing/loadDataGDS.r need to only load librarys relevant for array version. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/106
+I_kwDOCxwUgs6HYCB4,[Bug]: broken for loop,CLOSED,2024-04-30T11:36:52Z,2024-05-09T13:03:34Z,2024-05-09T13:03:34Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+FILE: [/general/jobSubmission/filePermissions.sh](https://github.com/ejh243/BrainFANS/blob/master/general/jobSubmission/filePermissions.sh)
+LINE: 34
+
+If the user types END as their second input, the `chmod 774 $file` loop will not execute properly as there is no `do` and `done` keywords present.
+
+### How can the bug be reproduced?
+
+Run this script and give it any path for $1 and ""END"" for $2.
+
+### Relevant log output
+
+```shell
+general/jobSubmission/filePermissions.sh: line 35: syntax error near unexpected token `chmod'
+general/jobSubmission/filePermissions.sh: line 35: `    chmod 774 $file'
+```
+",sof202,https://github.com/ejh243/BrainFANS/issues/109
+I_kwDOCxwUgs6HYPHI,[Bug]: Outdated full links,OPEN,2024-04-30T12:00:09Z,2024-09-27T14:01:01Z,,"### Contact Details
+
+_No response_
+
+### What happened?
+
+here is a list of files that are pointing to gpfs
+
+general/processing/outputFileSizes
+array/SNParray/utilitys/summarizeCNVCalls
+integrative/chromHMM/processing/createAnnotationFiles.r
+sequencing/ATACSeq/preprocessing/CreateFACS_SFARI_fetalSamplesDatalFileForDB.r
+sequencing/DNAhydroxy/jobSubmission/peakCalling5hmCIncreasingSampleSizes.sh
+sequencing/DNAhydroxy/preprocessing/QCSummary.rmd
+
+
+Realistically, there should be no full or relative file paths anywhere for maximum portability.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/110
+I_kwDOCxwUgs6HYele,[Code Refactor]: Move R library out of repo,CLOSED,2024-04-30T12:28:06Z,2024-04-30T15:07:26Z,2024-04-30T15:07:26Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+https://github.com/ejh243/BrainFANS/tree/master/functionsR
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Move R package out to it's own repo and then add to install libraries script and load into relevant scripts",ejh243,https://github.com/ejh243/BrainFANS/issues/111
+I_kwDOCxwUgs6HY8Xz,[Documentation Fault]: DNAm QC add config details,CLOSED,2024-04-30T13:19:29Z,2024-06-10T19:22:11Z,2024-06-10T19:22:11Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+Need to add details on where the config files is stored in [array/DNAm/preprocessing/loadDataGDS.r](https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/preprocessing/loadDataGDS.r) and likely others. ",ejh243,https://github.com/ejh243/BrainFANS/issues/117
+I_kwDOCxwUgs6HZO6g,[Bug]: .lintr is not in proper DCF format,CLOSED,2024-04-30T13:51:38Z,2024-05-30T11:52:49Z,2024-05-30T11:52:49Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+I know nothing. DCF format has a few quirks that are not immediately obvious. You need to ensure that there is a new line at the end of the file. Also the indentation matters (unlike in R, whyyy).
+
+### How can the bug be reproduced?
+
+Make any pull request that changes an R file.
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/120
+I_kwDOCxwUgs6Hbqaq,[Enhancement suggestion]: Generalise overlapping cell type classification,OPEN,2024-04-30T18:13:14Z,2024-10-30T13:18:06Z,,"### Contact Details
+
+@ejh243 
+
+### Enhancement suggestion
+
+For the section in clusterCellTypes.r that handles overlap of NeuN+ and SATB2+ predictions, generalise to handle other types of user specified overlapping cell types. 
+
+For neuronal cell type checks, make conditional on dataset having Neuronal samples -  https://github.com/ejh243/BrainFANS/blob/90277eff9ff38f029c516f9b89c72fc259071036/array/DNAm/preprocessing/clusterCellTypes.r#L251-L261",ejh243,https://github.com/ejh243/BrainFANS/issues/124
+I_kwDOCxwUgs6HbtAU,[Bug]: QC metrics summary error if columns unavailable,CLOSED,2024-04-30T18:19:04Z,2024-05-07T13:22:36Z,2024-05-07T13:22:36Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+https://github.com/ejh243/BrainFANS/blob/90277eff9ff38f029c516f9b89c72fc259071036/array/DNAm/preprocessing/QC.rmd#L57
+
+When one of the QCmetrics columns for filtering is missing, it can't complete the QC filtering. Need to add a check for which columns exist can can be included.  
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/125
+I_kwDOCxwUgs6Hbvg8,[Enhancement suggestion]: Turn off cell type clustering if bulk tissue?,CLOSED,2024-04-30T18:25:55Z,2024-07-10T12:28:12Z,2024-07-10T12:28:12Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+@ew367 should we turn off array/DNAm/preprocessing/clusterCellTypes.r if ctCheck=FALSE?
+
+Alternatively if we keep it in, for bulk tissue it would serve as a PCA outlier detection step. Thoughts?",ejh243,https://github.com/ejh243/BrainFANS/issues/126
+I_kwDOCxwUgs6HbziM,[Code Refactor]: Add cetygo into cell type check QC report,OPEN,2024-04-30T18:35:07Z,2024-04-30T18:38:20Z,,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Path to affected file
+
+```shell
+array/DNAm/preprocessing/QCwithinCellType.rmd
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Currently we do cetygo after cell type check and normalisation. Would it make sense to include the plots etc into the `array/DNAm/preprocessing/QCwithinCellType.rmd.` This would mean running `array/DNAm/preprocessing/CETYGOdeconvolution.r `after the `array/DNAm/preprocessing/clusterCellTypes.r.` 
+
+We might also want to add some default thresholds to the config file. ",ejh243,https://github.com/ejh243/BrainFANS/issues/127
+I_kwDOCxwUgs6IfXRr,[Bug]: QC.rmd expects genoCheck column if snpCheck = TRUE ,CLOSED,2024-05-10T15:13:08Z,2024-05-15T17:32:35Z,2024-05-15T17:32:35Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+When running QC.rmd, error in lines 877-888 as genoCheck column not in output and snpCheck = TRUE. Oversight of fix to not run geno check if genotype IID column is missing, all subsequent code blocks will assume genoCheck column exists. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/130
+I_kwDOCxwUgs6IfdGr,[Bug]: For age correlation stats missing check for variable age,CLOSED,2024-05-10T15:27:54Z,2024-05-15T17:32:36Z,2024-05-15T17:32:36Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+bug in line 1001 in QC.rmd 
+
+error in summary statistics for comparing predicted age against chronological age is Age column is not variable. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/132
+I_kwDOCxwUgs6IobIf,[Code Refactor]: lintr is picking up on too many stylistic lints,CLOSED,2024-05-13T09:32:23Z,2024-05-13T09:35:32Z,2024-05-13T09:35:32Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+.github/linters/.lintr
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Just need to slowly add/remove linters that should/shouldn't be tested for. There are tonnes of linters and so this won't be a quick fix. Just some trial and error over the next few pull requests that are created.",sof202,https://github.com/ejh243/BrainFANS/issues/133
+I_kwDOCxwUgs6IrXAp,Normalisation script Cell.type vs Cell_Type[Bug]: ,CLOSED,2024-05-13T14:52:40Z,2024-06-10T19:22:12Z,2024-06-10T19:22:12Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Script contains QCmetrics$Cell.type, however the standard name is Cell_Type. Running the script as it currently is, it normalised all my samples together rather than normalising the cell types separately. When loading in the normalised data, the object is called normbeta rather than celltypeNormbeta. Could cell.type be corrected to Cell_Type, or ensure it matches what is on your sample sheet so that it normalises the cell types separately and gives celltypeNormbeta?
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",AnthonyKl98,https://github.com/ejh243/BrainFANS/issues/135
+I_kwDOCxwUgs6IzHdl,[Documentation Fault]: encourage use of `git pull --rebase`,CLOSED,2024-05-14T10:50:42Z,2024-07-05T14:30:56Z,2024-07-05T14:30:56Z,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+If multiple people are working on the same branch, the current guidance is to have users use `git pull` before pushing their commits (as otherwise their push will be rejected). However, this results in git calling `git merge`, which will result in unhelpful merge commits cropping up in a pull request. This has already happened multiple times with pull request #116.
+
+A slightly better approach would be to rebase when using git pull (`git pull --rebase`). This way the git commit history is a little more clear as you can see the progression of the feature branch better.
+
+This will of course not work if there is a merge conflict. In which case a regular `git pull` is required. ",sof202,https://github.com/ejh243/BrainFANS/issues/136
+I_kwDOCxwUgs6I0tNR,[Bug]: add scripts directory variable to config,CLOSED,2024-05-14T13:50:03Z,2024-06-10T19:22:12Z,2024-06-10T19:22:12Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+When submitting the DNAm QC job submission script, fails due to incorrect paths.
+
+We will fix by adding a variable for the location of the scripts folder to the config file and remove the need for relative paths that often fail. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/137
+I_kwDOCxwUgs6I03hO,[Bug] calcQCmetrics nFACS giving N/As,CLOSED,2024-05-14T14:04:37Z,2024-05-15T08:48:32Z,2024-05-15T08:48:32Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Sample IDs are numbers which were treated as numeric, nFACS giving N/A as not recognised as samples. Want to add line to change IDs to characters
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",AnthonyKl98,https://github.com/ejh243/BrainFANS/issues/138
+I_kwDOCxwUgs6I_8fP,[Enhancement suggestion]: Add installLibraries script to README/pipeline,CLOSED,2024-05-15T17:32:11Z,2024-06-11T16:32:24Z,2024-06-11T16:32:24Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+At the moment there is no documentation for how to use the [installLibraries.r](https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/preprocessing/installLibraries.r). 
+
+Do we also what to add the execution of it to the job submission script?",ejh243,https://github.com/ejh243/BrainFANS/issues/141
+I_kwDOCxwUgs6JsKqn,[Documentation Fault]: Incorrect `git reset` command,CLOSED,2024-05-22T09:37:48Z,2024-05-24T17:58:45Z,2024-05-24T17:58:45Z,"### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+On page: 
+https://ejh243.github.io/BrainFANS/Developer-information/Contributing-to-repository/Resolving-the-issue
+
+The advice is to use `git reset --soft HEAD` if you accidently have already made commits to master. This is wrong. Instead what I really want is for people to use `git checkout master` to check they are on master, then to use `git reset --soft origin/master` (to put their commit history back on track from where they started). 
+
+The code snippet should also account for users on older versions of git (before version 2.6) that cannot automatically stash their changes when moving to the desired branch. They will need to use `git stash push` then `git stash pop` to move their changes over manually.",sof202,https://github.com/ejh243/BrainFANS/issues/144
+I_kwDOCxwUgs6JuS_6,Install libraries at start of QC[Bug]: ,CLOSED,2024-05-22T13:57:46Z,2024-06-10T19:22:12Z,2024-06-10T19:22:12Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Current pipeline does not include the install.libraries script at the start of QC - if any packages are missing from other scripts the analysis breaks. Install.libraries also needs to be updated to include most recent QC scripts before incorporating
+
+### How can the bug be reproduced?
+
+Run pipeline with missing packages
+
+### Relevant log output
+
+_No response_",rhaigh5,https://github.com/ejh243/BrainFANS/issues/145
+I_kwDOCxwUgs6KdhUM,[Enhancement suggestion]: Add QC step after trimming and before alignment,CLOSED,2024-05-29T10:43:54Z,2024-06-25T07:48:58Z,2024-06-25T07:48:58Z,"### Contact Details
+
+m.flores-payan@exeter.ac.uk
+
+### Enhancement suggestion
+
+Currently, there is not a qc step after trimming of reads is done in the ATACseq pipeline. This enhancement will allow the user to check trimming statistics and make sure the process has run as expected. In addition, when multiqc is done in step 4, trimming qc results should be collated in a single report as done with raw reads qc and alignment qc.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/147
+I_kwDOCxwUgs6Kmgf2,[Bug]: FASTP detecting adapters but not trimming,CLOSED,2024-05-30T10:49:59Z,2024-06-25T07:48:28Z,2024-06-25T07:48:28Z,"### Contact Details
+
+m.flores-payan@exeter.ac.uk
+
+### What happened?
+
+The fastp.sh script in the preScripts folder uses FASTP to perform trimming on raw reads and produce fastqc on the results. However, even if the --detect_adapter_for_pe parameter is set, not all reads with Nextera adapter are detected and they failed to be trimmed. Nextera adapters should be detected and properly trimmed from reads. 
+
+### How can the bug be reproduced?
+
+Run the fastp.sh file using only the --detect_adapter_for_pe. If fastqc is used on the trimmed output files, adapters are still detected.
+
+### Relevant log output
+
+_No response_",marinafloresp,https://github.com/ejh243/BrainFANS/issues/148
+I_kwDOCxwUgs6L4Bzq,[Bug]: DNAm QC pipeline sex check thresholds,OPEN,2024-06-11T15:27:28Z,2024-12-13T11:45:37Z,,"### Contact Details
+
+_No response_
+
+### What happened?
+
+A number of samples are not having sex predicted as thresholds are too conservative. Suggest we learn thresholds from the data rather than hardcode them. 
+
+In addition would be useful to output a list of samples for which sex could not be predicted. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/152
+I_kwDOCxwUgs6NYVxM,[Enhancement suggestion]: Add parameters config file,OPEN,2024-06-25T07:56:43Z,2024-06-25T07:57:06Z,,"### Contact Details
+
+m.flores-payan@exeter.ac.uk
+
+### Enhancement suggestion
+
+Currently, the config file includes variables, paths and parameters that must be changed by the user in order to use the pipeline in their chosen dataset or project, and others that shouldn't be changed or are expected by the pipeline to have a specific name or structure. As suggested by @SiyiSEA in the bioinformatics meeting, a solution could be to have a config file for the parameters to be changed and a different one for the unchanging ones. The pros and cons of this can be further discussed.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/154
+I_kwDOCxwUgs6OZHla,[Code Refactor]: Possible temporary file,OPEN,2024-07-03T15:43:29Z,2024-07-03T15:50:26Z,,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+general/processing/outputFileSizes.r
+```
+
+
+### Type of refactor
+
+Code Deletion
+### Description of required code refactor
+
+Does this file really need to exist anymore? 
+All it is doing is extracting the size of files in a specific directory (which could just be done with `ls -lh` or similar).
+Also, this script isn't being called in any other script so removing it won't cause any problems.",sof202,https://github.com/ejh243/BrainFANS/issues/155
+I_kwDOCxwUgs6OZKVE,[Code Refactor]: Unneeded download files,OPEN,2024-07-03T15:49:39Z,2024-07-03T15:53:12Z,,"### Contact Details
+
+_No response_
+
+### Path to affected files
+
+```shell
+general/processing/downloadCommonMind.r
+general/processing/downloadPsychEncode.r
+```
+
+
+### Type of refactor
+
+Code Deletion
+
+### Description of required code refactor
+
+Although these files still have use, do they really need to be in the BrainFANS repository specifically? These files can only be used by one person (ejh243) and aren't necessarily completely relevant to the pipelines BrainFANS provides. 
+
+Yes our group has used (or plan to use) the data from CommonMind and PsychEncode, but these are not required for any pipelines.
+
+We can safely move these download scripts to a separate repository if they need to be backed up, but I don't see why they need to be in this repository specifically.",sof202,https://github.com/ejh243/BrainFANS/issues/156
+I_kwDOCxwUgs6OgXph,"[Bug]: CountMTReads not generating properly, escape sequences not recognised",CLOSED,2024-07-04T13:14:08Z,2024-07-05T14:31:50Z,2024-07-05T14:31:50Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+When running `sequencing/ATACSeq/preprocessing/countMTReads.sh`, the output file's header row will have literal character escape sequences. I presume this is not the desired effect considering the rest of the file is tab delimited.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+```shell
+$ head ./countMTReads.txt
+Filename\tMTReads\tAllMappedReads\n
+11031_EX161_NEUN_S1     1179779 165581552
+```
+",sof202,https://github.com/ejh243/BrainFANS/issues/157
+I_kwDOCxwUgs6P0ySc,[Code Refactor]: PBS usage,OPEN,2024-07-17T08:21:37Z,2024-10-30T13:04:59Z,,"### Path to affected file
+
+```shell
+array/SNPArray/jobSubmission/runFormatting1000G.sh
+```
+
+
+### Type of refactor
+
+Outdated file
+
+### Description of required code refactor
+
+Currently this file uses PBS directives:
+
+```bash
+#PBS -V # export all environment variables to the batch job.
+#PBS -q sq # submit to the serial queue
+#PBS -l walltime=24:00:00 # Maximum wall time for the job.
+#PBS -A Research_Project-MRC190311 # research project to submit under. 
+#PBS -l procs=1 # specify number of processors.
+#PBS -m e -M e.j.hannon@exeter.ac.uk # email me at job completion
+#PBS -e format1KG.err # error file
+#PBS -o format1KG.log # output file
+```
+
+This is fine, but it isn't consistent with every other script in the repository.
+Also, this file has incorrect paths (pointing to a misc directory, which is not under a 'utilitys' directory).",sof202,https://github.com/ejh243/BrainFANS/issues/161
+I_kwDOCxwUgs6P1pf1,[Documentation Fault]: Docusaurus is outdated,CLOSED,2024-07-17T10:11:13Z,2024-09-10T15:22:52Z,2024-09-10T15:22:52Z,"### Fault type
+
+Outdated npm packages
+
+### Please describe the fault in detail
+
+Docusaurus is outdated. As such Dependabot is unable to resolve some 'critical' security issues with the website.
+[See here](https://github.com/ejh243/BrainFANS/security/dependabot)",sof202,https://github.com/ejh243/BrainFANS/issues/162
+I_kwDOCxwUgs6QztvB,[Bug]: DNAm install libraries script not working on clean install,CLOSED,2024-07-25T09:24:13Z,2024-08-30T13:06:36Z,2024-08-30T13:06:36Z,"### What happened?
+
+The required libraries for the DNAm pipeline will not download from a completely fresh install.
+
+The root cause of the error seemed to be `wateRmelon`. My current hypothesis is that the `remotes` package is attempting to install the incorrect dependency versions from Bioconductor (resulting in errors like 'This package is not available for your version of R'). This can be remedied by installing each of the problem dependencies individually with the `BiocManager::install()` function.
+
+-------------------------------------
+
+In addition to this, using `BiocManager::install(""DelayedMatrixStats"")` (a dependency of the `minfi` package) will result in an error on our HPC due to a package conflict with `Matrix` (this package is already installed in the `.site.Library` under version `1.4-1`, but `minfi` requires version `>=1.5.0`). This will need to be remedied by using `devtools::install_version(""Matrix"", version = ""1.5"")` like we do with `MatrixStats` already (**Note:** a higher version of `Matrix` may also work).
+
+----------------------------------------------------------------------------------
+Here is the list of `wateRmelon` dependencies that incorrectly install when using `remotes::install_github(""schalkwyk/wateRmelon"")`:
+- `DelayedMatrixStats`
+- `minfi`
+- `lumi`
+- `methylumi`
+- `IlluminaHumanMethylation450kanno.ilmn12.hg19`
+----------------------------------------------------------------------------------
+
+> [!IMPORTANT]
+> To ensure maximum portability, we should consider installing all of the dependencies to a separate library directory specifically for this pipeline. This has pros and cons. 
+> ## Pros
+> The main pro is that we can test if necessary packages for the pipeline are always installing properly (as installing packages to a default library directory might lead to false positives/negatives due to previously installed packages from other pipelines/projects).
+>
+> Also this method will be easy to implement (just add the `lib.loc=""path/to/R/library` option to the end of each `library()` and package installation call, which can be done with a couple of `sed` commands).
+> ## Cons
+> The main con is that we will be installing multiple instances of the same packages which takes up unnecessary space.
+>
+> It also will become quite annoying to implement this into every pipeline in BrainFANS and communicate this to users.
+>
+> Further still, this might not even work for all package installation as the `lib.loc` option might not get carried down into dependency installation calls (resulting in more errors and so more manual installation calls would be required).
+> ## Alternatives
+> There does exist [`renv`](https://rstudio.github.io/renv/articles/renv.html) which helps you to create isolated R environments (a bit like a conda environment). This is used by some RSE members I believe.
+> 
+> In a similar vein, [`packrat`](https://rstudio.github.io/packrat/) is very similar if `renv` doesn't tickle your fancy. (Be warned that this is mainly deprecated and slow).
+> There's also [`checkpoint`](https://cran.r-project.org/web/packages/checkpoint/index.html), which is again very similar.
+>
+> If we want to go through the efforts of creating our own conda repositories, we can use conda instead (this would be fine if some of the packages weren't being obtained from GitHub).
+
+
+### How can the bug be reproduced?
+
+## Step 1 - Create new library for fresh install
+
+```bash
+echo "".libPaths('~/R-new-library/')"" >> ~/.Rprofile
+```
+
+## Step 2 - Run the install libraries script
+
+```bash
+# dataDir isn't actually required for this error to appear.
+Rscript .../array/DNAm/preprocessing/installLibraries.r dataDir 
+```
+
+### Relevant log output
+
+```shell
+> BiocManager::install(""DelayedMatrixStats"")     
+...
+...
+Error in loadNamespace(j <- imp[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) :
+  namespace ‘Matrix’ 1.4-1 is already loaded, but >= 1.5.0 is required
+...
+...
+Warning message:
+In install.packages(...) :
+  installation of package ‘DelayedMatrixStats’ had non-zero exit status
+```
+",sof202,https://github.com/ejh243/BrainFANS/issues/164
+I_kwDOCxwUgs6Q_PiV,[Bug]: V2 Probe names need to be cleaned before EWAS ,OPEN,2024-07-26T15:41:52Z,2024-07-26T15:42:42Z,,"### Contact Details
+
+rh609@exeter.ac.uk
+
+### What happened?
+
+When using calcBrainComposition() function from testCellComposition in the EWAS pipeline, normalised data is not compatible due to new probe name changes in EPICv2. Fix: need to incorporate epicv2clean from wateRmelon into the normalisation script before saving data.
+
+### How can the bug be reproduced?
+
+Run calcBrainComposition on normalised data produced from the QC pipeline.
+
+### Relevant log output
+
+```shell
+predPropBest<-calcBrainComposition(celltypeNormbeta)
+Error in projectCellTypeWithError(betas, modelBrainCoef[[method]][[j]]) : 
+  Only 0 probes in common between trained model and bulk data. Stopping.
+```
+",rhaigh5,https://github.com/ejh243/BrainFANS/issues/165
+I_kwDOCxwUgs6RtwQ9,[Enhancement suggestion]: Use of renv to manage packages,OPEN,2024-08-02T10:46:20Z,2024-08-02T10:46:20Z,,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Enhancement suggestion
+
+As discussed in the analysis meeting we will trial using renv to install and manage packages.
+
+This can be segmented into different folders for different parts of the pipeline. I will test initially on DNAm analysis and pre-processing folders.",ejh243,https://github.com/ejh243/BrainFANS/issues/166
+I_kwDOCxwUgs6TPbdB,Missing Cell_Type column from sample sheet in DNAm QC,CLOSED,2024-08-16T13:36:55Z,2024-08-16T13:55:16Z,2024-08-16T13:55:16Z,"calcQCMetrics.r scripts requires a `Cell_Type` column which is not strictly needed if only processing a single sample type. Will introduce an error if not included.
+
+Offending line here:
+https://github.com/ejh243/BrainFANS/blob/b7b0fabf295f78b0fe985071f4bebb81148bdaee/array/DNAm/preprocessing/calcQCMetrics.r#L451C72-L451C83",ejh243,https://github.com/ejh243/BrainFANS/issues/167
+I_kwDOCxwUgs6TZIGl,[Bug]: Turn off clusterCellTypes script for non-cellsorted data,CLOSED,2024-08-19T09:00:23Z,2024-08-19T11:07:03Z,2024-08-19T11:07:03Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+When script attempts to run for non-cell sorted data, creates legacy issues further down the QC processing. 
+
+Solution: Add conditional at beginning of script to turn this off. 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/169
+I_kwDOCxwUgs6Tk_Dy,[Bug]: Error in example config file config.example.r (microarray QC),CLOSED,2024-08-20T15:31:02Z,2024-08-20T19:18:30Z,2024-08-20T19:18:30Z,"### Contact Details
+
+d.m.soanes@exeter.ac.uk
+
+### What happened?
+
+There is a line in the example config file:
+`cellSorted<-""FALSE"" # turns off cell type clustering check`
+If you include this in your file then the variable cellSorted contains string data rather than a boolean TRUE/FALSE.
+This causes an error in the script **BrainFANS/array/DNAm/preprocessing/clusterCellTypes.r** at the line
+```
+if(!cellSorted){
+	quit(save = ""no"", status = 0)
+}
+```
+
+### How can the bug be reproduced?
+
+Add the line `cellSorted<-""FALSE"" to the config file
+
+### Relevant log output
+
+```shell
+Error in !cellSorted : invalid argument type
+```
+",dmsoanes,https://github.com/ejh243/BrainFANS/issues/171
+I_kwDOCxwUgs6TrFez,[Bug]: Possible bug in QC.rmd script in DNAm QC pipeline ,CLOSED,2024-08-21T09:28:37Z,2024-08-30T13:05:53Z,2024-08-30T13:05:53Z,"### Contact Details
+
+d.m.soanes@exeter.ac.uk
+
+### What happened?
+
+Microarray data was not cell sorted (small test dataset)
+The first part of the QC pipeline seemed to work fine:
+1: Column names were correct
+2: raw.gds and rawNorm.gds files were produced
+3: calcQCMetrics.r worked (files attached) - although there was a warning: Sentrix position model failed, skipping not sure if that is important
+4: The markdown script QC.rmd failed:
+
+### How can the bug be reproduced?
+
+Uploaded config, output, log and sample sheet files - other files can be found at /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN
+[config.txt](https://github.com/user-attachments/files/16689449/config.txt)
+[PassQCStatusAllSamples.csv](https://github.com/user-attachments/files/16689450/PassQCStatusAllSamples.csv)
+[QCDNAdata_2556271.log](https://github.com/user-attachments/files/16689451/QCDNAdata_2556271.log)
+[QCMetricsPostSampleCheck.csv](https://github.com/user-attachments/files/16689452/QCMetricsPostSampleCheck.csv)
+[sampleSheet.csv](https://github.com/user-attachments/files/16689453/sampleSheet.csv)
+[config.r.txt](https://github.com/user-attachments/files/16689491/config.r.txt)
+[QCDNAdata_2556271.err.txt](https://github.com/user-attachments/files/16689492/QCDNAdata_2556271.err.txt)
+
+
+
+### Relevant log output
+
+```shell
+processing file: QC.rmd
+Error in `names(x) <- value`:
+! 'names' attribute [6] must be the same length as the vector [5]
+Backtrace:
+ 1. base::`colnames<-`(`*tmp*`, value = `<chr>`)
+ 2. base::`colnames<-`(`*tmp*`, value = `<chr>`)
+Warning message:
+In in_dir(input_dir(), expr) :
+  You changed the working directory to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN (probably via setwd()). It will be restored to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN/original_scripts/BrainFANS/array/DNAm/preprocessing. See the Note section in ?knitr::knit
+
+Quitting from lines 61-141 [definPlotParams] (QC.rmd)
+Execution halted
+```
+",dmsoanes,https://github.com/ejh243/BrainFANS/issues/173
+I_kwDOCxwUgs6T_Hu6,[Bug]: r config file incorrectly specificed in config template ,OPEN,2024-08-23T10:07:35Z,2024-09-23T09:47:33Z,,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### What happened?
+
+RCONFIG variable needs config.r at the end of the file path in [`config.example.r`](https://github.com/ejh243/BrainFANS/blob/master/array/DNAm/config/config.example.r)
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",ejh243,https://github.com/ejh243/BrainFANS/issues/176
+I_kwDOCxwUgs6T_LIL,[Bug]: Possible bug in QC.rmd script in DNA microarray QC pipeline,CLOSED,2024-08-23T10:14:26Z,2024-08-30T13:05:07Z,2024-08-30T13:05:07Z,"### Contact Details
+
+d.m.soanes@exeter.ac.uk
+
+### What happened?
+
+Microarray data was not cell sorted
+The first part of the QC pipeline seemed to work fine:
+1: Column names were correct
+2: raw.gds and rawNorm.gds files were produced
+3: calcQCMetrics.r worked (files attached) - although there was a warning: Sentrix position model failed, skipping not sure if that is important
+4: The markdown script QC.rmd failed:
+
+### How can the bug be reproduced?
+
+Uploaded config, output, log and sample sheet files - other files can be found at /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN
+[config.r.txt](https://github.com/user-attachments/files/16727132/config.r.txt)
+[config.txt](https://github.com/user-attachments/files/16727134/config.txt)
+[PassQCStatusAllSamples.csv](https://github.com/user-attachments/files/16727135/PassQCStatusAllSamples.csv)
+[QCDNAdata_2558375.err.txt](https://github.com/user-attachments/files/16727136/QCDNAdata_2558375.err.txt)
+[QCDNAdata_2558375.log](https://github.com/user-attachments/files/16727137/QCDNAdata_2558375.log)
+[QCMetricsPostSampleCheck.csv](https://github.com/user-attachments/files/16727138/QCMetricsPostSampleCheck.csv)
+[sampleSheet.csv](https://github.com/user-attachments/files/16727139/sampleSheet.csv)
+
+
+### Relevant log output
+
+```shell
+processing file: QC.rmd
+Error in `contrasts<-`:
+! contrasts can be applied only to factors with 2 or more levels
+Backtrace:
+ 1. stats::lm(...)
+ 3. stats::model.matrix.default(mt, mf, contrasts)
+ 4. stats::`contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]])
+Warning message:
+In in_dir(input_dir(), expr) :
+  You changed the working directory to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN (probably via setwd()). It will be restored to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN/original_scripts/BrainFANS/array/DNAm/preprocessing. See the Note section in ?knitr::knit
+
+Quitting from lines 402-413 [controlProbeHeatmap] (QC.rmd)
+Execution halted
+```
+",dmsoanes,https://github.com/ejh243/BrainFANS/issues/177
+I_kwDOCxwUgs6UBVR6,[Bug]: Possible bug in QC.rmd script in DNA microarray QC pipeline,CLOSED,2024-08-23T15:23:18Z,2024-08-30T13:04:48Z,2024-08-30T13:04:48Z,"### Contact Details
+
+d.m.soanes@exeter.ac.uk
+
+### What happened?
+
+Microarray data was not cell sorted
+The first part of the QC pipeline seemed to work fine:
+1: Column names were correct
+2: raw.gds and rawNorm.gds files were produced
+3: calcQCMetrics.r worked (files attached) - although there was a warning: Sentrix position model failed, skipping not sure if that is important
+4: The markdown script QC.rmd failed - **SexMismatches.csv** and **PlotsWithinDNAmMismatches.pdf** files produced but contained no data.
+
+### How can the bug be reproduced?
+
+Uploaded config, output, log and sample sheet files - other files can be found at /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN
+[config.r.txt](https://github.com/user-attachments/files/16730648/config.r.txt)
+[config.txt](https://github.com/user-attachments/files/16730649/config.txt)
+[PassQCStatusAllSamples.csv](https://github.com/user-attachments/files/16730650/PassQCStatusAllSamples.csv)
+[QCDNAdata_2559367.err.txt](https://github.com/user-attachments/files/16730651/QCDNAdata_2559367.err.txt)
+[QCDNAdata_2559367.log](https://github.com/user-attachments/files/16730652/QCDNAdata_2559367.log)
+[QCMetricsPostSampleCheck.csv](https://github.com/user-attachments/files/16730653/QCMetricsPostSampleCheck.csv)
+
+
+### Relevant log output
+
+```shell
+processing file: QC.rmd
+
+
+processing file: ./rmarkdownChild/sexCheck.rmd
+Error in `$<-.data.frame`:
+! replacement has 94 rows, data has 96
+Backtrace:
+ 1. base::`$<-`(`*tmp*`, predictedduplicates, value = `<chr>`)
+ 2. base::`$<-.data.frame`(`*tmp*`, predictedduplicates, value = `<chr>`)
+Warning message:
+In in_dir(input_dir(), expr) :
+  You changed the working directory to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN (probably via setwd()). It will be restored to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN/original_scripts/BrainFANS/array/DNAm/preprocessing. See the Note section in ?knitr::knit
+
+Quitting from lines 858-875 [findDuplicateSamplesPostQC] (QC.rmd)
+Execution halted
+```
+",dmsoanes,https://github.com/ejh243/BrainFANS/issues/179
+I_kwDOCxwUgs6Ui7rO,[Code Refactor]: nested c() calls,CLOSED,2024-08-28T14:06:06Z,2024-09-10T15:22:03Z,2024-09-10T15:22:02Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+/array/DNAm/preprocessing/QC.rmd
+```
+
+
+### Type of refactor
+
+Code readability improvement
+
+### Description of required code refactor
+
+Currently the file nests three c() calls when only one is necessary.
+Also there is a ~100 column gap between two entries for some reason.
+
+```R
+colsToKeep <- c(c(c(""M.median"",""U.median"",""intens.ratio"",                                                                                            ""bisulfCon"", ""pFilter"",
+ ""x.cp"",""y.cp"",
+ ""genoCheck"",
+ ""rmsd"",""sdd"",""sadd"",""srms"",
+ ""nNAsPer""), colnames(QCmetrics)[grep(""PC"", colnames(QCmetrics))]))
+```",sof202,https://github.com/ejh243/BrainFANS/issues/181
+I_kwDOCxwUgs6UpyLB,[Bug]: `cellType` is not defined in CETYGOdeconvolution.R,CLOSED,2024-08-29T09:53:45Z,2024-08-29T10:01:07Z,2024-08-29T10:00:43Z,"### What happened?
+
+`cellType` is not being set prior to the call:
+
+```R
+paste0(dataDir, ""/2_gds/QCmetrics/CETYGO/CETYGOscorePlots_"", cellType, "".pdf"")
+```
+
+As such the script will fail here, resulting in the 2_gds/QCmetrics/CETYGO/ directory being empty after 1_runDNAmQC.sh is ran.
+
+
+### How can the bug be reproduced?
+
+Run CETYGOdeconvolution.r on any dataset and config file.
+",sof202,https://github.com/ejh243/BrainFANS/issues/183
+I_kwDOCxwUgs6UzosJ,[Enhancement suggestion]: Check variables exist before execution,CLOSED,2024-08-30T08:21:40Z,2024-09-20T11:00:26Z,2024-09-20T11:00:26Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Enhancement suggestion
+
+At the top of scripts that depend on variables defined in the config files, to check they exist and print helpful error messages if they do not. ",ejh243,https://github.com/ejh243/BrainFANS/issues/184
+I_kwDOCxwUgs6U0pvq,Extracting chromosome and design type from EPIC V1 manifest in ctCheck.rmd,CLOSED,2024-08-30T10:20:50Z,2024-12-05T15:51:42Z,2024-12-05T15:51:42Z,"### Contact Details
+
+ak735@exeter.ac.uk
+
+### What happened?
+
+When running the QC for EPIC v1, I was getting the following error from the ctCheck.rmd. 
+
+```
+Error:
+processing file: ./rmarkdownChild/ctCheck.rmd
+Error in `[.data.frame`:
+! undefined columns selected
+Backtrace:
+ 1. ...[]
+ 2. base::`[.data.frame`(...)
+Quitting from lines 3-87 [setupCtCheck] (./rmarkdownChild/ctCheck.rmd)
+```
+
+I think it relates to line 20:
+`manifest<-manifest[match(fData(gfile)$Probe_ID, probeAnnot$probeID), c(""CHR"", ""INFINIUM_DESIGN_TYPE"")]`
+Changing ProbeAnnot to manifest and ""CHR"", ""INFINIUM_DESIGN_TYPE"" to ""chrm"", ""designType"" (which match the column names of manifest) seemed to solve the problem i.e.
+`manifest<-manifest[match(fData(gfile)$Probe_ID, manifest$probeID), c(""chrm"", ""designType"")]`
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",AnthonyKl98,https://github.com/ejh243/BrainFANS/issues/185
+I_kwDOCxwUgs6U2W-w,[Code Refactor]: messy conditional logic in CETYGOdeconvolution.r,CLOSED,2024-08-30T13:39:24Z,2024-09-10T15:21:32Z,2024-09-10T15:21:32Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+array/DNAm/preprocessing/CETYGOdeconvolution.r
+```
+
+
+### Type of refactor
+
+Code readability improvement
+
+### Description of required code refactor
+
+Currently the conditional logic at the end of this file has some redundancies that makes it harder to read. This can be cleaned up by removing some conditions.",sof202,https://github.com/ejh243/BrainFANS/issues/186
+I_kwDOCxwUgs6U3lQ0,[Bug]: technical variables summary never shows,CLOSED,2024-08-30T15:45:24Z,2024-09-20T15:23:55Z,2024-09-20T15:23:54Z,"### What happened?
+
+In the QC.rmd, Section 1.1 will never show summaries of samples categorised by [insert `techVar` item here]
+
+### How can the bug be reproduced?
+
+Run the QC pipeline and look at QC.html. Section 1.1 will always be empty.
+",sof202,https://github.com/ejh243/BrainFANS/issues/188
+I_kwDOCxwUgs6VpXO6,[Enhancement suggestion]: Pfilter for probe removal,CLOSED,2024-09-06T15:06:56Z,2024-11-06T12:25:40Z,2024-11-06T12:25:40Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Add pfilter step before the normalisation step in the normalisation script",eld211,https://github.com/ejh243/BrainFANS/issues/192
+I_kwDOCxwUgs6V9meh,[Bug]: miscalculating genetically unique individuals in the QC report,CLOSED,2024-09-10T09:47:14Z,2024-09-10T10:58:31Z,2024-09-10T10:58:31Z,"### Contact Details
+
+me460@exeter.ac.uk
+
+### What happened?
+
+When generating the QC.html, I think the table that is generated in section 3.1 under the heading ""Genetically Identical Samples"" is potentially miscalculating the number of genetically unique individuals. The second table that identifies the expected distribution from the sample sheet is as expected. However, I believe the first table is possibly miscalculating the number of unique individuals as this does not match what I expect in my cohort.
+![Screenshot 2024-09-09 at 16 21 40](https://github.com/user-attachments/assets/2294f867-95ff-4e06-9879-8f9e004743da)
+
+
+### How can the bug be reproduced?
+
+The data I am using to generate the QC.html is not currently publicly available. However, please just let me know if I can provide any further information.
+
+### Relevant log output
+
+_No response_",Molly-Endicott,https://github.com/ejh243/BrainFANS/issues/193
+I_kwDOCxwUgs6V9yP0,[Bug]: Principal component analysis for autosomal probes,CLOSED,2024-09-10T10:07:32Z,2024-09-23T11:45:37Z,2024-09-23T11:45:37Z,"### Contact Details
+
+me460@exeter.ac.uk
+
+### What happened?
+
+When running the QC.html, I think the number of PCs identified which explained > 1% of the variance could be taken from the control probes rather than the autosomal probes. 
+
+Section 2.8 of the QC report identified 7 PCs explaining > 1% variance in my data which matches the number displayed in section 2.6 for my control probes. Section 2.8 investigating autosomal probes highlights 7 in the text but proceeds to show 9 PCs on the variance explained plot and plot 9 histograms & scatter plots explaining > 1% variant. From the plots, I think the text should read as ""9 PCs identified which explained > 1% of the variance"" as I think the number 7 might be taken from the control probes?
+![Screenshot 2024-09-10 at 10 59 25](https://github.com/user-attachments/assets/f51bfd2c-5249-4cc2-87d3-89fd0846793d)
+![Screenshot 2024-09-10 at 11 00 12](https://github.com/user-attachments/assets/e911ff94-07b7-4044-868b-86c13f880e6f)
+![Screenshot 2024-09-10 at 11 00 34](https://github.com/user-attachments/assets/ffde220c-c60a-441a-be06-3862b446209b)
+
+
+### How can the bug be reproduced?
+
+The data I am using to generate the QC.html is not currently publicly available. However, please just let me know if I can provide any further information.
+
+### Relevant log output
+
+_No response_",Molly-Endicott,https://github.com/ejh243/BrainFANS/issues/195
+I_kwDOCxwUgs6V_Um2,[Bug]: Bug in QC.rmd from microarray QC pipeline,CLOSED,2024-09-10T12:59:40Z,2024-09-10T15:19:36Z,2024-09-10T15:19:36Z,"### Contact Details
+
+d.m.soanes@exeter.ac.uk
+
+### What happened?
+
+Running microarray QC - **QCMetricsPostSampleCheck.csv** and **PassQCStatusAllSamples.csv** files produced, also **WithinDNAmGeneticErrors.csv**
+Error produced before QC.rmd finished running
+
+### How can the bug be reproduced?
+
+Data can be found in /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN/
+
+### Relevant log output
+
+```shell
+processing file: QC.rmd
+Error in `if (QCmetrics[match(bsnames[j], QCmetrics$Basename), ""passQCS1""]) ...`:
+! missing value where TRUE/FALSE needed
+Warning message:
+In in_dir(input_dir(), expr) :
+  You changed the working directory to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/OHSU_006PLT_JN (probably via setwd()). It will be restored to /lustre/projects/Research_Project-MRC190311/DNAm/Darren/scripts/BrainFANS/array/DNAm/preprocessing. See the Note section in ?knitr::knit
+
+Quitting from lines 724-777 [plotsOfSampleGroupsFromMultipleIDs] (QC.rmd)
+Execution halted
+```
+",dmsoanes,https://github.com/ejh243/BrainFANS/issues/196
+I_kwDOCxwUgs6WI63H,[Bug]: clusterCellTypes.r script doesn't work when phenotype info is not available,CLOSED,2024-09-11T08:05:39Z,2024-12-11T15:30:31Z,2024-12-11T15:30:30Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Line 165:166 of the clsuterCellTypes script defines columns to keep from QCmetrics dataframe. If the keepcols object is not longer than 1, line 167 creates a vector rather than a dataframe for object ""uniqueIDs"". Line 171 then cannot access ""Individual_ID"" by column name selection, as the uniqueIDs object has no columns.
+
+### How can the bug be reproduced?
+
+supply a samplesheet with no Age, Sex, Phenotype, Tissue.Centre columns
+
+### Relevant log output
+
+```shell
+uniqueIDs$Individual_ID <- as.character(uniqueIDs$Individual_ID)
+Error in uniqueIDs$Individual_ID :
+  $ operator is invalid for atomic vectors
+```
+",ew367,https://github.com/ejh243/BrainFANS/issues/198
+I_kwDOCxwUgs6WgOZw,[Code Refactor]: installLibraries.r script contains unecessary code,CLOSED,2024-09-13T14:50:19Z,2024-09-16T09:20:14Z,2024-09-16T09:20:14Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+BrainFans/Array/DNAm/preprocessing/installLibraries.r
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Currently the file needs a data directory file path to be provided on the command line in order to run.
+This is used in the script to load the config File, however none of the config file parameters are then used at any point in the script.
+
+To ammend: remove lines 15:20 from installLibraries.r script and change 1_runDNAmQC script line 37 to remove $DATADIR arg",ew367,https://github.com/ejh243/BrainFANS/issues/199
+I_kwDOCxwUgs6WtlYg,"[Bug]: config.example.r file is missing ""arrayType"" variable parameter",CLOSED,2024-09-16T13:47:06Z,2024-09-17T08:02:25Z,2024-09-17T07:50:42Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+array/DNAm/config/config.example.r
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+add `arrayType<-V2` to exmaple file",ew367,https://github.com/ejh243/BrainFANS/issues/201
+I_kwDOCxwUgs6XS99c,[Enhancement suggestion]: update dasen to dasen.adj,CLOSED,2024-09-20T09:28:17Z,2024-12-11T13:55:35Z,2024-12-11T13:55:35Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Enhancement suggestion
+
+Change all occurrences of `dasen` to `dasen.adj`.
+",ejh243,https://github.com/ejh243/BrainFANS/issues/210
+I_kwDOCxwUgs6XS_U2,[Enhancement suggestion]: QC report add document code version ,CLOSED,2024-09-20T09:31:04Z,2024-09-27T12:34:33Z,2024-09-27T12:34:33Z,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Enhancement suggestion
+
+In QC report add a statement specifying which version of the repo was used and the last commit.
+
+ ",ejh243,https://github.com/ejh243/BrainFANS/issues/211
+I_kwDOCxwUgs6XTCbb,[Enhancement suggestion]: qual summary stats,OPEN,2024-09-20T09:36:54Z,2024-09-20T13:37:07Z,,"### Contact Details
+
+e.j.hannon@exeter.ac.uk
+
+### Enhancement suggestion
+
+1. Do we want to keep all four of the normalisation violence output metrics? 
+2. We should add to the QC report a definition of the abbreviations. I can't find them in full for all but here is the code for how they are calculated: 
+
+```
+rmsd <- sqrt(mean(dif^2, na.rm = TRUE))
+sdd  <- sd(dif, na.rm = TRUE)
+sadd <- sd(abs(dif), na.rm = TRUE)
+srms <- rmsd/sdd
+```
+",ejh243,https://github.com/ejh243/BrainFANS/issues/212
+I_kwDOCxwUgs6XTGNf,[Enhancement suggestion]: Add stops on unsuccessful scripts,OPEN,2024-09-20T09:43:48Z,2024-09-20T11:37:49Z,,"### Enhancement suggestion
+
+For unsuccessful scripts in `1_runDNAmQC`, a helpful log message should be displayed before exiting the script entirely. This is to stop the shell script from running when we know for a fact it will end up failing.
+
+We could do this with `set -e`, but then log messages couldn't be displayed to help users identify why the script ended.",sof202,https://github.com/ejh243/BrainFANS/issues/213
+I_kwDOCxwUgs6XTuRc,[Bug]: QC Report Section 4.2 reconfirming genetic relationships,CLOSED,2024-09-20T11:03:51Z,2024-09-25T10:16:50Z,2024-09-25T10:16:50Z,"### Contact Details
+
+me460@exeter.ac.uk
+
+### What happened?
+
+When generating the QC.html, we think the table in section 4.2 ""Reconfirming genetic relationships are correct"" is identifying the samples which have been filtered out during QC as samples from the same individual. The genetically identical samples are correctly identified in section 3.1 but an additional column appears postQC in section 4.2 and corresponds to the number of samples that have been removed during QC in my dataset. 
+![Screenshot 2024-09-20 at 11 50 20](https://github.com/user-attachments/assets/9757bffa-2769-4707-b5b2-1e5b1be3807d)
+![Screenshot 2024-09-20 at 11 50 51](https://github.com/user-attachments/assets/be39674c-4b20-4810-9ac1-e9d552f4901f)
+
+
+### How can the bug be reproduced?
+
+The data I am using to generate the QC.html is not currently publicly available. However, please just let me know if I can provide any further information.
+
+### Relevant log output
+
+_No response_",Molly-Endicott,https://github.com/ejh243/BrainFANS/issues/214
+I_kwDOCxwUgs6XUvKS,[Enhancement suggestion]: Remove techVar and bioVar variables and replace with hardcoded Sentrix_ID and Sentrix_Position and optional project variables (projVar),CLOSED,2024-09-20T13:11:36Z,2024-09-23T12:31:50Z,2024-09-23T12:31:50Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Remove techVar and bioVar variables and replace with hardcoded Sentrix_ID and Sentrix_Position and optional project variables (projVar)
+
+Sentrix_ID and Sentrix_Position will need to be included as plot variables in the QC report for all projects so should be hardcoded in to the QC.rmd script. There is also no need to distinguish between technical and biological variables so these can be combined into an overall (optional) project variable.
+
+affected scripts:
+
+config.example.r,  checkRconfigFile.r and QC.rmd files",ew367,https://github.com/ejh243/BrainFANS/issues/216
+I_kwDOCxwUgs6XisiN,[Bug]: installLibraries.r script contains errors and is missing libraries essential to run QC.rmd,OPEN,2024-09-23T12:16:26Z,2024-09-23T12:16:27Z,,"### Contact Details
+
+_No response_
+
+### What happened?
+
+the installLibraries.r script throws an error for the below as `install` should be`BiocManager::install`
+
+```
+ `if(arrayType=='V2'){
+	install(""jokergoo/IlluminaHumanMethylationEPICv2manifest"")
+	install(""jokergoo/IlluminaHumanMethylationEPICv2anno.20a1.hg38"")
+
+}`
+```
+
+Also the QC.rmd script will not run as several of the packages are missing (gplots, diptest,corrplot, pheatmap, mixtools).
+
+
+
+### How can the bug be reproduced?
+
+try to run the installLibraries.r script (lines 47:50) and then the QC.rmd script (lines 14:24, 259 and 275,)
+
+### Relevant log output
+
+_No response_",ew367,https://github.com/ejh243/BrainFANS/issues/221
+I_kwDOCxwUgs6Xjf6O,[Enhancement suggestion]: Adapt checkColnamesSampleSheet.r script to check that all basenames are unique,CLOSED,2024-09-23T13:32:01Z,2024-09-23T13:43:08Z,2024-09-23T13:43:08Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Occasionally excel input errors occur in the samplesheet. Add line to script to check that all the basenames are unique",ew367,https://github.com/ejh243/BrainFANS/issues/223
+I_kwDOCxwUgs6XkAiH,[Code Refactor]: Multiple variables currently exist for same data (Sentrix_ID and _Position),OPEN,2024-09-23T14:14:59Z,2024-09-23T14:16:54Z,,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+CETYGOdeconvolution.r, loadDataGDS.r, calcQCMetrics.r, checkColnamesSampleSheet.r
+```
+
+
+### Type of refactor
+
+Code optimisation, Code understandability improvement
+
+### Description of required code refactor
+
+The pipeline currently contains references to Chip.ID/.Postion, Chip_Location/_Position and Sentrix_ID/_Postion, which are all referring to the same data
+
+Fix: standardise to Sentrix_ID/Sentrix_Position as this is what is used in the downstream analysis scripts (and also avoids confusion with chip_seq data/ references to snp chips).
+
+Within the QC pipeline, these variables are only ever used to create a 'Basename' column if one doesn't already exist in the samplesheet (repeated code in CETYGOdeconvolution.r, loadDataGDS.r and calcQCMetrics.r scripts) and for the QC.rmd plots, where Sentrix_ID and _Position are extracted from basename to ensure excel hasn't converted to sci notation. 
+
+Fix: adapt checkColnamesSampleSheet.r script to require basename to be included in samplesheet from outset and check that all values are unique",ew367,https://github.com/ejh243/BrainFANS/issues/224
+I_kwDOCxwUgs6X2Wjw,[Enhancement suggestion]: GitHub description,CLOSED,2024-09-25T10:30:25Z,2024-09-27T12:21:36Z,2024-09-27T12:21:36Z,"## Description
+
+A quick description of the repository on GitHub would be nice for metadata reasons (it would also look nicer on the lab website this way).
+
+![image](https://github.com/user-attachments/assets/dee34ace-b143-4ba5-b8a5-5a14fcde5270)
+
+## Documentation
+
+As a bonus we can put the documentation website here as well (Though there isn't any documentation on it just yet, so that can wait).
+
+![image](https://github.com/user-attachments/assets/2719bda1-621a-4716-aee4-fa7839170023)
+",sof202,https://github.com/ejh243/BrainFANS/issues/225
+I_kwDOCxwUgs6YKT8J,[Bug]: Full git tag is shown on QC rmd report,CLOSED,2024-09-27T12:39:41Z,2024-09-27T13:03:24Z,2024-09-27T13:03:24Z,"### What happened?
+
+The QC.html file will have the full git tag rather than just the bit we care about.
+
+I didn't pick up on this as when I ran this last week, the most recent commit was the same as the commit the most recent tag was created on. Now some pull requests have been merged, this problem has arisen.
+
+### How can the bug be reproduced?
+
+```bash
+git describe --tags
+## v1.1.0-5-g1bc6d45
+```",sof202,https://github.com/ejh243/BrainFANS/issues/226
+I_kwDOCxwUgs6Yg1xG,[Code Refactor]: only run cortical clock for brain samples,CLOSED,2024-10-01T09:54:40Z,2024-11-04T15:47:07Z,2024-11-04T15:47:07Z,"### Contact Details
+
+_No response_
+
+### Path to affected file
+
+```shell
+calcQCmetrics.r
+```
+
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+The code currently runs the coritcal clock age predictor regardless of sample type, but it is only applicable to brain data. 
+It could be turned off/on using config input ( `if (tissueType == ""Brain"")`  )",ew367,https://github.com/ejh243/BrainFANS/issues/229
+I_kwDOCxwUgs6bzsNI,[Code Refactor]: create function to load and standardise manifests,CLOSED,2024-10-25T12:48:33Z,2024-12-05T15:51:42Z,2024-12-05T15:51:42Z,"### Path to affected files
+
+- array/DNAm/preprocessing/calQCMetrics.r
+- array/DNAm/preprocessing/clusterCellTypes.r
+- array/DNAm/preprocessing/rmarkdownChild/ctCheck.rmd
+- array/DNAm/preprocessing/normalisation.r
+  - Though this code is currently commented out
+
+### Type of refactor
+
+Code optimisation
+
+### Description of required code refactor
+
+Many of the pipeline scripts contain identical code to load and standardise the manifest files for the different array versions. It would be nice to call a function that can be shared across files instead",ew367,https://github.com/ejh243/BrainFANS/issues/235
+I_kwDOCxwUgs6cjTx3,[Bug]: Modules not working,CLOSED,2024-10-31T10:25:24Z,2024-11-25T10:01:53Z,2024-11-25T10:01:53Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Due to the recent ISCA update, some modules are not working anymore, like FastQC, MACS3, FastP or Samtools. This could be solved by installing these software in a conda environment. This affect several steps of the ATAC-seq pipeline, although might be affecting other pipelines that use the same modules.
+
+### How can the bug be reproduced?
+
+Commands like `module load fastqc` or `ml fastqc` not loading the modules as expected and different issues are raising.
+
+### Relevant log output
+
+_No response_",marinafloresp,https://github.com/ejh243/BrainFANS/issues/238
+I_kwDOCxwUgs6c7LCU,[Bug]: QC installLibraries.R script will always fail,CLOSED,2024-11-04T13:00:56Z,2024-11-05T09:10:21Z,2024-11-05T09:10:20Z,"### What happened?
+
+In the installLibraries.R script, wateRmelon and bigmelon are being installed before any of the Bioconductor packages are installed (like minfi for example). This will most likely result in an exit code of 1 unless the user already has the dependencies (or the melon packages) installed.
+https://github.com/ejh243/BrainFANS/blob/6bbfbeceb89f79421ad8e94d1c47bf00ba2010ee/array/DNAm/preprocessing/installLibraries.r#L33-L35
+
+## Proposed solution
+
+Delete lines 33-35 and move them below lines 80-82 (other `install_github()` commands here).",sof202,https://github.com/ejh243/BrainFANS/issues/240
+I_kwDOCxwUgs6c8UJr,[Bug]: EPIC V1 annotation file package version mismatch,CLOSED,2024-11-04T14:59:43Z,2024-11-07T11:49:42Z,2024-11-07T11:49:42Z,"### What happened?
+
+The version of the annotation file for EPIC V1 being installed in installLibraries.r does not match up with the minfi::getAnnotationObject call in loadDataGDS.r.
+
+https://github.com/ejh243/BrainFANS/blob/6bbfbeceb89f79421ad8e94d1c47bf00ba2010ee/array/DNAm/preprocessing/installLibraries.r#L45
+
+https://github.com/ejh243/BrainFANS/blob/32d8c53a9fae7e377a71733acac48ebccc297bc0/array/DNAm/preprocessing/loadDataGDS.r#L151
+
+(b2 -> b4)",sof202,https://github.com/ejh243/BrainFANS/issues/241
+I_kwDOCxwUgs6dEu1A,[Bug]: gridExtra not installed in installLibraries.r script,CLOSED,2024-11-05T11:59:53Z,2024-11-15T11:24:57Z,2024-11-15T11:24:57Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+The job was submitted but failed within 6 minutes with the following error: Error in library(gridExtra) : there is no package called ‘gridExtra’
+Execution halted
+
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",lw371,https://github.com/ejh243/BrainFANS/issues/244
+I_kwDOCxwUgs6dHND2,[Bug]: Plotting parameters legend mismatch,CLOSED,2024-11-05T16:19:49Z,2024-12-13T09:47:48Z,2024-12-13T09:47:48Z,"### What happened?
+
+When you running QC @lw371 found a bug where the number of colours and the number of names for the `intensRatio` plots did not match up. This was because his 'Sex' column had blank values. 
+
+Blank values are converted to NA values in the code. In the plotting parameter definition section we use the following lines to get information for the legend:
+https://github.com/ejh243/BrainFANS/blob/052acf82bfb745654aea8540348eb8d4f25cba0a/array/DNAm/preprocessing/QC.rmd#L129-L130
+
+The problem here is that:
+```R
+test <- as.factor(c(""M"",""F"",""F"",NA))
+levels(test)
+# [1] ""M"" ""F""
+unique(test)
+# [1] M    F    <NA>
+```
+
+As such, the number of colours created by the `rainbow` function was 3, but the number of names for the legend was 2. This mismatch caused a plotting error.
+
+### How can the bug be reproduced?
+
+Add a variable with empty values to `projVar` in your config.r.
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/246
+I_kwDOCxwUgs6d6DFL,[Bug]: 450k array type not loading manifest files,CLOSED,2024-11-11T12:45:58Z,2024-11-11T12:47:53Z,2024-11-11T12:47:53Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+The manifest files for 450k do not load properly when using 450k in the configuration file for DNAmQC.
+
+### How can the bug be reproduced?
+
+Run the DNAm QC pipeline with `arrayType` set to 450k. Also breaks if you set it to `hm450k` or `HM450k`.
+
+### Relevant log output
+
+_No response_",sof202,https://github.com/ejh243/BrainFANS/issues/249
+I_kwDOCxwUgs6eSCnS,[Documentation Fault]: Repeated and incomplete information in README,OPEN,2024-11-13T13:28:06Z,2024-11-13T13:28:19Z,,"### Fault type
+
+Incorrect/outdated information given
+
+### Please describe the fault in detail
+
+In `array/DNAm/preprocessing/README.md` the following lines are given:
+
+https://github.com/ejh243/BrainFANS/blob/169609f306cff35765d8139755fdf5a0531afa04/array/DNAm/preprocessing/README.md?plain=1#L17-L23
+
+This slurm script however does more than this, making this bulleted list outdated. I would suggest to remove it entirely as it isn't really adding anything to the readme file. If the user wanted to know what R scripts this slurm script ran, they could just look at the files themselves. If they wanted to know the exact commands being ran, they could again just look at the slurm script itself.
+
+#### Further problem
+
+Also there is some formatting problems that comes with what is currently shown as it is not put inside of backticks:
+
+![image](https://github.com/user-attachments/assets/33b9c109-1b38-4939-9020-b3e2658f879b)
+",sof202,https://github.com/ejh243/BrainFANS/issues/252
+I_kwDOCxwUgs6eoK4V,[Documentation Fault]: Log/error files of DNAm QC pipeline are not user friendly,CLOSED,2024-11-15T09:12:18Z,2024-12-12T16:35:36Z,2024-12-12T16:35:36Z,"### Fault type
+
+Rewording required
+
+### Please describe the fault in detail
+
+In the error files especially, a large part of the file is just the messages you get when loading in libraries like `wateRmelon` and `bigmelon`. This makes it very difficult for users to find the actual error messages that matter (for example, what might be wrong with their config file). If you know where to look, and block out the unimportant information, the process of finding the actual error messages are easy (though a little tedious). However, for the uninitiated, this is much more difficult.
+
+I suggest we try to use `quiet` flags and similar as much as possible to suppress the unimportant messages being written to stderr as much as possible.",sof202,https://github.com/ejh243/BrainFANS/issues/253
+I_kwDOCxwUgs6epfpS,[Documentation Fault]: Poor clarity in DNAm config files,OPEN,2024-11-15T11:21:07Z,2024-11-15T11:21:07Z,,"### Contact Details
+
+_No response_
+
+### Fault type
+
+Rewording required
+
+### Please describe the fault in detail
+
+According to @lw371, some wording in the two example config files could be fixed up to ensure that users know exactly what we are expecting from them.
+
+#### config.txt
+> It should be clear that the path to Rconfig needs the file name at 
+the end (“config.r”)
+
+#### config.r
+> Maybe make it clearer that all project variables you want coloured 
+have to be included in “projVar” and that they should exactly match
+the headings in your sampleSheet file
+
+> Explain the QC thresholds more?",sof202,https://github.com/ejh243/BrainFANS/issues/255
+I_kwDOCxwUgs6epgyK,[Documentation Fault]: Add example sampleSheet files,OPEN,2024-11-15T11:23:27Z,2024-12-13T09:58:46Z,,"### Contact Details
+
+_No response_
+
+### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+@lw371 has suggested that it would be nice to see an example sampleSheet file for the DNAm QC pipeline. I presume this would help users know what the expected form of the file is? I don't know exactly what he is looking for in an example sampleSheet, maybe he can specify in the replies?",sof202,https://github.com/ejh243/BrainFANS/issues/256
+I_kwDOCxwUgs6fQu61,[Code Refactor]: Orthogonalise the DNAm QC pipeline,OPEN,2024-11-19T12:05:19Z,2024-11-19T13:49:32Z,,"### Path to affected file
+
+```shell
+array/DNAm/preprocessing/QC.rmd
+```
+
+
+### Type of refactor
+
+Code understandability improvement, Code readability improvement
+
+### Description of required code refactor
+
+Currently, the DNAm QC pipeline is very interdependent and [nonorthogonal](https://en.wikipedia.org/wiki/Orthogonality_(programming)) in design. A great deal of bugs that have been identified in the past year or so have been due to this problem.
+
+Many parts of the pipeline depend on other parts successful completion. As a result, a seemingly harmless change to one section of code in the pipeline inevitably causes problems in a different, completely unrelated part of the pipeline.
+
+Therefore it would be beneficial to properly layout what each part of the pipeline **requires** and what each part of the pipeline **outputs/contributes**. Doing this will allow us to disentangle and compartmentalise each section of the pipeline. This will have the benefit of making the pipeline easier to understand and therefore easier to contribute to in the future (without fear of breaking everything).
+
+#### Steps to completion
+
+1) An agreement of what the sections of the DNAm QC pipeline actually are. The blocks and headings provide a solid start (and it may be all we actually need), but it would be useful to actually have this written down. See #259.
+2) A set of 'contracts' (see [design by contract](https://en.wikipedia.org/wiki/Design_by_contract)) detailing the requirements and expectations of each section of the pipeline. Completion of this step results in the resolution of issue #259.
+  a) If it feels like any contract is exceptionally long/complex, this implies that some abstraction or 
+     further compartmentalisation is required.
+3) Using these contracts create a [UML diagram](https://miro.com/diagramming/what-is-a-uml-diagram/) (or similar) to help determine the processes/steps of the pipeline that each section actually depends on.
+  a) Add this UML diagram (or similar) to the documentation to help users understand what the pipeline 
+     actually does (mermaid may be useful for this). This step is given explicitly in #258 and 
+     **should be completed separately to the other steps listed**
+4) Reflect the diagram from 3) in the actual code. Ensure that each section does indeed receive the information it requires and does indeed output the information it is obligated to (with ideally no side effects) *i.e.* each section adheres to its proposed contract.
+  a) It may be useful to move some processing to separate files, either rmarkdown children or new R 
+     scripts. This can help with navigation around the code base (though might be better suited to 
+     being asked for in a further issue)
+",sof202,https://github.com/ejh243/BrainFANS/issues/257
+I_kwDOCxwUgs6fQw7u,[Documentation Fault]: Create a UML diagram explaining the steps for the DNAm QC pipeline,OPEN,2024-11-19T12:09:06Z,2024-11-19T12:26:14Z,,"### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+After generating 'contracts' for the DNAm QC pipeline and removing unnecessary non-orthogonality, a UML diagram (or a similar diagram that achieves the same thing) should be created to aid users (and future contributors) in understanding what the pipeline actually does and needs.
+
+For more information look at step 3 of #257. ",sof202,https://github.com/ejh243/BrainFANS/issues/258
+I_kwDOCxwUgs6fQ4xz,[Documentation Fault]: Create contracts for each stage/section of DNAm QC pipeline,OPEN,2024-11-19T12:23:59Z,2024-11-20T13:19:37Z,,"### Fault type
+
+New page required
+
+### Please describe the fault in detail
+
+In order to assist in the completion of #257 and #258, a clear set of [contracts](https://en.wikipedia.org/wiki/Design_by_contract) should be generated for each part of the DNAm QC pipeline. Of course you don't have to think of them as contracts, what really matters here is that we pin down what each section is expecting (or should be expecting) and what we expect that section to do.
+
+If we don't have a clear concise idea of what each section actually requires and provides, working on individual sections of the code can be daunting. This is especially true when you haven't extensively used the pipeline and can't know the full extent of your changes. Knowing what each section requires immediately helps in identifying how bugs are introduced. Meanwhile, knowing exactly what each section is expected to do helps massively with testing (which in turn helps identify potential bugs much faster). 
+
+Completing this issue also opens up the possibility of adding unit tests into the pipeline, which can be used to check that each individual section is indeed working as expected (which is obviously useful to developers, but also to users who may be setting up config files incorrectly). 
+
+The solution to this issue ideally would be a document (that can be added to the documentation website perhaps) that details:
+
+- What each section of the DNAm QC pipeline is
+- What each section of the DNAm QC pipeline requires to function correctly
+- What each section of the DNAm QC pipeline is required to do
+- What does each section of the DNAm QC pipeline maintain (*i.e.* what is it expected to **not change** regardless of input)
+
+Try not to be *overly* specific in these 'contracts'. Think about it like a contract that you would have for a regular job. For an example of a 'good' and 'bad' contract (that isn't programmatic), look at the comments section.
+
+Details of how each section of the pipeline interplay with one another is not required in this document as this is covered by #258.
+
+This issue is tightly related with the refactor called for in #257, for more information/context look at step 1/2 of that issue.",sof202,https://github.com/ejh243/BrainFANS/issues/259
+I_kwDOCxwUgs6gV7VB,[Bug]: Picard run out of space on device,CLOSED,2024-11-25T10:08:43Z,2024-12-04T16:25:52Z,2024-12-04T16:25:42Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+Picard is a software used multiple times in the ATAC-seq pipeline to mark duplicated reads (Step 1.3 and 6.1) or add read groups (Step 6.1). For large samples, these processes are memory and resources intensive such that a temporary directory with large capacity is needed. This is not always the case of the shared temporary space allocated when a job is submitted by ISCA. Even if an alternative temporary directory is specified in the .bashrc file, this is not used by the Picard software and the processes can't be completed. 
+
+### How can the bug be reproduced?
+
+This happens both when using Picard from a conda environment and from the software source file. 
+
+### Relevant log output
+
+```shell
+Exception in thread ""main"" picard.PicardException: Exception writing ReadEnds to file.
+	at picard.sam.markduplicates.util.ReadEndsForMarkDuplicatesCodec.encode(ReadEndsForMarkDuplicatesCodec.java:74)
+	at picard.sam.markduplicates.util.ReadEndsForMarkDuplicatesCodec.encode(ReadEndsForMarkDuplicatesCodec.java:32)
+	at htsjdk.samtools.util.SortingCollection.spillToDisk(SortingCollection.java:254)
+	at htsjdk.samtools.util.SortingCollection.add(SortingCollection.java:182)
+	at picard.sam.markduplicates.MarkDuplicates.buildSortedReadEndLists(MarkDuplicates.java:627)
+	at picard.sam.markduplicates.MarkDuplicates.doWork(MarkDuplicates.java:270)
+	at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:309)
+	at picard.cmdline.PicardCommandLine.instanceMain(PicardCommandLine.java:103)
+	at picard.cmdline.PicardCommandLine.main(PicardCommandLine.java:113)
+	Suppressed: java.io.IOException: No space left on device
+		at java.base/sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+		at java.base/sun.nio.ch.FileDispatcherImpl.write(FileDispatcherImpl.java:62)
+		at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+		at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+		at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:67)
+		at java.base/sun.nio.ch.FileChannelImpl.write(FileChannelImpl.java:288)
+		at java.base/java.nio.channels.Channels.writeFullyImpl(Channels.java:74)
+		at java.base/java.nio.channels.Channels.writeFully(Channels.java:96)
+		at java.base/java.nio.channels.Channels$1.write(Channels.java:171)
+		at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:81)
+		at java.base/java.io.BufferedOutputStream.write(BufferedOutputStream.java:127)
+		at org.xerial.snappy.SnappyOutputStream.dumpOutput(SnappyOutputStream.java:360)
+		at org.xerial.snappy.SnappyOutputStream.compressInput(SnappyOutputStream.java:377)
+		at org.xerial.snappy.SnappyOutputStream.flush(SnappyOutputStream.java:334)
+		at org.xerial.snappy.SnappyOutputStream.close(SnappyOutputStream.java:419)
+		at htsjdk.samtools.util.SortingCollection.spillToDisk(SortingCollection.java:259)
+		... 6 more
+Caused by: java.io.IOException: No space left on device
+	at java.base/sun.nio.ch.FileDispatcherImpl.write0(Native Method)
+	at java.base/sun.nio.ch.FileDispatcherImpl.write(FileDispatcherImpl.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:67)
+	at java.base/sun.nio.ch.FileChannelImpl.write(FileChannelImpl.java:288)
+	at java.base/java.nio.channels.Channels.writeFullyImpl(Channels.java:74)
+	at java.base/java.nio.channels.Channels.writeFully(Channels.java:96)
+	at java.base/java.nio.channels.Channels$1.write(Channels.java:171)
+	at java.base/java.io.BufferedOutputStream.flushBuffer(BufferedOutputStream.java:81)
+	at java.base/java.io.BufferedOutputStream.write(BufferedOutputStream.java:127)
+	at org.xerial.snappy.SnappyOutputStream.dumpOutput(SnappyOutputStream.java:360)
+	at org.xerial.snappy.SnappyOutputStream.compressInput(SnappyOutputStream.java:377)
+	at org.xerial.snappy.SnappyOutputStream.write(SnappyOutputStream.java:130)
+	at java.base/java.io.DataOutputStream.writeInt(DataOutputStream.java:208)
+	at picard.sam.markduplicates.util.ReadEndsForMarkDuplicatesCodec.encode(ReadEndsForMarkDuplicatesCodec.java:60)
+	... 8 more
+```
+",marinafloresp,https://github.com/ejh243/BrainFANS/issues/260
+I_kwDOCxwUgs6hHPyo,"[Bug]: Incorrect labelling of the ""Ratio of M and U Intensities"" box plots",OPEN,2024-11-28T19:06:36Z,2024-11-29T09:28:54Z,,"### Contact Details
+
+lw371@exeter.ac.uk
+
+### What happened?
+
+In the produced html QC report the ""Ratio of M and U Intensities"" labelling of the box plots can sometimes be incorrect. For example for samples where I have genders of Male (M), Female (F), and fully methylated controls (C) the C plot is incorrectly labelled as 'M'. 
+![Mislabeled box plot](https://github.com/user-attachments/assets/5724f557-6b72-4638-ac73-21b4e623601e)
+ 
+
+ 
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",lw371,https://github.com/ejh243/BrainFANS/issues/265
+I_kwDOCxwUgs6hHRLM,[Bug]: Lack of clarity regarding fully methylated controls (FMC) ,OPEN,2024-11-28T19:11:51Z,2024-11-28T19:11:51Z,,"### Contact Details
+
+lw371@exeter.ac.uk
+
+### What happened?
+
+Could some more clarity be added to the ""2.3 Fully methylated Controls"" section be added? For the cohorts that I've run that have fully methylated controls these are never recognised in this section. I don't believe this to be a sample issue as I have run both these cohorts on a previous QC pipeline and they have indeed been recognised as controls.
+![FMC message](https://github.com/user-attachments/assets/5161c311-9793-4ab9-9745-ac4d3af705ca)
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",lw371,https://github.com/ejh243/BrainFANS/issues/266
+I_kwDOCxwUgs6iTaf3,[Bug]: Stage 2 QC does not output sample list,CLOSED,2024-12-06T12:54:51Z,2024-12-09T16:35:16Z,2024-12-09T16:35:15Z,"### Contact Details
+
+_No response_
+
+### What happened?
+
+The second stage of the ATAC-seq QC performs sample identity check. This includes sex and genotype check. Step 6.2 of the pipeline collates these results on a single R markdown. One of the outputs should be a list of samples that passed this stage 2 of QC. A sample sheet is being output, but not a list of samples (passStage2SampleList.txt)
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",marinafloresp,https://github.com/ejh243/BrainFANS/issues/269
+I_kwDOCxwUgs6iUZLc,[Enhancement suggestion]: Use data.tables in DNAm QC rmarkdown report,OPEN,2024-12-06T14:57:53Z,2024-12-06T14:58:03Z,,"### Enhancement suggestion
+
+@SziKayLeung has implemented data.tables into their QC pipeline for ONT and it was agreed today that the rendering of this object type in rmarkdown reports is better than standard data.frames. We say this because if you have a lot of samples (lots of rows) a data.frame will take up a lot of space on the report (which can be annoying). However with data.tables, the object will be rendered like this:
+
+![image](https://github.com/user-attachments/assets/7e266df1-b8e4-46f4-a436-e466fcfe8597)
+
+Which is much cleaner.
+
+If the user that takes this on has a `QC.html` file that has been generated recently, this will help with identifying the lines of code behind each `data.frame` call that needs to be changed.
+
+### Note:
+If you don't have access to a rendered QC report, this issue can be probably still be completed by replacing all `data.frame` calls with `data.table::data.table` (as the two are very similar for the most part). There are a few quirks I have seen in the past with this, however, someone can always check if your changes work.",sof202,https://github.com/ejh243/BrainFANS/issues/271
+I_kwDOCxwUgs6iUu0q,[Bug]: IDATS that don't contain a run date caused the pipeline to fail ,OPEN,2024-12-06T15:42:17Z,2024-12-16T12:12:01Z,,"### Contact Details
+
+lw371@exeter.ac.uk
+
+### What happened?
+
+IDATS that don't contain a run date cause the meth QC pipeline to fail (Sam tried to remove the relevant line of code from the script and this did enable the pipeline to complete but a side effect was that the html QC report didn't get produced). Code detailed below:
+
+This code block:
+```R
+scanDate <- unlist(sapply(paste0(""1_raw/"", sampleSheet$Basename, ""_Red.idat""), getScanDate))
+sampleSheet <- cbind(sampleSheet, nProbes, scanDate)
+```
+
+Was changed to:
+```R
+# scanDate <- unlist(sapply(paste0(""1_raw/"", sampleSheet$Basename, ""_Red.idat""), getScanDate))
+sampleSheet <- cbind(sampleSheet, nProbes)
+```
+
+getScanDate is from cdegUtilities:
+
+```R
+getScanDate <- function(idat) {
+    tmp <- readIDAT(idat)$RunInfo
+    return(unique(unlist(lapply(strsplit(tmp[which(tmp[, ""BlockType""] == ""Scan""), 1], "" ""), head, n = 1)))[1])
+}
+```
+
+The problem is the ROSMAP IDATs have no information at all under RunInfo",lw371,https://github.com/ejh243/BrainFANS/issues/272
+I_kwDOCxwUgs6iVBKZ,[Enhancement suggestion]: Add cell type check stage to ATAC-seq pipeline,CLOSED,2024-12-06T16:09:37Z,2024-12-11T16:03:58Z,2024-12-11T16:03:58Z,"### Enhancement suggestion
+
+The last stage of the ATAC-seq pipeline should check the cell type of the samples, in order to verify that the right label has been assigned or that the FANS sorting process has worked as planned. This stage will use peaks called by cell fraction and counts in them to test for similarity between samples within a cell fraction.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/273
+I_kwDOCxwUgs6iVGUs,[Enhancement suggestion]: Interactive plots in R markdowns,CLOSED,2024-12-06T16:17:02Z,2024-12-09T16:30:33Z,2024-12-09T16:30:33Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+When creating plots with large number of data (e.g. scatter plots) it becomes very difficult to identify each data point in the graph. A possible solution is to add labels, although this can be very difficult to plot if there are many data. When a Rmarkdown is generated as a report, some plots could be produced using [ggplotly](https://plotly.com/ggplot2/getting-started/), which creates an interactive plot in the html report produced using a ggplot. This can also be done using plots made with base R.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/274
+I_kwDOCxwUgs6iuakS,[Enhancement suggestion]: Check all samples have been through stage 2,CLOSED,2024-12-10T13:06:54Z,2024-12-11T16:03:50Z,2024-12-11T16:03:50Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Currently, there is no way of checking which samples have been through the second stage of the ATAC-seq QC pipeline. This is done in STEP 4.2 for the first QC stage using the progressReport.sh script. Same should be done for the sex and genotype check stages. ",marinafloresp,https://github.com/ejh243/BrainFANS/issues/276
+I_kwDOCxwUgs6jDe58,[Bug]: List of R libraries to install is outdated,OPEN,2024-12-12T11:13:45Z,2024-12-12T11:13:46Z,,"### Contact Details
+
+_No response_
+
+### What happened?
+
+In the STEP 0 of the ATAC-seq pipeline, the 0_setUp.sh script will install the R libraries used through the pipeline using the installLibraries.r script. The list of R libraries to be installed need to be updated with the ones needed in the scripts added lately to the pipeline.
+
+### How can the bug be reproduced?
+
+_No response_
+
+### Relevant log output
+
+_No response_",marinafloresp,https://github.com/ejh243/BrainFANS/issues/277
+I_kwDOCxwUgs6jDhG6,[Enhancement suggestion]: Peak calling user-defined cutoffs,CLOSED,2024-12-12T11:17:40Z,2024-12-12T14:42:07Z,2024-12-12T14:42:07Z,"### Contact Details
+
+_No response_
+
+### Enhancement suggestion
+
+Right now, the scripts that perform peak calling (groupPeaks.sh, samplesPeaks.sh, etc.) have a defined q-cutoff already. However, to make it more widely useful for other projects with no need to change the scripts, this should be implemented as a variable. The user will then assign the values of these cutoffs from the config.txt file.",marinafloresp,https://github.com/ejh243/BrainFANS/issues/278

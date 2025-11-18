@@ -1,0 +1,120 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFKLxpM5M7lt1,Dry-run issue with Snakemake Version 7.7.0,OPEN,2022-06-30T22:10:27Z,2022-07-01T13:55:50Z,,"## Overview
+
+A bug was found when using the default module for Snakemake on Biowulf (7.7.0). During the dry-run, it reports that additional rules (which weren't supposed to be running need to run). Switching back to Snakemake/6.0.5 resolves the issue. 
+
+**Here is a dry-run with  Snakemake version 6.0.5:**
+```
+Job counts:
+	count	jobs
+	34	Gatk_SelectVariants
+	17	LearnReadOrientationModel
+	1	all
+	34	bam_check
+	34	bcftools_stats
+	34	bwa_mem
+	2	collect_cohort_mafs
+	2	collect_ffpefilter_mafs
+	1	collectvariantcallmetrics
+	17	contamination_paired
+	34	fastq_screen
+	34	fastqc_bam
+	34	fc_lane
+	34	ffpefilter_mafs
+	17	freec_exome_somatic_pass1
+	17	freec_exome_somatic_pass2
+	425	gatk_mutect2
+	34	gatk_recal
+	34	gatk_varianteval
+	25	genotype
+	1	germline_merge_chrom
+	850	haplotypecaller
+	34	kraken
+	25	mergegvcfs
+	1	multiqc
+	17	mutect2_filter
+	17	pileup_paired
+	34	qualimap_bamqc
+	34	raw_index
+	1	reformat_targets_bed
+	34	samtools_flagstats
+	17	sequenza
+	34	snpeff
+	2	sobdetect_cohort_params
+	1	sobdetect_get
+	2	sobdetect_metrics
+	34	sobdetect_pass1
+	34	sobdetect_pass2
+	1	somalier_analysis
+	34	somalier_extract
+	34	somatic_mafs
+	17	somatic_merge_callers
+	17	somatic_merge_chrom
+	850	split_bam_by_chrom
+	34	trimmomatic
+	1	vcftools
+	3024
+This was a dry-run (flag -n). The order of jobs does not reflect the order of execution.
+```
+
+**And here is a dry-run with Snakemake version 7.7.0:**
+```
+job                          count    min threads    max threads
+-------------------------  -------  -------------  -------------
+Gatk_SelectVariants             34              1              1
+LearnReadOrientationModel       17              1              1
+all                              1              1              1
+bam2fastq                       34              1              1
+bam_check                       34              1              1
+bcftools_stats                  34              1              1
+bwa_mem                         34              1              1
+collect_cohort_mafs              2              1              1
+collect_ffpefilter_mafs          2              1              1
+collectvariantcallmetrics        1              1              1
+contamination_paired            17              1              1
+fastq_screen                    34              1              1
+fastqc_bam                      34              1              1
+fc_lane                         34              1              1
+ffpefilter_mafs                 34              1              1
+freec_exome_somatic_pass1       17              1              1
+freec_exome_somatic_pass2       17              1              1
+gatk_mutect2                   425              1              1
+gatk_recal                      34              1              1
+gatk_varianteval                34              1              1
+genotype                        25              1              1
+germline_merge_chrom             1              1              1
+haplotypecaller                850              1              1
+kraken                          34              1              1
+mergegvcfs                      25              1              1
+multiqc                          1              1              1
+mutect2_filter                  17              1              1
+pileup_paired                   17              1              1
+qualimap_bamqc                  34              1              1
+raw_index                       34              1              1
+reformat_targets_bed             1              1              1
+samtools_flagstats              34              1              1
+sequenza                        17              1              1
+snpeff                          34              1              1
+sobdetect_cohort_params          2              1              1
+sobdetect_get                    1              1              1
+sobdetect_metrics                2              1              1
+sobdetect_pass1                 34              1              1
+sobdetect_pass2                 34              1              1
+somalier_analysis                1              1              1
+somalier_extract                34              1              1
+somatic_mafs                    34              1              1
+somatic_merge_callers           17              1              1
+somatic_merge_chrom             17              1              1
+split_bam_by_chrom             850              1              1
+trimmomatic                     34              1              1
+vcftools                         1              1              1
+total                         3058              1              1
+```
+
+## Significance 
+The difference is that version 7.7.0 determines rule bam2fastq should be run. This is problematic. This rule is only supposed to be run when given bam files as input. When this rule runs, it has a weird side effect that causes the sym-linked input fastq files in the `input_file/fastqs` to get overwritten by the output of the bam2fastq rule. This is problematic when the directory is dry run again or basically whenever the DAG is re-evaluated because the time stamp of these overwritten fastq files *WILL* be newer than the output files of some of the first steps in the pipeline. This creates a circular graph of rules which will never be resolved. 
+
+## Short-term solution
+Please do not use `7.X` versions of Snakemake until this issue is resolved. For the time being, please use `6.X` versions of the tool. I will set aside some time next week to look into this more. The fix looks relatively simple; however, it is of interest to determine whether this is a bug in this version of Snakemake (if so, we need to reach out to the author) *OR* if this behavior is expected based on some breaking changes from version `6.X` to `7.X`. 
+
+",skchronicles,https://github.com/mtandon09/CCBR_GATK4_Exome_Seq_Pipeline/issues/34

@@ -1,0 +1,144 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3MjU1NzEzMDk=,"Describir que reads utilizas (Ilumina, nanopore)",OPEN,2020-10-20T13:10:26Z,2020-10-20T13:11:30Z,,,VeronicaGlez,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/1
+MDU6SXNzdWU3MzUwODMwMTA=,Difficulties to use databases running BLAST,CLOSED,2020-11-03T07:18:36Z,2020-11-25T00:16:38Z,2020-11-25T00:16:38Z,"Do you need to create databases or is there a better option?
+
+I created a database for copepods:
+
+```
+makeblastdb -in ../blastpacope/genomas_copepods/ncbi_dataset/data/db_all_copepods.fna -dbtype nucl -parse_seqids -out my_refrence2.fa
+```
+But they weigh a lot and running the BLAST is very slow.
+
+To run BLAST use: 
+
+```
+blastn -db my_refrence2.fa -query ../blastpacope/minion/minion_carmen.fa -out results_allgenomes_tab.out -outfmt ""6 sframe qseqid sseqid evalue pident mismatch"" 
+```
+The function `-outfmt ""6 <options>""` shows results in a tab separated table.  And although it's hard to see, the line of identity percentage in general it looks higher than 80%, so I think that maybe it is not so contaminated, however, I think it makes a BLAST with many databases it will take longer and be more difficult, so I would like to know if anyone knows a more easier way to run BLAST?
+
+<img width=""587"" alt=""results_blast"" src=""https://user-images.githubusercontent.com/59941891/97955698-6b5f1900-1d6c-11eb-9e64-d33db3717250.png"">
+
+Or if it will be a better option to start testing assemblers with different parameters? 
+The first draft I have seems to be fragmented
+
+<img width=""1058"" alt=""busco_quast"" src=""https://user-images.githubusercontent.com/59941891/97956356-0c020880-1d6e-11eb-97c7-52f2547ca614.png"">
+
+
+",JavierUrban,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/3
+MDU6SXNzdWU3Nzg2ODYxMzg=,denovo_map.pl: Aborted because the last command failed (Error: Unable to load data),OPEN,2021-01-05T07:44:54Z,2021-01-05T16:00:15Z,,"My problem is that I can't finish running **[denovo_map.pl.](https://catchenlab.life.illinois.edu/stacks/comp-v1/denovo_map.php)**
+
+I am using stacks on my local computer from a docker container with the following script [stacks.denovo_map.prueba.sh](https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/blob/main/bin/stacks.denovo_map.prueba.sh)
+
+**denovomap.pl** is a program that is used to construct loci and to call SNPs de novo, this is used when there is no reference genome.
+
+I want to run `denovo_map.pl` to identify SNPs in 93 samples with 23 and 22 individuals from 4 populations, but before I wanted to perform a test with 3 individuals from each population but I could not finish the process for these samples the program starts to run, but when you with to continue the analysis of sample 2, the process stops and displays an aborted message: `denovo_map.pl: Aborted because the last command failed (1); see log file.`
+
+I first ran [`process_radtags`](https://catchenlab.life.illinois.edu/stacks/comp/process_radtags.php), this is a program that checks the raw data from illumina and demultiplexes the samples for quality and cutoff sites of the restriction enzymes
+
+I run the command as follows:
+
+```
+stacks process_radtags -P -p ../stacks/isuue2/GBS_raw/ --interleaved \
+-b ../stacks/isuue2/barcodes_copes_iss.tsv -o ../stacks/isuue2/process_map_res/ \
+-c -q -r --index_index --renz_1 mspI --renz_2 nsiI
+```
+The following image is an example of the raw data format and this is the [barcode file](https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/blob/main/meta-data/barcodes_copes_iss.tsv) that I use.
+
+![image](https://user-images.githubusercontent.com/59941891/103620107-88dd6a00-4ef8-11eb-836f-50ab16631f2b.png)
+
+The output of `process_radtags` generates 4 different files .1 and .2 which are used to run` denovo_map.pl`
+![image](https://user-images.githubusercontent.com/59941891/103621066-4321a100-4efa-11eb-956d-566d0bf19499.png)
+
+And then run `denovo_map.pl`:
+
+```
+stacks denovo_map.pl --samples ../stacks/isuue2/process_map_res/ \
+--popmap ../stacks/isuue2/popmap_tarea_issue.tsv -o ../stacks/isuue2/denovo_map_re2 \
+-M 3 -n 2 -m 3 -X ""populations: -r 0.50 --min_maf 0.01 --genepop""
+
+```
+Here is the [population map](https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/blob/main/meta-data/popmap_tarea_issue.tsv) file i use
+
+And the following happens, showing the following message: **denovo_map.pl: Aborted because the last command failed (1); [see log file.](https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/blob/main/meta-data/denovo_map.log)**
+
+![image](https://user-images.githubusercontent.com/59941891/103620007-5af82580-4ef8-11eb-85f9-cd080b45080c.png)
+
+I tried looking for the error, and saw that it could be due to my computer's memory, but I also ran it on a cluster, and got the same error, I also saw that it could probably be due to the ID of the samples, but I tried to change them and they still do not finish the process, and I'm still confused because I don't know if I'm using some command or parameter wrong",JavierUrban,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/4
+MDU6SXNzdWU3ODE0MTk0NjQ=,better explain metadata,OPEN,2021-01-07T16:00:12Z,2021-01-07T16:00:12Z,,"Your metadata directory should only contain metadata info, but currently it also has images and other files related to issues or examples of the class. Please clean this and have a separate directory for non metadata files.",AliciaMstt,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/5
+MDU6SXNzdWU3ODMwMjYxMjc=,"Comments to improve repo organization, scritps and final project",OPEN,2021-01-11T02:42:04Z,2021-01-28T06:32:33Z,,"Your repo is looking good, but the following points need attention:
+
+
+- [x] README: It would be clearer if you could briefly state in which order one needs to run **all** of your scripts. Notice that all scripts in `/bin` should be mentioned in the README, this is currently not the case.
+- [x] README: not all of the programs you used are mentioned in ""Software versions used"", for instance bwa is missing.
+- [x] README: specify if your Illumina data is single end or pair end and whether it was already demultiplexed
+- [x] README: briefly explain the contents of all of the files in `/meta-data`. In the case of files with columns, please briefly mention what does each column mean.
+- [x] Script `DeNovo_assembly.sh` line 43 and script `pilon.sh` line 6: `mkadir` is not a command, correct it for `mkdir`. Since the directories where not being created, also check that this was not causing an error.
+- [x] Scripts: When you use `mkdir` in an script, is good practice to add the flag `-p` so that the script can be run several times without causing an error because the directory already exists. Please use `mkdir -p` in all your scripts that currently use `mkdir`
+- [x] Don't forget to add a short summary explaining your main results, this can be part of the README or a separate md file.
+- [x] Don't forget to add a R figure and the code used to make it. This can be done a simple plot of your number of reads or any data you already have.
+- [x] When making commits, don't forget to add **relevant** short messages indicating what did you change.
+",AliciaMstt,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/6
+MDU6SXNzdWU3ODg3NzMyNzU=,Database download in KRAKEN2 ,CLOSED,2021-01-19T07:17:21Z,2021-01-19T16:23:19Z,2021-01-19T16:23:19Z,"I want to identify if there are bacteria or viruses common that could be in my sequences and for this I would like to use [KRAKEN2](https://github.com/DerrickWood/kraken2/blob/master/docs/MANUAL.markdown) and its databases
+
+KRAKEN2 I'm running it from Docker with the repository: [`tbattaglia/kraken2:latest`](https://hub.docker.com/r/tbattaglia/kraken2/tags?page=1&ordering=last_updated)
+
+I ran the program correctly, but I could not download the databases, try to follow the manual. 
+
+This is the help of KRAKEN2
+
+```
+Usage: kraken2-build [task option] [options]
+
+Task options (exactly one must be selected):
+  --download-taxonomy        Download NCBI taxonomic information
+  --download-library TYPE    Download partial library
+                             (TYPE = one of ""archaea"", ""bacteria"", ""plasmid"",
+                             ""viral"", ""human"", ""fungi"", ""plant"", ""protozoa"",
+                             ""nr"", ""nt"", ""env_nr"", ""env_nt"", ""UniVec"",
+                             ""UniVec_Core"")
+  --special TYPE             Download and build a special database
+                             (TYPE = one of ""greengenes"", ""silva"", ""rdp"")
+  --add-to-library FILE      Add FILE to library
+  --build                    Create DB from library
+                             (requires taxonomy d/l'ed and at least one file
+                             in library)
+  --clean                    Remove unneeded files from a built database
+  --standard                 Download and build default database
+  --help                     Print this message
+  --version                  Print version information
+
+Options:
+  --db NAME                  Kraken 2 DB name (mandatory except for
+                             --help/--version)
+  --threads #                Number of threads (def: 1)
+  --kmer-len NUM             K-mer length in bp/aa (build task only;
+                             def: 35 nt, 15 aa)
+  --minimizer-len NUM        Minimizer length in bp/aa (build task only;
+                             def: 31 nt, 12 aa)
+  --minimizer-spaces NUM     Number of characters in minimizer that are
+                             ignored in comparisons (build task only;
+                             def: 7 nt, 0 aa)
+  --protein                  Build a protein database for translated search
+  --no-masking               Used with --standard/--download-library/
+                             --add-to-library to avoid masking low-complexity
+                             sequences prior to building; masking requires
+                             dustmasker or segmasker to be installed in PATH,
+                             which some users might not have.
+  --max-db-size NUM          Maximum number of bytes for Kraken 2 hash table;
+                             if the estimator determines more would normally be
+                             needed, the reference library will be downsampled
+                             to fit. (Used with --build/--standard/--special)
+  --use-ftp                  Use FTP for downloading instead of RSYNC; used with
+                             --download-library/--download-taxonomy/--standard.
+  --skip-maps                Avoids downloading accession number to taxid maps,
+                             used with --download-taxonomy.
+                                                          
+```                             
+I used this command line:`kraken2-build --standard --db ""bacteria""`
+
+But i get this error: 
+```
+Downloading taxonomy tree data.../kraken2-2.0.8-beta/download_taxonomy.sh: line 27: rsync: command not found
+```
+
+I think the command: rsync is to give data download permissions, but I have doubts if I would have to install it in the Docker image or if I only have to give some permission from my computer or in the same image",JavierUrban,https://github.com/JavierUrban/Genome-assembly-of-the-copepod-Leptodiaptomus/issues/7

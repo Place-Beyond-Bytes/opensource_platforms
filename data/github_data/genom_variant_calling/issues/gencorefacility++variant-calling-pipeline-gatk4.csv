@@ -1,0 +1,30 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4MTc5MjAwODY=,Error while running the nextflow framework at getMetrics step,OPEN,2021-02-27T13:18:32Z,2021-02-27T13:18:32Z,,"Hello!
+I'm using the nextflow framework for variant calling in E.coli, I am pretty new to this. I have configured my nextflow.config file.The process crashes in the getMetrics step. The error shows PICARD_JAR: unbound variable but I did export pICARD_JAR to my ./bashrc.
+The error is as follows: 
+
+Error executing process > 'getMetrics (1)'
+
+Caused by:
+  Process `getMetrics (1)` terminated with an error exit status (1)
+
+Command executed:
+
+  java -jar $PICARD_JAR         CollectAlignmentSummaryMetrics 7R=/STORAGE/e_coli/GCF_000005845.2_ASM584v2_genomic.fna         I=MT-2021-00037_S4_L001_R_sorted_dedup.bam 0003O=MT-2021-00037_S4_L001_R_alignment_metrics.txt
+  java -jar $PICARD_JAR         CollectInsertSizeMetrics         INPUT=MT-2021-00037_S4_L001_R_sorted_dedup.bam 	OUTPUT=MT-2021-00037_S4_L001_R_insert_metrics.txt         HISTOGRAM_FILE=MT-2021-00037_S4_L001_R_insert_size_histogram.pdf 
+  samtools depth -a MT-2021-00037_S4_L001_R_sorted_dedup.bam > MT-2021-00037_S4_L001_R_depth_out.txt
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  .command.sh: line 2: PICARD_JAR: unbound variable
+
+Work dir:
+  /STORAGE/e_coli/control_result/nextflow_work_dir/29/d10f0357a7b623c360e06d31fdd913
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+",maanasa-b,https://github.com/gencorefacility/variant-calling-pipeline-gatk4/issues/4

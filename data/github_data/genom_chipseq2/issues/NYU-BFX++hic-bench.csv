@@ -1,0 +1,175 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNTY4MzgwNDI=, ./results/.db/run: No such file or directory,CLOSED,2016-05-25T20:03:43Z,2017-01-24T22:59:38Z,2017-01-24T22:59:38Z,"Hi,
+
+I set up my pipeline and installed all the dependency correctly, but it popped up error when I try ""run"" to run __01 a-aglign command:
+_[ydw529@qnode4144 __01a-align]$ ./run
+=== Operation = align =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+cat: ./results/.db/run: No such file or directory
+cat: ./results/.db/run: No such file or directory_
+
+I then tried ./run.dry, and it shows the follow message: 
+
+_[ydw529@qnode4144 project_test]$ ./run.dry 
+Validating sample sheet...
+PIPELINE STARTING: Tue May 24 13:50:33 CDT 2016
+=== Operation = align =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = filter =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = filter-stats =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = tracks =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = matrix-filtered =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = matrix-prep =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = matrix-ic =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = matrix-hicnorm =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = matrix-stats =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = compare-matrices =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = compare-matrices-stats =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = boundary-scores =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = boundary-scores-pca =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = domains =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = domains-stats =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = compare-boundaries =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = compare-boundaries-stats =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = hicplotter =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = interactions =============
+USAGE: pipeline-master-explorer.r [OPTIONS] SCRIPT OUTDIR-PREFIX PARAM-SCRIPTS INPUT-BRANCHES SPLIT-VARIABLE OUTPUT-OBJECT-VARIABLE TUPLES
+=== Operation = annotations =============
+**Warning: .db directory exists, removing!
+Error: parameter file list is empty!_**
+
+What do you think could be the problem here? 
+",quzhouxiachuan,https://github.com/NYU-BFX/hic-bench/issues/1
+MDU6SXNzdWUxNTc3OTQ4NTI=,qsub doesn't work ,CLOSED,2016-05-31T23:46:06Z,2017-01-24T22:59:27Z,2017-01-24T22:59:27Z,"Hi 
+
+When we ran pipeline-execute command. It popped up the following error. Our cluster doesn't use OGS/ Grid Engine 2011.11 as scheduler, we use PBS to schedule jobs and msub to submit jobs. Would this be the reason? if it is, how would you recommend to deal with this situation?
+
+Thanks! 
+
+```
+_ydw529@quser12 project2]$ ./code.main/pipeline-execute project yudeng2015@u.northwestern.edu
+[qsub: illegal -c value]
+
+usage: qsub [-a date_time] [-A account_string] [-b secs]
+    [-c [ none | { enabled | periodic | shutdown |
+    depth=<int> | dir=<path> | interval=<minutes>}... ]
+    [-C directive_prefix] [-d path] [-D path]
+    [-e path] [-h] [-I] [-j oe|eo|n] [-k {oe}] [-l resource_list] [-m n|{abe}]
+    [-M user_list] [-N jobname] [-o path] [-p priority] [-P proxy_user [-J <jobid]]
+    [-q queue] [-r y|n] [-S path] [-t number_to_submit] [-T type]  [-u user_list]
+    [-w] path
+      [-W additional_attributes] [-v variable_list] [-V ] [-x] [-X] [-z] [script]
+
+[ydw529@quser12 project2]$ pwd
+/home/ydw529/panos/HiC/hic-bench/project2_
+```
+",quzhouxiachuan,https://github.com/NYU-BFX/hic-bench/issues/2
+MDU6SXNzdWUxOTA0MjUxMDI=,alignment statistic percentage plot still over 100%,CLOSED,2016-11-18T21:23:34Z,2017-03-08T19:52:37Z,2017-03-08T17:16:05Z,"Here is one of the example:
+
+/ifs/home/gongy05/.../ATAC-seq/pipeline/align-stats/results/align-stats.standard/align.by_sample.bowtie2/all-samples/alignment_barplots.pdf",gongyixiao,https://github.com/NYU-BFX/hic-bench/issues/3
+MDU6SXNzdWUyMDI5NjUyMDc=,count_peaks bug,OPEN,2017-01-24T22:57:07Z,2017-01-24T22:58:27Z,,"There is a problem with the count_peaks step that you added. At the beginning, you are reading the input variables:
+`source ./code/code.main/scripts-read-job-vars $branch ""$objects"" ""genome genome_dir""`
+
+But then you are just scanning the directory manually, so you are ignoring them.
+
+Simple example where this makes a difference:
+All the peak counts are currently reported, including inputs, which doesn’t really make sense. Inputs should be ignored. It looks like you used the chipseq-diffbind step as an example (there is still chipseq-diffbind code in there). If you check the chipseq-diffbind step, it ignores the inputs.
+
+I think the relevant part is the `foreach obj ($objects)` loop.
+",igordot,https://github.com/NYU-BFX/hic-bench/issues/4
+MDU6SXNzdWUyMTU3MzMyMTM=,'run' scripts do not handle 0 byte files properly,OPEN,2017-03-21T13:06:38Z,2017-03-21T13:06:38Z,,"If a pipeline step tries to run and `touch`es output files, or otherwise creates an output file of 0 byte size before breaking, subsequent re-runs of the pipeline step will see this output file and consider it 'up-to-date'. Might be useful to have the pipeline step output checker detect this and delete 0B files",stevekm,https://github.com/NYU-BFX/hic-bench/issues/5
+MDU6SXNzdWUyMjMyNTg2MTM=,compile error,OPEN,2017-04-21T02:41:25Z,2019-05-30T14:44:49Z,,"Hi.
+
+I got the following error during make in code / src:
+How do I resolve this?
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/libgsl.so: undefined reference to `cblas_dtrsv'
+/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/libgsl.so: undefined reference to `cblas_zher2'
+/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/libgsl.so: undefined reference to `cblas_sasum'
+/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/libgsl.so: undefined reference to `cblas_zaxpy'
+collect2: error: ld returned 1 exit status
+make: *** [gtools-hic] Error 1
+
+",okokookk,https://github.com/NYU-BFX/hic-bench/issues/6
+MDU6SXNzdWUyMzc0NzE5NDU=,I could not find the bin directory in code as described in mannual,OPEN,2017-06-21T09:32:37Z,2017-06-21T09:32:37Z,,I could not find the **bin** directory in **code** as described in mannual,liufuyan2016,https://github.com/NYU-BFX/hic-bench/issues/7
+MDU6SXNzdWUyMzc0NzIzNTU=,Dependencies: matlab and ghmm,CLOSED,2017-06-21T09:33:57Z,2017-06-28T01:21:24Z,2017-06-28T01:21:24Z,"When I install HiC-bench,the  software: matlab / R2013a I could not get. if I do not install them, which section of the the pipeline will be broken?
+The software :ghmm/ 0.9,Could give me the download site?",liufuyan2016,https://github.com/NYU-BFX/hic-bench/issues/8
+MDU6SXNzdWUyMzg3MzIwOTA=,how to set the params.tcsh file,CLOSED,2017-06-27T04:06:50Z,2017-06-28T01:21:02Z,2017-06-28T01:21:02Z,"Dear professor,
+when I set my params.tcsh file ,the erro below is occured. I do not know how to set the line in module load .
+########################################
+$cat inputs/params/params.tcsh
+#!/bin/tcsh
+
+#unload
+module unload samtools
+module unload java
+module unload gcc
+module unload python
+module unload r
+
+#load basic tools
+#module load python/2.7.3
+**module load /share/nas2/genome/biosoft/samtools/1.3.1/
+module load /share/nas2/genome/biosoft/bedtools/2.17.0/
+module load /share/nas2/genome/biosoft/java/jdk/1.8.0_31/
+module load /share/nas2/genome/biosoft/R/3.2.2/**
+######################################
+note: the softwares position in my computer is located in share/nas2/genome/biosoft/samtools/1.3.1/,
+/share/nas2/genome/biosoft/bedtools/2.17.0/,/share/nas2/genome/biosoft/java/jdk/1.8.0_31/,/share/nas2/genome/biosoft/R/3.2.2/
+
+报错信息：
+ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for '/share/nas2/genome/biosoft/samtools/1.3.1'
+ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for '/share/nas2/genome/biosoft/bedtools/2.17.0'
+ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for '/share/nas2/genome/biosoft/java/jdk/1.8.0_31'
+ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for '/share/nas2/genome/biosoft/R/3.2.2'",liufuyan2016,https://github.com/NYU-BFX/hic-bench/issues/9
+MDU6SXNzdWUyMzkwMzQ3Mzc=,Compartment and subcompartment analysis,OPEN,2017-06-28T02:21:06Z,2017-06-28T02:21:06Z,,"Dear professor,
+Could you provide the compartment and subcompartment analysis tools?
+Also ,there is no loop analysis tools.
+if both have, the pipeline will be perfect.",liufuyan2016,https://github.com/NYU-BFX/hic-bench/issues/10
+MDU6SXNzdWUyNjEyNzA0MzA=,can this pipeline run on a cluster system such as PBS?,OPEN,2017-09-28T10:33:54Z,2017-09-28T19:32:24Z,,,shenscore,https://github.com/NYU-BFX/hic-bench/issues/11
+MDU6SXNzdWUzMDc4MDQxMjU=,SLURM Support?,OPEN,2018-03-22T20:33:22Z,2018-03-22T20:33:22Z,,"Hi,
+
+This pipeline looks great for running Hi-C analyses--just wondering, do you currently or do you expect to in the future have support for other HPC cluster workload managers? My cluster uses SLURM and scientific linux and I've been having a difficult time getting it to work there. Would I just (hopefully) need to modify all the qsub options and commands in the qsub files in /code.main to be their equivalent SLURM commands? The other big difference I'd see is in loading of the modulefiles and what is available, but I think it's much easier to work around that.
+
+Thanks,
+Ittai",IttaiEres,https://github.com/NYU-BFX/hic-bench/issues/12
+MDU6SXNzdWU1OTYwMjY4Njc=,how to analyze intra-TAD activity,OPEN,2020-04-07T17:17:20Z,2020-04-07T17:46:12Z,,"Hi,
+  The nature genetics paper analyze intra-TAD activity. Could you tell me how to analyze intra-TAD activity?
+Best,",BenxiaHu,https://github.com/NYU-BFX/hic-bench/issues/14
+MDU6SXNzdWU3MzYxNDAxNDQ=,TAD activity,CLOSED,2020-11-04T14:02:08Z,2020-11-05T06:57:14Z,2020-11-05T06:57:13Z,"Hi, there are some questions:
+1. I do not find that how do you define TAD activity and how do you calculate the TAD activity expression? There is no RNA-seq expression data. 
+2. The `find-consistent-domains.pl` can generate the sample1 specific TAD files, sample2 specific and common TAD files. And then you use this different type TAD domain to calculate the TAD activity and TAD activity expression?
+
+Thank you.",francisfa,https://github.com/NYU-BFX/hic-bench/issues/16
+I_kwDOAzHyq849LfYS,Genome location error in Loops ,OPEN,2021-10-14T13:46:58Z,2021-10-14T14:51:58Z,,"Hello,
+
+I believe there's a bug in the loops step: I get the following error
+Error: Can't open genome file */__14a-loops/inputs/genomes/dm6/genome/bowtie2.index/genome.fa.fai Exiting...
+
+The correct path is */__14a-loops/inputs/genomes/dm6/bowtie2.index/genome.fa.fai so I'm assuming the code points to an incorrect genome file location, I tried finding where rapidly but did not...
+
+Thanks",RXCoux,https://github.com/NYU-BFX/hic-bench/issues/17
+I_kwDOAzHyq85S16uQ,Docker Image?,OPEN,2022-09-28T19:45:56Z,2022-09-28T19:45:56Z,,"Hello NYU-BFX team,
+
+Do you have any plans to make a Docker image for hic bench? 
+Thanks for taking the time to read this request!
+
+Sincerely,
+Jaclyn",jaclyn-marie,https://github.com/NYU-BFX/hic-bench/issues/18

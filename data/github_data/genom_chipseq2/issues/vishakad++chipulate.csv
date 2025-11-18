@@ -1,0 +1,289 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MjYxOTgzMjc=,Code not working with basicExamples.tsv,CLOSED,2019-03-27T21:47:04Z,2019-03-29T14:54:40Z,2019-03-29T14:54:40Z,"Hi,
+
+I cloned chipulate from the git repository today, and tried to run the provided example with the following code:
+`python3 chipulate.py -i examples/basicExample.tsv`
+
+I received the following error messages:
+```
+Traceback (most recent call last):
+  File ""../software_inst/chipulate/chipulate.py"", line 666, in <module>
+    main()
+  File ""../software_inst/chipulate/chipulate.py"", line 583, in main
+    if terminateFlagInput or terminateFlagBedFasta :
+UnboundLocalError: local variable 'terminateFlagBedFasta' referenced before assignment
+```
+Since I'm not providing an interval file (i.e. no `chr`, `start` and `end` columns), I don't think that it is running the `validateBedFastaAndAutofillInput` subroutine, which assigns the `terminateFlagBedFasta` variable.
+
+I then run into another issue:
+```
+Traceback (most recent call last):
+  File ""../software_inst/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py"", line 2657, in get_loc
+    return self._engine.get_loc(key)
+  File ""pandas/_libs/index.pyx"", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/index.pyx"", line 132, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 1601, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 1608, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""../software_inst/chipulate/chipulate.py"", line 667, in <module>
+    main()
+  File ""../software_inst/chipulate/chipulate.py"", line 616, in main
+    pExt=pExt, pcrCycles=pcrCycles, names=inputDf['name'].values,
+  File ""../software_inst/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py"", line 2927, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File ""../software_inst/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py"", line 2659, in get_loc
+    return self._engine.get_loc(self._maybe_cast_indexer(key))
+  File ""pandas/_libs/index.pyx"", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/index.pyx"", line 132, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 1601, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 1608, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'name'
+```
+At a quick glance, it looks like the `name` column in the input file was not set. Again, I noticed that the code for setting the `name` of the input was found in the `validateBedFastaAndAutofillInput` subroutine (which is skipped).
+```python
+if 'name' in df.columns:
+        df.loc[:,'name'] = df['name'].values
+    else:
+        df.loc[:,'name'] =  ['region_' + str(idx) for idx in range( 1, df.shape[0]+1 )]
+```
+
+I also encountered a third issue:
+```
+Traceback (most recent call last):
+  File ""../software_inst/chipulate/chipulate.py"", line 673, in <module>
+    main()
+  File ""../software_inst/chipulate/chipulate.py"", line 628, in main
+    indirectLocations=indirectLocations, generateIntervals=generateIntervals )
+UnboundLocalError: local variable 'generateIntervals' referenced before assignment
+```
+This appears to be also due to the `generateIntervals` variable being initialized only if an interval file is given.
+
+Here are my program versions:
+
+- Python: 3.6.8
+- argparse: 1.4.0
+- numpy: 1.16.2
+- pandas: 0.24.2
+- pybedtools: 0.8.0
+- scipy: 1.2.1
+
+I am wondering if you had encountered these issues while running `basicExample.tsv`, and if you have any fixes/suggetsions.
+
+Thanks.",olivertam,https://github.com/vishakad/chipulate/issues/1
+MDU6SXNzdWU0NDQzNTM5OTI=,Generating input file automatically?,CLOSED,2019-05-15T10:15:55Z,2019-05-21T12:07:13Z,2019-05-21T12:07:13Z,"Hello. Firstly, thanks for the great tool! I've been struggling to find a ChIP-seq simulation tool.
+
+I was able to run the basic and fastq examples fine. However, I would now like to simulate a much larger dataset, with many binding sites across several chromosomes.
+
+I was wondering if this was something that Chipulate can handle. I can't imagine manually creating such a file, and was wondering if a script or something existed that would create this for me.
+
+Thank you!",joshuak94,https://github.com/vishakad/chipulate/issues/3
+MDU6SXNzdWU0NDQ0ODQ3NTg=,Getting error with custom tsv file.,CLOSED,2019-05-15T14:52:09Z,2019-05-16T15:07:30Z,2019-05-16T10:25:34Z,"Here are the contents of the file:
+
+```
+chr     start   end     p_ext   p_amp   energy_A
+chr2    620757  620992  0.496275        0.62    0.46
+chr5    1214    1440    0.349417        0.55    0.33
+chr10   161445  161633  0.478571        0.51    0.14
+chr3    145349  145521  0.494844        0.52    0.42
+chr10   90101   90337   0.420610        0.64    0.38
+chr7    640792  640972  0.643100        0.37    0.48
+chr8    97273   97464   0.351437        0.45    0.35
+chr8    221104  221306  0.475548        0.50    0.06
+chr6    207820  208069  0.307712        0.45    0.15
+chr6    1539    1785    0.538900        0.32    0.41
+chr6    15140   15333   0.588943        0.41    0.13
+chr4    954892  955096  0.415799        0.43    0.06
+chr9    350291  350521  0.531129        0.43    0.76
+chr3    197599  197760  0.478777        0.53    0.17
+```
+
+Here is the error I receive:
+```
+For the following 128 fragment(s) in the chip sample, their right ends were at positions beyond the length of the chromosome. They were shifted to the left by upto 10 base pairs. This can be avoided by either setting a shorter fragment length, or choosing genomic regions away from chromosome ends.
+       chr   start     end               name  score strand
+933   chr3  640807  316619    region_6_read_1      1      -
+934   chr3  640824  316617    region_6_read_2      1      -
+935   chr3  640848  316615    region_6_read_3      1      -
+936   chr3  640821  316613    region_6_read_4      1      -
+937   chr3  640833  316619    region_6_read_5      1      -
+938   chr3  640780  316616    region_6_read_6      1      -
+939   chr3  640807  316611    region_6_read_7      1      -
+940   chr3  640776  316616    region_6_read_8      1      +
+941   chr3  640811  316617    region_6_read_9      1      -
+942   chr3  640775  316617   region_6_read_10      1      +
+943   chr3  640836  316615   region_6_read_11      1      -
+944   chr3  640780  316610   region_6_read_12      1      +
+945   chr3  640798  316617   region_6_read_13      1      +
+946   chr3  640853  316611   region_6_read_14      1      -
+947   chr3  640801  316614   region_6_read_15      1      -
+948   chr3  640753  316616   region_6_read_16      1      +
+949   chr3  640822  316619   region_6_read_17      1      -
+950   chr3  640800  316617   region_6_read_18      1      -
+951   chr3  640854  316610   region_6_read_19      1      -
+952   chr3  640743  316614   region_6_read_20      1      +
+953   chr3  640833  316615   region_6_read_21      1      -
+954   chr3  640783  316614   region_6_read_22      1      +
+955   chr3  640747  316619   region_6_read_23      1      +
+956   chr3  640826  316617   region_6_read_24      1      +
+957   chr3  640756  316617   region_6_read_25      1      +
+958   chr3  640891  316617   region_6_read_26      1      -
+959   chr3  640835  316613   region_6_read_27      1      -
+960   chr3  640772  316618   region_6_read_28      1      -
+961   chr3  640817  316616   region_6_read_29      1      -
+1196  chr6  954920  270157   region_12_read_1      1      -
+...    ...     ...     ...                ...    ...    ...
+1265  chr6  350281  270153  region_13_read_23      1      +
+1266  chr6  350350  270155  region_13_read_24      1      -
+1267  chr6  350358  270152  region_13_read_25      1      -
+1268  chr6  350348  270152  region_13_read_26      1      -
+1269  chr6  350343  270156  region_13_read_27      1      -
+1270  chr6  350309  270152  region_13_read_28      1      +
+1271  chr6  350322  270155  region_13_read_29      1      +
+1272  chr6  350304  270156  region_13_read_30      1      +
+1273  chr6  350345  270158  region_13_read_31      1      -
+1274  chr6  350337  270152  region_13_read_32      1      -
+1275  chr6  350353  270158  region_13_read_33      1      -
+1276  chr6  350288  270155  region_13_read_34      1      +
+1277  chr6  350356  270157  region_13_read_35      1      -
+1278  chr6  350355  270160  region_13_read_36      1      -
+1279  chr6  350314  270154  region_13_read_37      1      -
+1280  chr6  350368  270160  region_13_read_38      1      -
+1281  chr6  350290  270158  region_13_read_39      1      +
+1282  chr6  350314  270152  region_13_read_40      1      +
+1283  chr6  350290  270160  region_13_read_41      1      +
+1284  chr6  350375  270156  region_13_read_42      1      -
+1285  chr6  350399  270159  region_13_read_43      1      -
+1286  chr6  350321  270160  region_13_read_44      1      +
+1287  chr6  350348  270155  region_13_read_45      1      -
+1288  chr6  350276  270159  region_13_read_46      1      +
+1289  chr6  350276  270159  region_13_read_46      1      +
+1290  chr6  350271  270153  region_13_read_47      1      +
+1291  chr6  350332  270151  region_13_read_48      1      +
+1292  chr6  350295  270156  region_13_read_49      1      +
+1293  chr6  350266  270159  region_13_read_50      1      +
+1294  chr6  350301  270153  region_13_read_51      1      +
+
+[128 rows x 6 columns]
+For the following 124 fragment(s) in the control sample, their right ends were at positions beyond the length of the chromosome. They were shifted to the left by upto 10 base pairs. This can be avoided by either setting a shorter fragment length, or choosing genomic regions away from chromosome ends.
+       chr   start     end               name  score strand
+928   chr3  640840  316614    region_6_read_1      1      -
+929   chr3  640892  316610    region_6_read_2      1      -
+930   chr3  640794  316612    region_6_read_3      1      -
+931   chr3  640856  316616    region_6_read_4      1      +
+932   chr3  640820  316616    region_6_read_5      1      +
+933   chr3  640852  316619    region_6_read_6      1      +
+934   chr3  640708  316612    region_6_read_7      1      +
+935   chr3  640739  316619    region_6_read_8      1      +
+936   chr3  640858  316612    region_6_read_9      1      +
+937   chr3  640783  316613   region_6_read_10      1      +
+938   chr3  640787  316617   region_6_read_10      1      +
+939   chr3  640785  316615   region_6_read_10      1      +
+940   chr3  640780  316610   region_6_read_10      1      +
+941   chr3  640767  316611   region_6_read_11      1      -
+942   chr3  640794  316616   region_6_read_12      1      +
+943   chr3  640732  316614   region_6_read_13      1      +
+944   chr3  640892  316613   region_6_read_14      1      -
+945   chr3  640757  316612   region_6_read_15      1      +
+946   chr3  640830  316611   region_6_read_16      1      +
+947   chr3  640776  316612   region_6_read_17      1      -
+948   chr3  640876  316611   region_6_read_18      1      -
+949   chr3  640760  316613   region_6_read_19      1      +
+950   chr3  640811  316611   region_6_read_20      1      -
+951   chr3  640818  316618   region_6_read_21      1      -
+952   chr3  640863  316612   region_6_read_22      1      -
+953   chr3  640906  316619   region_6_read_23      1      -
+954   chr3  640794  316610   region_6_read_24      1      +
+955   chr3  640846  316615   region_6_read_25      1      +
+1171  chr8  954988  562642   region_12_read_1      1      +
+1172  chr8  954937  562636   region_12_read_2      1      -
+...    ...     ...     ...                ...    ...    ...
+1237  chr6  350361  270153  region_13_read_15      1      -
+1238  chr6  350312  270152  region_13_read_16      1      +
+1239  chr6  350215  270155  region_13_read_17      1      +
+1240  chr6  350380  270159  region_13_read_18      1      +
+1241  chr6  350327  270155  region_13_read_19      1      -
+1242  chr6  350270  270151  region_13_read_20      1      +
+1243  chr6  350230  270159  region_13_read_21      1      +
+1244  chr6  350194  270157  region_13_read_22      1      +
+1245  chr6  350379  270151  region_13_read_23      1      +
+1246  chr6  350319  270154  region_13_read_24      1      +
+1247  chr6  350309  270154  region_13_read_25      1      +
+1248  chr6  350425  270155  region_13_read_26      1      -
+1249  chr6  350187  270156  region_13_read_27      1      +
+1250  chr6  350188  270153  region_13_read_28      1      +
+1251  chr6  350457  270156  region_13_read_29      1      -
+1252  chr6  350329  270152  region_13_read_30      1      -
+1253  chr6  350352  270151  region_13_read_31      1      -
+1254  chr6  350250  270160  region_13_read_32      1      -
+1255  chr6  350317  270152  region_13_read_33      1      +
+1256  chr6  350413  270160  region_13_read_34      1      -
+1257  chr6  350387  270160  region_13_read_35      1      -
+1258  chr6  350378  270154  region_13_read_36      1      -
+1259  chr6  350276  270158  region_13_read_37      1      +
+1260  chr6  350401  270159  region_13_read_38      1      -
+1261  chr6  350246  270154  region_13_read_39      1      -
+1262  chr6  350396  270154  region_13_read_40      1      +
+1263  chr6  350299  270157  region_13_read_41      1      +
+1264  chr6  350225  270151  region_13_read_42      1      +
+1265  chr6  350384  270156  region_13_read_43      1      +
+1266  chr6  350298  270152  region_13_read_44      1      -
+
+[124 rows x 6 columns]
+Traceback (most recent call last):
+  File ""chipulate.py"", line 674, in <module>
+    main()
+  File ""chipulate.py"", line 638, in main
+    makeFastq( bedFileNames, genomeFileName, readLength, libraryType=libraryType )
+  File ""chipulate.py"", line 284, in makeFastq
+    regionsFile = pybedtools.BedTool( bedFileName ).getfasta( fi=genomeFileName, bed=bedFileName, s=True, name=True )
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/bedtool.py"", line 840, in decorated
+    result = method(self, *args, **kwargs)
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/bedtool.py"", line 345, in wrapped
+    decode_output=decode_output,
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/helpers.py"", line 434, in call_bedtools
+    raise BEDToolsError(subprocess.list2cmdline(cmds), stderr)
+pybedtools.helpers.BEDToolsError: 
+Command was:
+
+	bedtools getfasta -s -name -fo /scratch/user/pybedtools.lheoegg8.tmp -fi examples/yeast-genome.fa -bed test100/example_test2.chip_reads.bed
+
+Error message was:
+Error: malformed BED entry at line 934. Start was greater than end. Exiting.
+```
+
+Strangely enough, it works fine if I delete the last line.
+
+Also, if I move append the last line of my input into `examples/fastq-basicExample.tsv`, it runs fine as well.",joshuak94,https://github.com/vishakad/chipulate/issues/4
+MDU6SXNzdWU0NDUwMTI2NDM=,Obtaining negative positions in control BED output.,CLOSED,2019-05-16T15:11:43Z,2019-08-07T00:22:34Z,2019-08-07T00:22:34Z,"Input file (input.tsv) and control BED file (test100000.control_reads.bed) are attached, after conversion to TXT format for Github's accepted file formats.
+[input.txt](https://github.com/vishakad/chipulate/files/3187713/input.txt)
+[test100000.control_reads.txt](https://github.com/vishakad/chipulate/files/3187715/test100000.control_reads.txt)
+
+Error message:
+```sh
+Traceback (most recent call last):
+  File ""chipulate.py"", line 674, in <module>
+    main()
+  File ""chipulate.py"", line 638, in main
+    makeFastq( bedFileNames, genomeFileName, readLength, libraryType=libraryType )
+  File ""chipulate.py"", line 284, in makeFastq
+    regionsFile = pybedtools.BedTool( bedFileName ).getfasta( fi=genomeFileName, bed=bedFileName, s=True, name=True )
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/bedtool.py"", line 840, in decorated
+    result = method(self, *args, **kwargs)
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/bedtool.py"", line 345, in wrapped
+    decode_output=decode_output,
+  File ""/homes/user/.linuxbrew/Cellar/python/3.7.3/lib/python3.7/site-packages/pybedtools/helpers.py"", line 434, in call_bedtools
+    raise BEDToolsError(subprocess.list2cmdline(cmds), stderr)
+pybedtools.helpers.BEDToolsError: 
+Command was:
+
+        bedtools getfasta -s -name -fo /scratch/joshjayk/pybedtools.11hrhckk.tmp -fi examples/yeast-genome.fa -bed test100000/test100000.control_reads.bed
+
+Error message was:
+Error: malformed BED entry at line 49076. End Coordinate detected that is < 0. Exiting.
+```
+
+The ChIP BED and fastq files were generated fine.",joshuak94,https://github.com/vishakad/chipulate/issues/5

@@ -1,0 +1,144 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOLctQ6c6Ejk0z,Versioned docs,CLOSED,2024-04-03T21:01:39Z,2024-04-15T14:36:33Z,2024-04-15T14:36:33Z,"https://github.com/deepgenomics/GenomeKit/pull/30 added auto-published docs to Github Pages but it overwrites all the docs every time.
+
+Change the repo config to grab the pages source from a branch, and add docs to that branch from the Github Actions workflow.",ovesh,https://github.com/deepgenomics/GenomeKit/issues/31
+I_kwDOLctQ6c6E13vH,DefaultDataManager checks GCS before the local path,CLOSED,2024-04-05T19:53:34Z,2024-04-08T16:33:49Z,2024-04-08T16:33:49Z,"https://github.com/deepgenomics/GenomeKit/blob/a5e7b44195bb3dee55b39369d7522f7b6038e8ba/genome_kit/data_manager.py#L192
+DefaultDataManager.get_file() first checks if a file exists in the GCS bucket. If users build their own data files and put them in GENOMEKIT_DATA_DIR then GK will still claim that it can't find the files.",ovesh,https://github.com/deepgenomics/GenomeKit/issues/37
+I_kwDOLctQ6c6FCuXz,Add starter example for other data file types,OPEN,2024-04-08T21:09:02Z,2024-04-08T21:09:02Z,,"Add examples in starter/build.sh for generating:
+* Appris
+* gtrack
+* vcfbin
+* ralign
+* jralign
+* rdist",ovesh,https://github.com/deepgenomics/GenomeKit/issues/41
+I_kwDOLctQ6c6KIEwV,Trouble with ftp in starter build script,CLOSED,2024-05-26T01:27:31Z,2024-05-27T16:49:50Z,2024-05-27T16:49:50Z,"Hi!
+
+Playing with `starter/build.sh` on a fedora linux system, I get errors like `Failed to parse URI 'ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz'`. This is because my system uses wget2 which doesn't support ftp.
+
+However, the resources are available over http(s) at the same location,  e.g. `https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gff3.gz` works and is probably preferable to using ftp anyway. Changing all ""ftp://"" to ""https://"" in build.sh makes the script work for me.
+
+Thanks for open-sourcing GenomeKit :smile:
+",kzuberi,https://github.com/deepgenomics/GenomeKit/issues/58
+I_kwDOLctQ6c6L6fyV,Reverse-lookup refg name from hash,CLOSED,2024-06-11T21:51:04Z,2024-06-13T04:33:45Z,2024-06-13T04:33:45Z,"Refg names are not encoded as part of intervals. Instead, it's a 32-bit hash of the name.
+There is no way for GK to know the refg name from the hash. If a user loads a GK binary file (e.g gtrack) and tries to get the refg name from an interval, they get a cryptic error:
+```
+ValueError: src/refg.cpp:74: Could not retrieve name for 18068147913528327027
+```",ovesh,https://github.com/deepgenomics/GenomeKit/issues/60
+I_kwDOLctQ6c6MAV9b,"Error passing 2D np array to GenomeTrackBuilder, but a copy works.",CLOSED,2024-06-12T14:17:47Z,2024-08-20T05:52:08Z,2024-08-20T05:52:07Z,"# Description
+
+When trying to build a gtrack with multiple dimensions, you have to pass a copy of the array to the `GenomeTrackBuilder` for it to work. If you pass the original array, you get the following error:
+
+```
+ValueError: src/py_genome_track.cpp:219: Data must have stride=1, consider making a copy with `np.array`
+```
+
+# Steps to Reproduce
+
+```
+def test():
+    genome = gk.Genome(""hg38"")
+    itvl = gk.Interval(""chr1"", ""+"", 1000000, 1000010, genome)
+    data = np.vstack([np.arange(10, dtype=np.int8)] * 5).T
+
+    track = gk.GenomeTrackBuilder(
+        f""test.gtrack"",
+        ""i8"",
+        ""single_stranded"",
+        genome,
+        dim=5,
+    )
+    track.set_default_value(0)
+
+    # this breaks
+    # track.set_data(itvl, data)
+    # track.finalize()
+
+    # this works
+    track.set_data(itvl, data.copy())
+    track.finalize()
+```",parthgvora,https://github.com/deepgenomics/GenomeKit/issues/61
+I_kwDOLctQ6c6Mkmp8,Detect use-after-free bugs in debug mode,OPEN,2024-06-17T22:44:39Z,2024-06-17T22:44:39Z,,"#62 and #63 showed that it's too easy to introduce use-after-free bugs.
+These can be caught by adding the fsanitize=address flag, which will exit non-zero if such a bug is found. Due to the performance penalty, enable this only in debug mode.",ovesh,https://github.com/deepgenomics/GenomeKit/issues/64
+I_kwDOLctQ6c6NF4Sx,No type check on genome.dna(Interval),CLOSED,2024-06-21T19:26:30Z,2024-06-22T00:55:56Z,2024-06-22T00:55:56Z,"Getting this cryptic error instead:
+```
+>>> import genome_kit as gk
+>>> genome = gk.Genome(""hg38"")
+>>> genome.dna(0)
+Traceback (most recent call last):
+  File ""<stdin>"", line 1, in <module>
+ValueError: src/py_init.cpp:72: Traceback (most recent call last):
+  File ""redacted.../python3.10/site-packages/genome_kit/gk_data.py"",
+ line 87, in resolve_datafile_path
+  ¦ path = get_file(rel_path)
+  File ""redacted.../python3.10/site-packages/genome_kit/gk_data.py"",
+ line 53, in get_file
+  ¦ return data_manager.get_file(filename)
+  File ""redacted.../python3.10/site-packages/gk_dg_plugins/data_mana
+ger.py"", line 124, in get_file
+  ¦ raise ValueError(f""No such file: {filename}"")
+ValueError: No such file: 2551.hash
+```",ovesh,https://github.com/deepgenomics/GenomeKit/issues/67
+I_kwDOLctQ6c6PxCBg,Broken docs link on anaconda.org,CLOSED,2024-07-16T20:32:25Z,2024-08-19T07:17:25Z,2024-08-19T07:17:25Z,The docs link on https://anaconda.org/conda-forge/genomekit points to https://genomekit.readthedocs.io/ instead of https://deepgenomics.github.io/GenomeKit/,ovesh,https://github.com/deepgenomics/GenomeKit/issues/69
+I_kwDOLctQ6c6TueAp,Interval compatibility across patches,OPEN,2024-08-21T16:09:16Z,2024-08-22T05:30:44Z,,"Hi GenomeKit team! Regarding hg38 patch compatibility. Imagine we are using an annotation on hg38.p12, and define the following three intervals:
+```
+import genome_kit as gk
+
+genome = gk.Genome('ncbi_refseq.v109') # uses hg38.p12
+
+itv = gk.Interval('chr7', '-', 65967466, 65968201, 'hg38')
+itv_p12 = gk.Interval('chr7', '-', 65967466, 65968201, 'hg38.p12')
+itv_p13 = gk.Interval('chr7', '-', 65967466, 65968201, 'hg38.p13')
+```
+Only the interval `itv_p12` will work with the object `genome`. For example, if we try to retrieve the sequence:
+```
+genome.dna(itv) # error
+genome.dna(itv_p12) # works
+genome.dna(itv_p13) # error
+```
+Similar errors occur when trying to find overlapping genes and transcripts, or creating new intervals based on a combination of these three intervals.
+
+However, the sequence information on the main chromosome does not change between patches, and the intervals are actually compatible with each other. It would be useful to have either:
+- Support for combining main chromosome intervals across patches 
+   - In practice, this would mean that the above operations do not error out, but take advantage of the fact that the coordinates are the same across patches and return the same result as if `itv_p12` were used.
+- A way of explicitly lifting/translating intervals across patches
+    - Imagine we had something like a `genome.make_compatible(itv)` function that returns an interval on the same patch if the interval is on the main chromosome of the same major assembly. 
+        - In this case, `genome.make_compatible(itv)`  and  `genome.make_compatible(itv_p13)` should return `itv_p12`
+   - It would be easiest if `genome.make_compatible(itv_p12)` still returned `itv_p12` so we can call the function without checking the reference patch first. 
+   - If the intervals are not compatible (e.g. different major assemblies, or non-main chromosome), the function should throw an error
+   
+This would be especially useful when dealing with intervals saved in a database. Currently, we are restricted to always working with the same patch that the interval was saved on, which limits our choice of annotations. This problem will get worse over time. 
+
+Let me know if any clarificiations are needed. Thank you!
+",eholgersen,https://github.com/deepgenomics/GenomeKit/issues/85
+I_kwDOLctQ6c6XmUFu,Quickstart VCFTable example doesn't work,OPEN,2024-09-23T18:52:42Z,2024-09-23T20:09:06Z,,"Trying to open the file in the example results in this error:
+```
+>>> vcf = VCFTable.from_vcf(""test.vcf.gz"", Genome(""hg19""), info_ids=[""AF""], fmt_ids=[""GT"", ""AD""])
+Traceback (most recent call last):
+  File ""<stdin>"", line 1, in <module>
+  File ""/Users/foo/GenomeKit/genome_kit/vcf_table.py"", line 247, in from_vcf
+    VCFTable.build_vcfbin(
+ValueError: src/variant_table.cpp:983: In VCF file: test.vcf.gz:9
+  src/variant_table.cpp:751: Invalid REF ""-"".
+```
+
+The correct contents of the file are in demos/query_vcf.py",ovesh,https://github.com/deepgenomics/GenomeKit/issues/95
+I_kwDOLctQ6c6ZoLaO,allow_outside_chromosome is default=True in python but actually defaults as False in the C layer,CLOSED,2024-10-10T03:37:07Z,2024-10-16T19:24:52Z,2024-10-16T19:24:52Z,"https://github.com/deepgenomics/GenomeKit/blob/8e8fca0237d647561637ef44fd7dc89b4370ee4a/genome_kit/genome_dna.py#L30
+
+vs
+
+https://github.com/deepgenomics/GenomeKit/blob/8e8fca0237d647561637ef44fd7dc89b4370ee4a/src/py_genome_dna.cpp#L63
+
+Also VariantGenome.dna doesn't support it",s22chan,https://github.com/deepgenomics/GenomeKit/issues/97
+I_kwDOLctQ6c6agS20,support python 311 312 313,OPEN,2024-10-16T14:57:22Z,2024-11-06T17:44:47Z,,"Requires updating meta.yaml (on conda-forge, but only after local testing)",ovesh,https://github.com/deepgenomics/GenomeKit/issues/102
+I_kwDOLctQ6c6fYsYb,Starter build missing from main,OPEN,2024-11-20T01:37:02Z,2024-11-20T15:51:33Z,,"Hello dear genomekit team. Thanks for releasing the project it's been tremendously useful - I've been using it to help folks start using a model we made https://github.com/bowang-lab/Orthrus?tab=readme-ov-file#create-and-set-up-the-environment
+
+It looks like the starter build link which is specified in [the docs ](https://deepgenomics.github.io/GenomeKit/quickstart.html#initial-data-access) now points to an empty page:
+
+https://raw.githubusercontent.com/deepgenomics/GenomeKit/main/starter/build.sh
+
+However, https://raw.githubusercontent.com/deepgenomics/GenomeKit/v6.0.3/starter/build.sh is still available. 
+
+Is it possible to bring that page back online?
+
+Thanks
+",phil-fradkin,https://github.com/deepgenomics/GenomeKit/issues/115

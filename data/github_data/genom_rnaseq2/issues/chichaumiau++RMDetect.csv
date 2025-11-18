@@ -1,0 +1,54 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOBbfBW85h2DHw,ImportError: No module named gcx,CLOSED,2023-03-27T07:36:35Z,2023-03-27T13:42:08Z,2023-03-27T13:42:08Z,"The version at `main` branch fails with this error:
+
+```python
+Traceback (most recent call last):
+  File ""rmdetect.py"", line 19, in <module>
+    import scanner
+  File ""./lib/scanner.py"", line 10, in <module>
+    from gcx import *
+ImportError: No module named gcx
+```",tzok,https://github.com/chichaumiau/RMDetect/issues/2
+I_kwDOBbfBW85iMWBL,RMDetect fails to find modules in a given sequence,OPEN,2023-03-30T11:10:06Z,2023-03-30T11:13:22Z,,"RMDetect fails to recognize any motif in the example lysine riboswitch sequence:
+
+```sh
+$ python2 rmdetect.py --data-path models --out lys_result.txt examples/lysine/lys.seq
+Searching for models in:
+	1. '--data-path' option: OK! -> 'models'
+
+Loading models from: 'models' ....
+Included models:  TGA_1.0, KT_1.0, GB_1.0, CL_1.0
+Excluded models:  none
+Scanning 1 sequences...
+Sequence 1 of 1 'unique'slide pos 76 of 194
+DONE
+$ python2 rmout.py --data-path models < lys_result.txt
+Searching for models in:
+	1. '--data-path' option: OK! -> 'models'
+
+Loading models from: 'models' ....
+Included models:  TGA_1.0, KT_1.0, GB_1.0, CL_1.0
+Excluded models:  none
+Reading data from results file: None
+
+- - - - - - - - - - - - - - - - - - - -
+Found 0 candidates:
+
+    # sequence model ver. score bpp pos cols motif
+- - - - - - - - - - - - - - - - - - - -
+```
+
+It seems that RMDetect correctly loads models for kink-turn and G-bulged modules, but is unable to find them in the given sequence. This is incorrect according to supplementary materials of the main RMDetect paper: https://static-content.springer.com/esm/art%3A10.1038%2Fnmeth.1603/MediaObjects/41592_2011_BFnmeth1603_MOESM173_ESM.pdf
+
+According to it, the output should be:
+
+```
+- - - - - - - - - - - - - - - - - - - -
+Found 2 candidates:
+ # sequence model ver. score bpp pos cols motif
+ 1 unique KT 1.0 14.27 0.45 35-51 35-51 GUGAGG-CCAGAGA.CC
+ 2 unique GB 1.0 6.88 0.09 23-65 23-65 CAGGUA.G-UGAGGG
+- - - - - - - - - - - - - - - - - - - - 
+```
+
+What is the reason? Why cannot RMDetect find the modules?",tzok,https://github.com/chichaumiau/RMDetect/issues/5

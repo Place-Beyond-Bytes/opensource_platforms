@@ -1,0 +1,23 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0ODE4ODMzODY=,A question about reconstruction_loss in VAE model,CLOSED,2019-08-17T13:00:01Z,2019-08-20T09:12:16Z,2019-08-20T09:12:16Z,"Hi, thank you for your good work!
+I am very interested at your work and I just tried to run the example code in 10X_PBMC data using VAE and AAE1 model, and the values of loss for the two different models(VAE and AAE1) makes me puzzled.
+For I run the code by using AAE1, the three kinds of loss: rec_loss, gen_loss and dis_loss are both lower than 50, but when I did experiments on the same dataset with VAE loss, the loss is more than 10000, I think it is abnormal.
+And I read the original code models.py, where I found the loss of VAE is as below:
+
+# build and compile variational autoencoder
+		real_input = encoder_input
+		compression = self.encoder(real_input)[2]
+		reconstruction = self.decoder(compression)
+		self.autoencoder = Model(real_input, reconstruction, name='autoencoder')
+
+		# expected negative log-likelihood of the ii-th datapoint (reconstruction loss)
+		reconstruction_loss = mse(real_input, reconstruction)
+		reconstruction_loss *= self.original_dim ————> ?? 
+
+I just don't know why here the mse loss need to multiply the dimension_value(Actually it is the features number of this dataset, I remember it is about 15000-16000). By letting off out the dimension_value, the loss just dropped to 70(the val_loss is 30-40).
+Can you tell me the reason and whether I can run the code without multiplying the dimension_value?
+Thank you very much!
+:)
+
+
+",AllenWu18,https://github.com/emolinaro/scRNAseq-AAE/issues/1

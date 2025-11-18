@@ -1,0 +1,153 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NjAwNjQ4OTI=,Lack of tests,OPEN,2020-07-18T10:30:58Z,2020-07-18T10:30:58Z,,"It sure would be nice to know that changes aren't breaking anything majorly before I push/merge to main!
+
+This issue will be closed when this lib is considered out of 'beta', as that will probably be the last thing that needs to happen before going to 1.0",C-Sto,https://github.com/C-Sto/BananaPhone/issues/2
+MDU6SXNzdWU2NjAwNzEwNzI=,More potassium references,OPEN,2020-07-18T10:43:37Z,2020-07-18T10:43:37Z,,Wife wants more Potassium references. Bananas etc.,C-Sto,https://github.com/C-Sto/BananaPhone/issues/4
+MDU6SXNzdWU2NzA2NzAxMTc=,mkwinsyscall compat,OPEN,2020-08-01T08:45:17Z,2020-08-01T08:45:17Z,,"**Is your feature request related to a problem? Please describe.**
+Combine syscall and directsyscall (or don't).
+
+**Describe the solution you'd like**
+Have mkwinsyscall use `//sys` tags to revert back to original syscall stuff. Or have it in docs to explicitly out of scope it.
+
+**Describe alternatives you've considered**
+Option 1: modify mkdirectwinsyscall to revert back to normal syscall generation when it sees `//sys` tags.
+Option 2: explicitly out of scope it (and maybe show a warning if directsyscall sees `//sys` tags
+Option 3: ???
+
+**Additional context**
+N/A
+",C-Sto,https://github.com/C-Sto/BananaPhone/issues/5
+MDU6SXNzdWU4MTA4MzUwNzU=,How can i use NtOpenProcess with bananaphone,CLOSED,2021-02-18T07:21:15Z,2022-02-03T06:42:44Z,2022-02-03T00:31:28Z,How can i use NtOpenProcess with bananaphone,timwhitez,https://github.com/C-Sto/BananaPhone/issues/6
+MDU6SXNzdWU4NDkwODU0MjQ=,32位下会报错。有没有asm_x32.s？,OPEN,2021-04-02T08:46:12Z,2021-05-18T01:33:37Z,,"asm: asmins: illegal 64: 00018 (C:\Users\Administrator\Desktop\aaa\bananaphone\asm_x64.s:4)        MOVQ    96(GS), AX
+asm: asmins: illegal in mode 32: 00018 (C:\Users\Administrator\Desktop\aaa\bananaphone\asm_x64.s:4)        MOVQ    96(GS), AX (24 14)
+
+
+32位下会报错。有没有asm_x32.s？",shadow1ng,https://github.com/C-Sto/BananaPhone/issues/9
+I_kwDOEGksPs5D1a77,break when call to NtTestAlert with no args,CLOSED,2022-02-15T02:01:37Z,2022-03-23T06:05:17Z,2022-03-22T02:51:20Z,"break when call to NtTestAlert with no args
+
+",timwhitez,https://github.com/C-Sto/BananaPhone/issues/10
+I_kwDOEGksPs5D_xeK,to support RecycledGate,CLOSED,2022-02-17T02:22:10Z,2022-03-09T15:43:50Z,2022-03-09T15:43:49Z,"https://github.com/thefLink/RecycledGate
+
+i think RecycledGate is a awesome solution of syscall, 
+it re-use existing syscall;ret instructions
+
+but i'm not good at goasm",timwhitez,https://github.com/C-Sto/BananaPhone/issues/11
+I_kwDOEGksPs5JPrKK,NtQueueApcThreadEx call crash,OPEN,2022-05-08T10:02:28Z,2022-05-08T10:05:52Z,,"Hello
+
+Following our discussion on Slack. Do not hesitate to contact me if i can help.
+
+**Describe the bug**
+The program crashed when using NtQueueApcThreadEx Syscall.
+
+I think the problem is linked to how i pass the parameters.
+
+**To Reproduce**
+To generate the code i use a tool i made, the code can be found here: https://github.com/guervild/uru/blob/main/data/templates/injector/windows/bananaphone/local/NtQueueApcThreadEx-Local/functions.go.tmpl
+
+
+**behavior**
+```
+[INFO]    Loading bananaphone
+[INFO]    Loading kernel32.dll
+[INFO]    Loading GetCurrentThread procedure...
+[INFO]    Try to allocate memory
+[INFO]    Allocated 1379777 bytes at 1902622343168
+[DEBUG]   Copying shellcode to memory...
+[INFO]    Try to change memory protection to PAGE_EXECUTE_READ
+[INFO]    Try to execute the shellcode
+[DEBUG]   Got handle to current thread: 18446744073709551614
+Exception 0xe06d7363 0x19930520 0xc00022d8a8 0x7ffd10c14f69
+PC=0x7ffd10c14f69
+
+runtime: unknown pc 0x7ffd10c14f69
+stack: frame={sp:0xc00022d6c0, fp:0x0} stack=[0xc000180000,0xc000380000)
+0x000000c00022d5c0:  0x0000000000000000  0x0000000000000023
+0x000000c00022d5d0:  0x1ea2dada00000000  0x00007ffd12eda36f
+0x000000c00022d5e0:  0x0000000000000000  0x00000000805bf4c6
+0x000000c00022d5f0:  0x000000000000000d  0x000001bafbbf0000
+0x000000c00022d600:  0x0000000000000000  0x00007ffd12ef0b31
+0x000000c00022d610:  0x000001bafbb18eb0  0x006f006400000000
+0x000000c00022d620:  0x0000000000000011  0x0000000000000040
+0x000000c00022d630:  0x000001bafbbf02e4  0x000001bafbbf0000
+0x000000c00022d640:  0x000001bafbbf1140  0x000001bafbb294e0
+0x000000c00022d650:  0x000001bafbb18eb0  0x00007ffd12f13a0d
+0x000000c00022d660:  0x00000000000b001d  0x00000000000000c4
+0x000000c00022d670:  0x000001bafbb190b0  0x0000000000000110
+0x000000c00022d680:  0x0000000000000000  0x0000000000000000
+0x000000c00022d690:  0x0000342af9b3f101  0x000001bafbbf1140
+0x000000c00022d6a0:  0x00007ffcf80a7000  0x000000c00022d8a8
+0x000000c00022d6b0:  0x000000c00022d800  0x00007ffd10c14f69
+0x000000c00022d6c0: <0x0000000000000110  0x00007ffcf80b9a50
+0x000000c00022d6d0:  0x0000000000000000  0x000000c00022d780
+0x000000c00022d6e0:  0x00000009e06d7363  0x0000000000000000
+0x000000c00022d6f0:  0x00007ffd10c14f69  0x0069002000000004
+0x000000c00022d700:  0x0000000019930520  0x000000c00022d8a8
+0x000000c00022d710:  0x00007ffcf80b9a50  0x00007ffcf8080000
+0x000000c00022d720:  0x0000000000000001  0x0000000000000000 
+0x000000c00022d730:  0x0000000000000000  0x000000c00022d800
+0x000000c00022d740:  0x000000c00022d810  0x00007ffd12f04a5f
+0x000000c00022d750:  0x000000c00022d8a8  0x000000c000000000
+0x000000c00022d760:  0x000000c00022d870  0x00007ffd10c0edb3
+0x000000c00022d770:  0x00007ffcf80bd000  0x00007ffcf8080000
+0x000000c00022d780:  0x0000031985f133a7  0x000000c00022d890
+0x000000c00022d790:  0x00007ffcf80b9a50  0x00007ffd1122af2d
+0x000000c00022d7a0:  0x0000000000000002  0x0000005200000000
+0x000000c00022d7b0:  0x0000000000000000  0x0000000000000000
+runtime: unknown pc 0x7ffd10c14f69
+stack: frame={sp:0xc00022d6c0, fp:0x0} stack=[0xc000180000,0xc000380000)
+0x000000c00022d5c0:  0x0000000000000000  0x0000000000000023
+0x000000c00022d5d0:  0x1ea2dada00000000  0x00007ffd12eda36f
+0x000000c00022d5e0:  0x0000000000000000  0x00000000805bf4c6
+0x000000c00022d5f0:  0x000000000000000d  0x000001bafbbf0000 
+0x000000c00022d600:  0x0000000000000000  0x00007ffd12ef0b31
+0x000000c00022d610:  0x000001bafbb18eb0  0x006f006400000000
+0x000000c00022d620:  0x0000000000000011  0x0000000000000040
+0x000000c00022d630:  0x000001bafbbf02e4  0x000001bafbbf0000
+0x000000c00022d640:  0x000001bafbbf1140  0x000001bafbb294e0
+0x000000c00022d650:  0x000001bafbb18eb0  0x00007ffd12f13a0d
+0x000000c00022d660:  0x00000000000b001d  0x00000000000000c4
+0x000000c00022d670:  0x000001bafbb190b0  0x0000000000000110
+0x000000c00022d680:  0x0000000000000000  0x0000000000000000
+0x000000c00022d690:  0x0000342af9b3f101  0x000001bafbbf1140
+0x000000c00022d6a0:  0x00007ffcf80a7000  0x000000c00022d8a8
+0x000000c00022d6b0:  0x000000c00022d800  0x00007ffd10c14f69
+0x000000c00022d6c0: <0x0000000000000110  0x00007ffcf80b9a50
+0x000000c00022d6d0:  0x0000000000000000  0x000000c00022d780
+0x000000c00022d6e0:  0x00000009e06d7363  0x0000000000000000
+0x000000c00022d6f0:  0x00007ffd10c14f69  0x0069002000000004
+0x000000c00022d700:  0x0000000019930520  0x000000c00022d8a8
+0x000000c00022d710:  0x00007ffcf80b9a50  0x00007ffcf8080000
+0x000000c00022d720:  0x0000000000000001  0x0000000000000000
+0x000000c00022d730:  0x0000000000000000  0x000000c00022d800
+0x000000c00022d740:  0x000000c00022d810  0x00007ffd12f04a5f
+0x000000c00022d750:  0x000000c00022d8a8  0x000000c000000000
+0x000000c00022d760:  0x000000c00022d870  0x00007ffd10c0edb3
+0x000000c00022d770:  0x00007ffcf80bd000  0x00007ffcf8080000 
+0x000000c00022d780:  0x0000031985f133a7  0x000000c00022d890
+0x000000c00022d790:  0x00007ffcf80b9a50  0x00007ffd1122af2d
+0x000000c00022d7a0:  0x0000000000000002  0x0000005200000000
+0x000000c00022d7b0:  0x0000000000000000  0x0000000000000000
+rax     0xc00022d1c0
+rcx     0xc00022d020
+rdi     0xc00022d8a8
+rbp     0xc00022d800
+rsp     0xc00022d6c0
+r8      0xc00022d200
+r9      0x342af9b3e991
+r10     0x7ffd12eec3c8
+r11     0x7ffd1039a000
+r12     0x0
+r13     0x1
+r14     0x7ffcf80a7000
+r15     0x0
+rip     0x7ffd10c14f69
+rflags  0x206
+cs      0x33
+fs      0x53
+gs      0x2b
+```
+",guervild,https://github.com/C-Sto/BananaPhone/issues/13
+I_kwDOEGksPs5WkzcV,SneakySys tests,OPEN,2022-11-17T00:22:14Z,2023-03-27T16:46:31Z,,"I've been asked by a few people when the sneakysys branch will be merged - so these are the two things that are holding it back at the moment.
+
+1. **Parameters are passed correctly.** This should be reasonably straight forward, but will be a bit painful to do automagically. Ideally, I'd like to make a `Syscall(` call with 1,2,3.. up to 8 parameters to ensure that they are all passed as intended. The process I have in mind for this is literally using a debugger to eyeball the parameters, and ensure they land where they are meant to go (just passing the value 1,2,3 etc in will be fine, it doesn't have to execute anything)
+2. **No weird problems across different OS versions.** A bit easier to automagic up - compile a single bin that calls a few common functions, run it on a bunch of operating systems, hope that there aren't any weird crashes. I'd like to ensure it works on Win 7 through 10, with a 'nice to have' including XP and 11.",C-Sto,https://github.com/C-Sto/BananaPhone/issues/15

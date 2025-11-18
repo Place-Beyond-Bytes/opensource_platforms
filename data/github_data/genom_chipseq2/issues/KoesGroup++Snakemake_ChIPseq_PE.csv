@@ -1,0 +1,80 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNTQ4MTY2MTY=,bedgraph -bga,CLOSED,2018-08-28T16:50:00Z,2018-09-04T15:50:03Z,2018-09-04T15:50:03Z,"Hello Jihed, 
+About the pull request #3:
+Why do you want to report regions with zero coverage (`bedtools genomecov -bga`)? Is there a specific reason? Because this will significantly increase the size of your bedgraph files. 
+I think you could simply use the `-bg`option there and only report the positions with some coverage. 
+Hope it helps,
+Cheers
+Marc",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/4
+MDU6SXNzdWUzNTY4NzQ1NTc=,Implement singularity,CLOSED,2018-09-04T15:54:48Z,2018-12-03T15:53:00Z,2018-12-03T15:53:00Z,"Add singularity management within Snakemake.
+
+From the documentation:
+>Singularity enables users to have full control of their environment. Singularity containers can be used to package entire scientific workflows, software and libraries, and even data. This means that you don’t have to ask your cluster admin to install anything for you - you can put it in a Singularity container and run. ",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/6
+MDU6SXNzdWUzNTc1NzQ0OTg=,order in the rules ,CLOSED,2018-09-06T09:38:26Z,2018-09-10T14:44:30Z,2018-09-10T14:44:30Z,"When running the snakefile with multiple core, it seems that the indexing of the bam file is done later than the rules using it.
+`'results/mapped/ChIP1_L1.sorted.rmdup.bam' does not appear to have an index. You MUST index the file first!`
+```
+'results/mapped/ChIP1_L1.sorted.rmdup.bam' does not appear to have an index. You MUST index the file first!
+    Error in rule bamcompare:
+        jobid: 3
+        output: results/bamcompare/log2_ChIP1_ChIP2_L1.bamcompare.bw
+
+RuleException:
+CalledProcessError in line 249 of /Users/Jihed/Desktop/DMC1_ChIPseq/Snakefile:
+Command ' set -euo pipefail;  bamCompare -b1 results/mapped/ChIP1_L1.sorted.rmdup.bam -b2 results/mapped/ChIP2_L1.sorted.rmdup.bam -o results/bamcompare/log2_ChIP1_ChIP2_L1.bamcompare.bw ' returned non-zero exit status 1
+  File ""/Users/Jihed/Desktop/DMC1_ChIPseq/Snakefile"", line 249, in __rule_bamcompare
+  File ""/anaconda3/envs/bigwig/lib/python3.5/concurrent/futures/thread.py"", line 55, in run```
+
+The rule producing the bam index file is `rule bam_index`, take sorted bam files as input. The output is required by the `rule_all`, so the file are produced at some point and it appears in the DAG. However I can not find the files `*.bai` in the output folder. ",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/8
+MDU6SXNzdWUzNTc1Nzg1Mzc=,Use all treatment and control ,CLOSED,2018-09-06T09:48:54Z,2018-09-12T12:42:19Z,2018-09-12T12:42:19Z,"To test the peak calling rules I have tested the `bed branch` on real samples, the good news is that the peak calling works well. There is still the issue with the indexing of the bam file here #8 . 
+
+The problem is that the pipeline only called peaks for ATAC1 vs ATAC4, while it should also have work for all treatment and control.
+
+- treatment= 'ATAC1', 'ATAC2', 'ATAC3'
+- control     = 'ATAC4', 'ATAC5', 'ATAC6'.
+
+I expect the files ATAC2 vs ATAC5 and ATAC3 vs ATAC6 as well.",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/9
+MDU6SXNzdWUzNTc2MjI3MDY=,Create one .yaml environment file per rule,CLOSED,2018-09-06T12:00:09Z,2018-09-10T14:43:20Z,2018-09-10T14:43:20Z,"To increase reproducibility and avoid the need to install and activate a conda virtual environemnt before running Snakemake, it would be good to create one environment file per rule (envs/rule1.yaml) in order to use snakemake with the `--use-conda` argument.",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/10
+MDU6SXNzdWUzNTgwNjYwNTA=,test,CLOSED,2018-09-07T13:25:20Z,2018-09-07T14:07:10Z,2018-09-07T14:07:10Z,to test the automation,JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/11
+MDU6SXNzdWUzNTg1NDYyNjY=,Mistake,CLOSED,2018-09-10T09:45:08Z,2018-09-10T14:42:59Z,2018-09-10T14:42:59Z,"https://github.com/KoesGroup/Snakemake_ChIPseq/blob/86cdaa227fb3ab10e57d4711b6f462931535056c/Snakefile#L47-L48
+
+Small mistake to be changed on the bed branch, CASE should be treatment and CONTROLS should be control.
+
+`CASES = get_samples_per_treatment(treatment=""treatment"") `
+`CONTROLS = get_samples_per_treatment(treatment=""control"") `",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/12
+MDU6SXNzdWUzNTg5ODY3MjM=,Some logs are incomplete ,CLOSED,2018-09-11T10:35:25Z,2018-10-05T13:08:24Z,2018-10-05T13:08:24Z,"Some of the logs produced by the pipeline (branch develop) are empty files:
+
+- bedgraph.log
+- bamcompare.log
+- macs2 narrowPeak
+- samtools rmdup",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/13
+MDU6SXNzdWUzNTk0NjQ4NzM=,Add protected and temporary to the relevant outputs,CLOSED,2018-09-12T12:49:38Z,2018-10-05T12:50:01Z,2018-10-05T12:48:12Z,There are a lot of files that can be removed once the pipeline is finished. [Here](https://snakemake.readthedocs.io/en/stable/tutorial/advanced.html?highlight=protected#step-6-temporary-and-protected-files),JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/14
+MDU6SXNzdWUzNjU5MTg4MjU=,Single end,CLOSED,2018-10-02T14:15:32Z,2018-12-03T14:22:12Z,2018-11-26T13:43:16Z,"The snakemake pipeline is for now only usable for PE sequencing, it would be good to have it to work for single end as well.",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/15
+MDU6SXNzdWUzNjYyODU0MzM=,Deeptools : Correlation plot,CLOSED,2018-10-03T11:07:03Z,2018-10-05T11:39:17Z,2018-10-05T11:39:17Z,"Implement the correlation plot using the deeptools:
+* multiBamSummary
+* plotCorrelation
+
+Define the best correlation method
+",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/16
+MDU6SXNzdWUzNjg2NzkyNDY=,Implement multiQC,OPEN,2018-10-10T13:56:59Z,2018-11-26T14:30:11Z,,Add [MultiQC](https://multiqc.info) at the end of the pipeline to produce html reports,JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/18
+MDU6SXNzdWUzNzA0ODc4MTE=,Make a documentation for deeptools,CLOSED,2018-10-16T08:07:25Z,2018-11-26T14:28:59Z,2018-11-26T14:28:59Z,"Documentations of deeptools already exist in its repository, I think it would be nice to include part of the documentation in the `README` file or at least links to it in order to explain what is the purpose of the figures generated by the pipeline and how to interpret them.",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/20
+MDU6SXNzdWUzNzI4ODcyMzE=,Move the definitions of the group for deep tools to the configuration file,CLOSED,2018-10-23T09:02:51Z,2018-12-03T15:54:31Z,2018-12-03T15:54:31Z,"On the Deeptools branch:
+For now the definition of groups to make the matrix is written in the Snakefile, therefore it is required to change the Snakefile to make.
+Before finding a more handy solution to define the group, I should move the group definition to the configuration file and refer to it in the Snakefile",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/21
+MDU6SXNzdWUzODY4MzI0NjU=,HPC Cluster execution,OPEN,2018-12-03T14:04:40Z,2018-12-03T14:04:40Z,,"Transform the Snakemake pipeline so that it can be executed on a cluster environment such as LISA (SURF). On LISA, the batch job management system is SLURM. ",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/23
+MDU6SXNzdWUzODY4NDA2NjY=,Handle GTF or GFF formats,OPEN,2018-12-03T14:23:46Z,2018-12-03T14:24:27Z,,"For tomato, one has to generate the GTF file from the GFF3 format .
+For other species, you can provide a GTF file directly. 
+Rules has to be changed into 'external_data.smk'.
+ ",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/24
+MDU6SXNzdWUzODcyMDcyNDM=,Add a DAG of the pipeline in the README,CLOSED,2018-12-04T10:04:04Z,2018-12-05T15:18:03Z,2018-12-05T15:18:03Z,To have a rapid overview of the pipeline I think it would be nice to include the DAG of the pipeline.,JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/26
+MDU6SXNzdWUzODc3OTkwNTY=,Implement genome visualization of the data in the pipeline,OPEN,2018-12-05T15:05:59Z,2018-12-14T08:06:19Z,,"I have found this [repository](https://github.com/deeptools/pyGenomeTracks) which seems to allow to produce nice genome browser using bigwig, bed files, etc ... 
+
+This might be a good thing to add in the next release!",JihedC,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/27
+MDU6SXNzdWUzODgwNzg0NTg=,"Write a publication in the ""The Journal of Open Source Software""",OPEN,2018-12-06T06:46:24Z,2018-12-14T10:01:42Z,,"We should include a CITATION file in the main repository to indicate how to cite the pipeline. 
+To have a proper scientific publication, we could write a publication in the ""Journal of Open Source Software"".  
+That way, the pipeline could be properly cited. Publications are short ~3 pages and easy to write. 
+
+See an example:    
+http://joss.theoj.org/papers/6eb3ba7dddbdab8788a430eb62fc3841
+
+Citation would look like:
+Bennett et al., (2018). restez: Create and Query a Local Copy of GenBank in R. Journal of Open Source Software, 3(31), 1102, https://doi.org/10.21105/joss.01102",mgalland,https://github.com/KoesGroup/Snakemake_ChIPseq_PE/issues/29

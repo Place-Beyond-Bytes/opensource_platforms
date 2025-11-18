@@ -1,0 +1,194 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNTc1MzA5MjA=,How to run RPS-BLAST+ and `cdd2cog`,OPEN,2016-05-30T16:28:32Z,2018-11-27T13:49:24Z,,"A master student from Brazil contacted me via email with questions how to run RPS-BLAST+ and `cdd2cog.pl` correctly. I'm copying the correspondence in here in case it is useful for someone else:
+
+Hi, I am a master student of genetics at the Universidade Federal de Minas Gerais, Brasil. I was reading the cdd2goc description at
+https://github.com/aleimba/bac-genomics-scripts/tree/master/cdd2cog#rps-blast
+
+In the line referring to the use of RPS-Blast :
+
+rpsblast -query protein.fasta -db **Cog** -out rps-blast.out -evalue 1e-2 -outfmt 6
+
+I am confuse about the cog, which I highlighted. Is this another database we must download? If so, where could I find it, and to perform a search for protein sequences of a draft bacterial genome I assembled, how database should I get? Thank you in advance.
+",aleimba,https://github.com/aleimba/bac-genomics-scripts/issues/1
+MDU6SXNzdWUxODcyMzE2OTc=,update compatibility to COG2014? ,OPEN,2016-11-04T01:28:40Z,2017-07-18T13:43:57Z,,"Hi Andreas,
+
+Love the `cdd2cog.pl` script and description, thanks for making this available. Was wondering if you planned to update this to the newer release of COG [ftp://ftp.ncbi.nlm.nih.gov/pub/COG/COG2014/data/](url) with the fun and whog updated to fun2003-2014.tab and cognames2003-2014.tab. I tried running `cdd2cog.pl` with these newer classification files and it doesn't seem to parse the COG categories and so the func_stats.txt file does not get populated.",sirmicrobe,https://github.com/aleimba/bac-genomics-scripts/issues/2
+MDU6SXNzdWUyNDE2NjQxMTU=,CDS-extractor.pl should return error message (and exit code 1) when no CDS could be extracted,OPEN,2017-07-10T10:14:03Z,2017-07-11T09:44:36Z,,"When genbanks are used as input that still have windows/dos line-endings, cds-extractor.pl just quits without an error message, giving the impression that it successfully extracted all CDS.
+
+Maybe it could either be adjusted to tolerate windows line endings or to always double-check the number of extracted CDS when finished and generally raise a warning if it is zero. ",jvollme,https://github.com/aleimba/bac-genomics-scripts/issues/3
+MDU6SXNzdWUyNDM1MDExMDU=,running rpsblast with gi numbers as queries,OPEN,2017-07-17T19:29:28Z,2017-07-17T19:29:28Z,,"Hi, I'm trying to do an rpsblast using ncbi-blast-2.5.0+. I have a file containing gi numbers as my query and my command line is below.
+
+`rpsblast -query t -db results/Cog/Cog -out rps-blast.out -evalue 1e-2 -outfmt 6`
+Oddly the rpbslast keeps giving me this error:
+
+`Warning: [rpsblast] Error initializing remote BLAST database data loader: Protein BLAST database 'Cog/Cog nr' does not exist in the NCBI servers`
+My query file (t) looks like this. I've tried to remove search using just the numbers (292833481) but it still doesn't solve the problem. 
+gi|292833481 
+gi|383341230 
+gi|289693981
+
+However, when I try to the same search but using a fasta file as query, it runs fine and gives the results I need.
+`rpsblast -query GCF_000005845.2_ASM584v2_protein.faa -db results/Cog/Cog -out rps-blast.out -evalue 1e-2 -outfmt 6`
+Is there something that I did wrong here? What is the correct way to format query a list of gi's for blast? Thanks!",arolni,https://github.com/aleimba/bac-genomics-scripts/issues/4
+MDU6SXNzdWUyNDgxNzI0MTM=,Error while executing po2group_stats.pl,OPEN,2017-08-05T08:35:31Z,2017-10-15T22:11:35Z,,"Hi,
+
+I get this error while executing  po2group_stats.pl:
+
+Bareword found where operator expected at ./po2group_stats.pl line 669, near ""s/\.\w+$//r""
+syntax error at ./po2group_stats.pl line 669, near ""s/\.\w+$//r""
+BEGIN not safe after errors--compilation aborted at ./po2group_stats.pl line 913
+
+Any advice please?
+
+Thanks",bioinfo17,https://github.com/aleimba/bac-genomics-scripts/issues/6
+MDU6SXNzdWUyOTQyNDE4NDY=,cdd2cog and RPSBLAST 2.2.31+ report parse,OPEN,2018-02-04T23:30:31Z,2018-02-04T23:30:31Z,,"Hi,
+
+Thanks for the tool, really useful!. 
+
+There seems to be a change on the output of RPS-Blast, an example line:
+
+`fig|992418.4.peg.8018	gnl|CDD|223110	26.42	159	100	6	20	165	11	165	4e-13	65.6	45`
+
+The `subject id` format changed, and the current regex on cdd2cog doesn't work. Changing the line `302` to `my $pssm_id = $1 if $line[1] =~ /^gnl\|CDD\|(\d+)/; # get PSSM-Id from the subject hit` fix the issue.
+
+Regards",mberacochea,https://github.com/aleimba/bac-genomics-scripts/issues/7
+MDU6SXNzdWUzMDAwNDM2MzA=,Error with rpsblast+,OPEN,2018-02-25T17:21:28Z,2018-02-25T17:21:28Z,,"Dear Aleimba,
+
+I tried running the following command with the respective error message.
+
+> rpsblast+ -query protein.faa -db ../../COG/cog_LE_db/ -evalue 0.00001 -outfmt ""6 qseqid sseqid evalue pident score qstart qend sstart send length slen"" -out cog_blast_output.out
+
+BLAST Database error: No alias or index file found for protein database [../../COG/cog_LE_db/] in search path [/home/rajal/Downloads/prokka/prokka_annotation:/var/lib/blastdb::]
+
+I am using rpsblast+ version [Reverse Position Specific BLAST 2.2.28+]. What am I missing here?
+
+Thank you.",rajaldebnath,https://github.com/aleimba/bac-genomics-scripts/issues/8
+MDU6SXNzdWUzNTgyMDgyNTA=,Cannot retrieve path to RPS database,OPEN,2018-09-07T20:54:05Z,2019-05-08T18:04:49Z,,"Hi, I think this has a simple answer, I get this error when running the rpsblast command:
+
+`rpsblast -query ROD1.txt -db /Users/Laura/Desktop/rspblast/Cog_LE/ -out rps.blast.out -evalue 1e-5 -outfmt 6
+`
+Cannot retrieve path to RPS database
+
+
+Thanks!
+",Alopias1988,https://github.com/aleimba/bac-genomics-scripts/issues/9
+MDU6SXNzdWUzNjU0ODUxMTY=,Can't convert CDDs IDs to COGs,CLOSED,2018-10-01T14:21:30Z,2018-10-01T16:35:06Z,2018-10-01T16:35:06Z,"Following all the commands in #1 , I get rpsblast claiming that the arguments in the command ""rpsblast -query GCF_000005845.2_ASM584v2_protein.faa -db Cog -out rps-blast.out -evalue 1e-2 -outfmt 6"" are wrong, and it works after I adjust the command to 
+```
+rpsblast -i GCF_000005845.2_ASM584v2_protein.faa -d Cog -o rps-blast.out -m 8
+```
+which gets the job done, however the conversion to COGs with
+```
+perl cdd2cog.pl -r rps-blast.out -c cddid.tbl -f fun.txt -w whog
+```
+gets the result
+```
+Overall assignment statistics:
+~ Total query proteins categorized into COGs: 4134
+~ Total COGs used for the query proteins [of 4873 overall]: 1
+~ Total number of assigned functional categories: 0
+~ Total functional categories used for the query proteins [of 25 overall]: 0
+```
+which brings no information, since nothing was identified. It also outputs a lot of ""Use of uninitialized value"" which probably means the CDD's IDs are not being recognized. The rest of the commands were used as suggested, so what is happening here? Also, this is using the 2003 COGs right?",iquasere,https://github.com/aleimba/bac-genomics-scripts/issues/10
+MDU6SXNzdWU1MzQwMjAyMTM=,No output argument?,OPEN,2019-12-06T14:18:10Z,2019-12-06T14:18:10Z,,"Greetings
+
+Does cdd2cog have an output argument for deciding where to export results, or do they have to go the the ./results directory always?",iquasere,https://github.com/aleimba/bac-genomics-scripts/issues/11
+MDU6SXNzdWU1Mzk3MzI0Njc=,Error when running cdd2cog,OPEN,2019-12-18T14:56:10Z,2019-12-18T14:56:10Z,,"Hi, I am trying to run cdd2cog and I am getting the Error: Excessively long <> operator at ./cdd2cog.pl line 21
+
+I am running: $ perl ./cdd2cog.pl -r GRW1_COGs_rpsblast.out -c cddid.tbl -f fun.txt -w whog -a
+
+I got the rpsblast output by running: rpsblast -i ../proteins/GRW1_prots.fas -d Cog_LE/Cog -o GRW1_COGs_rpsblast.out -e 0.01 -m 8
+
+I notice that the outfmt parameter written in the README file for running RPS-BLAST says to use ""-outfmt 6 or 7"", but when I tried running this option it did not want to take it. 
+
+Here are the first few lines of the GRW1_COGs_rpsblast.out:
+gene_3|GeneMark.hmm|389_aa|+|1295|2464	>k123_143	gnl|CDD|226020	17.25	313	213	12	105	389	65	359	2e-05	42.9
+gene_6|GeneMark.hmm|322_aa|-|993|1961	>k123_238	gnl|CDD|224392	21.43	140	92	3	70	209	16	137	5e-08	49.9
+gene_7|GeneMark.hmm|235_aa|-|1975|2682	>k123_238	gnl|CDD|224113	21.79	179	126	2	20	198	76	240	2e-19	81.8
+
+",ngilber3,https://github.com/aleimba/bac-genomics-scripts/issues/13
+MDU6SXNzdWU5MzQ3NzU0NDM=,small code change for use of the cdd2cog.pl script with COG20,OPEN,2021-07-01T12:09:37Z,2021-07-01T12:09:37Z,,"Hi!
+
+not really an issue, but putting this here in case the original author doesn't have time to modify the ```cdd2cog.pl``` script for use with the updated COG20 database. I guess this would be more properly done via pull request, but I figure more people might see an opened issue. I also realise this is a ""band-aid"" style fix, but might be useful to someone nonetheless.
+
+if you're interested in using the ```cdd2cog.pl``` script with the COG20 database (which can be found here https://ftp.ncbi.nih.gov/pub/COG/COG2020/data/) only a small change is required. The body of the script will work perfectly fine, but the information parsed from the ```fun.txt``` and ```whog``` files now needs to be parsed from files with a slightly different name and format. 
+
+```fun.txt``` is now replaced by ```fun-20.tab```
+```whog``` can be replaced by ```cog-20.def.tab```
+both of these files can be downloaded from the link above
+
+to retrieve the relevant info from these files, the subroutines all the way at the end of ```cdd2cog.pl``` need to be modified. For clarity and ease of copy/pasting, I have pasted the entire subroutine here. The orignal code is still in place, but commented out. The 4 added lines are present under ```# code to parse fun-20.tab file``` and ```# code to parse cog-20.def.tab```. 
+
+after the modifications are made, the script can be run using:
+```cdd2cog.pl -r rps-blast.out -c cddid.tbl -f fun-20.tab -w cog-20.def.tab```
+
+Hope this is helpful!
+
+
+
+```
+###############
+# Subroutines #
+###############
+
+### Subroutine to parse the 'cddid.tbl', 'fun' and 'whog' file contents and store in hash structures
+sub parse_cdd_cog {
+
+    ### 'cddid.tbl'
+    open (my $cddid_fh, ""<"", ""$CDDid_File"");
+    print ""\nParsing CDDs '$CDDid_File' file ...\n""; # status message
+    while (<$cddid_fh>) {
+        chomp;
+        my @line = split(/\t/, $_); # split line at the tabs
+        if ($line[1] =~ /^COG\d{4}$/) { # search for COG CD accessions in cddid
+            $CDDid{$line[0]} = $line[1]; # hash to store info; $line[0] = PSSM-Id
+        }
+    }
+    close $cddid_fh;
+
+    ### 'fun.txt'
+    open (my $fun_fh, ""<"", ""$Fun_File"");
+    print ""Parsing COGs '$Fun_File' file ...\n""; # status message
+    while (<$fun_fh>) {
+        chomp;
+	
+	# code to parse fun-20.tab file
+	my @line = split(/\t/, $_); # split line at the tabs
+	$Fun{$line[0]} = {'desc' => $line[2], 'count' => 0}; # anonymous hash in hash
+        # $line[0] = single-letter functional category, $line[2] = description of functional category
+        # count used to find functional categories not present in the query proteins for final overall assignment statistics	
+
+	# code and comments to parse original fun.txt file
+	#$_ =~ s/^\s*|\s+$//g; # get rid of all leading and trailing whitespaces
+        #if (/^\[(\w)\]\s*(.+)$/) {
+        #    $Fun{$1} = {'desc' => $2, 'count' => 0}; # anonymous hash in hash
+        #    # $1 = single-letter functional category, $2 = description of functional category
+        #    # count used to find functional categories not present in the query proteins for final overall assignment statistics
+
+        #}
+    }
+    close $fun_fh;
+
+    ### 'whog'
+    open (my $whog_fh, ""<"", ""$Whog_File"");
+    print ""Parsing COGs '$Whog_File' file ...\n""; # status message
+    while (<$whog_fh>) {
+        chomp;
+	# code to parse cog-20.def.tab
+	my @line = split(/\t/, $_); # split line at the tabs
+	$Whog{$line[0]} = {'function' => $line[1], 'desc' => $line[2]}; # anonymous hash in hash
+	# $line[1] = single-letter functional categories, maximal four per COG in COG20 (COG5032 no longer exists)
+	# $line[0] = COG#, $line[2] = COG protein description
+
+	#code and comments to parse the original whog file
+        #$_ =~ s/^\s*|\s+$//g; # get rid of all leading and trailing whitespaces
+        #if (/^\[(\w+)\]\s*(COG\d{4})\s+(.+)$/) {
+        #    $Whog{$2} = {'function' => $1, 'desc' => $3}; # anonymous hash in hash
+        #    # $1 = single-letter functional categories, maximal five per COG (only COG5032 with five)
+	#    # $2 = COG#, $3 = COG protein description
+        #}
+    }
+    close $whog_fh;
+
+    return 1;
+}
+```",dspeth,https://github.com/aleimba/bac-genomics-scripts/issues/14

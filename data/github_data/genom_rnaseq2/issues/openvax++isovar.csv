@@ -1,0 +1,822 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMzE0OTExMzE=,Naive strategy: handle complex variants,CLOSED,2016-02-04T22:23:55Z,2016-03-30T21:25:24Z,2016-03-30T21:25:24Z,"The current simple solution (#1) handles only SNVs and ignores more complex cases when extracting the context of a variant. It should handle indels too.
+
+Sample code from @iskandr:
+
+``` python
+if pileup_read.is_refskip:
+    continue
+elif len(variant.ref) == 0 and pileup_read.indel != len(variant.alt):
+    continue
+elif len(variant.alt) == 0 and pileup_read.indel != -len(variant.ref):
+    continue
+```
+",armish,https://github.com/openvax/isovar/issues/2
+MDU6SXNzdWUxMzE1MDA5MDg=,Steps on the road from RNAseq to variant protein sequence,CLOSED,2016-02-04T23:03:51Z,2016-03-30T21:24:27Z,2016-03-30T21:24:27Z,"The handful of algorithms I've sketched out and discussed with @armish and @ryan-williams, there are broadly two steps:
+1. _Gather variant RNAseq reads_: Either using gapped alignment to the reference or by generating a set of phased candidate haplotype sequences around the variant (all combinations of nearby variants) and using either k-mer lookups or an FM-index to find matching reads. 
+2. _Assemble partial transcript sequence(s)_: In the ""naive"" version @armish is working on we get a sequence by taking the most common nucleotide at each offset from the variant. We could also build an overlap graph of the filtered reads and assemble multiple candidate sequences. Each sequence should be accompanied by an abundance estimate. 
+
+Third step (which may live in this package or in PGV): 
+
+To determine a partial protein sequence from an assembled sequence, it needs to be placed in a reading frame. The easiest way I can think of doing this is to use the known reading frame of annotated transcripts overlapping the variant locus which match the assembled sequence before the variant. We can't expect to match after the variant due to exon truncation or intron retention (i.e. variant splicing). 
+",iskandr,https://github.com/openvax/isovar/issues/3
+MDU6SXNzdWUxMzIyOTk5Njk=,Test data: get co-occurring germline + somatic variants ,CLOSED,2016-02-09T00:43:28Z,2016-09-19T14:15:28Z,2016-09-19T14:15:28Z,"@timodonnell found that roughly 18% of PT189's somatic exome variants occur within a read length of a germline variant. 
+
+It would be useful to find some clean examples of these co-occurrences and use them as test data. 
+",iskandr,https://github.com/openvax/isovar/issues/4
+MDU6SXNzdWUxMzQ2NTE1Mzg=,Needs a DOI for citations,CLOSED,2016-02-18T18:07:33Z,2016-03-30T21:22:02Z,2016-03-30T21:22:02Z,"https://zenodo.org/collection/software
+",iskandr,https://github.com/openvax/isovar/issues/5
+MDU6SXNzdWUxMzQ2NTE5MDc=,Commandline API,CLOSED,2016-02-18T18:08:50Z,2016-04-15T23:02:46Z,2016-04-15T23:02:46Z,"Given a VCF and BAM file, return a CSV of detected variant sequences, the number of reads supporting each one, a reading frame (if determined), names of transcripts which support the reading frame, amino acid translation. 
+",iskandr,https://github.com/openvax/isovar/issues/6
+MDU6SXNzdWUxMzc2OTYyOTc=,Take into account base quality,OPEN,2016-03-01T21:46:26Z,2016-09-16T02:03:32Z,,"And soft clipping
+",ihodes,https://github.com/openvax/isovar/issues/8
+MDU6SXNzdWUxMzgwMzA4MzI=,Pull into Topiary,OPEN,2016-03-02T23:57:27Z,2016-09-16T02:03:54Z,,"I think we want to do this before wrapping Topiary in Biokepi?
+",ihodes,https://github.com/openvax/isovar/issues/9
+MDU6SXNzdWUxMzg2MzM2MzI=,Precompute reference sequence contexts & reading frames for a set of transcripts,CLOSED,2016-03-05T02:03:28Z,2016-04-15T23:02:37Z,2016-04-15T23:02:37Z,"Currently we're inspecting every pair of RNA sequences and reference transcripts to create a (largely redundant) set of protein translations. 
+
+We should precompute the reference transcript sequences and the ORFs they imply and pass in a list of ReferenceTranscriptContext objects with the following fields:
+
+```
+        #   sequence_before_variant_locus : cDNA
+        #   reading_frame_at_start_of_sequence : int
+        #   transcript_ids : str set
+        #   transcript_names : str set
+        #   gene : str
+```
+",iskandr,https://github.com/openvax/isovar/issues/10
+MDU6SXNzdWUxMzg2MzM3MDQ=,Add variant amino acid offset range to TranslationFromReferenceORF,CLOSED,2016-03-05T02:04:42Z,2016-04-15T23:02:41Z,2016-04-15T23:02:41Z,"Useful for determining which protein peptides overlap the mutant residues in a RNA-derived amino acid sequence. 
+",iskandr,https://github.com/openvax/isovar/issues/11
+MDU6SXNzdWUxNDQ3MjMzMTU=,Ignore duplicate and MAPQ=0 reads,CLOSED,2016-03-30T21:21:53Z,2016-04-15T23:02:31Z,2016-04-15T23:02:31Z,"I'm currently using every read, whereas using duplicate and multi-mapped reads should be disabled by default.
+",iskandr,https://github.com/openvax/isovar/issues/12
+MDU6SXNzdWUxNDk1MjU2NTM=,Logging too noisy,CLOSED,2016-04-19T17:22:26Z,2016-04-23T05:22:36Z,2016-04-23T05:22:36Z,"Use debug message for anything that happens multiple times per variant. 
+",iskandr,https://github.com/openvax/isovar/issues/13
+MDU6SXNzdWUxNTA0MjQ2MzU=,reads_at_locus incorrect when variant occurs in the first or last nucleotide of an exon,OPEN,2016-04-22T17:13:01Z,2016-09-16T02:03:36Z,,"Currently we're relying on a read to align to the reference positions before and after a variant locus. However, in the event that a variant occurs on the ends of an exon one of these two positions will be covered by CIGAR element N (intron). 
+
+Need to reconsider how this edge case gets handled, possibly by looking at pileup elements which align to _either_ the first or last position and keeping a set of previously generated read names to prevent duplicates. 
+",iskandr,https://github.com/openvax/isovar/issues/14
+MDU6SXNzdWUxNTA2NjI0NzA=,AttributeError: 'Variant' object has no attribute 'is_insertion',CLOSED,2016-04-24T13:50:12Z,2016-04-25T15:01:52Z,2016-04-25T15:01:52Z,"Run with:
+
+```
+isovar-protein-sequences.py \
+--vcf ~/Desktop/WD/Results/WES/Tumor_B16.F10_0810/ISMMS/VCF/Strelka/results/passed.somatic.snvs.indels.vcf \
+--bam ~/Desktop/WD/Results/RNA/Tumor_B16.F10/ISMMS/Tumor_B16.F10_0810.131B/BAM/HISAT2/Tumor_B16.F10_0810.131B.HISAT2.sorted.bam \
+--genome mm10 \
+--min-reads 2 \
+--protein-sequence-length 30 \
+--output ~/Desktop/isovar-results.csv
+```
+
+Output: 
+
+```
+Namespace(bam='/Users/johnfinnigan/Desktop/WD/Results/RNA/Tumor_B16.F10/ISMMS/Tumor_B16.F10_0810.131B/BAM/HISAT2/Tumor_B16.F10_0810.131B.HISAT2.sorted.bam', genome='mm10', max_reference_transcript_mismatches=2, max_sequences_per_variant=1, min_mapping_quality=0, min_reads=2, min_transcript_prefix_length=10, output='/Users/johnfinnigan/Desktop/isovar-results.csv', protein_sequence_length=30, vcf='/Users/johnfinnigan/Desktop/WD/Results/WES/Tumor_B16.F10_0810/ISMMS/VCF/Strelka/results/passed.somatic.snvs.indels.vcf')
+INFO:root:Gathering reads for Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 0 reads at locus overlapping Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38)
+INFO:root:Found 0 VariantReads for variant Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38)
+INFO:root:Skipping variant Variant(contig=1, start=4346510, ref=., alt=T, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 1 reads at locus overlapping Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Found 1 VariantReads for variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Dropped 1/1 variant sequences
+INFO:root:Skipping variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 10 reads at locus overlapping Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Found 10 VariantReads for variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Dropped 6/7 variant sequences
+INFO:root:Predicted 4 effects for variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Keeping 4/4 non-synonymous coding effects for Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Keeping 4/4 effects with predictable AA sequences for Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+Traceback (most recent call last):
+  File ""/Library/Frameworks/Python.framework/Versions/2.7/bin/isovar-protein-sequences.py"", line 6, in <module>
+    exec(compile(open(__file__).read(), __file__, 'exec'))
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/script/isovar-protein-sequences.py"", line 115, in <module>
+    min_mapping_quality=args.min_mapping_quality)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/protein_sequence.py"", line 250, in variants_to_protein_sequences_dataframe
+    for (variant, protein_sequences) in variants_to_protein_sequences(*args, **kwargs):
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/protein_sequence.py"", line 194, in variants_to_protein_sequences
+    min_mapping_quality=min_mapping_quality):
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/translation.py"", line 614, in translate_variants
+    transcript_id_whitelist=transcript_id_whitelist)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 367, in reference_contexts_for_variant
+    context_size=context_size)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 253, in sequence_key_with_reading_frame_for_variant_on_transcript
+    context_size=context_size)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 147, in sequence_key_for_variant_on_transcript
+    transcript=transcript)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/variant_helpers.py"", line 148, in interbase_range_affected_by_variant_on_transcript
+    if variant.is_insertion:
+AttributeError: 'Variant' object has no attribute 'is_insertion'
+```
+
+I ran this with both the MuTect and Strelka .vcf, and both RNASeq datasets. Quickly perusing the locus in both RNASeq datasets, would indicate that this is likely a FP. Similarly, running w/ the B16.F1 data fails w/: 
+
+```
+Namespace(bam='/Users/johnfinnigan/Desktop/WD/Results/RNA/Tumor_B16.F1/Tumor_B16.F1_0821.115B/BAM/HISAT2/Tumor_B16.F1_0821.115B.HISAT2.sorted.bam', genome='mm10', max_reference_transcript_mismatches=2, max_sequences_per_variant=1, min_mapping_quality=0, min_reads=2, min_transcript_prefix_length=10, output='/Users/johnfinnigan/Desktop/isovar-results.csv', protein_sequence_length=30, vcf='/Users/johnfinnigan/Desktop/WD/Results/WES/Tumor_B16.F1_0821/ISMMS/VCF/MuTect/Tumor_B16_F1_0821.mutect.targets.pass.vcf')
+INFO:root:Gathering reads for Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 0 reads at locus overlapping Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38)
+INFO:root:Found 0 VariantReads for variant Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38)
+INFO:root:Skipping variant Variant(contig=1, start=3671038, ref=C, alt=T, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 0 reads at locus overlapping Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Found 0 VariantReads for variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Skipping variant Variant(contig=1, start=4492071, ref=G, alt=C, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 7 reads at locus overlapping Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Found 7 VariantReads for variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38)
+INFO:root:Dropped 7/7 variant sequences
+INFO:root:Skipping variant Variant(contig=1, start=4492302, ref=G, alt=T, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 5 reads at locus overlapping Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Found 5 VariantReads for variant Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38)
+INFO:root:Dropped 5/5 variant sequences
+INFO:root:Skipping variant Variant(contig=1, start=4493244, ref=G, alt=C, reference_name=GRCm38), no cDNA sequences detected
+INFO:root:Gathering reads for Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Gathering variant reads for variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38) (chromosome=1)
+INFO:root:Found 387 reads at locus overlapping Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Found 387 VariantReads for variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Looking at 46nt before and 46nt after variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Dropped 106/107 variant sequences
+INFO:root:Skipping transcript Transcript(id=ENSMUST00000192142, name=Atp6v1h-005, gene_id=ENSMUSG00000033793, gene_name=Atp6v1h, biotype=retained_intron, location=1:5083164-5099777) for variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38) because it's incomplete
+INFO:root:Skipping transcript Transcript(id=ENSMUST00000194301, name=Atp6v1h-004, gene_id=ENSMUSG00000033793, gene_name=Atp6v1h, biotype=retained_intron, location=1:5083124-5145052) for variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38) because it's incomplete
+INFO:root:Predicted 3 effects for variant Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Keeping 3/3 non-synonymous coding effects for Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+INFO:root:Keeping 3/3 effects with predictable AA sequences for Variant(contig=1, start=5098048, ref=A, alt=C, reference_name=GRCm38)
+Traceback (most recent call last):
+  File ""/Library/Frameworks/Python.framework/Versions/2.7/bin/isovar-protein-sequences.py"", line 6, in <module>
+    exec(compile(open(__file__).read(), __file__, 'exec'))
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/script/isovar-protein-sequences.py"", line 115, in <module>
+    min_mapping_quality=args.min_mapping_quality)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/protein_sequence.py"", line 250, in variants_to_protein_sequences_dataframe
+    for (variant, protein_sequences) in variants_to_protein_sequences(*args, **kwargs):
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/protein_sequence.py"", line 194, in variants_to_protein_sequences
+    min_mapping_quality=min_mapping_quality):
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/translation.py"", line 614, in translate_variants
+    transcript_id_whitelist=transcript_id_whitelist)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 367, in reference_contexts_for_variant
+    context_size=context_size)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 253, in sequence_key_with_reading_frame_for_variant_on_transcript
+    context_size=context_size)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/reference_context.py"", line 147, in sequence_key_for_variant_on_transcript
+    transcript=transcript)
+  File ""/Users/johnfinnigan/Desktop/Utilities/Isovar/isovar/variant_helpers.py"", line 148, in interbase_range_affected_by_variant_on_transcript
+    if variant.is_insertion:
+AttributeError: 'Variant' object has no attribute 'is_insertion'
+```
+
+However, in this case there is clearly a point variant at the locus.  
+",JPFinnigan,https://github.com/openvax/isovar/issues/16
+MDU6SXNzdWUxNTA2OTI1NDE=,Failure on trying to translate an N nucleotide,CLOSED,2016-04-24T19:27:34Z,2016-04-25T16:54:02Z,2016-04-25T16:54:02Z,"`cdna_sequence_from_first_codon.translate()` throws a `NotImplementedError` for this `VariantSequence`:
+
+`VariantSequence(prefix=u'CTGCTGTCCTCCAGGCTGGGCTCAGGGAGGGGC', alt='A', suffix=u'AGGCTGGACCGGAN', full_sequence=u'CTGCTGTCCTCCAGGCTGGGCTCAGGGAGGGGCAAGGCTGGACCGGAN', read_names=set(['K00193:50:H5NKVBBXX:5:2222:6522:48913', 'K00193:50:H5NKVBBXX:5:2105:32522:47225', 'K00193:50:H5NKVBBXX:5:2101:32583:40192', 'K00193:50:H5NKVBBXX:5:1102:32765:39066']), read_count=4)`
+
+Not sure what the right behavior is?
+",tavinathanson,https://github.com/openvax/isovar/issues/17
+MDU6SXNzdWUxNTA3MzE5NTg=,Wrong cDNA sequence after variant for negative strand transcripts (also affecting counts),CLOSED,2016-04-25T02:55:06Z,2016-09-16T02:20:36Z,2016-09-16T02:20:36Z,"From @JPFinnigan:
+
+> I’m seeing isovar output ‘supporting_variant_reads’ that grossly differ from the counts in IGV. Also the translated protein sequence is frequently, but not always wrong, particularly when ‘ends_with_stop_codon’ is true.
+> ...
+> Ok, so I think I might have figured out the problem. The cdna_sequence preceeding the variant nucleotide comes from the + strand of relative to the mRNA but the cdna_sequence after the variant nucleotide comes aligns to the negative strand (e.g is the reverse compliment) of the mRNA. This portion of the cdna_sequence downstream of the variant (I think you’re calling this the suffix) is the reverse-compliment of the portion upstream of the variant (prefix).
+> ...
+> It seems to be a pervasive issue for variants in transcripts from the negative strand...Transcripts on the positive strand are essentially all reconstructed perfectly
+> ...
+> Similarly, the supporting_variant_reads counts for variant transcripts on the positive strand are consistent with the counts in IGV (+/- some number that could be explained by filtering). Whereas the supporting_variant_reads counts for variant transcripts on the negative strand are ~2x (+/- some number that could be explained by filtering) the IGV counts which leads me to believe that some fraction of the reads are being counted twice.
+",iskandr,https://github.com/openvax/isovar/issues/19
+MDU6SXNzdWUxNTkwMTI4MDA=,Add unit tests for variant read counts,CLOSED,2016-06-07T20:08:57Z,2016-06-10T20:12:15Z,2016-06-10T20:12:15Z,"Currently don't have any tests from real data to make sure we get the expected number of variant reads. 
+",iskandr,https://github.com/openvax/isovar/issues/20
+MDU6SXNzdWUxNTkwMzM3MDQ=,Add ability to skip soft-clipped bases,OPEN,2016-06-07T21:53:50Z,2016-09-16T02:03:32Z,,,arahuja,https://github.com/openvax/isovar/issues/22
+MDU6SXNzdWUxNTkyODMxMTU=,Add unit test for variant read count with indels,OPEN,2016-06-08T21:56:01Z,2016-09-16T02:02:31Z,,,iskandr,https://github.com/openvax/isovar/issues/23
+MDU6SXNzdWUxNTkyODMyMjE=,Add unit test for variant(s) at a splice boundary,OPEN,2016-06-08T21:56:29Z,2016-09-16T02:02:32Z,,,iskandr,https://github.com/openvax/isovar/issues/24
+MDU6SXNzdWUxNTkyODk5ODQ=,Reorganize ReadAtLocus and VariantRead,CLOSED,2016-06-08T22:29:24Z,2016-07-04T03:01:57Z,2016-07-04T03:01:57Z,"It seems difficult to count alleles other than the variant nucleotides using `ReadAtLocus` but we can't use `VariantRead` since by definition they only carry the variant allele. 
+",iskandr,https://github.com/openvax/isovar/issues/25
+MDU6SXNzdWUxNTk0NjY4MTA=,Weighted RNA support score for variant sequences,OPEN,2016-06-09T17:41:51Z,2016-09-16T02:03:32Z,,"The current supporting read count drops any read which only partially spans a variant sequence. This causes counts to fall very sharply with increasing variant sequence length. A smoother measure of RNA supporting for a variant sequence would give partially spanning reads weights less than 0 (proportional to how many bases they overlap and how many sequences contain that subsequence). 
+",iskandr,https://github.com/openvax/isovar/issues/26
+MDU6SXNzdWUxNjA0NjQxNjE=,scikit-bio 0.5.0 is not compatible with py2,CLOSED,2016-06-15T16:19:18Z,2016-06-15T18:21:44Z,2016-06-15T18:21:44Z,"`scikit-bio 0.5.0` was uploaded to PyPI on 2016-06-14
+
+> Note: scikit-bio is no longer compatible with Python 2. scikit-bio is compatible with Python 3.4 and later.
+
+Do you want to fix the version to be `0.4.2` then?
+",arahuja,https://github.com/openvax/isovar/issues/27
+MDU6SXNzdWUxNjA0OTE0NzA=,Drop scikit-bio to avoid pinning an old version,CLOSED,2016-06-15T18:28:54Z,2016-11-13T01:57:07Z,2016-11-13T01:57:07Z,"See https://github.com/hammerlab/isovar/issues/27#issuecomment-226257194
+",tavinathanson,https://github.com/openvax/isovar/issues/29
+MDU6SXNzdWUxNjEzMDg2NjE=,Add total_reads to output,CLOSED,2016-06-20T22:14:24Z,2016-07-04T03:01:34Z,2016-07-04T03:01:34Z,"I want to filter by the % of `alt` reads over total reads for a locus, but don't have a `total_reads` column to look at; `supporting_variant_reads` and `total_variant_reads` are both referring to reads with `alt`.
+",tavinathanson,https://github.com/openvax/isovar/issues/30
+MDU6SXNzdWUxNjM0NzIwNDM=,Unit tests to ensure that Python & CLI give same results,CLOSED,2016-07-01T20:51:00Z,2016-09-19T14:14:04Z,2016-09-19T14:14:04Z,"Since most functions in isovar can be called either directly or via a commandline script, it's worth adding tests for equivalence of results for all the ""levels"" (allele reads, variant reads, variant sequences, translations, protein sequences). 
+",iskandr,https://github.com/openvax/isovar/issues/32
+MDU6SXNzdWUxNjM0NzIxNTc=,Make sure all commandline arguments match function parameters,OPEN,2016-07-01T20:51:56Z,2016-09-16T02:03:54Z,,,iskandr,https://github.com/openvax/isovar/issues/33
+MDU6SXNzdWUxNjM0NzI0MTQ=,Make sure no unnecessary arguments snuck into commandline scripts,CLOSED,2016-07-01T20:53:47Z,2016-07-04T03:01:14Z,2016-07-04T03:01:14Z,"There are some commandline arguments such as `--context-size` which should only appear in one script but probably have snuck into all of them. 
+",iskandr,https://github.com/openvax/isovar/issues/34
+MDU6SXNzdWUxNjM0NzMxMDc=,Change scripts into entry_points,CLOSED,2016-07-01T20:59:15Z,2019-06-12T21:38:26Z,2019-06-12T21:38:26Z,"Since most of the code for scripts already lives in the `args` sub-package, I should probably just rename that to `cli` and add an entry_point for each script. 
+
+See: https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-scripts/
+",iskandr,https://github.com/openvax/isovar/issues/35
+MDU6SXNzdWUxNjM5NDE2ODA=,Update description of algorithm in README,CLOSED,2016-07-05T20:40:46Z,2019-06-12T21:38:53Z,2019-06-12T21:38:53Z,"At least need to drop references to `VariantRead`. 
+",iskandr,https://github.com/openvax/isovar/issues/36
+MDU6SXNzdWUxNzczMzA4NzQ=,"Document what isovar is doing, in particular the nitty-gritty counting logic in text and images",CLOSED,2016-09-16T02:01:18Z,2019-06-12T21:38:14Z,2019-06-12T21:38:14Z,,ihodes,https://github.com/openvax/isovar/issues/43
+MDU6SXNzdWUxNzc2ODQxMjQ=,Error due to PyEnsembl biotypes,CLOSED,2016-09-18T23:17:39Z,2016-09-18T23:59:05Z,2016-09-18T23:59:05Z,"Reported error from @JPFinnigan:
+
+```
+ File ""/Isovar/isovar/isovar/protein_sequences.py"", line 25, in <module>
+   from pyensembl.biotypes import is_coding_biotype
+ImportError: No module named biotypes
+```
+",iskandr,https://github.com/openvax/isovar/issues/44
+MDU6SXNzdWUxODA0MTg2Nzc=,One logger per module,CLOSED,2016-09-30T22:56:22Z,2016-10-20T23:26:26Z,2016-10-20T23:26:26Z,"Set level to WARNING, can tweak later if necessary
+",julia326,https://github.com/openvax/isovar/issues/46
+MDU6SXNzdWUxODM4Mzc4NTI=,Insertions (other variants?) on the ends/beginnings of reads are being counted as reference,OPEN,2016-10-19T00:37:18Z,2016-10-19T00:37:26Z,,"Isovar thinks out of 42 total reads, 11 are variant, and the rest are not. But, 13 are variants: these two are being dropped
+
+![](http://link.isaachodes.io/3A3n153f1l1h/Screen%20Shot%202016-10-18%20at%208.36.49%20PM.png)
+",ihodes,https://github.com/openvax/isovar/issues/49
+MDU6SXNzdWUxODM4NzUxNjc=,CLI switch for changing logging levels (not just writing to a file),OPEN,2016-10-19T06:21:31Z,2016-12-17T19:30:24Z,,,ihodes,https://github.com/openvax/isovar/issues/50
+MDU6SXNzdWUxODM4NzUxOTA=,Results of isovar-protein-sequences.py no longer printed to screen,CLOSED,2016-10-19T06:21:47Z,2016-11-17T21:34:38Z,2016-11-17T21:34:38Z,"I think our conversion to logging made it so that the results of isovar no longer get displayed by default. If the results are getting logged, how do I set the log level from the commandline? Otherwise, maybe we should go back to good old `print`. 
+",iskandr,https://github.com/openvax/isovar/issues/51
+MDU6SXNzdWUxODQwMTc4NDA=,Error running isovar-variant-sequences.py,CLOSED,2016-10-19T16:54:12Z,2016-10-19T20:08:30Z,2016-10-19T20:08:30Z,"> $isovar-variant-sequences.py --vcf mutect.vcf --vcf strelka.vcf --bam tumor-rna.bam --output-csv isovar-variant-sequences.csv
+> 
+> Traceback (most recent call last):
+>   File ""/Library/Frameworks/Python.framework/Versions/3.4/bin/isovar-variant-sequences.py"", line 6, in <module>
+>     exec(compile(open(**file**).read(), **file**, 'exec'))
+>   File ""/Users/iskander/code/isovar/script/isovar-variant-sequences.py"", line 28, in <module>
+>     logging.config.fileConfig(pkg_resources.resource_filename(**name**, 'logging.conf'))
+>   File ""/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/logging/config.py"", line 76, in fileConfig
+>     formatters = _create_formatters(cp)
+>   File ""/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/logging/config.py"", line 109, in _create_formatters
+>     flist = cp[""formatters""][""keys""]
+>   File ""/Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/configparser.py"", line 937, in __getitem__
+>     raise KeyError(key)
+> KeyError: 'formatters'
+",iskandr,https://github.com/openvax/isovar/issues/52
+MDU6SXNzdWUxODQwMzg0ODg=,"Move ""scripts"" into a real CLI/module/app",CLOSED,2016-10-19T18:26:43Z,2019-05-16T19:21:04Z,2019-05-16T19:21:04Z,"So we can do real logging etc
+",ihodes,https://github.com/openvax/isovar/issues/54
+MDU6SXNzdWUxODQ5NzIzODk=,Isovar undercounting supporting reference reads,OPEN,2016-10-24T22:33:25Z,2017-01-18T16:27:21Z,,"Looking at a variant with 81 RNA reads spanning, isovar is saying 70 are reference and 9 support the alternate allele. Looking in IGV I see 72 reads supporting reference; looking around, I notice that two (ref) reads start at the point of the variant: looks like Isovar misses those?
+
+![screen shot 2016-10-24 at 6 33 19 pm](https://cloud.githubusercontent.com/assets/167803/19666413/58b55a5c-9a18-11e6-90b5-27d27cabf23b.png)
+",ihodes,https://github.com/openvax/isovar/issues/55
+MDU6SXNzdWUxODU1MTI5OTI=,Premature length filtering of VariantSequences results in dropped ProteinSequences,CLOSED,2016-10-26T21:18:39Z,2017-01-10T22:54:29Z,2017-01-10T22:54:29Z,"We currently return variant sequences which are at least as long as the user requests or (failing that) the longest possible. This results in premature filtering of shorter sequences which result in successful translation to protein sequences (in cases where the longer variant sequences fail due to mismatch with the reference transcripts). 
+
+Filtering logic here: https://github.com/hammerlab/isovar/blob/master/isovar/variant_sequences.py#L176
+",iskandr,https://github.com/openvax/isovar/issues/56
+MDU6SXNzdWUxODc0MzczNjA=,Trim VariantSequences by increasing coverage while trying to figure out reading frame,CLOSED,2016-11-04T21:01:33Z,2016-11-17T23:23:23Z,2016-11-17T23:23:23Z,It sucks to drop a very well supported variant sequence because the 5'-most nucleotide was noise from a single read. ,iskandr,https://github.com/openvax/isovar/issues/58
+MDU6SXNzdWUxODc0Mzc3MTk=,Merge overlapping read pairs into single LocusRead,OPEN,2016-11-04T21:03:18Z,2016-11-18T18:12:48Z,,"If the insert size is small enough then many reads actually overlap the sequence of their mate pairs, which provides an opportunity for merging them into a longer read length. Doing this would also prevent over count of variant allele support. ",iskandr,https://github.com/openvax/isovar/issues/59
+MDU6SXNzdWUxODk0NDMyNzE=,ValueError: Reference genome 'hg19' not found,CLOSED,2016-11-15T16:41:06Z,2016-11-22T08:54:56Z,2016-11-22T08:54:56Z,"I am getting the error  "" Reference genome 'hg19' not found ""  when I run the command
+
+isovar-protein-sequences.py \
+ --vcf my.vcf \
+--bam accepted_hits.bam  \
+--genome hg19
+
+Traceback (most recent call last):
+  File ""/exports/igmm/software/pkg/el7/apps/python/2.7.10/bin/isovar-protein-sequences.py"", line 4, in <module>
+    __import__('pkg_resources').run_script('isovar==0.3.1', 'isovar-protein-sequences.py')
+  File ""/exports/igmm/software/pkg/el7/apps/python/2.7.10/lib/python2.7/site-packages/setuptools-18.4-py2.7.egg/pkg_resources/__init__.py"", line 735, in run_script
+    self.require(requires)[0].run_script(script_name, ns)
+  File ""/exports/igmm/software/pkg/el7/apps/python/2.7.10/lib/python2.7/site-packages/setuptools-18.4-py2.7.egg/pkg_resources/__init__.py"", line 1659, in run_script
+    exec(script_code, namespace, namespace)
+  File ""/exports/igmm/software/pkg/el7/apps/python/2.7.10/lib/python2.7/site-packages/isovar-0.3.1-py2.7.egg/EGG-INFO/scripts/isovar-protein-sequences.py"", line 46, in <module>
+
+  File ""build/bdist.linux-x86_64/egg/isovar/cli/protein_sequences.py"", line 70, in protein_sequences_dataframe_from_args
+  File ""build/bdist.linux-x86_64/egg/isovar/cli/protein_sequences.py"", line 60, in protein_sequences_generator_from_args
+  File ""build/bdist.linux-x86_64/egg/isovar/cli/rna_reads.py"", line 79, in allele_reads_generator_from_args
+  File ""/exports/igmm/software/pkg/el7/apps/python/2.7.10/lib/python2.7/site-packages/varcode-0.5.10-py2.7.egg/varcode/cli/variant_args.py"", line 101, in variant_collection_from_args
+    genome = genome_for_reference_name(args.genome)
+  File ""build/bdist.linux-x86_64/egg/pyensembl/__init__.py"", line 51, in genome_for_reference_name
+  File ""build/bdist.linux-x86_64/egg/pyensembl/species.py"", line 138, in normalize_reference_name
+ValueError: Reference genome 'hg19' not found
+
+Any ideas what has gone wrong?
+
+Thanks,
+
+Graeme
+
+",ggrimes,https://github.com/openvax/isovar/issues/62
+MDU6SXNzdWUxOTAxNzAyOTM=,Travis caching still not working,OPEN,2016-11-17T21:32:18Z,2017-11-27T18:55:58Z,,,iskandr,https://github.com/openvax/isovar/issues/63
+MDU6SXNzdWUxOTAzODU0OTE=,Construct LocusRead objects using pysam fetch instead of pileups,CLOSED,2016-11-18T18:11:10Z,2019-06-12T21:37:53Z,2019-06-12T21:37:53Z,There's a whole extra layer of complexity in `locus_reads.py` related to iterating through pileup columns at positions around the variant. This can be circumvented by just calling `AlignmentFile.fetch` and using each `AlignedSegment`'s reference position array to determine if and where it overlaps the variant locus. ,iskandr,https://github.com/openvax/isovar/issues/64
+MDU6SXNzdWUxOTAzODYwMTI=,CLI option `--cosmic_vcf_filename` should use dashes and not underscores,CLOSED,2016-11-18T18:13:52Z,2019-05-16T19:18:57Z,2019-05-16T19:18:57Z,,iskandr,https://github.com/openvax/isovar/issues/65
+MDU6SXNzdWUxOTA0MjQ2NTk=,Elongate coding sequences using reference transcripts,OPEN,2016-11-18T21:21:19Z,2016-12-10T06:08:19Z,,If a variant sequence perfectly matches a reference transcript then we can extend the sequence using reference nucleotides.,iskandr,https://github.com/openvax/isovar/issues/66
+MDU6SXNzdWUxOTE0MjMwMzQ=,Verify that we de-duplicate identical reads ,OPEN,2016-11-24T02:57:27Z,2016-12-10T06:08:09Z,,We can end up with reads in a BAM mapped to the same position with the same read ID. ,ihodes,https://github.com/openvax/isovar/issues/69
+MDU6SXNzdWUxOTUzNjQwNDQ=,Make phasing of multiple variants on a read explicit (group reads into phase groups),OPEN,2016-12-13T20:47:42Z,2016-12-13T21:35:35Z,,,ihodes,https://github.com/openvax/isovar/issues/72
+MDU6SXNzdWUxOTY0NzIxMzc=,Count mismatches after variant toward total,CLOSED,2016-12-19T17:19:28Z,2017-01-17T20:28:41Z,2017-01-17T20:28:41Z,"From @iskandr :
+`VariantInReadingFrame` has a `number_mismatch_before_variant`, you can add a `number_mismatch_after_variant` and filter on that unless some flag like `—allow-alternate-splicing` is supplied",julia326,https://github.com/openvax/isovar/issues/73
+MDU6SXNzdWUyMDEzOTcxMjk=,Cut a new release,CLOSED,2017-01-17T20:30:31Z,2017-01-18T21:44:33Z,2017-01-18T21:44:33Z,"This should include filtering on mismatches after the variant locus, etc.",julia326,https://github.com/openvax/isovar/issues/75
+MDU6SXNzdWUyMDEzOTg2NjE=,Expose flag to include mismatches after the variant,CLOSED,2017-01-17T20:37:22Z,2017-01-18T17:07:20Z,2017-01-18T17:07:20Z,,julia326,https://github.com/openvax/isovar/issues/77
+MDU6SXNzdWUyMDI5NzU4Nzg=,Left align indels,OPEN,2017-01-24T23:57:05Z,2017-01-24T23:57:19Z,,"This variant is an insertion of an ""A"" inside of a homopolymer stretch of reference ""A"" nucleotides. The RNA aligner places the insertion at arbitrary positions:
+
+![](https://www.dropbox.com/s/4y4hj3dwk5qrhx8/Screenshot%202017-01-24%2019.55.09.png?dl=1)
+
+Since DNA is easier to left align than RNA (and thus we can expect left aligned variants) it would be nice for isovar to perform this left alignment. ",iskandr,https://github.com/openvax/isovar/issues/79
+MDU6SXNzdWUyMjE4OTM0ODU=,Variant effect has a null `aa_mutation_start_offset`,OPEN,2017-04-14T21:19:04Z,2017-04-14T21:19:34Z,,"@julia326 commented on [Thu Apr 06 2017](https://github.com/hammerlab/vaxrank/issues/125)
+
+See the tesla code for what generates this error; basically, this variant's predicted effect has an `aa_mutation_start_offset` of None. Need to look into why that is. 
+
+2017-04-06 20:07:52,135 - tesla.cli:86 - ERROR - Could not find mutation start pos for variant Variant(contig='21', start=37140673, ref='G', alt='A', reference_name='GRCh38'), peptide VaccinePeptide(mutant_protein_fragment=MutantProteinFragment(variant=Variant(contig='21', start=37140673, ref='G', alt='A', reference_name='GRCh38'), gene_name=u'TTC3', amino_acids='YCGIGKVYLKKNKLVEMTLL', mutant_amino_acid_start_offset=12, mutant_amino_acid_end_offset=13, supporting_reference_transcripts=[Transcript(transcript_id=ENST00000354749, name=TTC3-001, gene_id=ENSG00000182670, gene_name=TTC3, biotype=protein_coding, location=21:37085790-37203112), Transcript(transcript_id=ENST00000399017, name=TTC3-003, gene_id=ENSG00000182670, gene_name=TTC3, biotype=protein_coding, location=21:37081596-37203112), Transcript(transcript_id=ENST00000540756, name=TTC3-024, gene_id=ENSG00000182670, gene_name=TTC3, biotype=protein_coding, location=21:37073281-37153323), Transcript(transcript_id=ENST00000355666, name=TTC3-201, gene_id=ENSG00000182670, gene_name=TTC3, biotype=protein_coding, location=21:37073271-37203103)], n_overlapping_reads=16, n_alt_reads=13, n_ref_reads=3, n_alt_reads_supporting_protein_sequence=7), epitope_predictions=[EpitopePrediction(allele='HLA-A*02:01', peptide_sequence='KLVEMTLL', length=8, ic50=335.8, percentile_rank=2.5, prediction_method_name='netMHCpan', overlaps_mutation=True, source_sequence='YCGIGKVYLKKNKLVEMTLL', offset=12, occurs_in_reference=False)], mutant_epitope_score=0.57442828263847712, wildtype_epitope_score=0, manufacturability_scores=ManufacturabilityScores(cterm_7mer_gravy_score=1.9000000000000001, max_7mer_gravy_score=1.9000000000000001, difficult_n_terminal_residue=False, c_terminal_cysteine=False, c_terminal_proline=False, cysteine_count=1, n_terminal_asparagine=False, asparagine_proline_bond_count=0))
+
+
+",julia326,https://github.com/openvax/isovar/issues/81
+MDU6SXNzdWUyMzA3Nzk3MjA=,Exception when deletion extends beyond exon boundary,CLOSED,2017-05-23T17:04:02Z,2017-05-24T20:48:47Z,2017-05-24T20:48:47Z,"@iskandr commented on [Sun May 14 2017](https://github.com/hammerlab/varcode/issues/224)
+
+```ValueError: Wrong reference sequence for variant Variant(contig='11', start=106262686, ref='GTGAAGG', alt='', reference_name='GRCm38') on transcript Transcript(transcript_id=ENSMUST00000021049, name=Psmc5-001, gene_id=ENSMUSG00000020708, gene_name=Psmc5, biotype=protein_coding, location=11:106256154-106263120)
+```
+
+The end of exon 9 is “GTGAAG” and the next intronic nt is “G”. So the variant deletes the end of the exon and the next nucleotide. Varcode only looks at the transcript sequence and apparently doesn’t clip the variant to only cover the exons. (This seems like it would likely cause a splice variant, since both the exonic and intronic splice signal is potentially damaged).
+
+---
+
+@ihodes commented on [Tue May 16 2017](https://github.com/hammerlab/varcode/issues/224#issuecomment-301862801)
+
+What is the right thing to do here? 
+
+---
+
+@julia326 commented on [Wed May 17 2017](https://github.com/hammerlab/varcode/issues/224#issuecomment-302231165)
+
+Example where this comes up:
+ValueError: Wrong reference sequence for variant Variant(contig='11', start=106262686, ref='GTGAAGG', alt='', reference_name='GRCm38') on transcript Transcript(transcript_id=ENSMUST00000021049, name=Psmc5-001, gene_id=ENSMUSG00000020708, gene_name=Psmc5, biotype=protein_coding, location=11:106256154-106263120)
+
+---
+
+@julia326 commented on [Mon May 22 2017](https://github.com/hammerlab/varcode/issues/224#issuecomment-303241235)
+
+Went over this with @iskandr. Varcode is doing the right thing and, when predicting the effect, trimming the variant to just the exon, but it's not altering the variant object itself - and isovar replicated the ""does the reference match"" check but didn't account for a variant reading into the intron. Solution: 1) remove that isovar check, 2) add a logging statement to varcode if it trims the variant like that and make sure it gets logged. Doing that shortly...
+
+",julia326,https://github.com/openvax/isovar/issues/82
+MDU6SXNzdWUyMzExODE4MDI=,Figure out what to do when variant and transcript don't match,OPEN,2017-05-24T21:50:36Z,2017-05-24T21:50:36Z,,One case where this happened recently is documented in #82. Reopening an issue about that since it's an isovar logic question.,julia326,https://github.com/openvax/isovar/issues/84
+MDU6SXNzdWUyMzQ2NDg3NzQ=,AssertionError deep in the stack,CLOSED,2017-06-08T20:36:25Z,2017-06-21T23:33:05Z,2017-06-21T23:33:05Z,"@julia326 commented on [Fri Jun 02 2017](https://github.com/hammerlab/vaxrank/issues/131)
+
+Possibly relevant logs (maybe problematic variant?):
+```
+2017-06-02 18:06:56,992 - vaxrank.core_logic:55 - INFO - Mutant protein fragment for Variant(contig='12', start=88271648, ref='T', alt='C', reference_name='GRCm38'): MutantProteinFragment(variant=Variant(contig='12', start=88271648, ref='T', alt='C', reference_name='GRCm38'), gene_name=u'Gm5662', amino_acids='', mutant_amino_acid_start_offset=15, mutant_amino_acid_end_offset=16, supporting_reference_transcripts=[Transcript(transcript_id=ENSMUST00000101168, name=Gm5662-001, gene_id=ENSMUSG00000079029, gene_name=Gm5662, biotype=protein_coding, location=12:88270640-88274500)], n_overlapping_reads=3, n_alt_reads=3, n_ref_reads=0, n_alt_reads_supporting_protein_sequence=2)
+Traceback (most recent call last):
+  File ""/home/julia/envs/vaxrank/bin/vaxrank"", line 11, in <module>
+    sys.exit(main())
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/cli.py"", line 285, in main
+    data = ranked_variant_list_with_metadata(args)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/cli.py"", line 227, in ranked_variant_list_with_metadata
+    variant_sequence_assembly=args.variant_sequence_assembly)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/core_logic.py"", line 191, in ranked_vaccine_peptides
+    min_epitope_score=min_epitope_score)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/core_logic.py"", line 164, in generate_vaccine_peptides
+    min_epitope_score=min_epitope_score)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/core_logic.py"", line 61, in vaccine_peptides_for_variant
+    genome=variant.ensembl).values()
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/vaxrank/epitope_prediction.py"", line 168, in predict_epitopes
+    {protein_fragment.gene_name: protein_fragment.amino_acids})
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/mhctools/base_predictor.py"", line 208, in predict_subsequences
+    binding_predictions = self.predict_peptides(peptide_list)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/mhctools/base_commandline_predictor.py"", line 316, in predict_peptides
+    temp_dir_list=dirs)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/mhctools/base_commandline_predictor.py"", line 262, in _run_commands_and_collect_predictions
+    process_limit=self.process_limit)
+  File ""/home/julia/envs/vaxrank/local/lib/python2.7/site-packages/mhctools/process_helpers.py"", line 114, in run_multiple_commands_redirect_stdout
+    assert len(multiple_args_dict) > 0
+```
+
+---
+
+@julia326 commented on [Wed Jun 07 2017](https://github.com/hammerlab/vaxrank/issues/131#issuecomment-306909568)
+
+Variant sequence:
+```
+VariantSequence(prefix='TCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATT', alt='C', suffix='TGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTTAG', sequence='TCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATTCTGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTTAG', reads=frozenset([AlleleRead(prefix='CTCTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATT', allele='C', suffix='TGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTT', name='D00543:132:CA2WYANXX:7:2301:17630:72894', sequence='CTCTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATTCTGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTT'), AlleleRead(prefix='CTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATT', allele='C', suffix='TGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTTAG', name='D00543:132:CA2WYANXX:7:2301:17630:72894', sequence='CTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATTCTGGCATGTTCTGGAAGTTCTCCATAGGCCTTCAGACTTCTTGCTTAG'), AlleleRead(prefix='TTGGAATATAGCATGATTAGATTATGTTAGATATCATCAATGTCTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATT', allele='C', suffix='TGGC', name='D00543:132:CA2WYANXX:7:1210:19312:79146', sequence='TTGGAATATAGCATGATTAGATTATGTTAGATATCATCAATGTCTTCATCATCCTCTCCAATATCATCAAACACGATTTCATCATCATCCCCAGCACCAAATGTGTCCATTTCATTGATTCTGGC')]))
+```
+Reference context:
+```
+ReferenceContext(strand='-', sequence_before_variant_locus='ATCCAGATGAAGCAAGAAGTCTGAAGGCCTATGGAGAACTTCCAGAACATGCCA', sequence_at_variant_locus='A', sequence_after_variant_locus='AATCAATGAAATGGACACATTTGGTGCTGGGGATGATGATGAAATCGTGTTTGA', offset_to_first_complete_codon=2, overlaps_start_codon=False, contains_start_codon=False, contains_five_prime_utr=False, amino_acids_before_variant='PDEARSLKAYGELPEHA', variant=Variant(contig='12', start=88271648, ref='T', alt='C', reference_name='GRCm38'), transcripts=(Transcript(transcript_id=ENSMUST00000101168, name=Gm5662-001, gene_id=ENSMUSG00000079029, gene_name=Gm5662, biotype=protein_coding, location=12:88270640-88274500),))
+```
+That variant sequence results in a cdna_prefix of ''CTAAGCAAGAAGTCTGAAGGCCTATGGAGAACTTCCAGAACATGCCA' and is matched to a reading frame with offset 1, having 2 mismatches before the variant (fitting under threshold). The first codon is then TAA (a stop codon), so we get an empty amino acid sequence. We need to figure out the right way to deal with surprise stop codons resulting from some variant sequence in reading frame. @iskandr thoughts?
+
+",julia326,https://github.com/openvax/isovar/issues/85
+MDU6SXNzdWUyNzAxNDI2NTg=,"User wants ""hg19"" as genome option",OPEN,2017-10-31T22:46:14Z,2017-10-31T22:46:14Z,,"Email from Wenhui Li:
+
+> 
+> 
+> When I run isovar with parameter "" --genome hg19"", error occurs. The Error message is the following:
+> 
+> -----------------------------------
+> 
+> Traceback (most recent call last):
+> 
+>   File ""/hwfssz1/ST_PRECISION/USER/liwenhui/01.Software/02.common/anaconda2/bin/isovar-protein-sequences.py"", line 4, in <module>
+> 
+>     __import__('pkg_resources').run_script('isovar==0.7.0', 'isovar-protein-sequences.py')
+> 
+>   File ""/hwfssz1/ST_PRECISION/USER/liwenhui/01.Software/02.common/anaconda2/lib/python2.7/site-packages/setuptools-27.2.0-py2.7.egg/pkg_resources/__init__.py"", line 744, in run_script
+> 
+>   File ""/hwfssz1/ST_PRECISION/USER/liwenhui/01.Software/02.common/anaconda2/lib/python2.7/site-packages/setuptools-27.2.0-py2.7.egg/pkg_resources/__init__.py"", line 1506, in run_script
+> 
+>   File ""/hwfssz1/ST_PRECISION/USER/liwenhui/01.Software/02.common/anaconda2/lib/python2.7/site-packages/isovar-0.7.0-py2.7.egg/EGG-INFO/scripts/isovar-protein-sequences.py"", line 46, in <module>
+> 
+> 
+> 
+>   File ""build/bdist.linux-x86_64/egg/isovar/cli/protein_sequences.py"", line 72, in protein_sequences_dataframe_from_args
+> 
+>   File ""build/bdist.linux-x86_64/egg/isovar/cli/protein_sequences.py"", line 60, in protein_sequences_generator_from_args
+> 
+>   File ""build/bdist.linux-x86_64/egg/isovar/cli/rna_reads.py"", line 79, in allele_reads_generator_from_args
+> 
+>   File ""/hwfssz1/ST_PRECISION/USER/liwenhui/01.Software/02.common/anaconda2/lib/python2.7/site-packages/varcode-0.5.15-py2.7.egg/varcode/cli/variant_args.py"", line 101, in variant_collection_from_args
+> 
+>     genome = genome_for_reference_name(args.genome)
+> 
+>   File ""build/bdist.linux-x86_64/egg/pyensembl/__init__.py"", line 51, in genome_for_reference_name
+> 
+>   File ""build/bdist.linux-x86_64/egg/pyensembl/species.py"", line 138, in normalize_reference_name
+> 
+> ValueError: Reference genome 'hg19' not found
+> 
+> ----------------------------------------------------------------------------------------------
+> 
+> 
+> 
+> I want to know how to use the parameter "" --genome"" to set genome reference (such as Ensembl, or refseq). Would you please to give me some guide? Thank you!
+> 
+> 
+> 
+> Looking forward to your reply.
+> 
+> 
+> 
+> Ms. Wenhui Li
+> 
+> Bioinformatics Analyst in BGI, Shenzhen, China
+> 
+> 
+> ",iskandr,https://github.com/openvax/isovar/issues/87
+MDU6SXNzdWUyNzAxNDI5NDU=,Questions about Isovar,OPEN,2017-10-31T22:47:38Z,2017-10-31T22:47:47Z,,"Email from Wenhui Li:
+
+
+> Here I have some more questions about isovar:
+> 
+> 
+> 1. How to know the allele-specific expression of a variance? Is that ""alt_reads_supporting_protein_sequence"" shows the expression? Or is there any optional parameter to set to tell isovar output the Expression information (such as RPKM, FPKM or TPM)?
+> 
+> 2. The reference fasta we used is RefSeq Gene hg19. When I run isovar, the parameter "" --genome GRCh37"" (the reference is Ensemble). Is that a problem? How to set this parameter of reference genome?
+> 
+> 
+> 
+> Thank you very much! Looking forward to your reply.
+> 
+> 
+> 
+> Ms. Wenhui Li
+> 
+> Bioinformatics Analyst in BGI, Shenzhen, China
+",iskandr,https://github.com/openvax/isovar/issues/88
+MDU6SXNzdWUyNzE2ODA1Mjk=,Too slow running isovar. Could it be run in multithread?,OPEN,2017-11-07T01:34:14Z,2017-11-07T01:34:14Z,,"Hi, hammer lab team.
+
+I'm using isovar phasing using RNA-seq data. The input is about 500 somatic mutations, and the program keep running for a day. It seems too slow. Could isovar be run in multithread?
+
+Thank you.",Jemimacat,https://github.com/openvax/isovar/issues/89
+MDU6SXNzdWUyNzcxMjg0NTE=,Unexpectedly short protein sequences,OPEN,2017-11-27T18:55:01Z,2018-04-13T23:33:00Z,,"Issue reported by email from [Scott Brown](http://www.holtlab.ca/personnel.html#scottb): 
+
+
+>I have a question regarding the protein sequence output from Isovar. I have seen multiple cases where the protein that is output is shorter than the requested ‘--protein-sequence-length’, but when checking the locus in IGV there appears to be sufficient mutant read support covering both sides of the mutation site. Is there a parameter that is limiting the length of the protein, or is there some other reason that the returned protein is not matching the requested length?
+
+...
+
+>It appears to be finding two possible proteins based on two transcripts, and despite having equal read support, choosing the shorter of the two (it outputs MYPTAALIVNLRPNTF, whereas manual inspection suggests to me that it should output AAGAVEWMYPTAALIVNLRPNTF).
+ 
+>Separately, I found another case where the somatic mutation was the very last nucleotide of an exon, and Isovar output the peptide based on two reads which went directly into the intron rather than nearly 20 mutant reads which jumped to the next exon correctly. I suspect this is because only the intronic reads were recruited since Isovar takes reads that map to the region +/-1 nucleotide of the mutation? In this case, right at the edge of the exon, it seems like this may be undesired behaviour, at least when there are more reads containing the mutation which skip the intron and read into the next exon?
+ 
+>Aside from those two cases, I think I have been able to explain all shorter-than-expected proteins due to insufficient numbers of high quality mapped reads.
+
+STDOUT from isovar invocation:
+
+```
+$ PYTHONPATH=""/projects/sbrown_prj/bin/isovar/"" python2 /projects/sbrown_prj/bin/isovar/script/isovar-protein-sequences.py --vcf POG616_17_81042903_snv.pvcf --bam /projects/POG/POG_data/POG616/rna/biop1_t_P01608/reposition/hg19a_jg-e69_bwa-mem-0.7.6a/C9J57ANXX_8_CCGCAA_withJunctionsOnGenome_dupsFlagged.bam --min-alt-rna-reads 2 --protein-sequence-length 23 --output POG616_17_81042903_isovar.csv
+
+2017-10-25 12:24:58,904 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37')
+2017-10-25 12:24:58,918 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37') (chromosome = 17, gene names = [u'METRNL'])
+2017-10-25 12:24:58,947 - isovar.locus_reads:314 - INFO - Found 486 reads overlapping locus 17: 81042902-81042904
+2017-10-25 12:24:58,947 - isovar.variant_sequences:422 - INFO - Initial pool of 28 variant sequences (min length=39, max length=72)
+2017-10-25 12:24:58,948 - isovar.assembly:140 - INFO - Collapsed 28 -> 19 sequences
+2017-10-25 12:24:58,954 - isovar.variant_sequences:440 - INFO - After overlap assembly: 3 variant sequences (min length=72, max length=72)
+2017-10-25 12:24:58,955 - isovar.variant_sequences:207 - INFO - Coverage: [14 14 14 14 14 14 14 14 14 14 15 15 15 16 17 19 19 19 20 20 21 21 22 23 23
+ 24 25 25 25 25 26 27 27 28 28 28 28 28 28 27 27 27 27 26 25 25 25 25 25 24
+ 23 23 23 23 22 20 19 19 18 18 17 16 16 16 16 16 16 16 16 16 15 15] (len=72)
+2017-10-25 12:24:58,955 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 3 3 4 5 5 5 5 6 7 7 8 8 8 8
+ 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 7 7 7 7 7 7 7 7 7 7] (len=72)
+2017-10-25 12:24:58,956 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] (len=72)
+2017-10-25 12:24:58,956 - isovar.variant_sequences:330 - INFO - Kept 1/3 variant sequences after read coverage trimming to >=2x
+2017-10-25 12:24:58,956 - isovar.variant_sequences:456 - INFO - After coverage & length filtering: 1 variant sequences (min length=72, max length=72)
+2017-10-25 12:24:59,500 - pyensembl.sequence_data:95 - INFO - Loaded sequence dictionary from /home/sbrown/.cache/pyensembl/GRCh37/ensembl75/Homo_sapiens.GRCh37.75.cdna.all.fa.gz.pickle
+2017-10-25 12:24:59,795 - pyensembl.sequence_data:95 - INFO - Loaded sequence dictionary from /home/sbrown/.cache/pyensembl/GRCh37/ensembl75/Homo_sapiens.GRCh37.75.pep.all.fa.gz.pickle
+2017-10-25 12:24:59,859 - isovar.effect_prediction:65 - INFO - Predicted total 3 effects for variant Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37')
+2017-10-25 12:24:59,859 - isovar.effect_prediction:73 - INFO - Keeping 3/3 effects which affect protein coding sequence for Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37'): <EffectCollection with 3 elements>
+  -- Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-001, transcript_id=ENST00000320095, effect_description=p.G87A)
+  -- Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-005, transcript_id=ENST00000570778, effect_description=p.G5A)
+  -- Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-003, transcript_id=ENST00000571814, effect_description=p.G5A)
+2017-10-25 12:24:59,860 - isovar.effect_prediction:84 - INFO - Keeping 3 effects with predictable AA sequences for Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37'): [Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-001, transcript_id=ENST00000320095, effect_description=p.G87A), Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-005, transcript_id=ENST00000570778, effect_description=p.G5A), Substitution(variant=chr17 g.81042903G>C, transcript_name=METRNL-003, transcript_id=ENST00000571814, effect_description=p.G5A)]
+2017-10-25 12:24:59,860 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on METRNL-001 for variant Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37') = 384:385
+2017-10-25 12:24:59,860 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on METRNL-005 for variant Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37') = 120:121
+2017-10-25 12:24:59,860 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on METRNL-003 for variant Variant(contig='17', start=81042903, ref='G', alt='C', reference_name='GRCh37') = 954:955
+2017-10-25 12:24:59,860 - isovar.variant_sequence_in_reading_frame:105 - INFO - cdna_predix='[REDACTED]', cdna_alt='C', cdna_suffix='[REDACTED]', reference_prefix='[REDACTED]', reference_suffix='[REDACTED]', n_trimmed=0
+2017-10-25 12:24:59,861 - isovar.variant_sequence_in_reading_frame:354 - INFO - Iter #1/3: VariantSequenceInReadingFrame(cdna_sequence='[REDACTED][REDACTED]', offset_to_first_complete_codon=2, variant_cdna_interval_start=36, variant_cdna_interval_end=37, reference_cdna_sequence_before_variant='[REDACTED]', reference_cdna_sequence_after_variant='[REDACTED]', number_mismatches_before_variant=0, number_mismatches_after_variant=0)
+2017-10-25 12:24:59,861 - isovar.variant_sequence_in_reading_frame:105 - INFO - cdna_predix='[REDACTED]', cdna_alt='C', cdna_suffix='[REDACTED]', reference_prefix='[REDACTED]', reference_suffix='[REDACTED]', n_trimmed=0
+2017-10-25 12:24:59,861 - isovar.variant_sequence_in_reading_frame:354 - INFO - Iter #1/3: VariantSequenceInReadingFrame(cdna_sequence='[REDACTED][REDACTED]', offset_to_first_complete_codon=23, variant_cdna_interval_start=36, variant_cdna_interval_end=37, reference_cdna_sequence_before_variant='[REDACTED]', reference_cdna_sequence_after_variant='[REDACTED]', number_mismatches_before_variant=0, number_mismatches_after_variant=0)
+2017-10-25 12:24:59,861 - isovar.protein_sequences:293 - INFO - TranslationKey(amino_acids='MYPTAALIVNLRPNTF', variant_aa_interval_start=4, variant_aa_interval_end=5, ends_with_stop_codon=False, frameshift=False): 29 alt reads supporting protein sequence (gene names = set([u'METRNL']))
+2017-10-25 12:24:59,861 - isovar.protein_sequences:305 - INFO - TranslationKey(amino_acids='MYPTAALIVNLRPNTF', variant_aa_interval_start=4, variant_aa_interval_end=5, ends_with_stop_codon=False, frameshift=False): protein sequence = MYPTAALIVNLRPNTF
+2017-10-25 12:24:59,861 - isovar.protein_sequences:293 - INFO - TranslationKey(amino_acids='AAGAVEWMYPTAALIVNLRPNTF', variant_aa_interval_start=11, variant_aa_interval_end=12, ends_with_stop_codon=False, frameshift=False): 29 alt reads supporting protein sequence (gene names = set([u'METRNL']))
+2017-10-25 12:24:59,861 - isovar.protein_sequences:305 - INFO - TranslationKey(amino_acids='AAGAVEWMYPTAALIVNLRPNTF', variant_aa_interval_start=11, variant_aa_interval_end=12, ends_with_stop_codon=False, frameshift=False): protein sequence = AAGAVEWMYPTAALIVNLRPNTF
+```
+
+It does seem like both `AAGAVEWMYPTAALIVNLRPNTF` and `MYPTAALIVNLRPNTF` have the same number of reads, maybe there's no logic for when there's a tie in coverage? 
+
+
+ ",iskandr,https://github.com/openvax/isovar/issues/90
+MDU6SXNzdWUyOTAyNDQyMTk=,Isovar on multiple .bam,OPEN,2018-01-21T03:40:11Z,2018-05-01T21:19:53Z,,"Hey, 
+
+It would be neat to be able to run isovar on many .bam samples to see how allele-specific expression changes with treatments/time. The specific use-case I have in mind is the change in expression of variant containing transcripts in a cell line with a known genotype in response to exposure to some stimulus.  
+
+At present the I'm running isovar on each sample individually, and then cobbling together a table from the results. ",JPFinnigan,https://github.com/openvax/isovar/issues/91
+MDU6SXNzdWUzMDM3MDg4ODg=,No exon_id in mouse mm9 ensembl annotaiotn,OPEN,2018-03-09T03:08:44Z,2018-03-09T03:08:44Z,,"There is no exon_id in the mouse mm9 annotation.
+head Mus_musculus.NCBIM37.67.gtf
+NT_166433       protein_coding  exon    11955   12166   .       +       .        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""1""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201"";
+NT_166433       protein_coding  CDS     12026   12166   .       +       0        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""1""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201""; protein_id ""ENSMUSP00000100851"";
+NT_166433       protein_coding  start_codon     12026   12028   .       +       0        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""1""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201"";
+NT_166433       protein_coding  exon    16677   16841   .       +       .        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""2""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201"";
+NT_166433       protein_coding  CDS     16677   16841   .       +       0        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""2""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201""; protein_id ""ENSMUSP00000100851"";
+NT_166433       protein_coding  exon    17745   17814   .       +       .        gene_id ""ENSMUSG00000000702""; transcript_id ""ENSMUST00000105216""; exon_number ""3""; gene_name ""AC007307.1""; gene_biotype ""protein_coding""; transcript_name ""AC007307.1-201"";
+
+So, I got error while try to running isovar (see below): 
+isovar-protein-sequences.py      --vcf batch1-ensemble-annotated-decomposed.vcf      --bam ERR420397.fastq.genome.sorted.bam     --min-alt-rna-reads 2     --protein-sequence-length 30     --output rep1-results.csv --genome NCBIM37
+2018-03-08 21:59:24,270 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='1', start=4336591, ref='', alt='T', reference_name='NCBIM37')
+2018-03-08 21:59:24,289 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='1', start=4336591, ref='', alt='T', reference_name='NCBIM37') (chromosome = 1, gene names = ['Rp1'])
+2018-03-08 21:59:24,303 - isovar.locus_reads:314 - INFO - Found 0 reads overlapping locus 1: 4336591-4336592
+2018-03-08 21:59:24,303 - isovar.translation:461 - INFO - No supporting reads for variant Variant(contig='1', start=4336591, ref='', alt='T', reference_name='NCBIM37')
+2018-03-08 21:59:24,303 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='1', start=5088129, ref='A', alt='C', reference_name='NCBIM37')
+2018-03-08 21:59:24,305 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='1', start=5088129, ref='A', alt='C', reference_name='NCBIM37') (chromosome = 1, gene names = ['Atp6v1h'])
+2018-03-08 21:59:24,318 - isovar.locus_reads:314 - INFO - Found 22 reads overlapping locus 1: 5088128-5088130
+2018-03-08 21:59:24,318 - isovar.variant_sequences:422 - INFO - Initial pool of 2 variant sequences (min length=50, max length=50)
+2018-03-08 21:59:24,318 - isovar.assembly:140 - INFO - Collapsed 2 -> 2 sequences
+2018-03-08 21:59:24,318 - isovar.variant_sequences:440 - INFO - After overlap assembly: 1 variant sequences (min length=56, max length=56)
+2018-03-08 21:59:24,320 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1] (len=56)
+2018-03-08 21:59:24,320 - isovar.variant_sequences:330 - INFO - Kept 1/1 variant sequences after read coverage trimming to >=2x
+2018-03-08 21:59:24,320 - isovar.variant_sequences:456 - INFO - After coverage & length filtering: 1 variant sequences (min length=44, max length=44)
+2018-03-08 21:59:24,636 - pyensembl.sequence_data:118 - INFO - Loaded sequence dictionary from /home/zhuwe/.cache/pyensembl/NCBIM37/ensembl67/Mus_musculus.NCBIM37.67.cdna.all.fa.gz.pickle
+2018-03-08 21:59:24,653 - pyensembl.sequence_data:118 - INFO - Loaded sequence dictionary from /home/zhuwe/.cache/pyensembl/NCBIM37/ensembl67/Mus_musculus.NCBIM37.67.ncrna.fa.gz.pickle
+2018-03-08 21:59:24,666 - pyensembl.database:436 - WARNING - Encountered error ""no such column: exon_id"" from query ""
+            SELECT exon_number, exon_id
+            FROM exon
+            WHERE transcript_id = ?
+        "" with parameters ['ENSMUST00000044369']
+Traceback (most recent call last):
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/common.py"", line 65, in wrapped_fn
+    return cache[cache_key]
+KeyError: (<pyensembl.database.Database object at 0x7fffec08ba20>, ('exon_number', 'exon_id'), ('feature', 'exon'), ('filter_column', 'transcript_id'), ('filter_value', 'ENSMUST00000044369'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/bioinfo/packages/anaconda3/bin/isovar-protein-sequences.py"", line 46, in <module>
+    df = protein_sequences_dataframe_from_args(args)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/cli/protein_sequences.py"", line 73, in protein_sequences_dataframe_from_args
+    return protein_sequences_generator_to_dataframe(protein_sequences_generator)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/protein_sequences.py"", line 323, in protein_sequences_generator_to_dataframe
+    gene=lambda x: "";"".join(x)))
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/dataframe_builder.py"", line 189, in dataframe_from_generator
+    for variant, elements in variant_and_elements_generator:
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/protein_sequences.py"", line 279, in reads_generator_to_protein_sequences_generator
+    variant_sequence_assembly=variant_sequence_assembly)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/translation.py"", line 492, in translate_variant_reads
+    transcript_id_whitelist=transcript_id_whitelist)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/reference_context.py"", line 117, in reference_contexts_for_variant
+    transcript_id_whitelist=transcript_id_whitelist)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/effect_prediction.py"", line 95, in reference_transcripts_for_variant
+    transcript_id_whitelist=transcript_id_whitelist)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/isovar/effect_prediction.py"", line 44, in predicted_coding_effects_with_mutant_sequence
+    if not transcript.complete:
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/memoized_property.py"", line 40, in fget_memoized
+    setattr(self, attr_name, fget(self))
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 393, in complete
+    self.coding_sequence is not None and
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/memoized_property.py"", line 40, in fget_memoized
+    setattr(self, attr_name, fget(self))
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 435, in coding_sequence
+    start = self.first_start_codon_spliced_offset
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/memoized_property.py"", line 40, in fget_memoized
+    setattr(self, attr_name, fget(self))
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 414, in first_start_codon_spliced_offset
+    start_offsets = self.start_codon_spliced_offsets
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/memoized_property.py"", line 40, in fget_memoized
+    setattr(self, attr_name, fget(self))
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 359, in start_codon_spliced_offsets
+    in self.start_codon_positions
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 358, in <listcomp>
+    for position
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 293, in spliced_offset
+    for exon in self.exons:
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/transcript.py"", line 121, in exons
+    feature=""exon"")
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/common.py"", line 67, in wrapped_fn
+    value = fn(*args, **kwargs)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/database.py"", line 469, in query
+    sql, required=required, query_params=query_params)
+  File ""/bioinfo/packages/anaconda3/lib/python3.6/site-packages/pyensembl/database.py"", line 429, in run_sql_query
+    cursor = self.connection.execute(sql, query_params)
+sqlite3.OperationalError: no such column: exon_id
+
+### end of the error message
+
+Is there any fix for this problem?
+
+Thanks,
+
+Wei 
+",weizhu365,https://github.com/openvax/isovar/issues/92
+MDU6SXNzdWUzMDM5NTUzMDc=,ASE for Synonymous + Non-synonymous Variants ,OPEN,2018-03-09T19:34:12Z,2018-05-01T21:20:22Z,,"The current implementation outputs VAR and REF read counts for non-synonymous variants only. I would be great, as a user to have the option to output read-support counts for all variants. I've used Varlens to get around this current limitation in Isovar, but that route has it's own limitations which I'll discuss below. 
+
+Per a conversation w/ Alex:
+> Hey John, 
+> 
+> I looked a little bit and found that on line 67 of isovar.effect_prediction I'm doing the following:
+> 
+>  nonsynonymous_coding_effects = effects.drop_silent_and_noncoding()
+> 
+> Do you want me to make this optional for the purposes of counting variant reads and assembling variant sequences?  
+> 
+> If so, can you file an issue on the repo? https://github.com/openvax/isovar/issues
+
+Eliminating the hard filter for non-synonymous variants affords the user a bit of added flexibility, but would necessitate additional descriptors for each variant to enable filtering to variant classes of interest. I think two additional columns, ""Effect_Class"" and ""Effect"" would solve the filtering problem and make working with the isovar output relatively easy. 
+
+I believe two columns may be required largely because of my experience working with Varlens. The Varlens output has an ""effect"" column that describes the specific coding effect of a variant (e.g. p.G12D). However, I've found this to be difficult to work-with in practice as AFAIK there is no easy way to parse non-synonymous SNVs (""p.G12D""), in-frame INDEL (""p.HDVPS811del"") and framshifts (p.A117fs). It may be better to have separate columns for effect class (""Exon, non-synonymous"") separated from the descriptor of the specific effect (p.G12D). 
+
+Ideally an effect class column would provide the same filtering as the current hard-coded isovar filters, or use the standard Ensembl classes.
+
+- 3' UTR 
+- 5' UTR
+- exonic-splice-site
+- Incomplete
+- Intergenic
+- Intragenic
+- Intronic
+- intronic-splice-site
+- non-coding-transcript
+- Silent
+- splice-acceptor
+- Splice-donor
+- Stop-loss
+- Stop-gain
+- Exon, Non-synonymous
+
+The specific use case I have in mind is counting the number of variants, the number of variants with RNA read-support; and finally how the latter category breaks down by variant type (e.g. SNV, SNV w/ coding effect, Indel, etc). ",JPFinnigan,https://github.com/openvax/isovar/issues/93
+MDU6SXNzdWUzMTc1MjkyMDQ=,option --use-duplicate-reads is ignores by isovar-protein-sequences.py ,CLOSED,2018-04-25T08:34:30Z,2019-06-12T21:35:33Z,2019-06-12T21:35:33Z,"Thanks for creating isovar and make it available for others.
+
+Some of my RNAs are of suboptimal quality resulting in many duplicated reads. 
+isovar-protein-sequences.py was the option --use-duplicate-reads listed but I get exactly the same counts with and without it. 
+I can send you a small bam file to test if necessary.
+
+I really appreciate if you could look into this issue.
+
+Regards,
+Dina",drna,https://github.com/openvax/isovar/issues/94
+MDU6SXNzdWUzMTc5NjcxODc=,setup error: No such file or directory: 'isovar/__init__.py',CLOSED,2018-04-26T10:23:43Z,2018-05-01T21:16:16Z,2018-05-01T21:16:16Z,"```
+/bin>python isovar/setup.py
+WARNING:root:Conversion of long_description from MD to RST failed
+Traceback (most recent call last):
+  File ""isovar/setup.py"", line 40, in <module>
+    with open('isovar/__init__.py', 'r') as f:
+IOError: [Errno 2] No such file or directory: 'isovar/__init__.py'
+```
+",gilhornung,https://github.com/openvax/isovar/issues/95
+MDU6SXNzdWUzMjg4MTM3MDI=,Variant sequence ... shorter than min allowed,OPEN,2018-06-03T09:28:17Z,2018-06-03T09:28:17Z,,"Hi,
+
+I've tried to run `isovar-protein-sequences.py` and noticed that a few variants with RNA support were missing. Below is an example of two genes, THSD1 and ARHGEF10, in which a variant was skipped in isovar. The stdout has an error `Variant sequence ... shorter than min allowed`, and `Unable to determine reading frame for VariantSequence...`.  I tried to reduce the `--min-transcript-prefix-length`, but I still get the error.
+
+All the files to reproduce the error can be found in the link
+https://owncloud.incpm.weizmann.ac.il/owncloud/index.php/s/L83i1GsOXqO1oOt
+
+
+```
+python isovar-protein-sequences.py --vcf variants.vcf --genome GRCh38 --bam rna.bam --min-alt-rna-reads 1 --min-transcript-prefix-length 1
+
+2018-06-03 12:22:43,374 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38')
+2018-06-03 12:22:43,414 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38') (chromosome = 13, gene names = [u'THSD1'])
+2018-06-03 12:22:43,438 - isovar.locus_reads:314 - INFO - Found 9 reads overlapping locus 13: 52377690-52377692
+2018-06-03 12:22:43,438 - isovar.variant_sequences:422 - INFO - Initial pool of 2 variant sequences (min length=63, max length=63)
+2018-06-03 12:22:43,439 - isovar.assembly:140 - INFO - Collapsed 2 -> 2 sequences
+2018-06-03 12:22:43,439 - isovar.variant_sequences:440 - INFO - After overlap assembly: 2 variant sequences (min length=63, max length=63)
+2018-06-03 12:22:43,440 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] (len=63)
+2018-06-03 12:22:43,442 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1] (len=63)
+2018-06-03 12:22:43,443 - isovar.variant_sequences:330 - INFO - Kept 1/2 variant sequences after read coverage trimming to >=2x
+2018-06-03 12:22:43,443 - isovar.variant_sequences:456 - INFO - After coverage & length filtering: 1 variant sequences (min length=0, max length=0)
+2018-06-03 12:22:44,482 - pyensembl.sequence_data:118 - INFO - Loaded sequence dictionary from /users/pmgil/.cache/pyensembl/GRCh38/ensembl87/Homo_sapiens.GRCh38.cdna.all.fa.gz.pickle
+2018-06-03 12:22:44,617 - pyensembl.sequence_data:118 - INFO - Loaded sequence dictionary from /users/pmgil/.cache/pyensembl/GRCh38/ensembl87/Homo_sapiens.GRCh38.ncrna.fa.gz.pickle
+2018-06-03 12:22:45,031 - pyensembl.sequence_data:118 - INFO - Loaded sequence dictionary from /users/pmgil/.cache/pyensembl/GRCh38/ensembl87/Homo_sapiens.GRCh38.pep.all.fa.gz.pickle
+2018-06-03 12:22:45,036 - isovar.effect_prediction:65 - INFO - Predicted total 2 effects for variant Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38')
+2018-06-03 12:22:45,036 - isovar.effect_prediction:73 - INFO - Keeping 2/2 effects which affect protein coding sequence for Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'): <EffectCollection with 2 elements>
+  -- Substitution(variant=Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'), transcript_name=THSD1-001, transcript_id=ENST00000258613, effect_description=p.R760P)
+  -- Substitution(variant=Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'), transcript_name=THSD1-002, transcript_id=ENST00000349258, effect_description=p.R707P)
+2018-06-03 12:22:45,036 - isovar.effect_prediction:84 - INFO - Keeping 2 effects with predictable AA sequences for Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'): [Substitution(variant=Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'), transcript_name=THSD1-001, transcript_id=ENST00000258613, effect_description=p.R760P), Substitution(variant=Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38'), transcript_name=THSD1-002, transcript_id=ENST00000349258, effect_description=p.R707P)]
+2018-06-03 12:22:45,037 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on THSD1-001 for variant Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38') = 2457:2458
+2018-06-03 12:22:45,037 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on THSD1-002 for variant Variant(contig='13', start=52377691, ref='C', alt='G', reference_name='GRCh38') = 2664:2665
+2018-06-03 12:22:45,037 - isovar.variant_sequence_in_reading_frame:334 - INFO - Variant sequence VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='GGGGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGA', allele='G', suffix='GAGCTCTGTGGGGCTCTGTTCTCTCAATTCCGGCCACTAATCCTG', name='A00376:25:HCKVGDMXX:1:2341:4535:8155', sequence='GGGGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGAGGAGCTCTGTGGGGCTCTGTTCTCTCAATTCCGGCCACTAATCCTG'), AlleleRead(prefix='GGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGA', allele='G', suffix='GAGCTCTGGGGGGCTCTGTTCTCTCAATTCCGGC', name='A00376:25:HCKVGDMXX:1:2426:22553:6073', sequence='GGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGAGGAGCTCTGGGGGGCTCTGTTCTCTCAATTCCGGC')])) shorter than min allowed 1 (iter=1)
+2018-06-03 12:22:45,037 - isovar.translation:206 - INFO - Unable to determine reading frame for VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='GGGGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGA', allele='G', suffix='GAGCTCTGTGGGGCTCTGTTCTCTCAATTCCGGCCACTAATCCTG', name='A00376:25:HCKVGDMXX:1:2341:4535:8155', sequence='GGGGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGAGGAGCTCTGTGGGGCTCTGTTCTCTCAATTCCGGCCACTAATCCTG'), AlleleRead(prefix='GGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGA', allele='G', suffix='GAGCTCTGGGGGGCTCTGTTCTCTCAATTCCGGC', name='A00376:25:HCKVGDMXX:1:2426:22553:6073', sequence='GGGATATGGGAGAAGACTGCTTCCTTGAGACACTCCTGTGACTGGGGGACGGTCCCCGAGGAGCTCTGGGGGGCTCTGTTCTCTCAATTCCGGC')]))
+2018-06-03 12:22:45,038 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38')
+2018-06-03 12:22:45,038 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') (chromosome = 8, gene names = [u'ARHGEF10', u'RP11-439C15.6'])
+2018-06-03 12:22:45,070 - isovar.locus_reads:314 - INFO - Found 21 reads overlapping locus 8: 1903317-1903319
+2018-06-03 12:22:45,070 - isovar.variant_sequences:422 - INFO - Initial pool of 1 variant sequences (min length=38, max length=38)
+2018-06-03 12:22:45,070 - isovar.variant_sequences:440 - INFO - After overlap assembly: 1 variant sequences (min length=38, max length=38)
+2018-06-03 12:22:45,071 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1] (len=38)
+2018-06-03 12:22:45,072 - isovar.variant_sequences:330 - INFO - Kept 1/1 variant sequences after read coverage trimming to >=2x
+2018-06-03 12:22:45,072 - isovar.variant_sequences:456 - INFO - After coverage & length filtering: 1 variant sequences (min length=0, max length=0)
+2018-06-03 12:22:45,166 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-006 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,166 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-004 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,167 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-005 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,167 - isovar.effect_prediction:48 - INFO - Skipping transcript RP11-439C15.6-001 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,175 - isovar.effect_prediction:65 - INFO - Predicted total 6 effects for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38')
+2018-06-03 12:22:45,175 - isovar.effect_prediction:73 - INFO - Keeping 5/6 effects which affect protein coding sequence for Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'): <EffectCollection with 5 elements>
+  -- Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-003, transcript_id=ENST00000349830, effect_description=p.R563T)
+  -- Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-201, transcript_id=ENST00000398560, effect_description=p.R319T)
+  -- Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-202, transcript_id=ENST00000398564, effect_description=p.R588T)
+  -- Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-001, transcript_id=ENST00000518288, effect_description=p.R587T)
+  -- Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-002, transcript_id=ENST00000520359, effect_description=p.R525T)
+2018-06-03 12:22:45,176 - isovar.effect_prediction:84 - INFO - Keeping 5 effects with predictable AA sequences for Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'): [Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-003, transcript_id=ENST00000349830, effect_description=p.R563T), Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-201, transcript_id=ENST00000398560, effect_description=p.R319T), Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-202, transcript_id=ENST00000398564, effect_description=p.R588T), Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-001, transcript_id=ENST00000518288, effect_description=p.R587T), Substitution(variant=Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38'), transcript_name=ARHGEF10-002, transcript_id=ENST00000520359, effect_description=p.R525T)]
+2018-06-03 12:22:45,176 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-003 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') = 1872:1873
+2018-06-03 12:22:45,176 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-201 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') = 1442:1443
+2018-06-03 12:22:45,177 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-202 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') = 1762:1763
+2018-06-03 12:22:45,177 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-001 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') = 1922:1923
+2018-06-03 12:22:45,178 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-002 for variant Variant(contig='8', start=1903318, ref='G', alt='C', reference_name='GRCh38') = 1746:1747
+2018-06-03 12:22:45,178 - isovar.variant_sequence_in_reading_frame:334 - INFO - Variant sequence VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='CCGACA', allele='C', suffix='TCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG', name='A00376:25:HCKVGDMXX:1:1404:23421:10551', sequence='CCGACACTCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG')])) shorter than min allowed 1 (iter=1)
+2018-06-03 12:22:45,178 - isovar.translation:206 - INFO - Unable to determine reading frame for VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='CCGACA', allele='C', suffix='TCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG', name='A00376:25:HCKVGDMXX:1:1404:23421:10551', sequence='CCGACACTCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG')]))
+2018-06-03 12:22:45,178 - isovar.allele_reads:200 - INFO - Gathering reads for Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38')
+2018-06-03 12:22:45,178 - isovar.allele_reads:208 - INFO - Gathering variant reads for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') (chromosome = 8, gene names = [u'ARHGEF10', u'RP11-439C15.6'])
+2018-06-03 12:22:45,180 - isovar.locus_reads:314 - INFO - Found 21 reads overlapping locus 8: 1903318-1903320
+2018-06-03 12:22:45,181 - isovar.variant_sequences:422 - INFO - Initial pool of 1 variant sequences (min length=39, max length=39)
+2018-06-03 12:22:45,181 - isovar.variant_sequences:440 - INFO - After overlap assembly: 1 variant sequences (min length=39, max length=39)
+2018-06-03 12:22:45,181 - isovar.variant_sequences:207 - INFO - Coverage: [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1] (len=39)
+2018-06-03 12:22:45,181 - isovar.variant_sequences:330 - INFO - Kept 1/1 variant sequences after read coverage trimming to >=2x
+2018-06-03 12:22:45,182 - isovar.variant_sequences:456 - INFO - After coverage & length filtering: 1 variant sequences (min length=0, max length=0)
+2018-06-03 12:22:45,185 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-006 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,185 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-004 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,185 - isovar.effect_prediction:48 - INFO - Skipping transcript ARHGEF10-005 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,185 - isovar.effect_prediction:48 - INFO - Skipping transcript RP11-439C15.6-001 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') because it's incomplete
+2018-06-03 12:22:45,185 - isovar.effect_prediction:65 - INFO - Predicted total 6 effects for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38')
+2018-06-03 12:22:45,185 - isovar.effect_prediction:73 - INFO - Keeping 5/6 effects which affect protein coding sequence for Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'): <EffectCollection with 5 elements>
+  -- Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-003, transcript_id=ENST00000349830, effect_description=p.R563S)
+  -- Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-201, transcript_id=ENST00000398560, effect_description=p.R319S)
+  -- Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-202, transcript_id=ENST00000398564, effect_description=p.R588S)
+  -- Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-001, transcript_id=ENST00000518288, effect_description=p.R587S)
+  -- Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-002, transcript_id=ENST00000520359, effect_description=p.R525S)
+2018-06-03 12:22:45,186 - isovar.effect_prediction:84 - INFO - Keeping 5 effects with predictable AA sequences for Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'): [Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-003, transcript_id=ENST00000349830, effect_description=p.R563S), Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-201, transcript_id=ENST00000398560, effect_description=p.R319S), Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-202, transcript_id=ENST00000398564, effect_description=p.R588S), Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-001, transcript_id=ENST00000518288, effect_description=p.R587S), Substitution(variant=Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38'), transcript_name=ARHGEF10-002, transcript_id=ENST00000520359, effect_description=p.R525S)]
+2018-06-03 12:22:45,186 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-003 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') = 1873:1874
+2018-06-03 12:22:45,187 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-201 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') = 1443:1444
+2018-06-03 12:22:45,187 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-202 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') = 1763:1764
+2018-06-03 12:22:45,187 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-001 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') = 1923:1924
+2018-06-03 12:22:45,188 - isovar.reference_sequence_key:113 - INFO - Interbase offset range on ARHGEF10-002 for variant Variant(contig='8', start=1903319, ref='G', alt='T', reference_name='GRCh38') = 1747:1748
+2018-06-03 12:22:45,188 - isovar.variant_sequence_in_reading_frame:334 - INFO - Variant sequence VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='CCGACAC', allele='T', suffix='CTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG', name='A00376:25:HCKVGDMXX:1:1404:23421:10551', sequence='CCGACACTCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG')])) shorter than min allowed 1 (iter=1)
+2018-06-03 12:22:45,188 - isovar.translation:206 - INFO - Unable to determine reading frame for VariantSequence(prefix='', alt='', suffix='', sequence='', reads=frozenset([AlleleRead(prefix='CCGACAC', allele='T', suffix='CTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG', name='A00376:25:HCKVGDMXX:1:1404:23421:10551', sequence='CCGACACTCTGCCTCTTCAGATGGCCCTGACAGAGCTCGAAACACTAGCAGAGAAGTTAAATGAAAGAAAGAGAGATGCTGATCAACGCTGTGAAGTGAAG')]))
+```",gilhornung,https://github.com/openvax/isovar/issues/99
+MDU6SXNzdWUzNDA2MTczMDc=,Constructing wildtype peptides,OPEN,2018-07-12T12:30:43Z,2019-06-15T18:52:02Z,,"Dear Alex,
+Have you tried to use IsoVar to assemble wildtype variants of the mutant peptides?
+It seems that now IsoVar is not designed to do that?
+Do you have an idea how to tune it to manage it?
+Thanx.
+",felixfrenkel,https://github.com/openvax/isovar/issues/100
+MDU6SXNzdWUzNjMwNTE1MTk=,Isovar with pysam > 0.9.0,CLOSED,2018-09-24T08:25:06Z,2019-05-16T19:17:45Z,2019-05-16T19:17:45Z,"Hi Alex,
+
+Could you please update the Isovar's dependency on pysam=0.9.0 to pysam>0.9.0? It would make my life much easier if it could work with pysam=0.15.0.
+
+Thank you for making this awesome piece of software!
+
+- Monika",monikasekelja,https://github.com/openvax/isovar/issues/101
+MDU6SXNzdWUzODYyODU3MzQ=,Count read names and not just reads,CLOSED,2018-11-30T17:43:28Z,2019-06-12T21:36:11Z,2019-06-12T21:36:11Z,,iskandr,https://github.com/openvax/isovar/issues/102
+MDU6SXNzdWUzODYyODU4ODk=,Threshold ratio of alt alleles to all other non-ref alleles,CLOSED,2018-11-30T17:43:58Z,2019-06-12T21:35:57Z,2019-06-12T21:35:57Z,Default 3x,iskandr,https://github.com/openvax/isovar/issues/103
+MDU6SXNzdWU0NTc1MDQ2OTg=,num_cdna_mismatches_after_variant_in_top_protein_sequence always non-zero,CLOSED,2019-06-18T14:07:48Z,2019-07-02T19:58:42Z,2019-07-02T19:58:42Z,,iskandr,https://github.com/openvax/isovar/issues/110
+MDU6SXNzdWU0NTc2NDE1ODc=,Normalize counts by number of mapped reads to get CPM,OPEN,2019-06-18T18:53:18Z,2019-06-18T18:53:18Z,,,iskandr,https://github.com/openvax/isovar/issues/112
+MDU6SXNzdWU0NzYzNDIzODQ=,Weird chromosome bug in MT variant under GRCh38,OPEN,2019-08-02T20:23:29Z,2019-08-02T20:23:29Z,,"```
+isovar.allele_reads:272 - WARNING - Chromosome 'chr9' from variant Variant(contig='MT', start=12404, ref='T', alt='C', reference_name='GRCh38') not in alignment file b'/outputs/pgv001-002-grch38/rna_final_sorted.bam'
+```",iskandr,https://github.com/openvax/isovar/issues/116
+MDU6SXNzdWU1MjAyMDQyODg=,get more than the top protein sequence,OPEN,2019-11-08T19:53:19Z,2021-08-13T15:54:25Z,,"When I run isovar, I get back only the top protein sequence even when I increase the value of --max-protein-sequences-per-variant to more than 1.
+
+Is there a way to get all the protein sequences in the results and not only the top one?
+That would be very useful.",drna,https://github.com/openvax/isovar/issues/118
+MDU6SXNzdWU2MjE1ODUyMzk=,RNA sequencing coverage,OPEN,2020-05-20T08:55:41Z,2020-05-20T08:55:41Z,,It is recommended to get >100M paired-end reads for RNAseq. I am wondering if this means >100M reads or >100M read pairs? Thanks.,nknewnew,https://github.com/openvax/isovar/issues/120
+MDU6SXNzdWU3ODk1Nzg0NDk=,Can I specify which ensembl release to use by the isovar command line?,OPEN,2021-01-20T02:47:40Z,2021-01-20T02:47:40Z,,I have downloaded multiple releases for the same reference genome. How can I specify which ensembl release (installed by pyensembl) to use in the command line? Thanks.,nknewnew,https://github.com/openvax/isovar/issues/122
+MDU6SXNzdWU5Njg4ODkzOTY=,Use another genome/annotation?,OPEN,2021-08-12T14:01:56Z,2021-08-12T14:01:56Z,,"Hello!
+
+I wonder can i run isovar against some other genome and/or annotation file? Our pipeline uses hg38.analysisset.fa and gencode.v31.chr_patch_hapl_scaff.annotation.gtf, but isovar uses Homo_sapiens.GRCh38.*.fa.gz and Homo_sapiens.GRCh38.102.gtf.gz which it downloads by itself, which results at least in some inconsistencies in gene names.
+
+Is it possible to set genome/annotation from python? It should be obviously so cos the command line isovar accepts genome parameter, but your readme says nothing about this.
+
+Can i read the list of genome names accepted as the mentioned parameter?
+
+Thanks in advance.",dining-philosopher,https://github.com/openvax/isovar/issues/123

@@ -1,0 +1,62 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MTMyODg5MjM=,How to prepare resource files for hg38 ?,CLOSED,2019-02-22T08:11:23Z,2019-11-21T09:03:58Z,2019-03-13T08:57:43Z,"Dear developers,
+Thanks for the workflow.
+My dataset is aligned to hg38 but not hg19.
+I was wondering that is that possible to apply the classification model for hg38 . If so, how to prepare resource files for the whole workflow, especifially for the splice4bp and rnaedit files ?
+
+",ahy1221,https://github.com/inab/SmartRNASeqCaller/issues/1
+MDU6SXNzdWU0MTc0NzYwOTc=,How many variants per cell should I expected after classification ?,CLOSED,2019-03-05T19:58:32Z,2019-09-20T13:28:42Z,2019-09-20T13:28:42Z,"Aftering running this pipeline on my own Smartseq2 data, I got  ~10000 variants a cell. The RF model just filtered out about 1000 ~ 2000 variants.
+Is that a right number of variants for a cell ? My variant calling pipeline follows GATK4 RNA-seq calling best practice.",ahy1221,https://github.com/inab/SmartRNASeqCaller/issues/2
+MDU6SXNzdWU0MTg2MTcxNzE=,Where is RNA edited sites from?,CLOSED,2019-03-08T03:34:35Z,2019-05-10T14:11:07Z,2019-05-10T14:11:07Z,"As I asked, how did you get bed files of RNA Edit positions? ",wangshun1121,https://github.com/inab/SmartRNASeqCaller/issues/3
+MDU6SXNzdWU0OTAwMTE2ODA=,Using RDConnect_RNASeq for input to SmartRNASeqCaller,OPEN,2019-09-05T21:10:49Z,2019-11-11T15:47:15Z,,"Hi,
+
+I used your nextflow workflow from here:
+https://github.com/inab/RDConnect_RNASeq
+
+to generate a gatk vcf file to be used as input to SmartRNASeqCaller.
+
+The final output from running RDConnect_RNASeq is:
+Step8_out.filtered.g.vcf
+
+which contains PASS variants along with all those with filter fields set to non-pass values.
+
+If I use this as input to SmartRNASeqCaller, it ends up selecting some non-pass variants as 'ok' variants.
+
+Should we be running SmartRNASeqCaller on only the PASS variants from this vcf file?
+
+thanks!",brianjohnhaas,https://github.com/inab/SmartRNASeqCaller/issues/4
+MDU6SXNzdWU0OTA2MzY3Njk=,SmartRNASeqCaller/Nextflow/params.yaml  intron file mis-spelling,CLOSED,2019-09-07T13:39:45Z,2019-09-09T08:59:34Z,2019-09-09T08:59:34Z,"
+intron_bed: ""SmartRNASeqCaller/resources/hg19/intron_4bp_splice_overla.bed.gz""
+
+is not being used properly because it should be 'overlap.bed' not 'overla.bed'
+
+",brianjohnhaas,https://github.com/inab/SmartRNASeqCaller/issues/5
+MDU6SXNzdWU0OTA2NDE2Njk=,filters not compatible with 'chr' in chromosome identifiers.  ie. requires '1' instead of 'chr1',CLOSED,2019-09-07T14:29:14Z,2019-10-16T08:26:31Z,2019-10-16T08:26:31Z,"Hi,
+
+I noticed that if the genome being used includes 'chr' in the chromosome identifiers, the various filters aren't working, such as splice adjacency, repeat masker overlap, etc., as none of the resource files contain 'chr' identifiers and none of the resulting 'bed intersect' calls find overlaps.
+
+Genomes downloaded from GENCODE all contain 'chr' identifiers, and this breaks compatibility.",brianjohnhaas,https://github.com/inab/SmartRNASeqCaller/issues/6
+MDU6SXNzdWU1MDc0MzQ3ODM=,Docker error,CLOSED,2019-10-15T19:22:03Z,2019-10-28T15:27:48Z,2019-10-28T15:27:47Z,"Hello,
+
+When trying to run SmartRNASeqCaller using docker and nextflow, I get the following error at the final step. Not sure if the error is coming from the Rscript command or the split_vcf.py command. I believe it is from the Rscript command. Can you please tell me how I can go about solving this issue.
+
+Thanks!
+
+Error:
+![Screen Shot 2019-10-15 at 3 21 37 PM](https://user-images.githubusercontent.com/36251375/66862733-82fc1180-ef5f-11e9-8ad4-5869db798df0.png)
+",PrincescaDorsaint,https://github.com/inab/SmartRNASeqCaller/issues/7
+MDU6SXNzdWU1MjI4NTMwNTg=,Running smartRNASeqCaller on hg38,CLOSED,2019-11-14T13:19:35Z,2019-11-27T12:21:57Z,2019-11-27T12:21:57Z,Is there a way to run it on data generated with hg38 in stead of hg19? ,travelanywhere,https://github.com/inab/SmartRNASeqCaller/issues/8
+MDU6SXNzdWU3MDk2OTA5NjI=,Problems in predict_variants.R script,OPEN,2020-09-27T07:58:07Z,2020-09-28T14:30:29Z,,"Hi,
+I have two questions:
+1. As you mentioned, this software used GATK best practise vcf file as input, but in your pipeline it is also used bam file. So this bam file in which step GATK best practise created? or just first step mapping bam is OK? 
+2. I have run to predict_variants.R script. It always print ""Error: both model and input file need to be specified.
+Execution halted"". Below is output files before this step. Could you help how to correct it?
+Thank you!
+![a](https://user-images.githubusercontent.com/38235922/94359526-64444b80-00da-11eb-87c8-6332b58e81a4.png)
+
+
+",dreammxy,https://github.com/inab/SmartRNASeqCaller/issues/9
+MDU6SXNzdWU3MTMwMjc4NjY=,Issues installing caret package via docker/nextflow,OPEN,2020-10-01T17:11:39Z,2020-10-01T17:11:39Z,,"Hello,
+
+I am having issues installing the caret package via docker. I build the docker image just like you have done but for some reason, the caret package isn't loading. Looks like docker is having issues installing dependencies such as stringi, stringr, & reshape2 therefore failing to install caret.",PrincescaDorsaint,https://github.com/inab/SmartRNASeqCaller/issues/10
+MDU6SXNzdWU4OTA0NjA1OTM=,resources/hg38/intron_slice* -> intron_splice*,OPEN,2021-05-12T20:30:33Z,2021-05-12T20:30:33Z,,looks like a typo in the resource filename which results in the splice file not being found properly during the workflow.,brianjohnhaas,https://github.com/inab/SmartRNASeqCaller/issues/11

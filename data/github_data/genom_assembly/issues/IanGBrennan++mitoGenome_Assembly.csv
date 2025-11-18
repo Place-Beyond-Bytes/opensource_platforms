@@ -1,0 +1,38 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOB8l18s6OjORl,mira error: C++,OPEN,2024-07-05T01:02:56Z,2024-07-05T01:02:56Z,,"Hey Ian, 
+
+I found an error and a workaround. 
+
+On some machines the pre-compiled library of mira throws an error in the log file:
+
+```
+==============
+ ITERATION 1
+==============
+Jul  5 09:38:54
+
+
+quick option baits reads from provided reference in iteration 0
+
+fishing readpool using mirabait (k = 31)
+
+mirabait: loadlocale.c:130: _nl_intern_locale_data: Assertion `cnt < (sizeof (_nl_value_type_LC_TIME) / sizeof (_nl_value_type_LC_TIME[0]))' failed.
+
+your readpool does not contain any reads with reasonable match (k = 31) to your reference - Maybe you ll want to try different settings or even a different reference?
+
+```
+
+I investigated further and it seems like this is a known bug reported on the mira sourceforge page [here](https://sourceforge.net/p/mira-assembler/tickets/40/). [Bastien Chevreux](https://sourceforge.net/u/bach/profile/) the author of MIRA wrote 
+
+```
+A bug of the C++ libraries which I learned to circumvent in later versions of MIRA. Should you insist on using 4.0.2, the workaround is:
+export LC_ALL=C
+in the shell, then it will work.
+```
+
+For the time being, I recommend modifying `mtGenome_Assembly_Nick.R`:
+
+```
+final.call <- paste(change.to.directory, "";"", ""export LC_ALL=C"", "";"", mitobim.call)
+      system(final.call)
+```",stiatragul,https://github.com/IanGBrennan/mitoGenome_Assembly/issues/1

@@ -1,0 +1,460 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3MDY5NjkzNw==,Core Data documentation,CLOSED,2015-04-24T13:54:20Z,2015-10-24T03:22:10Z,2015-09-28T22:20:41Z,"Hi guys, your framework look promising and very clear! I would like to ask extend Core data support documentation. Especially what I'm interesting in is: how to get some keys from JSON in init section to link with existing objects in CD and not to create new one?  
+",SPopenko,https://github.com/loganwright/Genome/issues/2
+MDU6SXNzdWUxMDgzNzM3MjA=,Simple Customizable Logging,CLOSED,2015-09-25T17:35:44Z,2015-09-25T18:19:54Z,2015-09-25T18:19:54Z,"Possibilities
+
+```
+var logOutput: ((ErrorType) -> Void)? = print
+```
+
+Or, an array:
+
+```
+var logOutput: [(ErrorType) -> Void)] = [print]
+```
+",loganwright,https://github.com/loganwright/Genome/issues/6
+MDU6SXNzdWUxMDg0ODk3NTQ=,Logging Documentation,CLOSED,2015-09-26T19:39:48Z,2015-09-26T23:15:43Z,2015-09-26T23:15:43Z,"Show quick demo how to hook into loggers.
+",loganwright,https://github.com/loganwright/Genome/issues/8
+MDU6SXNzdWUxMDg1NzQ3Nzg=,Genome and Realm can be used together ?,CLOSED,2015-09-28T01:40:47Z,2015-09-28T22:21:26Z,2015-09-28T22:21:26Z,"Genome and Realm can be used together ?
+",arden,https://github.com/loganwright/Genome/issues/10
+MDU6SXNzdWUxMDg1NzUxMzA=,source directory is missing.,CLOSED,2015-09-28T01:42:59Z,2015-09-28T01:56:41Z,2015-09-28T01:55:39Z,"source directory is missing.
+",arden,https://github.com/loganwright/Genome/issues/11
+MDU6SXNzdWUxMTAzMzc5MjU=,tvOS support,CLOSED,2015-10-07T23:14:00Z,2015-10-23T13:21:43Z,2015-10-23T13:21:43Z,"`import Genome` currently results in the following build error on Xcode 7.1 beta 3:
+
+```
+module file was created for incompatible target x86_64-apple-ios8.0: [...]/Carthage/Build/iOS/Genome.framework/Modules/Genome.swiftmodule/x86_64.swiftmodule
+```
+
+It would be great to see this project support tvOS like Alamofire and Decodable have!
+",iliaskarim,https://github.com/loganwright/Genome/issues/15
+MDU6SXNzdWUxMTE5MTIyNjI=,Map.swift:53:26: Use of undeclared type 'NSNull',CLOSED,2015-10-16T21:12:45Z,2015-10-19T05:34:51Z,2015-10-18T22:51:38Z,"I opened the playground folder in Xcode 7.0.1 and got the following error:
+Genome/Genome.playground/Sources/Map.swift:53:26: Use of undeclared type ‚NSNull'
+",jplasser,https://github.com/loganwright/Genome/issues/20
+MDU6SXNzdWUxMTc4Nzg3MDU=,Int64 unexpected value mapping error,CLOSED,2015-11-19T18:38:03Z,2016-02-15T10:48:57Z,2016-01-16T17:18:18Z,"Could you describe how to use Genome with Int64 type? I'm getting error while trying to map:
+
+> ""UnexpectedValue(""Found: 42 ofType: __NSCFNumber Expected: Int64 KeyPath: id TargetType: Int64"")\n""
+
+Here is sample:
+
+``` swift
+let string = ""{ \""id\"": 42 }""
+let data = string.dataUsingEncoding(NSUTF8StringEncoding)
+let json = try? NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+
+struct Sample: BasicMappable {
+    private(set) var id: Int64 = 0
+    mutating func sequence(map: Map) throws {
+        try id <~> map[""id""]
+    }
+}
+
+do {
+    let sample = try Sample.mappedInstance(json as! JSON)
+    print(sample.id)
+} catch {
+    print(error)
+}
+```
+",max-potapov,https://github.com/loganwright/Genome/issues/25
+MDU6SXNzdWUxMjI2NDg2Njk=,Ambiguous reference to member 'transformFromJson' when using Optional property,CLOSED,2015-12-17T02:42:08Z,2015-12-17T20:24:09Z,2015-12-17T20:24:09Z,"I have an optional property that I'm trying to transform
+
+```
+init(map: Map) throws {
+    try logo = <~?map[""logo""].transformFromJson(urlFromString)
+}
+```
+
+It works great with non-optional properties, I'm guessing it can't decide which version of the generic transformFromJson method to use.
+",NinoScript,https://github.com/loganwright/Genome/issues/28
+MDU6SXNzdWUxMjUyOTU5ODY=,Swift Package Manager,CLOSED,2016-01-07T00:33:48Z,2016-09-13T16:33:36Z,2016-09-13T16:33:36Z,"Support for Swift Package Manager stripping Foundation Requirements
+",loganwright,https://github.com/loganwright/Genome/issues/30
+MDU6SXNzdWUxMjY3NTI1Njk=,null value under KeyPath,CLOSED,2016-01-14T21:31:59Z,2016-01-19T03:43:20Z,2016-01-19T03:42:49Z,"Hi,
+Awesome library! I'm trying to figure out how to handle a case when a given field may contain null value. Right now I receive
+
+``` swift
+UnexpectedInputType(""Unexpectedly found nil input.  KeyPath: .KeyPath(Date2) Expected: String"")
+```
+
+which is quite understandable given it contains `null` value.
+How should I approach it?
+",kamil-tomaszewski,https://github.com/loganwright/Genome/issues/33
+MDU6SXNzdWUxMjcyNTk0MjQ=,transformToJson to NSNull,CLOSED,2016-01-18T16:15:42Z,2016-01-19T16:09:58Z,2016-01-19T16:09:58Z,"``` Swift
+// Genome 1.0
+try self.note ~> map[""note""]
+  .transformToJson {
+    $0 ?? NSNull()
+  }
+```
+
+``` Swift
+// Genome 2.0
+try self.note ~> map[""note""]
+  .transformToJson { (value: String?) -> String in
+    if let text = value {
+      return text
+    }
+    return ""\(NSNull())""
+  }
+```
+
+In Genome 1.0, I can `transformToJson` from nil to NSNull by first code block
+but In Genome 2.0, I have to change the transform code to second block which does not actually return NSNull as I want but a String
+
+does there have some way to do the function like before?
+",wanewang,https://github.com/loganwright/Genome/issues/36
+MDU6SXNzdWUxMjgyMTU0Nzc=,jsonRepresentation can not cast to AnyObject,CLOSED,2016-01-22T18:31:39Z,2016-09-13T16:31:51Z,2016-09-13T16:31:51Z,"In v1.0.8
+I can do this directly(obj is a class object confirm to BasicMappable)
+
+``` Swift
+  var basic = [String: AnyObject]()
+  basic[""obj""] = obj.jsonRepresentation()
+```
+
+But in v2, it won't work and I can't even cast to AnyObject
+
+``` Swift
+if let dict = try obj.jsonRepresentation() as? AnyObject {
+  basic[""obj""] = dict
+}
+```
+
+I'm using Alamofire to do a POST which take Dictionary<String, AnyObject> as parameter and assemble to string automatically, does there a way to do things like before?
+",wanewang,https://github.com/loganwright/Genome/issues/39
+MDU6SXNzdWUxMjk5Njg2NjM=,Core Data example in readme,CLOSED,2016-01-30T10:05:51Z,2016-01-30T15:04:08Z,2016-01-30T15:04:08Z,"I've tried to play with Genome 2.0 and CoreData example and faced with complier error:
+
+> error: declarations from extensions cannot be overridden yet
+
+Here is example without CoreData stack to reduce code size.
+
+```
+public class NSManagedObjectContextStub {}
+public class NSManagedObjectObjectStub {}
+
+extension NSManagedObjectContextStub: Context {}
+
+extension NSManagedObjectObjectStub: MappableBase {
+    public class var entityName: String {
+        return ""\(self)""
+    }
+
+    public func sequence(map: Map) throws {
+        fatalError(""Sequence must be overwritten"")
+    }
+
+    public class func newInstance(json: Json, context: Context) throws -> Self {
+        return try newInstance(json, context: context, type: self)
+    }
+
+    public class func newInstance<T: NSManagedObjectObjectStub>(json: Json, context: Context, type: T.Type) throws -> T {
+        let context = context as! NSManagedObjectContextStub
+        let new = NSManagedObjectObjectStub() as! T
+        let map = Map(json: json, context: context)
+        try new.sequence(map)
+        return new
+    }
+}
+
+class Person: NSManagedObjectObjectStub {
+    override func sequence(map: Map) throws {
+        // error: declarations from extensions cannot be overridden yet
+    }
+}
+```
+",max-potapov,https://github.com/loganwright/Genome/issues/41
+MDU6SXNzdWUxMzI1NDY3Mzk=,Create a method for converting null strings to empty strings on map.,OPEN,2016-02-09T21:52:19Z,2016-02-09T21:53:38Z,,"Instead of doing something like
+
+```
+extension String {
+    static func fromJson(json: Json) -> String {
+        return json.stringValue ?? """"
+    }
+}
+func sequence(map: Map) throws {
+    try someValue <~ map[""someValue""].transformFromJson(String.fromJson)
+}
+```
+
+Add a method like: `<~ map[""someValue""].emptyStringTransform()`
+",Benuuu,https://github.com/loganwright/Genome/issues/44
+MDU6SXNzdWUxMzI3Njk5MDg=,Problems running playground,CLOSED,2016-02-10T17:46:12Z,2016-02-11T12:03:48Z,2016-02-11T12:02:30Z,"Hi,
+
+I'm having some troubles trying to run playground. I need to drag `Genome.xcodeproj` inside of _Genome.playground > Sources_ folder because if I don't do it, it has problems finding `MappableObject` and other requirements in playground.
+
+Do you know if I'm doing something wrong? I usually don't use playgrounds, so maybe it's a problem of mine...
+",patoroco,https://github.com/loganwright/Genome/issues/50
+MDU6SXNzdWUxNTM4NzA0NTM=,Swift-3 branch indefinite dictionary initializer,CLOSED,2016-05-09T21:08:33Z,2016-05-10T06:17:04Z,2016-05-10T06:17:04Z,"https://github.com/LoganWright/Genome/blob/lw/swift-3/Sources/GenomeJson/Genome%2BJson.swift#L51
+",loganwright,https://github.com/loganwright/Genome/issues/59
+MDU6SXNzdWUxNTM5NDQ2MzE=,Can't build with Carthage,CLOSED,2016-05-10T07:54:53Z,2016-09-13T16:33:52Z,2016-09-13T16:33:52Z,"I tried building Genome 3.0.0 with Carthage, but I couldn't build with error 'Dependency ""Genome"" has no shared framework schemes for any of the platforms: iOS'.
+",rizumita,https://github.com/loganwright/Genome/issues/60
+MDU6SXNzdWUxNTU0MDAzMjM=,Error: method 'newInstance(_:context:)' in non-final class 'ChecklistItem' must return `Self` to conform to protocol 'JsonConvertibleType',CLOSED,2016-05-18T01:49:46Z,2016-08-22T19:38:23Z,2016-08-22T19:38:23Z,"I'm getting this error using Carthage install: github ""LoganWright/Genome"" ""2.0.4""
+
+Here is the source code
+
+```
+class ChecklistItem: MappableObject {
+
+    var title: String
+    var checked: Bool
+
+    init(title: String, checked: Bool) {
+        self.title = title
+        self.checked = checked
+    }
+
+    convenience init(title: String) {
+        self.init(title: title, checked: false)
+    }
+
+    required init(map: Map) throws {
+        self.title = try map.extract(""title"")
+        self.checked = try map.extract(""checked"")
+    }
+
+    func sequence(map: Map) throws {
+        try title ~> map[""title""];
+        try checked ~> map[""checked""];
+    }
+
+}
+
+extension ChecklistItem: Equatable { }
+func == (lhs: ChecklistItem, rhs: ChecklistItem) -> Bool {
+    return lhs.checked == rhs.checked && lhs.title == rhs.title
+}
+```
+",jefferythomas,https://github.com/loganwright/Genome/issues/62
+MDU6SXNzdWUxNjQxMTAxNTk=,'String' is not convertible to 'KeyType',CLOSED,2016-07-06T15:52:35Z,2016-07-07T07:22:41Z,2016-07-07T07:22:41Z,"Hello,
+
+first of all: great library. I just moved from another lib to Genome, and I find it much more transparent and efficient.
+
+My problem: I want to save a `UIImage`, using this code in the `sequence` function:
+
+```
+        try image <~> map[""image""]
+            .transformFromJson {
+                let stringData = $0
+                let image = UIImage.fromBase64(stringData)
+                return UIImage(data: imageData)
+        }
+            .transformToJson {
+                let image: UIImage = $0
+                let stringData = image.toBase64()
+                return stringData
+        }
+```
+
+However, this does not compile, as the error ""'String' is not convertible to 'KeyType'"" is thrown. What goes wrong, and how to fix it?
+
+Thank a lot in advance!
+- Hardy
+",N/A,https://github.com/loganwright/Genome/issues/63
+MDU6SXNzdWUxNjQyNTAzMjQ=,Problem with restoring data,CLOSED,2016-07-07T07:55:46Z,2016-09-13T16:31:17Z,2016-09-13T16:31:17Z,"I have a custom data structure, with DM_ModelRoot as root item. Writing to a JSON string is working fine:
+
+```
+let map = Map()
+var settableRoot: DM_ModelRoot? = self.modelRoot
+
+try settableRoot ~> map[""modelRoot""]
+
+print(settableRoot)
+
+var jsonString = map.toJson.serialize()
+```
+
+However, when trying to restore the JSON string, there is an error `UnableToMap(.KeyPath(modelRoot), Genome.SequenceError.FoundNil(""Key: .KeyPath(identifier) TargetType: String""))`:
+
+```
+var settableRoot: DM_ModelRoot?
+
+let json = try Json.deserialize(jsonString)
+
+let map = Map(json: json)
+
+try settableRoot <~ map[""modelRoot""]
+```
+
+What am I doing wrong? 
+
+Note: DM_ModelRoot is setup with init(...) and sequence(...) properly, the JSON string is created correctly.
+
+BTW: It would be helpful to have examples for correctly reading and writing JSON from and into custom objects on the documentation page ;-)
+",N/A,https://github.com/loganwright/Genome/issues/64
+MDU6SXNzdWUxNzU5Nzc4NDI=,Swift 3 / Xcode 8 / Carthage: usable version available soon?,CLOSED,2016-09-09T10:28:33Z,2016-09-14T07:51:43Z,2016-09-14T01:34:50Z,"Are there plans to have a working version of this very nice project soon that can be used with Swift 3 and be checkout out via Carthage?
+
+I had a look at #58 but current state doesn't even contain a Xcode project. The Swift 3 branch over at [PureJsonSerializer](https://github.com/gfx/Swift-PureJsonSerializer/pull/17) also seems very outdated.
+
+Would be cool to have and working Swift 3 version soon. It's the one thing holding me back from upgrading to Xcode 8.
+",t-unit,https://github.com/loganwright/Genome/issues/65
+MDU6SXNzdWUxNzg5OTI5MTU=,Node alternative to Json.deserialize(string) and Json.serialize(style)?,CLOSED,2016-09-23T23:19:01Z,2016-09-28T23:20:28Z,2016-09-26T19:56:41Z,"Hi!
+Yesterday I serialized and deserialized strings to and from JSON directly with PureJsonSerializer like this:
+
+`Json.deserialize(rawString)`
+and 
+`Json.serialize(aStyle)`
+
+but know I'm a little but confused as to how to do it with Node. Could you give us some insight on this please? 
+
+Thanks!
+",diegomontoyas,https://github.com/loganwright/Genome/issues/71
+MDU6SXNzdWUxODE0MTYxMzc=,Swift 3: Date unconditionallyBridgeFromObjectiveC exception,CLOSED,2016-10-06T13:34:00Z,2021-04-10T11:24:09Z,2016-11-07T23:40:20Z,"I am using Genome to parse server response to CoreData entity. Exception is thrown when non-optional Date field is parsed:
+ **libswiftFoundation.dylib`static Foundation.Date._unconditionallyBridgeFromObjectiveC (Swift.Optional<__ObjC.NSDate>) -> Foundation.Date:**
+
+```
+extension BaseNote {
+    @NSManaged var date: Date
+    @NSManaged var text: String?
+}
+
+override func sequence(_ map: Map) throws {
+//...
+    try date <~> map[""date""]
+        .transformFromNode {
+            return Date(timeIntervalSince1970: $0)
+        }
+        .transformToNode { return $0.timeIntervalSince1970 }
+}
+```
+
+Note that the problem disappears if I use NSDate in NSManagedObject subclass or make the field optional (Date?). It worked fine before migration to Swift 3.
+
+Please correct me if I'm doing it wrong.
+",alexburtnik,https://github.com/loganwright/Genome/issues/72
+MDU6SXNzdWUxODU2MDYzOTE=,version 3.1.0 not work in Carthage,CLOSED,2016-10-27T08:39:29Z,2016-11-10T07:05:23Z,2016-11-09T20:36:34Z,"I'm trying Genome with Carthage, but when running `carthage update` it won't download `Packages`  folder content. Node, PathIndexable and Polymorphic is missing in project, which caused built failed.
+
+I'm now running with specific version
+`github ""LoganWright/Genome"" == 3.0.3`
+It worked.
+
+might be submodule issue?
+",wanewang,https://github.com/loganwright/Genome/issues/75
+MDU6SXNzdWUxODU3NTM4MzM=,Missing sections in README.md,OPEN,2016-10-27T19:05:46Z,2017-04-03T15:49:41Z,,"The README has a **Table Of Contents** with links to two sections that don't exist.
+
+One is about Alamofire:
+https://github.com/LoganWright/Genome#alamofire
+
+And the other about Logging:
+https://github.com/LoganWright/Genome#logging
+",NinoScript,https://github.com/loganwright/Genome/issues/76
+MDU6SXNzdWUxODg4OTk1MjY=,Dealing with optional variables (basic types and enum),OPEN,2016-11-12T08:05:13Z,2016-11-14T15:50:31Z,,"I am learning how to use Genome, and so far I am impressed with the flexibility offered by Genome. 👍  
+
+1.  Is it possible to declare optional variables (both basic type and enum) that will not be mapped to JSON at all if they are nil? 
+2. An extension to this question is how do I specify the transformToNode and transformFromNode functions for these optional variables?
+3. I am trying to extend Date class, making it NodeRepresentable and NodeConvertible. (See code below). Would this implementation be able to handle when _date_ is nil during serialization (my intention is to skip saving _date_ data if _date_ is nil) and when the JSON data is absent during deserialization (my intention is to leave the _date_ variable uninitialized)?
+
+```swift
+extension Date: NodeRepresentable {
+    public func makeNode(context: Context = EmptyNode) throws -> Node {
+        return .string(self.ISO8601String())
+    }
+}
+
+extension Date: NodeConvertible {
+    public init(node: Node, in context: Context) throws {
+        guard let string = node.string else {
+            throw NodeError.unableToConvert(node: node, expected: ""\(String.self)"")
+        }
+        guard let date = Date.dateFromISO8601String(string: string) else {
+            throw NodeError.unableToConvert(node: node, expected: ""Date is stored in ISO8601 format"")
+        }
+        self = date
+    }
+}
+```
+
+Example class definition:
+```swift
+enum FooType: Int8 {
+    case typeA
+    case typeB
+}
+
+class Bar: BasicMappable {
+    var foo: FooType?
+    var date: Date?
+    var name: String?
+    
+    required init() {
+    }
+    
+    func sequence(map: Map) throws {
+        try foo <~> map[""foo""]
+        try date <~> map[""date""]
+        try name <~> map[""name""]
+    }
+}
+```
+",jimmyti,https://github.com/loganwright/Genome/issues/81
+MDU6SXNzdWUxOTY4OTg4NDI=,Include map key in error message,OPEN,2016-12-21T10:34:59Z,2017-01-04T23:03:05Z,,"I remember that 2.0 has key information in error message right?
+like if `let id:String = map[""id""]`, but `map[""id""]` is nil, 
+the message will have the key `id` in it.
+It would be better for debugging with the key information.
+",wanewang,https://github.com/loganwright/Genome/issues/82
+MDU6SXNzdWUyMTM4MDE4Njc=,Update Podspec,OPEN,2017-03-13T15:24:25Z,2017-03-13T15:24:25Z,,"Latest version when adding with cocoapods is Installing Genome (3.0.2). Not latest (3.1.1)
+",waltermvp,https://github.com/loganwright/Genome/issues/83
+MDU6SXNzdWUyMTQ4OTMzOTQ=,Updated CoreData Example,OPEN,2017-03-17T02:47:36Z,2017-03-17T03:01:05Z,,"I'm not sure exactly how to use Genome with core Data. Am I missing something here? How do they get initialized?
+
+How do I fetch or init it?
+
+```swift
+public class Todo: ManagedObject {
+    
+    init(map: Map, context: Context) throws {
+        try checked ~> map[""checked""]
+        try id ~> map[""id""]
+        try text ~> map[""text""]
+    }
+
+    public override func sequence(_ map: Map) throws {
+        try checked ~> map[""checked""]
+        try id ~> map[""id""]
+        try text ~> map[""text""]
+    }
+       
+}
+```",waltermvp,https://github.com/loganwright/Genome/issues/84
+MDU6SXNzdWUyMTgyMTc4MTE=,Core Data initialization,OPEN,2017-03-30T14:32:59Z,2017-04-03T16:46:41Z,,"Can you provide us how to use Genome for core data?
+Which protocol/class we have to use? 
+
+According to your Readme: NSMappableManagedObject is not avaiable.
+
+",lumo2707,https://github.com/loganwright/Genome/issues/86
+MDU6SXNzdWUyMjA3NTM4MjQ=,Add copyright,OPEN,2017-04-10T20:00:51Z,2017-04-10T20:00:51Z,,"Hi,
+Could you please add a copyright statement to the license?
+Thank you!",sakma,https://github.com/loganwright/Genome/issues/87
+MDU6SXNzdWUyMjc3MjE4NjA=,sub-map node not change when mapping,OPEN,2017-05-10T15:35:08Z,2017-05-10T15:35:08Z,,"I would like to have a sub-map when mapping so I don't have to type the path repeatedly
+e.x. json is
+```
+[
+    ""test"": ""abc"",
+    ""sub"": [
+        ""int"": 9,
+        ""string"": ""8""
+    ]
+]
+```
+and my mapping function is
+```
+try mainString <~> map[""test""]
+let subMap = map[""sub""]
+try subInt <~> subMap[""int""]
+try subString <~> subMap[""string""]
+```
+but when I do `let subMap = map[""sub""]`
+the subMap.node is still original node since subscript only change result
+```
+// file Map.swift line 102
+public subscript(keys: [PathIndex]) -> Map {
+    lastPath = keys
+    result = node[keys]
+    return self
+}
+```
+should it also change `node` to `node[keys]`?",wanewang,https://github.com/loganwright/Genome/issues/93
+MDU6SXNzdWUyNTk1NjMxOTI=,Swift 4 ,OPEN,2017-09-21T16:50:41Z,2017-10-01T01:40:06Z,,"Yes, we have a new way to work with JSON in swift-4, but project which use Genome could really make use of an update. Do you plan to update it? 
+Seems easy: https://www.dropbox.com/s/l2gmoepbxvhfku7/Screenshot%202017-09-21%2019.51.12.png?dl=0
+P.S: I see the updates brunch, but it seems like it's abandoned :) ",lonkly,https://github.com/loganwright/Genome/issues/98
+MDU6SXNzdWUyNjI5ODUzODE=,User Defaults,CLOSED,2017-10-05T02:16:10Z,2017-10-05T15:49:10Z,2017-10-05T15:49:10Z,"I am attempting to set a Genome.Node.array value to user defaults. Is this even possible via Genome? I have looked into extending Genome and Node to conform to NSCoding but have not found a unsuccessful as they are not classes. 
+
+Suggestions? Thank you.",cnbecom,https://github.com/loganwright/Genome/issues/99
+MDU6SXNzdWUyODU3ODA5NTU=,Abandoned Repo,OPEN,2018-01-03T19:11:38Z,2018-01-03T19:11:38Z,,,btelintelo,https://github.com/loganwright/Genome/issues/100
+MDU6SXNzdWU0MTM5NjA5NTE=,How to use Genome in Swift 4.2,OPEN,2019-02-25T07:02:24Z,2019-02-25T07:02:50Z,,,RajAggrawal0507,https://github.com/loganwright/Genome/issues/102

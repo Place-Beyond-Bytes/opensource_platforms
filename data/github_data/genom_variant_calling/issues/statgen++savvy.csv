@@ -1,0 +1,722 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNDQ2ODYzMzI=,Support Additional VCF Format Fields,CLOSED,2017-07-21T14:30:18Z,2018-05-22T12:29:59Z,2018-05-22T12:29:59Z,"Add support for DP, EC, etc.",jonathonl,https://github.com/statgen/savvy/issues/1
+MDU6SXNzdWUzNDc1MDk3NjY=,Update index during concat,CLOSED,2018-08-03T19:23:22Z,2021-01-24T21:18:44Z,2021-01-24T21:18:44Z,Merge index files into one when concatenating. ,jonathonl,https://github.com/statgen/savvy/issues/3
+MDU6SXNzdWUzNDc1MTAzMjM=,Merge headers during concat,CLOSED,2018-08-03T19:25:34Z,2019-01-29T17:06:34Z,2019-01-29T17:06:34Z,Missing contig headers could cause problems downstream.,jonathonl,https://github.com/statgen/savvy/issues/4
+MDU6SXNzdWUzNDg4ODIyNzk=,no warning if sample-ids-file is missing,CLOSED,2018-08-08T20:36:07Z,2019-04-26T15:42:31Z,2019-04-26T15:42:31Z,"Hi, Jonathon,
+
+`sav export --sample-ids-file XXX` will output the whole data if the --sample-ids-file is missing (I had a typo in the file name and no warning message showed up).
+
+Thanks,
+Lars",ilarsf,https://github.com/statgen/savvy/issues/5
+MDU6SXNzdWUzNjg3MDkxMzU=,sav export vcf / AF is updated MAF not,CLOSED,2018-10-10T14:58:54Z,2019-01-29T17:05:56Z,2019-01-29T17:05:55Z,"Hi Jonathon,
+
+when I export a subset with
+`sav export --sample-ids <SAMPLE ID> --file-format vcf <in.sav> <out.vcf>`
+I found that savvy updated the INFO/AF which is a great feature. However, the INFO/MAF remained unchanged.
+
+FYI: I'm using the latest savvy version in your home directory 
+
+Cheers,
+Lars",ilarsf,https://github.com/statgen/savvy/issues/6
+MDU6SXNzdWU0MDQzOTQ4NTk=,Export multiple FORMAT fields to VCF,CLOSED,2019-01-29T17:08:41Z,2021-01-24T21:19:10Z,2021-01-24T21:19:10Z,,jonathonl,https://github.com/statgen/savvy/issues/7
+MDU6SXNzdWU0MTQyNzE4MDU=,error: 'isnan' is not a member of 'std',CLOSED,2019-02-25T19:38:13Z,2019-02-25T23:39:33Z,2019-02-25T23:38:45Z,"I can compile savvy@develop on my Mac with no issues, but on our Ubuntu box with gcc 5.4 it fails with: 
+
+```
+In file included from /home/welchr/scratch/savvy/src/savvy/site_info.cpp:7:0:
+/home/welchr/scratch/savvy/include/savvy/site_info.hpp: In function 'void savvy::update_info_fields(savvy::site_info&, const T&, savvy::fmt)':
+/home/welchr/scratch/savvy/include/savvy/site_info.hpp:192:11: error: 'isnan' is not a member of 'std'
+       if (std::isnan(*it))
+```
+
+If I add `#include <cmath>` to that header file, then it compiles successfully. Maybe it's included by default on Mac for some reason. ",welchr,https://github.com/statgen/savvy/issues/8
+MDU6SXNzdWU1ODc5NTU4Nzc=,SAIGE installs fail because statgen/savvy can't be accessed (Centos 6.x),OPEN,2020-03-25T20:02:00Z,2021-03-11T22:11:46Z,,"They fail the same way:
+
+Downloading https://github.com/statgen/savvy/archive/<long_id>.tar.gz
+""Download failed with error 400""
+
+At the core, this command fails:
+cget install statgen/savvy@<long_id>
+
+Did you make some change which broke downstream installs using cget?
+Is there anything that you can publish that users should follow instead of that URL?
+You have some re-direct scheme in place. Is there another destination that people should use instead of the above? Also, how were users supposed to reach this through a proxy? No system config for proxy is honored during these attempts.
+
+Thanks for any leads.
+",jbsysadmin,https://github.com/statgen/savvy/issues/9
+MDU6SXNzdWU3Mzc1OTE2NDk=,conda package,CLOSED,2020-11-06T09:01:50Z,2021-03-31T17:48:50Z,2021-03-31T17:48:50Z,"Hi @jonathonl 
+
+I created a conda package of savvy https://anaconda.org/bioconda/savvy
+
+are you interested in adding some documentation about it in readme?
+For example mention installation:
+```
+conda install -c bioconda savvy
+```
+
+and maybe add some fancy badge? [![Savvy](https://anaconda.org/bioconda/savvy/badges/installer/conda.svg)](https://anaconda.org/bioconda/savvy)
+```
+[![Savvy](https://anaconda.org/bioconda/savvy/badges/installer/conda.svg)](https://anaconda.org/bioconda/savvy)
+```
+",matuskosut,https://github.com/statgen/savvy/issues/10
+MDU6SXNzdWU4MzY0MTczNDY=,Understanding sav benefits.,OPEN,2021-03-19T22:24:11Z,2021-03-24T20:23:49Z,,"I'm trying to catch up on what's been going on in the world of alternat vcf representations and I'm trying to understand what the benefits of savvy are vs bcf.  I've run into a few questions.
+
+1.  It seems like the big difference is the addition of a sparse vector type.  The random vcf files I've tried *savving* haven't seen any appreciable size improvement from running `sav import` on them though so I was wondering if you had some examples of files that benefited from using savvy.     I suspect I'm either using files that don't particularly benefit from the sparsity reduction, or I've misconfigured my import.
+
+2. I don't understand how PBWT is used by sav files and what benefit that gives.  Does it only apply to genotype fields?  I tried looking in the code, but I couldn't find where it actually computes PBWT.  It seems like it's just tagging fields as being PBWT sorted?  Is this passing through something processed upstream and just acting as a marker for it?  How is this intended to be used? I'm not really a C++ programmer so I may have just missed something obvious.
+
+3. From what I can tell sav doesn't directly address the problem of encoding gvcf files efficiently.  (Although they could probably benefit from the sparse vector type when encoding sparse PLs.).  Is that outside of the mandate of the sav format? 
+
+Thank you.   Let me know if there's a better forum for asking general non-code questions about savvy.",lbergelson,https://github.com/statgen/savvy/issues/11
+MDU6SXNzdWU4NjUwOTU5Njg=,Problem building savvy,CLOSED,2021-04-22T15:40:06Z,2022-04-01T17:41:52Z,2022-04-01T17:41:51Z,"I'm trying to build savvy on a PPC machine, and I'm seeing a lot of errors coming from typed_value.hpp like this:
+
+```
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1712:49: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1712 |         std::uint8_t old_val_type = type_code<T>();
+```
+
+We did not see these errors in 1.3.0. I'm using cget for the install. Here is the output of the configure
+
+```
+$ MAKE=""make -j1"" CXX=g++ CC=gcc cget install -DCMAKE_C_FLAGS=""-fPIC"" -DCMAKE_CXX_FLAGS=""-fPIC"" --prefix ./cgetsavvy/ statgen/savvy
+Downloading https://github.com/statgen/savvy/archive/HEAD.tar.gz
+Extracting archive /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/HEAD.tar.gz ...
+-- The C compiler identification is GNU 9.3.0
+-- The CXX compiler identification is GNU 9.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /sw/summit/gcc/9.3.0-1/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /sw/summit/gcc/9.3.0-1/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_TESTING
+    CGET_CMAKE_DIR
+    CGET_CMAKE_ORIGINAL_SOURCE_FILE
+```
+
+And here's the full error list
+
+```
+[  8%] Building CXX object CMakeFiles/sav.dir/src/sav/main.cpp.o
+In file included from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/site_info.hpp:12,
+                 from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/region.hpp:10,
+                 from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/s1r.hpp:11,
+                 from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/sav_reader.hpp:12,
+                 from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/sav/sort.hpp:10,
+                 from /gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/src/sav/main.cpp:14:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1712:49: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1712 |         std::uint8_t old_val_type = type_code<T>();
+      |                                     ~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1712:49:   required from ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1712:49:   required from ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1727:48: error: no matching function for call to ‘savvy::typed_value::type_code(const char&)’
+ 1727 |           new_val_type = typed_value::type_code(std::max<T>(max_val, -min_val));
+      |                          ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1727:48: note:   candidate expects 0 arguments, 1 provided
+ 1727 |           new_val_type = typed_value::type_code(std::max<T>(max_val, -min_val));
+      |                          ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1727:48:   required from ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1182:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1811:42:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const T*, const T*) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1213:11:   required from ‘bool savvy::typed_value::capply_dense(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2031:79:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1983:39: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1983 |         dest_.val_type_ = type_code<T>();
+      |                           ~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1983:39:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const T*, const T*) [with T = char]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1213:11:   required from ‘bool savvy::typed_value::capply_dense(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2031:79:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const T*, const T*) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1213:11:   required from ‘bool savvy::typed_value::capply_dense(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2031:79:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1983:39:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const T*, const T*) [with T = char]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1213:11:   required from ‘bool savvy::typed_value::capply_dense(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2031:79:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned char; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1120:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1950 |         dest_.val_type_ = type_code<ValT>();
+      |                           ~~~~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned char; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1120:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned char; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1120:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned char; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1120:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = short unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1123:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1950 |         dest_.val_type_ = type_code<ValT>();
+      |                           ~~~~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = short unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1123:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = short unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1123:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = short unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1123:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1126:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1950 |         dest_.val_type_ = type_code<ValT>();
+      |                           ~~~~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1126:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1126:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1126:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = long unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1129:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42: error: no matching function for call to ‘savvy::typed_value::type_code<char>()’
+ 1950 |         dest_.val_type_ = type_code<ValT>();
+      |                           ~~~~~~~~~~~~~~~^~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code()’
+ 2274 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code()
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code() [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = long unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1129:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2274:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = long unsigned int; std::size_t = long unsigned int]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1129:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 2323 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: note:   template argument deduction/substitution failed:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1950:42:   required from ‘void savvy::typed_value::copy_subset_functor::operator()(const ValT*, const ValT*, const OffT*, std::size_t) [with ValT = char; OffT = long unsigned int; std::size_t = long unsigned int]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1129:11:   required from ‘bool savvy::typed_value::capply_sparse_offsets(Fn, Args ...) const [with ValT = char; Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:1153:93:   required from ‘bool savvy::typed_value::capply_sparse(Fn, Args ...) const [with Fn = savvy::typed_value::copy_subset_functor; Args = {long unsigned int}]’
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2026:87:   required from here
+/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/savvy-87cb329b3309a1b5042989819a218a7af120a6e3/include/savvy/typed_value.hpp:2323:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+make[2]: *** [CMakeFiles/sav.dir/src/sav/main.cpp.o] Error 1
+make[1]: *** [CMakeFiles/sav.dir/all] Error 2
+gmake: *** [all] Error 2
+Command failed: ['/autofs/nccs-svm1_sw/summit/.swci/0-core/opt/spack/20180914/linux-rhel7-ppc64le/gcc-4.8.5/cmake-3.18.2-cirtl5oah4d6bequfcoji6jbetertrna/bin/cmake', '--build', '/gpfs/alpine/stf011/proj-shared/va8/saige/newsavvy/cgetsavvy/cget/build/tmp-26a1c8f6e4ba45d9a3fa1494cf24436f/build', '--config', 'Release', '--', '-j', '128']
+Failed to build package statgen/savvy
+```",wrathematics,https://github.com/statgen/savvy/issues/13
+MDU6SXNzdWU5NTkwMTg4NDk=,Problem building savvy,OPEN,2021-08-03T11:28:58Z,2021-08-03T13:30:38Z,,"So I am trying to build savvy via SAIGE, like this:
+
+When trying to install SAIGE either with
+
+export CFLAGS=""-fPIC""; export CXXFLAGS=""-fPIC""; cget install -f requirements.txt
+
+I get:
+
+Scanning dependencies of target sav
+[ 16%] Building CXX object CMakeFiles/sav.dir/src/sav/main.cpp.o
+[ 41%] Building CXX object CMakeFiles/sav.dir/src/sav/head.cpp.o
+[ 75%] Building CXX object CMakeFiles/sav.dir/src/sav/sort.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/concat.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/export.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/import.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/index.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/merge.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/rehead.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/stat.cpp.o
+[ 91%] Building CXX object CMakeFiles/sav.dir/src/sav/utility.cpp.o
+In file included from /home/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/include/savvy/sav_reader.hpp:12:0,
+                 from /homes/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/include/sav/sort.hpp:10,
+                 from /home/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/src/sav/main.cpp:14:
+/home/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/include/savvy/s1r.hpp: In member function ‘std::fstream savvy::s1r::writer::close()’:
+/home/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/include/savvy/s1r.hpp:829:14: error: ‘std::fstream’ has no member named ‘swap’
+         ofs_.swap(ret);
+              ^
+/home/user/software/SAIGE/thirdParty/cget/cget/build/tmp-3455d2ae89894b2481d478654b43c4f4/savvy-2aa2af64142a9f729b03e7bf84b6b39beb23b6d3/include/savvy/s1r.hpp:830:16: error: use of deleted function ‘std::basic_fstream<char>::basic_fstream(const std::basic_fstream<char>&)’
+         return ret;
+
+what could the problem be?",Reavyr,https://github.com/statgen/savvy/issues/14
+I_kwDOA8j8d849Plph,Standalone `sav` program,CLOSED,2021-10-15T14:22:13Z,2021-10-15T14:42:19Z,2021-10-15T14:42:19Z,"Hello.
+Would it be possible to provide a standalone version of the `sav` utility as a download ?
+
+This would simplify the ""installation"" and allow users to try the utility by simple download instead of installing from (ana)conda or building from source. (E.g., as a standalone binary for GNU/Linux).
+
+Thank you.
+Regards.
+Rick",rick-heig,https://github.com/statgen/savvy/issues/15
+I_kwDOA8j8d85AyGSy,Parameter trade-off suggestions,CLOSED,2021-12-22T14:28:18Z,2021-12-22T15:27:35Z,2021-12-22T15:27:35Z,"Hello.
+What would be a good starting point as for values for the parameters listed in the ""Parameter Trade-offs"" section of the README ?
+
+If I would compress GT data with `sav` would the following command seem acceptable ?
+```
+sav import --phasing full --pbwt-field ""GT"" <input> <output>
+```
+Or do I need to specify a block size for it to work effectively ?
+
+Could you share settings which gave a nice balance between size and speed ? (I understand this is dataset dependent but e.g., as used on TOPMed) Or do you have any general recommandations ?
+
+Thanks !
+Best Regards.",rick-heig,https://github.com/statgen/savvy/issues/16
+I_kwDOA8j8d85BaWBf,statgen/savvy install error,CLOSED,2022-01-10T03:45:25Z,2022-01-20T09:41:25Z,2022-01-20T09:41:25Z,"Hi, I am trying to **install statgen/savvy** as follow but **fail**:
+
+**cget install --prefix <install_prefix>  statgen/savvy**
+
+Downloading https://github.com/statgen/savvy/archive/HEAD.tar.gz
+  [######################################################################]  100%
+Extracting archive cget/build/tmp-cdaaf6062f89429ca57bbb5c928f7d6d/HEAD.tar.gz ...
+Downloading https://github.com/jonathonl/shrinkwrap/archive/f25369a4bd78ecdd85e65345256442e8812c50d3.tar.gz
+  [######################################################################]  100%
+Extracting archive cget/build/tmp-06fe2ffc6a9b434ea26784aed947a1d3/f25369a4bd78ecdd85e65345256442e8812c50d3.tar.gz ...
+Downloading https://tukaani.org/xz/xz-5.2.3.tar.bz2
+  [----------------------------------------------------------------------]    0%
+**Download failed with error 503 for: //tukaani.org/xz/xz-5.2.3.tar.bz2**
+**Failed** to build package statgen/savvy
+
+I check on the website the **xz-5.2.3.tar.bz2 had update to xz-5.2.5.tar.bz2** . Is that make it download failed?
+How can I change to download xz-5.2.5.tar.bz2 file?",lanxianmei,https://github.com/statgen/savvy/issues/17
+I_kwDOA8j8d85ClnDM,Output test file has an allele missing,CLOSED,2022-01-28T08:58:27Z,2022-01-28T15:21:43Z,2022-01-28T15:21:43Z,"Hello.
+
+I have been running a small test file to see if mixed ploidy (1 and 2) and mixed phasing variant lines are supported and found out that there seems to be an edge case where an allele is lost.
+
+Here is the input (test_file.vcf) : 
+```
+##fileformat=VCFv4.1
+##FILTER=<ID=PASS,Description=""All filters passed"">
+##fileDate=20150218
+##reference=ftp://ftp.1000genomes.ebi.ac.uk//vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
+##contig=<ID=20,assembly=b37,length=63025520>
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype"">
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  SAMPLE1 SAMPLE2 SAMPLE3 SAMPLE4 SAMPLE5 SAMPLE6 SAMPLE7 SAMPLE8 SAMPLE9 SAMPLE10
+20      60343   rs527639301     G       A       100     PASS    .       GT      0|0     1|0     1|.     0|0     0|0     0       1|0     0/1     0|0     0|0
+20      60419   rs538242240     A       G       100     PASS    .       GT      0|0     1|0     0|0     1|1     0|0     0|0     1|1     0|0     1|0     1|0
+20      60479   rs149529999     C       T       100     PASS    .       GT      0/0     0|1     0/0     0/0     0/0     0/0     0/0     0/0     0|1     0|0
+20      60522   rs150241001     T       TC      100     PASS    .       GT      0|0     0|0     1|0     0|0     0|0     0|0     0|0     0|0     0|0     0|0
+20      60568   rs533509214     A       C       100     PASS    .       GT      0|0     ./0     0|0     0|0     0|0     0|0     0|0     0       0|0     0|0
+20      60571   rs116145529     C       A       100     PASS    .       GT      1       0|0     0|1     0|0     0|0     1|1     0|0     1|0     0|0     0|0
+20      60795   rs184056664     G       C       100     PASS    .       GT      0/1     0|0     0|0     1|1     0|0     0|0     1|0     0|0     0|0     0
+20      60808   rs534548532     G       A       100     PASS    .       GT      0|0     0|0     1|0     0|0     0|0     0|0     0|0     0|0     0|0     0|0
+20      60810   rs527408846     G       GA      100     PASS    .       GT      0       1       0       0       0       0       0       0       0       0|0
+20      60826   rs557778563     A       G       100     PASS    .       GT      1       0       0       0       0       0       0       0       0       0
+```
+
+After running : 
+```bash
+sav import test_file.vcf --phasing partial --pbwt GT test_file.sav
+sav export test_file.sav > test_file.sav.vcf
+```
+
+I get : 
+```
+##fileformat=VCFv4.1
+##FILTER=<ID=PASS,Description=""All filters passed"">
+##fileDate=20220128
+##reference=ftp://ftp.1000genomes.ebi.ac.uk//vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
+##contig=<ID=20,assembly=b37,length=63025520>
+##FORMAT=<ID=GT, Type=String, Number=1, Description=""Genotype"">
+##phasing=partial
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  SAMPLE1 SAMPLE2 SAMPLE3 SAMPLE4 SAMPLE5 SAMPLE6 SAMPLE7 SAMPLE8 SAMPLE9 SAMPLE10
+20      60343   rs527639301     G       A       100     PASS    .       GT      0|0     1|0     1|.     0|0     0|0     0       1|0     0/1     0|0     0|0
+20      60419   rs538242240     A       G       100     PASS    .       GT      0|0     1|0     0|0     1|1     0|0     0|0     1|1     0|0     1|0     1|0
+20      60479   rs149529999     C       T       100     PASS    .       GT      0/0     0|1     0/0     0/0     0/0     0/0     0/0     0/0     0|1     0|0
+20      60522   rs150241001     T       TC      100     PASS    .       GT      0|0     0|0     1|0     0|0     0|0     0|0     0|0     0|0     0|0     0|0
+20      60568   rs533509214     A       C       100     PASS    .       GT      0|0     ./0     0|0     0|0     0|0     0|0     0|0     0       0|0     0|0
+20      60571   rs116145529     C       A       100     PASS    .       GT      1       0|0     0|1     0|0     0|0     1|1     0|0     1|0     0|0     0|0
+20      60795   rs184056664     G       C       100     PASS    .       GT      0/1     0|0     0|0     1|1     0|0     0|0     1|0     0|0     0|0     0
+20      60808   rs534548532     G       A       100     PASS    .       GT      0|0     0|0     1|0     0|0     0|0     0|0     0|0     0|0     0|0     0|0
+20      60810   rs527408846     G       GA      100     PASS    .       GT      0       1       0       0       0       0       0       0       0       0
+20      60826   rs557778563     A       G       100     PASS    .       GT      1       0       0       0       0       0       0       0       0       0
+```
+
+The two following lines differ : 
+```
+20      60810   rs527408846     G       GA      100     PASS    .       GT      0       1       0       0       0       0       0       0       0       0|0
+```
+
+```
+20      60810   rs527408846     G       GA      100     PASS    .       GT      0       1       0       0       0       0       0       0       0       0
+```
+
+The last sample is now haploid instead of diploid on that variant loci, an allele is lost (`0|0` becomes `0`).
+
+Best,
+Rick",rick-heig,https://github.com/statgen/savvy/issues/18
+I_kwDOA8j8d85EHH5k,Sample extraction fails with -O bcf,OPEN,2022-02-18T09:31:04Z,2022-02-18T14:58:47Z,,"Hello.
+I compressed chr1 from 1KGP3 (available here ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/)
+
+And checked the file with the following commands : 
+```bash
+sav export -O vcf chr1.sav | less
+```
+```bash
+sav export -O bcf chr1.sav | bcftools view | less
+```
+This is ok.
+
+Then, for sample extraction and ran the following commands : 
+```bash
+sav export -O vcf -i ""NA12878,HG00109"" chr1.sav | less
+```
+which works but,
+
+```bash
+sav export -O bcf -i ""NA12878,HG00109"" chr1.sav | bcftools view | less
+```
+doesn't work, only the header is shown.
+
+
+So it seems there is a small bug with the interaction of the `-O bcf` and `-i ""sample list""` options.
+
+
+Best regards,
+Rick",rick-heig,https://github.com/statgen/savvy/issues/19
+I_kwDOA8j8d85Gv_oG,Build failure on arm64: Templates not found because char is unsigned,CLOSED,2022-03-30T21:01:38Z,2022-05-16T16:43:08Z,2022-05-16T16:43:07Z,"Savvy can't build or run on arm64 right now, because char is unsigned on arm64 and this code assumes that char will be signed. The C/C++ specification says nothing about the signed-ness of char by default, so if char is signed varies by compiler / architecture / implementation.
+
+Edit about my specific environment: I'm on an Apple Silicon M1 Mac, building this both on mac OS and also Ubuntu on arm64 inside of Docker. Our intent is to evaluate the Graviton AWS instances, which would need tooling to work and perform well on arm64.
+
+Some quick ways to work around this would be to either specify that these types are signed chars, or to update the template so that it works on unsigned types. I haven't investigated deeper and barely know C++, so I'd appreciate your help with a solution.
+
+Specifically, I see that typed_value.hpp we have some char vectors https://github.com/statgen/savvy/blob/master/include/savvy/typed_value.hpp#L1712
+```
+    std::vector<char> off_data_;
+    std::vector<char> val_data_;
+```
+and then expect to be able to operate on them with this template https://github.com/statgen/savvy/blob/master/include/savvy/typed_value.hpp#L125:
+
+```
+    template<typename T>
+    static typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type
+    type_code(const T& val);
+```
+
+Stack trace from build failure on arm64:
+```
+include/savvy/typed_value.hpp: In instantiation of ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’:
+include/savvy/typed_value.hpp:712:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+include/savvy/typed_value.hpp:1412:42:   required from here
+include/savvy/typed_value.hpp:1331:44: error: no matching function for call to ‘savvy::typed_value::type_code(char&)’
+ 1331 |           new_val_type = std::max(type_code(max_val), type_code(min_val));
+      |                                   ~~~~~~~~~^~~~~~~~~
+In file included from include/savvy/site_info.hpp:12,
+                 from include/savvy/region.hpp:10,
+                 from include/savvy/s1r.hpp:11,
+                 from include/savvy/sav_reader.hpp:12,
+                 from include/sav/sort.hpp:10,
+                 from src/sav/main.cpp:14:
+include/savvy/typed_value.hpp:122:32: note: candidate: ‘template<class T> static uint8_t savvy::typed_value::type_code()’
+  122 |     inline static std::uint8_t type_code();
+      |                                ^~~~~~~~~
+include/savvy/typed_value.hpp:122:32: note:   template argument deduction/substitution failed:
+In file included from include/savvy/site_info.hpp:12,
+                 from include/savvy/region.hpp:10,
+                 from include/savvy/s1r.hpp:11,
+                 from include/savvy/sav_reader.hpp:12,
+                 from include/sav/sort.hpp:10,
+                 from src/sav/main.cpp:14:
+include/savvy/typed_value.hpp:1331:44: note:   candidate expects 0 arguments, 1 provided
+ 1331 |           new_val_type = std::max(type_code(max_val), type_code(min_val));
+      |                                   ~~~~~~~~~^~~~~~~~~
+include/savvy/typed_value.hpp:1864:73: note: candidate: ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&)’
+ 1864 |   typename std::enable_if<std::is_signed<T>::value, std::uint8_t>::type typed_value::type_code(const T& val)
+      |                                                                         ^~~~~~~~~~~
+include/savvy/typed_value.hpp:1864:73: note:   template argument deduction/substitution failed:
+include/savvy/typed_value.hpp: In substitution of ‘template<class T> static typename std::enable_if<std::is_signed<_Tp>::value, unsigned char>::type savvy::typed_value::type_code(const T&) [with T = char]’:
+include/savvy/typed_value.hpp:1331:44:   required from ‘void savvy::typed_value::thin_types_fn::operator()(T*, T*, savvy::typed_value*) [with T = char]’
+include/savvy/typed_value.hpp:712:11:   required from ‘bool savvy::typed_value::apply_dense(Fn, Args ...) [with Fn = savvy::typed_value::thin_types_fn; Args = {savvy::typed_value*}]’
+include/savvy/typed_value.hpp:1412:42:   required from here
+include/savvy/typed_value.hpp:1864:73: error: no type named ‘type’ in ‘struct std::enable_if<false, unsigned char>’
+```",pettyalex,https://github.com/statgen/savvy/issues/20
+I_kwDOA8j8d85GwEnQ,Cannot build savvy because sourceforge xz is down,CLOSED,2022-03-30T21:23:08Z,2022-03-31T00:06:26Z,2022-03-31T00:06:26Z,"Hello,
+
+I figured out why I can't build savvy locally: When I run `cget build` or `cget install`, it is trying to get xz, which is a dependency of shrinkwrap. Is there any way that xz could use the github mirror instead, so that at least savvy, shrinkwrap, xz, and other deps could all be coming from the same service with fewer points of failure?
+
+When cget is trying to build XZ, it's getting back this and trying to build it as a package:
+
+```
+<noscript>
+We're sorry -- the Sourceforge site is currently in Disaster Recovery mode.  Please check back later.
+</noscript>
+```",pettyalex,https://github.com/statgen/savvy/issues/22
+I_kwDOA8j8d85GxzrF,Build failure related to crossplatform sprintf: expected ')' before 'PRId64',CLOSED,2022-03-31T03:59:53Z,2022-03-31T20:11:41Z,2022-03-31T20:11:41Z,"I'm running into another build problem, this time on a normal x86_64 Ubuntu 20.04 server. savvy is being built as a dependency of SAIGE.
+
+It looks like in some environments, to use `<cinttypes>`, then `__STDC_FORMAT_MACROS` must be defined. I've seen this across a few projects. I don't see anywhere where this is defined in savvy. I do not encounter this problem when I'm building savvy by itself using `cget build`, which makes me think that there may be some configuration set somewhere I cannot find. My build environment is a bone standard Ubuntu 20.04 on a plain Intel Xeon CPU.
+
+This could be solved by either #defining `__STDC_FORMAT_MACROS` above where `<cinttypes>` is included in the source files, or setting the config globally with add_definitions(-D__STDC_FORMAT_MACROS) in CMakeLists.txt. I'm working on a minimal reproduction of this to see if I can understand why it's working sometimes but not others.
+
+Other projects encountering this:
+https://github.com/pytorch/pytorch/issues/5217
+https://github.com/zdevito/ATen/issues/183
+
+Log of the failure build failure when compiling with SAIGE:
+```
+../thirdParty/cget/include/savvy/typed_value.hpp: In member function 'void savvy::typed_value::serialize_vcf(std::size_t, char*&, char) const':
+../thirdParty/cget/include/savvy/typed_value.hpp:2955:40: error: expected ')' before 'PRId64'
+ 2955 |       else out += std::sprintf(out, ""%"" PRId64, v);
+      |                               ~        ^~~~~~~
+      |                                        )
+
+```",pettyalex,https://github.com/statgen/savvy/issues/23
+I_kwDOA8j8d85HMrXr,Scalability issues,OPEN,2022-04-06T11:54:37Z,2022-04-07T09:38:07Z,,"As discussed in the video-call, we have been experimenting with different formats here at deCODE. 
+![plot2](https://user-images.githubusercontent.com/2996863/161967833-0f2b292b-6f4b-42af-9d2e-746e6a639e40.png)
+
+Unfortunately, I cannot share the data files, but one very visible observation that we had in regard to Savvy, was, that between 75k samples and 100k samples there is a huge jump in file size; it more than doubles. After that the file size of Savvy always seems to be very close ot BCF.
+
+I suspect that the mechanism for determining when to use sparse vectors has a bug and does not cope with the large size, resulting uncompressed fallback.",h-2,https://github.com/statgen/savvy/issues/24
+I_kwDOA8j8d85P4OKI,Download failed with error 404 for: //zlib.net/zlib-1.2.11.tar.gz ,CLOSED,2022-08-16T10:24:36Z,2022-08-17T17:02:49Z,2022-08-17T17:02:49Z,"Hello @CreRecombinase ,
+
+I am trying to install SAIGE which pulls savvy as cget dependency. However savvy fails to build as result of a dead zlib link.
+
+could you please fix the bit of the code that points to a dead zlib link?
+
+```
+Downloading http://zlib.net/zlib-1.2.11.tar.gz
+  [----------------------------------------------------------------------]    0%
+Download failed with error 404 for: //zlib.net/zlib-1.2.11.tar.gz
+Failed to build package statgen/savvy
+ERROR: configuration failed for package ‘SAIGE’
+* removing ‘/usr/local/lib/R/site-library/SAIGE’
+Warning message:
+In i.p(...) :
+  installation of package ‘/tmp/RtmpE6Jk4z/file2b3272197cc98/SAIGE_0.42.1.tar.gz’ had non-zero exit status
+>
+```
+
+The correct link is https://zlib.net/fossils/zlib-1.2.11.tar.gz
+
+Regards",psammarco,https://github.com/statgen/savvy/issues/25
+I_kwDOA8j8d85QwADa,Build failure on Ubuntu 22.04,CLOSED,2022-08-29T19:16:12Z,2022-08-30T13:05:24Z,2022-08-30T12:55:42Z,"Hello,
+
+It looks like savvy fails to build on 22.04, I first saw this reported here: https://github.com/saigegit/SAIGE/issues/44, then reproduced it by failing to build savvy standalone.
+
+At a quick glance, it looks like savvy is using std::numeric_limits without `#include <limits>` [all](https://github.com/statgen/savvy/blob/e980ae6da1fb1da99fd26f444e8fab6ae40ea902/src/savvy/sav_reader.cpp#L45) [over](https://github.com/statgen/savvy/blob/3842f47ec4ea1328c1963512bfe2e32412bfcfc1/include/savvy/typed_value.hpp#L162) [the](https://github.com/statgen/savvy/blob/d4bd182f04c8c51c1d98ee9809acdb125bf1c908/include/savvy/reader.hpp#L61) [place](https://github.com/statgen/savvy/blob/e980ae6da1fb1da99fd26f444e8fab6ae40ea902/include/savvy/sav_reader.hpp#L65), which could have only worked by getting lucky with transitive `#include`s. This is a pretty easy fix though, files that are using std::numeric_limits just need to #include limits.
+
+The build failure is a whole lot of this:
+```
+#13 15.67 /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/savvy/typed_value.hpp:177:32: error: ‘numeric_limits’ is not a member of ‘std’
+#13 15.67   177 |           if (*val_ptr == std::numeric_limits<T>::min())
+#13 15.67       |                                ^~~~~~~~~~~~~~
+#13 15.67 In file included from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/savvy/site_info.hpp:12,
+#13 15.67                  from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/savvy/region.hpp:10,
+#13 15.67                  from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/savvy/s1r.hpp:11,
+#13 15.67                  from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/savvy/sav_reader.hpp:12,
+#13 15.67                  from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/include/sav/sort.hpp:10,
+#13 15.67                  from /SAIGE/thirdParty/cget/cget/build/tmp-5bc3e58925564ed98953278e381bc961/savvy-b3dabf81e316b5eaf5650219e62bfa36e7bde4ea/src/sav/main.cpp:14:
+```
+",pettyalex,https://github.com/statgen/savvy/issues/26
+I_kwDOA8j8d85Q7k5R,Savvy has missing #includes that could cause portability problems,CLOSED,2022-08-31T19:55:49Z,2022-08-31T20:38:30Z,2022-08-31T20:37:49Z,"As noted in https://github.com/statgen/savvy/issues/26 and discovered in other dependent projects, Savvy has some symbols used that are not specifically included in files. This is going to continue to cause portability problems between different systems and C compiler / library versions in the future unless fixed.
+
+One potential way to tackle this is to use a tool like https://github.com/include-what-you-use/include-what-you-use to audit the code and find missing imports. It's available on Debian, Ubuntu, and Homebrew package managers too. I did a very quick run of it (without mapping properly set up on my system), and got these results, which are a pretty good starting point:
+
+[savvy_iwyu_results.txt](https://github.com/statgen/savvy/files/9464627/savvy_iwyu_results.txt)
+
+I'd be open to working through these as a checklist, but integrating a tool like iwyu into the cmake build process could potentially automatically fix problems like these both now and in the future.",pettyalex,https://github.com/statgen/savvy/issues/28
+I_kwDOA8j8d85VbUJQ,Fix headers populated by --generate-info,OPEN,2022-11-02T14:17:09Z,2022-11-02T14:17:09Z,,"Include Type, Number, and Description fields.",jonathonl,https://github.com/statgen/savvy/issues/29
+I_kwDOA8j8d85m_iwP,Error isntalling this package for saige,OPEN,2023-05-26T16:41:16Z,2023-06-01T15:06:00Z,,"Hello, 
+
+I am trying to install this package as part of Saige and I am getting an error like this.
+
+```Ignore package xz
+Downloading https://github.com/statgen/savvy/archive/v2.1.0.tar.gz
+Unexpected error: <class 'OSError'>
+[Errno socket error] [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1129)
+Failed to build package statgen/savvy
+```
+May I know how to rectify this error?
+
+~Akhil ",akhilpampana,https://github.com/statgen/savvy/issues/30
+I_kwDOA8j8d85rojLz,Failed to build statgen/savvy,CLOSED,2023-07-15T01:24:01Z,2023-07-19T19:57:53Z,2023-07-19T19:57:52Z,"Hi this error keeps popping up and I'm unsure why.
+I am using Mac M1- macOS Ventura
+This is trying to download Saige-gene plus overall
+
+configure: error: in `/Users/wellaglover/Documents/Codes RP/savvy-master/cget/cget/build/tmp-d2604558bab444c9b7165f9fa45fe4ed/xz-5.2.3':
+configure: error: C compiler cannot create executables
+See `config.log' for more details
+-- Configuring done (2.9s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_TESTING
+    CGET_CMAKE_DIR
+    CGET_CMAKE_ORIGINAL_SOURCE_FILE
+
+
+-- Build files have been written to: /Users/wellaglover/Documents/Codes RP/savvy-master/cget/cget/build/tmp-d2604558bab444c9b7165f9fa45fe4ed/build
+[100%] Building xz ...
+make[3]: *** No targets specified and no makefile found.  Stop.
+gmake[2]: *** [CMakeFiles/xz.dir/build.make:71: CMakeFiles/xz] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/xz.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+Command failed: ['/usr/local/bin/cmake', '--build', '/Users/wellaglover/Documents/Codes RP/savvy-master/cget/cget/build/tmp-d2604558bab444c9b7165f9fa45fe4ed/build', '--config', 'Release', '--', '-j', '8']
+Failed to build package statgen/savvy",Welz2,https://github.com/statgen/savvy/issues/31
+I_kwDOA8j8d85vtT7b,sav merge command?,OPEN,2023-08-30T18:09:46Z,2023-08-30T19:15:07Z,,"I was looking to merge multiple `sav` files but noticed that `sav merge` isn't recognized as a command. However, after looking through the source code, I noticed that there is a `merge.cpp` file that references a `sav merge` command? 
+
+What is the best method to merge multiple `sav`-formatted files, similar to `bcftools merge`?",mragsac,https://github.com/statgen/savvy/issues/32
+I_kwDOA8j8d86MVWtf,Probably typo in assert,CLOSED,2024-06-15T02:10:35Z,2024-06-15T15:34:21Z,2024-06-15T15:34:21Z,"Here:
+```cpp
+template <typename AggregateT>
+    AggregateT dot_slow(const self_type& other, AggregateT ret) const
+    {
+      assert(size_ = other.size_);
+      ...
+      return ret;
+    }
+```
+Probably must be `==` instead of `=`.
+
+https://github.com/statgen/savvy/blob/82fb57602ccabb23ba5a686444102e842c382d28/include/savvy/compressed_vector.hpp#L424",serzero2007,https://github.com/statgen/savvy/issues/33
+I_kwDOA8j8d86Xfv_n,sav concat commend,OPEN,2024-09-23T06:27:55Z,2024-09-24T12:22:08Z,,"I’m currently using the test VCF file you provided to create SAV files for chromosomes 18 and 20, and I encountered some issues when trying to concatenate the two SAV files.
+
+**Attempt 1**:
+I used the following commands to create the SAV files:
+
+```shell
+sav import test_file.vcf test_file.sav
+sav export --regions 18 test_file.sav > chr18.sav
+sav export --regions 20 test_file.sav > chr20.sav
+sav concat chr18.sav chr20.sav > concat.sav
+``` 
+
+However, when running the concat command, I received the following error:
+```shell
+Error: chr18.sav is not a SAV v2 file
+``` 
+
+Could you help me understand why chr18.sav is not recognized as a SAV v2 file?
+
+**Attempt 2**:
+
+I tried an alternative approach using the following commands:
+```shell
+sav import test_file.vcf test_file.sav
+sav import --regions 18 test_file.sav > chr18.im.sav
+sav import --regions 20 test_file.sav > chr20.im.sav
+sav concat chr18.im.sav chr20.im.sav > concat.im.sav
+``` 
+This time, I received a different error:
+```shell
+Header dictionaries incompatible
+``` 
+When I inspect the headers using the sav `head` command, they appear to be identical. Could you provide any insight into why this issue occurs and how I might resolve it?
+",Nahyeon203,https://github.com/statgen/savvy/issues/34

@@ -1,0 +1,133 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxODU4MDEyNTY=,Failed to map REF block,CLOSED,2016-10-27T23:01:08Z,2018-08-21T19:21:55Z,2018-08-21T19:21:55Z,"Trying to convert this hg19 VCF to hg38:
+https://storage.cloud.google.com/genomics-public-data/platinum-genomes/vcf/NA12880_S1.genome.vcf
+
+Using the chain file from the README and a query BED file that covers all passing reference positions, the processing stops with the following error:
+
+```
+Exception in thread ""main"" java.lang.IllegalArgumentException: Different reference for query variant and reference in query_range {
+  reference_name: ""chr1""
+  start: 1584759
+  end: 1584798
+}
+target_range {
+  reference_name: ""chr1""
+  start: 1653313
+  end: 1653352
+}
+target_strand: POSITIVE_STRAND
+region_type: MISMATCHED_BASES
+
+        at com.google.common.base.Preconditions.checkArgument(Preconditions.java:146)
+        at com.verily.genomewarp.TransformationUnit.getTargetAssemblyVariantsFromDualSNVs(TransformationUnit.java:244)
+        at com.verily.genomewarp.TransformationUnit.getTargetAssemblyVariants(TransformationUnit.java:163)
+        at com.verily.genomewarp.TransformVariantsInRange.getTargetVariantsForAllTransformationUnitsInRange(TransformVariantsInRange.java:332)
+        at com.verily.genomewarp.TransformVariantsInRange.transform(TransformVariantsInRange.java:162)
+        at com.verily.genomewarp.TransformVariantsInRange.transformQueryToTargetVariants(TransformVariantsInRange.java:85)
+        at com.verily.genomewarp.GenomeWarpSerial.main(GenomeWarpSerial.java:833)
+```
+
+Query entry causing the issue:
+`chr1    1584760 .       C       .       .       PASS    END=1584798;BLOCKAVG_min30p3a   GT:DP:GQX:MQ    0/0:38:99:49`
+
+HG19 (query_range sequence)
+
+```
+>chr1:1584760-1584798
+caccc*g*gctttatttttatttttttcagatagaatctcg
+```
+
+HG38 (target_range sequence)
+
+```
+>chr1:1653314-1653352
+CACCC*A*GCTTTATTTTTATTTTTTTCAGATAGAATCTCG
+```
+
+This part of the code performs a comparison of the first position of the query REF block (`C`) with the 6th position in the target REF block (`G`):
+`https://github.com/verilylifesciences/genomewarp/blob/15a9a2a22c609dbe7f8bc1fe7818c8a8323cf165/src/main/java/com/verily/genomewarp/TransformationUnit.java#L245`
+
+Line 245: `referenceGenomeDifference().queryDna().equals(variant.getReferenceBases()),`
+
+Values compared by `.equals()`:
+`referenceGenomeDifference()` = `{queryPosition=1584764, queryDna=G, targetDna=A}`
+`variant.getReferenceBases()` = `C`
+
+The query reference base for REF blocks will always be a single base and should not be compared to the n-th base with the difference in the target sequence.
+",robertschmieder,https://github.com/verilylifesciences/genomewarp/issues/2
+MDU6SXNzdWUyODYwODEwNjU=,Variants doubled with a subset bed file for the same vcf file,CLOSED,2018-01-04T18:57:15Z,2018-09-19T20:29:53Z,2018-09-19T20:29:53Z,"Dear all,
+I use the same vcf file from hg37 run two times with a bed and its subset.
+However, I get double variants with the subset bed, the number of which even more reasonable for normal sense.
+Could you help me figure out what happened behind this result
+
+#####brief points for two run####
+INPUT1: VCF1, BED1, Hg37.fa, hg19to38.chain.file, hg38
+OUTPUT1: VCF1_output1, BED1_output;
+
+INPUT2: VCF1, BED2, Hg37.fa, hg19to38.chain.file, hg38
+OUTPUT2: VCF1_output2, BED2_output
+
+Initial variants in VCF1: 4875314
+Initial bases in BED1: 2806545357
+Initial bases in BED2: 2728614045
+**Relationship between BED1 and BED2: BED2 is a totally subset of BED1**
+Variants in VCF1_output1: **2102101**
+Variants in VCF1_output2: **3983104**
+bases in BED1_output: 1143768646
+bases in BED2_output: 2628402283
+ 
+#######file used for two run##############
+VCF1: ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/NISTv3.3.2/GRCh37/supplementaryFiles/inputvcfsandbeds/HG001_GRCh37_CHROM1-MT_novoalign_Ilmn150bp300X_FB.vcf.gz
+
+BED1: ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/NISTv3.3.2/GRCh37/supplementaryFiles/inputvcfsandbeds/HG001_GRCh37_CHROM1-MT_novoalign_Ilmn150bp300X_callableloci.bed
+note: keep ""callable"" position only according the lable information in column 4
+
+BEDg: ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/NISTv3.3.2/GRCh37/supplementaryFiles/inputvcfsandbeds/HG001_GRCh37_CHROM1-X_novoalign_Ilmn150bp300X_GATKHC_gvcf_callable.bed
+BED2: Intersect region of BED1 and BEDg by ""bedtools-intersect"" command
+
+hg37.fa: ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
+hg38,fa: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz
+chainfile:
+http://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/hg19ToHg38.over.chain.gz
+
+Thanks for your time
+
+
+
+
+",justwalking2017,https://github.com/verilylifesciences/genomewarp/issues/4
+MDU6SXNzdWUzOTg5OTkwMTY=,Support or fail when query input BED contains overlapping records,CLOSED,2019-01-14T17:39:58Z,2019-04-08T15:53:07Z,2019-04-08T15:53:07Z,"GenomeWarp requires that the query input BED contain no overlapping records.
+When the input BED does contain overlapping records, the result can be that GenomeWarp drops variants in the liftover.
+
+At the very least it would be great if GenomeWarp detected this situation and aborted with a helpful error message.",mbookman,https://github.com/verilylifesciences/genomewarp/issues/6
+I_kwDOA_TuC85nvr94,Failed to build ,CLOSED,2023-06-04T19:51:34Z,2023-07-05T13:31:05Z,2023-07-05T13:31:05Z,"Hello,
+I've followed the steps to build the .jar file, but I ran into this issue (after running mvn package):
+
+> [ERROR] Failed to execute goal org.xolstice.maven.plugins:protobuf-maven-plugin:0.5.0:compile (default) on project verilylifesciences-genomewarp: Missing:
+> [ERROR] ----------
+> [ERROR] 1) com.google.protobuf:protoc:exe:osx-aarch_64:3.0.0-beta-2
+> [ERROR] 
+> [ERROR]   Try downloading the file manually from the project website.
+> [ERROR] 
+> [ERROR]   Then, install it using the command: 
+> [ERROR]       mvn install:install-file -DgroupId=com.google.protobuf -DartifactId=protoc -Dversion=3.0.0-beta-2 -Dclassifier=osx-aarch_64 -Dpackaging=exe -Dfile=/path/to/file
+> [ERROR] 
+> [ERROR]   Alternatively, if you host your own repository you can deploy the file there: 
+> [ERROR]       mvn deploy:deploy-file -DgroupId=com.google.protobuf -DartifactId=protoc -Dversion=3.0.0-beta-2 -Dclassifier=osx-aarch_64 -Dpackaging=exe -Dfile=/path/to/file -Durl=[url] -DrepositoryId=[id]
+> [ERROR] 
+> [ERROR]   Path to dependency: 
+> [ERROR]   	1) com.verily.genomewarp:verilylifesciences-genomewarp:jar:1.2.1
+> [ERROR]   	2) com.google.protobuf:protoc:exe:osx-aarch_64:3.0.0-beta-2
+> [ERROR] 
+> [ERROR] ----------
+> [ERROR] 1 required artifact is missing.
+> [ERROR] 
+> [ERROR] for artifact: 
+> [ERROR]   com.verily.genomewarp:verilylifesciences-genomewarp:jar:1.2.1
+> [ERROR] 
+> [ERROR] from the specified remote repositories:
+> [ERROR]   central (https://repo.maven.apache.org/maven2, releases=true, snapshots=false)
+
+I also tried building manually, again using Gradle, and of course also following the steps in the error message to fix the issue. However, this hasn't worked. Would it be possible to provide the already built .jar file itself? Or am I missing something obvious here?
+
+Thanks!",scpv,https://github.com/verilylifesciences/genomewarp/issues/14

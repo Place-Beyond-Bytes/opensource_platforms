@@ -1,0 +1,276 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyOTE2OTkxOTE=,Prepare/Load metadata into Gemma,CLOSED,2018-01-25T20:08:01Z,2018-09-21T20:25:03Z,2018-09-21T20:25:03Z,"Addressing request from PavlidisLab/Gemma#20  
+
+For GEO datasets/expression experiments, we would like to obtain:
+
+- The GSExxxxx
+- Pipeline parameters (Assembly, software versions, etc)
+- Fastq header information
+- Alignment information (may not be straightforward with RSEM)
+
+To start, let's produce a text file in a ""METADATA"" directory similar to the Data directory.
+",mbelmadani,https://github.com/PavlidisLab/rnaseq-pipeline/issues/1
+MDU6SXNzdWUyOTMzMzI4NDI=,ERCC Spike-ins support,CLOSED,2018-01-31T22:19:41Z,2018-09-21T20:29:30Z,2018-09-21T20:29:30Z,It would be convenient to automate generation of ERCC spike-in count and storing the result for QC purposes.,mbelmadani,https://github.com/PavlidisLab/rnaseq-pipeline/issues/2
+MDU6SXNzdWUzMzk2MjMxMTY=,Raise warning on download when GEO accession doesn't have matching SRA data,CLOSED,2018-07-09T22:03:36Z,2019-10-17T18:35:06Z,2019-10-17T18:35:05Z,"Experiments from GEO can sometimes have an accession but not actually have SRA data. An example is `GSE64018`. 
+
+Currently the pipeline will not see this as a failure on `DownloadGSE`, but the Qc step will fail (assuming the `--nsamples` argument from `QcGSE` is not 0). It would be nicer if DownloadGSE would either return a failure when it can't find a matching SRA accession from the MINIML file, or at least raise a loud warning so the problem is obvious to the pipeline user.",mbelmadani,https://github.com/PavlidisLab/rnaseq-pipeline/issues/3
+MDU6SXNzdWUzNjYwNzU3NDE=,Add task for backfilling FASTQ metadata only,CLOSED,2018-10-02T20:54:44Z,2019-12-06T00:25:01Z,2019-12-06T00:25:01Z,"Some experiments may need to be re-downloaded for the only purpose of getting the FASTQ metadata. This could be made as a luigi task.
+
+Additional considerations:
+* Is it possible to speed this up by only downloading a small part of the file?
+* Are there external meta data repos for GEO/SRA data? (e.g. MetaSRA, http://metasra.biostat.wisc.edu/api.html)
+* Is it better to overwrite existing (obsolete or missing) metadata for historical purposes or append to it?",mbelmadani,https://github.com/PavlidisLab/rnaseq-pipeline/issues/4
+MDU6SXNzdWU1MDQyMjMyNjI=,Have a single sourceable environment/configuration script,CLOSED,2019-10-08T19:06:25Z,2019-10-10T18:28:39Z,2019-10-10T18:28:39Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/5
+MDU6SXNzdWU1MDU0Mzg0MjU=,Extend ExternalProgramTask to work with a job scheduler,CLOSED,2019-10-10T18:30:23Z,2019-11-12T23:48:20Z,2019-11-12T23:48:20Z,"If we happen to eventually use a job scheduler to distribute the computation, it would be simple to extend `ExternalProgramTask` to dispatch the work on a job scheduler.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/6
+MDU6SXNzdWU1MDYxMTg5OTU=,SRA prefetch fails with large downloads,CLOSED,2019-10-12T02:33:36Z,2024-09-04T16:51:37Z,2024-09-04T16:51:37Z,The real issue is that the tool does not exit with a non-zero code when it fails due to a download size limit.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/7
+MDU6SXNzdWU1MDg2NDgxMTg=,Remove dependency on DownloadExperiment from AlignExperiment,CLOSED,2019-10-17T18:30:09Z,2020-02-10T14:51:39Z,2020-02-10T14:51:39Z,This would remove the bottleneck between data download and downstream processing.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/8
+MDU6SXNzdWU1MDkyMzMzMjY=,Handle strand-specific RNA-Seq data,CLOSED,2019-10-18T18:04:02Z,2019-11-14T22:01:20Z,2019-11-14T22:00:59Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/9
+MDU6SXNzdWU1MTAyMjQ2MTk=,Add support for local data,CLOSED,2019-10-21T19:19:55Z,2019-10-21T19:54:15Z,2019-10-21T19:54:15Z,Add `DownloadLocalSample` and `DownloadLocalExperiment` tasks to cover case of local samples.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/10
+MDU6SXNzdWU1MTAyNzc2NjY=,Add a FastQC task,CLOSED,2019-10-21T20:39:08Z,2019-10-29T19:03:16Z,2019-10-29T19:03:16Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/11
+MDU6SXNzdWU1MTAzMjEzNzg=,Use $OUTPUT_DIR/metadata for storing series and samples metadata,CLOSED,2019-10-21T22:08:59Z,2019-10-29T19:03:09Z,2019-10-29T19:03:09Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/12
+MDU6SXNzdWU1MTAzMjI4NjE=,Remove --taxon argument,OPEN,2019-10-21T22:12:14Z,2022-07-08T18:01:02Z,,"The information that the taxon provide is redundant because we already have the genome and the annotation reference identifiers.
+
+For that to work, we have to update Gemma platform identifiers to use explicit Ensembl versions.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/13
+MDU6SXNzdWU1MTIyMjkyNzk=,Fetch metadata from Gemma,CLOSED,2019-10-24T23:32:32Z,2019-12-06T00:25:50Z,2019-12-06T00:25:50Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/14
+MDU6SXNzdWU1MTI2MzU3NTk=,Add a source parameter to determine where the metadata are stored,CLOSED,2019-10-25T17:37:53Z,2019-12-06T00:25:39Z,2019-12-06T00:25:39Z,This is necessary for #14 because the shortName entry might conflict with GEO accessions. Using the `experiment_id` parameter cannot always disambiguate the data source.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/15
+MDU6SXNzdWU1MTQxNTMyNjc=,Add quality control for alignment results,OPEN,2019-10-29T19:04:09Z,2019-10-29T19:04:09Z,,[RSeQC](http://rseqc.sourceforge.net/) provide a wide range of tools for that purpose.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/16
+MDU6SXNzdWU1MTQxNTM1MTA=,Generate MultiQC reports,CLOSED,2019-10-29T19:04:31Z,2019-12-06T00:23:37Z,2019-12-06T00:23:37Z,Relates to: #16 ,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/17
+MDU6SXNzdWU1MjA2NTcxMzc=,Migrate tool-specific code to bioluigi,CLOSED,2019-11-10T21:02:57Z,2022-02-09T05:20:34Z,2022-02-09T05:20:34Z,https://github.com/PavlidisLab/bioluigi,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/18
+MDU6SXNzdWU1MjA2ODE4OTE=,Spring cleanup!,CLOSED,2019-11-11T00:20:17Z,2019-11-20T00:45:03Z,2019-11-20T00:45:03Z,"Most of the logic is now in scheduler/tasks.py, so it would be great to clean up the legacy code and get this repository tidy.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/19
+MDU6SXNzdWU1MjE4NjkyMzA=,STAR does not always cleanup shared memory,CLOSED,2019-11-12T23:49:45Z,2019-12-06T00:23:00Z,2019-12-06T00:23:00Z,This is basically due to memory leakage when a process does not decrement the shared memory usage counter. It would be better to establish the count on the number of attached process on the segment instead.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/20
+MDU6SXNzdWU1MjMxMjg2NDY=,FastQC fails silently,CLOSED,2019-11-14T21:59:53Z,2019-11-16T23:59:52Z,2019-11-16T23:59:52Z,"It causes the following error in Luigi:
+
+```
+Runtime error:
+Traceback (most recent call last):
+  File ""/space/grp/Pipelines/rnaseq-pipeline/venv/lib/python2.7/site-packages/luigi/worker.py"", line 184, in run
+    raise RuntimeError('Unfulfilled %s at run time: %s' % (deps, ', '.join(missing)))
+RuntimeError: Unfulfilled dependency at run time: QualityControlSample_GSE117223_GSM3288306_d6aef47967
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/21
+MDU6SXNzdWU1MjMyMTExMjk=,Use fasterq-dump,OPEN,2019-11-15T02:12:06Z,2019-11-15T02:12:06Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/22
+MDU6SXNzdWU1MjgyNTUyNjY=,Use a SRX identifier to query the SRA database,CLOSED,2019-11-25T18:18:10Z,2020-01-06T23:39:30Z,2020-01-06T23:39:30Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/23
+MDU6SXNzdWU1MzM2NzMzNjk=,Add a SRA source,CLOSED,2019-12-06T00:21:14Z,2020-01-23T19:43:58Z,2020-01-23T19:43:58Z,"In addition to the GEO source which invokes the SRA source, it would be nice to complement this with a SRA source that works with SRX accession (see #23).",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/24
+MDU6SXNzdWU1MzYwNDg0Nzg=,Label SRR with the sample identifier in MultiQC report,CLOSED,2019-12-10T23:15:15Z,2024-09-04T16:52:31Z,2024-09-04T16:52:31Z,This will have the advantage of grouping the alignments statistics with the FASTQ quality controls in the final report.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/25
+MDU6SXNzdWU1Mzc3ODk4MDk=,STAR fails to to SJ buffer size being too small,CLOSED,2019-12-13T21:41:16Z,2024-03-05T19:17:51Z,2024-03-05T19:17:34Z,"```
+EXITING because of fatal error: buffer size for SJ output is too small
+Solution: increase input parameter --limitOutSJcollapsed
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/26
+MDU6SXNzdWU1MzkzNDA1MTQ=,Limit the number of sratoolkit.Prefetch jobs,CLOSED,2019-12-17T22:17:50Z,2020-07-09T16:13:05Z,2020-07-09T16:13:05Z,We need a mechanism for limiting the number of jobs of this kind since it does not scale with the number running tasks due to bandwith bottleneck.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/27
+MDU6SXNzdWU1NDU0NzM2MzI=,LibraryLayout does not always match the number of mates per spot,CLOSED,2020-01-05T22:08:33Z,2022-03-16T16:44:19Z,2022-03-16T16:44:18Z,This is the case for SRR3279144 where the metadata claims it is paired but the output of fastq-dump in single-ended.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/28
+MDU6SXNzdWU1NDc2MTIyOTk=,Let sources handle taxons and other metadata,OPEN,2020-01-09T17:15:22Z,2020-01-09T17:15:22Z,,"This would basically resolve #13 since we would pull the information from SRA/GEO/Gemma instead of requesting it.
+
+For the local source, we would still need a flag to override a default taxon.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/29
+MDU6SXNzdWU1NDgyMTYxNDA=,Make it less disruptive to queue new experiments,OPEN,2020-01-10T18:02:27Z,2020-01-10T18:02:27Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/30
+MDU6SXNzdWU1NDgzMTM0MTc=,Minimize usage of network between DownloadSample and AlignSample,OPEN,2020-01-10T22:04:20Z,2020-01-10T22:04:35Z,,"In the current setup, it's possible that the AlignSample task get scheduled on a different node than the matching DownloadSample task which disrupt the NFS caching.
+
+We could first start by pinning align jobs on whichever node was used to download the data. If that works well, we would then switch to use the local scratch filesystem to completely avoid the NFS.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/31
+MDU6SXNzdWU1NDkxMTgzMjg=,Add priority to SubmitBatchInfoToGemma tasks,CLOSED,2020-01-13T18:55:16Z,2020-01-14T19:03:08Z,2020-01-14T19:03:08Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/32
+MDU6SXNzdWU1NTAzODQyMjM=,Add quality-control for batch info before submitting it to Gemma,CLOSED,2020-01-15T19:29:42Z,2020-03-14T17:45:24Z,2020-03-14T17:45:24Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/33
+MDU6SXNzdWU1NTE5MjI2MDE=,Move to Python 3,CLOSED,2020-01-19T13:31:12Z,2020-01-20T18:59:45Z,2020-01-20T18:59:45Z,"Luigi (and also the Python core developers...) is about to drop support for Python 2.7 see https://github.com/spotify/luigi/pull/2876.
+
+This is a rather simple move as we only have to update the Conda environment to use Python 3 and possibly adjust some code in the pipeline.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/34
+MDU6SXNzdWU1NTE5MjUyMjk=,Look into including adapter trimming,CLOSED,2020-01-19T13:51:53Z,2020-07-09T16:12:30Z,2020-07-09T16:12:30Z,"While it is not generally needed, some datasets might require adapter trimming and there's pretty popular solution out there that automate some decisions:
+
+ - [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)
+ - [Trim Galore!](http://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
+
+What's nice about Trim Galore! is that we already use FastQC for reporting read quality and it might be possible to reuse the generated report.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/35
+MDU6SXNzdWU1NTM4MjgwMzg=,Use CacheControl for GEO/SRA HTTP requests instead of local files,CLOSED,2020-01-22T22:19:43Z,2024-03-05T19:18:31Z,2024-03-05T19:18:27Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/36
+MDU6SXNzdWU1NTQ4ODQwMjA=,Use --origfmt with fastq-dump,OPEN,2020-01-24T18:20:15Z,2020-01-24T18:21:07Z,,"Currently, we use the SRA format for FASTQ headers which prefix the SRR run accession to the original string from the sequencer. This format is not compatible with ArrayExpress and local sources and will pose a problem if we try to generalize batch information extraction for arbitrary FASTQs and not just GEO series.
+
+The solution is to add the `--origfmt` flag to `fastq-dump` so that the original header will be used instead.
+
+This might require some adjustment in how Gemma parses the batch information.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/37
+MDU6SXNzdWU1NjI3MjE5NTE=,Remove FASTQs when not needed if source is not local,CLOSED,2020-02-10T17:44:12Z,2020-03-14T17:44:18Z,2020-03-14T17:44:10Z,"We need the FASTQ files for two things: alignment tasks and batch information extraction.
+
+At this time, submitting a batch information and quantifying gene expression are two separate and independent tasks that share some common dependencies. This makes it a bit difficult to determine the right moment to clear the FASTQ files.
+
+We could add a wrapper task that depends on any task that needs the FASTQ files to exist and that would be considered completed if all its dependencies are met AND the FASTQ files do not exist.
+
+This logic cannot apply for the `local` source.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/38
+MDU6SXNzdWU1NzIyOTgyNDU=,RSEM temporary file cleanup does not always work,OPEN,2020-02-27T19:17:38Z,2020-02-27T19:17:38Z,,I think it might relate to NFS.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/39
+MDU6SXNzdWU1NzM3Mzg3NTQ=,Upload MultiQC reports to Gemma,CLOSED,2020-03-02T06:00:19Z,2024-09-04T16:50:55Z,2024-09-04T16:50:55Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/40
+MDU6SXNzdWU1NzM3Mzk4NTA=,Upload pipeline metadata to Gemma,OPEN,2020-03-02T06:03:37Z,2020-03-02T06:03:45Z,,"There's been discussion about using a subset of [CWL](https://www.commonwl.org/) to produce a file with structured pipeline metadata.
+
+This process can be entirely automated by introspecting the Luigi task graph and extending `ExternalProgramTask` to provide additional metadata such as a version number. Ideally, we would move that logic into [bioluigi](https://github.com/PavlidisLab/bioluigi/tree/master/bioluigi) and make all our task CWL-friendly.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/41
+MDU6SXNzdWU1NzcxMjIwOTg=,Treat unusable batch info as a success,CLOSED,2020-03-06T19:13:04Z,2020-03-10T23:50:26Z,2020-03-10T23:50:26Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/42
+MDU6SXNzdWU1ODEzMDIxODY=,Support extracting batch information from FASTQ headers with underscores,OPEN,2020-03-14T17:43:19Z,2020-03-14T17:43:19Z,,"I've encountered a couple of archives in SRA that replaces `:` separator by `_` in their FASTQ headers.
+
+We would have to handle this specific case in `ExtractGeoSeriesBatchInfo`.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/43
+MDU6SXNzdWU1ODE4NDQ3ODQ=,Fix missing stacktrace when GemmaTask fails,CLOSED,2020-03-15T22:08:03Z,2021-01-21T23:42:30Z,2021-01-21T23:42:03Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/44
+MDU6SXNzdWU2MDg0MjgwMDQ=,RSEM section is not appearing the the MultiQC report,CLOSED,2020-04-28T15:54:10Z,2020-06-24T20:29:56Z,2020-06-24T20:29:55Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/45
+MDU6SXNzdWU2NDE0ODk0ODM=,Only consider the relevant subset of samples when assessing batch info,CLOSED,2020-06-18T19:16:50Z,2024-09-04T16:54:41Z,2024-09-04T16:54:28Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/46
+MDU6SXNzdWU2NTUwNjg0ODk=,Add cutadapt section to MultiQC report,OPEN,2020-07-10T22:29:41Z,2022-02-08T21:45:43Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/47
+MDU6SXNzdWU2NTUzMDA5MTA=,Migrate to Luigi 3.0.0,CLOSED,2020-07-12T00:00:54Z,2021-01-21T23:43:11Z,2021-01-21T23:43:11Z, - [ ] migrate the central scheduler to Luigi 3.0.0,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/48
+MDU6SXNzdWU2OTUzMjI1MDI=,Adapt the Web viewer for other data sources,OPEN,2020-09-07T18:13:23Z,2020-09-07T18:13:23Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/49
+MDU6SXNzdWU3Mjk5NTkyNDU=,Add a timeout after submitting data to Gemma to account for caching,CLOSED,2020-10-26T22:45:29Z,2021-01-21T23:43:44Z,2021-01-21T23:43:43Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/50
+MDU6SXNzdWU3ODcwNzY3Njk=,Add automated quality control checks before submitting data to Gemma,OPEN,2021-01-15T17:48:51Z,2021-01-15T17:48:54Z,,"As per https://github.com/PavlidisLab/GemmaCuration/issues/3#issuecomment-759691608, it would be valuable to perform some sanity checks before submitting data to Gemma.
+
+Here's a list of basic things that we can do:
+
+ - [ ] detect samples with zeroed-out expression vectors (this could be caused by an alignment failure, or too short reads, etc.)
+ - [ ] ensure that every column have enough variance
+ - [ ] add a Luigi parameter to manually skip QC checks
+ - [ ] report QC checks in the Web viewer
+ - [ ] report QC checks on Slack (in case of failure)",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/51
+MDU6SXNzdWU3OTQzODMzNzk=,Add support for Ion Torrent Proton platform,OPEN,2021-01-26T16:38:51Z,2021-01-26T16:38:51Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/52
+MDU6SXNzdWU3OTg2MTU0NjY=,Add BGI-SEQ adapters to the FastQC report,OPEN,2021-02-01T18:46:48Z,2021-02-01T18:46:48Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/53
+MDU6SXNzdWU3OTg2MTY1Mzk=,Adjust FastQC limits to be suitable for RNA-Seq,OPEN,2021-02-01T18:48:30Z,2021-02-01T18:48:30Z,,We can get an idea of the thresholds to apply by looking at the data we gathered so far.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/54
+MDU6SXNzdWU4MTI0NjQ2NzQ=,DownloadSraExperimentRunInfo should fail on an empty runinfo table,CLOSED,2021-02-20T00:59:54Z,2023-09-25T20:48:58Z,2023-09-25T20:48:58Z,"This problem is caught in DownloadSraExperiment which makes it impossible to address without restarting the pipeline since DownloadSraExperimentRunInfo is considered to have succeeded.
+
+ - [ ] raise an exception if the runinfo file is empty
+ - [ ] make sure that empty files are not stored on-disk
+ - [ ] check a similar fix could also be applied to GEO metadata",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/55
+MDU6SXNzdWU4MjUwMTU2Nzg=,Batch information for split experiments,OPEN,2021-03-08T22:28:11Z,2021-03-08T22:28:11Z,,"Batch info for split experiments is displayed all together. 
+
+E.g. GSE147432 was split into 3 datasets: GSE147432.1, GSE147432.2, GSE147432.3, but the batch info for each one of them is identical (i.e. https://home.pavlab.msl.ubc.ca/rnaseq-pipeline/experiment/GSE147432.2) showing all the samples from the original experiment.
+
+Only the samples belonging to a particular subset experiment should be shown",sanjarogic,https://github.com/PavlidisLab/rnaseq-pipeline/issues/56
+MDU6SXNzdWU4OTA0OTc3NTI=,Update MultiQC to 1.10,CLOSED,2021-05-12T21:20:40Z,2021-06-18T17:49:07Z,2021-06-18T17:49:07Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/57
+MDU6SXNzdWU5MzAzNjM3NzE=,Build and install the shared memory cleanup tool during initial setup,OPEN,2021-06-25T17:19:21Z,2021-06-25T17:19:21Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/58
+MDU6SXNzdWU5NTUwNDY4NzQ=,Trimmed FASTQs are not deleted when data is successfully submitted to Gemma,CLOSED,2021-07-28T16:48:09Z,2024-09-14T18:37:40Z,2024-09-14T18:37:40Z,"For some reason, the `TrimExperiment` task returns nothing.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/59
+MDU6SXNzdWU5Njk3NTM0NjM=,Read with 3 parts break cutadapt with unexpected suffixes in the read ids,CLOSED,2021-08-12T23:30:37Z,2021-08-13T21:52:33Z,2021-08-13T21:52:33Z,"https://github.com/marcelm/cutadapt/issues/199
+
+This is a problem for GSE171683.
+
+The first read in SRR14182285 are mismatched due to the `.1` and `.3` suffixes:
+
+```
+@SRR14182285.1.1 HWI-ST1264:174:H5LVLBCX2:2:1101:1354:2225 length=100
+CTCTCAAAAATTACAGGTTTAAATTATAACGTGTCCTTAAGTTTAGCATGGTTAAATGATATTTTCTTTTAGGGTAACCAAGAGCAGTTAGTTAAGTGAC
++SRR14182285.1.1 HWI-ST1264:174:H5LVLBCX2:2:1101:1354:2225 length=100
+DDABBEHFFGG1CCFHIC@FFHHFHIHCHHHF@<?FCCCGHIIICGEH@<@FGC1FHIHHHIEHIHHHIICHEHHIIHEHIIEH1<GHHEHIHHIECHHE
+```
+
+```
+@SRR14182285.1.3 HWI-ST1264:174:H5LVLBCX2:2:1101:1354:2225 length=101
+CCGTTATTTTCGAGACAGAGTTTCTCTGTGTAGTCCTGGCTGTCCTAGAACTCACTCTGTAGACCAGACTGGCCTCAAACTCACAGAGATCTGCCTGCCTC
++SRR14182285.1.3 HWI-ST1264:174:H5LVLBCX2:2:1101:1354:2225 length=101
+IID0DDB@F<</<C1F@ECFHEHH?1<D<1<DC1<1<<<CG1<CFHH@1<1<<F@<<1DGC1D<11<D<<<1<GHC1<1<DCG?<F@C<1D@CG@G?F@<1
+```
+
+This issue causes cutadapt to hang when run in parallel. This should be reported upstream.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/60
+MDU6SXNzdWU5NzE5NzAyMzY=,Use luigi.TaskParameter for platforms and sources-specific tasks,OPEN,2021-08-16T17:56:42Z,2021-08-16T17:56:57Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/62
+MDU6SXNzdWU5ODIwMTgyMzM=,"Add a task to generate a summary of the tools, software and references used",OPEN,2021-08-29T07:23:13Z,2022-07-08T18:00:28Z,,"I thought of first serializing the whole workflow with CWL, but that is definitely overkill and really challenging to achieve with our dynamic dependencies. I'm not against reusing the definitions in CWL though where useful.
+
+ - software versions (git commit for contrib/RSEM)
+ - reference metadata (add a new YAML format to drop under genomes/<reference_id>/metadata.yaml)
+ - pipeline version & Python dependencies
+ - full CLI arguments used at each step
+ - snapshot of the Conda environment
+
+VERY IMPORTANT: version the metadata format itself! and make it backward-compatible.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/63
+MDU6SXNzdWU5OTM3MDAzMTk=,Batch information that has been deemed unuseable are not considered completed,OPEN,2021-09-11T00:42:45Z,2021-09-11T00:42:45Z,,"The information can be retrieved from https://gemma.msl.ubc.ca/rest/v2/datasets/GSE128140 under the `batchEffect` instead of by looking at the factors tied to individual samples.
+
+Example: GSE128140",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/64
+I_kwDOAt2Yk847y2fO,Raise Error When SRX Only Has Empty Files,CLOSED,2021-09-21T20:03:22Z,2021-12-15T22:43:07Z,2021-12-15T22:43:07Z,"Following up on our last conversation, I was wondering if you still want to change the behavior of the pipeline so that if the SRX doesn't have data the system will just raise an error instead of downloading empty files.",Tu1026,https://github.com/PavlidisLab/rnaseq-pipeline/issues/65
+I_kwDOAt2Yk8493biw,rnaseq_pipeline.sources.sra.DownloadSraExperimentRunInfo fails with exit status 255 ,CLOSED,2021-10-27T23:24:08Z,2023-09-25T20:48:23Z,2023-09-25T20:48:17Z,"The task can be restarted and works fine, so this could be an issue with Entrez utilities or maybe NCBI servers. I think it would make sense to retry it a couple of times with Luigi retry mechanism.
+
+```
+Runtime error:
+Traceback (most recent call last):
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/luigi/worker.py"", line 191, in run
+    new_deps = self._run_get_new_deps()
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/luigi/worker.py"", line 133, in _run_get_new_deps
+    task_gen = self.task.run()
+  File ""/space/grp/Pipelines/rnaseq-pipeline/rnaseq_pipeline/sources/sra.py"", line 92, in run
+    check_call(['efetch', '-format', 'runinfo'], stdin=esearch_proc.stdout, stdout=f)
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/subprocess.py"", line 363, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['efetch', '-format', 'runinfo']' returned non-zero exit status 255.
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/66
+I_kwDOAt2Yk84-itmM,Killed external tasks leave an empty error message,OPEN,2021-11-10T01:08:31Z,2021-11-10T01:08:31Z,,It would be very useful to catch process that exit with a signal and display the signal and a useful message in Luigi's task output.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/67
+I_kwDOAt2Yk85DNU9O,Include the experiment ID and sample ID in Prefetch,CLOSED,2022-02-08T17:45:52Z,2024-03-05T19:20:11Z,2024-03-05T19:20:03Z,"I'm not sure if it's allowed to add metadata to Luigi's tasks (via insignificant parameters), but it would be absolutely useful for `sratoolkit.Prefetch` to report the experiment and sample IDs.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/68
+I_kwDOAt2Yk85DOBAA,Update MultiQC to 1.11,CLOSED,2022-02-08T20:53:53Z,2022-02-08T21:45:05Z,2022-02-08T21:45:05Z,"There's a relevant bug fix for us:
+
+> RSEM
+> Handled ZeroDivisionError when input files have zero reads (https://github.com/ewels/MultiQC/issues/1040)",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/69
+I_kwDOAt2Yk85JaUud,Evaluate cutadapt 4.0,CLOSED,2022-05-10T20:09:16Z,2023-02-27T17:12:12Z,2023-02-27T17:12:11Z,"There was a breaking change in this release, so we need to evaluate how this might affect our preprocessing.
+
+For now, I have capped the cutadapt version with e77faa4141ab5a1a17c39e3d0d9fe7618719455b.
+
+Related cutadapt issue: https://github.com/marcelm/cutadapt/issues/604",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/72
+I_kwDOAt2Yk85M7hmo,Fastas file ending with .fna are not detected when preparing RSEM/STAR indices ,CLOSED,2022-06-30T21:48:12Z,2022-07-08T18:00:17Z,2022-07-08T18:00:14Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/73
+I_kwDOAt2Yk85PSTDO,IndexError: single positional indexer is out-of-bounds while parsing runinfo file,CLOSED,2022-08-05T17:35:24Z,2023-01-12T19:19:26Z,2023-01-12T19:19:26Z,"```
+Runtime error:
+Traceback (most recent call last):
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/luigi/worker.py"", line 191, in run
+    new_deps = self._run_get_new_deps()
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/luigi/worker.py"", line 142, in _run_get_new_deps
+    requires = next(task_gen)
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/rnaseq_pipeline/sources/sra.py"", line 145, in run
+    run = df.sort_values('Run', ascending=False).iloc[0]
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/pandas/core/indexing.py"", line 931, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/pandas/core/indexing.py"", line 1566, in _getitem_axis
+    self._validate_integer(key, axis)
+  File ""/home/rogic/miniconda3/envs/rnaseq-pipeline/lib/python3.7/site-packages/pandas/core/indexing.py"", line 1500, in _validate_integer
+    raise IndexError(""single positional indexer is out-of-bounds"")
+IndexError: single positional indexer is out-of-bounds
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/75
+I_kwDOAt2Yk85PSTmz,Unfulfilled dependency at runtime for SubmitExperimentBatchInfo,CLOSED,2022-08-05T17:38:02Z,2024-09-04T16:49:27Z,2024-09-04T16:49:27Z,"I think there's a delay between batch info submission and the batch factor appearing in the Gemma public API due to caching.
+
+A simple workaround would be to introduce a small waiting period.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/76
+I_kwDOAt2Yk85XiRA4,DeprecationWarning: Importing 'itsdangerous.json' is deprecated and will be removed in ItsDangerous 2.1. Use Python's 'json' modu le instead.,CLOSED,2022-11-29T19:38:57Z,2023-02-27T17:20:16Z,2023-02-27T17:20:15Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/77
+I_kwDOAt2Yk85bRM5T,Update MultiQC to 1.14,CLOSED,2023-01-12T19:20:24Z,2023-01-12T21:46:56Z,2023-01-12T21:46:56Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/78
+I_kwDOAt2Yk85bRNDq,CI is stuck when setting up the Conda environment,CLOSED,2023-01-12T19:20:44Z,2024-03-05T19:18:50Z,2024-03-05T19:18:44Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/79
+I_kwDOAt2Yk85bRN24,Include environment variables from the Slurm jobs in the error logs,CLOSED,2023-01-12T19:22:45Z,2023-01-12T19:35:34Z,2023-01-12T19:35:34Z,I think this can be achieved by allowing more info logs with `--slurmd-debug`.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/80
+I_kwDOAt2Yk85bR1-F,Add support for NextSeq 2000 (Mus musculus) (GPL30172),CLOSED,2023-01-12T21:37:38Z,2023-01-12T21:46:44Z,2023-01-12T21:46:40Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/81
+I_kwDOAt2Yk85c0UYc,RuntimeError: Unfulfilled dependency at run time: rnaseq_pipeline.tasks.SubmitExperimentBatchInfoToGemma,CLOSED,2023-01-25T20:14:13Z,2023-01-25T20:14:52Z,2023-01-25T20:14:51Z,This is caused by the caching discrepancies between the CLI tool that submits batch information and the information exposed in Gemma REST.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/82
+I_kwDOAt2Yk85vfadi,Use of uninitialized value $doesOpen in numeric eq (==) at contrib/RSEM/rsem-calculate-expression line 574,OPEN,2023-08-28T21:05:01Z,2023-08-28T21:05:36Z,,Caught this error while aligning GSM7062734 from GSE226076.,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/84
+I_kwDOAt2Yk85x-fJN,Report errors on the Slack channel,OPEN,2023-09-25T20:07:55Z,2023-09-25T20:07:55Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/85
+I_kwDOAt2Yk850FJZQ,Include the webviewer tests on the CI,OPEN,2023-10-17T13:59:45Z,2023-10-17T13:59:45Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/86
+I_kwDOAt2Yk850G7MC,Remove --clip and --skip-technical from fastq-dump,OPEN,2023-10-17T18:07:29Z,2023-10-17T19:03:38Z,,"We don't use split spots (required for --skip-technical) and we trim adapter ourselves, so there's no need for these two options.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/87
+I_kwDOAt2Yk850P-4i,Produce an error when fastq files are empty,OPEN,2023-10-18T18:03:14Z,2023-10-18T18:03:14Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/88
+I_kwDOAt2Yk850Q5RA,Reorganize high-level scripts into a rnaseq-pipeline-cli tool,OPEN,2023-10-18T20:23:42Z,2024-09-04T16:49:08Z,,"Tasks that should be covered via sub-commands:
+
+ - submit experiments from a gsheet
+ - submit experiments from a file
+ - submit individual experiment
+ - resubmit batch information
+ - general luigi-wrapper task submissions (we can remove luigi-wrapper once that is finished)
+
+This tool can be modeled on Bioluigi CLI.",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/89
+I_kwDOAt2Yk86EsBXf,"Metadata in Prefetch tasks should use a GSM ID, not a SRX ID. ",CLOSED,2024-04-04T17:30:28Z,2024-09-04T16:48:43Z,2024-09-04T16:48:43Z,"![image](https://github.com/PavlidisLab/rnaseq-pipeline/assets/1318477/4a1233e9-aaa9-4505-be61-961fce304b18)
+",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/90
+I_kwDOAt2Yk86EsqyJ,Address already in use,CLOSED,2024-04-04T19:00:27Z,2024-09-04T16:48:51Z,2024-09-04T16:48:51Z,"```
+srun: error: unable to initialize step context socket: Address already in use srun: error: Unable to create step for job 2539557: Address already in use
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/91
+I_kwDOAt2Yk86Fjms1,Duplicate row name 170942 when adding RNA-Seq data,CLOSED,2024-04-10T23:43:31Z,2024-04-12T19:31:20Z,2024-04-12T19:31:20Z,"```
+/space/grp/bin/gemma-cli rnaseqDataAdd -e GSE193995 -a Generic_mouse_ncbiIds -count /cosmos/data/pipeline-output/rnaseq/quantified/mm39_ncbi_109_fixed/GSE193995_counts.genes -rpkm /cosmos/data/pipeline-output/rnaseq/quantified/mm39_ncbi_109_fixed/GSE193995_fpkm.genes
+```
+
+```
+java.lang.IllegalArgumentException: Duplicate row name 170942
+	at ubic.basecode.dataStructure.matrix.AbstractMatrix.setRowName(AbstractMatrix.java:330) ~[baseCode-1.1.21.jar:?]
+	at ubic.basecode.dataStructure.matrix.AbstractMatrix.setRowNames(AbstractMatrix.java:349) ~[baseCode-1.1.21.jar:?]
+	at ubic.basecode.io.reader.DoubleMatrixReader.createMatrix(DoubleMatrixReader.java:262) ~[baseCode-1.1.21.jar:?]
+	at ubic.basecode.io.reader.DoubleMatrixReader.read(DoubleMatrixReader.java:157) ~[baseCode-1.1.21.jar:?]
+	at ubic.basecode.io.reader.DoubleMatrixReader.read(DoubleMatrixReader.java:217) ~[baseCode-1.1.21.jar:?]
+	at ubic.basecode.io.reader.DoubleMatrixReader.read(DoubleMatrixReader.java:180) ~[baseCode-1.1.21.jar:?]
+	at ubic.gemma.core.apps.RNASeqDataAddCli.doWork(RNASeqDataAddCli.java:208) ~[gemma-cli-1.31.3.jar:?]
+	at ubic.gemma.core.util.AbstractCLI.executeCommand(AbstractCLI.java:210) [gemma-cli-1.31.3.jar:?]
+	at ubic.gemma.core.apps.GemmaCLI.main(GemmaCLI.java:243) [gemma-cli-1.31.3.jar:?]",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/92
+I_kwDOAt2Yk86Nd-4f,AttributeError: 'Series' object has no attribute 'spots_with_mates',CLOSED,2024-06-25T19:09:15Z,2024-06-25T19:23:28Z,2024-06-25T19:23:28Z,"![image](https://github.com/PavlidisLab/rnaseq-pipeline/assets/1318477/0b778092-3561-4bae-86b0-22ead8578577)
+",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/93
+I_kwDOAt2Yk86OaIlM,Handle SRA experiments with multiple lanes mapped on distinct runs,OPEN,2024-07-03T18:29:33Z,2024-07-03T18:37:46Z,," - [ ] check the runinfo to make sure the sample can be combined (i.e. same pairedness, insert size, read length)
+ - [ ] make sure we don't process the same file twice
+ - [ ] concatenate output files into a single file for the experiment
+ - [ ] extract batch information for each run
+
+Example: https://www.ncbi.nlm.nih.gov/sra/?term=SRX19303543
+
+
+```csv
+Run,ReleaseDate,LoadDate,spots,bases,spots_with_mates,avgLength,size_MB,AssemblyName,download_path,Experiment,LibraryName,LibraryStrategy,LibrarySelection,LibrarySource,LibraryLayout,InsertSize,InsertDev,Platform,Model,SRAStudy,BioProject,Study_Pubmed_id,ProjectID,Sample,BioSample,SampleType,TaxID,ScientificName,SampleName,g1k_pop_code,source,g1k_analysis_group,Subject_ID,Sex,Disease,Tumor,Affection_Status,Analyte_Type,Histological_Type,Body_Site,CenterName,Submission,dbgap_study_accession,Consent,RunHash,ReadHash
+SRR23362510,2023-03-04 00:13:53,2023-02-07 15:21:34,33757271,4287173417,0,127,1642,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362510/SRR23362510.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,E1D7908479DB68AC5BF2D02363843723,74BBC66805FB82F94EB3452E14DF9B20
+SRR23362511,2023-03-04 00:13:55,2023-02-07 15:07:32,33582785,4265013695,0,127,1645,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362511/SRR23362511.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,F9EBCCF2EE039048F7DF04362D0B9A7B,1EE5D4D071EDB9940102EC1A47C2012E
+SRR23362512,2023-03-04 00:13:55,2023-02-07 15:13:12,33586989,4265547603,0,127,1635,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362512/SRR23362512.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,C6294D9108B441B431D0A79E3FD38AB1,F76192753E8D0311E3BD7E2919B72AF1
+SRR23362513,2023-03-04 00:13:55,2023-02-07 15:17:01,33427011,4245230397,0,127,1631,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362513/SRR23362513.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,3967C30F1B279DC47ABA8FFBBA9ADF75,D62A8FB4F31C612652A6E4F8B28A56E2
+SRR23362514,2023-03-04 00:13:55,2023-02-07 15:24:06,57117283,7253894941,0,127,2899,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362514/SRR23362514.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,2AC482F669A1A6473F9F344E3A2C240F,342BE1E8386C569711B667C03A3D1184
+SRR23362515,2023-03-04 00:13:55,2023-02-07 15:29:43,57138159,7256546193,0,127,2932,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362515/SRR23362515.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,27DECC599ED381BF772E39872B0639F7,66155FA1849CF725DA6A2C2F1EB9D81E
+SRR23362516,2023-03-04 00:13:55,2023-02-07 15:28:47,57071250,7248048750,0,127,2914,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362516/SRR23362516.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,2C3181C595DAA7686DB8AD836B9FD9E7,539051CB6A33D15E2F4BBC766FFBA7C2
+SRR23362517,2023-03-04 00:13:55,2023-02-07 15:31:39,56810433,7214924991,0,127,2891,,https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos4/sra-pub-zq-3/SRR023/23362/SRR23362517/SRR23362517.lite.1,SRX19303543,GSM7031205,RNA-Seq,cDNA,TRANSCRIPTOMIC,PAIRED,0,0,ILLUMINA,Illumina NovaSeq 6000,SRP421366,PRJNA932339,,932339,SRS16703502,SAMN33190761,simple,9606,Homo sapiens,GSM7031205,,,,,,,no,,,,,""MOLECULAR NEUROGENETICS, WALLENBERG NEUROSCIENCE CENTER, LUND UNIVERSITY"",SRA1586479,,public,FBA981C516A70A4F42107649F7056FC1,89575037DD543FD8F09124BF8E6DCFAF
+```",arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/94
+I_kwDOAt2Yk86OamUG,Use NCBI FTP server for downloading MINiML files,CLOSED,2024-07-03T19:48:10Z,2024-09-04T16:47:55Z,2024-09-04T16:47:37Z,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/95
+I_kwDOAt2Yk86cJSMA,CI fails because /rest/v2/datasets/GSE110256/hasbatch requires admin role,OPEN,2024-10-28T22:15:00Z,2024-10-28T22:15:00Z,,,arteymix,https://github.com/PavlidisLab/rnaseq-pipeline/issues/96

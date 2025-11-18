@@ -1,0 +1,92 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1NTgzNTMzNDc=,"""import RNA""",CLOSED,2020-01-31T20:22:39Z,2020-02-07T15:51:34Z,2020-02-07T15:51:34Z,"Hi,
+What is ""import RNA"" package in line 25 of ScanFold-Scan?
+Thanks,
+Abhinav Mittal
+University of Rochester Medical Center,
+Biophysics and Biochemistry Department",Abhinav-Mittal,https://github.com/moss-lab/ScanFold/issues/3
+MDU6SXNzdWU4NDEwMTg4MTM=,"Change default name ""UserInput"" to fasta header.",OPEN,2021-03-25T15:00:42Z,2021-03-25T15:00:42Z,,,rjandr,https://github.com/moss-lab/ScanFold/issues/14
+MDU6SXNzdWU4NDEwMjEzMzc=,Generate average per-nucleotide metric tracks for MFE and ED ,OPEN,2021-03-25T15:03:12Z,2021-03-25T15:03:51Z,,"We already generate Zavg tracks, but per nucleotide data is not generated for ED or MFE yet.",rjandr,https://github.com/moss-lab/ScanFold/issues/15
+MDU6SXNzdWU5NzE4MTE2MTM=,RunTimeERROR: ,OPEN,2021-08-16T14:42:45Z,2021-08-18T01:58:16Z,,"Hello, Developer,
+  I'm trying to use ScanFold to predict a 2D RNA Structure of a RNA sequences. However, I encounter a runtime error as below:
+
+
+```
+Making output folder named:FLAVs_UTR5_ScanFoldOut_08-16-2021-22.35.59_669
+Output name=MN661082_UTR5.win_120.stp_1.rnd_200.shfl_di
+Scanning input sequence: MN661082_UTR5
+Elapsed time: 32.95s
+Determining best base pairs...
+Elapsed time: 33.07s
+Detecting competing pairs...
+Trying to write CT files with -c option
+Elapsed time: 34.18s
+Writing CT files
+WARNING: vrna_hc_add_from_db: Unbalanced brackets in constraint string
+<<<.......<...................).......<.........................................................((((((......))))))
+No constraints will be applied!
+WARNING: vrna_hc_add_from_db: Unbalanced brackets in constraint string
+<<.......<...................).......<.........................................................((((((......)))))).>
+No constraints will be applied!
+WARNING: vrna_hc_add_from_db: Unbalanced brackets in constraint string
+<.......<...................).......<.........................................................((((((......)))))).>>
+No constraints will be applied!
+WARNING: vrna_hc_add_from_db: Unbalanced brackets in constraint string
+<...................).......<.........................................................((((((......)))))).>>>
+No constraints will be applied!
+WARNING: vrna_fold_compound@data_structures.c: sequence length must be greater 0
+Traceback (most recent call last):
+  File ""/home/zhoujl/packages/ScanFold/ScanFold.py"", line 1735, in <module>
+    fc.hc_add_from_db(str(es.structure))
+  File ""/home/zhoujl/bin/ViennaRNA/lib/python3.8/site-packages/RNA/__init__.py"", line 3286, in hc_add_from_db
+    return _RNA.fold_compound_hc_add_from_db(self, *args, **kwargs)
+TypeError: in method 'fold_compound_hc_add_from_db', argument 1 of type 'vrna_fold_compound_t *'
+```
+My Conda environment is 
+```
+conda list | egrep ""rna|numpy|biopython""
+biopython                 1.78             py38h7b6447c_0    https://mirrors.ustc.edu.cn/anaconda/pkgs/main
+infernal                  1.1.2                h516909a_3    bioconda
+numpy                     1.18.5           py38ha1c710e_0    defaults
+numpy-base                1.18.5           py38hde5b4d6_0    https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+numpydoc                  1.1.0                      py_0    https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+rnastructure              6.1                  he1b5a44_1    bioconda
+tornado                   6.0.4            py38h7b6447c_1    https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+
+```
+Would you please help me ?
+btw, If my sequence was less than 70bp, for example 30 bp or 50bp, what is the best value for the stepwise window size? Thank you.
+
+
+",Zjianglin,https://github.com/moss-lab/ScanFold/issues/16
+MDU6SXNzdWU5NzMxNjcwODg=,Degenerate Bases,CLOSED,2021-08-18T00:34:18Z,2021-08-22T15:24:18Z,2021-08-18T00:50:07Z,"From  @Zjianglin :
+
+`ScanFold` can not process `degenerate bases`. For example, `M=A+C, K=G+T`。 
+When I run ScanFold with a sequences containing `degenerate bases` as input, it raised a KeyError. 
+```
+scanfold --name demo --fold --out_name demoout -w 120 -r 200 -t 37 --type di --global_refold test.fa 
+/Storage/p3/test
+Making output folder named:demoout
+Output name=KC181923_3'UTR.win_120.stp_1.rnd_200.shfl_di
+Scanning input sequence: KC181923_3'UTR
+Traceback (most recent call last):
+  File ""/home/zhoujl/packages/ScanFold/ScanFold.py"", line 549, in <module>
+    scrambled_sequences = scramble(frag, randomizations, type)
+  File ""/home/zhoujl/packages/ScanFold/ScanFoldFunctions.py"", line 875, in scramble
+    result = dinuclShuffle(frag)
+  File ""/home/zhoujl/packages/ScanFold/ScanFoldFunctions.py"", line 264, in dinuclShuffle
+    ok,edgeList,nuclList,lastCh = eulerian(s)
+  File ""/home/zhoujl/packages/ScanFold/ScanFoldFunctions.py"", line 231, in eulerian
+    nuclCnt,dinuclCnt,List = computeCountAndLists(s)
+  File ""/home/zhoujl/packages/ScanFold/ScanFoldFunctions.py"", line 188, in computeCountAndLists
+    nuclCnt[y] += 1; nuclTotal  += 1
+KeyError: 'K'
+
+less test.fa | grep ""K""
+>KC181923_3'UTR Aedes flavivirus|Aedes_flavivirus|[10120:11079](+)
+TTAGGGAGTTTGGAATACCTTTTCTATACCATAGATGCGC**K**GAAGCTTTAAAAATCGGG
+```
+There is a `K` in my sequence, but ScanFold failed to run. What should I do for this phenomenon? After all, many sequences have degenerate bases or `N` bases.
+
+_Originally posted by @Zjianglin in https://github.com/moss-lab/ScanFold/issues/16#issuecomment-900720685_",rjandr,https://github.com/moss-lab/ScanFold/issues/17
+I_kwDOCHxSFM5fgV1f,Arc diagram,CLOSED,2023-02-28T03:38:35Z,2023-03-10T08:30:01Z,2023-03-10T08:30:01Z,,masa1115sophia,https://github.com/moss-lab/ScanFold/issues/19

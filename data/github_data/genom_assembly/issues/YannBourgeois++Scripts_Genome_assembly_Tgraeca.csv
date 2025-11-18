@@ -1,0 +1,16 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOMSca8s6V1JTn,SOAPdenovo_array.sh error,OPEN,2024-09-09T11:48:02Z,2024-09-11T07:46:42Z,,"We tried running the SOAPdenovo_array.sh script using 30 .fq files of total size 557GB as input and a reference genome with a total size of approximately 17GB.
+The SOAPdenovo_array.sh script requires a cluster with 22 computing nodes and 200GB RAM.
+Our cluster contains 16 computing nodes, with 48 CPUs and 120GB RAM each, thus we changed the SOAPdenovo_array.sh script SLURM parameters to cater to our system specs.
+
+However, when we run the script using sbatch, it didn't produce any output. After checking the .err files, we get the following message at the file end:
+
+slurmstepd: error: Detected 2 oom_kill events in StepId=3851.0. Some of the step tasks have been OOM Killed.
+srun: error: comp16: task 9: Out Of Memory
+slurmstepd: error: Detected 4 oom_kill events in StepId=3851.0. Some of the step tasks have been OOM Killed.
+--- 100000000th reads.
+--- 100000000th reads.
+--- 200000000th reads.
+--- 200000000th reads.
+
+We wonder what modifications we should try in order to run SOAPdenovo_array.sh successfully. ",AlkistisZach,https://github.com/YannBourgeois/Scripts_Genome_assembly_Tgraeca/issues/1

@@ -1,0 +1,2712 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFdpQNM5Czo_K,snp/indel databases are required,CLOSED,2022-02-01T15:24:21Z,2022-02-09T11:45:23Z,2022-02-09T11:45:23Z,"### Description of the bug
+
+snp/indel databases are required for base recalibration step. However it would be much better to set this step optional since many model or non-model organisms do not have a var database.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",m3hdad,https://github.com/nf-core/rnavar/issues/19
+I_kwDOFdpQNM5CzrgR,SIFT missense predictions for genomes,OPEN,2022-02-01T15:31:21Z,2022-02-01T15:31:21Z,,"### Description of feature
+
+Dear `nf-core/rnavar` authors,
+
+It would be an amazing feature to include sorting intolerant from tolerant algorithm in the pipeline and rank which one of the variants has the potential to be studied further in details.
+
+Kindly find the nature protocols below:
+
+https://doi.org/10.1038/nprot.2009.86
+https://doi.org/10.1038/nprot.2015.123",m3hdad,https://github.com/nf-core/rnavar/issues/20
+I_kwDOFdpQNM5CzuON,"GFF to GTF conversion is ignored, GTF is required!",CLOSED,2022-02-01T15:39:09Z,2022-02-09T11:53:23Z,2022-02-09T11:53:23Z,"### Description of the bug
+
+Even though GFF conversion to GTF has been implemented in in `GFFREAD` process, the pipeline requires a GTF file to proceed! 
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",m3hdad,https://github.com/nf-core/rnavar/issues/21
+I_kwDOFdpQNM5ECZug,Cannot overwrite some params,OPEN,2022-02-17T15:22:28Z,2022-06-23T09:53:22Z,,"### Description of the bug
+
+I cannot overwrite some parameters in custom config file:
+
+- `read_length`
+- `qd_filter`
+- `fs_filter`
+- `save_reference`
+
+For `qd_filter` and `fs_filter` I used float type as described.
+When these parameters are defined in a custom config file, nextflow log file returns the new values but in the work directory, looking at `.command.sh`, you see the default values set in the `nextflow.config` are used. 
+
+For now it's only possible to set these parameters by changing the `nextflow.config` file.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",m3hdad,https://github.com/nf-core/rnavar/issues/26
+I_kwDOFdpQNM5GzBuO,Somatic Variant Calling (Tumor-Normal & Tumor-Only),CLOSED,2022-03-31T09:27:52Z,2022-03-31T12:53:32Z,2022-03-31T12:53:32Z,"### Description of feature
+
+Hey, I wanted to RNA-Seq support for tumor-only samples to the sarek workflow, however they redirected me to this repo.
+What do you think about adding somatic variant (tumor-normal and tumor-only) calling to the workflow?
+I think it would be a good start to add MuTect2 and in the future other variant calling tools could be added.
+
+For the details of my specific use case see: https://github.com/nf-core/sarek/issues/517",JasperO98,https://github.com/nf-core/rnavar/issues/34
+I_kwDOFdpQNM5IbGRN,Allow bam files to be added as input to rnavar workflow,OPEN,2022-04-25T21:26:22Z,2024-09-14T10:04:13Z,,"### Description of feature
+
+I have aligned files using the nfcore RNAseq pipeline (`bam`). I would like to use them to launch the `rnavar` pipeline to avoid re-doing the alignment. This will save time and resources for large scale data processing.",jaybee84,https://github.com/nf-core/rnavar/issues/41
+I_kwDOFdpQNM5IzZ7F,samplesheet check for distributed run,CLOSED,2022-04-29T19:23:13Z,2024-02-06T07:58:14Z,2022-04-30T18:20:22Z,"### Description of the bug
+
+After a succesful testrun of RNAvar with local/docker config, I am trying to set up a run on AWS Batch to scale up to larger sample numbers.
+
+I've moved all inputs and outputs to an S3 bucket the first few processes like SAMTOOLS_FAIDX run to completion. The samplesheet_check seems to fail however. Not well versed enough in DSL2 to know for sure but it seems like checking the existance of a file might not be possible since files are only pulled if they are needed for a given process i.e. ""SampleA.fastq.gz"" will only be downloaded to the EC2 instances for mapping of SampleA and SAMPLESHEET_CHECK seems to want to create a channel from a file that is accesible on a machine running the process.
+
+
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -r dev -bucket-dir s3://myStudy/rnaver_workDir --input /data/test_RNAvar_input_S3paths.csv --fasta s3://myStudy/RNAvar_inputs/Homo_sapiens.GRCh38.dna.primary_assembly.fa --gtf s3://myStudy/RNAvar_inputs/Homo_sapiens.GRCh38.99.gtf --star_index s3://myStudy/GRCh38v99 --read_length 101 --star_limitBAMsortRAM 30064771072 --outdir s3://myStudy/RNAvar_results/test1 --known_indels s3://myStudy/RNAvar_inputs/All_20170710.vcf.gz --known_indels_tbi s3://myStudy/RNAvar_inputs/All_20170710.vcf.gz.tbi --dbsnp s3://myStudy/RNAvar_inputs/dbSNP_1405_GRCh38.vcf.gz --dbsnp_tbi s3://myStudy/RNAvar_inputs/dbSNP_1405_GRCh38.vcf.gz.tbi --annotate_tools vep --vep_cache s3://myStudy/RNAvar_inputs/vep_cache/ --vep_genome GRCh38 --vep_cache_version \'99\' --vep_species homo_sapiens --annotation_cache -bg --genome GRCh38 --igenomes_ignore true
+$
+$ N E X T F L O W  ~  version 21.10.6
+Launching `nf-core/rnavar` [lonely_lamarr] - revision: 8e8f79a3b8 [dev]
+
+
+------------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~'
+  |\ | |__  __ /  ` /  \ |__) |__         }  {
+  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                        `._,._,'
+  nf-core/rnavar v1.0dev
+------------------------------------------------------
+Core Nextflow options
+  revision            : dev
+  runName             : lonely_lamarr
+  launchDir           : /data
+  workDir             : /data/work
+  projectDir          : /home/ubuntu/.nextflow/assets/nf-core/rnavar
+  userName            : ubuntu
+  profile             : standard
+  configFiles         : /home/ubuntu/.nextflow/assets/nf-core/rnavar/nextflow.config, /data/nextflow.config
+
+Input/output options
+  input               : /data/test_RNAvar_input_S3paths.csv
+  outdir              : s3://myStudy/RNAvar_results/test1
+
+Reference genome options
+  genome              : GRCh38
+  fasta               : s3://myStudy/RNAvar_inputs/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+  igenomes_ignore     : true
+  gtf                 : s3://myStudy/RNAvar_inputs/Homo_sapiens.GRCh38.99.gtf
+  read_length         : 101
+  known_indels        : s3://myStudy/RNAvar_inputs/All_20170710.vcf.gz
+  known_indels_tbi    : s3://myStudy/RNAvar_inputs/All_20170710.vcf.gz.tbi
+  dbsnp               : s3://myStudy/RNAvar_inputs/dbSNP_1405_GRCh38.vcf.gz
+  dbsnp_tbi           : s3://myStudy/RNAvar_inputs/dbSNP_1405_GRCh38.vcf.gz.tbi
+  vep_genome          : GRCh38
+  vep_species         : homo_sapiens
+  vep_cache_version   : '99'
+
+Alignment options
+  star_index          : s3://myStudy/GRCh38v99
+  star_twopass        : true
+  star_limitBAMsortRAM: 30064771072
+
+Variant Annotation
+  annotate_tools      : vep
+  annotation_cache    : true
+  vep_cache           : s3://myStudy/RNAvar_inputs/vep_cache/
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+------------------------------------------------------
+If you use nf-core/rnavar for your analysis please cite:
+
+* The nf-core framework
+  https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+  https://github.com/nf-core/rnavar/blob/master/CITATIONS.md
+------------------------------------------------------
+Uploading local `bin` scripts folder to s3://myStudy/rnaver_workDir/tmp/5c/c35134b70c1d3105b3a0dd102e7778/bin
+[01/a23005] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX (Homo_sapiens.GRCh38.dna.primary_assembly.fa)
+[52/120445] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (Homo_sapiens.GRCh38.99.gtf)
+[4a/70626a] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GATK4_CREATESEQUENCEDICTIONARY (Homo_sapiens.GRCh38.dna.primary_assembly.fa)
+[d6/8a2d8d] Submitted process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (test_RNAvar_input_S3paths.csv)
+ERROR: Please check input samplesheet -> Read 1 FastQ file does not exist!
+s3://myStudy/raw/myStudy-0002.trim.R1.fq.gz
+```
+
+
+### Relevant files
+
+$cat nextflow.config
+plugins {
+    id 'nf-amazon'
+}
+
+process {
+    executor = 'awsbatch'
+    queue = 'arn:aws:batch:us***:job-queue/***-queue'
+}
+
+aws {
+    batch {
+        // NOTE: this setting is only required if the AWS CLI tool is installed in a custom AMI
+        cliPath = '/home/ec2-user/miniconda/bin/aws'
+    }
+    region = 'us***'
+}
+
+$ tail .nextflow.log
+Apr-29 19:11:21.317 [main] DEBUG nextflow.extension.CH - Bridging dataflow queue=DataflowQueue(queue=[])
+Apr-29 19:11:21.318 [main] DEBUG nextflow.extension.CH - Bridging dataflow queue=DataflowQueue(queue=[])
+Apr-29 19:11:21.318 [main] DEBUG nextflow.extension.CH - Bridging dataflow queue=DataflowQueue(queue=[])
+Apr-29 19:11:21.318 [main] DEBUG nextflow.Session - Ignite dataflow network (86)
+Apr-29 19:11:21.337 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED
+Apr-29 19:11:21.342 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX
+Apr-29 19:11:21.343 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GATK4_CREATESEQUENCEDICTIONARY
+Apr-29 19:11:21.344 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK
+Apr-29 19:11:21.346 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ
+Apr-29 19:11:21.346 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:FASTQC
+Apr-29 19:11:21.347 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST
+Apr-29 19:11:21.353 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_INTERVALLISTTOOLS
+Apr-29 19:11:21.368 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN
+Apr-29 19:11:21.370 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:SAMTOOLS_SORT
+Apr-29 19:11:21.371 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:SAMTOOLS_INDEX
+Apr-29 19:11:21.372 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_STATS
+Apr-29 19:11:21.378 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT
+Apr-29 19:11:21.378 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS
+Apr-29 19:11:21.378 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:PICARD_MARKDUPLICATES
+Apr-29 19:11:21.379 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:SAMTOOLS_INDEX
+Apr-29 19:11:21.379 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_STATS
+Apr-29 19:11:21.380 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT
+Apr-29 19:11:21.381 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS
+Apr-29 19:11:21.382 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGAR:GATK4_SPLITNCIGARREADS
+Apr-29 19:11:21.385 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGAR:SAMTOOLS_INDEX
+Apr-29 19:11:21.386 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE
+Apr-29 19:11:21.386 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_INDEX
+Apr-29 19:11:21.387 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_BASERECALIBRATOR
+Apr-29 19:11:21.389 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:APPLYBQSR
+Apr-29 19:11:21.389 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:SAMTOOLS_INDEX
+Apr-29 19:11:21.389 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:SAMTOOLS_STATS
+Apr-29 19:11:21.389 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_HAPLOTYPECALLER
+Apr-29 19:11:21.390 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_MERGEVCFS
+Apr-29 19:11:21.390 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_INDEXFEATUREFILE
+Apr-29 19:11:21.390 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:GATK4_VARIANTFILTRATION
+Apr-29 19:11:21.396 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ANNOTATE:ENSEMBLVEP_ANNOTATE:ENSEMBLVEP
+Apr-29 19:11:21.396 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:ANNOTATE:ENSEMBLVEP_ANNOTATE:TABIX_BGZIPTABIX
+Apr-29 19:11:21.397 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:CUSTOM_DUMPSOFTWAREVERSIONS
+Apr-29 19:11:21.399 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > NFCORE_RNAVAR:RNAVAR:MULTIQC
+Apr-29 19:11:21.399 [main] DEBUG nextflow.script.ScriptRunner - > Await termination
+Apr-29 19:11:21.399 [main] DEBUG nextflow.Session - Session await
+Apr-29 19:11:21.733 [Actor Thread 59] DEBUG nextflow.sort.BigSort - Sort completed -- entries: 1; slices: 1; internal sort time: 0.001 s; external sort time: 0.016 s; total time: 0.017 s
+Apr-29 19:11:21.779 [Actor Thread 59] DEBUG nextflow.file.FileCollector - Saved collect-files list to: /tmp/27dcb8f6261b2ab88f8b4a2c393d7497.collect-file
+Apr-29 19:11:21.802 [Actor Thread 59] DEBUG nextflow.file.FileCollector - Deleting file collector temp dir: /tmp/nxf-11758180432553332609
+Apr-29 19:11:21.809 [Actor Thread 57] DEBUG nextflow.util.CacheHelper - Hash asset file sha-256: /home/ubuntu/.nextflow/assets/nf-core/rnavar/bin/check_samplesheet.py
+Apr-29 19:11:22.436 [AWSBatch-executor-1] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] [AWS BATCH] Found job definition name=nf-quay-io-biocontainers-samtools-1-15-1--h1170115_0:1; container=quay.io/biocontainers/samtools:1.15.1--h1170115_0
+Apr-29 19:11:22.512 [AWSBatch-executor-3] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] [AWS BATCH] Found job definition name=nf-quay-io-biocontainers-r-base-3-5-0:1; container=quay.io/biocontainers/r-base:3.5.0
+Apr-29 19:11:22.598 [AWSBatch-executor-1] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] submitted > job=efc6cdce-f02c-4309-8fdc-ed5ed0587df0; work-dir=s3://myStudy/rnaver_workDir/ec/6daa393556ec2e0b8db50f36e9c6cc
+Apr-29 19:11:22.599 [AWSBatch-executor-3] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] submitted > job=a9381608-c7f2-4020-8ee1-7259e066aa50; work-dir=s3://myStudy/rnaver_workDir/4f/535004f264dfb1ded556e9a55a019c
+Apr-29 19:11:22.601 [AWSBatch-executor-3] INFO  nextflow.Session - [4f/535004] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (Homo_sapiens.GRCh38.99.gtf)
+Apr-29 19:11:22.605 [AWSBatch-executor-1] INFO  nextflow.Session - [ec/6daa39] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX (Homo_sapiens.GRCh38.dna.primary_assembly.fa)
+Apr-29 19:11:22.619 [AWSBatch-executor-2] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] [AWS BATCH] Found job definition name=nf-quay-io-biocontainers-gatk4-4-2-5-0--hdfd78af_0:1; container=quay.io/biocontainers/gatk4:4.2.5.0--hdfd78af_0
+Apr-29 19:11:22.711 [AWSBatch-executor-4] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] [AWS BATCH] Found job definition name=nf-quay-io-biocontainers-python-3-9--1:1; container=quay.io/biocontainers/python:3.9--1
+Apr-29 19:11:22.730 [AWSBatch-executor-2] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] submitted > job=dc18d624-569f-406a-8abc-52f50371667c; work-dir=s3://myStudy/rnaver_workDir/ca/5493f2e77c41f2ceee42021857d968
+Apr-29 19:11:22.730 [AWSBatch-executor-2] INFO  nextflow.Session - [ca/5493f2] Submitted process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GATK4_CREATESEQUENCEDICTIONARY (Homo_sapiens.GRCh38.dna.primary_assembly.fa)
+Apr-29 19:11:22.790 [AWSBatch-executor-4] DEBUG n.c.aws.batch.AwsBatchTaskHandler - [AWS BATCH] submitted > job=70e9e6e0-e31c-4cca-98f4-ada84358c74d; work-dir=s3://myStudy/rnaver_workDir/fb/91fc1ead89e38ff0805706d89647c8
+Apr-29 19:11:22.791 [AWSBatch-executor-4] INFO  nextflow.Session - [fb/91fc1e] Submitted process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (test_RNAvar_input_S3paths.csv)
+Apr-29 19:15:59.942 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX (Homo_sapiens.GRCh38.dna.primary_assembly.fa); status: COMPLETED; exit: 0; error: -; workDir: s3://myStudy/rnaver_workDir/ec/6daa393556ec2e0b8db50f36e9c6cc]
+Apr-29 19:15:59.950 [Task monitor] DEBUG nextflow.file.FileHelper - Path matcher not defined by 'S3FileSystem' file system -- using default default strategy
+Apr-29 19:16:00.227 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (test_RNAvar_input_S3paths.csv); status: COMPLETED; exit: 0; error: -; workDir: s3://myStudy/rnaver_workDir/fb/91fc1ead89e38ff0805706d89647c8]
+Apr-29 19:16:00.430 [Actor Thread 70] ERROR nextflow.Nextflow - ERROR: Please check input samplesheet -> Read 1 FastQ file does not exist!
+s3://myStudy/raw/myStudy-0002.trim.R1.fq.gz
+Apr-29 19:16:00.461 [Task monitor] DEBUG n.util.BlockingThreadExecutorFactory - Thread pool name=FileTransfer; maxThreads=6; maxQueueSize=18; keepAlive=1m
+
+
+### System information
+
+Using an EC2 instance (18.04.5 LTS Bionic Beaver) to control a run on AWS Batch.
+N E X T F L O W  ~  version 21.10.6
+`nf-core/rnavar` - revision: 8e8f79a3b8 [dev]",AnotherSimon,https://github.com/nf-core/rnavar/issues/42
+I_kwDOFdpQNM5J1UsT,produce g.vcf file,OPEN,2022-05-17T14:18:13Z,2024-02-05T23:11:30Z,,"### Description of feature
+
+ I would like to know if it could be possible to produce g.vcf instead of VCF files, with Haplotypecaller ? Because we have a lot of samples (420) and I will run by batch of ~ 50 samples, so I will need to merge VCF files at the end of the pipeline.",SarahMaman,https://github.com/nf-core/rnavar/issues/50
+I_kwDOFdpQNM5LiA6s, incorrect merging (CAT_FASTQ) of different samples,CLOSED,2022-06-10T08:07:38Z,2022-06-17T09:38:27Z,2022-06-16T13:48:09Z,"### Description of the bug
+
+The `CAT_FAST `process is incorrectly merging different samples that share the same prefix but different suffix names in the sample column of samplesheet.csv. For example `CONTROL_1` and `CONTROL_2` are being incorrectly merged but `TREATMENT_1` and `CONTROL_1` are not being merged. When i run nfcore/rnaseq with the same samplesheet.csv this doesn't happen. You can see in my samplesheet that there are 18 unique samples which should not be merged but CAT_FASTQ is merging them into 4 samples: `c9orf72`, `ctrl`, `fus` and `iso`.
+
+I think this is being caused by this split by `_` in the meta.id:
+https://github.com/nf-core/rnavar/blob/3924aac34ce715414fad953f41d98e98d0981fb8/workflows/rnavar.nf#L142
+
+presumably `meta.id.split` has been copied over from an old rnaseq pipeline but has since been removed. This is the latest rnaseq pipeline equivelent for comparison: https://github.com/nf-core/rnaseq/blob/89bf536ce4faa98b4d50a8ec0a0343780bc62e0a/workflows/rnaseq.nf#L192 
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar \
+--input samplesheet.csv \
+--outdir rnavar \
+-c rnavar.config \
+--igenomes_ignore true \
+--read_length 150 \
+--email oliver.ziff@crick.ac.uk -profile crick -r dev
+```
+
+output
+```
+[28/8f289e] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (genes.gtf)                                [100%] 1 of 1, cached: 1 ✔
+[1b/cf281c] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:STAR_GENOMEGENERATE (genome.fa)                    [100%] 1 of 1, cached: 1 ✔
+executor >  slurm (6)
+[28/8f289e] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (genes.gtf)                                [100%] 1 of 1, cached: 1 ✔
+[1b/cf281c] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:STAR_GENOMEGENERATE (genome.fa)                    [100%] 1 of 1, cached: 1 ✔
+[90/5cf789] process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet.csv)                   [100%] 1 of 1, cached: 1 ✔
+[8a/a5098c] process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ (ctrl)                                                  [100%] 4 of 4, cached: 4 ✔
+```
+
+### Relevant files
+
+[samplesheet.csv](https://github.com/nf-core/rnavar/files/8876987/samplesheet.csv)
+
+rnavar.config:
+```
+params {
+    bwa                   = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/BWAIndex/version0.6.0/'
+    chr_dir               = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/Chromosomes""
+    dbsnp                 = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Homo_sapiens_assembly38.dbsnp138.vcf'
+    dbsnp_tbi             = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Homo_sapiens_assembly38.dbsnp138.vcf.idx'
+    known_indels          = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz'
+    known_indels_tbi      = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi'
+    dict                  = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.dict""
+    fasta                 = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa""
+    fasta_fai             = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa.fai""
+    snpeff_db             = 'GRCh38.99'
+    snpeff_genome         = 'GRCh38'
+    vep_cache_version     = '104'
+    vep_genome            = 'GRCh38'
+    vep_species           = 'homo_sapiens'
+    bowtie2               = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/Bowtie2Index/'
+    star                  = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/STARIndex/'
+    bismark               = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/BismarkIndex/'
+    gtf                   = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.gtf'
+    bed12                 = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.bed'
+}
+```
+
+### System information
+
+N E X T F L O W  ~  version 21.10.3
+HPC at Crick
+Executor slurm
+Container singularity
+OS Linux
+version dev",ojziff,https://github.com/nf-core/rnavar/issues/54
+I_kwDOFdpQNM5LiGLc,Genome files clashing,OPEN,2022-06-10T08:27:26Z,2022-06-23T09:53:24Z,,"### Description of the bug
+
+`GATK4_BEDTOINTERVALLIST` is failing because of picard not finding sequences (bed) in the sequence directory (dict):
+```
+ picard.PicardException: Sequence 'chr10_GL383545v1_alt' was not found in the sequence dictionary
+ ```
+Suggests the dict and bed are inconsistent. Searching through rnavar slack channel for `chr10_GL383545v1_alt` confirms 6 others have also posted about this very same issue. This stems from the usage docs not being clear on which reference files to ensure the pipeline sequence files match between processes. For GRCh38, it would be very helpful if suggested files (and where to access them) could be advised for each of:
+
+- dbsnp
+- dbsnp_tbi
+- known_indels
+- known_indels_tbi 
+- dict               
+- fasta 
+- gtf
+-  star
+- snpeff_db
+-  snpeff_genome 
+- vep_cache_version
+
+I understand from @maxulysse that [NCBI iGenomes files ](https://github.com/nf-core/rnavar/blob/ed9e2a3f5cc383569aa877459e173ef8e7bd0148/conf/igenomes.config#L27-L38) are advised but am finding the error above with these. Using iGenomes I also run into errors with STAR_ALIGN because the iGenomes STAR index version is different to the pipeline STAR version:
+```
+  EXITING because of FATAL ERROR: Genome version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a
+  SOLUTION: please re-generate genome from scratch with running version of STAR, or with version: 2.7.4a
+  ```
+Should `--igenomes_ignore true` be made default?
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar \
+--input samplesheet.csv \
+--outdir rnavar \
+-c rnavar.config \
+--igenomes_ignore true \
+--read_length 150 \
+--email oliver.ziff@crick.ac.uk -profile crick -r dev
+```
+
+Output
+
+```
+[28/8f289e] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (genes.gtf)                                [100%] 1 of 1, cached: 1 ✔
+[1b/cf281c] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:STAR_GENOMEGENERATE (genome.fa)                    [100%] 1 of 1, cached: 1 ✔
+executor >  slurm (6)
+[28/8f289e] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (genes.gtf)                                [100%] 1 of 1, cached: 1 ✔
+[1b/cf281c] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:STAR_GENOMEGENERATE (genome.fa)                    [100%] 1 of 1, cached: 1 ✔
+[90/5cf789] process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet.csv)                   [100%] 1 of 1, cached: 1 ✔
+executor >  slurm (6)
+[28/8f289e] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (genes.gtf)                                [100%] 1 of 1, cached: 1 ✔
+[1b/cf281c] process > NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:STAR_GENOMEGENERATE (genome.fa)                    [100%] 1 of 1, cached: 1 ✔
+[90/5cf789] process > NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet.csv)                   [100%] 1 of 1, cached: 1 ✔
+[8a/a5098c] process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ (ctrl)                                                  [100%] 4 of 4, cached: 4 ✔
+[63/bcf2f5] process > NFCORE_RNAVAR:RNAVAR:FASTQC (ctrl)                                                     [100%] 4 of 4, cached: 3 ✔
+[aa/8266d8] process > NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST (genome.bed)                              [100%] 1 of 1, failed: 1 ✘
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_INTERVALLISTTOOLS                                           -
+[8f/8d506a] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN (iso)                                       [  0%] 0 of 4
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:SAMTOOLS_SORT                        -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:SAMTOOLS_INDEX                       -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_STATS    -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:BAM_SORT_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:GATK4_MARKDUPLICATES                               -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:SAMTOOLS_INDEX                                     -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_STATS                  -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT               -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDUPLICATES:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS               -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS                                -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE                                        -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_INDEX                                        -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_BASERECALIBRATOR                                            -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:APPLYBQSR                                             -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:SAMTOOLS_INDEX                                        -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALIBRATE:SAMTOOLS_STATS                                        -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_HAPLOTYPECALLER                                             -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_MERGEVCFS                                                   -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:TABIX                                                             -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_VARIANTFILTRATION                                           -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CUSTOM_DUMPSOFTWAREVERSIONS                                       -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MULTIQC                                                           -
+
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST (genome.bed)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST (genome.bed)` terminated with an error exit status (3)
+
+Command executed:
+
+  gatk --java-options ""-Xmx36g"" BedToIntervalList \
+      --INPUT exome.bed \
+      --OUTPUT genome.bed.interval_list \
+      --SEQUENCE_DICTIONARY genome.dict \
+      --TMP_DIR . \
+
+
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST"":
+      gatk4: $(echo $(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*$//')
+  END_VERSIONS
+
+Command exit status:
+  3
+
+Command output:
+  (empty)
+
+Command error:
+  Using GATK jar /usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar
+  Running:
+      java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=2 -Xmx36g -jar /usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar BedToIntervalList --INPUT exome.bed --OUTPUT genome.bed.interval_list --SEQUENCE_DICTIONARY genome.dict --TMP_DIR .
+  07:56:36.815 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar!/com/intel/gkl/native/libgkl_compression.so
+  [Fri Jun 10 07:56:36 GMT 2022] BedToIntervalList --INPUT exome.bed --SEQUENCE_DICTIONARY genome.dict --OUTPUT genome.bed.interval_list --TMP_DIR . --SORT true --UNIQUE false --DROP_MISSING_CONTIGS false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 2 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --GA4GH_CLIENT_SECRETS client_secrets.json --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false
+  [Fri Jun 10 07:56:37 GMT 2022] Executing as ziffo@ca010 on Linux 3.10.0-1160.62.1.el7.x86_64 amd64; OpenJDK 64-Bit Server VM 11.0.9.1-internal+0-adhoc..src; Deflater: Intel; Inflater: Intel; Provider GCS is available; Picard version: Version:4.2.6.1
+  [Fri Jun 10 07:56:37 GMT 2022] picard.util.BedToIntervalList done. Elapsed time: 0.01 minutes.
+  Runtime.totalMemory()=2147483648
+  To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+  picard.PicardException: Sequence 'chr10_GL383545v1_alt' was not found in the sequence dictionary
+  /camp/at picard.util.BedToIntervalList.doWork(BedToIntervalList.java:156)
+        at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:308)
+        at org.broadinstitute.hellbender.cmdline.PicardCommandLineProgramExecutor.instanceMain(PicardCommandLineProgramExecutor.java:37)
+  rk dirat org.broadinstitute.hellbender.Main.runCommandLineProgram(Main.java:160)
+  /camp/at org.broadinstitute.hellbender.Main.mainEntry(Main.java:203)
+        at org.broadinstitute.hellbender.Main.main(Main.java:289)
+
+Work dir:
+  /camp/project/proj-luscombn-patani/working/public-data/ipsc-mn-c9orf72-fus-catanese-2021/work/aa/8266d89bfd7f43fff0c0f9d1a1c763
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+```
+
+### Relevant files
+
+rnavar.config
+```
+params {
+    bwa                   = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/BWAIndex/version0.6.0/'
+    chr_dir               = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/Chromosomes""
+    dbsnp                 = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Homo_sapiens_assembly38.dbsnp138.vcf'
+    dbsnp_tbi             = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Homo_sapiens_assembly38.dbsnp138.vcf.idx'
+    known_indels          = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz'
+    known_indels_tbi      = '/camp/lab/luscomben/home/users/ziffo/genomes/rnavar/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi'
+    dict                  = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.dict""
+    fasta                 = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa""
+    fasta_fai             = ""/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa.fai""
+    snpeff_db             = 'GRCh38.99'
+    snpeff_genome         = 'GRCh38'
+    vep_cache_version     = '104'
+    vep_genome            = 'GRCh38'
+    vep_species           = 'homo_sapiens'
+    bowtie2               = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/Bowtie2Index/'
+    star                  = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/STARIndex/'
+    bismark               = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/BismarkIndex/'
+    gtf                   = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.gtf'
+    bed12                 = '/camp/svc/reference/Genomics/aws-igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.bed'
+}
+```
+
+### System information
+
+N E X T F L O W ~ version 21.10.3
+HPC at Crick
+Executor slurm
+Container singularity
+OS Linux
+version dev",ojziff,https://github.com/nf-core/rnavar/issues/55
+I_kwDOFdpQNM5MGFS7,Summary metrics of haplotypecaller.filtered.vcf,OPEN,2022-06-20T09:49:52Z,2022-06-20T10:21:58Z,,"Hi @praveenraj2018 
+
+I have run nfcore/rnavar on 400 samples - it is a fantastic pipeline! Many congrats on writing and publishing this!
+
+I want to plot summary statistics on the genome-wide variant calling output `haplotypecaller.filtered.vcf` files across all 400 samples and compare the diseased with healthy samples  e.g. total number of variants per sample, types of variant (SNP, DEL, INS etc), the consequence of variant on protein etc. These are large VCF files and looking at each one by one is taking far too long and taking up too much memory in R. 
+
+If the pipeline could add these variant summary metrics per sample using a package like [Cerebra](https://github.com/czbiohub/cerebra), it would be very useful!
+
+Many thanks!
+Oliver
+
+
+",ojziff,https://github.com/nf-core/rnavar/issues/59
+I_kwDOFdpQNM5M2F5P,Optional filter out RNA editing variants,OPEN,2022-06-29T20:06:46Z,2022-06-29T20:06:58Z,,"Hi @praveenraj2018 
+
+A nice enhancement would be to add an optional argument to filter out RNA editing variants using the [REDIportal database](http://srv00.recas.ba.infn.it/atlas/download.html).
+
+The process could be run simply as:
+1. First convert REDIportal table to bed file
+```r
+read_tsv(""TABLE1_hg38.txt"") %>% select(Region, Position) %>% mutate(End = Position+1) %>%
+write_tsv(file = ""rediportal.bed""), col_names = FALSE)
+```
+2. Then run vcftools with --exclude-bed 
+```bash
+vcftools --gzvcf sample1.haplotypecaller.filtered.vcf.gz --exclude-bed rediportal.bed --out sample1 --recode --keep-INFO-all
+```
+Many thanks,
+Oliver",ojziff,https://github.com/nf-core/rnavar/issues/63
+I_kwDOFdpQNM5NuGHg,Can't find template file dumpsoftwareversions.py,CLOSED,2022-07-13T20:47:15Z,2022-07-15T15:03:41Z,2022-07-15T15:03:41Z,"I tried running the pipeline like this:
+
+```
+nextflow run nf-core/rnavar -profile test,singularity --outdir ~/scratch/test
+```
+
+The pipeline nearly completed, but failed near the very end:
+
+```
+[a9/58acd2] process > NFCORE_RNAVAR:RNAVAR:GATK4_VARIANTFILTRATION (GM12878)                                          [100%] 1 of 1 ✔        
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CUSTOM_DUMPSOFTWAREVERSIONS                                                -                      
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MULTIQC                                                                    -                      
+Execution cancelled -- Finishing pending tasks before exit                                                                                   
+-[nf-core/rnavar] Pipeline completed with errors-                                                                                            
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:CUSTOM_DUMPSOFTWAREVERSIONS (1)'                                                             
+                                                                                                                                             
+Caused by:                                                                                                                                   
+  Process `NFCORE_RNAVAR:RNAVAR:CUSTOM_DUMPSOFTWAREVERSIONS` can't find template file: /gstore/home/kammj2/.nextflow/assets/nf-core/rnavar/templates/dumpsoftwareversions.py                                                                                                             
+                                                                                                                                             
+Source block:                                                                                                                                
+  def args = task.ext.args ?: ''                                                                                                             
+  template 'dumpsoftwareversions.py'
+```
+
+The template file exists, but in a different location than expected:
+
+```
+~/.nextflow/assets/nf-core/rnavar/modules/nf-core/modules/custom/dumpsoftwareversions/templates/dumpsoftwareversions.py
+```
+
+I was able to workaround this by manually copying the file to the expected location:
+
+```
+mkdir ~/.nextflow/assets/nf-core/rnavar/templates
+cp ~/.nextflow/assets/nf-core/rnavar/modules/nf-core/modules/custom/dumpsoftwareversions/templates/dumpsoftwareversions.py ~/.nextflow/assets/nf-core/rnavar/templates/
+```
+
+Then, rerunning the nextflow command with `-resume` was able to complete.",jackkamm,https://github.com/nf-core/rnavar/issues/64
+I_kwDOFdpQNM5PXPGB,Missing STAR index not created automaticaly,OPEN,2022-08-08T08:06:37Z,2023-07-13T14:47:49Z,,"### Description of the bug
+
+Hi,
+I'm running rnavar v1.0.0 on GRCm38. Genomes and indices were downloaded using igenomes. I got troubles during the STAR alignment step. According to documentation, a new STAR index should automatically be created if the index version does not match the installed STAR version (https://github.com/nf-core/rnavar/pull/37#issue-1197002410). However, this process does not start and the workflow ends with an error
+
+`Error executing process > 'NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN (s9)'`
+
+Any ideas how I can fix this quickly so that the index gets created on the fly?
+
+Many thanks,
+ Axel
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -r 1.0.0 \
+	-profile singularity \
+	-resume \
+	--igenomes_base ./references \
+	--input samplesheet.csv --genome GRCm38 \
+	--dbsnp references/Mus_musculus/Ensembl/GRCm38/Annotation/Variation/Mus_musculus.vcf.gz \
+	--dbsnp_tbi references/Mus_musculus/Ensembl/GRCm38/Annotation/Variation/Mus_musculus.vcf.gz.tbi \
+	--outdir ./results_single_end \
+	--annotate_tools vep \
+	--genome GRCm38 \
+	--skip_variantannotation
+
+
+Execution cancelled -- Finishing pending tasks before exit
+-[nf-core/rnavar] Pipeline completed with errors-
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN (s9)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN (s9)` terminated with an error exit status (105)
+
+Command executed:
+
+  STAR \
+      --genomeDir STARIndex \
+      --readFilesIn GFI1_36S_S_MLL_AF9_3.fastq.gz  \
+      --runThreadN 12 \
+      --outFileNamePrefix s9. \
+       \
+      --sjdbGTFfile genes.gtf \
+      --outSAMattrRGline ID:s9 'SM:s9' 'PL:illumina'  \
+      --outSAMtype BAM SortedByCoordinate --readFilesCommand zcat  --sjdbOverhang 149 --twopassMode Basic  --outBAMsortingBinsN 50 --limitOutSJcollapsed 1000000
+  
+  
+  
+  if [ -f s9.Unmapped.out.mate1 ]; then
+      mv s9.Unmapped.out.mate1 s9.unmapped_1.fastq
+      gzip s9.unmapped_1.fastq
+  fi
+  if [ -f s9.Unmapped.out.mate2 ]; then
+      mv s9.Unmapped.out.mate2 s9.unmapped_2.fastq
+      gzip s9.unmapped_2.fastq
+  fi
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN"":
+      star: $(STAR --version | sed -e ""s/STAR_//g"")
+  END_VERSIONS
+
+Command exit status:
+  105
+
+Command output:
+  	STAR --genomeDir STARIndex --readFilesIn GFI1_36S_S_MLL_AF9_3.fastq.gz --runThreadN 12 --outFileNamePrefix s9. --sjdbGTFfile genes.gtf --outSAMattrRGline ID:s9 SM:s9 PL:illumina --outSAMtype BAM SortedByCoordinate --readFilesCommand zcat --sjdbOverhang 149 --twopassMode Basic --outBAMsortingBinsN 50 --limitOutSJcollapsed 1000000
+  	STAR version: 2.7.9a   compiled: 2021-05-04T09:43:56-0400 vega:/home/dobin/data/STAR/STARcode/STAR.master/source
+  Aug 08 09:51:40 ..... started STAR run
+  Aug 08 09:51:41 ..... loading genome
+
+Command error:
+  WARNING: Ignoring /data/sb_service_01/ak_20220805_SomaticSignatures_174 bind mount: user bind control disabled by system administrator
+  WARNING: Ignoring /home/kuenstner/.nextflow/assets/nf-core/rnavar/bin bind mount: user bind control disabled by system administrator
+  WARNING: Ignoring /data/sb_service_01/ak_20220805_SomaticSignatures_174/work/dc/0bc41c5077de6d940513d659ce71d4 bind mount: user bind control disabled by system administrator
+  WARNING: Not mounting current directory: user bind control is disabled by system administrator
+  
+  EXITING because of FATAL ERROR: Genome version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a
+  SOLUTION: please re-generate genome from scratch with running version of STAR, or with version: 2.7.4a
+  
+  Aug 08 09:51:41 ...... FATAL ERROR, exiting
+
+Work dir:
+  /data/sb_service_01/ak_20220805_SomaticSignatures_174/work/dc/0bc41c5077de6d940513d659ce71d4
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",kunstner,https://github.com/nf-core/rnavar/issues/65
+I_kwDOFdpQNM5PXbBF,File name collision error,CLOSED,2022-08-08T08:46:05Z,2023-12-29T10:51:07Z,2023-12-29T10:51:07Z,"### Description of the bug
+
+I am getting the following error. How can I go around it?
+executor >  slurm (52)
+[88/01f74d] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[36/aad565] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[22/7db4cc] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[24/9c8095] process > NFCORE_RNAVAR:RNAVAR:INPUT_... [100%] 1 of 1 ✔
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ -
+[ce/f813de] process > NFCORE_RNAVAR:RNAVAR:FASTQC... [100%] 12 of 12, cached:...
+[61/b69fc7] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1, cached: 1 ✔
+[46/93f930] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1, cached: 1 ✔
+[b3/7124a8] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[46/171a80] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[67/dd9be3] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[df/ea5bc6] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[18/3c1727] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[ab/aaf983] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 12 of 12, cached:...
+[be/9605cf] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 12 of 12, cached:...
+[5b/b38eaa] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 12 of 12, cached:...
+[c3/c43c99] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 12 of 12, cached:...
+[1e/307cb0] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 12 of 12, cached:...
+[77/2b4569] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 12 of 12, cached:...
+[f9/97c440] process > NFCORE_RNAVAR:RNAVAR:SPLITN... [100%] 6000 of 6000, cac...
+[96/179444] process > NFCORE_RNAVAR:RNAVAR:SPLITN... [  4%] 2 of 47
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:TABIX     -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CUSTOM... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MULTIQC   -
+Execution cancelled -- Finishing pending tasks before exit
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE (SRR12670015)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE` input file name collision -- There are multiple input files for each of the following file names: SRR12670015.bam
+
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+
+Failed to invoke `workflow.onComplete` event handler
+
+ -- Check script '/users/javanokendo/.nextflow/assets/nf-core/rnavar/./workflows/rnavar.nf' at line: 458 or see '.nextflow.log' file for more details
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+[samplesheet1.csv](https://github.com/nf-core/rnavar/files/9280321/samplesheet1.csv)
+
+
+### System information
+
+rnavar 1.0.0",Jokendo-collab,https://github.com/nf-core/rnavar/issues/66
+I_kwDOFdpQNM5PdpnN,Error when running rnavar with --skip_intervallisttools option,OPEN,2022-08-09T12:17:52Z,2024-06-29T11:52:54Z,,"### Description of the bug
+
+I am getting an error when I test rnavar with the --skip_intervallisttools. It seems subworkflows like splincigars can only run with intervals, there is no adaptation without the intervals. Might be more dowstream but this is the first bottleneck when running with this option.`
+
+### Command used and terminal output
+Command:
+```console
+nextflow run main.nf -profile singularity,test --outdir results  --skip_intervallisttools
+```
+
+Error:
+```
+Invalid method invocation `call` with arguments: [[id:GM12878, single_end:false], /rds/project/rds-upenYb9rdtk/Work/rm889/rna/nextflow/rnavar/work/18/cc7a1c1283d17a4567f27f7359431d/GM12878.markdup.sorted.bam, /rds/project/rds-upenYb9rdtk/Work/rm889/rna/nextflow/rnavar/work/e4/644c309484417807c7a96eb251d50d/GM12878.markdup.sorted.bam.bai, [id:genome.bed], /rds/project/rds-upenYb9rdtk/Work/rm889/rna/nextflow/rnavar/work/24/cd83cb4b3b27fd39cd651a18537859/genome.bed.interval_list] (java.util.LinkedList) on _closure3 type
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+nf-core/rnavar v1.0.0",RaqManzano,https://github.com/nf-core/rnavar/issues/67
+I_kwDOFdpQNM5Pmipg,Strandedness,OPEN,2022-08-11T05:56:13Z,2022-08-16T11:18:54Z,,"### Description of feature
+
+Hi, 
+
+I just wonder about the function of the Strandedness column in the sample sheet. Is this column really necessary and what is the function of it? I couldn't find any information about it in the documentation. 
+
+I ran all three possible cases (forward, reverse, unstranded) on some mouse data and got no differences between the different strandedness options.
+
+Best,
+ Axel",kunstner,https://github.com/nf-core/rnavar/issues/68
+I_kwDOFdpQNM5ShMG_,download_cache.nf  not found,OPEN,2022-09-23T23:17:31Z,2024-09-18T06:57:40Z,,"### Description of the bug
+
+HI,
+
+I am trying to download cached annotations for VEP and SnpEff, but I get the following error
+Remote resource not found: https://api.github.com/repos/repos/sarek/contents/download_cache.nf
+
+Is this a bug or a feature that has been removed ?
+
+Thanks
+
+
+
+### Command used and terminal output
+
+```console
+nextflow run repos/sarek/download_cache.nf \
+        --snpeff_cache $annCACHE \
+        --snpeff_db 4.3 \
+        --genome GRCh38 \
+        -profile singularity \
+        -work-dir $workDIR \
+        -r 1.0.0
+
+N E X T F L O W  ~  version 21.10.6
+Pulling repos/sarek ...
+Remote resource not found: https://api.github.com/repos/repos/sarek/contents/download_cache.nf
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+]N E X T F L O W  ~  version 21.10.6
+
+HPC
+
+either SLURm or command
+
+nf-core/rnavar 1.0.0",gianfilippo,https://github.com/nf-core/rnavar/issues/71
+I_kwDOFdpQNM5TE1tn,NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS error,OPEN,2022-10-02T14:02:50Z,2023-08-14T00:40:00Z,,"### Description of the bug
+
+Hi,
+
+I am getting the following error.  Can you please help ?
+
+Thanks
+
+
+-[nf-core/rnavar] Pipeline completed with errors-
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS (CCA002MV_17scattered)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS (CCA002MV_17scattered)` terminated with an error exit status (247)
+
+Command executed:
+
+  gatk --java-options ""-Xmx36g"" SplitNCigarReads \
+      --input CCA002MV.markdup.sorted.bam \
+      --output CCA002MV_17scattered.bam \
+      --reference GRCh38.p13.genome.fa \
+      --intervals 17scattered.interval_list \
+      --tmp-dir . \
+      --create-output-bam-index false
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS"":
+      gatk4: $(echo $(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*$//')
+  END_VERSIONS
+
+Command exit status:
+  247
+
+Command output:
+  (empty)
+
+Command error:
+  06:48:10.811 INFO  ProgressMeter -       chr14:49862713            180.9              69860000         386247.7
+  06:48:20.830 INFO  ProgressMeter -       chr14:49862713            181.0              69912000         386178.7
+  06:48:30.984 INFO  ProgressMeter -       chr14:49862713            181.2              69974000         386160.2
+  06:48:41.142 INFO  ProgressMeter -       chr14:49862713            181.4              70017000         386036.8
+  06:48:51.269 INFO  ProgressMeter -       chr14:49862713            181.5              70081000         386030.4
+  06:49:01.274 INFO  ProgressMeter -       chr14:49862713            181.7              70121000         385896.3
+  06:49:11.396 INFO  ProgressMeter -       chr14:49862713            181.9              70183000         385879.3
+  06:49:21.524 INFO  ProgressMeter -       chr14:49862713            182.0              70227000         385763.2
+  06:49:31.565 INFO  ProgressMeter -       chr14:49862713            182.2              70292000         385765.6
+  06:49:41.762 INFO  ProgressMeter -       chr14:49862713            182.4              70337000         385652.9
+  06:49:51.861 INFO  ProgressMeter -       chr14:49862713            182.6              70403000         385658.8
+  06:50:02.020 INFO  ProgressMeter -       chr14:49862713            182.7              70453000         385575.1
+  06:50:12.111 INFO  ProgressMeter -       chr14:49862713            182.9              70513000         385548.6
+  06:50:22.141 INFO  ProgressMeter -       chr14:49862713            183.1              70564000         385475.1
+  06:50:32.222 INFO  ProgressMeter -       chr14:49862713            183.2              70625000         385454.6
+  06:50:42.231 INFO  ProgressMeter -       chr14:49862713            183.4              70676000         385382.0
+  06:50:52.287 INFO  ProgressMeter -       chr14:49862713            183.6              70746000         385411.5
+  06:51:02.391 INFO  ProgressMeter -       chr14:49862713            183.7              70801000         385357.6
+  06:51:12.589 INFO  ProgressMeter -       chr14:49862713            183.9              70862000         385333.2
+  06:51:22.603 INFO  ProgressMeter -       chr14:49862713            184.1              70923000         385315.1
+  06:51:32.788 INFO  ProgressMeter -       chr14:49862713            184.2              70976000         385247.8
+  06:51:42.866 INFO  ProgressMeter -       chr14:49862714            184.4              71032000         385200.6
+  06:51:52.973 INFO  ProgressMeter -       chr14:49862714            184.6              71076000         385087.4
+  06:52:03.087 INFO  ProgressMeter -       chr14:49862714            184.7              71128000         385017.5
+  06:52:13.107 INFO  ProgressMeter -       chr14:49862714            184.9              71182000         384961.9
+  06:52:23.107 INFO  ProgressMeter -       chr14:49862714            185.1              71227000         384858.3
+  06:52:33.666 INFO  ProgressMeter -       chr14:49862714            185.2              71278000         384768.0
+  06:52:43.743 INFO  ProgressMeter -       chr14:49862714            185.4              71335000         384726.9
+  06:52:53.789 INFO  ProgressMeter -       chr14:49862714            185.6              71390000         384676.1
+  06:53:03.815 INFO  ProgressMeter -       chr14:49862714            185.8              71453000         384669.3
+  06:53:13.905 INFO  ProgressMeter -       chr14:49862714            185.9              71501000         384579.5
+  06:53:23.955 INFO  ProgressMeter -       chr14:49862714            186.1              71550000         384496.6
+  06:53:34.029 INFO  ProgressMeter -       chr14:49862714            186.3              71610000         384472.2
+  06:53:44.156 INFO  ProgressMeter -       chr14:49862714            186.4              71651000         384344.0
+  06:53:54.211 INFO  ProgressMeter -       chr14:49862714            186.6              71717000         384352.5
+  06:54:04.377 INFO  ProgressMeter -       chr14:49862714            186.8              71773000         384303.7
+  06:54:14.437 INFO  ProgressMeter -       chr14:49862714            186.9              71822000         384221.1
+  06:54:24.594 INFO  ProgressMeter -       chr14:49862714            187.1              71880000         384183.5
+  06:54:34.698 INFO  ProgressMeter -       chr14:49862715            187.3              71926000         384083.6
+  06:54:44.769 INFO  ProgressMeter -       chr14:49862715            187.4              71971000         383979.8
+  06:54:54.827 INFO  ProgressMeter -       chr14:49862715            187.6              72017000         383881.9
+  06:55:05.008 INFO  ProgressMeter -       chr14:49862717            187.8              72069000         383811.9
+  06:55:15.058 INFO  ProgressMeter -       chr14:49862721            187.9              72112000         383698.6
+  06:55:25.066 INFO  ProgressMeter -       chr14:49862725            188.1              72158000         383602.9
+  06:55:35.077 INFO  ProgressMeter -       chr14:49862732            188.3              72200000         383486.1
+  06:55:45.258 INFO  ProgressMeter -       chr14:49862750            188.4              72267000         383496.3
+  06:55:53.430 INFO  SplitNCigarReads - 0 read(s) filtered by: AllowAllReadsReadFilter 
+  
+  06:55:53.696 INFO  OverhangFixingManager - Overhang Fixing Manager saved 1338690 reads in the first pass
+  06:55:53.698 INFO  SplitNCigarReads - Starting traversal pass 2
+
+
+
+
+### Command used and terminal output
+
+```console
+I am running then following
+nextflow run nf-core/rnavar \
+    -r 1.0.0 \
+    -c ""$inDIR/yale.config"" \
+    -profile singularity \
+    -work-dir $workDIR \
+    --input $inDIR/samplesheet.csv \
+    --outdir $inDIR/RNAvar \
+    --fasta $FASTA_PATH \
+    --gtf $GTF_PATH \
+    --star_index $STAR_INDEX \
+    --aligner star \
+    --star_twopass true \
+    --read_length 101 \
+    --save_reference \
+    --dbsnp $DBSNP \
+    --dbsnp_tbi $DBSNPTBI \
+    --known_indels $INDELS \
+    --known_indels_tbi $INDELSTBI \
+    --gatk_hc_call_conf 20 \
+    --gatk_vf_cluster_size 3 \
+    --gatk_vf_window_size 35 \
+    --gatk_vf_fs_filter 30.0 \
+    --gatk_vf_qd_filter 2.0
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",gianfilippo,https://github.com/nf-core/rnavar/issues/72
+I_kwDOFdpQNM5TneQe,Prepared `STARIndex` folder is missing for `GATK/GRCh38`,OPEN,2022-10-10T09:20:47Z,2022-10-10T09:26:59Z,,"### Description of the bug
+
+I am using the GATK bundle with the below reference genome annotations. However, `STARIndex` folder is missing in [GATK/GRCh38](https://ngi-igenomes.s3.amazonaws.com/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/) folder so the pipeline uses the one from [NCBI/GRCh38](https://ngi-igenomes.s3.amazonaws.com/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/STARIndex/) for the alignment options by default. This causes compatibility issues.
+
+```
+nextflow run nf-core/rnavar \
+-latest \
+-profile docker \
+--genome GRCh38 \
+--read_length 150 \
+--fasta 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Sequence/WholeGenomeFasta/Homo_sapiens_assembly38.fasta' \
+--dbsnp 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz' \
+--dbsnp_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz.tbi' \
+--known_indels 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz' \
+--known_indels_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi' \
+--annotate_tools merge \
+--snpeff_db 'GRCh38.99' \
+--vep_species 'homo_sapiens' \
+--vep_genome 'GRCh38' \
+--vep_cache_version \'107\' \
+--input 'samplesheet_rnaseq.csv' \
+--outdir 'nextflow/rnavar/results/' \
+-work-dir 'nextflow/rnavar/work/' \
+-c 'custom.config' \
+-r dev \
+-resume
+```
+
+
+```
+Reference genome options
+  genome           : GRCh38
+  fasta            : s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Sequence/WholeGenomeFasta/Homo_sapiens_assembly38.fasta
+  gtf              : s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.gtf
+  read_length      : 150
+  known_indels     : s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+  known_indels_tbi : s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi
+  dbsnp            : s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz
+  dbsnp_tbi        : s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz.tbi
+  snpeff_db        : GRCh38.99
+  vep_genome       : GRCh38
+  vep_species      : homo_sapiens
+  vep_cache_version: '107'
+
+Alignment options
+  star_index       : s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/STARIndex/
+  star_twopass     : true
+```
+
+```
+Command exit status:
+  105
+
+Command output:
+  	STAR --genomeDir STARIndex --readFilesIn RLC_AL70_60_1.fq.gz RLC_AL70_60_2.fq.gz --runThreadN 12 --outFileNamePrefix RLC_AL70_60. --sjdbGTFfile genes.gtf --outSAMattrRGline ID:RLC_AL70_60 SM:RLC_AL70_60 PL:illumina --outSAMtype BAM SortedByCoordinate --readFilesCommand zcat --sjdbOverhang 149 --twopassMode Basic --outBAMsortingBinsN 50 --limitOutSJcollapsed 1000000
+  	STAR version: 2.7.9a   compiled: 2021-05-04T09:43:56-0400 vega:/home/dobin/data/STAR/STARcode/STAR.master/source
+  Oct 10 09:19:03 ..... started STAR run
+  Oct 10 09:19:03 ..... loading genome
+
+Command error:
+  Unable to find image 'quay.io/biocontainers/star:2.7.9a--h9ee0642_0' locally
+  2.7.9a--h9ee0642_0: Pulling from biocontainers/star
+  c1a16a04cedd: Already exists
+  4ca545ee6d5d: Already exists
+  f3d7726cfdb6: Pulling fs layer
+  f3d7726cfdb6: Verifying Checksum
+  f3d7726cfdb6: Download complete
+  f3d7726cfdb6: Pull complete
+  Digest: sha256:d80ae2e0354e890d55ad0009e9ad9667d1113a679659071e6e02d50e46c8bba1
+  Status: Downloaded newer image for quay.io/biocontainers/star:2.7.9a--h9ee0642_0
+  
+  EXITING because of FATAL ERROR: Genome version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a
+  SOLUTION: please re-generate genome from scratch with running version of STAR, or with version: 2.7.4a
+  
+  Oct 10 09:19:03 ...... FATAL ERROR, exiting
+```",bounlu,https://github.com/nf-core/rnavar/issues/74
+I_kwDOFdpQNM5UOF5y,Download snpeff singularity image failed,CLOSED,2022-10-18T10:34:46Z,2023-05-31T13:45:19Z,2022-10-31T03:31:59Z,"### Description of the bug
+
+![image](https://user-images.githubusercontent.com/8847420/196406795-13e75b26-6a20-490c-849d-3b03aed6fff1.png)
+
+
+### Command used and terminal output
+
+```console
+nf-core download rnavar --outdir nf-core-rnavar -c singularity -x none
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+Nextflow:
+```
+      N E X T F L O W                                                                                                 │
+      version 22.10.0 build 5826                                                                                      │
+      created 13-10-2022 05:44 UTC (13:44 HKST)                                                                       │
+      cite doi:10.1038/nbt.3820                                                                                       │
+      http://nextflow.io
+```
+
+nf-core
+```
+nf-core/tools version 2.6
+```
+
+System:
+```
+Linux hpc2021 4.18.0-348.7.1.el8_5.x86_64 #1 SMP Wed Dec 22 13:25:12 UTC 2021 x86_64 GNU/Linux
+Rocky Linux release 8.5 (Green Obsidian)
+```",alienzj,https://github.com/nf-core/rnavar/issues/75
+I_kwDOFdpQNM5Vzevl,Issue with FastQC,OPEN,2022-11-08T06:14:16Z,2022-11-08T06:22:02Z,,"Hello,
+
+There seems to be an issue when I run the pipeline, in particular the FASTQC step. It says an .html was expected but not found. I am using singularity on the SLURM executor for the cluster.
+
+```
+executor >  slurm (31)
+[14/7169cf] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[73/d2ddbd] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[e0/b4b70a] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1, cached: 1 ✔
+[69/2373fc] process > NFCORE_RNAVAR:RNAVAR:INPUT_... [100%] 1 of 1, cached: 1 ✔
+[94/d944ca] process > NFCORE_RNAVAR:RNAVAR:CAT_FA... [100%] 5 of 5, cached: 5 ✔
+[64/c92479] process > NFCORE_RNAVAR:RNAVAR:FASTQC... [ 22%] 26 of 116, cached...
+[c4/c6953d] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1, cached: 1 ✔
+[eb/b9d249] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1 ✔
+[bb/4dd180] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [ 12%] 14 of 116, cached...
+[6f/91715c] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [ 57%] 8 of 14
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [  0%] 0 of 8
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [  0%] 0 of 8
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:TABIX     -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CUSTOM... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MULTIQC   [  0%] 0 of 1
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:FASTQC (B02051)'
+
+Caused by:
+  Missing output file(s) `*.html` expected by process `NFCORE_RNAVAR:RNAVAR:FASTQC (B02051)`
+
+Command executed:
+
+  [ ! -f  B02051_1.fastq.gz ] && ln -s A006AUPB1.R1.fastq.gz B02051_1.fastq.gz
+  [ ! -f  B02051_2.fastq.gz ] && ln -s A006AUPB1.R2.fastq.gz B02051_2.fastq.gz
+  fastqc --quiet --threads 6 B02051_1.fastq.gz B02051_2.fastq.gz
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:FASTQC"":
+      fastqc: $( fastqc --version | sed -e ""s/FastQC v//g"" )
+  END_VERSIONS
+
+Command exit status:
+  0
+
+Command output:
+  (empty)
+
+Command error:
+  WARNING: Skipping mount /mnt/beegfs/software/singularity/3.6.3/var/singularity/mnt/session/etc/resolv.conf [files]: /etc/resolv.conf doesn't exist in container
+  Failed to process file B02051_2.fastq.gz
+  java.lang.IllegalArgumentException: image == null!
+  	at java.desktop/javax.imageio.ImageTypeSpecifier.createFromRenderedImage(ImageTypeSpecifier.java:925)
+  	at java.desktop/javax.imageio.ImageIO.getWriter(ImageIO.java:1608)
+  	at java.desktop/javax.imageio.ImageIO.write(ImageIO.java:1594)
+  	at uk.ac.babraham.FastQC.Utilities.ImageToBase64.imageToBase64(ImageToBase64.java:38)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.base64ForIcon(HTMLReportArchive.java:380)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.startDocument(HTMLReportArchive.java:303)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.<init>(HTMLReportArchive.java:84)
+  	at uk.ac.babraham.FastQC.Analysis.OfflineRunner.analysisComplete(OfflineRunner.java:185)
+  	at uk.ac.babraham.FastQC.Analysis.AnalysisRunner.run(AnalysisRunner.java:123)
+  	at java.base/java.lang.Thread.run(Thread.java:834)
+  Failed to process file B02051_1.fastq.gz
+  java.lang.IllegalArgumentException: image == null!
+  	at java.desktop/javax.imageio.ImageTypeSpecifier.createFromRenderedImage(ImageTypeSpecifier.java:925)
+  	at java.desktop/javax.imageio.ImageIO.getWriter(ImageIO.java:1608)
+  	at java.desktop/javax.imageio.ImageIO.write(ImageIO.java:1594)
+  	at uk.ac.babraham.FastQC.Utilities.ImageToBase64.imageToBase64(ImageToBase64.java:38)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.base64ForIcon(HTMLReportArchive.java:380)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.startDocument(HTMLReportArchive.java:303)
+  	at uk.ac.babraham.FastQC.Report.HTMLReportArchive.<init>(HTMLReportArchive.java:84)
+  	at uk.ac.babraham.FastQC.Analysis.OfflineRunner.analysisComplete(OfflineRunner.java:185)
+  	at uk.ac.babraham.FastQC.Analysis.AnalysisRunner.run(AnalysisRunner.java:123)
+  	at java.base/java.lang.Thread.run(Thread.java:834)
+
+Tip: when you have fixed the problem you can continue the execution adding the option `-resume` to the run command line
+```
+
+And my bash script to run:
+```
+#!/bin/bash
+
+module load java/12.0.2
+module load singularity
+module load nextflow
+
+nextflow run /mnt/beegfs/scratch/nf-core_rnavar/rnavar-1.0.0/main.nf \
+--igenomes_base '/mnt/beegfs/iGenome' \
+--input '/mnt/beegfs/scratch/nf-core_rnavar/sample_plan.csv' \
+--outdir '/mnt/beegfs/scratch/nf-core_rnvar/pipeline_results' \
+--annotate_tools merge \
+--save_reference \
+-profile singularity \
+--known_indels '/mnt/beegfs/database/GATK_resources_bundle_hg38_v0/Homo_sapiens_assembly38.known_indels.vcf.gz' \
+--known_indels_tbi '/mnt/beegfs/database/GATK_resources_bundle_hg38_v0/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi' \
+--dbsnp '/mnt/beegfs/database/GATK_resources_bundle_hg38_v0/Homo_sapiens_assembly38.dbsnp138.vcf' \
+--vep_cache_version \'107\' \
+--vep_species 'homo_sapiens' \
+--vep_genome 'GRCh38' \
+--genome GRCh38 \
+--snpeff_db '/mnt/beegfs/database/snpeff/data/GRCh38.85' \
+--star_index '/mnt/beegfs/database/Human/hg38/indexes/STAR_2.7.6a'
+```",jsangalang,https://github.com/nf-core/rnavar/issues/76
+I_kwDOFdpQNM5XAj_h,Single cell somatic mutations,OPEN,2022-11-22T12:20:03Z,2023-11-13T11:36:30Z,,"### Description of feature
+
+Hello, thanks for the great work with this pipeline. I would like to try to use this pipeline to call somatic mutations in single cell rna-seq data. I have my own WGS reference for the cell line I am using. Is there a way to do this?
+",cutleraging,https://github.com/nf-core/rnavar/issues/77
+I_kwDOFdpQNM5a0wfE,Implementing the --AlignIntronMax option for STAR,OPEN,2023-01-07T12:26:02Z,2023-01-07T13:08:35Z,,"### Description of feature
+
+Hello. 
+Thanks for this nf-core pipeline, it looks promising. When we use STAR to align RNAseq reads, we usually define the maximum search length of introns using the --alignIntronMax option. Doing this can seriously improve alignment calculation times, sometimes by factors of 10 or 20 depending on the genome used. Would it be possible to introduce the option within the general parameters the next time you update this pipeline?
+Best",ChrisSwale,https://github.com/nf-core/rnavar/issues/81
+I_kwDOFdpQNM5ddyNk,SAMTOOLS_FAIDX can't locate singularity image,OPEN,2023-02-02T13:44:19Z,2023-02-06T13:23:58Z,,"### Description of the bug
+
+Hello,
+
+The process SAMTOOLS_FAIDX is not able to locate the singularity image : 
+
+`FATAL:   could not open image /data/projects/ptdom/pipelines/rnavar/sifs/samtools-1.15.1--h1170115_0.sif : failed to retrieve path for /data/projects/ptdom/pipelines/rnavar/sifs/samtools-1.15.1--h1170115_0.sif : lstat /data/projects/ptdom/pipelines/rnavar/sifs/samtools-1.15.1--h1170115_0.sif : no such file or directory`
+
+However there is a singularity image containing samtools at this specific location available from any node on the cluster (Managed with slurm)
+
+Image location is precised like this in the config files : 
+
+```
+withName: 'SAMTOOLS_FAIDX' {
+	container = '/data/projects/ptdom/pipelines/rnavar/sifs/samtools-1.15.1--h1170115_0.sif '
+}
+```
+
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",PBMCHUGA,https://github.com/nf-core/rnavar/issues/82
+I_kwDOFdpQNM5drzwd,Warning about GATK4_HAPLOTYPECALLERGVCF,OPEN,2023-02-06T02:07:54Z,2023-02-07T08:46:26Z,,"### Description of the bug
+
+I get the below warning:
+
+`WARN: A process with name 'GATK4_HAPLOTYPECALLERGVCF' is defined more than once in module script: /home/omeran/.nextflow/assets/nf-core/rnavar/./workflows/rnavar.nf -- Make sure to not define the same function as process`
+
+### Command used and terminal output
+
+```console
+#!/bin/bash
+
+nextflow run nf-core/rnavar \
+-latest \
+-profile docker \
+--genome GRCh38 \
+--read_length 150 \
+--fasta 's3://reference/rnaseq-genome/combined.fa' \
+--gtf 's3://reference/rnaseq-genome/combined.gtf' \
+--star_index 's3://reference/rnaseq-genome/STAR_100/' \
+--dbsnp 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz' \
+--dbsnp_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz.tbi' \
+--known_indels 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz' \
+--known_indels_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi' \
+--annotate_tools merge \
+--snpeff_db 'GRCh38.99' \
+--vep_species 'homo_sapiens' \
+--vep_genome 'GRCh38' \
+--vep_cache_version \'108\' \
+--max_cpus 512 \
+--max_memory '2048.GB' \
+--input 'samplesheet_rnaseq.csv' \
+--outdir 's3://nextflow/rnavar/results/' \
+-bucket-dir 's3://nextflow/rnavar/work/' \
+-work-dir 's3://nextflow/rnavar/work/' \
+-c 'custom.config' \
+-r dev \
+-resume
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",bounlu,https://github.com/nf-core/rnavar/issues/83
+I_kwDOFdpQNM5d5uUL,ENSEMBLVEP fails after module update,OPEN,2023-02-08T03:45:51Z,2023-02-08T09:26:25Z,,"### Description of the bug
+
+After the recent update of the module [bea3ca9](https://github.com/nf-core/modules/commit/bea3ca998816a7f812b1bbbcb27c3a9ffbac0706), `ENSEMBLVEP` process fails:
+
+```
+-[nf-core/rnavar] Pipeline completed with errors-
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:ANNOTATE:MERGE_ANNOTATE:ENSEMBLVEP (sample1)'
+
+Caused by:
+  Essential container in task exited
+
+Command executed:
+
+  mkdir sample1
+  
+  vep \
+      -i sample1.gz \
+      -o sample1.ann.vcf \
+      --everything --filter_common --per_gene --total_length --offline \
+      --assembly GRCh38 \
+      --species homo_sapiens \
+      --cache \
+      --cache_version '108' \
+      --dir_cache /.vep \
+      --fork 6 \
+      --vcf \
+      --stats_file sample1.summary.html
+  
+  rm -rf sample1
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:ANNOTATE:MERGE_ANNOTATE:ENSEMBLVEP"":
+      ensemblvep: $( echo $(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*$//')
+  END_VERSIONS
+
+Command exit status:
+  2
+
+Command output:
+  (empty)
+
+Command error:
+  -------------------- EXCEPTION --------------------
+  MSG: ERROR: Cache directory /.vep/homo_sapiens not found
+  STACK Bio::EnsEMBL::VEP::CacheDir::dir /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:305
+  STACK Bio::EnsEMBL::VEP::CacheDir::init /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:219
+  STACK Bio::EnsEMBL::VEP::CacheDir::new /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:111
+  STACK Bio::EnsEMBL::VEP::AnnotationSourceAdaptor::get_all_from_cache /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/AnnotationSourceAdaptor.pm:116
+  STACK Bio::EnsEMBL::VEP::AnnotationSourceAdaptor::get_all /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/AnnotationSourceAdaptor.pm:92
+  STACK Bio::EnsEMBL::VEP::BaseRunner::get_all_AnnotationSources /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/BaseRunner.pm:170
+  STACK Bio::EnsEMBL::VEP::Runner::init /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/Runner.pm:128
+  STACK Bio::EnsEMBL::VEP::Runner::run /usr/local/share/ensembl-vep-108.2-0/modules/Bio/EnsEMBL/VEP/Runner.pm:199
+  STACK toplevel /usr/local/bin/vep:240
+  Date (localtime)    = Wed Feb  8 02:58:15 2023
+  Ensembl API version = 108
+  ---------------------------------------------------
+
+Work dir:
+  s3://omeran/nextflow/rnavar/work/3c/49923e4312cb7325c865ed2d9c9218
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+```
+
+### Command used and terminal output
+
+```console
+#!/bin/bash
+
+nextflow run nf-core/rnavar \
+-latest \
+-profile docker \
+--genome GRCh38 \
+--read_length 150 \
+--fasta 's3://reference/rnaseq-genome/combined.fa' \
+--gtf 's3://reference/rnaseq-genome/combined.gtf' \
+--star_index 's3://reference/rnaseq-genome/STAR_100/' \
+--dbsnp 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz' \
+--dbsnp_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/dbsnp_146.hg38.vcf.gz.tbi' \
+--known_indels 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz' \
+--known_indels_tbi 's3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Annotation/GATKBundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi' \
+--annotate_tools merge \
+--snpeff_db 'GRCh38.99' \
+--vep_species 'homo_sapiens' \
+--vep_genome 'GRCh38' \
+--vep_cache_version \'108\' \
+--max_cpus 512 \
+--max_memory '2048.GB' \
+--input 'samplesheet_rnaseq.csv' \
+--outdir 's3://nextflow/rnavar/results/' \
+-bucket-dir 's3://nextflow/rnavar/work/' \
+-work-dir 's3://nextflow/rnavar/work/' \
+-c 'custom.config' \
+-r dev \
+-resume
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+      N E X T F L O W
+      version 22.10.6 build 5843
+      created 23-01-2023 23:20 UTC (24-01-2023 07:20 SGST)
+      cite doi:10.1038/nbt.3820
+      http://nextflow.io
+
+```
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04.1 LTS
+Release:	22.04
+Codename:	jammy
+```",bounlu,https://github.com/nf-core/rnavar/issues/84
+I_kwDOFdpQNM5d9vBe,ANNOTATE processes scheduled but not executed despite params.annotate_tool not null and skip_variantannotation = false,OPEN,2023-02-08T16:48:04Z,2023-03-02T11:19:37Z,,"### Description of the bug
+
+Hi,
+
+The pipeline is executing succesfully until the end but skip annotation processes despite params.annotate_tool is not null. I tried to set it up with 'vep' and 'merge' values. 
+
+```
+------------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~'
+  |\ | |__  __ /  ` /  \ |__) |__         }  {
+  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                        `._,._,'
+  nf-core/rnavar v1.0.0
+------------------------------------------------------
+Core Nextflow options
+  runName         : hopeful_mclean
+...
+Input/output options
+  input           : /data/home/cbenoit3/datasets/DragenTest/samplesheetTest.csv
+ ...
+
+Reference genome options
+...
+
+Variant Annotation
+  annotate_tools  : vep
+...
+
+[6b/9cc46d] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 2 of 2 ✔
+[a2/98ca04] process > NFCORE_RNAVAR:RNAVAR:TABIX ... [100%] 2 of 2 ✔
+[67/43781f] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 2 of 2 ✔
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ANNOTA... -
+[8c/0d8a3c] process > NFCORE_RNAVAR:RNAVAR:CUSTOM... [100%] 1 of 1 ✔
+[8d/c6f5d2] process > NFCORE_RNAVAR:RNAVAR:MULTIQC   [100%] 1 of 1 ✔
+-[nf-core/rnavar] Sent summary e-mail to cbenoit3@chu-grenoble.fr (sendmail)-
+-[nf-core/rnavar] Pipeline completed successfully-
+Completed at: 08-Feb-2023 14:54:00
+Duration    : 10m 2s
+CPU hours   : 2.7
+Succeeded   : 150
+```
+[.nextflow.log.txt](https://github.com/nf-core/rnavar/files/10687672/default.nextflow.log.txt)
+
+All vep and snpfEff options are defined in my  [igenomes.config.txt](https://github.com/nf-core/rnavar/files/10687683/igenomes.config.txt) (GRCh37)
+
+Also I commented  these two lines in WorkflowRnaVar.groovy  :
+
+```
+       if((!params.skip_variantannotation) && (params.annotate_tools) && (params.annotate_tools.contains('merge') || params.annotate_tools.contains('vep')) && (!params.genome || !params.vep_genome || !params.vep_species || !params.vep_cache_version)) {
+            print(params.skip_variantannotation)
+            print(params.annotate_tools)
+            log.error ""Species name (using --vep_species), genome assembly (either --genome or --vep_genome) and cache version (--vep_cache_version) are required to run VEP variant annotation.""
+            System.exit(1)
+        }
+        if((!params.skip_variantannotation) && (params.annotate_tools) && (params.annotate_tools.contains('merge') || params.annotate_tools.contains('snpeff')) && (!params.genome || !params.snpeff_db)) {
+            log.error ""Either --genome or --snpeff_db is required to run snpEff variant annotation.""
+            System.exit(1)
+        }
+```
+Because I did not managed to pass the log.error even all parameters seemed to be set up (skip_variantannotation = false). But I guess it's not a good practice X)
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",PBMCHUGA,https://github.com/nf-core/rnavar/issues/85
+I_kwDOFdpQNM5eBDEQ,Add UMI spport,OPEN,2023-02-09T06:41:22Z,2023-08-15T07:34:12Z,,"Hi,
+
+Please add UMI support (`umi_tools`) for removal of PCR mutations and accurate depth of the variants.
+Just like in the [nf-core/rnaseq](https://github.com/nf-core/rnaseq/tree/master/modules/nf-core/umitools) pipeline.
+
+Thanks.",bounlu,https://github.com/nf-core/rnavar/issues/86
+I_kwDOFdpQNM5eBFTk,`strandedness` field is unnecessary,OPEN,2023-02-09T06:51:00Z,2023-02-09T06:51:00Z,,"### Description of the bug
+
+`strandedness` field [required in the input samplesheet](https://nf-co.re/rnavar/1.0.0/usage#full-samplesheet) is never used in the pipeline. It's unnecessary and can be safely removed.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",bounlu,https://github.com/nf-core/rnavar/issues/87
+I_kwDOFdpQNM5i_XbN,Pipeline test is failing,OPEN,2023-04-10T13:19:29Z,2023-07-18T05:14:21Z,,"### Description of the bug
+
+The test profile for the pipeline is failing to run on my HPC cluster.  This does not happen with other nf-core pipelines (e.g., rnaseq).  The log file (attached) is showing HTTP errors.
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -profile test,seawulf --outdir /gpfs/scratch/decarlson/rnavar_test
+
+N E X T F L O W  ~  version 23.04.0
+Launching `https://github.com/nf-core/rnavar` [festering_banach] DSL2 - revision: 222d7a15f7 [master]
+
+
+------------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~'
+  |\ | |__  __ /  ` /  \ |__) |__         }  {
+  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                        `._,._,'
+  nf-core/rnavar v1.0.0
+------------------------------------------------------
+Core Nextflow options
+  revision                  : master
+  runName                   : festering_banach
+  containerEngine           : singularity
+  launchDir                 : /gpfs/home/decarlson
+  workDir                   : /gpfs/home/decarlson/work
+  projectDir                : /gpfs/home/decarlson/.nextflow/assets/nf-core/rnavar
+  userName                  : decarlson
+  profile                   : test,seawulf
+  configFiles               : /gpfs/home/decarlson/.nextflow/assets/nf-core/rnavar/nextflow.config
+
+Input/output options
+  input                     : https://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet.csv
+  outdir                    : /gpfs/scratch/decarlson/rnavar_test
+
+Reference genome options
+  genome                    : WBcel235
+  fasta                     : https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta
+  dict                      : https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.dict
+  gtf                       : https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.gtf
+  read_length               : 150
+  known_indels              : https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/mills_and_1000G.indels.vcf.gz
+  known_indels_tbi          : https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/mills_and_1000G.indels.vcf.gz.tbi
+  dbsnp                     : https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz
+  dbsnp_tbi                 : https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi
+  snpeff_db                 : WBcel235.99
+  vep_genome                : WBcel235
+  vep_species               : caenorhabditis_elegans
+  vep_cache_version         : 104
+
+Alignment options
+  star_index                : https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/index/star/star.tar.gz
+  star_twopass              : true
+
+Institutional config options
+  config_profile_name       : Test profile
+  config_profile_description: Minimal test dataset to check pipeline function
+  config_profile_contact    : David Carlson (@davidecarlson)
+  config_profile_url        : https://it.stonybrook.edu/services/high-performance-computing
+
+Max job request options
+  max_cpus                  : 2
+  max_memory                : 6.GB
+  max_time                  : 6.h
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+------------------------------------------------------
+If you use nf-core/rnavar for your analysis please cite:
+
+* The nf-core framework
+  https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+  https://github.com/nf-core/rnavar/blob/master/CITATIONS.md
+------------------------------------------------------
+ERROR ~ Unable to read script: '/gpfs/home/decarlson/.nextflow/assets/nf-core/rnavar/./workflows/rnavar.nf' -- cause: https://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet.csv
+
+ -- Check script '.nextflow/assets/nf-core/rnavar/main.nf' at line: 49 or see '.nextflow.log' file for more details
+```
+
+
+### Relevant files
+
+[nextflow.log](https://github.com/nf-core/rnavar/files/11190706/nextflow.log)
+
+
+### System information
+
+nextflow version 23.04.0.585
+Hardware: HPC
+Executor: Slurm
+Container: Singularity
+OS: Rocky Linux
+version of nf-core/rnavar: v1.0.0",davidecarlson,https://github.com/nf-core/rnavar/issues/89
+I_kwDOFdpQNM5jFkEd,GRCh38 gtf file being used even when custom gff file is supplied,OPEN,2023-04-11T12:45:44Z,2023-04-11T12:45:44Z,,"### Description of the bug
+
+I tried running the pipeline using my own fasta and gff files, but instead of converting the gff to gtf, the human GRCh38 gtf file was downloaded and used instead, which causes errors later on, when the genome assembly and the gtf do not match.
+
+Note that it also appears that the GRCh38 STAR index is automatically being used as well instead of building a new index from the provided fasta file.
+
+After converting my gff to gtf (and also building a STAR index outside of the nf-core pipeline), this issue does not occur.  However, the docs indicate that a gff file can be supplied and will automatically be converted to gtf, which didn't seem to happen here.
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar --input /gpfs/projects/GenomicsCore/fastqs/Sipperly/sipperly_samplesheet.csv --outdir sipperly_out --fasta ref/Dniv87_Chicago_SSPACE_LINKS14_1kb_ChromonomerRun4_integrated_20July2018.fasta --gff ref/Dniv87_Chicago_SSPACE_LINKS14_1kb_ChromonomerRun4_integrated_20July2018_unwrap.all.Run5.maker.genes.gff --skip_baserecalibration -profile seawulf
+
+...
+
+Apr-10 12:39:44.948 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST (genome.bed)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST (genome.bed)` terminated with an error exit status (3)
+
+Command executed:
+
+  gatk --java-options ""-Xmx36g"" BedToIntervalList \
+      --INPUT exome.bed \
+      --OUTPUT genome.bed.interval_list \
+      --SEQUENCE_DICTIONARY Dniv87_Chicago_SSPACE_LINKS14_1kb_ChromonomerRun4_integrated_20July2018.dict \
+      --TMP_DIR . \
+  
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST"":
+      gatk4: $(echo $(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*$//')
+  END_VERSIONS
+
+Command exit status:
+  3
+
+Command output:
+  (empty)
+
+Command error:
+  Using GATK jar /usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar
+  Running:
+      java -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=2 -Xmx36g -jar /usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar BedToIntervalList --INPUT exome.bed --OUTPUT genome.bed.interval_list --SEQUENCE_DICTIONARY Dniv87_Chicago_SSPACE_LINKS14_1kb_ChromonomerRun4_integrated_20July2018.dict --TMP_DIR .
+  16:39:41.962 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/gatk4-4.2.6.1-0/gatk-package-4.2.6.1-local.jar!/com/intel/gkl/native/libgkl_compression.so
+  [Mon Apr 10 16:39:41 GMT 2023] BedToIntervalList --INPUT exome.bed --SEQUENCE_DICTIONARY Dniv87_Chicago_SSPACE_LINKS14_1kb_ChromonomerRun4_integrated_20July2018.dict --OUTPUT genome.bed.interval_list --TMP_DIR . --SORT true --UNIQUE false --DROP_MISSING_CONTIGS false --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 2 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --GA4GH_CLIENT_SECRETS client_secrets.json --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false
+  [Mon Apr 10 16:39:42 GMT 2023] Executing as decarlson@dn022 on Linux 4.18.0-425.3.1.el8.x86_64 amd64; OpenJDK 64-Bit Server VM 11.0.9.1-internal+0-adhoc..src; Deflater: Intel; Inflater: Intel; Provider GCS is available; Picard version: Version:4.2.6.1
+  [Mon Apr 10 16:39:42 GMT 2023] picard.util.BedToIntervalList done. Elapsed time: 0.00 minutes.
+  Runtime.totalMemory()=2147483648
+  To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+  picard.PicardException: Sequence 'chr1' was not found in the sequence dictionary
+  	at picard.util.BedToIntervalList.doWork(BedToIntervalList.java:156)
+  	at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:308)
+  	at org.broadinstitute.hellbender.cmdline.PicardCommandLineProgramExecutor.instanceMain(PicardCommandLineProgramExecutor.java:37)
+  	at org.broadinstitute.hellbender.Main.runCommandLineProgram(Main.java:160)
+  	at org.broadinstitute.hellbender.Main.mainEntry(Main.java:203)
+  	at org.broadinstitute.hellbender.Main.main(Main.java:289)
+
+Work dir:
+  /gpfs/projects/GenomicsCore/nf-core/rnavar/sipperly/work/4e/3ddd2803d8b75b6479ad2394facc8c
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+Apr-10 12:39:44.967 [Task monitor] INFO  nextflow.Session - Execution cancelled -- Finishing pending tasks before exit
+```
+
+
+### Relevant files
+
+[nextflow.log](https://github.com/nf-core/rnavar/files/11200487/nextflow.log)
+
+
+### System information
+
+nextflow version 23.04.0.585
+Hardware: HPC
+Executor: Slurm
+Container: Singularity
+OS: Rocky Linux
+version of nf-core/rnavar: v1.0.0",davidecarlson,https://github.com/nf-core/rnavar/issues/90
+I_kwDOFdpQNM5nYmfJ,Genome Version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a,OPEN,2023-05-31T15:35:40Z,2024-06-25T08:10:05Z,,"### Description of the bug
+
+While running RNAvar pipeline and providing the reference as a GTF file, the following error was seen:
+EXITING because of FATAL ERROR: Genome version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a
+SOLUTION: please re-generate genome from scratch with running version of STAR, or with version: 2.7.4a
+
+In order to overcome the compatibility issue,  the --star_index flag was removed and RNAvar was re-run.
+Based on the log file, as indicated in the documentation, the pipeline tried to build in it's own STAR indices using ""genomeGenerate"" but then ran into the same error:
+
+EXITING because of FATAL ERROR: Genome version: 20201 is INCOMPATIBLE with running STAR version: 2.7.9a
+SOLUTION: please re-generate genome from scratch with running version of STAR, or with version: 2.7.4a
+
+### Command used and terminal output
+
+```console
+nextflow rnavar/main.nf \
+        --input samplesheet.txt \
+        --outdir <output> \
+        --gtf Homo_sapiens.GRCh38.104.gtf \
+        --fasta Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz \
+        --known_indels resources_broad_hg38_v0_Homo_sapiens_assembly38.known_indels.vcf.gz \
+        --known_indels_tbi resources_broad_hg38_v0_Homo_sapiens_assembly38.known_indels.vcf.gz.tbi \
+        --seq_center ""Core facility""
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",meherpreethi777,https://github.com/nf-core/rnavar/issues/92
+I_kwDOFdpQNM5ndATP,Singularity container retrieval failed,OPEN,2023-06-01T07:22:54Z,2023-06-01T07:22:54Z,,"### Description of the bug
+
+I am getting an error during the download of snpeff singularity image.
+
+nf-core/tools version 2.8
+![image](https://github.com/nf-core/rnavar/assets/50982874/9f9d9ef8-a0d0-406d-a904-8cbae2009bb3)
+
+
+
+### Command used and terminal output
+
+```console
+nf-core download rnavar --outdir nf-core-rnavar -r dev -c singularity -x none
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+nf-core/tools version 2.8",hakobyansiras,https://github.com/nf-core/rnavar/issues/93
+I_kwDOFdpQNM5n49PL,"STAR_ALIGN error ""Not a valid S3 file system provider file attribute view: java.nio.file.attribute.BasicWithKeyFileAttributeView""",OPEN,2023-06-06T02:57:46Z,2023-06-28T05:54:59Z,,"### Description of the bug
+
+Running nf-core/rnavar:1.0.0 with genome references from igenome or user-specified fasta/gtf files will both encounter the following error when in the STAR_ALIGN stage: 
+
+""Not a valid S3 file system provider file attribute view: java.nio.file.attribute.BasicWithKeyFileAttributeView""
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -r 1.0.0 \
+--input /mnt/scratch/projects/adipocytes/samplesheet-bulkRNAseq-variant_calling.csv \
+--outdir /mnt/scratch/projects/adipocytes/results/GRCh38-2023-A/rnaseq-variant_calling \
+--genome GRCh38 \
+--known_indels /mnt/scratch/projects/adipocytes/popscle/filtervcf.minAF.freemuxlet.vcf.gz \
+--save_reference \
+--max_cpus 30 \
+--max_memory 235GB \
+-resume \
+-profile singularity
+
+executor >  local (5)
+[-        ] process > NFCORE_RNAVAR:RNAVAR:PREPAR... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:PREPAR... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:PREPAR... -
+[41/23e647] process > NFCORE_RNAVAR:RNAVAR:INPUT_... [100%] 1 of 1, cached: 1 ✔
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ -
+[66/fea76f] process > NFCORE_RNAVAR:RNAVAR:FASTQC... [  0%] 0 of 15
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MARKDU... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:SPLITN... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:TABIX     -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CUSTOM... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:MULTIQC   -
+Staging foreign file: s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa
+Error executing process > 'NFCORE_RNAVAR:RNAVAR:ALIGN_STAR:STAR_ALIGN (A20S35242OM)'
+
+Caused by:
+  Not a valid S3 file system provider file attribute view: java.nio.file.attribute.BasicWithKeyFileAttributeView
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+- Nextflow version: 22.10.6
+- Hardware: AWS EC2 - r5a instance type
+- OS: Debian 11 x64
+- Container engine: Singularity
+- Executor: local
+- nf-core/rnavar: 1.0.0
+",BurtonChia,https://github.com/nf-core/rnavar/issues/94
+I_kwDOFdpQNM5uVFkI,Add `trimming` step,OPEN,2023-08-15T07:33:07Z,2023-08-15T07:35:09Z,,"Hi,
+
+Just like in `rnaseq` [pipeline](https://github.com/nf-core/rnaseq#introduction), please add adapter and quality `trimming` step.
+
+Thanks.",bounlu,https://github.com/nf-core/rnavar/issues/96
+I_kwDOFdpQNM5yxzY_,Gunzipping before STAR alignment on NTFS,CLOSED,2023-10-04T08:18:34Z,2023-10-13T17:58:46Z,2023-10-13T17:56:53Z,"### Description of feature
+
+Hello rnavar devs,
+
+This is a feature request as well as an ask for assistance, if possible.
+
+Essentially, I would like to add a small step in the pipeline, right before STAR alignment, in which the fastq.gz files are gunzipped and the resulting uncompressed files are fed to STAR.  I need to do this because I am working on a wsl2 ubuntu server with NTFS storage . [(STAR has an issue with gzs on NTFS, it gives a FIFO error)](https://www.biostars.org/p/9469010/).
+
+I have tried to do this on my own by adding the following code to the ALIGN_STAR subworkflow:
+```
+
+include { GUNZIP        } from '../../modules/nf-core/modules/gunzip/main'
+
+...
+
+workflow ALIGN_STAR {
+    take:
+    reads                   // channel: [ val(meta), [ reads ] ]
+ ...
+    main:
+    ch_unzipped_fastq = Channel.empty()
+    ch_versions = Channel.empty()
+
+
+    // Iterate over each entry in the 'reads' channel
+    reads.flatten().collect { meta, files ->
+        // Use scatter to parallelize the unzipping process for all files in the current entry
+        scatter (file in files) {
+            // Unzip the file and add it to the ch_unzipped_fastq channel along with meta
+            unzipped_file = GUNZIP(file)
+            emit meta, unzipped_file
+        }
+    }
+
+
+    // Collect the results into the 'ch_unzipped_fastq' channel
+    collect { meta, unzipped_file -> ch_unzipped_fastq << [meta, unzipped_file] }
+    
+//
+    // Map reads with STAR
+    //
+
+    STAR_ALIGN (
+        ch_unzipped_fastq, // Use the unzipped fastq files as input
+        index,
+        gtf,
+        star_ignore_sjdbgtf,
+        seq_platform,
+        seq_center
+    )
+    ch_versions = ch_versions.mix(STAR_ALIGN.out.versions.first())
+
+...
+
+```
+`
+
+Now when testing, I get the following exception, and I'm in over my head at the point.  Nextflow is pretty new to me.
+
+```
+
+`Oct-04 04:00:59.049 [main] DEBUG nextflow.cli.Launcher - $> nextflow run /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar --outdir /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar_results --genome GRCh38 --dbsnp /mnt/e/GenomesAndIndexes/Homo_sapiens_assembly38.dbsnp138.vcf -profile docker,test
+Oct-04 04:00:59.325 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 23.04.4
+Oct-04 04:00:59.351 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/z8g4/.nextflow/plugins; core-plugins: nf-amazon@1.16.2,nf-azure@1.0.1,nf-codecommit@0.1.4,nf-console@1.0.5,nf-ga4gh@1.0.5,nf-google@1.7.3-patch1,nf-tower@1.5.12,nf-wave@0.8.4
+Oct-04 04:00:59.377 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Oct-04 04:00:59.387 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Oct-04 04:00:59.392 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Oct-04 04:00:59.450 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Oct-04 04:01:00.621 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/nextflow.config
+Oct-04 04:01:00.623 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/nextflow.config
+Oct-04 04:01:00.638 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `docker,test`
+Oct-04 04:01:02.334 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [cfc_dev, ifb_core, denbi_qbic, alice, mjolnir_globe, uppmax, incliva, uge, rosalind_uge, lugh, unibe_ibu, vai, czbiohub_aws, jax, ccga_med, scw, tigem, tubingen_apg, google, apollo, ipop_up, googlels, eddie, medair, biowulf, bi, bigpurple, adcra, cedars, vsc_kul_uhasselt, pawsey_nimbus, ucl_myriad, utd_ganymede, charliecloud, icr_davros, ceres, munin, rosalind, hasta, cfc, uzh, ebi_codon_slurm, ebc, ku_sund_dangpu, ccga_dx, crick, marvin, biohpc_gen, shifter, mana, unc_lccc, wehi, awsbatch, wustl_htcf, imperial, maestro, software_license, genotoul, nci_gadi, abims, janelia, nu_genomics, googlebatch, oist, sahmri, mpcdf, leicester, vsc_ugent, sage, cambridge, podman, ebi_codon, cheaha, xanadu, test, computerome, ucd_sonic, seg_globe, sanger, dkfz, pasteur, ethz_euler, test_full, tuos_stanage, azurebatch, hki, crukmi, docker, engaging, gis, hypatia, psmn, eva, fgcz, conda, crg, singularity, uw_hyak_pedslabs, prince, utd_sysbio, debug, genouest, cbe, phoenix, seawulf, fub_curta, uct_hpc, aws_tower, binac]
+Oct-04 04:01:02.392 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declararion
+Oct-04 04:01:02.422 [main] INFO  nextflow.cli.CmdRun - Launching `/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/main.nf` [hopeful_cajal] DSL2 - revision: e58604470a
+Oct-04 04:01:02.425 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Oct-04 04:01:02.426 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Oct-04 04:01:02.432 [main] DEBUG nextflow.secret.LocalSecretsProvider - Secrets store: /home/z8g4/.nextflow/secrets/store.json
+Oct-04 04:01:02.437 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@25ae1f80] - activable => nextflow.secret.LocalSecretsProvider@25ae1f80
+Oct-04 04:01:02.509 [main] DEBUG nextflow.Session - Session UUID: 683d52bb-c7e0-4c8f-960f-ce50d23727a5
+Oct-04 04:01:02.510 [main] DEBUG nextflow.Session - Run name: hopeful_cajal
+Oct-04 04:01:02.512 [main] DEBUG nextflow.Session - Executor pool size: 40
+Oct-04 04:01:02.525 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=120; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Oct-04 04:01:02.551 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 23.04.4 build 5881
+  Created: 25-09-2023 15:34 UTC (11:34 EDT)
+  System: Linux 5.10.16.3-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.16 on OpenJDK 64-Bit Server VM 11.0.13+7-b1751.21
+  Encoding: UTF-8 (UTF-8)
+  Process: 17538@DESKTOP-8I83U5J [127.0.1.1]
+  CPUs: 40 - Mem: 1.2 TB (985.3 GB) - Swap: 0 (0)
+Oct-04 04:01:02.619 [main] DEBUG nextflow.Session - Work-dir: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/work [v9fs]
+Oct-04 04:01:02.660 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Oct-04 04:01:02.675 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Oct-04 04:01:02.754 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Oct-04 04:01:02.769 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 41; maxThreads: 1000
+Oct-04 04:01:03.407 [main] DEBUG nextflow.Session - Session start
+Oct-04 04:01:03.413 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar_results/pipeline_info/execution_trace_2023-10-04_04-01-01.txt
+Oct-04 04:01:03.441 [main] DEBUG nextflow.Session - Using default localLib path: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/lib
+Oct-04 04:01:03.506 [main] DEBUG nextflow.Session - Adding to the classpath library: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/lib
+Oct-04 04:01:03.511 [main] DEBUG nextflow.Session - Adding to the classpath library: /mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/lib/nfcore_external_java_deps.jar
+Oct-04 04:01:04.840 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Oct-04 04:01:05.505 [main] INFO  nextflow.Nextflow - 
+
+-[2m----------------------------------------------------[0m-
+                                        [0;32m,--.[0;30m/[0;32m,-.[0m
+[0;34m        ___     __   __   __   ___     [0;32m/,-._.--~'[0m
+[0;34m  |\ | |__  __ /  ` /  \ |__) |__         [0;33m}  {[0m
+[0;34m  | \| |       \__, \__/ |  \ |___     [0;32m\`-._,-`-,[0m
+                                        [0;32m`._,._,'[0m
+[0;35m  nf-core/rnavar v1.0.0[0m
+-[2m----------------------------------------------------[0m-
+[1mCore Nextflow options[0m
+  [0;34mrunName                   : [0;32mhopeful_cajal[0m
+  [0;34mcontainerEngine           : [0;32mdocker[0m
+  [0;34mlaunchDir                 : [0;32m/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar[0m
+  [0;34mworkDir                   : [0;32m/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/work[0m
+  [0;34mprojectDir                : [0;32m/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar[0m
+  [0;34muserName                  : [0;32mz8g4[0m
+  [0;34mprofile                   : [0;32mdocker,test[0m
+  [0;34mconfigFiles               : [0;32m/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar/nextflow.config[0m
+
+[1mInput/output options[0m
+  [0;34minput                     : [0;32mhttps://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet.csv[0m
+  [0;34moutdir                    : [0;32m/mnt/e/Repositories/Jonah/SFT_nextflow/rnavar_results[0m
+
+[1mReference genome options[0m
+  [0;34mgenome                    : [0;32mGRCh38[0m
+  [0;34mfasta                     : [0;32mhttps://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta[0m
+  [0;34mdict                      : [0;32mhttps://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.dict[0m
+  [0;34mgtf                       : [0;32mhttps://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.gtf[0m
+  [0;34mread_length               : [0;32m150[0m
+  [0;34mknown_indels              : [0;32mhttps://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/mills_and_1000G.indels.vcf.gz[0m
+  [0;34mknown_indels_tbi          : [0;32mhttps://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/mills_and_1000G.indels.vcf.gz.tbi[0m
+  [0;34mdbsnp                     : [0;32m/mnt/e/GenomesAndIndexes/Homo_sapiens_assembly38.dbsnp138.vcf[0m
+  [0;34mdbsnp_tbi                 : [0;32mhttps://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi[0m
+  [0;34msnpeff_db                 : [0;32mWBcel235.99[0m
+  [0;34mvep_genome                : [0;32mWBcel235[0m
+  [0;34mvep_species               : [0;32mcaenorhabditis_elegans[0m
+  [0;34mvep_cache_version         : [0;32m104[0m
+
+[1mAlignment options[0m
+  [0;34mstar_index                : [0;32mhttps://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/index/star/star.tar.gz[0m
+  [0;34mstar_twopass              : [0;32mtrue[0m
+
+[1mVariant Annotation[0m
+  [0;34mannotate_tools            : [0;32mmerge[0m
+
+[1mInstitutional config options[0m
+  [0;34mconfig_profile_name       : [0;32mTest profile[0m
+  [0;34mconfig_profile_description: [0;32mMinimal test dataset to check pipeline function[0m
+
+[1mMax job request options[0m
+  [0;34mmax_cpus                  : [0;32m2[0m
+  [0;34mmax_memory                : [0;32m6.GB[0m
+  [0;34mmax_time                  : [0;32m6.h[0m
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+-[2m----------------------------------------------------[0m-
+If you use nf-core/rnavar for your analysis please cite:
+
+* The nf-core framework
+  https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+  https://github.com/nf-core/rnavar/blob/master/CITATIONS.md
+-[2m----------------------------------------------------[0m-
+Oct-04 04:01:28.840 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_low` matches labels `process_low` for process with name NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED
+Oct-04 04:01:28.842 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:GTF2BED` matches process NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED
+Oct-04 04:01:28.848 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:28.849 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:28.858 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Oct-04 04:01:28.865 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=40; memory=1.2 TB; capacity=40; pollInterval=100ms; dumpInterval=5m
+Oct-04 04:01:28.967 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_low` matches labels `process_low` for process with name NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX
+Oct-04 04:01:28.974 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:SAMTOOLS_FAIDX` matches process NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:SAMTOOLS_FAIDX
+Oct-04 04:01:28.979 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:28.987 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.012 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_low` matches labels `process_low` for process with name NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:UNTAR_STAR_INDEX
+Oct-04 04:01:29.019 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:UNTAR_.*` matches process NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:UNTAR_STAR_INDEX
+Oct-04 04:01:29.077 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:UNTAR_.*|STAR_GENOMEGENERATE` matches process NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:UNTAR_STAR_INDEX
+Oct-04 04:01:29.082 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.083 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.171 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK` matches process NFCORE_RNAVAR:RNAVAR:INPUT_CHECK:SAMPLESHEET_CHECK
+Oct-04 04:01:29.174 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.175 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.231 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_low` matches labels `process_low` for process with name NFCORE_RNAVAR:RNAVAR:CAT_FASTQ
+Oct-04 04:01:29.249 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:CAT_FASTQ` matches process NFCORE_RNAVAR:RNAVAR:CAT_FASTQ
+Oct-04 04:01:29.252 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.259 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.288 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_medium` matches labels `process_medium` for process with name NFCORE_RNAVAR:RNAVAR:FASTQC
+Oct-04 04:01:29.289 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:FASTQC` matches process NFCORE_RNAVAR:RNAVAR:FASTQC
+Oct-04 04:01:29.291 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.292 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.312 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_medium` matches labels `process_medium` for process with name NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST
+Oct-04 04:01:29.313 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:GATK4_BEDTOINTERVALLIST` matches process NFCORE_RNAVAR:RNAVAR:GATK4_BEDTOINTERVALLIST
+Oct-04 04:01:29.316 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.317 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.330 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withLabel:process_medium` matches labels `process_medium` for process with name NFCORE_RNAVAR:RNAVAR:GATK4_INTERVALLISTTOOLS
+Oct-04 04:01:29.332 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:GATK4_INTERVALLISTTOOLS` matches process NFCORE_RNAVAR:RNAVAR:GATK4_INTERVALLISTTOOLS
+Oct-04 04:01:29.335 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-04 04:01:29.336 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-04 04:01:29.363 [main] DEBUG nextflow.Session - Session aborted -- Cause: Missing process or function doCall([Script_e95846d7$_runScript_closure1$_closure2@292be875])
+Oct-04 04:01:29.450 [main] DEBUG nextflow.Session - The following nodes are still active:
+  [operator] collect
+  [operator] collect
+  [operator] collect
+  [operator] collect
+  [operator] collect
+  [operator] collect
+  [operator] collect
+  [operator] mix
+  [operator] map
+  [operator] map
+  [operator] collect
+  [operator] mix
+  [operator] collect
+  [operator] map
+  [operator] map
+  [operator] collect
+  [operator] mix
+  [operator] ifEmpty
+  [operator] combine
+  [operator] mix
+  [operator] splitCsv
+  [operator] map
+  [operator] map
+  [operator] groupTuple
+  [operator] branch
+  [operator] mix
+  [operator] mix
+  [operator] ifEmpty
+  [operator] mix
+  [operator] collect
+  [operator] ifEmpty
+  [operator] mix
+  [operator] mix
+  [operator] ifEmpty
+  [operator] mix
+  [operator] map
+  [operator] flatten
+  [operator] flatten
+  [operator] collect
+
+Oct-04 04:01:29.493 [main] ERROR nextflow.cli.Launcher - @unknown
+nextflow.exception.MissingProcessException: Missing process or function doCall([Script_e95846d7$_runScript_closure1$_closure2@292be875])
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:191)
+	at nextflow.script.BindableDef.invoke_a(BindableDef.groovy:51)
+	at nextflow.script.ComponentDef.invoke_o(ComponentDef.groovy:40)
+	at nextflow.script.WorkflowBinding.invokeMethod(WorkflowBinding.groovy:102)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeOnDelegationObjects(ClosureMetaClass.java:408)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:350)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at Script_e8ecf00b$_runScript_closure1$_closure3.doCall(Script_e8ecf00b:215)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:406)
+	at nextflow.script.WorkflowDef.run0(WorkflowDef.groovy:204)
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:188)
+	at nextflow.script.BindableDef.invoke_a(BindableDef.groovy:51)
+	at nextflow.script.ComponentDef.invoke_o(ComponentDef.groovy:40)
+	at nextflow.script.WorkflowBinding.invokeMethod(WorkflowBinding.groovy:102)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeOnDelegationObjects(ClosureMetaClass.java:408)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:350)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:176)
+	at Script_58c04bec$_runScript_closure1$_closure3.doCall(Script_58c04bec:55)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:406)
+	at nextflow.script.WorkflowDef.run0(WorkflowDef.groovy:204)
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:188)
+	at nextflow.script.BindableDef.invoke_a(BindableDef.groovy:51)
+	at nextflow.script.ComponentDef.invoke_o(ComponentDef.groovy:40)
+	at nextflow.script.WorkflowBinding.invokeMethod(WorkflowBinding.groovy:102)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeOnDelegationObjects(ClosureMetaClass.java:408)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:350)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:176)
+	at Script_58c04bec$_runScript_closure2$_closure4.doCall(Script_58c04bec:69)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:406)
+	at nextflow.script.WorkflowDef.run0(WorkflowDef.groovy:204)
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:188)
+	at nextflow.script.BindableDef.invoke_a(BindableDef.groovy:51)
+	at nextflow.script.IterableDef$invoke_a.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at nextflow.script.BaseScript.run0(BaseScript.groovy:183)
+	at nextflow.script.BaseScript.run(BaseScript.groovy:192)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:229)
+	at nextflow.script.ScriptRunner.run(ScriptRunner.groovy:224)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:130)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:368)
+	at nextflow.cli.Launcher.run(Launcher.groovy:494)
+	at nextflow.cli.Launcher.main(Launcher.groovy:665)
+Caused by: groovy.lang.MissingMethodException: No signature of method: Script_e95846d7$_runScript_closure1$_closure2$_closure4.doCall() is applicable for argument types: (Script_e95846d7$_runScript_closure1$_closure2) values: [Script_e95846d7$_runScript_closure1$_closure2@292be875]
+Possible solutions: doCall(java.lang.Object, java.lang.Object), findAll(), findAll(), isCase(java.lang.Object), isCase(java.lang.Object)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:266)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:428)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.collect(DefaultGroovyMethods.java:3601)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.collect(DefaultGroovyMethods.java:3540)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.collect(DefaultGroovyMethods.java:3526)
+	at org.codehaus.groovy.runtime.dgm$102.doMethodInvoke(Unknown Source)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at Script_e95846d7$_runScript_closure1$_closure2.doCall(Script_e95846d7:34)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:406)
+	at nextflow.script.WorkflowDef.run0(WorkflowDef.groovy:204)
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:188)
+	... 78 common frames omitted
+```
+`
+
+I'd really like a way to do this.  I am trying to run a variant analysis with this pipeline on many RNA-seq samples.  Is there any option I'm missing or something I'm doing wrong with my code? Thank you so much for any of your time.",jcdaneshmand,https://github.com/nf-core/rnavar/issues/99
+I_kwDOFdpQNM5znMoH,`dev` version gets stuck at Launching step,OPEN,2023-10-12T10:07:22Z,2023-10-12T10:07:22Z,,"### Description of the bug
+
+It freezes here forever:
+
+```
+N E X T F L O W  ~  version 23.09.3-edge
+Pulling nf-core/rnavar ...
+ downloaded from https://github.com/nf-core/rnavar.git
+Launching `https://github.com/nf-core/rnavar` [focused_dalembert] DSL2 - revision: cb84087361 [dev]
+```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",bounlu,https://github.com/nf-core/rnavar/issues/103
+I_kwDOFdpQNM51mPsl,input file name collision,OPEN,2023-11-01T19:21:41Z,2023-11-01T19:44:33Z,,"### Description of the bug
+
+ERROR ~ Error executing process > 'NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE (15)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:SAMTOOLS_MERGE` input file name collision -- There are multiple input files for each of the following file names: Non-hypertensive_Control_SRR16505214.bam
+
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+ -- Check '.nextflow.log' file for details
+Execution cancelled -- Finishing pending tasks before exit
+
+### Command used and terminal output
+
+```console
+$ nextflow run nf-core/rnavar -profile docker -c custom.comfig --genome GRCh38 --read_length 151 --fasta GRCh38.primary_assembly.genome.fa --dbsnp All_20180418.vcf.gz  --dbsnp_tbi All_20180418.vcf.gz.tbi --known_indels Homo_sapiens_assembly38.known_indels.vcf.gz --known_indels_tbi Homo_sapiens_assembly38.known_indels.vcf.gz.tbi --input Samplesheet.csv --outdir /home/vivischuch/fastq/output_rnavar --star_index /home/vivischuch/fastq/star_files -bg -resume
+```
+
+
+### Relevant files
+
+
+[Samplesheet.csv](https://github.com/nf-core/rnavar/files/13230956/Samplesheet.csv)
+
+
+### System information
+
+N E X T F L O W  ~  version 23.04.4
+Launching `https://github.com/nf-core/rnavar` [disturbed_murdock] DSL2 - revision: 222d7a15f7 [master]
+
+
+------------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~'
+  |\ | |__  __ /  ` /  \ |__) |__         }  {
+  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                        `._,._,'
+  nf-core/rnavar v1.0.0
+------------------------------------------------------
+Core Nextflow options
+  revision        : master
+  runName         : disturbed_murdock
+  containerEngine : docker
+  launchDir       : /home/vivischuch/fastq
+  workDir         : /home/vivischuch/fastq/work
+  projectDir      : /home/vivischuch/.nextflow/assets/nf-core/rnavar
+  userName        : vivischuch
+  profile         : docker
+  configFiles     : /home/vivischuch/.nextflow/assets/nf-core/rnavar/nextflow.config, /home/vivischuch/fastq/custom.comfig
+
+Input/output options
+  input           : Samplesheet.csv
+  outdir          : /home/vivischuch/fastq/output_rnavar
+
+Reference genome options
+  genome          : GRCh38
+  fasta           : GRCh38.primary_assembly.genome.fa
+  gtf             : s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Annotation/Genes/genes.gtf
+  known_indels    : Homo_sapiens_assembly38.known_indels.vcf.gz
+  known_indels_tbi: Homo_sapiens_assembly38.known_indels.vcf.gz.tbi
+  dbsnp           : All_20180418.vcf.gz
+  dbsnp_tbi       : All_20180418.vcf.gz.tbi
+
+Alignment options
+  star_index      : /home/vivischuch/fastq/star_files
+  star_twopass    : true
+
+!! Only displaying parameters that differ from the pipeline defaults !!",vivischuch,https://github.com/nf-core/rnavar/issues/108
+I_kwDOFdpQNM54G9aV,Add samtools mpileup as an alternative variant caller,OPEN,2023-11-28T18:47:41Z,2023-11-28T18:47:41Z,,"### Description of feature
+
+I tried using the default variants called using GATK but they didn't seem to work as well for my purpose. On the contrary samtools mpileup worked extremely well.
+
+Maybe it would be worthwhile adding it as an alternative calling procedure to this?",Leon-Bichmann,https://github.com/nf-core/rnavar/issues/110
+I_kwDOFdpQNM56lE_I,Failure on GATK4_BEDTOINTERVALLIST due to incorrect exome.bed generation from iGenomes References.,OPEN,2023-12-26T16:19:03Z,2024-07-17T15:03:39Z,,"### Description of the bug
+
+Then GATK4_BEDTOINTERVALLIST sometimes fails when using a variety of references genomes due to the incorrect creation of the genome.dict or exome.bed file from the reference GTF files. This results in a sequence dictionary mismatch between the two which leads the step to fail. 
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",Shaun-Regenbaum,https://github.com/nf-core/rnavar/issues/112
+I_kwDOFdpQNM56sX5H,Add the possibility of usiing gzipped fasta and gtf files,CLOSED,2023-12-28T13:37:18Z,2024-02-21T16:02:03Z,2024-02-21T16:02:03Z,"### Description of feature
+
+The pipeline currently only allows for the fasta and gtf file to be in an unzipped format, i'm currently trying to use reference files from a database that has them gzipped, and it doesn't work",nschcolnicov,https://github.com/nf-core/rnavar/issues/115
+I_kwDOFdpQNM59T4aU,"It is possible to make ""known indels"" and ""dbsnp"" databases optional in this pipeline as was done in Sarek?",OPEN,2024-01-26T15:00:48Z,2024-01-26T15:23:58Z,,"### Description of feature
+
+I am working with zebrafish genome and it lacks ""known indels"" and ""dbsnp"" databases and I see it is a mandatory requirement in this pipeline. How can one call variants from an organism lacking the above mentioned files?",Jokendo-collab,https://github.com/nf-core/rnavar/issues/118
+I_kwDOFdpQNM59foqw,SplitNCigarReads: sample cross-contamination,OPEN,2024-01-29T12:57:53Z,2024-01-29T12:57:53Z,,"### Description of the bug
+
+This might be a nextflow bug. When looking at the workflow error to do with sample name collision (similar to #108), I've tracked down the issue to this .command.sh:
+```
+#!/bin/bash -euo pipefail
+gatk --java-options ""-Xmx36g"" SplitNCigarReads \
+    --input PS036.markdup.sorted.bam \
+    --output PS044.bam \
+    --reference Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+    --intervals 3scattered.interval_list \
+    --tmp-dir . \
+    --create-output-bam-index false
+
+cat <<-END_VERSIONS > versions.yml
+""NFCORE_RNAVAR:RNAVAR:SPLITNCIGAR:GATK4_SPLITNCIGARREADS"":
+    gatk4: $(echo $(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*$//')
+END_VERSIONS
+```
+Either the --output parameter should be PS036_3scattered.bam or the --input parameter should be PS044.markdup.sorted.bam and the --output should then be PS044_3scattered.bam
+Nextflow had this under the PS044 sample, so likely the latter case (wrong staging?).
+
+### Command used and terminal output
+
+```console
+nextflow run -resume nf-core/rnavar -r 1.0.0 -profile docker,dt02 --input /data/rnaseq/tissues/batch2/tissues_batch2.csv --fasta /data/reference/genomes/ensembl/release-110/Homo_sapiens.GRCh38.dna.primary_assembly.fa --gtf /data/reference/genomes/ensembl/release-110/Homo_sapiens.GRCh38.110.gtf --known_indels /data/reference/Homo_sapiens_assembly38.known_indels.vcf.gz --known_indels_tbi /data/reference/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi --skip_variantannotation --star_index /data/reference/genomes/ensembl/release-110/STAR_sjdb149
+```
+
+
+### Relevant files
+
+[tissues_batch2.csv](https://github.com/nf-core/rnavar/files/14084351/tissues_batch2.csv)
+
+
+### System information
+
+Nextflow version 23.10.1 build 5891 (conda)
+Local executor on Desktop Ubuntu 22.04.3, rnavar v 1.0.0, docker containers",dbatrakou,https://github.com/nf-core/rnavar/issues/119
+I_kwDOFdpQNM5-aztk,SNPEFF_SNPEEF fails due to not finding snpEffPredictor.bin file,CLOSED,2024-02-06T14:41:51Z,2024-02-14T13:01:23Z,2024-02-14T13:01:23Z,"### Description of the bug
+
+Running the pipeline indicating to use the snpeff tool failed with this error:
+
+```ERROR ~ Error executing process > 'NFCORE_RNAVAR:RNAVAR:VCF_ANNOTATE_ALL:VCF_ANNOTATE_SNPEFF:SNPEFF_SNPEFF (sample)'
+
+Caused by:
+  Process `NFCORE_RNAVAR:RNAVAR:VCF_ANNOTATE_ALL:VCF_ANNOTATE_SNPEFF:SNPEFF_SNPEFF (sample)` terminated with an error exit status (255)
+
+Command executed:
+
+  snpEff \
+      -Xmx88473M \
+      GRCh38.105 \
+      -nodownload -canon -v \
+      -csvStats sample.haplotypecaller.filtered_snpEff.csv \
+      -dataDir ${PWD}/snpeff_cache \
+      sample.haplotypecaller.filtered.vcf.gz \
+      > sample.haplotypecaller.filtered_snpEff.ann.vcf
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_RNAVAR:RNAVAR:VCF_ANNOTATE_ALL:VCF_ANNOTATE_SNPEFF:SNPEFF_SNPEFF"":
+      snpeff: $(echo $(snpEff -version 2>&1) | cut -f 2 -d ' ')
+  END_VERSIONS
+
+Command exit status:
+  255
+
+Command output:
+  (empty)
+
+Command error:
+  00:00:00 SnpEff version SnpEff 5.1d (build 2022-04-19 15:49), by Pablo Cingolani
+  00:00:00 Command: 'ann'
+  00:00:00 Reading configuration file 'snpEff.config'. Genome: 'GRCh38.105'
+  00:00:00 Reading config file: snpEff.config
+  00:00:00 Reading config file: /usr/local/share/snpeff-5.1-2/snpEff.config
+  00:00:01 done
+  00:00:01 Reading database for genome version 'GRCh38.105' from file 'snpeff_cache/GRCh38.105/snpEffectPredictor.bin' (this might take a while)
+  java.lang.RuntimeException:   ERROR: Cannot read file 'snpeff_cache/GRCh38.105/snpEffectPredictor.bin'.
+        You can try to download the database by running the following command:
+                java -jar snpEff.jar download GRCh38.105
+  
+        at org.snpeff.snpEffect.SnpEffectPredictor.load(SnpEffectPredictor.java:48)
+        at org.snpeff.snpEffect.Config.loadSnpEffectPredictor(Config.java:680)
+        at org.snpeff.SnpEff.loadDb(SnpEff.java:499)
+        at org.snpeff.snpEffect.commandLine.SnpEffCmdEff.run(SnpEffCmdEff.java:890)
+        at org.snpeff.snpEffect.commandLine.SnpEffCmdEff.run(SnpEffCmdEff.java:875)
+        at org.snpeff.SnpEff.run(SnpEff.java:1141)
+        at org.snpeff.SnpEff.main(SnpEff.java:160)
+  00:00:01 Logging
+  00:00:03 Checking for updates...
+  00:00:05 Done.
+
+```
+
+When checking the workdir, the file exists but the path where it expects to find it is snpeff_cache/GRCh38.105/snpEffectPredictor.bin but is actually in snpeff_cache/GRCh38.105/GRCh38.105/snpEffectPredictor.bin
+
+### Command used and terminal output
+
+nextflow run ../../main.nf -profile bi,cluster --input ../input.csv --genome GRCh38 --outdir . -c ../config.config --annotate_tools vep -resume --vep_cache 's3://annotation-cache/vep_cache/110_GRCh38/'
+
+### Relevant files
+
+The config.config file defines the fasta, fasta_fai, dict, gtf, dbsnp and dbsnp_tbi files that I'm using, which work without any issues if snpEff is not used
+
+### System information
+
+dev branch",nschcolnicov,https://github.com/nf-core/rnavar/issues/121
+I_kwDOFdpQNM5-irj-,Pipeline doesn't build the right path to the vep cache files,CLOSED,2024-02-07T13:18:38Z,2024-02-12T10:20:09Z,2024-02-12T10:20:09Z,"### Description of the bug
+
+If running a command that uses the VEP cache files from ""s3://annotation-cache/vep_cache"" it fails to build the right path and raises this error:
+Files within --vep_cache invalid. Make sure there is a directory named caenorhabditis_elegans/110_WBcel235 in s3://annotation-cache/vep_cache/.
+https://nf-co.re/sarek/usage#how-to-customise-snpeff-and-vep-annotation
+It also fails for other genomes:
+Files within --vep_cache invalid. Make sure there is a directory named homo_sapiens/110_GRCh38 in s3://annotation-cache/vep_cache/.
+https://nf-co.re/sarek/usage#how-to-customise-snpeff-and-vep-annotation
+
+
+Both of this files exist, but the path is not properly built:
+aws s3 ls s3://annotation-cache/vep_cache/
+                           PRE 102_GRCm38/
+                           PRE 108_GRCh38/
+                           PRE 108_WBcel235/
+                           PRE 109_GRCh38/
+                           PRE 109_WBcel235/
+                           PRE 110_GRCh37/
+                           PRE 110_GRCh38/
+                           PRE 110_WBcel235/
+
+
+
+### Command used and terminal output
+
+```console
+For the frist error:
+nextflow run ../../main.nf -profile bi,cluster --annotate_tools merge --outdir . -c config.config 
+
+For the second error:
+nextflow run ../../main.nf -profile bi,cluster --outdir . --annotate_tools merge --input https://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet_full.csv -c ../config.config
+```
+
+
+### Relevant files
+
+First config.config file defines necesary reference files for running a WBcel235 sample
+Second config.config file defines necesary reference files for running GRCh38 sample
+
+### System information
+
+dev branch",nschcolnicov,https://github.com/nf-core/rnavar/issues/122
+I_kwDOFdpQNM5-iv6l,Test full profile is not working,OPEN,2024-02-07T13:27:31Z,2024-02-12T15:00:05Z,,"### Description of the bug
+
+When trying to run the test_full profile I get the error: Known variants VCF file or its index is missing!. At least --dbsnp (and its index) or --known_indels (and its index) is required.
+
+### Command used and terminal output
+
+```console
+Both of these commands raise the same error
+nextflow run ../../main.nf -profile test_full,bi,cluster --outdir .
+
+nextflow run ../main.nf -profile test_full,docker --outdir .
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+dev branch",nschcolnicov,https://github.com/nf-core/rnavar/issues/123
+I_kwDOFdpQNM5-sXrC,SnpEff and VEP publishDir contains a variable with a null value,CLOSED,2024-02-08T16:11:35Z,2024-02-29T18:12:30Z,2024-02-29T18:12:30Z,"### Description of the bug
+
+When running the pipeline using the annotate_tools  SnpEff and VEP I get the error:
+ publishDir path contains a variable with a null value
+ 
+ 
+<img width=""649"" alt=""image"" src=""https://github.com/nf-core/rnavar/assets/90359308/ce90c8cf-d8cd-4ae4-8463-dbb6017cb535"">
+<img width=""421"" alt=""image"" src=""https://github.com/nf-core/rnavar/assets/90359308/0879b55b-9909-47a6-b4dc-ba2dc7bde866"">
+
+
+### Command used and terminal output
+
+```console
+nextflow run ../../main.nf -profile bi,cluster --input ../input.csv --genome GRCh38 --outdir . -c ../config.config --annotate_tools vep -resume --vep_cache 's3://annotation-cache/vep_cache/110_GRCh38/'
+```
+
+
+### Relevant files
+
+The config file contains all the definitions for the reference files, the vep_cache had to be specified manually because the automatic process for building its path is not currently working and is being addressed here: https://github.com/nf-core/rnavar/pull/106
+
+### System information
+
+_No response_",nschcolnicov,https://github.com/nf-core/rnavar/issues/125
+I_kwDOFdpQNM5_WMP8,VEP cache is not working,CLOSED,2024-02-15T13:27:31Z,2024-02-15T17:48:39Z,2024-02-15T17:48:39Z,"### Description of the bug
+
+I got the error:  MSG: `ERROR:` Cache directory vep_cache/homo_sapiens not found` When running the module NFCORE_RNAVAR:RNAVAR:VCF_ANNOTATE_ALL:VCF_ANNOTATE_MERGE:ENSEMBLVEP_VEP
+
+I saw that, similarly to what happened with snpEff, the conditional statement that checks if the vep_cache is equal to ""s3://annotation-cache/vep_cache/"" is missing a ""/"" in https://github.com/nf-core/rnavar/blob/dev/workflows/rnavar.nf lines 154 and 162.
+
+However, if I add the missing ""/"" and run the command: `nextflow run main.nf -profile docker,test --annotate_tools merge --outdir `. It still doesn't work because it fails to build the right path, and raises the error: `This path is not available within annotation-cache. Please check https://annotation-cache.github.io/ to create a request for it.`
+
+The test profile is a modified version that removes the parameters vep_cache = null and snpeff_cache = null
+
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nschcolnicov,https://github.com/nf-core/rnavar/issues/126
+I_kwDOFdpQNM5_gBPu,"NFCORE_RNAVAR:RNAVAR:GATK4_MERGEVCFS fails with error ""has sample entries that don't match the other files""",CLOSED,2024-02-16T17:49:26Z,2024-02-21T16:01:14Z,2024-02-21T16:01:14Z,"### Description of the bug
+
+NFCORE_RNAVAR:RNAVAR:GATK4_MERGEVCFS fails with error ""has sample entries that don't match the other files""
+
+This is something that happens when running with --annotate_tools merge, and it also happens with --annotate_tools VEP and the issue is only spotted when running input samplesheets with more than one sample.
+
+For the first command the full error said:
+```
+java.lang.IllegalArgumentException: Input path K562_REP2_13scattered_5scattered.vcf.gz has sample entries that don't match the other files.
+```
+And when looking at the file, I saw that the K562_REP2_13scattered_5scattered.vcf.gz VCF file contained an incorrect sample:
+```
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  GM12878_REP1
+```
+While it should look like the other files, for example K562_REP2_10scattered.vcf: 
+
+```
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  K562_REP2
+```
+
+It seems that the files from different samples are getting mixed up somewhere
+
+### Command used and terminal output
+
+```console
+First command:
+nextflow run nf-core/rnavar -r dev -latest  -profile bi,cluster --outdir . --annotate_tools merge --input https://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet_full.csv -c ../config.config -resume
+
+Second command:
+nextflow run nf-core/rnavar -r dev -latest -profile bi,cluster --input ../input_backup.csv --outdir . --annotate_tools merge -resume -c ../config.config
+```
+
+
+### Relevant files
+
+The samplesheet contains these samples:
+```
+sample,fastq_1,fastq_2,strandedness
+GM12878_REP1,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603629_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603629_T1_2.fastq.gz,reverse
+GM12878_REP2,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603630_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603630_T1_2.fastq.gz,reverse
+K562_REP1,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603392_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603392_T1_2.fastq.gz,reverse
+K562_REP2,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603393_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX1603393_T1_2.fastq.gz,reverse
+MCF7_REP1,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370490_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370490_T1_2.fastq.gz,reverse
+MCF7_REP2,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370491_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370491_T1_2.fastq.gz,reverse
+H1_REP1,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370468_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370468_T1_2.fastq.gz,reverse
+H1_REP2,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370469_T1_1.fastq.gz,s3://nf-core-awsmegatests/rnaseq/input_data/SRX2370469_T1_2.fastq.gz,re
+```
+The config file contains reference file information, and the input_backup.csv contains a list of samples, similar to the samplesheet_full.csv
+
+### System information
+
+nf-core/rnavar -r dev",nschcolnicov,https://github.com/nf-core/rnavar/issues/128
+I_kwDOFdpQNM5_tIIu,Paired end files are being classified as single_end: true,CLOSED,2024-02-19T14:45:47Z,2024-02-19T15:03:04Z,2024-02-19T15:03:03Z,"### Description of the bug
+
+The ch_input definition classifies all samples as single end:
+![image](https://github.com/nf-core/rnavar/assets/90359308/a113cec5-cea3-4a19-86ed-1afd3f808df5)
+The println statement in this part of the rnavar.nf workflow prints a nested list, so it will always be of size 1:
+![image](https://github.com/nf-core/rnavar/assets/90359308/78d5dbeb-80b1-42aa-87a8-95f90bd547bd)
+Adding a flatten() before checking the size should fix it
+
+### Command used and terminal output
+
+```console
+nextflow run ../../main.nf -profile bi,cluster --outdir . --annotate_tools vep --input https://raw.githubusercontent.com/nf-core/test-datasets/rnavar/samplesheet/v1.0/samplesheet_full.csv -c ../config.config -resume
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nschcolnicov,https://github.com/nf-core/rnavar/issues/129
+I_kwDOFdpQNM6BMqRo,preprocessing output directory contains more subdirectories than the number of samples processed,CLOSED,2024-03-04T19:24:41Z,2024-03-22T12:16:29Z,2024-03-22T12:16:28Z,"### Description of the bug
+
+When looking at the preprocessing output directory, I see that besides the sample folders there are also some extra folders that contain the ""{n}_scattered suffix. Its worth to note that not all samples have this extra folders, only some of them. Not sure if is an issue with the publishDir or the input channel.
+
+### Command used and terminal output
+
+```console
+nextflow run ../../main.nf -profile bi,cluster --input ../input_backup.csv --outdir . --annotate_tools merge -c ../config.config -resume
+```
+
+
+### Relevant files
+
+config.config contains only reference files.
+input_backup.csv contains a list of custom samples
+
+### System information
+
+dev branch",nschcolnicov,https://github.com/nf-core/rnavar/issues/134
+I_kwDOFdpQNM6Ce5qK,UNZIPPED files are not being properly staged when running on aws,CLOSED,2024-03-15T17:24:37Z,2024-03-22T12:15:54Z,2024-03-22T12:15:54Z,"### Description of the bug
+
+When running a working command in AWS, the pipeline fails because it is not able to stage the unzipped file, it seems that the URL being used to stage the file is correct but has an additional ""/"" at the start
+`[null] NOTE: Can't stage file file:///{my-s3-bucket-path}/Homo_sapiens.GRCh38.86.gtf/Homo_sapiens.GRCh38.86.gtf -- file does not exist -- Execution is retried (1)
+ERROR ~ Unable to re-submit task `NFCORE_RNAVAR:RNAVAR:PREPARE_GENOME:GTF2BED (1)``
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -profile bi,aws\
+-r dev -latest \
+--input $INPUT \
+--outdir $OUTDIR \
+-c $CONFIG \
+--annotate_tools vep \
+-resume
+```
+
+
+### Relevant files
+
+The config file contains custom ref files, and the input file is the test samplesheet provided with the pipeline files
+
+### System information
+
+dev",nschcolnicov,https://github.com/nf-core/rnavar/issues/135
+I_kwDOFdpQNM6MjkS-,dev branch works only on the first sample,OPEN,2024-06-17T19:50:25Z,2024-11-15T08:31:48Z,,"### Description of the bug
+
+I know it is still work in progress, but the new version of this pipeline `https://github.com/nf-core/rnavar/tree/dev` seems really promising. However, it only takes the first sample in a sample sheet and ignores the rest for alignment with STAR.
+
+`FASTQC` is still done on both samples, but `STAR_ALIGN` only takes the first sample, probably due to some multichannel conflict? I don't know exactly, what fixed it for me was setting the `ch_star_index` and `ch_gtf` to values using `.first()`? but you probably know a smoother and better way to solve this. just wanted to let you know. thanks for the nice pipeline. can be closed if you already know it.
+
+```
+https://github.com/nf-core/rnavar/blob/0b2c66e5b49eb25be3ce9014534be56a8955ec2b/workflows/rnavar/main.nf#L138
+
+FASTQ_ALIGN_STAR(ch_cat_fastq,
+            ch_star_index.first(),
+            ch_gtf.first(),
+            params.star_ignore_sjdbgtf,
+            seq_platform,
+            seq_center,
+            ch_fasta,
+            [[:],[]]) //ch_transcripts_fasta)
+```
+
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/rnavar -r dev -profile docker,test --outdir test2 --input input_sample_sheet.csv
+```
+
+
+### Relevant files
+
+input_sample_sheet.csv (your example with a second row):
+```
+sample,fastq_1,fastq_2,strandedness
+GM12878,https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz,https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz,reverse
+s2,https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz,https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz,reverse
+```
+
+### System information
+
+N E X T F L O W
+version 24.04.2 build 5914",loipf,https://github.com/nf-core/rnavar/issues/145
+I_kwDOFdpQNM6Nd5wx,Add a bgzip module for dbsnp files,OPEN,2024-06-25T18:59:25Z,2024-06-25T18:59:25Z,,"### Description of feature
+
+I recently came across a new issue that I wasn't getting in the version previous to this PR: https://github.com/nf-core/rnavar/pull/140. 
+This process is complaining about my dbsnp file not being BGZF:
+NFCORE_RNAVAR:PREPARE_GENOME:TABIX_DBSNP
+
+Easiest way would be to just bgzip the file and use the new file as input, but I have limited capabilities in my current working environment, so it is more efficient for me to have it being done within the pipeline execution.
+
+The scope of this ticket is to add this module inside the prepare_genome subworkflow",nschcolnicov,https://github.com/nf-core/rnavar/issues/146
+I_kwDOFdpQNM6NkHQH,Thoughts on submitting RNAVar to a journal?,OPEN,2024-06-26T11:13:55Z,2024-06-26T11:13:56Z,,"### Description of feature
+
+Many of the other popular nf-core pipelines, either have papers published about them ([sarek](https://pubmed.ncbi.nlm.nih.gov/32269765/), [eager](https://peerj.com/articles/10947/)) or at least correspondences of some kind. I was wondering if anyone from the main team would be interested in publishing a short review/paper on rnavar? I have some changes and features I've added to rnavar that I have been meaning to push, but haven't had the time.
+
+If there is interest, I would be down to put a lot more effort into it and incorporating some new ideas into the pipeline.",Shaun-Regenbaum,https://github.com/nf-core/rnavar/issues/147
+I_kwDOFdpQNM6Nk4_G,Ungzipped GTF created in PREPARE_GENOME subworkflow not being used,CLOSED,2024-06-26T12:51:25Z,2024-06-27T14:42:43Z,2024-06-27T14:42:43Z,"### Description of the bug
+
+I recently came across this error during the execution of this process ""NFCORE_RNAVAR:RNAVAR:FASTQ_ALIGN_STAR:STAR_ALIGN"":
+![image](https://github.com/nf-core/rnavar/assets/90359308/e588ae52-3311-48e0-b967-702cac4d4096)
+
+It seems that the process is complaining about the GTF file not being unzipped, but this is being done in the PREPARE_GENOME subworkflow:
+![image](https://github.com/nf-core/rnavar/assets/90359308/d5b04ac2-5a61-4f4f-a47c-ef8fc91608f8)
+However, this is being overwritten in the main.nf file:
+![image](https://github.com/nf-core/rnavar/assets/90359308/663eb8e0-a7f2-4f75-9bcc-42f05e48e417)
+
+This line should be change to be the same as for the ch_fasta, and ch_star_index, (ch_gtf              = PREPARE_GENOME.out.gtf) else the ch_gtf is being populated by the gzipped version of the gtf file, whenever the params.gtf is true.
+
+UPDATE:
+When looking into this issue, I also saw that the ch_fast_fai was also creating an issue, because it was now containing an additional meta map https://github.com/nf-core/rnavar/blob/dev/main.nf:
+![image](https://github.com/nf-core/rnavar/assets/90359308/9f045ed9-a740-4594-b155-5cc5a8368260)
+This created issues because the channel also gets added a meta map in some of the modules i.e https://github.com/nf-core/rnavar/blob/dev/subworkflows/local/splitncigar/main.nf:
+![image](https://github.com/nf-core/rnavar/assets/90359308/28d310a2-77be-4031-b567-a91150cbdf7e)
+This caused the channel to become a tuple of two meta maps and 1 fasta_fai index, which caused issues in the pipeline execution
+
+All of these new issues seem to have been introduced in this PR: https://github.com/nf-core/rnavar/pull/140
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nschcolnicov,https://github.com/nf-core/rnavar/issues/148
+I_kwDOFdpQNM6N1bO0,Pipeline does not run through GATK step,OPEN,2024-06-28T05:12:56Z,2024-07-02T11:12:34Z,,"### Description of the bug
+
+Hi,
+I am running rnavar on a non-model organims species and I don't have vcf annotations or calibration for it. The pipeline runs after the mapping stage and it does not go to GATK.
+```
+executor >  slurm (47)
+[12/1cec80] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1 ✔
+[cf/96eccc] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1 ✔
+[e0/4dab2d] process > NFCORE_RNAVAR:RNAVAR:PREPAR... [100%] 1 of 1 ✔
+[6c/e28e84] process > NFCORE_RNAVAR:RNAVAR:INPUT_... [100%] 1 of 1 ✔
+[-        ] process > NFCORE_RNAVAR:RNAVAR:CAT_FASTQ -
+[a7/e9c640] process > NFCORE_RNAVAR:RNAVAR:FASTQC... [100%] 1 of 1 ✔
+[c4/617bf4] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1 ✔
+[86/e568e0] process > NFCORE_RNAVAR:RNAVAR:GATK4_... [100%] 1 of 1 ✔
+[80/111ba2] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[23/1ca68d] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[41/8ad986] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[31/af1859] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[b5/88a156] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[c6/67b710] process > NFCORE_RNAVAR:RNAVAR:ALIGN_... [100%] 1 of 1 ✔
+[02/99c6a2] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 1 of 1 ✔
+[0d/cc7179] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 1 of 1 ✔
+[0b/0e79a5] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 1 of 1 ✔
+[52/13a903] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 1 of 1 ✔
+[c2/d94ff1] process > NFCORE_RNAVAR:RNAVAR:MARKDU... [100%] 1 of 1 ✔
+[79/a55ab1] process > NFCORE_RNAVAR:RNAVAR:SPLITN... [100%] 25 of 25 ✔
+[c9/7186bd] process > NFCORE_RNAVAR:RNAVAR:SPLITN... [100%] 1 of 1 ✔
+[e9/bfc666] process > NFCORE_RNAVAR:RNAVAR:SPLITN... [100%] 1 of 1 ✔
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:RECALI... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:TABIX     -
+[-        ] process > NFCORE_RNAVAR:RNAVAR:GATK4_... -
+[fd/c277a2] process > NFCORE_RNAVAR:RNAVAR:CUSTOM... [100%] 1 of 1 ✔
+[b5/b3074a] process > NFCORE_RNAVAR:RNAVAR:MULTIQC   [100%] 1 of 1 ✔
+-[nf-core/rnavar] Pipeline completed successfully-
+```
+Could you please advise on what I may have done wrong? I included a mock vcf for the snps db.
+
+
+### Command used and terminal output
+
+```console
+nextflow run ./main.nf \
+        -resume \
+        -profile singularity,pawsey_setonix \
+        --input samples.csv \
+        --fasta ""/path/to/genome/genome.fna"" \
+        --gtf ""/path/to/genome/genome.gtf"" \
+        --star_index ""/path/to/genome/star_index"" \
+        --dbsnp ""/path/to/rnavar/mockdb.vcf"" \
+        --skip-basecalibration true \
+        --skip_variantannotation true
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+module load nextflow/23.10.0
+module load singularity/4.1.0-slurm
+Launching `./main.nf` [reverent_mcclintock] DSL2 - revision: e58604470a
+",KristinaGagalova,https://github.com/nf-core/rnavar/issues/150

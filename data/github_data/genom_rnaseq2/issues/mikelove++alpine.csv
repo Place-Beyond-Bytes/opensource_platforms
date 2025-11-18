@@ -1,0 +1,47 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNzIyNzQ4MjY=,Memoize vlmm calculation ,CLOSED,2016-08-20T15:00:00Z,2016-08-20T18:24:35Z,2016-08-20T18:24:35Z,,mikelove,https://github.com/mikelove/alpine/issues/1
+MDU6SXNzdWUxNzIyNzQ4NDM=,Make knots customizable ,CLOSED,2016-08-20T15:00:22Z,2016-08-25T00:41:06Z,2016-08-25T00:41:06Z,,mikelove,https://github.com/mikelove/alpine/issues/2
+MDU6SXNzdWUxNzIyNzQ5MTc=,"Estimate theta ""models"" should be automatic ",CLOSED,2016-08-20T15:01:39Z,2016-08-26T17:14:34Z,2016-08-26T17:14:34Z,,mikelove,https://github.com/mikelove/alpine/issues/3
+MDU6SXNzdWUxNzIyNzQ5NTk=,Stranded support ,OPEN,2016-08-20T15:02:35Z,2016-08-20T15:02:35Z,,,mikelove,https://github.com/mikelove/alpine/issues/4
+MDU6SXNzdWUxNzIyNzQ5ODQ=,Use eff tx length in correction ,OPEN,2016-08-20T15:02:55Z,2016-08-20T15:02:55Z,,,mikelove,https://github.com/mikelove/alpine/issues/5
+MDU6SXNzdWUxNzIyODc0NzU=,"much faster, approximate GC bias curves",OPEN,2016-08-20T19:45:37Z,2016-08-20T19:45:37Z,,,mikelove,https://github.com/mikelove/alpine/issues/6
+MDU6SXNzdWU0OTA1MzkxNDY=,"Error in alpine::fitBiasModels shows as ""offset needs to be finite""",CLOSED,2019-09-06T21:59:09Z,2019-09-06T23:31:25Z,2019-09-06T23:31:25Z,"Hi
+While implementing the fitbiasmodel, I end up with the following error. Could you please check and let me know the possible solution to resolve the error.
+
+```
+> Error in alpine::fitBiasModels(genes = ebtFit, bam.file = bf, fragtypes = fragtypes,  : 
+>   offset needs to be finite
+```
+Thanks,
+Nagesh",nagzz,https://github.com/mikelove/alpine/issues/7
+I_kwDOANlXrM5BeIRQ,how to use the learned model to correct for RNA-seq coverage,CLOSED,2022-01-10T21:41:02Z,2022-01-11T15:42:20Z,2022-01-11T11:47:24Z,"@mikelove 
+
+        In the Vignette, you showed that the learned model can be used to predict RNA-seq read coverage for single-isoform genes. Do you have a guide how to use the learned model to correct for RNA-seq coverage for any genes?
+
+Thanks",haibol2016,https://github.com/mikelove/alpine/issues/8
+I_kwDOANlXrM6ItuPS,S4Vectors `fancy_mseq()` removed as of version 0.29.2,CLOSED,2024-05-13T19:40:01Z,2024-05-13T23:56:44Z,2024-05-13T23:56:44Z,"Hello @mikelove,
+
+An unexported function in alpine, `mapTx2Gene`, calls `S4Vectors:::fancy_mseq` which was removed a couple years ago (see [this commit](https://github.com/Bioconductor/S4Vectors/commit/07a75c72b6654d510f52d31ad0975fc24a67fa91)). This breaks standard usage of the jcc package. I am happy to make a pull request with the following replacement that I found to replicate fancy_mseq's behavior:
+
+```
+mapTxToGenome <- function(exons) {
+  strand <- as.character(strand(exons)[1])
+  stopifnot(all(exons$exon_rank == seq_along(exons)))
+  
+  ### Hack to replicate `rev` from old S4Vectors:::fancy_mseq
+  froms <- ifelse(strand == ""-"",
+                  start(exons) + width(exons) - 1L,
+                  start(exons))
+  bys <- 1L*ifelse(strand == ""-"", -1L, 1L)
+  
+  bases <- sequence(width(exons), from = froms,
+                    by = bys)
+
+  data.frame(tx=seq_along(bases),
+             genome=bases,
+             exon_rank=rep(exons$exon_rank, width(exons)))
+}
+```
+
+Let me know your thoughts,
+Isaac",isaacvock,https://github.com/mikelove/alpine/issues/9

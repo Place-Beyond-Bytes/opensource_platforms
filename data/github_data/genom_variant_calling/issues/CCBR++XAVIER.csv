@@ -1,0 +1,868 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHi1bPs5ig46i,Create action to pull from CCBR/Exome-Seek to NCIPangea on regular basis ,CLOSED,2023-04-03T21:18:43Z,2023-09-05T13:59:18Z,2023-09-05T13:59:18Z,"Problem
+- Will fork repo to https://github.com/NCIPangea/EXOME-seek but want this to auto update whenever master repo is updated (on CCBR)
+
+Solution
+- create yaml to do this pull
+- create workflow",slsevilla,https://github.com/CCBR/XAVIER/issues/3
+I_kwDOHi1bPs5ig5UP,Create refs on FRCE for mm10,CLOSED,2023-04-03T21:19:57Z,2024-02-01T04:20:53Z,2023-08-29T16:02:23Z,"Problem
+- Currently pipeline functions with hg38 on FRCE but mm10 is likely to be a requested ref type
+
+Solution
+- need to add ref files on FRCE
+- need to create json for FRCE pull; ensure pipeline reads files correctly
+",slsevilla,https://github.com/CCBR/XAVIER/issues/4
+I_kwDOHi1bPs5ig6Wo,Cleanup git repo on FORCE to connect with CCBR,CLOSED,2023-04-03T21:22:43Z,2023-09-05T13:43:03Z,2023-09-05T13:43:02Z,"Problem
+- Current repo is linked to dnousome account
+
+Solution
+- after change of ownership; update FRCE biowulf pull to reflect correct repo path
+    -  /mnt/projects/CCBR-Pipelines/pipelines/Exome-seek
+- cleanup other remote branches, as needed",slsevilla,https://github.com/CCBR/XAVIER/issues/5
+I_kwDOHi1bPs5jPo8x,Create config file for pipeline to gather input information,OPEN,2023-04-12T18:27:38Z,2023-09-05T13:40:56Z,,"Problem:
+- Currently the pipeline requires several inputs from the command line, including full paths to reference files. 
+
+Solution
+- To avoid mistakes and to ease use, a config file will be used to take in parameters ",slsevilla,https://github.com/CCBR/XAVIER/issues/6
+I_kwDOHi1bPs5jPpi9,Update pipeline to allow for 'mouse' as species,CLOSED,2023-04-12T18:29:43Z,2023-06-03T13:57:07Z,2023-06-03T13:57:07Z,"Problem:
+- Currently the pipeline is hard coded for homo_sapiens for specific features, although mouse is a selectable species during 'run'.
+
+Solution:
+- Update pipeline so all features either can accept either species OR turn off feature and remove hard coding",slsevilla,https://github.com/CCBR/XAVIER/issues/7
+I_kwDOHi1bPs5kyVez,Update Github pages documentation link in About Section,CLOSED,2023-05-01T14:59:32Z,2023-05-30T14:47:36Z,2023-05-30T14:47:35Z,"With changes to repo name and owner, new gh pages about section link should be changed to [https://ccbr.github.io/exome-seek/](url)
+
+The link already works and GH actions is already rendering everything to the link",dnousome,https://github.com/CCBR/XAVIER/issues/8
+I_kwDOHi1bPs5nRkww,"Stop copying over script files, unless initialization",CLOSED,2023-05-30T17:12:15Z,2024-02-01T04:21:12Z,2023-05-30T17:13:51Z,"## Problem:
+Currently the pipeline performs an initialization, writing over any editing script or config file with every dryrun OR run. This creates problems when project specific solutions or changes need to be made, as the actual information used by a pipeline run is overwritten.
+
+## Solution:
+- [x] create `runmode` option for the pipeline to either run `init`, `dryrun` or `run`
+- [x] ensure that only the `init` option overwrites previously obtained config/script files",slsevilla,https://github.com/CCBR/XAVIER/issues/11
+I_kwDOHi1bPs5nSI6_,Docker for WES_BASE failing to load due to EOF,CLOSED,2023-05-30T18:59:01Z,2024-02-01T04:21:04Z,2023-06-02T15:32:49Z,"Problem:
+I am attempting to pull `docker://nciccbr/ccbr_wes_base:v0.1.0` for the exome-seek pipeline but am running into the following failure:
+```
+Building DAG of jobs...
+Pulling singularity image docker://nciccbr/ccbr_qualimap:v0.0.1.
+Pulling singularity image docker://nciccbr/ccbr_mutect:v0.1.0.
+Pulling singularity image docker://nciccbr/ccbr_fastq_screen_0.13.0:v2.0.
+Pulling singularity image docker://nciccbr/ccbr_multiqc_1.9:v0.0.1.
+Pulling singularity image docker://nciccbr/ccbr_kraken_v2.1.1:v0.0.1.
+Pulling singularity image docker://nciccbr/ccbr_picard:v0.0.1.
+Pulling singularity image docker://nciccbr/ccbr_fastqc_0.11.9:v1.1.
+Pulling singularity image docker://dnousome/ccbr_vcf2maf:v102.0.0.
+Pulling singularity image docker://nciccbr/ccbr_wes_base:v0.1.0.
+WorkflowError:
+Failed to pull singularity image from docker://nciccbr/ccbr_wes_base:v0.1.0:
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+Getting image source signatures
+Copying blob sha256:4dbc2eae9f5b12b3ed0184975878d8748a7a0ab8603e949b4a2bded157ab5934
+Copying blob sha256:258d383f4da134b1185c5d1972b6c2eea6bf508c6dfb064a391689788377e097
+Copying blob sha256:ca828c21e0960473f16b1d2787d90df529e1c840523eeced001f3eeb6d12b485
+Copying blob sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4
+Copying blob sha256:ad6a35a7c76be8d99ac4fa38989f345f7e3d1fa1730d8fee7b2ff31dc41ead2e
+Copying blob sha256:7b1a6ab2e44dbac178598dabe7cff59bd67233dba0b27e4fbd1f9d4b3c877a54
+Copying blob sha256:fecb55cb69fbf513e904a33e8ea4c742d1a1799b5fa070ebf9e48fe14a74a694
+Copying blob sha256:c21cdba574e4b2a75eb8b5abc7cf739fb630e23254837e332cd276d55e965ff8
+Copying blob sha256:0337c4ac8405ba86c5c5da8c8332ef2d7e59fbcd7d42f4fcb956bce4fbda6908
+Copying blob sha256:5fd1799ce5550798cce08eba94621bb341b57879e3445d59c0f7846db28118e8
+Copying blob sha256:01cb17d8c290be876b6fb779b5511b7f5ba6c1dd6c8cf743c9b0fe2f96fbbeb9
+Copying blob sha256:97f3d5ac425863415e62ee4b9218cff299f003a0fd2586511924190bc905f775
+Copying blob sha256:001347a0e261caaa26661f92c4c5ed27a4e3fa5bb81ba8acbe973660d4df2a74
+Copying blob sha256:6199a5085e3a518c4f3a3928cc7b7bd6c8dca6f78938f40406e0075188a99bb7
+Copying blob sha256:88c5b5621cef5c01c0c65af620bedcf70d166322a0dffb789f887e3b6560b92a
+Copying blob sha256:4b6d533bc1af4ec98659d1c8f26eb94d175ab7fd5315f8eebdb0923600a1e317
+Copying blob sha256:bfd76b5b9f27d2c8e116dc8766c43eac0dbaca3eace3a70641ac06195df2721f
+Copying blob sha256:8567af8bc0a0bc86012f8b2d895b738c052da6addc31e3adec3e55f2932527a5
+Copying blob sha256:07f34cf0cade294fa4439df28d2618254c6b148095cbc51f16aec03dfad5eff5
+Copying blob sha256:b6663ce6db04b7983056f0b1fb9500d77ebb14a77734b34a6d0c07f16dcf9b78
+Copying blob sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4
+Copying blob sha256:2f073d5416cdb17c519e7d724ac0bb1534104086900464944af3eb19cf606c2a
+Copying blob sha256:b330984ce68c6713207d0e0201741ce2d3346594749f8436abc313a439d09a56
+Copying blob sha256:3aeb03ed04c4d6ed3444c1c5b0716cda809f4ee256370dc371c6cd254fdd6c1a
+Copying blob sha256:70a145aeba426911753686e3d5480b9f5f1f1a544d1b4ff54edb01474be2f9dc
+Copying blob sha256:b010717d5be4a881c33c5834564b400e6152914634c2f0df627440c46bef8d62
+Copying blob sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4
+Copying blob sha256:eac8eec19114db30b8e917a748cd1aa4a46cdf273af03474337ca999c1332f73
+Copying blob sha256:68c28a746d8c7aa5bff82010526daa3b727b85d472d99ae07af195a45abea9d4
+Copying blob sha256:bb012ba4e32c37d3a742d8e4457f7b1f1e92f3ad9f4941f8c6df839845b43188
+Copying blob sha256:5266c64ecc235dc7a1bde9b62a7db904251fc840d9d5038b40f56474aa55b76b
+Copying blob sha256:0d626004cbde0b51ec51069dc8d6c8d3df27e0c2e10ebac9e564688361674d06
+Copying blob sha256:04c0aeeaedc3013e7463621e094513b5792e830c3881ae57369dec5ed215e4fe
+Copying blob sha256:aebf69a2d3354ef69710429133da35a6caff2d04f574fc9eb427ab47acc82ed2
+Copying blob sha256:a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4
+Copying blob sha256:a03c23061963e5cb68a6eeaa48e1c3e75aaf8893c331cdef4345cd6bacac5293
+FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get: initializing source oci:/data/sevillas2/WES_hg38/.singularity/cache/blob:sha256.1e77f2d6f37405cb98592a413cb9e745b7c637c970287aa50e49a37278cef772: writing blob: happened during read: unexpected EOF
+```
+
+It looks like this is the correct version - any ideas @kopardev?",slsevilla,https://github.com/CCBR/XAVIER/issues/12
+I_kwDOHi1bPs5nn8D3,Remove hard coded modules within most rules,CLOSED,2023-06-02T17:00:47Z,2023-06-27T15:51:26Z,2023-06-27T15:51:26Z,"# Problem
+Most of the rules within the pipeline have hard coded module versions that are not being pull from the partition / host specific configuration file
+
+The rules affected are below (workflow/rules):
+- cnv.smk
+- ffpe.smk
+- gatk_vqsr.smk
+- germline.smk
+- qc_human.smk
+- qc_mm10.smk
+- qc
+- somatic_snps.paired.smk
+- somatic_snps.tumor_only.smk
+- somatic_snps.common.smk
+- trim_map_preprocess.smk
+
+# Solution
+For each of the above affected rules
+- [x] if the module is not part of the config, then add it
+- [x] If it is part of the config and there is no conflict in version numbers, then remove hard coding and update rule to load version from the config (see below)
+- [ ] If is part of the config and there is a conflict in versions, update to the most recent version available on rhel8 and test there are no errors emerging
+
+# Notes
+The updates should follow the nomenclature, based on the nesting:
+```
+{
+   ""tools"": {
+        ""trimmomatic"": {
+            ""version"": ""0.39""
+        },
+```
+
+```
+envmodules:
+        TOOLS[""trimmomatic""][""version""]
+```
+Feel free to also change the nesting of the json if you'd rather something cleaner:
+```
+{
+   ""tools"": {
+        ""trimmomatic"": ""0.39""
+        },
+```
+which would then read within the rules:
+```
+envmodules:
+        TOOLS[""TRIMMOMATIC""]
+```
+",slsevilla,https://github.com/CCBR/XAVIER/issues/15
+I_kwDOHi1bPs5oFcRh,Create PySimpleGUI for exome-seek pipeline,CLOSED,2023-06-07T16:15:14Z,2023-09-05T13:38:56Z,2023-09-05T13:38:56Z,"# Problem
+Current CCBR_Pipeliner is difficult to update and relies on outdated versions of pipelines.
+
+# Solution
+Using PySimpleGUI, create a GUI that can import containerized pipelines, which can be easily changed and updated as needed, beginning with the exome-seek pipeline.
+
+# Requirements
+## User options
+- Drop down (or tabs?) for pipeline selection 
+- Interactive dir locator for FASTQ inputs
+- Drop down for species
+- Text box for output dir
+- Interactive file locator for bed file
+- Select boxes for 'initialize' 'dry run' 'run'
+- Drop down for mode 'slurm' 'local'
+## Dev options
+- Should be able to select which pipelines are 'user facing' (ie turn on or off exome-seek)
+- Specify GitHub location for pulling and running the pipeline (ideally would pull a version from the main branch, but 'latest' would also work)
+- Use @kopardev's `spook` script to track log details from the user",slsevilla,https://github.com/CCBR/XAVIER/issues/16
+I_kwDOHi1bPs5oHHxT,FRCE: singularity/snakemake version issues,CLOSED,2023-06-07T21:14:54Z,2023-08-18T18:49:24Z,2023-08-18T18:49:24Z,"# Problem
+FRCE is loading singularity and snakemake default values without setting a version. This is causing failures in snakemake calls which have been updated on Biowulf and Biowulf8
+
+# Solution
+Install the equivalent versions of singularity and snakemake on FRCE to ensure compatibility with the pipeline on any platform. Long term solution is to containerize pipeline, but for now, this is temp solution.
+
+## Steps:
+- Update snakemake to version snakemake/7.19.1
+- Update singularity to version  singularity/3.10.5
+- update frce_run_exome_pipeline.sh with corrected versions
+- run init and dryrun on frce using commands:
+```
+# init
+sh frce_run_exome_pipeline.sh init /path/to/output/dir
+# dryrun
+sh frce_run_exome_pipeline.sh dryrun /path/to/output/dir
+```",slsevilla,https://github.com/CCBR/XAVIER/issues/18
+I_kwDOHi1bPs5rXR-4,Rebranding,CLOSED,2023-07-12T15:42:30Z,2023-07-26T00:45:34Z,2023-07-26T00:45:34Z,"- Replace all instances of `Exome-seek` with `XAVIER` in the documentation
+- Replace all instances of `exome-seek` with `xavier` in the documentation
+- Replace all instances of `./exome-seek` with `xavier` in the ""help"" text, ""usage"" text, run ""logs"", etc.
+- Replace all instances of `module load singularity snakemake` with `module load ccbrpipeliner` in the documentation",kopardev,https://github.com/CCBR/XAVIER/issues/21
+I_kwDOHi1bPs5rXTLc,`bin` folder creation,CLOSED,2023-07-12T15:44:43Z,2023-07-26T00:45:49Z,2023-07-26T00:45:49Z,"- Using [RENEE](https://github.com/CCBR/RENEE/tree/dev/bin)'s template, create a bin folder for XAVIER
+- `redirect` script loads required modules and conda environments
+- `redirect` works on both BIOWULF and FRCE",kopardev,https://github.com/CCBR/XAVIER/issues/22
+I_kwDOHi1bPs5rXT8Z,create FRCE-specific jsons,CLOSED,2023-07-12T15:46:39Z,2023-08-29T16:21:42Z,2023-08-29T16:21:41Z,"<img width=""974"" alt=""image"" src=""https://github.com/CCBR/XAVIER/assets/1882209/3974dcf4-14bf-4140-8d49-4f7bf3ba8a52"">
+
+",kopardev,https://github.com/CCBR/XAVIER/issues/23
+I_kwDOHi1bPs5t0aSG,XAVIER v3.0 and gui testing,CLOSED,2023-08-09T04:48:28Z,2023-12-19T15:37:56Z,2023-12-19T15:37:56Z,"### XAVIER gui beta version released
+See details [here](https://github.com/CCBR/guis/tree/xavier).
+
+1. Updating XAVIER on github, biowulf, and frce
+- [x] Test `hotfix` branch with both hg38 and mm10 data
+- [x] Test `--create-nidap-folder` on biowulf and frce 
+- [x] Update  `README.md` to remove Installation and add `module load ccbrpipeliner`
+- [ ]  Merge `hotfix` to `main` branch (`xavier v3.0`)
+- [ ] Update XAVIER repo in `/data/CCBR_Pipeliner/Pipelines/XAVIER` to `v3.0` in biowulf
+- [ ] Update XAVIER repo in `/mnt/projects/CCBR-Pipelines/pipelines/XAVIER` to `v3.0` in frce
+
+2. Testing XAVIER gui on biowulf and frce (see more details [here](https://github.com/CCBR/guis/issues/9#issue-1842503892))
+- [x] Clone `xavier` branch of [ccbr gui](https://github.com/CCBR/guis/tree/xavier) and run `./bin/xavier_gui`
+- [x] Perform full runs on biowulf using both hg38 and mm10 data
+- [x] Perform full runs on frce using hg38 data
+> Note: frce specific jsons are missing for mm10. (see issue #4)
+- [ ] Merge `xavier` branch into `main` branch of gui repo
+- [ ] Update and release latest `ccbrpipeliner 4` with `xavier v3.0` and `xavier_gui`",samarth8392,https://github.com/CCBR/XAVIER/issues/26
+I_kwDOHi1bPs5uHLOJ,Subset small test dataset,CLOSED,2023-08-11T20:18:11Z,2024-08-16T13:00:07Z,2024-08-16T13:00:07Z,"Subset to keep all reads that aligned to just one chromosome. Better than random sampling so read depth will still be high.
+
+In progress on branch `tests_iss-27`",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/27
+I_kwDOHi1bPs5uYw-q,Gracefully handle when no reads map to a chromosome,OPEN,2023-08-15T19:16:53Z,2023-08-21T18:26:03Z,,"While running a test dataset with a subset of reads from only chromosome 22 (see #27), rule `varscan_single` failed for all other chromosomes because no reads mapped to them so there were no variants to call. (The varscan command within that rule didn't error, but bcftools errored right after due to the empty file.)
+
+We could prevent this further upstream after rule `split_bam_by_chrom`. If this rule produces a bam file with no reads for a given chromosome, remove it from the `chroms` list so downstream rules don't use it. Will probably need a checkpoint to accomplish this because the DAG will have to be reevaluated with the new chroms list after all `split_bam_by_chrom` instances complete.
+
+Temporary fix I'm using now is to manually edit the config file to include only `chr22` and then manually run `kickoff.sh` so it doesn't override my custom config (see #29).
+
+",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/28
+I_kwDOHi1bPs5uYz_W,Allow users to override config template,CLOSED,2023-08-15T19:24:06Z,2023-09-06T00:29:01Z,2023-09-06T00:29:01Z,"The xavier wrapper script copies a template config file into the working directory whenever it is run, which prevents users from editing the config file to customize it. We could copy the files only during `init` and not during `dryrun` or `run` modes so users can edit and dryrun custom configurations. But it would probably be most ideal if config parameters could be forwarded to Snakemake via the command line.",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/29
+I_kwDOHi1bPs5ud__3,Support custom genomes,OPEN,2023-08-16T14:24:27Z,2023-08-16T14:24:27Z,,"Would need to provide instructions for creating a genome config file and downloading/building the files it points to.
+
+Example use case: using hg38 with only 1 chromosome for testing purposes. #27 ",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/30
+I_kwDOHi1bPs5uggIk,Error running XAVIER on frce,CLOSED,2023-08-16T23:10:42Z,2023-08-17T18:59:40Z,2023-08-17T18:35:51Z,"### `xavier v2.0` stable release on biowulf does not work on FRCE. 
+
+1. Created a new branch `frce_test` from  XAVIER `main` to test on frce.
+2. Cloned the repo and created a file `config/cluster.frce.json` which does not have `gres` argument.
+3. Since `--tmp_dir` is `/lscratch/\$SLURM_JOBID/` by default on biowulf, we need to provide `/scratch/cluster_scratch/\$USER/` on frce.
+4. Ran the pipeline as follows:
+
+```
+/scratch/cluster_scratch/mathurs2/XAVIER/xavier run \
+--input data/*.R?.fastq.gz \
+--output runs/hg38.cli.tp.r1 \
+--genome hg38 \
+--pairs pairs.txt \
+--tmp-dir /scratch/cluster_scratch/$USER/ \
+--targets Twist_Exome_Core_Covered_Targets_hg38.bed \
+--mode slurm \
+--runmode init 
+```
+No error during initialization but when I do `--runmode dryrun`, I get the following error:
+```
+xavier (v2.0)
+--Dry-Run
+Command '['snakemake', '-npr', '-s', 'workflow/Snakefile', '--use-singularity', '--cores', '1', '--configfile=config.json']' returned non-zero exit status 1. b'ImportError in file /scratch/cluster_scratch/mathurs2/techDev/runs/hg38.cli.tp.r1/workflow/Snakefile, line 6:\nUnable to import required dependencies:\nnumpy: \n\nIMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!\n\nImporting the numpy C-extensions failed. This error can happen for\nmany reasons, often due to issues with your setup or how NumPy was\ninstalled.\n\nWe have compiled some common reasons and troubleshooting tips at:\n\n    https://numpy.org/devdocs/user/troubleshooting-importerror.html\n\nPlease note and check the following:\n\n  * The Python version is: Python3.10 from ""/mnt/nasapps/production/snakemake/mambaforge/bin/python3.10""\n  * The NumPy version is: ""1.24.1""\n\nand make sure that they are the versions you expect.\nPlease carefully study the documentation linked above for further help.\n\nOriginal error was: No module named \'numpy.core._multiarray_umath\'\n\n  File ""/scratch/cluster_scratch/mathurs2/techDev/runs/hg38.cli.tp.r1/workflow/Snakefile"", line 6, in <module>\n  File ""/mnt/nasapps/production/python/3.11/lib/python3.11/site-packages/pandas/__init__.py"", line 16, in <module>\n'
+Traceback (most recent call last):
+  File ""/scratch/cluster_scratch/mathurs2/XAVIER/xavier"", line 731, in <module>
+    main()
+  File ""/scratch/cluster_scratch/mathurs2/XAVIER/xavier"", line 727, in main
+    args.func(args)
+  File ""/scratch/cluster_scratch/mathurs2/XAVIER/xavier"", line 115, in run
+    dryrun_output = dryrun(outdir = sub_args.output) # python3 returns byte-string representation
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/scratch/cluster_scratch/mathurs2/XAVIER/src/run.py"", line 614, in dryrun
+    raise(e)
+  File ""/scratch/cluster_scratch/mathurs2/XAVIER/src/run.py"", line 594, in dryrun
+    dryrun_output = subprocess.check_output([
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/mnt/nasapps/production/python/3.11/lib/python3.11/subprocess.py"", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/mnt/nasapps/production/python/3.11/lib/python3.11/subprocess.py"", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['snakemake', '-npr', '-s', 'workflow/Snakefile', '--use-singularity', '--cores', '1', '--configfile=config.json']' returned non-zero exit status 1.
+
+```",samarth8392,https://github.com/CCBR/XAVIER/issues/31
+I_kwDOHi1bPs5ukBtU,"Temporary disk path assumes mode=slurm, fails on local mode",CLOSED,2023-08-17T12:48:11Z,2023-09-06T00:29:01Z,2023-09-06T00:29:01Z,"A number of rules in `workflow/rules/somatic_snps.common.smk` use a custom temporary directory based on the slurm job id set in `config/config.json`. This assumes users only run these jobs on slurm, not in local mode. But for testing, users may initially submit it as a slurm job, then run in local mode on an interactive node to debug any errors -- but these jobs fail in local mode with:
+
+```
+mktemp: failed to create directory via template ‘/lscratch/6463377/tmp.X
+XXXXXXXXX’: No such file or directory
+```
+
+Could we use snakemake's `temp()` function instead of this custom temp file scheme?
+https://github.com/CCBR/XAVIER/blob/37d46f700ee381d36d8be899f2c0f0d838b75d30/workflow/rules/somatic_snps.common.smk#L85-L89
+
+And/or refrain from using bash variables in the configfile that assume you're on a particular HPC?
+https://github.com/CCBR/XAVIER/blob/37d46f700ee381d36d8be899f2c0f0d838b75d30/config/config.json#L14
+
+(this was initially added here: https://github.com/CCBR/XAVIER/blame/321adaafd64c07da80be1922b85cb062c48b3413/config/config.json#L14)",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/32
+I_kwDOHi1bPs5umTfw,Error pulling docker images on FRCE,CLOSED,2023-08-17T18:52:03Z,2023-08-29T15:58:30Z,2023-08-29T15:58:29Z,"1. Started an interactive session using `norm` partition 
+2. Load the modules and run `xavier` from `/scratch/cluster_scratch/mathurs2/XAVIER/`
+> this is a clone of most updated `frce_test` branch of XAVIER
+3. `init` and `dryrun` successful
+4. `run` fails due to docker pull error.
+```
+$srun -N 1 -n 2 --time=12:00:00 --mem=16gb --pty bash
+$module purge
+$module load singularity snakemake
+
+[+] Loading singularity 3.9.7
+[+] Loading python 3.7.7
+[+] Loading snakemake 7.3.8 
+
+cd /scratch/cluster_scratch/mathurs2/techDev
+
+
+/scratch/cluster_scratch/mathurs2/XAVIER/xavier run \
+--input data/*.R?.fastq.gz \
+--output runs/hg38.cli.tp.r1 \
+--genome hg38 \
+--pairs pairs.txt \
+--tmp-dir /scratch/cluster_scratch/$USER/ \
+--targets Twist_Exome_Core_Covered_Targets_hg38.bed \
+--mode slurm \
+--runmode run  # init/dryrun/run
+```
+
+`less snakemake.log `
+
+```
+Config file config.json is extended by additional config specified via the command line.
+Building DAG of jobs...
+Pulling singularity image docker://nciccbr/ccbr_python:v0.0.1.
+WorkflowError:
+Failed to pull singularity image from docker://nciccbr/ccbr_python:v0.0.1:
+INFO:    Converting OCI blobs to SIF format
+WARNING: 'nodev' mount option set on /tmp, it could be a source of failure during build process
+INFO:    Starting build...
+FATAL:   While making image from oci registry: error fetching image to cache: while building SIF from layers: conveyor failed to get: Get ""https://auth.docker.io/token?scope=repository%3Anciccbr%2Fccbr_python%3Apull&service=registry.docker.io"": net/http: TLS handshake timeout
+
+``` ",samarth8392,https://github.com/CCBR/XAVIER/issues/34
+I_kwDOHi1bPs5vFL2Q,Biowulf resources location changed,CLOSED,2023-08-23T16:09:32Z,2023-08-28T14:18:11Z,2023-08-25T19:08:59Z,"`/data/CCBR_Pipeliner/Exome-seek/` no longer exists for both mm10/hg38 resources.
+",dnousome,https://github.com/CCBR/XAVIER/issues/40
+I_kwDOHi1bPs5vGSix,KeyError in somatic variant calling rules in FRCE,CLOSED,2023-08-23T19:48:45Z,2023-08-28T03:20:16Z,2023-08-28T03:20:15Z,"Working with  XAVIER `frce_test` branch (that was previously merged with `hotfix`) and running `xavier` on frce with hg38 data.
+
+```
+srun -N 1 -n 2 --time=12:00:00 --mem=16gb --pty bash
+
+module purge
+module load singularity snakemake
+cd /scratch/cluster_scratch/mathurs2/techDev/
+# hg38 #
+/scratch/cluster_scratch/mathurs2/XAVIER/xavier run \
+--input data/*.R?.fastq.gz \
+--output runs/hg38.cli.tp.r4 \
+--genome hg38 \
+--pairs pairs.txt \
+--tmp-dir /scratch/cluster_scratch/$USER/ \
+--targets Twist_Exome_Core_Covered_Targets_hg38.bed \
+--mode slurm \
+--sif-cache /mnt/projects/CCBR-Pipelines/SIFs/XAVIER/ \
+--runmode run  #init/drunrun/run
+
+```
+The pipeline runs with many failed steps. see: `/scratch/cluster_scratch/mathurs2/techDev/runs/hg38.cli.tp.r4/logfiles`
+
+And the slurm errors files say:
+```
+Config file config.json is extended by additional config specified via the command line.
+Building DAG of jobs...
+InputFunctionException in line 396 of /scratch/cluster_scratch/mathurs2/techDev/runs/hg38.cli.tp.r4/workflow/rules/somatic_snps.paired.smk:
+Error:
+  KeyError: 'sample1-tumor'
+Wildcards:
+  samples=sample1-tumor
+  chroms=chr6
+Traceback:
+  File ""/scratch/cluster_scratch/mathurs2/techDev/runs/hg38.cli.tp.r4/workflow/rules/somatic_snps.paired.smk"", line 400, in <lambda>
+```
+
+Thoughts?",samarth8392,https://github.com/CCBR/XAVIER/issues/41
+I_kwDOHi1bPs5vmL7U,Specify threads/cpus in cluster config,OPEN,2023-08-29T19:33:02Z,2024-07-11T18:15:13Z,,"- [ ] In each rule, set threads based on cluster config file like here https://github.com/CCBR/RENEE/blob/fb8613b55e3856bf1579ee197d6318e0e325bc18/workflow/rules/paired-end.smk#L57
+- [ ] Double-check that all rules that use multithreading/processing use the threads directive in the shell/script/run block. There are currently some instances of samtools `-@` being hard-coded. Also look for common flags used by other commands like `-t` and `-p`.
+  - e.g. known instance here: https://github.com/CCBR/XAVIER/blob/3feaf86c48a0f99c0080eaf31c9742839fce539d/workflow/rules/trim_map_preprocess.smk#L127 ",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/42
+I_kwDOHi1bPs5wLUga,cleanup PIPELINES_HOME on FRCE,OPEN,2023-09-05T13:43:59Z,2023-09-05T13:43:59Z,,"<img width=""1052"" alt=""image"" src=""https://github.com/CCBR/XAVIER/assets/1882209/abd1ee19-4bed-4b18-b1d8-a9e062593342"">
+",kopardev,https://github.com/CCBR/XAVIER/issues/45
+I_kwDOHi1bPs5wLXqX,Fix GH action for NCIPangea forked version,CLOSED,2023-09-05T13:50:51Z,2023-09-08T01:31:49Z,2023-09-08T01:31:49Z,See [this](https://github.com/NCIPangea/RENEE/blob/main/.github/workflows/sync-main.yml),kopardev,https://github.com/CCBR/XAVIER/issues/46
+I_kwDOHi1bPs5xqpDN,XAVIER 3.0 Biowulf ,CLOSED,2023-09-21T13:35:17Z,2023-09-22T14:18:13Z,2023-09-22T14:18:12Z,XAVIER on Biowulf is pointing to an older version (2.0). Requires write permissions to pull new release,dnousome,https://github.com/CCBR/XAVIER/issues/52
+I_kwDOHi1bPs50QRl3,Documentation Update,CLOSED,2023-10-18T18:50:44Z,2023-11-29T16:52:16Z,2023-11-29T16:52:16Z,"Documentation to add 
+- Expected output files
+- Filtering approaches and differences between Pipeliner and Xavier",dnousome,https://github.com/CCBR/XAVIER/issues/53
+I_kwDOHi1bPs50YnN5,QC Fix,CLOSED,2023-10-19T16:03:50Z,2023-10-19T18:24:11Z,2023-10-19T18:24:11Z,Modify qc.smk to include both mm10 and hg38 in one file,dnousome,https://github.com/CCBR/XAVIER/issues/54
+I_kwDOHi1bPs56k1JP,Fix requirements.txt,CLOSED,2023-12-26T14:47:07Z,2024-02-07T20:06:33Z,2024-02-07T20:06:32Z,"![image](https://github.com/CCBR/XAVIER/assets/1882209/29f65c76-6fbd-4305-a72d-602a934b2908)
+",kopardev,https://github.com/CCBR/XAVIER/issues/64
+I_kwDOHi1bPs57qBk_,Somatic callers not merging correctly,CLOSED,2024-01-10T15:26:42Z,2024-01-10T15:34:54Z,2024-01-10T15:34:54Z,"Different callers output different reference variants.
+
+Need to add additional `bcftools norm` step",dnousome,https://github.com/CCBR/XAVIER/issues/69
+I_kwDOHi1bPs59YnLD,"Version not printed ""correctly"" on headnode",OPEN,2024-01-27T14:08:14Z,2024-07-16T14:20:36Z,,"`xavier --version` prints the correct version but not before complaining that singularity and snakemake are not loaded. 
+Can singularity/snakemake be not loaded if only version needs printing??
+
+### On head node:
+![image](https://github.com/CCBR/XAVIER/assets/1882209/2de1d8ae-501d-42c1-a790-501a1d6581f6)
+
+### On interactive node:
+<img width=""820"" alt=""image"" src=""https://github.com/CCBR/XAVIER/assets/1882209/0028d312-fd12-4d3c-8f35-ef09af3789e3"">
+
+Also, why is unloading ""ccbrpipeliner"" before loading snakemake/singularity modules?",kopardev,https://github.com/CCBR/XAVIER/issues/71
+I_kwDOHi1bPs59Yn8Q,`xavier` with no argument gives error,CLOSED,2024-01-27T14:15:03Z,2024-02-07T20:25:57Z,2024-02-07T20:25:57Z,"### no argument
+<img width=""1188"" alt=""image"" src=""https://github.com/CCBR/XAVIER/assets/1882209/92fc2d46-df31-4b57-9791-8568d7cdf93e"">
+
+### with `--help`
+<img width=""842"" alt=""image"" src=""https://github.com/CCBR/XAVIER/assets/1882209/9b4adf33-ed44-4566-ba6a-3ef2016a0660"">
+
+Behavior in both cases should be identical as seen in `renee`.",kopardev,https://github.com/CCBR/XAVIER/issues/72
+I_kwDOHi1bPs59r970,update citation file with Zenodo DOI after we cut the next release,CLOSED,2024-01-30T20:13:02Z,2024-07-12T14:53:01Z,2024-07-12T14:53:01Z,,kelly-sovacool,https://github.com/CCBR/XAVIER/issues/74
+I_kwDOHi1bPs59sInO,fix spelling errors,CLOSED,2024-01-30T20:37:15Z,2024-02-09T17:30:17Z,2024-02-07T20:08:23Z,"list identified by codespell hook. some of these may be false positives.
+
+```
+src/run.py:105: infered ==> inferred
+src/run.py:346: betweeen ==> between
+src/run.py:354: Aviods ==> Avoids
+src/run.py:630: runnning ==> running
+src/run.py:685: submited ==> submitted
+workflow/rules/cnv.smk:8: recal ==> recall
+workflow/rules/cnv.smk:60: recal ==> recall
+workflow/rules/cnv.smk:80: recal ==> recall
+workflow/rules/cnv.smk:82: recal ==> recall
+workflow/rules/cnv.smk:87: recal ==> recall
+workflow/rules/cnv.smk:88: recal ==> recall
+workflow/rules/cnv.smk:115: recal ==> recall
+workflow/Snakefile:17: infered ==> inferred
+workflow/Snakefile:46: recal ==> recall
+workflow/Snakefile:47: recal ==> recall
+workflow/Snakefile:204: recal ==> recall
+workflow/Snakefile:207: recal ==> recall
+workflow/Snakefile:243: recal ==> recall
+workflow/Snakefile:341: useable ==> usable
+workflow/Snakefile:445: recal ==> recall
+docs/pipeline-details/output.md:43: relatdness ==> relatedness
+docs/pipeline-details/output.md:122: filterd ==> filtered
+workflow/scripts/RScripts/combineAllSampleCompareResults.R:45: Som ==> Some
+workflow/scripts/RScripts/combineAllSampleCompareResults.R:45: Som ==> Some
+workflow/scripts/RScripts/sampleCompareAncestoryPlots.R:25: Ancestory ==> Ancestry
+workflow/scripts/RScripts/sampleCompareAncestoryPlots.R:39: Ancestory ==> Ancestry
+workflow/scripts/RScripts/sampleCompareAncestoryPlots.R:40: Ancestory ==> Ancestry
+resources/jobby:66: sequeces ==> sequences
+resources/jobby:78: higlighted ==> highlighted
+resources/jobby:184: consequetive ==> consecutive
+resources/jobby:587: seperated ==> separated
+resources/jobby:656: verison ==> version
+xavier:212: Comming ==> Coming
+xavier:294: Verison ==> Version
+xavier:409: Supressing ==> Suppressing
+xavier:477: Vaild ==> Valid
+xavier:566: convinient ==> convenient
+xavier:634: vaule ==> value
+xavier:679: Supressing ==> Suppressing
+xavier:744: Supressing ==> Suppressing
+workflow/rules/germline.smk:165: filterd ==> filtered
+resources/cacher:29: seperated ==> separated
+resources/cacher:33: coverted ==> converted, covered, coveted
+resources/cacher:156: Ouput ==> Output
+resources/cacher:158: everytime ==> every time
+docker/vcf2maf/Dockerfile:5: relase ==> release
+workflow/scripts/vcf2maf_wrapper.bash:25: vaild ==> valid
+workflow/scripts/vcf2maf_wrapper.bash:38: Unsupport ==> Unsupported
+resources/runner:46: exection ==> execution
+resources/runner:50: seperated ==> separated
+resources/runner:183: Ouput ==> Output
+resources/runner:185: everytime ==> every time
+src/shells.py:72: dne ==> done
+docs/usage/run.md:47: seperated ==> separated
+docs/usage/run.md:135: Vaild ==> Valid
+docs/usage/run.md:238: vaule ==> value
+src/options.py:14: vaild ==> valid
+src/options.py:22: builded ==> built
+src/options.py:25: vaule ==> value
+src/options.py:32: vaild ==> valid
+src/options.py:36: vaild ==> valid
+.github/workflows/main.yaml:58: recal ==> recall
+.github/workflows/main.yaml:59: recal ==> recall
+.github/workflows/main.yaml:60: recal ==> recall
+.github/workflows/main.yaml:66: recal ==> recall
+.github/workflows/main.yaml:67: recal ==> recall
+.github/workflows/main.yaml:68: recal ==> recall
+.github/workflows/main.yaml:76: recal ==> recall
+.github/workflows/main.yaml:77: recal ==> recall
+.github/workflows/main.yaml:78: recal ==> recall
+.github/workflows/main.yaml:84: recal ==> recall
+.github/workflows/main.yaml:85: recal ==> recall
+.github/workflows/main.yaml:86: recal ==> recall
+workflow/scripts/get_flowcell_lanes.py:20: intrument ==> instrument
+workflow/scripts/get_flowcell_lanes.py:67: indentifer ==> identifier
+workflow/scripts/get_flowcell_lanes.py:149: identifer ==> identifier
+.tests/README.md:3: specificially ==> specifically
+src/utils.py:28: chunck ==> chunk
+src/utils.py:70: sufficent ==> sufficient
+src/utils.py:102: vaild ==> valid
+src/utils.py:304: Calcualte ==> Calculate
+src/utils.py:304: chunck ==> chunk
+workflow/scripts/parse_tn_mode.py:171: identifer ==> identifier
+workflow/rules/ffpe.smk:54: Dectector ==> Detector
+workflow/rules/ffpe.smk:86: Dectect ==> Detect
+workflow/rules/ffpe.smk:142: Dectector ==> Detector
+docs/usage/gui.md:111: neeed ==> need, needed
+workflow/rules/trim_map_preprocess.smk:1: recal ==> recall
+docs/index.md:27: continous ==> continuous
+README.md:113: continous ==> continuous
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bu ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bu ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+docs/pipeline-details/assets/XAVIER_workflow.svg:1: bU ==> by, be, but, bug, bun, bud, buy, bum
+workflow/rules/nidap.smk:9: recal ==> recall
+workflow/rules/qc.smk:9: indentifer ==> identifier
+workflow/rules/qc.smk:84: interative ==> interactive
+workflow/rules/qc.smk:495: recurively ==> recursively
+workflow/rules/qc.smk:611: recurively ==> recursively
+workflow/rules/gatk_vqsr.smk:43: recal ==> recall
+workflow/rules/gatk_vqsr.smk:57: recal ==> recall
+workflow/rules/gatk_vqsr.smk:63: recal ==> recall
+workflow/rules/gatk_vqsr.smk:72: recal ==> recall
+docker/mutect/Dockerfile:20: compatiable ==> compatible
+docker/mutect/Dockerfile:38: satified ==> satisfied
+workflow/scripts/makeGraph.R:106: pres ==> press
+workflow/scripts/makeGraph.R:109: pres ==> press
+workflow/scripts/makeGraph.R:110: pres ==> press
+workflow/scripts/makeGraph.R:119: pres ==> press
+workflow/scripts/makeGraph.R:121: pres ==> press
+workflow/scripts/makeGraph.R:122: pres ==> press
+```",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/76
+I_kwDOHi1bPs590eoa,numerous jobs failing with v3.0.2,CLOSED,2024-01-31T20:26:18Z,2024-02-09T17:30:24Z,2024-02-02T14:41:19Z,"xavier command:
+```sh
+module load ccbrpipeliner
+xavier run \
+  --input /data/CCBR_Pipeliner/Pipelines/XAVIER/v3.0/.tests/*.fastq.gz \
+  --output /data/sovacoolkl/xavier_test_v3.0.2 \
+  --genome hg38 \
+  --targets /data/CCBR_Pipeliner/Pipelines/XAVIER/v3.0/.tests/Agilent_SSv7_allExons_hg38.bed \
+  --mode slurm \
+  --runmode run
+```
+
+`logfiles/snakemake.log.jobby.short`:
+
+```
+jobname	state	std_err
+trimmomatic.samples=Sample11_ACI_158_S38	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347872.trimmomatic.samples=Sample11_ACI_158_S38.err
+fc_lane.samples=Sample10_ARK1_S37	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347874.fc_lane.samples=Sample10_ARK1_S37.err
+trimmomatic.samples=Sample10_ARK1_S37	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347878.trimmomatic.samples=Sample10_ARK1_S37.err
+fc_lane.samples=Sample11_ACI_158_S38	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347880.fc_lane.samples=Sample11_ACI_158_S38.err
+trimmomatic.samples=Sample4_CRL1622_S31	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347882.trimmomatic.samples=Sample4_CRL1622_S31.err
+fc_lane.samples=Sample4_CRL1622_S31	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18347885.fc_lane.samples=Sample4_CRL1622_S31.err
+fastq_screen.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348010.fastq_screen.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348013.kraken.samples=Sample11_ACI_158_S38.err
+bwa_mem.samples=Sample11_ACI_158_S38	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348016.bwa_mem.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348018.kraken.samples=Sample10_ARK1_S37.err
+bwa_mem.samples=Sample10_ARK1_S37	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348020.bwa_mem.samples=Sample10_ARK1_S37.err
+fastq_screen.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348023.fastq_screen.samples=Sample4_CRL1622_S31.err
+kraken.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348026.kraken.samples=Sample4_CRL1622_S31.err
+fastq_screen.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348028.fastq_screen.samples=Sample10_ARK1_S37.err
+bwa_mem.samples=Sample4_CRL1622_S31	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348031.bwa_mem.samples=Sample4_CRL1622_S31.err
+gatk_recal.samples=Sample10_ARK1_S37	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348202.gatk_recal.samples=Sample10_ARK1_S37.err
+gatk_recal.samples=Sample4_CRL1622_S31	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348205.gatk_recal.samples=Sample4_CRL1622_S31.err
+gatk_recal.samples=Sample11_ACI_158_S38	COMPLETED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348210.gatk_recal.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348285.kraken.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348288.kraken.samples=Sample4_CRL1622_S31.err
+kraken.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348446.kraken.samples=Sample10_ARK1_S37.err
+bam_check.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348500.bam_check.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348503.bam2fastq.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348506.bam2fastq.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348510.bam_check.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348513.bam2fastq.samples=Sample4_CRL1622_S31.err
+bam_check.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348517.bam_check.samples=Sample11_ACI_158_S38.err
+fastq_screen.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348550.fastq_screen.samples=Sample11_ACI_158_S38.err
+fastq_screen.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348554.fastq_screen.samples=Sample10_ARK1_S37.err
+fastq_screen.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348558.fastq_screen.samples=Sample4_CRL1622_S31.err
+kraken.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348732.kraken.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348757.kraken.samples=Sample4_CRL1622_S31.err
+kraken.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348778.kraken.samples=Sample10_ARK1_S37.err
+fastq_screen.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348781.fastq_screen.samples=Sample11_ACI_158_S38.err
+fastq_screen.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348785.fastq_screen.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348788.bam2fastq.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348791.bam_check.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348795.bam2fastq.samples=Sample10_ARK1_S37.err
+bam_check.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348798.bam_check.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348802.bam_check.samples=Sample4_CRL1622_S31.err
+fastq_screen.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348805.fastq_screen.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348808.bam2fastq.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348981.bam2fastq.samples=Sample11_ACI_158_S38.err
+fastq_screen.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348984.fastq_screen.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348986.bam2fastq.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348989.bam2fastq.samples=Sample10_ARK1_S37.err
+kraken.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348992.kraken.samples=Sample11_ACI_158_S38.err
+kraken.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348994.kraken.samples=Sample10_ARK1_S37.err
+fastq_screen.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348996.fastq_screen.samples=Sample11_ACI_158_S38.err
+fastq_screen.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348997.fastq_screen.samples=Sample4_CRL1622_S31.err
+bam_check.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18348999.bam_check.samples=Sample10_ARK1_S37.err
+kraken.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349001.kraken.samples=Sample4_CRL1622_S31.err
+bam_check.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349003.bam_check.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349006.bam_check.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349138.bam2fastq.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349141.bam_check.samples=Sample10_ARK1_S37.err
+bam2fastq.samples=Sample10_ARK1_S37	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349143.bam2fastq.samples=Sample10_ARK1_S37.err
+bam_check.samples=Sample11_ACI_158_S38	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349144.bam_check.samples=Sample11_ACI_158_S38.err
+bam_check.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349146.bam_check.samples=Sample4_CRL1622_S31.err
+bam2fastq.samples=Sample4_CRL1622_S31	FAILED	/gpfs/gsfs12/users/sovacoolkl/xavier_test_v3.0.2/logfiles/slurmfiles/18346496.18349147.bam2fastq.samples=Sample4_CRL1622_S31.err
+```",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/79
+I_kwDOHi1bPs599s_1,refactor xavier GUI,CLOSED,2024-02-01T19:40:23Z,2024-08-12T17:30:47Z,2024-08-12T15:42:24Z,"move it from the ccbrpipeliner repo to this one
+
+related to:
+
+- https://github.com/CCBR/ccbrpipeliner/issues/28
+- https://github.com/CCBR/RENEE/pull/94",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/81
+I_kwDOHi1bPs5-GkfI,add test dataset for mouse genome,CLOSED,2024-02-02T19:43:42Z,2024-08-19T16:10:44Z,2024-08-19T16:10:44Z,"https://doi.org/10.18632%2Foncotarget.19642
+
+may need to subset regions for faster run time",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/82
+I_kwDOHi1bPs6D9nfM,Varscan VCF rename,CLOSED,2024-03-28T19:27:22Z,2024-04-01T15:38:52Z,2024-04-01T15:38:52Z,Varscan outputs sample as Sample1 in tumor only mode. Need to reheader to correct sample name,dnousome,https://github.com/CCBR/XAVIER/issues/83
+I_kwDOHi1bPs6GjxB9,HPC/Biowulf memory overallocation,CLOSED,2024-04-22T21:51:21Z,2024-05-07T15:57:03Z,2024-05-07T15:57:03Z,"## Issue
+I ran >100 whole exome seq samples sequenced at average 300-400x through the XAVIER pipeline and I received a warning from HPC/Biowulf about memory overallocation.
+
+### Coverage histogram from MultiQC 
+![qualimap_coverage_histogram](https://github.com/CCBR/XAVIER/assets/22455222/1385e3a5-b696-4b1e-83d3-530ff2d9f7d8)
+
+### Message from HPC:
+```
+We have noticed that many of your jobs on Biowulf ALLOCATED
+considerably MORE MEMORY than they used during a recent time period:
+
+JOBS:         13345
+
+
+Resources:    Needed: 15,608 GBh   Alloc: 232,901 GBh  Efficiency: 6.7%
+From:         2024-04-12 10:02:08
+Until:        2024-04-13 10:02:09
+
+GBh = Gigabyte hours (i.e. GB * runtime in hours)
+
+Please check on the resource usage of types of jobs you run regularly
+and adjust memory allocations to reduce idle memory.
+
+Memory that is allocated by a job but not used reduces cluster
+efficiency and prevents the jobs of your NIH colleagues from using
+this memory. In addition, allocating more resources than needed
+will reduce the priority of your future jobs resulting in longer queue
+wait times.
+
+```
+I looked at the runtime and max memory used for all the rules and noticed that all rules were only using 5-10GB of max memory and most memory was used by `gatk_recal`, `LearnReadOrientationModel`, and a few others. 
+
+![usage](https://github.com/CCBR/XAVIER/assets/22455222/ce7de818-93ea-4086-9cf7-8669d17bda1b)
+
+Default memory:
+
+rule | alloc_mem (gb)
+-- | --
+fc_lane | 64
+fastq_screen | 64
+gatk_recal | 72
+bam_check | 64
+bam2fastq | 48
+haplotypecaller | 48
+samtools_flagstats | 64
+fastqc_bam | 64
+pileup_single | 64
+mutect2_single | 64
+varscan_single | 64
+vardict_single | 64
+mutect_single | 64
+somatic_mafs | 64
+LearnReadOrientationModel | 64
+somatic_merge_callers | 64
+mergegvcfs | 48
+genotype | 96
+
+
+
+## Proposed solution
+
+Reduce memory allocation for non-GATK and other rules that don't need a whole lot of memory.
+",samarth8392,https://github.com/CCBR/XAVIER/issues/85
+I_kwDOHi1bPs6Q2_h6,Local rule: insufficient memory for the Java Runtime Environment ,CLOSED,2024-07-25T15:36:37Z,2024-08-14T13:59:12Z,2024-08-14T13:59:12Z,"## Issue
+
+The `contamination_paired` rule runs as a _localrule_ and since it's not submitted to the cluster and instead executed on the host node, is running into `Out of Memory Error`
+
+Snippet from the error:
+```
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Cannot create GC thread. Out of system resources.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (gcTaskThread.cpp:48), pid=383637, tid=0x000015555417b700
+#
+# JRE version:  (8.0_292-b10) (build )
+# Java VM: OpenJDK 64-Bit Server VM (25.292-b10 mixed mode linux-amd64 compressed oops)
+# Core dump written. Default location: /vf/users/BandayLab/CABO-exome-seq-Andrea/mathurs2/ccbr1332/exome/uc_only_paired/paired_uc_Only/core or core.38
+3637 (max size 1 kB). To ensure a full core dump, try ""ulimit -c unlimited"" before starting Java again
+
+
+VM Arguments:
+jvm_args: -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=2 
+java_command: /opt2/gatk-4.2.2.0/gatk-package-4.2.2.0-local.jar CalculateContamination -I /vf/users/BandayLab/CABO-exome-seq-Andrea/mathurs2/ccbr1332/exome/uc_only_paired/paired_uc_Only/somatic_paired/SNP_Indels/mutect2_out/pileup_summaries/13_CBPC_AU_0029_001_S19_tumor.pileup.table --matched-normal /vf/users/BandayLab/CABO-exome-seq-Andrea/mathurs2/ccbr1332/exome/uc_only_paired/paired_uc_Only/somatic_paired/SNP_Indels/mutect2_out/pileup_summaries/13_CBPC_AU_0029_001_S19_normal.pileup.table -O /vf/users/BandayLab/CABO-exome-seq-Andrea/mathurs2/ccbr1332/exome/uc_only_paired/paired_uc_Only/somatic_paired/qc/gatk_contamination/13_CBPC_AU_0029_001_S19.contamination.table
+java_class_path (initial): /opt2/gatk-4.2.2.0/gatk-package-4.2.2.0-local.jar
+Launcher Type: SUN_STANDARD
+```
+
+## Proposed solution
+
+Run `contamination_paired` as a regular rule that runs as a job on a compute node.",samarth8392,https://github.com/CCBR/XAVIER/issues/89
+I_kwDOHi1bPs6Q3Gvo,Update GATK module on docker,CLOSED,2024-07-25T15:45:58Z,2024-09-26T19:21:02Z,2024-09-26T19:21:02Z,"## Issue
+
+Need to update GATK module from v4.2.2.0 to GATK v4.6.0.0 on the [docker](https://hub.docker.com/repository/docker/nciccbr/ccbr_wes_base/general) file",samarth8392,https://github.com/CCBR/XAVIER/issues/90
+I_kwDOHi1bPs6Q_m6U,document the GUI,CLOSED,2024-07-26T16:44:41Z,2024-07-26T16:52:22Z,2024-07-26T16:52:22Z,,kelly-sovacool,https://github.com/CCBR/XAVIER/issues/91
+I_kwDOHi1bPs6RmjhA,MKdocs fails to render XAVIER title correctly,CLOSED,2024-08-01T15:48:00Z,2024-08-01T18:13:16Z,2024-08-01T18:13:15Z,"## Issue
+
+Due to `betterem` extension, the XAVIER header on the documentation [website](https://ccbr.github.io/XAVIER/) fails to render correctly.
+It looks like:
+
+XAVIER - e**X**ome A**nalysis and **V**ariant explor**ER 
+
+
+## Solution
+
+Remove the `betterem` extensions from `mkdocs.yml` file",samarth8392,https://github.com/CCBR/XAVIER/issues/93
+I_kwDOHi1bPs6R-E8J,show multiple versions on the docs website,CLOSED,2024-08-05T16:25:32Z,2024-08-05T20:28:52Z,2024-08-05T20:28:52Z,see also https://github.com/CCBR/RENEE/issues/97,kelly-sovacool,https://github.com/CCBR/XAVIER/issues/95
+I_kwDOHi1bPs6R_uXn,refactor genome config structure to match RENEE,CLOSED,2024-08-05T20:13:29Z,2024-08-12T17:30:50Z,2024-08-12T15:42:25Z,"In RENEE, platform-specific genome configs are in `config/genomes/<hpcname>/hgXX_YY.json`. We should reorganize XAVIER to follow the same format so we can reuse CLI code more easily.",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/98
+I_kwDOHi1bPs6ShkIT,set default targets file based on genome if `--targets` not provided,CLOSED,2024-08-09T16:26:35Z,2024-08-12T19:07:59Z,2024-08-12T19:07:59Z,we have targets files for our typical datasets in `resources/`. let's set these in the genome config files by default but still allow users to override them with `--targets`.,kelly-sovacool,https://github.com/CCBR/XAVIER/issues/100
+I_kwDOHi1bPs6S4Rmt,deprecation warning - invalid escape sequence,OPEN,2024-08-13T21:09:30Z,2024-08-13T21:09:30Z,,"```
+src/xavier/run.py:662: DeprecationWarning: invalid escape sequence '\.'
+    sample = re.split(""\.R[12]\.fastq\.gz"", os.path.basename(file))[0]
+```",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/106
+I_kwDOHi1bPs6TJkdD,bug: Default targets file is always for hg38 when running GUI,CLOSED,2024-08-15T19:14:23Z,2024-08-19T16:00:32Z,2024-08-19T16:00:32Z,"## Issue
+
+The XAVIER GUI only selects `Agilent_SSv7_allExons_hg38.bed` as defaults target file even when the genome is `mm10`.
+
+## Solution
+
+Update the `src/gui.py` to contain another if-else statement to check the genome argument and assign the default target file accordingly.
+
+",samarth8392,https://github.com/CCBR/XAVIER/issues/108
+I_kwDOHi1bPs6Y4RaC,Error in rule freec_exome_somatic,CLOSED,2024-10-03T19:50:17Z,2024-10-03T20:13:54Z,2024-10-03T20:13:54Z,"### Issue
+
+The rule `freec_exome_somatic_pass1` fails with the following error:
+
+```
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Error in if (class(resultks) == ""try-error"") { : 
+  the condition has length > 1
+Calls: KS
+In addition: Warning message:
+In ks.test.default(values, score(normals)) :
+  p-value will be approximate in the presence of ties
+Execution halted
+```
+
+### Possible explanation:
+
+In the script assess_signficance.R, on line [51](https://github.com/CCBR/XAVIER/blob/9403e67a5acef25932bf404c19af5874fb1237be/workflow/scripts/assess_significance.R#L51), the code is:
+`if (class(resultks) == ""try-error"")`
+
+but `class(resultks)` gives the output:
+```
+> class(resultks)
+[1] ""ks.test"" ""htest""  
+``` 
+
+### Proposed solution:
+collapse `class(resultks)` output into a single string, and then compare.
+
+```
+paste(class(resultks), collapse=""_"")
+[1] ""ks.test_htest""
+```",samarth8392,https://github.com/CCBR/XAVIER/issues/120
+I_kwDOHi1bPs6cu3Fj,Error in MultiQC rule,CLOSED,2024-11-01T17:30:48Z,2024-11-05T14:04:46Z,2024-11-05T14:04:46Z,"Multiqc docker was updated to `ccbr_multiqc_1.15:v1` https://github.com/CCBR/XAVIER/blob/2e60f68b62aced7203b1984600700312db6002d3/config/containers/images.json#L11
+
+
+and now I got this error:
+
+```
+Activating singularity image /vf/users/CCBR/projects/ccbr1305/xavier/SJACT030812/.snakemake/singularity/e2b8d373264c1508b661a6ef559e263c.simg
+Traceback (most recent call last):
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/_core/__init__.py"", line 23, in <module>
+    from . import multiarray
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/_core/multiarray.py"", line 10, in <module>
+    from . import overrides
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/_core/overrides.py"", line 8, in <module>
+    from numpy._core._multiarray_umath import (
+ModuleNotFoundError: No module named 'numpy._core._multiarray_umath'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/__init__.py"", line 114, in <module>
+    from numpy.__config__ import show as show_config
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/__config__.py"", line 4, in <module>
+    from numpy._core._multiarray_umath import (
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/_core/__init__.py"", line 49, in <module>
+    raise ImportError(msg)
+ImportError: 
+
+IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
+
+Importing the numpy C-extensions failed. This error can happen for
+many reasons, often due to issues with your setup or how NumPy was
+installed.
+
+We have compiled some common reasons and troubleshooting tips at:
+
+    https://numpy.org/devdocs/user/troubleshooting-importerror.html
+
+Please note and check the following:
+
+  * The Python version is: Python3.8 from ""/usr/bin/python3""
+  * The NumPy version is: ""2.1.1""
+
+and make sure that they are the versions you expect.
+Please carefully study the documentation linked above for further help.
+
+Original error was: No module named 'numpy._core._multiarray_umath'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/usr/local/bin/multiqc"", line 5, in <module>
+    from multiqc.__main__ import run_multiqc
+  File ""/usr/local/lib/python3.8/dist-packages/multiqc/__init__.py"", line 16, in <module>
+    from .multiqc import run
+  File ""/usr/local/lib/python3.8/dist-packages/multiqc/multiqc.py"", line 30, in <module>
+    from .plots import table
+  File ""/usr/local/lib/python3.8/dist-packages/multiqc/plots/table.py"", line 10, in <module>
+    from multiqc.utils import config, mqc_colour, report, util_functions
+  File ""/usr/local/lib/python3.8/dist-packages/multiqc/utils/mqc_colour.py"", line 11, in <module>
+    import numpy as np
+  File ""/data/CCBR_Pipeliner/Tools/ccbr_tools/v0.1/numpy/__init__.py"", line 119, in <module>
+    raise ImportError(msg) from e
+ImportError: Error importing numpy: you should not try to import numpy from
+        its source directory; please exit the numpy source tree, and relaunch
+        your python interpreter from there.
+
+```",samarth8392,https://github.com/CCBR/XAVIER/issues/122
+I_kwDOHi1bPs6c_S6h,clean up unused containers ,CLOSED,2024-11-04T21:00:28Z,2024-11-05T18:46:10Z,2024-11-05T18:46:09Z,"
+## used containers:
+
+`grep -hr ""config\[[\""']images"" * | sed 's/ //g' | sed 's/container://g' | sort | uniq`
+```
+config['images']['fastqc']
+config['images']['fastq_screen']
+config['images']['kraken']
+config['images']['multiqc']
+config['images']['mutect']
+config['images']['picard']
+config['images']['python']
+config['images']['qualimap']
+config['images']['vcf2maf']
+config['images']['wes_base']
+```",kelly-sovacool,https://github.com/CCBR/XAVIER/issues/125
+I_kwDOHi1bPs6dsIdN,Reduce data footprint post run,OPEN,2024-11-09T04:17:33Z,2024-11-09T04:19:34Z,,"## Issue
+Create a separate cleanup rule or script that runs ""ON-SUCCESS"" like the spooker of jobby script which cleans up all the unnecessary intermediate files. ",samarth8392,https://github.com/CCBR/XAVIER/issues/128

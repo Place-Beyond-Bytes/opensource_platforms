@@ -1,0 +1,106 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGiQZ6s5ir0yy,5 mouse genes cause errors referencing very large genes on the same chromosome,OPEN,2023-04-05T13:47:32Z,2023-07-27T15:04:54Z,,"used mouse genome 12-column BED file: 
+mm10 from UCSC as gzip https://genome.ucsc.edu/cgi-bin/hgTables assembly:mm10 -> track:NCBI RefSeq -> table:refFlat; output format: BED
+
+error genes
+
+- Ccl19 -> chr4:42,754,525-42,756,543 2,019 bp
+- Ccl21a -> chr4:42,772,860-42,773,993 1,134 bp
+- Ccl21c -> chr4:42,612,123-42,613,253 1,131 bp
+- Il11ra2 -> chr4:42,656,001-42,665,763 9,763 bp
+- Rarres2 -> chr6:48,546,630-48,549,721 3,092 bp
+
+Mdn1 pops up in all Chr4 error messages:
+chr4:32,657,119-32,775,217
+118,099 bp
+
+Sspo pops up in Rarres2 (on Chr6) error message
+chr6:48,425,163-48,478,169
+53,007 bp
+
+Ccl19 (error)
+chr4:42,754,525-42,756,543
+2,019 bp
+
+Cxcl17 not correctly displayed! no gene not correct coordinates
+chr7:25,099,478-25,112,311
+12,834 bp
+
+Ccl17 completely fine
+chr8:95,537,081-95,538,664
+1,584 bp
+
+[https://www.informatics.jax.org/marker/MGI:109123](https://www.informatics.jax.org/marker/MGI:109123)
+
+[https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm39&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr6%3A48425163-48478169&hgsid=1597741285_OPZS1OsEmzcw5yAStALoyZTLcBbj](https://genome.ucsc.edu/cgi-bin/hgTracks?db=mm39&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr6%3A48425163%2D48478169&hgsid=1597741285_OPZS1OsEmzcw5yAStALoyZTLcBbj)",sreichl,https://github.com/epigen/genome_tracks/issues/1
+I_kwDOGiQZ6s5swLUe,consider switching to ggcoverage package,CLOSED,2023-07-27T15:01:28Z,2024-03-13T14:04:56Z,2024-03-13T14:04:55Z,"- https://cran.r-project.org/web/packages/ggcoverage/index.html
+- https://cran.r-project.org/web/packages/ggcoverage/vignettes/ggcoverage.html#3_RNA-seq_data",sreichl,https://github.com/epigen/genome_tracks/issues/2
+I_kwDOGiQZ6s5swLi7,consider adding IGV-Reports (self-contained HTML) Snakemake wrapper,CLOSED,2023-07-27T15:01:59Z,2024-03-14T18:04:48Z,2024-03-14T18:04:48Z,"- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/igv-reports.html
+- https://github.com/igvteam/igv-reports
+- If I understand correctly you can create one report summarizing all samples, which would be great
+- [x] try it manually on one test example, if easy -> implement.
+  - in bioconda: https://bioconda.github.io/recipes/igv-reports/README.html",sreichl,https://github.com/epigen/genome_tracks/issues/3
+I_kwDOGiQZ6s5swMYB,change input to CSV instead of txt file,CLOSED,2023-07-27T15:03:52Z,2024-03-13T17:04:47Z,2024-03-13T17:04:47Z,"- consider gene/region input as csv
+- first column gene/region
+- second column ymax/""” (then remove from config) → then its at least configurable on a gene/region level → can be extracted like DEA parameters in dea_limma workflow
+- ymax parameter: have in addition to ""”==auto also ""max” which determines the max value across all to be plotted and uses that as ymax → not possible, because that is not known before",sreichl,https://github.com/epigen/genome_tracks/issues/4
+I_kwDOGiQZ6s5xPOjE,make output format configurable,CLOSED,2023-09-17T15:16:35Z,2023-09-19T13:09:10Z,2023-09-19T13:09:10Z,"from the docs: The file type of the plot will be determined by the output file extension.
+
+currently hard coded: .svg
+extend to: .png and .pdf",sreichl,https://github.com/epigen/genome_tracks/issues/5
+I_kwDOGiQZ6s5-hjHZ,check & provide instructions for single cell modalities,CLOSED,2024-02-07T10:43:04Z,2024-03-18T16:46:27Z,2024-03-18T16:46:27Z,"should also work for scRNA-seq and scATAC-seq data/samples that gets grouped and merged by metadata
+
+- [x] works in principle, need to find a way to differentiate between normal and single cell bams in rule `sc_bams`
+- [x] I have to turn the order for single cell around
+  - [x] First split per sample into sample/group.bam
+  - [x] Then merge the same groups together and put into merged_band and take from there as before. 
+  - [x] So, when single cell. Then preprocessing step with sinto. 
+  - [x] Why? Because of potential barcode duplicates across samples (can happen by chance)",sreichl,https://github.com/epigen/genome_tracks/issues/6
+I_kwDOGiQZ6s6CLORf,generate UCSC genome browser track hub (see ATAC-seq pipeline),CLOSED,2024-03-13T13:07:03Z,2024-03-14T10:48:49Z,2024-03-14T10:48:49Z,,sreichl,https://github.com/epigen/genome_tracks/issues/7
+I_kwDOGiQZ6s6CLnG8,make MR.PARETO module,CLOSED,2024-03-13T13:54:53Z,2024-03-20T15:07:10Z,2024-03-20T15:07:10Z,"- [x] #11 
+- [x] update and extend docs
+  - [x] config.yaml
+  - [x] config/README: how configure single cell data; important that single-cell metadata.tsv is sample specific as by chance different samples could have the same cell barcodes...
+  - [x] README
+    - [x] remove ALL feature -> always all
+    - [x] add new features: ymax per gene/region; color per group; UCSC genome browser hub; IGV-Report, single-cell bam file support,...
+    - [x] move all genome browser track related docs/instructions from ATAC-seq pipeline to genome_tracks
+    - [x] performance
+      - 78 ATAC-seq samples in 31 groups took 22 minutes with max 4 cores and 4GB memory
+      - 64 RNA-seq samples in 31 groups took 16 minutes with max 4 cores and 4GB memory
+      - 2 10x genomics 5' scRNA-seq reactions each ~10k cells split in 2 small subset groups took 31 minutes with max 4 cores and 8GB memory
+- [x] go through MRP checklist",sreichl,https://github.com/epigen/genome_tracks/issues/8
+I_kwDOGiQZ6s6CMkQ1,check and implement parameters,CLOSED,2024-03-13T15:43:27Z,2024-03-14T14:43:40Z,2024-03-14T14:43:40Z,"- [x] check normalization methods in deeptools::bamCoverage (e.g., RPKM vs RPGC) -> configurable?
+- [x] check if scaling is necessary in deeptools::bamCoverage ie as a dependency to the number of samples merged? or during merging with samtools? -> no, samtools merge literally only merges.
+  - no scaling is necessary as it is done by all normalization methods. In case of [RPGC*](https://groups.google.com/g/deeptools/c/th96gaftAXQ) it not only takes the total number of reads into consideration, but also the effective genome size, making it even more robust.
+- [x] check if the parameters work with tracks (they are from pyGenomeTracks): `--dpi 300 --fontSize 12`
+  - nope 
+
+from ATAC-seq pipeline
+```shell
+bamCoverage --bam {input.bam} \
+            -p max --binSize 10  --normalizeUsing RPGC \
+            --effectiveGenomeSize {params.genome_size} --extendReads 175 \
+            -o ""{output.bigWig}"" > ""{output.bigWig_log}"" 2>&1;
+```
+
+*RPGC, on the other hand, does not only take the total number of reads into consideration, it also needs the effective genome size (which will differ from the ""real"" genome size because for mapping reads those regions of the genome where the sequence is either not determined or too repetitive to be covered should not be taken into consideration for calculating the coverage. Note that the exact effective genome size might be bigger than the values we indicate in the help texts if you have very long sequencing reads. For the example above, RPGC would work as follows:
+sequencing depth = (total number of mapped reads * fragment length) / effective genome size = 50 x 10^6 * 200/ 2.15057 x 10^9 = 4.65
+RPGC scaling factor = 1/sequencing depth = 1/4.65 = 0.22
+RPGC(bin1) = 0.22 * 10 = 2.2
+RPGC(bin2) = 0.22 * 12 = 2.64",sreichl,https://github.com/epigen/genome_tracks/issues/9
+I_kwDOGiQZ6s6CNAJJ,customize coloring,CLOSED,2024-03-13T16:37:51Z,2024-03-14T15:51:06Z,2024-03-14T15:51:06Z,"[Changing the color palette](https://gitlab.com/salk-tm/gtracks#changing-the-color-palette)
+probably requires gtracks update -> gtracks 1.12.6",sreichl,https://github.com/epigen/genome_tracks/issues/10
+I_kwDOGiQZ6s6Cd9aS,test & clean everything,CLOSED,2024-03-15T15:38:19Z,2024-03-19T17:48:26Z,2024-03-19T17:48:26Z,"- [x] clean code and comments
+- [x] add reporting for IGV-report
+- [x] macroStim RNA-seq
+- [x] macroStim ATACseq
+- [x] macroStim PT141 for NT, Csf1r subsets (check KO)
+",sreichl,https://github.com/epigen/genome_tracks/issues/11
+I_kwDOGiQZ6s6Dv0zH,Consider seqNdisplayR package,CLOSED,2024-03-27T09:59:13Z,2024-03-27T09:59:42Z,2024-03-27T09:59:42Z,"Protocol for generating customizable and reproducible plots of sequencing coverage data using the seqNdisplayR package.
+https://www.sciencedirect.com/science/article/pii/S2666166724001254
+",sreichl,https://github.com/epigen/genome_tracks/issues/12
+I_kwDOGiQZ6s6V-yOz,add docs about IGV SSL problems,OPEN,2024-09-10T12:09:56Z,2024-09-13T14:28:03Z,,"IGV report: OSError: error when opening file `https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg38/hg38.fa`
+-> their https ie SSL certificate is outdated
+
+or pin this issue?",sreichl,https://github.com/epigen/genome_tracks/issues/13

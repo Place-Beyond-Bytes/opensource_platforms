@@ -1,0 +1,464 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMDMxMjc5NTk=,Send mail when errors are detected,CLOSED,2017-01-25T15:07:21Z,2017-06-15T16:12:45Z,2017-06-15T16:12:45Z,"Possible Solution:
+
+Use bash 'mail' as app function?
+",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/6
+MDU6SXNzdWUyMDMxMzExMDM=,Split workflow into stages with different resource options,CLOSED,2017-01-25T15:18:34Z,2017-05-22T18:51:33Z,2017-05-22T18:51:33Z,"Various stages of the workflow require various numbers of resources, as outlined in Luda's explanation to Justin through email correspondence:
+
+""
+1) The first phase (alignment) would be run in a single qsub that has as many nodes as there are samples. Thus, 100 samples will use 100 nodes.
+
+2) The second phase has two steps:
+  2.1) Splitting by chromosome uses 25 qsubs, one per chromosome. This computation is done using single-threaded process. In each qsub there are as many of those as #samples. Therefore, the number of nodes in each of the 25 qsubs is #samples/32, or #samples/16 if we want to space the processes apart on the cores. Thus, if we pack all cores, then 100 samples will use 25 qsubs, 4 nodes each - total of 100 nodes.
+  2.2) Realignment/recalibration uses 25 qsubs, each with #nodes=#samples. Thus, 100 samples will use 25 qsubs, each with 100 nodes - total of 2,500 nodes.
+
+3) The third phase also uses 25 qsubs, each with #nodes=#samples. Thus, 100 samples will use 25 qsubs, each with 100 nodes - total of 2,500 nodes.
+
+For a different organism you will need to recalculate for the appropriate number of chromosomes.
+For whole exome sequencing we probably will not be splitting by chromosomes, so qsubs are even in size.
+""
+
+Potential Solutions:
+
+option 1: simply have a flag that specifies which stage of the workflow is run. Call the workflow X times with X different flags
+
+option 2: Separate the workflow into X distinct executable files. Call sequentially, communication between steps through TMP files with list of input files from output of previous step
+
+(Jacob thinks that option two will result in cleaner code)",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/7
+MDU6SXNzdWUyMDMxMzkxNjU=,Make workflow keep going even if one branch of loop fails for as long as possible,CLOSED,2017-01-25T15:46:05Z,2017-05-22T18:52:01Z,2017-05-22T18:52:01Z,"Even if a given sample fails during the analysis within a loop, the rest of the loop should keep going until no further progress can be made without all of the samples being present (the ""gathering"" stages of the workflow, where branches are brought back together, such as the Joint Genotyping stage)
+
+If we add this feature, it is obvious that we should then add another feature that would allow one to jump back into the workflow right before the ""gathering"" stage, either after the failure with the killed sample branch has been resolved, or the ""gathering"" can take place without the output of the failed branch.
+
+Potential Solutions:
+Write app calls that catch non-zero exits, do something, and return an exit code of 0 to swift",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/8
+MDU6SXNzdWUyMzA1MTQ4MTE=,Ensure Multiple Novosort Processes Are Not Run Concurrently on One Node ,CLOSED,2017-05-22T20:47:40Z,2017-05-31T19:20:01Z,2017-05-31T19:20:01Z,"For a particular piece of the workflow I am running an app called Novosort. This app typically requests the vast majority of RAM on the node it is running, so much so that if this app is run in parallel for two samples concurrently on the same node, it will cause an OutOfMemory Error. 
+
+For most of the apps I run, it is more efficient to run two apps concurrently on a node using half the available threads than a single one using all of the cores. But in this case, I need to ensure that only one instance of the Novosort app is running on a given node at a time.
+
+How can this be done? The locations library can specify that jobs be assigned to particular ranks, but if the number of samples being analyzed is greater than the number of ranks, some nodes will have multiple Novosort apps assigned to it.
+
+I thought Swift/T would detect that there is already work going on there and not try to run them concurrently, but I don't believe what I am seeing reflects that. In my current tests, I am analyzing two samples using two nodes. I set ""-n 3"" when calling swift-t, and sometimes the run works fine, sometimes I get the memory error. My guess is that sometimes the two samples are assigned to the same node, other times different nodes.
+
+Can you give me some pointers @jmjwozniak ",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/10
+MDU6SXNzdWUyNDk4NzA0Mjk=,Aligner options,CLOSED,2017-08-13T12:20:27Z,2017-08-13T13:25:06Z,2017-08-13T13:25:06Z,"The pipeline works fine with bwa mem releases prior to 0.7.16.
+
+In the latest [bwa release](https://github.com/lh3/bwa/releases/tag/v0.7.16), the code  forbids literal TAB control characters in the read group header, and produces the error message: ` ""[E::%s] the read group line contained literal <tab> characters -- replace with escaped tabs: \\t\n"" `
+
+I'm not sure how to resolve this issue, so I'm using the older version 0.7.15 for testing",azzaea,https://github.com/ncsa/Swift-T-Variant-Calling/issues/18
+MDU6SXNzdWUyNTQwNTEwMjQ=,BW Error when running 601 Node run,OPEN,2017-08-30T15:56:26Z,2017-12-27T01:41:48Z,,"When running a 601 Node Swift/T run analyzing 1200 samples (with two tasks running in parallel on each node), a failure occurred. There was a truncated alignment file, SRR1293800, that was detected.",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/22
+MDU6SXNzdWUyNTc3ODE2ODk=,Problem running new Blue Waters Swift/T installation,CLOSED,2017-09-14T16:30:59Z,2017-11-21T16:16:51Z,2017-11-21T16:16:51Z,"It appears that Justin may have updated the Swift/T installation on BW, and now when I go to run a simple job I am told that I am allocating too many workers to the executor types.
+
+Here is my sh script that launches Swift/T for me 
+
+```
+#!/usr/bin/env bash
+
+export PPN=2
+export NODES=2
+export PROCS=$(($PPN * $NODES))
+export WALLTIME=30:00
+export PROJECT=baib
+export QUEUE=debug
+export SWIFT_TMP=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/temp
+
+# CRAY specific settings:
+export CRAY_PPN=true
+#export CRAY_FEATURE=""flags=commtransparent""
+
+# (Optional variables to set)
+export TURBINE_LOG=1    # This produces verbose logging info; great for debugging
+export ADBL_DEBUG_RANKS=1       # Displays layout of ranks and nodes
+export TURBINE_OUTPUT=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/log_directory   # This specifies where the log info will be stored; defaults to one's home directory
+
+/u/sciteam/wozniak/Public/sfw/login/swift-t/stc/bin/swift-t -m cray -O3 -n $PROCS -o /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/compiled.tic \
+-I /projects/sciteam/baib/SwiftTesting/Swift-T-Variant-Calling/src/ -r /projects/sciteam/baib/SwiftTesting/Swift-T-Variant-Calling/src/bioapps \
+/projects/sciteam/baib/SwiftTesting/Swift-T-Variant-Calling/src/VariantCalling.swift -runfile=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/1Node.runfile
+```
+Here is the qsub script Swift/T's cray tool generates for me
+
+```
+#!/bin/bash -e
+# We use  to change the M4 comment to 
+# Copyright 2013 University of Chicago and Argonne National Laboratory
+#
+# Licensed under the Apache License, Version 2.0 (the ""License"");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an ""AS IS"" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License
+
+# TURBINE-APRUN.SH
+
+# Created: Thu Sep 14 11:15:30 CDT 2017
+
+
+# Define a convenience macro
+# This simply does environment variable substition when m4 runs
+
+
+#PBS -N SWIFT
+#PBS -A baib
+#PBS -q debug
+#PBS -l walltime=30:00
+#PBS -o /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/log_directory/output.txt
+
+### Set the job size using appropriate directives for this system
+### Blue Waters mode
+#PBS -l nodes=2:ppn=2
+### End job size directives selection
+
+# This is ineffective- we have to use 'aprun -e'
+# PBS -V
+
+# Merge stdout/stderr
+#PBS -j oe
+# Disable mail
+#PBS -m n
+
+# User directives:
+
+
+VERBOSE=0
+(( VERBOSE )) && set -x
+
+# Set variables required for turbine-config.sh
+export TURBINE_HOME=/u/sciteam/wozniak/Public/sfw/login/swift-t/turbine
+TURBINE_STATIC_EXEC=0
+EXEC_SCRIPT=0
+
+# Setup configuration for turbine
+source ${TURBINE_HOME}/scripts/turbine-config.sh
+
+SCRIPT=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/compiled.tic
+ARGS=""-runfile=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/1Node.runfile""
+NODES=2
+WALLTIME=30:00
+TURBINE_OUTPUT=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/log_directory
+
+export TURBINE_USER_LIB=
+export TURBINE_LOG=1
+export TURBINE_DEBUG=0
+export ADLB_DEBUG=0
+export PATH=/u/sciteam/wozniak/Public/sfw/compute/swift-t/turbine/bin:/u/sciteam/wozniak/Public/sfw/compute/swift-t/stc/bin:/u/sciteam/wozniak/Public/sfw/login/swift-t/turbine/bin:/u/sciteam/wozniak/Public/sfw/login/swift-t/stc/bin:/sw/xe/darshan/3.1.3/darshan-3.1.3/bin:/sw/EasyBuild/software/gnuplot/5.0.5/bin:/sw/admin/scripts:/sw/user/scripts:/opt/xalt/0.7.6/sles11.3/libexec:/opt/xalt/0.7.6/sles11.3/bin:/usr/local/gsi-openssh-6.2p2-2/bin:/opt/java/jdk1.8.0_51/bin:/usr/local/globus-5.2.5/bin:/usr/local/globus-5.2.5/sbin:/opt/moab/9.0.2t7/sbin:/opt/torque/6.0.4/sbin:/opt/torque/6.0.4/bin:/opt/cray/mpt/7.5.0/gni/bin:/opt/cray/rca/1.0.0-2.0502.60530.1.63.gem/bin:/opt/cray/alps/5.2.4-2.0502.9774.31.12.gem/sbin:/opt/cray/dvs/2.5_0.9.0-1.0502.2188.1.113.gem/bin:/opt/cray/xpmem/0.1-2.0502.64982.5.3.gem/bin:/opt/cray/pmi/5.0.10-1.0000.11050.179.3.gem/bin:/opt/cray/ugni/6.0-1.0502.10863.8.28.gem/bin:/opt/cray/udreg/2.3.2-1.0502.10518.2.17.gem/bin:/opt/cray/craype/2.5.8/bin:/opt/cray/cce/8.4.6/cray-binutils/x86_64-unknown-linux-gnu/bin:/opt/cray/cce/8.4.6/craylibs/x86-64/bin:/opt/cray/cce/8.4.6/cftn/bin:/opt/cray/cce/8.4.6/CC/bin:/opt/cray/eslogin/eswrap/1.3.3-1.020200.1278.0/bin:/opt/modules/3.2.10.4/bin:/opt/moab/9.0.2t7/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/lib/qt3/bin:/opt/cray/bin:/u/sciteam/jacobrh/bin
+
+# Set configuration of Turbine processes
+export ADLB_SERVERS=1
+# Default to 1
+ADLB_SERVERS=${ADLB_SERVERS:-1}
+export TURBINE_GEMTC_WORKER=
+
+export ADLB_DEBUG_RANKS=
+export ADLB_PRINT_TIME=1
+export MPICH_RANK_REORDER_METHOD=
+
+# Output header
+echo ""Turbine: turbine-cray.sh""
+date ""+%m/%d/%Y %I:%M%p""
+echo
+
+PROCS=4
+TURBINE_WORKERS=$(( ${PROCS} - ${ADLB_SERVERS} ))
+
+cd ${TURBINE_OUTPUT}
+
+SCRIPT_NAME=$( basename ${SCRIPT} )
+
+# Put environment variables from run-init into 'aprun -e' format
+ENVS=""""
+for KV in ${ENV_PAIRS[@]}
+do
+    echo KV $KV
+    ENVS+=""-e ${KV} ""
+done
+
+echo ENVS $ENVS
+
+OUTPUT_FILE=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/log_directory/output.txt
+if [ -z ""$OUTPUT_FILE"" ]
+then
+    echo ""JOB OUTPUT:""
+    echo
+    aprun -n 4 -N 2 ${APRUN_ENV} -cc none -d 1 \
+          ${TCLSH} ${SCRIPT_NAME} ${ARGS}
+else
+    # Stream output to file for immediate viewing
+    echo ""JOB OUTPUT is in ${OUTPUT_FILE}.${PBS_JOBID}.out""
+    echo ""Running: ${TCLSH} ${SCRIPT_NAME} ${ARGS}""
+    aprun -n 4 -N 2 ${ENVS} -cc none -d 1 \
+          ${TCLSH} ${SCRIPT_NAME} ${ARGS} \
+                     2>&1 > ""${OUTPUT_FILE}.${PBS_JOBID}.out""
+fi
+
+# Local Variables:
+# mode: m4
+# End:
+
+```
+
+And here is the error message that is returned
+```
+Turbine: turbine-cray.sh
+09/14/2017 11:23AM
+
+ENVS
+JOB OUTPUT is in /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/log_directory/output.txt.7469047.bw.out
+Running: /usr/bin/tclsh8.5 compiled.tic -runfile=/scratch/sciteam/jacobrh/purge_exempt/Swift_testing/1Node/1Node.runfile
+Too many workers allocated to executor types:  {}.^M
+  Have 0 total workers, allocated^M
+                  0 already, need at least one to  serve as regular worker^M
+    while executing^M
+""error ""Too many workers allocated to executor types:  {$n_workers_by_type}.\n  Have $n_workers total workers, allocated^M
+                  $workers_run...""^M
+    (procedure ""rank_allocation"" line 35)^M
+    invoked from within^M
+""rank_allocation [ adlb::size ] ""^M
+    (procedure ""turbine::init"" line 17)^M
+    invoked from within^M
+""turbine::init $servers ""Swift""""^M
+    (file ""compiled.tic"" line 6130)^M
+Too many workers allocated to executor types:  {}.^M
+  Have 0 total workers, allocated^M
+                  0 already, need at least one to  serve as regular worker^M
+    while executing^M
+""error ""Too many workers allocated to executor types:  {$n_workers_by_type}.\n  Have $n_workers total workers, allocated^M
+                  $workers_run...""^M
+    (procedure ""rank_allocation"" line 35)^M
+    invoked from within^M
+""rank_allocation [ adlb::size ] ""^M
+    (procedure ""turbine::init"" line 17)^M
+    invoked from within^M
+""turbine::init $servers ""Swift""""^M
+    (file ""compiled.tic"" line 6130)^M
+Too many workers allocated to executor types:  {}.^M
+  Have 0 total workers, allocated^M
+                  0 already, need at least one to  serve as regular worker^M
+    while executing^M
+""error ""Too many workers allocated to executor types:  {$n_workers_by_type}.\n  Have $n_workers total workers, allocated^M
+                  $workers_run...""^M
+    (procedure ""rank_allocation"" line 35)^M
+    invoked from within^M
+""rank_allocation [ adlb::size ] ""^M
+    (procedure ""turbine::init"" line 17)^M
+    invoked from within^M
+""turbine::init $servers ""Swift""""^M
+    (file ""compiled.tic"" line 6130)^M
+Too many workers allocated to executor types:  {}.^M
+  Have 0 total workers, allocated^M
+                  0 already, need at least one to  serve as regular worker^M
+    while executing^M
+""error ""Too many workers allocated to executor types:  {$n_workers_by_type}.\n  Have $n_workers total workers, allocated^M
+                  $workers_run...""^M
+    (procedure ""rank_allocation"" line 35)^M
+    invoked from within^M
+""rank_allocation [ adlb::size ] ""^M
+    (procedure ""turbine::init"" line 17)^M
+    invoked from within^M
+""turbine::init $servers ""Swift""""^M
+    (file ""compiled.tic"" line 6130)^M
+```
+
+I'm pretty sure this setup worked when using the previous installation. What is going wrong?
+
+@jmjwozniak 
+",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/23
+MDU6SXNzdWUyNjE3NTg5NDE=,Undetected Executables' path errors,OPEN,2017-09-29T20:16:52Z,2017-10-03T20:11:21Z,,"It seems the pipeline is unable to tell when the executable of one of the programs being called (say bwa) is non-existing. These checks were already in place in the bash version of the pipeline, but we skipped this part while building the Swift/T equivalent.
+
+The tricky part is that the error messages resulting from erroneous usage are silently dropped, without alarming the user of the problem. To be more specific, the error message does get printed, but in place of the expected output; and since nothing gets produced (i.e., no exit code from the app function), the pipeline simply hangs, and the user stays in the dark.
+
+Practical example when bwa path is erroneously specified in the runfile:
+
+```
+$ cat tmp_analysis/align/H3A_NextGen_assessment_set3.noDedups.sam
+CAUGHT ERROR:^M
+^M
+error: c::sync_exec: Error executing command /home/apps/bwa/bwa-0.7.15: No such file or directory^M
+^M
+^M
+    invoked from within^M
+""c::sync_exec $stdin_src $stdout_dst $stderr_dst $cmd {*}$args""^M
+    (procedure ""turbine::exec_external"" line 19)^M
+    invoked from within^M
+""turbine::exec_external ${v:bwaexe} [ dict create ""stdout"" ${v:__filename:output} ""stderr"" ${v:__filename:outLog} ] ""mem"" ""-M"" {*}${v:bwamemparams} ""-t...""^M
+    (procedure ""bwa_mem-app-leaf1"" line 35)^M
+    invoked from within^M
+""bwa_mem-app-leaf1 152.0 152.1 150.0 157 163 164 165 0 1 H3A_NextGen_assessment_set3 {H3A_NextGen_assessment_set3       ALL     BWAMEM start    1506715523^M
+} {file 1...""^M
+Turbine worker task error in: bwa_mem-app-leaf1 152.0 152.1 150.0 157 163 164 165 0 1 H3A_NextGen_assessment_set3 {H3A_NextGen_assessment_set3  ALL     BWAMEM start    1506715523^M
+} {file 160 is_mapped 1} {file 150 is_mapped 1} 140 153 {file 161 is_mapped 1}^M
+    invoked from within^M
+""c::worker_loop $WORK_TYPE($mode) $keyword_args""^M
+    (procedure ""standard_worker"" line 27)^M
+    invoked from within^M
+""standard_worker $rules $startup_cmd ""^M
+    (procedure ""enter_mode_unchecked"" line 5)^M
+    invoked from within^M
+""enter_mode_unchecked $rules $startup_cmd""^M
+    (procedure ""enter_mode"" line 5)^M
+    invoked from within^M
+""enter_mode $rules $startup_cmd ""^M
+ADLB: ADLB_Abort(1) calling MPI_Abort(1)
+```
+",azzaea,https://github.com/ncsa/Swift-T-Variant-Calling/issues/24
+MDU6SXNzdWUyNjI2MDIwNjA=,Check for executables pull problem,CLOSED,2017-10-03T21:53:14Z,2017-10-27T14:19:23Z,2017-10-27T14:19:23Z,"Hey @zo0z Azza, I think your latest push, Adding checks for executables and jars as per the runfile, broke the pipeline.
+
+From what I saw, some functions passed in the config variables in something called 'var', when your additions expected them to be 'vars', or vice versa.
+
+Can you try and fix this?
+
+Thanks,
+Jacob",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/25
+MDU6SXNzdWUyNjMwNzY3ODc=,Memory limits,CLOSED,2017-10-05T10:34:21Z,2017-12-18T17:39:22Z,2017-12-18T17:39:22Z,"@jacobrh91 : With novosort, I'm running into the error: `slurmstepd: Exceeded step memory limit at some point.`. I think this relates to the way I'm setting up the parameter: `NOVOSORT_MEMLIMIT=3000000000` in the runfile. 
+
+Is there a recommendation as to how much memory should be reserved for novosort? I mean, should I specify it according to the maximum memory limit of the cluster for example, or do I specifically reserve it in the job submission script?
+
+Thank you,
+Azza",azzaea,https://github.com/ncsa/Swift-T-Variant-Calling/issues/26
+MDU6SXNzdWUyNzU3ODI0MTY=,BW Error when running 110 Node run,CLOSED,2017-11-21T16:43:44Z,2017-12-04T06:19:23Z,2017-11-29T15:43:07Z,"I have successfully tested a job with 2 nodes on BW, but when I scale up to running 200 samples on 110 Nodes (using 20 ADLB_SERVERS, two on each of the extra 10 Nodes)
+
+I get an error that complains that a samtools view command encountered a truncated file. Since this occurs directly after some reads have finished aligning, this is a key sign that one of the checkBam functions is evaluating an output bam before it has actually finished being written to.
+
+Poking through the logs and output files, I have discovered that out of the 200 samples being analyzed, there is only one sample that does not have an <aligned>.bam file (the SRR1438242/align directory was empty)
+
+In addition, I have poked through the alignment logs, and while most of the bwa logs end with 
+```
+[main] Version: 0.7.12-r1039
+[main] CMD: /projects/sciteam/baib/builds/bwa/bwa-0.7.12/bwa mem -M -k 32 -I 300,30 -t 16 -R @RG\tID:SRR1531512\tLB:\tPL:ILLUMINA\tPU:SRR1531512\tSM:SRR1531512\tCN: /projects/sciteam/baib/GATKbundle/July1_2017/LSM_July1_2017/human_g1k_v37_decoy.SimpleChromosomeNaming.fasta /scratch/sciteam/jacobrh/purge_exempt/fastq_batches/batch3/SRR1531512_1.fastq.gz /scratch/sciteam/jacobrh/purge_exempt/fastq_batches/batch3/SRR1531512_2.fastq.gz
+```
+
+which signals that the bwa program finished correctly, there was one file that did not have this completed signature. (logs/SRR1438242_Alignment.log)
+
+So, my conclusion is that there is one alignment that is not finished, but Swift/T tries to go on, even though there is an implicit (and now explicit, i.e. => command at the end of the alignment line, command added to the source code)
+
+My only guess at this point as to what is going wrong is that I am using too many ADLB_SERVERS for the task at hand, and they are having trouble communicating/coordinating with each other. If I roll this back to only having 1 ADLB_SERVER again, maybe this will fix the problem...
+
+(Update)
+
+It turns out that the actual command that killed the job was a samtools call on a different sample! Here is the actual error message in the Swift/T log:
+
+```
+14515 CAUGHT ERROR:^M
+14516 [E::bgzf_read] Read block operation failed with error -1 after 0 of 4 bytes^M
+14517 [main_samview] truncated file.^M
+14518     while executing^M
+14519 ""exec $samtoolsexe view -c $inputFile ""^M
+14520     (procedure ""alignment::samtools_view"" line 3)^M
+14521     invoked from within^M
+14522 ""alignment::samtools_view ${v:samtoolsexe} ${v:of:bamFile} ""^M
+14523     (procedure ""samtools_view2-argwait"" line 6)^M
+14524     invoked from within^M
+14525 ""samtools_view2-argwait 5487 /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/110Nodes/110Node_output/SRR1284952/align/SRR1284952.noDedups.bam 3701""^M
+14526 Turbine worker task error in: samtools_view2-argwait 5487 /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/110Nodes/110Node_output/SRR1284952/align/SRR1284952.noDedups.bam 3701^M
+14527     invoked from within^M
+14528 ""c::worker_loop $WORK_TYPE($mode) $keyword_args""^M
+14529     (procedure ""standard_worker"" line 27)^M
+14530     invoked from within^M
+14531 ""standard_worker $rules $startup_cmd ""^M
+14532     (procedure ""enter_mode_unchecked"" line 5)^M
+14533     invoked from within^M
+14534 ""enter_mode_unchecked $rules $startup_cmd""^M
+14535     (procedure ""enter_mode"" line 10)^M
+14536     invoked from within^M
+14537 ""enter_mode $rules $startup_cmd ""^M
+14538 ADLB: ADLB_Abort(1) calling MPI_Abort(1)
+14539 Application 63427736 exit codes: 134
+14540 Application 63427736 exit signals: Killed
+14541 Application 63427736 resources: utime ~995s, stime ~361s, Rss ~17640, inblocks ~19944652, outblocks ~1329
+```
+",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/30
+MDU6SXNzdWUyNzc4MDM0ODE=,Spacing problem in tmp timing logs,CLOSED,2017-11-29T15:46:30Z,2017-12-18T17:36:34Z,2017-12-18T17:36:34Z,"When looking at the tmp/timing.logs I noticed that there is an issue with spacing
+
+Here is an example
+```
+SRR1303883	ALL	NOVOSORT start	1511291146DedupSort
+SRR1303883	ALL	NOVOSORT end	1511291286DedupSort
+SRR1335748	ALL	NOVOSORT start	1511291146DedupSort
+SRR1335748	ALL	NOVOSORT end	1511291268DedupSort
+SRR1362011	ALL	NOVOSORT start	1511291146DedupSort
+SRR1362011	ALL	NOVOSORT end	1511291298DedupSort
+SRR1369398	ALL	NOVOSORT start	1511291146DedupSort
+SRR1369398	ALL	NOVOSORT end	1511291322DedupSort
+SRR1383541	ALL	NOVOSORT start	1511291146DedupSort
+SRR1383541	ALL	NOVOSORT end	1511291319DedupSort
+SRR1403775	ALL	NOVOSORT start	1511291146DedupSort
+SRR1403775	ALL	NOVOSORT end	1511291310DedupSort
+SRR1423710	ALL	NOVOSORT start	1511291146DedupSort
+SRR1423710	ALL	NOVOSORT end	1511291314DedupSort
+SRR1423881	ALL	NOVOSORT start	1511291146DedupSort
+SRR1423881	ALL	NOVOSORT end	1511291332DedupSort
+```",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/31
+MDU6SXNzdWUyNzc4MDU5Nzk=,Timing.log in the deliverables folder is empty,CLOSED,2017-11-29T15:52:56Z,2017-12-18T17:36:19Z,2017-12-18T17:36:19Z,"Looking at the output of my 110 Node Blue Waters run, I noticed that the Timing.log has no data in it, just the header line.",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/32
+MDU6SXNzdWUyODE3OTg5MzQ=,Dead link in readme,OPEN,2017-12-13T15:53:06Z,2017-12-18T17:35:58Z,,The link at the beginning of the readme that goes to the companion site is a dead link.,jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/33
+MDU6SXNzdWUyODU3MzYyMjg=,Scaling Up the Workflow on BW,OPEN,2018-01-03T16:23:15Z,2018-01-03T16:23:15Z,,"I’ve created the config files necessary to start testing the workflow for 10 samples for both 1 ppn and 2 ppn runs.
+
+Here is the directory I’m currently working in: /scratch/sciteam/jacobrh/purge_exempt/Swift_testing/Justins_Testing/10_sample_set
+
+Justin, 
+
+I based the current shell config script based on the more generalized one you created, but I left out the init.sh part (It copies the runfile into the output directory before Swift starts, but this is done at the start of the workflow itself).
+
+Another thing to note is that I had to change this: 
+
+PATH=/u/sciteam/wozniak/Public/sfw/compute/swift-t/stc/bin:$PATH
+to
+PATH=/u/sciteam/wozniak/Public/sfw/login/swift-t/stc/bin:$PATH
+
+As I do not have permission to execute the executable in the compute directory.
+
+Also, when I try to run the test I just created, I get the same error message I received months ago after you had updated the Swift/T installations on BW, it looks like:
+
+```
+Turbine: turbine-cray.sh
+ 18 01/03/2018 10:10AM
+ 19 
+ 20 ENVS
+ 21 JOB OUTPUT is in /scratch/sciteam/jacobrh/variant-output/X001/output.txt.8000576.bw.out
+ 22 Running: /u/sciteam/wozniak/Public/sfw/login/tcl-8.6.6/bin/tclsh8.6 swift-t-VariantCalling.NGi.tic -runfile=./1_ppn.runfile
+ 23 Too many workers allocated to executor types:  {}.^M
+ 24   Have 0 total workers, allocated^M
+ 25                   0 already, need at least one to  serve as regular worker^M
+ 26     while executing^M
+ 27 ""error ""Too many workers allocated to executor types:  {$n_workers_by_type}.\n  Have $n_workers total workers, allocated^M
+ 28                   $workers_run...""^M
+ 29     (procedure ""rank_allocation"" line 35)^M
+ 30     invoked from within^M
+ 31 ""rank_allocation [ adlb::size ] ""^M
+ 32     (procedure ""turbine::init"" line 17)^M
+```
+
+You were able to fix this last time, so hopefully you have a better idea than I about what is going wrong.
+",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/35
+MDU6SXNzdWUyODc4MTk2ODI=,exec_check function fails if a symbolic link is present,OPEN,2018-01-11T15:12:09Z,2018-01-11T15:45:40Z,,"Right now, the exec_check function just sees if the path to an executable exists and is a file, but fails if it is a link that points to the real file.
+
+This is an easy fix. I'll do it now. Just making an Issue for documentation purposes",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/38
+MDU6SXNzdWUyOTA5MTM1NjI=,logging function causing race conditions,OPEN,2018-01-23T16:55:26Z,2018-01-23T17:02:40Z,,"During testing on iForge, when testing jumping into the CombineChromosomes stage, we ran into situations that complained that a file X in the tmp/timinglogs folder could not be removed, as it doesn't exist.
+
+After looking around for a long time, we hypothesized that the logging function was causing it.
+
+This is how the logging function is called:
+
+```
+doSomething() =>
+logging()
+
+doSomethingElse() =>
+logging()
+```
+
+If the doSomethingElse() function finishes very quickly (in a small test case, for example), it is possible for the second call to logging function to start before the first call has finished.
+
+The logging function does three things:
+*  Step 1. Gather the info from all of the files in the tmp/timinglog directory
+* Step 2. Save this information in the permanent Timing.log file located in the output/deliverables folder
+* Step 3. Delete the original files that were gathered in the tmp/timinglog directory
+
+This means that the second call could gather the names of files in Step 1 before the first call has finished successfully deleted all of the files it was supposed to handle in its Step 3. But eventually one of the functions will finish Step 3. After this, when the other function call gets to its Step 3, the files that it is supposed to delete no longer exist, and a fatal error occurs.
+
+To try and fix this, I am going to add a 'void' output to the logging() function, and make sure that all calls to logging have to be waited on before moving on to the next step.
+
+We'll see if it works",jacobrh91,https://github.com/ncsa/Swift-T-Variant-Calling/issues/39

@@ -1,0 +1,120 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHAqrL85Xls7q,Baldur Installation,CLOSED,2022-11-30T11:45:31Z,2022-11-30T16:32:40Z,2022-11-30T12:28:28Z,"Hi,
+
+I would like to know if you had a solution regarding the following issue I've met during the installation step of the Baldur software : 
+
+```
+Compiling baldur v1.1.9 (/usr/bin/htslib-1.14/baldur)
+error[E0308]: mismatched types
+   --> src/cli.rs:538:24
+    |
+538 |    let hts = Hts::open(input, ""r"")?;
+    |                        ^^^^^ expected enum `Option`, found `&str`
+    |
+    = note:   expected enum `Option<_>`
+            found reference `&str`
+help: try wrapping the expression in `Some`
+    |
+538 |    let hts = Hts::open(Some(input), ""r"")?;
+    |                        +++++     +
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `baldur` due to previous error
+FATAL:   While performing build: while running engine: exit status 101
+```
+
+Have you already met this issue?
+
+Best regards,
+Boris",Lipinski-B,https://github.com/heathsc/baldur/issues/1
+I_kwDOHAqrL85hWccS,"Get error when running "" cargo build --release""",CLOSED,2023-03-21T05:51:37Z,2023-03-21T10:20:32Z,2023-03-21T10:20:31Z,"hi heathsc,
+    I get the error as below pic, when I run the command of ""cargo build --release"". Thank you very much!
+![image](https://user-images.githubusercontent.com/47717534/226528207-c780bdc0-b16e-46ab-89e7-2314d30289ba.png)
+",willow2333,https://github.com/heathsc/baldur/issues/2
+I_kwDOHAqrL85lLwcJ,"Error:""  No contigs read in from reference file /mnt/d/DataNanoPore/reference/mtDNA_sequence.fasta",OPEN,2023-05-05T12:58:53Z,2023-05-05T12:58:53Z,,"hello, seems like something wrong, 
+I've used the mtDNA_Sequence.fasta as a reference file, downloaded from NCBI. However I'm stuck there. What is wrong? 
+ ""  $baldur --rs-list $ref/bed_chr_MT.bed.gz -q10 -Q7 -M30 -T $ref/mtDNA_sequence.fasta -o $out/MT1_1 $sam/saMT1.sort.bam "" (my code)",malcom23,https://github.com/heathsc/baldur/issues/3
+I_kwDOHAqrL86DIEj0,Large deletions issue,OPEN,2024-03-21T11:31:02Z,2024-03-21T11:31:56Z,,"Hello,
+
+When I launch : 
+```
+baldur -Q15 -T MT.fa barcode65.bam -o barcode65 -l debug
+```
+I get this error : 
+```
+DEBUG - Checking for large deletions
+thread 'main' panicked at 'assertion failed: x <= y', src/detailed_align.rs:142:7
+stack backtrace:
+   0:     0x55e7c8c75bff - std::backtrace_rs::backtrace::libunwind::trace::hf4179216f2af7039
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/../../backtrace/src/backtrace/libunwind.rs:93:5
+   1:     0x55e7c8c75bff - std::backtrace_rs::backtrace::trace_unsynchronized::hfa14eb12e4b8ce4f
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/../../backtrace/src/backtrace/mod.rs:66:5
+   2:     0x55e7c8c75bff - std::sys_common::backtrace::_print_fmt::hc81cbee2043ec868
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/sys_common/backtrace.rs:65:5
+   3:     0x55e7c8c75bff - <std::sys_common::backtrace::_print::DisplayBacktrace as core::fmt::Display>::fmt::h7b2be2009a6bcba2
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/sys_common/backtrace.rs:44:22
+   4:     0x55e7c8c94a8e - core::fmt::write::hccee7882499b620f
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/core/src/fmt/mod.rs:1209:17
+   5:     0x55e7c8c59f15 - std::io::Write::write_fmt::h69e1f37bb24a9f49
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/io/mod.rs:1682:15
+   6:     0x55e7c8c759b5 - std::sys_common::backtrace::_print::h86df92192f156e4c
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/sys_common/backtrace.rs:47:5
+   7:     0x55e7c8c759b5 - std::sys_common::backtrace::print::h3b76d5113eea7ae3
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/sys_common/backtrace.rs:34:9
+   8:     0x55e7c8c6326f - std::panicking::default_hook::{{closure}}::h634bc187e8e58de8
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:267:22
+   9:     0x55e7c8c62f28 - std::panicking::default_hook::h262aef5e4abfc826
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:286:9
+  10:     0x55e7c8c6387b - std::panicking::rust_panic_with_hook::hedb8a8e4067bf251
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:688:13
+  11:     0x55e7c8c75f11 - std::panicking::begin_panic_handler::{{closure}}::hf501de419c9dcde3
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:577:13
+  12:     0x55e7c8c75d4c - std::sys_common::backtrace::__rust_end_short_backtrace::h8542e72ad556a307
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/sys_common/backtrace.rs:137:18
+  13:     0x55e7c8c63422 - rust_begin_unwind
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:575:5
+  14:     0x55e7c8b27b93 - core::panicking::panic_fmt::h1688e859668ba1d0
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/core/src/panicking.rs:65:14
+  15:     0x55e7c8b27c6d - core::panicking::panic::h7bf13e634a0cf963
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/core/src/panicking.rs:115:5
+  16:     0x55e7c8b464b4 - baldur::detailed_align::DetailedAlign::extract_deletion_allele::h5eb7418fc11141b0
+  17:     0x55e7c8b34d9e - baldur::alleles::get_large_deletions::ha8b5025b673a36ef
+  18:     0x55e7c8b39a47 - baldur::freq::process_large_deletions::hea53e9a0d85cbaad
+  19:     0x55e7c8b5b8f2 - baldur::process::process_data::ha94482edb3528c10
+  20:     0x55e7c8b32a62 - baldur::main::hf2c4e88ca612d5e1
+  21:     0x55e7c8b55223 - std::sys_common::backtrace::__rust_begin_short_backtrace::h1590c2d40f6670d8
+  22:     0x55e7c8b2fe5d - std::rt::lang_start::{{closure}}::h88ed8073088a32ed
+  23:     0x55e7c8c58cb4 - core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once::h37feed43940ccfab
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/core/src/ops/function.rs:286:13
+  24:     0x55e7c8c58cb4 - std::panicking::try::do_call::h8fe1ed7bdb58d0f5
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:483:40
+  25:     0x55e7c8c58cb4 - std::panicking::try::h87c3f91ef362d0ca
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:447:19
+  26:     0x55e7c8c58cb4 - std::panic::catch_unwind::hd6a68686ac8f53ed
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panic.rs:137:14
+  27:     0x55e7c8c58cb4 - std::rt::lang_start_internal::{{closure}}::hdc22961783632ef0
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/rt.rs:148:48
+  28:     0x55e7c8c58cb4 - std::panicking::try::do_call::h92fd045c6d8aed83
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:483:40
+  29:     0x55e7c8c58cb4 - std::panicking::try::haa1526bc83feb2c9
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panicking.rs:447:19
+  30:     0x55e7c8c58cb4 - std::panic::catch_unwind::hb3d0e1586c57c804
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/panic.rs:137:14
+  31:     0x55e7c8c58cb4 - std::rt::lang_start_internal::hed890805d128cbd3
+                               at /build/rustc-ujz1Py/rustc-1.66.1+dfsg0ubuntu1/library/std/src/rt.rs:148:20
+  32:     0x55e7c8b32aa5 - main
+  33:     0x7ff671b57d90 - <unknown>
+  34:     0x7ff671b57e40 - __libc_start_main
+  35:     0x55e7c8b27f35 - _start
+  36:                0x0 - <unknown>
+```
+
+Please, can you tell me why, and do you have a solution?
+
+Manny thanks in advance.
+Best regards,
+Boris",Lipinski-B,https://github.com/heathsc/baldur/issues/4
+I_kwDOHAqrL86jixQ_,bam file problem,OPEN,2024-12-17T02:46:10Z,2024-12-17T02:48:29Z,,"The BAM file generated from whole genome alignment; it will freeze without any error message, as shown in the image below:
+
+![image](https://github.com/user-attachments/assets/605c400a-24f9-4222-b57c-5c3fdada4ba3)
+",lihaicheng7003,https://github.com/heathsc/baldur/issues/5

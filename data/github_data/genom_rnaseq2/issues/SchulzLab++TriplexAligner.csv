@@ -1,0 +1,26 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHI0X6c5pH5WA,Query,OPEN,2023-06-19T14:33:47Z,2023-06-19T14:33:47Z,,"Hi, allow me to just say first of all that this is an excellent piece of computational work, and a really good and insightful program to be offering up. The fact that it has been implemented in R makes it even more useful. A couple of quick questions: is there any way to run it against a longer list of DNA targets (or if not, what is the maximum number it can be used on?)? Secondly, is it possible to use it just to search for potential triplex forming sites in an RNA transcript without the DNA input? I can just use other programs for this purpose, but the fact that it is easily integrated into broader R functions makes TriplexAligner much more useful for my purposes.",iorilondon,https://github.com/SchulzLab/TriplexAligner/issues/1
+I_kwDOHI0X6c6LjLsg,pairwiseAlignment moved from Biostrings to pwalign (in BioC 3.21),OPEN,2024-06-07T22:41:58Z,2024-06-07T22:44:25Z,,"### *TLDR: Biostrings removed pairwiseAlignment method and the method is moved to pwalign*
+
+
+
+
+> **pwalign** contains the `pairwiseAlignment`-related stuff taken from **Biostrings**. The plan is to deprecate this stuff in **Biostrings** (in BioC 3.19), and to redirect the user to the stuff that is now in **pwalign**. Then to defunct it in **Biostrings** (in BioC 3.20), and to finally remove it from **Biostrings** (in BioC 3.21).
+> 
+> The motivations for this split are:
+> - **Biostrings** is too big and hard to maintain. In particular, the `pairwiseAlignments`-related stuff in it adds a lot of complexity to the package (via additional specialized classes, generics, and methods, and a lot of complex C code to support them). This split will make **Biostrings** about 20% smaller. This in turn will make its maintenance easier and will also make `R CMD check` slightly faster.
+> - About 500 Bioconductor packages depend on **Biostrings**. However, very few of them need the `pairwiseAlignment` functionality. So this split won't affect most of **Biostrings** revdeps. However they will now depend on a lighter  **Biostrings** that will be slightly faster to install (faster to download, compile, and load).
+> - Separation of responsibilities: The plan is for Aidan Lakshman (@ahl27) to take over maintenance of **Biostrings** in the near future while I'll remain the maintainer of **pwalign**. This split will remove the burden of maintaining the `pairwiseAlignment`-related stuff from Aidan's plate.
+> 
+> H.
+> 
+> _Originally posted by @hpages in https://github.com/Bioconductor/Contributions/issues/3361#issuecomment-2013201207_",kankenny,https://github.com/SchulzLab/TriplexAligner/issues/3
+I_kwDOHI0X6c6bnB5P,Output file without 'DNA_name',OPEN,2024-10-24T07:16:48Z,2024-11-15T10:24:14Z,,"Hallo, 
+
+I'm running the tool using my list of lncRNA and the human promoter sequences. I use for RNA and DNA input a fasta file and after the run my output only has the column RNA_name but not the DNA_name. I fund the bug in the ""align_tx_against_dna.R"" script where the DNA_name is define as 'dna_aln$DNA_name = dna$meta$Symbol[dna_index]'. If anybody is working with fasta file as DNA input will not be able to have the colmun DNA_nam, it should be define as: ""dna_aln$DNA_name = names(dna$sequences)[dna_index]"".
+
+this is the output
+output (just a few lines):
+`""TxStart"",""TxEnd"",""TxSeq"",""DNAStart"",""DNAEnd"",""DNASeq"",""Score"",""BitScore"",""EValue"",""logE"",""Code"",""RNA_name"",""TxStart.1"",""TxEnd.1"",""TxSeq.1"",""DNAStart.1"",""DNAEnd.1"",""DNASeq.1"",""Score.1"",""BitScore.1"",""EValue.1"",""logE.1"",""Code.1"",""RNA_name.1"",""TxStart.2"",""TxEnd.2"",""TxSeq.2"",""DNAStart.2"",""DNAEnd.2"",""DNASeq.2"",""Score.2"",""BitScore.2"",""EValue.2"",""logE.2"",""Code.2"",""RNA_name.2"",""TxStart.3"",""TxEnd.3"",""TxSeq.3"",""DNAStart.3"",""DNAEnd.3"",""DNASeq.3"",""Score.3"",""BitScore.3"",""EValue.3"",""logE.3"",""Code.3"",""RNA_name.3""
+503,557,""UUGUUGAUUAUAUGUUUCUUCAACUUAGUGGCAUUAAACAGAUUUGGGUUUUCU"",902,956,""GAGGCGGGGCCGAGAGCCGGGGGCGGGGCCCGGACGGGGGCGGGCCCGCGGTGA"",55.7600135803223,30.1008948008301,9077.55305232729,-3.95796879575796,""Code 1"",""HR1_s"",503,557,""UUGUUGAUUAUAUGUUUCUUCAACUUAGUGGCAUUAAACAGAUUUGGGUUUUCU"",902,956,""GAGGCGGGGCCGAGAGCCGGGGGCGGGGCCCGGACGGGGGCGGGCCCGCGGTGA"",55.7600135803223,30.1008948008301,9077.55305232729,-3.95796879575796,""Code 1"",""HR1_s"",503,557,""UUGUUGAUUAUAUGUUUCUUCAACUUAGUGGCAUUAAACAGAUUUGGGUUUUCU"",902,956,""GAGGCGGGGCCGAGAGCCGGGGGCGGGGCCCGGACGGGGGCGGGCCCGCGGTGA"",55.7600135803223,30.1008948008301,9077.55305232729,-3.95796879575796,""Code 1"",""HR1_s"",503,557,""UUGUUGAUUAUAUGUUUCUUCAACUUAGUGGCAUUAAACAGAUUUGGGUUUUCU"",902,956,""GAGGCGGGGCCGAGAGCCGGGGGCGGGGCCCGGACGGGGGCGGGCCCGCGGTGA"",55.7600135803223,30.1008948008301,9077.55305232729,-3.95796879575796,""Code 1"",""HR1_s""
+`",laurafabre,https://github.com/SchulzLab/TriplexAligner/issues/4

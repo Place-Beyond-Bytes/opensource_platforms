@@ -1,0 +1,161 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHcU4BM5XNzLb,Enter the pipeline at step 3 (detect and remove chimeric reads),CLOSED,2022-11-24T11:59:11Z,2024-08-29T13:39:41Z,2024-08-29T13:39:40Z,"### Description of feature
+
+When already having CCS consensus reads cleaned from primer sequences and no raw subreads, it would be very helpful to have an option to enter the pipeline at step 3 (detect and remove chimeric reads).",reginabohnert,https://github.com/nf-core/isoseq/issues/10
+I_kwDOHcU4BM5qOPXM,Conversion from subreads.fastq.gz  to subreads.bam,OPEN,2023-06-30T08:28:00Z,2024-04-23T11:20:32Z,,"### Description of feature
+
+I have downloaded subreads.fastq.gz file from SRR. I have tried Picard, sam-dump, reformat.sh to convert to unaligned.subreads.bam file so that I can run CCS.
+However, seems like none of the tools perfectly convert subreads.fastq to subreads.bam for Pacbio Iso-seq bam format.
+Is there any suggestion to convert fastq to bam so that it is compatible to CCS?",LEESojung1998,https://github.com/nf-core/isoseq/issues/16
+I_kwDOHcU4BM5r1UZq,Transcript annotation with gene names,OPEN,2023-07-18T05:23:11Z,2023-07-18T05:23:11Z,,"### Description of feature
+
+First, thanks for sharing this wonderful resource! 
+
+While the pipeline did not produce any major errors (though it appeared it was using more memory than assigned using parameters), it seems that GSTAMA did not annotate with actual gene names or other easily interpretable metrics (e.g. exons). It would be great if you could include in the pipeline additional modules to do that 
+or at least suggest steps for post-processing the pipelines output to do so. 
+For example, would you recommend to proceed with 'pigeon classify' and 'pigeon filter' from iso-seq or other alternatives?
+Advice towards final isoform visualization would be also highly appreciated
+
+Thank you again,
+Asta",astulaaa,https://github.com/nf-core/isoseq/issues/18
+I_kwDOHcU4BM56ac6R,fastq2bam convert,OPEN,2023-12-22T10:58:19Z,2023-12-22T10:58:19Z,,"### Description of feature
+
+Hi!  I have the same questions as [LEESojung1998](https://github.com/LEESojung1998) mentioned above that fastq.gz cannot be converted into subreads.bam files and I can't even distinguish whether the fastq files are subreads or ccs reads, can I get some help? 
+the SRR id is [SRR17180608](https://trace.ncbi.nlm.nih.gov/Traces/sra?run=SRR17180608) to SRR17180617
+
+Lots of thanks.",Kratos12138,https://github.com/nf-core/isoseq/issues/22
+I_kwDOHcU4BM6AE5fK,URGENT: pin nf-validation version,CLOSED,2024-02-22T10:46:30Z,2024-08-29T13:35:55Z,2024-08-29T13:35:54Z,"### Description of the bug
+
+To prevent breaking this pipeline in the near future, the nf-validation version should be pinned to version 1.1.3 like:
+
+```
+plugins {
+    id 'nf-validation@1.1.3'
+}
+```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nvnieuwk,https://github.com/nf-core/isoseq/issues/25
+I_kwDOHcU4BM6CTEYD,Error using test profile,CLOSED,2024-03-14T10:49:38Z,2024-08-29T13:38:13Z,2024-08-29T13:38:13Z,"### Description of the bug
+
+Hi,
+
+When I tried to run the test profile provided from nf-core the pipeline crashed in the ISOSEQ3_REFINE process. Command exit status 139 and the command error was this:
+`.command.sh: line 8:    38 Segmentation fault      isoseq3 refine -j 2 alz.chunk3_flnc.NEB_5p--NEB_Clontech_3p.bam primers.fasta alz.chunk3.bam`
+
+The nexflow logfile is added as a file. 
+
+I tried running the command provided below, using the containers singularity and conda. Both encountered the exact same issue. 
+
+`nextflow run nf-core/isoseq -profile test,singularity --outdir /exports/sascstudent/yezegers/results/test/isoseq `
+
+I hope this helps to locate the issue.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+[nextflow_log_isoseq.txt](https://github.com/nf-core/isoseq/files/14601010/nextflow_log_isoseq.txt)
+
+
+### System information
+
+I'm using the newest version of nextflow:
+```
+N E X T F L O W
+      version 23.10.1 build 5891
+      created 12-01-2024 22:01 UTC (23:01 CEST)
+      cite doi:10.1038/nbt.3820
+      http://nextflow.io
+```
+
+",youpze,https://github.com/nf-core/isoseq/issues/27
+I_kwDOHcU4BM6efQkd,Typo in readme and https://nf-co.re/isoseq/2.0.0/ : CSS ==> CCS,OPEN,2024-11-14T14:34:00Z,2024-11-14T14:35:53Z,,"### Description of the bug
+
+Typo in readme and https://nf-co.re/isoseq/2.0.0/ : CSS ==> CCS
+
+Change:
+```
+Generates the Circular Consensus Sequences (CSS)
+```
+To:
+```
+Generates the Circular Consensus Sequences (CCS)
+```
+
+And in the picture:
+```gene models cleanning``` ==> ```gene models cleaning```
+",ghuls,https://github.com/nf-core/isoseq/issues/36
+I_kwDOHcU4BM6hNuJD,GSTAMA_COLLAPSE error - ref_allele = fasta_dict[scaffold][var_pos] IndexError: list index out of range,OPEN,2024-11-29T10:45:02Z,2024-12-03T07:52:04Z,,"### Description of the bug
+
+Dear all, 
+Thank you for your work and the pipeline.
+I am running your isoseq nf pipeline on PacBio reads.
+I am getting an error during tama::collapse step. 
+I have attached the nexflow.log and a snapshot of the work directory containing the command and output files generated before crashing.
+Thank you for your help on this and please let me know if you need more info.
+Jonathan
+
+
+### Command used and terminal output
+
+```console
+Nextflow command:
+nextflow run nf-core/isoseq  \
+    --input samplesheet_${RUNID}.csv \
+    --primers primers.fa \
+    --outdir isoseq_out_ultra \
+    --fasta GRCh38.primary_assembly.genome.fa \
+    --gtf gencode.v45.annotation.gtf \
+    --entrypoint map \
+    --aligner ultra \
+    -profile standard
+
+Error:
+[...]
+  ['transcript/4446740']
+  Read mapping off scaffold
+  chrM : -107
+  ['transcript/4797600']
+  Read mapping off scaffold
+  chrM : -61
+  ['transcript/4831734']
+  Read mapping off scaffold
+  chrM : -15
+  ['transcript/4846452']
+Command error:
+  Traceback (most recent call last):
+    File ""/usr/local/bin/tama_collapse.py"", line 6228, in <module>
+      ref_allele = fasta_dict[scaffold][var_pos]
+  IndexError: list index out of range
+```
+
+### Relevant files
+
+[.nextflow.log](https://github.com/user-attachments/files/17957794/default.nextflow.log)
+[command.tar.gz](https://github.com/user-attachments/files/17989197/command.tar.gz)
+
+
+
+
+### System information
+
+Nextflow version: version 24.04.4
+Hardware: HPC
+Executor: slurm
+Container engine: Apptainer
+OS: Linux 5.15.0-124-generic
+Version of nf-core/isoseq: v2.0.0
+
+",jlandry69,https://github.com/nf-core/isoseq/issues/37

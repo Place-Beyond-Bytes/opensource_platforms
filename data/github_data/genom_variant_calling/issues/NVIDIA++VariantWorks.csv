@@ -1,0 +1,475 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1ODMzMTYzODg=,[vw] Use pySAM correctly in pileup_generator,CLOSED,2020-03-17T21:42:19Z,2020-05-11T17:26:42Z,2020-03-19T16:58:24Z,Update pileup_generator function to use pySAM for generating pileup encodings based on chromosome and position,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/1
+MDU6SXNzdWU1ODMzMTkyMjg=,[vw] Load training/eval/test dataset from VCF files,CLOSED,2020-03-17T21:48:36Z,2020-05-11T17:26:42Z,2020-04-10T01:59:35Z,"Use VCF files to load training, eval and test datasets instead of using a custom CSV format.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/2
+MDU6SXNzdWU1ODMzMjA3NzM=,[vw] Output predictions into VCF file,CLOSED,2020-03-17T21:51:55Z,2020-05-31T16:05:53Z,2020-05-31T16:05:53Z,Output the inference results into a VCF file so it can be consumed by downstream steps for evaluation.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/3
+MDU6SXNzdWU1ODQ1MDcwMDg=,[vw] Add support for multiple BAM files in data loading,CLOSED,2020-03-19T15:44:28Z,2020-05-11T17:26:42Z,2020-05-11T05:18:58Z,,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/5
+MDU6SXNzdWU1ODQ1MDc4MDM=,[vw] Support creating an arbitrary number of channels in pileup generator,CLOSED,2020-03-19T15:45:37Z,2020-05-11T17:28:34Z,2020-05-11T17:28:34Z,"Pass in a list of channels, and then automatically query those channels from BAM file and add to the pileup",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/6
+MDU6SXNzdWU1OTc2NTE0MjM=,[eval] add proper logging of evaluation metrics in sample VC test,CLOSED,2020-04-10T02:01:49Z,2020-05-27T02:49:20Z,2020-05-27T02:49:20Z,use NeMo EvaluationCallback to log evaluation metrics like accuracy after each epoch,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/9
+MDU6SXNzdWU1OTc2NTI2MjU=,[dataset] Abstract label generator into separate API,CLOSED,2020-04-10T02:05:52Z,2020-05-11T17:27:56Z,2020-05-11T17:27:56Z,"Move VCF reader into an abstract base class for label loader which gets passed into dataset. the abstract class must expose chrom, pos, ref/var allelel, variant type as members",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/10
+MDU6SXNzdWU1OTc2NTMwNDU=,[dataset] create abstract class for pileup encoder,CLOSED,2020-04-10T02:07:20Z,2020-05-11T17:26:42Z,2020-05-10T00:44:48Z,Add abstract class for pileup encoder and inherit SnpEncoder class from ABC,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/11
+MDU6SXNzdWU2MTU0NTI5MzI=,[encoder] make encodings configurable,CLOSED,2020-05-10T18:52:49Z,2020-05-11T17:26:43Z,2020-05-11T04:50:55Z,"accept ""layers"" for encoding, with each layer having an enum to choose the data type, custom encoding of bases, any noise addition, etc",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/14
+MDU6SXNzdWU2MTU1MTYyNDU=,[label_loader] improve filtering framework,OPEN,2020-05-11T00:52:34Z,2020-08-04T14:44:03Z,,"The label loader currently has a make shift filtering framework making use if conditionals to check each variant candidate. However, this is error prone and could lead to some filters being ignored especially when classes are inherited. Feature request is to improve the filter management framework so it is more robust.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/16
+MDU6SXNzdWU2MTU1ODU3ODM=,[label_loader] vcf and bam file input arguments,CLOSED,2020-05-11T04:52:57Z,2020-05-13T15:05:21Z,2020-05-13T15:01:06Z,The VCF and BAM files need to be passed into the `VCFLabelLoader` class through a reasonable API that keeps corresponding VCF/BAM files together. Right now they're just passed in as a bunch of lists through positional arguments. Fix this so it's a cleaner and more intuitive API.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/18
+MDU6SXNzdWU2MTU1ODY3MDE=,[encoder] checking available channels for encoding,CLOSED,2020-05-11T04:55:28Z,2020-05-12T05:48:16Z,2020-05-12T05:48:16Z,"Improve the `channels` API in encoder to be safer and more extensible. The channels functionality in the encoder should allow for the following - 
+
+1. check if requested channel encodings are available
+2. easily add new channel encodings",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/19
+MDU6SXNzdWU2MTU1ODg5NjI=,[encoding] add support to encode labels,CLOSED,2020-05-11T05:02:13Z,2020-05-12T05:19:56Z,2020-05-12T05:19:24Z,"Labels are presently being ""encoded"" in the label generator, decoupled from the actual input encoder. Consider a better structure for encoding the labels.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/20
+MDU6SXNzdWU2MTU1OTAxNjI=,[encoding] add reference and variant proposal encoding layer,CLOSED,2020-05-11T05:05:51Z,2020-05-26T17:52:53Z,2020-05-26T17:52:53Z,"add a new layer for encoding reference, and add an implementation to the `PileupEncoder`",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/21
+MDU6SXNzdWU2MTU1OTEwODI=,[dataset] remove variant allele output,CLOSED,2020-05-11T05:08:25Z,2020-05-11T23:45:44Z,2020-05-11T23:45:44Z,"Remove variant allele as a prediction target for now. This is more appropriate for consensus calling type jobs, which will be added later. For predicting variant zygosity for an example, only a single output is sufficient. however this needs a reference and variant proposal encoding to be added to the input (as described in #21 )",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/22
+MDU6SXNzdWU2MTU1OTgxNTU=,[trainer] add wrapper function for training,CLOSED,2020-05-11T05:27:12Z,2020-05-12T05:24:48Z,2020-05-12T05:24:48Z,"add a wrapper function for training that hides the `nemo` specific setup and only requires the label generator, encoder and network to be passed in from the user",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/24
+MDU6SXNzdWU2MTU1OTk3NDM=,[visualizer] add visualization module for encodings,CLOSED,2020-05-11T05:30:59Z,2020-08-07T21:47:42Z,2020-08-07T21:47:42Z,It's usually very helpful to visualize encodings when debugging code or examples that are not categorized by the network correctly. the visualizer should be able to take a list of encodings and output png or some other rendering for the user.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/25
+MDU6SXNzdWU2MTU2MDA0MjE=,[visualization] dump visualizations for least confident samples,OPEN,2020-05-11T05:32:41Z,2020-05-11T05:32:41Z,,"for a given training batch, find the least confident predictions by the network and dump their visualizations for inspection. number of last confident predictions to be dumped per epoch should be user configurale",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/26
+MDU6SXNzdWU2MTU2MDE3NTQ=,[CI] add CI support for repo,CLOSED,2020-05-11T05:36:11Z,2020-06-04T06:07:33Z,2020-06-04T06:07:33Z,enable testing VariantWorks in gpuCI,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/27
+MDU6SXNzdWU2MTU2MDIwMzQ=,[sdk] linting and documentation check,CLOSED,2020-05-11T05:36:56Z,2020-06-06T22:23:18Z,2020-06-06T22:23:18Z,add checks for linting and docstring to the repo as we prepare for initial code release,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/28
+MDU6SXNzdWU2MTU5NjYyNjE=,"[encoder] remove depth, height and width as abstractmethods",CLOSED,2020-05-11T15:16:59Z,2020-05-11T23:22:35Z,2020-05-11T23:22:35Z,"depth, width and height are only applicable to images. keep the sizes as abstract method since it applies to all encodings",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/29
+MDU6SXNzdWU2MTYyNTk1MDU=,[trainer] serialize trained models,CLOSED,2020-05-11T23:48:27Z,2020-05-26T23:40:01Z,2020-05-26T23:40:01Z,add support for serializing and saving model checkpoints which can be loaded later for inference,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/32
+MDU6SXNzdWU2MTYyNjAwMDg=,[confing] add configuration management for training/inference,OPEN,2020-05-11T23:50:06Z,2020-05-28T19:10:07Z,,control training/inference through config files. borrow the config file setup used in examples in https://github.com/NVIDIA/NeMo so they can be easily integrated with the underlying framework,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/33
+MDU6SXNzdWU2MTYzNjk4ODU=,[inference] add inference DAG,CLOSED,2020-05-12T05:25:56Z,2020-05-15T06:09:25Z,2020-05-15T06:09:25Z,add DAG for running inference for SNP model training. Structure should be similar to the training.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/35
+MDU6SXNzdWU2MTgzOTUzMzk=,[label_loader] remove filtering from 0.1.0 release,CLOSED,2020-05-14T17:01:15Z,2020-05-19T13:53:14Z,2020-05-19T13:53:14Z,"1. remove the ad hoc filtering frameworks support from label loader
+2. add checks to only allow single sample, single allele, SNP variants in initial release",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/40
+MDU6SXNzdWU2MTg3MjI4NTU=,[tests] remove test_simple_vc test,CLOSED,2020-05-15T06:07:41Z,2020-06-04T15:07:12Z,2020-06-04T15:07:12Z,"the `test_simple_vc.py` file has more integration ""tests"" that only run a NeMo DAG but don't check for correctness. Think of a better place to put these integration type tests.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/41
+MDU6SXNzdWU2MjAyODA2MjU=,[scaling] test training and inference pipeline for larger datasets,CLOSED,2020-05-18T15:00:15Z,2020-06-04T06:09:03Z,2020-06-04T06:09:02Z,Run training and inference on larger VCF/BAM file to test for scalability and correctness.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/43
+MDU6SXNzdWU2MjAzMTg3MjM=,[types] convert variant namedtuple to dataclass,CLOSED,2020-05-18T15:51:35Z,2020-05-19T13:59:37Z,2020-05-19T13:59:37Z,"Change variant named tuple to be a dataclass with more variant specific fields such as format, info, etc. This will be useful in filtering as well as outputing variant records to a VCF file after inference",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/44
+MDU6SXNzdWU2MjM5NTU0NjU=,[label_encoder] add decoding function,CLOSED,2020-05-24T22:05:32Z,2020-06-03T19:06:23Z,2020-06-03T19:06:23Z,Augment label encoding classes to expose both encoding and decoding functions to go from class -> encoding and vice versa,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/48
+MDU6SXNzdWU2MjY2OTE2MTQ=,[vcf_writer] add zygosity probability to INFO column,OPEN,2020-05-28T17:39:00Z,2020-08-04T14:43:43Z,,"We want to add details of network output to each variant row in the VCF. One suggestion is to store the softmax outputs for each zygosity type in the INFO column, like this
+
+```
+INFO
+DP=aaa;AF=0.234234;HOMO_VAR=0.95;HETERO_VAR=0.05;NO_VAR=0.0
+```",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/52
+MDU6SXNzdWU2MjY3NDM3MDk=,[docs] add type info to APIs,OPEN,2020-05-28T19:07:46Z,2020-06-08T21:43:46Z,,python 3 support type info for function signatures. add type info across all APIs to improve overall documentation.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/53
+MDU6SXNzdWU2MjY3NzI2ODQ=,[sample] add simple variant caller sample,CLOSED,2020-05-28T19:53:20Z,2020-06-04T16:19:00Z,2020-06-04T16:19:00Z,"Exemplify how to use the `VariantWorks` example in a simple sample variant caller program. Add documentation explaining the steps, and make it into a simple program for training/inferring.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/54
+MDU6SXNzdWU2Mjc1OTI2MTA=,[logging] add logger to VariantWorks,OPEN,2020-05-29T23:16:47Z,2020-06-08T21:44:11Z,,Logging is quite abysmal in VariantWorks right now. We need each module to be able to log information clearly. ,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/55
+MDU6SXNzdWU2Mjg0NTg3MDY=,[tests] MockPyVCFReader test exposes underlying implementation details,CLOSED,2020-06-01T13:58:45Z,2020-06-16T18:34:10Z,2020-06-16T18:34:10Z,The `MockPyVCFReader` functions in the `VCFReader` tests exposes underlying details of how the VCF reader is implemented since it overloads the pyvcf `__init__` function. This should be hidden from the public tests as tests should be agnostic of implementation itself.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/57
+MDU6SXNzdWU2MjkxOTkxOTk=,[docs] add documentation for VariantWorks v0.1.0,CLOSED,2020-06-02T13:22:26Z,2020-06-04T06:05:54Z,2020-06-04T06:05:54Z,"Add sphinx based documentation for variant works sdk. This includes the following - 
+1. api docs for core modules
+2. introduction document
+3. explanation of VariantWorks structure
+4. introduction to sample",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/60
+MDU6SXNzdWU2MzIwODg2MDg=,[dataloader] add an HDF5 data loader,CLOSED,2020-06-06T00:26:49Z,2020-06-08T19:40:33Z,2020-06-08T19:40:33Z,"Add an HDF5 based data loader for pileups. This can be useful in pre-saving pileups into an HDF5 so that they don't need to be generated online during training/evaluation which is a slow process.
+
+Add relevant tests.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/69
+MDU6SXNzdWU2MzIwOTA2NTg=,[samples] add sample to show usage of HDF5 for storing encodings,CLOSED,2020-06-06T00:29:17Z,2020-06-08T19:40:33Z,2020-06-08T19:40:33Z,"1. add sample to serialize encodings to hdf5 format
+2. add relevant updates to training sample to showcase how to leverage hdf5 datasets",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/70
+MDU6SXNzdWU2MzQ3NzAyMDc=,[data loader] add tests for data loader implementations,OPEN,2020-06-08T16:42:12Z,2020-08-04T14:43:25Z,,Add tests for the VCF and HDF data loader for read pileup,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/73
+MDU6SXNzdWU2MzQ5NTQwNDE=,[pileup_encoder] add encoding for indels,CLOSED,2020-06-08T21:42:43Z,2020-07-20T14:10:05Z,2020-07-20T14:10:05Z,"encode indels into pileup tensor following same principle as for SNPs.
+
+i.e. keeping the variant location of interest at the center of the pileup",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/77
+MDU6SXNzdWU2MzkyNDcyMDY=,[io] load vcf entries into data frame,CLOSED,2020-06-15T23:18:16Z,2020-08-06T18:28:04Z,2020-08-06T18:28:04Z,"Load the VCF entries into a dataframe instead of the `Variant` data class. For existing functionality this doesn't change anything, but opens up possibilities for using the dataframes in more interesting ways in the future.
+
+Assigning @edawson to put up initial set of columns for variant dataframe",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/79
+MDU6SXNzdWU2NDMwODU0MzU=,[sample_encoding] add multi sample support,OPEN,2020-06-22T13:45:31Z,2020-08-04T14:43:03Z,,"Multi sample support is useful for many uses in variant calling -
+1. somatic calling uses tumor/normal calling
+2. population calling can benefit from common mutations across samples to filter novel mutations from common alleles in the population
+
+Key thing required here is being able to generate encodings for all samples for a single variant and compose them into a single or multiple blocks as outputs",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/83
+MDU6SXNzdWU2NDkyNzA1NTk=,[pileup_encoder] encoder layer configurability,OPEN,2020-07-01T19:45:23Z,2020-08-04T14:42:50Z,,"As we describe the ""layers"" (better name TBD) for each encoding, it becomes important to allow for configurability of layers themselves, e.g. user defined normalization values, user defined clipping, etc",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/85
+MDU6SXNzdWU2NTAyMTczNDA=,[summary_encoder] add summary encoder class to generate summary statistics encodings,CLOSED,2020-07-02T21:38:36Z,2020-08-10T21:14:54Z,2020-08-10T21:14:54Z,"Create a new encoder class called `SummaryEncoder` that generates summary encodings for read pileups, instead of keeping data from each individual read.
+
+The interface to the `__call__ function can look like this - 
+`def __call__(self, region)`, where region is a type that holds the following information
+- region.pileup = path to pileup file
+- region.start_pos = start column index
+- region.end_pos = end column index
+
+This function should return a pytorch tensor that encodes this region as a summary",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/86
+MDU6SXNzdWU2Njk0MDE3Mjc=,Add haploid label encoder ,CLOSED,2020-07-31T04:34:59Z,2020-09-16T19:26:48Z,2020-09-16T19:26:48Z,"Given a pileup generated from a truth sequence aligned to the draft sequence, generate one-hot encoded labels for each pileup column. The possible labels should be one of: [A, C, G, T, deletion], in both the forward and reverse strand. Therefore, given a pileup file as input, the output labels should be of shape (num_pileup_col, 10). 
+ ",rahulmohan,https://github.com/NVIDIA/VariantWorks/issues/92
+MDU6SXNzdWU2NzIyOTQ2MTI=,"[vcfio] INFO/FORMAT field parser does not support number=""G""",CLOSED,2020-08-03T19:31:47Z,2020-08-06T18:27:10Z,2020-08-06T18:27:10Z,"When parsing a VCF from Mutect, I received the following error:
+```
+Traceback (most recent call last):
+  File ""/home/eric/anaconda3/envs/py37/lib/python3.7/multiprocessing/pool.py"", line 121, in worker
+    result = (True, func(*args, **kwds))
+  File ""/home/eric/sandbox/variantworks/variantworks/io/vcfio.py"", line 551, in _parse_vcf_cyvcf
+    if idx % chunksize == 0:
+  File ""/home/eric/sandbox/variantworks/variantworks/io/vcfio.py"", line 515, in _create_df
+    val = [None for i in range(0, self._get_normalized_count(header_number, len(alts)))]
+TypeError: can't multiply sequence by non-int of type 'NoneType'
+```
+
+Looking at the code in `get_normalized_count`, it's clear that this is because we have no case for when the VCF INFO/FORMAT number of fields is ""G"". A number of ""G"" signifies that a VCF FORMAT / INFO field has one value per genotype (Section 1.2.2 in VCF spec https://samtools.github.io/hts-specs/VCFv4.1.pdf). I'm not sure exactly how to calculate this value without also parsing the genotype tags per-line, but we should be able to do so.",edawson,https://github.com/NVIDIA/VariantWorks/issues/93
+MDU6SXNzdWU2NzI0NDczMjQ=,[vcfio] INFO column data types are not preserved,CLOSED,2020-08-04T01:56:23Z,2020-08-06T18:27:11Z,2020-08-06T18:27:11Z,"When loading a VCF (e.g., the 1000 Genomes VCF), INFO columns are read in as type ""object."" This type is propagated through any PANDAS / cuDF transformations and prevents the use of functions like `query` that are highly optimized to work on numbers.",edawson,https://github.com/NVIDIA/VariantWorks/issues/94
+MDU6SXNzdWU2NzI4NDM4MTU=,stitcher for overlapping sequence predictions,CLOSED,2020-08-04T14:37:31Z,2020-09-14T19:00:46Z,2020-09-14T19:00:46Z,"Predictions on overlapping sequences of regions often need a stitcher to put the intermediate outputs together into a final sequence. This stitching is non trivial and requires an analysis of the overlapping regions to find reasonable breaking points.
+
+Task here is to write a stitcher that can take a sequence output over 2 regions and join them together by looking at the predictions per base in the overlapping portion of the regions.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/95
+MDU6SXNzdWU2NzUyMzE4OTY=,Unite scripts under `samples` folder and the snippets in `docs/source/examples.rst`,CLOSED,2020-08-07T19:33:58Z,2020-08-27T15:22:55Z,2020-08-27T15:22:55Z,"Currently, there are two things to concern about:
+
+1.  With every change to the user API, we need to update both - the sample applications, and the snippets in the documentation which are pretty similar.  We need to find a way to embed those sample python scripts into the `.rst` files either by using the https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-download or by having a pre-step before `sphinx-build` is called which replace placeholders with each script content. 
+
+2. In addition to the unit tests, we should have a script in the root directory that executes all the samples under the samples folder (to be executed from the `/c/gpu/build.sh` script and the pre-push hook). We can test the code in the documentation by using the doctest extension: https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html
+",ohadmo,https://github.com/NVIDIA/VariantWorks/issues/99
+MDU6SXNzdWU2NzY0NTkzMjE=,[encoders] add ability to expose scalar features,OPEN,2020-08-10T22:41:18Z,2020-08-24T19:13:42Z,,"Add scalar tensors as features to the encoding along with multi dimensional tensor is often useful in development for complex pipelines. Currently the pipelines only expose image like tensors, but it should be more generic. Task is to provide capability to add scalar elements to the encoding output",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/101
+MDU6SXNzdWU2NzY0NjYyMDM=,[vcfio] update VCF writer to corretly support all columns from DF,CLOSED,2020-08-10T23:00:42Z,2020-09-17T18:35:35Z,2020-09-17T18:35:35Z,"The VCF Writer right now runs into formatting issues when handling columns that either have None/NaN values, or keys that are Flags in the header. These need to be fixed in order to complete the VCF -> DF -> VCF flow",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/102
+MDU6SXNzdWU2NzY5NTcyNzY=,[summary_encoder] insertions next to deletes,OPEN,2020-08-11T15:10:26Z,2020-08-11T15:10:26Z,,"Investigate the cases where insertions occurs next to deletion in the pileup string. For now that case is skipped, but it may make sense to flag them as errors or deal with them specially instead of ignoring them.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/104
+MDU6SXNzdWU2ODQ4OTUzODA=,[samples] add inference sample to variant caller trainer,OPEN,2020-08-24T19:02:25Z,2020-10-22T23:46:46Z,,"Add an inference script example to the `sample_snp_trainer` folder that takes in a trained model from the trainer, runs inference and writes the output to a VCF file",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/107
+MDU6SXNzdWU2ODQ4OTU5MzE=,[samples] add multi GPU support to snp caller sample,OPEN,2020-08-24T19:03:24Z,2020-08-24T19:03:24Z,,Update the snp trainer sample to showcase multi GPU training and inference usage through NeMo,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/108
+MDU6SXNzdWU2ODQ4OTcwNTc=,[samples] polishing sample code,CLOSED,2020-08-24T19:05:26Z,2020-09-19T00:04:39Z,2020-09-19T00:04:39Z,"Similar to the snp caller sample, we need to have a DL polisher sample code as well that showcases the usage of the SummaryCountEncoder APIs. The structure can be similar - 
+
+1. Have an hdf5 generator that uses the SummaryCountEncoder and corresponding label encoder
+2. Use the HDF5 data loader to load the encoded data for training/inference",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/109
+MDU6SXNzdWU2ODQ5MDA0NjE=,[samples] add test data for snp trainer,OPEN,2020-08-24T19:11:24Z,2020-08-24T19:11:24Z,,The snp trainer sample currently doesn't have any larger scale test data that can be used by users for getting started. We should add sample data that users can download and begin playing around with the frameworks.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/110
+MDU6SXNzdWU2ODQ5MDMzNzM=,[sdk] update VariantWorks installation to be based on conda,OPEN,2020-08-24T19:16:19Z,2020-08-24T19:16:19Z,,Update VariantWorks install to be based on conda so it can be more seamlessly integrated with RAPIDS dependencies.,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/112
+MDU6SXNzdWU2ODQ5MDYwNjA=,[model] reference model for consensus calling,CLOSED,2020-08-24T19:20:58Z,2020-09-17T19:46:08Z,2020-09-17T19:46:08Z,Add a reference model for DL polishing to VW reference models. ,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/113
+MDU6SXNzdWU2OTYwNzExNDU=,[I/O] Generalize HDF data loader,CLOSED,2020-09-08T18:00:49Z,2020-09-19T00:04:39Z,2020-09-19T00:04:39Z,Generalize the HDF data loader and data dumper to serialize and load any encoding type,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/116
+MDU6SXNzdWU2OTYyNDc3Njk=,[samples] reduce memory consumption of consensus aummRY encoder hdf generator,OPEN,2020-09-08T23:08:36Z,2020-09-08T23:08:36Z,,"Right now the summary encoder hd5 generator generates all the features in memory and concatenates them before dumping them to hdf5. this means all the chunnks are kept in memory at the same time, which could run into bottlenecks.
+
+This section of the code would likely need re-writing to batch the feature generation and I/O so only a subset of the chunks are kept in memory at any time.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/117
+MDU6SXNzdWU3MDU4NTI2MTc=,[I/O] HDF Data Loader not showing speedup for multi threaded,OPEN,2020-09-21T19:19:29Z,2020-09-24T19:02:46Z,,"HDF Data Loader is setup to support simultaneous loads by multiple python processes. And this functionality works as evidenced by debugging. However, the multi process support isn't leading to a speedup during training.
+
+e.g. In the consensus sample, GPU utilization sits at around 80% using both 1 and 32 threads for data loader.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/123
+MDU6SXNzdWU3MDU4NTc3MjI=,[visualization] ReadPileup visualizer to take encoding as input,OPEN,2020-09-21T19:27:57Z,2020-09-21T19:27:57Z,,"Right now the visualizer accepts a `variant` tuple as an input, but that causes the visualizer to regenerate the encoding just to visualize. This is not ideal because it takes more time and the variant tuple is not always accessible. It's better if the visualizer is able to accept the encoded tensor as an input and directly visualize that.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/124
+MDU6SXNzdWU3MTEzNTkyMDI=,[I/O] VCFReader crashes when reading from regions that are empty,OPEN,2020-09-29T18:44:42Z,2020-10-19T19:22:39Z,,"When reading a VCF and parsing a specific region, the reader can crash if that region contains no variants. This can happen if the region is truly empty or if the tabix index is invalid.
+
+The solution is probably to place a guard around the call to `concat` to check if any of the VCF dataframes are not empty:
+```
+if any([not df.empty for df in df_list]):
+  concat(df_list)
+```
+and return an empty dataframe if no concat-able datframes exist.
+
+I've placed a stacktrace here, but it's from a VCF with an invalid tabix index, so it's maybe not the best example.
+
+```
+/home/eric/vcfs/LP6005441-DNA_B01.annotated.nh.vcf.gz
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+ in 
+     10 
+     11 sgdp_pon = pon.PanelOfNormals()
+---> 12 sgdp_pon.from_vcf_list(sgdp_list, merge_columns=[""chrom"", ""start_pos"", ""end_pos"", ""ref"", ""alt""], info_keys=[""AC""], regions=[""22""], usePandas=False)
+
+~/sandbox/somatic-vc/somaticdf/pon.py in from_vcf_list(self, vcf_list, merge_columns, regions, info_keys, tags, count_variable, usePandas)
+    109         for i in range(0, len(vcf_list)):
+    110             print(vcf_list[i])
+--> 111             d = read_func(vcf_list[i], regions, tags=tags, info_keys=info_keys)
+    112 
+    113             if not d.empty:
+
+~/sandbox/somatic-vc/somaticdf/utils.py in read_vcf_to_df(vcf_file, regions, num_threads, tags, info_keys, filter_keys, format_keys, chunk_size)
+    130     Read a VCF file into a cuDF Variant DataFrame.
+    131     """"""
+--> 132     ret = cudf.DataFrame(read_vcf_to_pandas(vcf_file, regions=regions, num_threads=num_threads, tags=tags, info_keys=info_keys, filter_keys=filter_keys, format_keys=format_keys, chunk_size=chunk_size))
+    133     return ret
+    134 
+
+~/sandbox/somatic-vc/somaticdf/utils.py in read_vcf_to_pandas(vcf_file, regions, num_threads, tags, info_keys, filter_keys, format_keys, chunk_size)
+    137     Read a VCF file into a PANDAS Variant DataFrame.
+    138     """"""
+--> 139     v = VCFReader(vcf_file, regions=regions, num_threads=num_threads, tags=tags, require_genotype=False, info_keys=info_keys, format_keys=format_keys, filter_keys=filter_keys, chunksize=chunk_size)
+    140     df = v.dataframe
+    141     df = set_default_types(df)
+
+~/sandbox/somatic-vc/VariantWorks/variantworks/io/vcfio.py in __init__(self, vcf, bams, is_fp, require_genotype, tags, info_keys, filter_keys, format_keys, regions, num_threads, chunksize, sort, unbounded_val_max_cols)
+    172 
+    173         # Parse the VCF
+--> 174         self._parallel_parse_vcf()
+    175 
+    176     @property
+
+~/sandbox/somatic-vc/VariantWorks/variantworks/io/vcfio.py in _parallel_parse_vcf(self)
+    646         # Generate final DataFrame from intermediate DataFrames computed by
+    647         # individual threads.
+--> 648         self._dataframe = pd.concat(df_list, ignore_index=True)
+    649 
+    650         # Manually set strict data types of specific fields
+
+~/anaconda3/envs/ashg/lib/python3.7/site-packages/pandas/core/reshape/concat.py in concat(objs, axis, join, ignore_index, keys, levels, names, verify_integrity, sort, copy)
+    279         verify_integrity=verify_integrity,
+    280         copy=copy,
+--> 281         sort=sort,
+    282     )
+    283 
+
+~/anaconda3/envs/ashg/lib/python3.7/site-packages/pandas/core/reshape/concat.py in __init__(self, objs, axis, join, keys, levels, names, ignore_index, verify_integrity, copy, sort)
+    327 
+    328         if len(objs) == 0:
+--> 329             raise ValueError(""No objects to concatenate"")
+    330 
+    331         if keys is None:
+
+ValueError: No objects to concatenate
+```",edawson,https://github.com/NVIDIA/VariantWorks/issues/129
+MDU6SXNzdWU3MTEzNzg2MTA=,[loss] add focal loss support,CLOSED,2020-09-29T19:09:21Z,2020-11-12T20:31:49Z,2020-11-12T20:31:49Z,focal loss has shown to improve convergence on skewed distribution datasets. it should be applicable broadly to almost all use cases in genomics. we should add focal loss supported cross entropy to VW loss functions list. https://arxiv.org/abs/1708.02002,tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/130
+MDU6SXNzdWU3MTQ5NTY4Mjk=,[model] add quality score output for consensus pipeline,CLOSED,2020-10-05T15:47:30Z,2020-10-19T13:01:11Z,2020-10-19T13:01:11Z,"Currently the consensus pipeline inference script only generates the consensus sequence as a fasta. however, it would be helpful to generate a quality score for the sequence as well, and output it into a fastq file.
+
+we can start with using the softmax output of the selected class as a basis qv score calculation.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/131
+MDU6SXNzdWU3MTQ5NjA1OTU=,[encoder] support latest samtools mpileup for summary encoder,OPEN,2020-10-05T15:52:24Z,2020-10-05T15:52:24Z,,"the summary encoder currently only accepts pileup formats from samtools 1.10, but it's incompatible with the latest samtools build. update the encoder to accept pileup from 1.10 and later versions.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/132
+MDU6SXNzdWU3MjQ5MTI5MzU=,[I/O] Update VCF -> cuDF parser with more optimized version,OPEN,2020-10-19T19:25:06Z,2020-10-19T19:25:06Z,,"The current VCFReader implementation depends on `cyvcf2` to parse the underlying file, and then converts each row into a data frame array. However, this is fairly slow. For `vcfio` to be more useful in VCF annotation flows, the parser needs to be ~5x faster than it is currently.",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/135
+MDU6SXNzdWU3NDE1MjU3ODU=,Feature request: BEDPE format for ingesting SV data,CLOSED,2020-11-12T11:36:27Z,2020-11-24T22:04:39Z,2020-11-24T22:04:39Z,"Hi,
+
+I am working on a structural variant breakpoint cluster classifier for cancer samples and was wondering whether you had a BEDPE format parser in the offing or whether you planned to write one in the near future?
+
+Martin",mp15,https://github.com/NVIDIA/VariantWorks/issues/144
+MDU6SXNzdWU3NDQzOTExOTg=,[I/O] KeyErrors are thrown for info columns not present in a region,OPEN,2020-11-17T04:04:15Z,2020-11-17T04:08:25Z,,"When passing a list of INFO fields and reading a VCF region where no variants have an entry for the field, an error is thrown. This happens with the 1000 Genomes VCF and the population-specific allele frequencies such as AFR. I assume it's because the header may be poorly formatted and the expected number does not match the real number.
+
+More graceful behavior would be helpful, and we should probably have a test or two to catch things like this (and to declare whether or not we consider this a bug).
+
+Example read:
+```
+onekg = utils.read_vcf_to_pandas(""/home/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz"", regions=[""1:1-1000000""], info_keys=[""AA"", ""AC"", ""AF"", ""AMR"", ""AN""], num_threads=1)
+```
+
+Error:
+```
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-15-9addf9417f5b> in <module>
+      1 ## Read in a VCF using the VariantWorks VCFReader
+----> 2 onekg = utils.read_vcf_to_pandas(""/home/edawson/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz"", regions=[""1:1-1000000""], info_keys=[""AFR""], num_threads=1)
+
+~/sandbox/somatic-vc/somaticdf/utils.py in read_vcf_to_pandas(vcf_file, regions, num_threads, tags, info_keys, filter_keys, format_keys, chunk_size)
+    343     Read a VCF file into a PANDAS Variant DataFrame.
+    344     """"""
+--> 345     v = VCFReader(vcf_file, regions=regions, num_threads=num_threads, tags=tags, require_genotype=False, info_keys=info_keys, format_keys=format_keys, filter_keys=filter_keys, chunksize=chunk_size)
+    346     df = v.dataframe
+    347     df = set_default_types(df)
+
+~/sandbox/VariantWorks/variantworks/io/vcfio.py in __init__(self, vcf, bams, is_fp, require_genotype, tags, info_keys, filter_keys, format_keys, regions, num_threads, chunksize, sort, unbounded_val_max_cols)
+    172 
+    173         # Parse the VCF
+--> 174         self._parallel_parse_vcf()
+    175 
+    176     @property
+
+~/sandbox/VariantWorks/variantworks/io/vcfio.py in _parallel_parse_vcf(self)
+    599                     self._info_vcf_keys.append(h['ID'])
+    600         for k in self._info_vcf_keys:
+--> 601             header_number = vcf.get_header_type(k)['Number']
+    602             self._info_vcf_key_counts[k] = self._get_normalized_count(header_number, 1, len(vcf.samples))
+    603             self._header_number[k] = header_number
+
+~/anaconda3/envs/rapids16/lib/python3.8/site-packages/cyvcf2/cyvcf2.pyx in cyvcf2.cyvcf2.VCF.get_header_type()
+
+~/anaconda3/envs/rapids16/lib/python3.8/site-packages/cyvcf2/cyvcf2.pyx in cyvcf2.cyvcf2.VCF.get_header_type()
+
+KeyError: b'AFR'
+```",edawson,https://github.com/NVIDIA/VariantWorks/issues/150
+MDU6SXNzdWU3NTkyNTIxMjI=,[Encoders] Handle exception `samtools mpileup` output when searching for insertions in  SummaryEncoder ,OPEN,2020-12-08T08:51:46Z,2020-12-08T08:51:46Z,,"When searching for the inserted positions in the pileup strings read from the `.pileup` file (which was generated by samtools), an exception occurs in the `find_insertions()` methods when a few pileup reads do not have a digit after the '+' sign, e.g.:
+` TTTtttTt^+t`
+
+Was tested on `m54328_180927_224427`
+",ohadmo,https://github.com/NVIDIA/VariantWorks/issues/156
+MDU6SXNzdWU3NjMwMjU1MDA=,[loss] focal loss throwing an error when used in place of ce loss,OPEN,2020-12-11T23:05:04Z,2020-12-11T23:05:04Z,,"When the nemo cross entropy loss is replaced with the focal loss call, it throws pytorch errors. The focal loss module should be s drop in replacement for the ce loss",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/158
+MDU6SXNzdWU3NjY1MDU0OTY=,[sample] filtering to consensus sample,OPEN,2020-12-14T14:30:51Z,2020-12-14T14:30:51Z,,"Right now the BAM based interface of the consensus pileup generator encodes all reads in the input files. But it's useful to limit encoding to certain regions.
+
+E.g. there could be regions to avoid (e.g. regions with known variations or lots of error)
+E.g. specific regions to be used for training and validation and test
+
+Regions can be passed using a BED file (the parser already exists in VW).
+
+So I think the interface to the tool can have the following options, and each will take a BED file as input. We only need to support this for the case where BAM is supported as input (not where directories are supported as input).
+
+--train-regions
+--val-regions
+--test-regions
+--ignore-regions
+",tijyojwad,https://github.com/NVIDIA/VariantWorks/issues/159
+MDU6SXNzdWU4NjIzMjE3OTQ=,VariantWorks simple_consensus _caller does not go to zero training loss / perfect training accuracy when expected,CLOSED,2021-04-20T02:24:13Z,2021-05-18T17:55:51Z,2021-05-18T17:54:32Z,"Using variantworks simple_consensus_caller, train large model (RNN 512 units by 4 layers) on a _single_ ZMW. I expect training loss to go to zero and accuracy to go to 100% as the number of model parameters is vastly larger than the training data size. 
+
+Run experiment with VariantWorks and then the exact same model in simplest pytorch implementation (included below).
+
+```
+mkdir bug
+cd bug
+
+module add minimap2/2.17
+module add samtools
+
+python /home/UNIXHOME/mbrown/mbrown/workspace2020Q3/VariantWorks/VariantWorks/samples/simple_consensus_caller/pileup_hdf5_generator.py \
+-r /home/UNIXHOME/mbrown/mbrown/workspace2020Q3/VariantWorks/VariantWorks/samples/simple_consensus_caller/data/samples/1 -o train.hdf -t 4
+
+python3 /home/UNIXHOME/mbrown/mbrown/workspace2020Q3/VariantWorks/VariantWorks/samples/simple_consensus_caller/consensus_trainer.py \
+--train-hdf train.hdf \
+--epochs 4096 \
+--gru_size 512 \
+--gru_layers 4 \
+--lr 1.0E-03 \
+--model-dir /home/UNIXHOME/mbrown/mbrown/workspace2021Q2/train-zero/bug \
+> bug.out 2> bug.err
+
+### now run pytorch bare-bones ripout
+python3 /home/UNIXHOME/mbrown/mbrown/workspace2021Q2/train-zero/ripBUG.py > ripbug.out 2> ripbug.err
+
+================================
+Summarize:
+
+dat = read.table(""bug/bug.out.dat"",head=T,sep=""\t"")
+datr = read.table(""bug/ripbug.out"",head=F,sep=""\t"")
+
+png(""bugLoss.png"")
+plot(datr$V2,datr$V4,type=""b"",col=""red"")
+points(dat$epoch,dat$loss,type=""b"",col=""black"")
+title(""train loss. bl=variantworks, red=pytorch. VW does not go to zero"")
+dev.off()
+
+dat$qv = -10*log10(1.0-dat$acc)
+datr$qv = -10*log10(1.0-datr$V6+1.0E-5)
+
+png(""bugAcc.png"")
+plot(datr$V2,datr$qv,type=""b"",col=""red"")
+points(dat$epoch,dat$qv,type=""b"",col=""black"")
+title(""train acc. bl=variantworks, red=pytorch.\nVW does not go to accuarcy=1.0 def-> QV50"")
+dev.off()
+```
+
+![image](https://user-images.githubusercontent.com/24304076/115327243-70116100-a143-11eb-83dd-6df1bc65e3c5.png)
+
+![image](https://user-images.githubusercontent.com/24304076/115327268-78699c00-a143-11eb-9fd0-0cd911595018.png)
+
+ripBug.py
+```
+import torch
+from torch import nn
+
+import h5py
+import sys
+import numpy as np
+
+################################
+# Data
+
+ff= h5py.File(""train.hdf"",""r"")
+
+datTrainFeatures = torch.Tensor(ff[""features""])
+datTrainLabels = torch.from_numpy(np.array(ff[""labels""]).astype(""int64"")) # pytorch cross entropy wants long
+
+# Get cpu or gpu device for training.
+device = ""cuda"" if torch.cuda.is_available() else ""cpu""
+print(""Using {} device"".format(device))
+
+class NeuralNetwork(nn.Module):
+    def __init__(self, input_feature_size, num_output_logits,
+                 gru_size=128, gru_layers=2, apply_softmax=False):
+        """"""Construct an Consensus RNN NeMo instance.
+
+        Args:
+            input_feature_size : Length of input feature set.
+            num_output_logits : Number of output classes of classifier.
+            gru_size : Number of units in RNN
+            gru_layers : Number of layers in RNN
+            apply_softmax : Apply softmax to the output of the classifier.
+
+        Returns:
+            Instance of class.
+        """"""
+        super().__init__()
+        self.num_output_logits = num_output_logits
+        self.apply_softmax = apply_softmax
+        self.gru_size = gru_size
+        self.gru_layers = gru_layers
+
+        self.gru = nn.GRU(input_feature_size, gru_size, gru_layers, batch_first=True, bidirectional=True)
+        self.classifier = nn.Linear(2 * gru_size, self.num_output_logits)  # 2* for bidirectional
+
+        # self._device = torch.device(
+        #     ""cuda"" if self.placement == DeviceType.GPU else ""cpu"")
+        # self.to(self._device)
+
+    def forward(self, encoding):
+        """"""Abstract function to run the network.
+
+        Args:
+            encoding : Input sequence to run network on.
+
+        Returns:
+            Output of forward pass.
+        """"""
+        encoding, h_n = self.gru(encoding)
+        encoding = self.classifier(encoding)
+        if self.apply_softmax:
+            encoding = F.softmax(encoding, dim=2)
+        return encoding
+
+model = NeuralNetwork(10, 5, 256, 4).to(device)
+
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+
+def train(dataFeatures, dataLabels, model, loss_fn, optimizer):
+    size = dataFeatures.shape[0]*dataFeatures.shape[1] # 32 windows of 1024 bases each
+    model.train()
+    losssum, correctsum = 0, 0
+    batch = 0
+    X = dataFeatures
+    y = dataLabels
+    if True: # one batch
+        X, y = X.to(device), y.to(device)
+
+        # Compute prediction error
+        pred = model(X)
+
+        newpred= pred.permute(0,2,1)
+
+        loss = loss_fn(newpred, y)
+        losssum += loss.item()
+        correctsum += (newpred.argmax(1) == y).type(torch.float).sum().item()
+
+        # Backpropagation
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        if batch % 100 == 0:
+          # do sum not avg for loss to follow variantworks
+          myloss = losssum # / size
+          mycorrect = correctsum / size
+          print(f""avgTrainLoss:\t{myloss}\tTrainCorrect:\t{mycorrect}\t"",end="""")
+          print()
+
+
+epochs = 4096
+for t in range(epochs):
+    print(f""Epoch\t{t+1}\t"",end="""")
+    train(datTrainFeatures, datTrainLabels, model, loss_fn, optimizer)
+```
+
+",michaelbrownid,https://github.com/NVIDIA/VariantWorks/issues/166
+I_kwDODU59Rs5LFmxW,"simple_consensus_caller , how to automatically remove ",OPEN,2022-06-03T10:51:27Z,2022-06-03T10:51:27Z,,"Hi,
+
+I am getting an error while trying to use the steps of the simple_consensus_caller that presumably suggests that the ccs reads and subreads are out of order, but they do not seem to be. I am guessing maybe that the error is actually occurring because there is only one subread for the ccs read?
+
+```sh
+python ~/git/VariantWorks/samples/simple_consensus_caller/pileup_hdf5_generator.py --draft-file ../9.ccs-all.bam --subreads-file 9.bam --reference /nfs/scistore16/itgrp/bioinf/projects/DA0030/2021_Aug_27/analysis.5/raw/pg_asm-0.4.10/Sample9/9-peregrine-2021-0.4.10-3x-circlator.fasta -o train.hdf -t 4
+Working directory /tmp/variantworks_consensus_sample_pileup_hdf5_06.03.2022-12:42:28_l3big6u_...
+Traceback (most recent call last):
+  File ""/nfs/scistore16/itgrp/jelbers/git/VariantWorks/samples/simple_consensus_caller/pileup_hdf5_generator.py"", line 386, in <module>
+    generate_hdf5(parsed_args)
+  File ""/nfs/scistore16/itgrp/jelbers/git/VariantWorks/samples/simple_consensus_caller/pileup_hdf5_generator.py"", line 315, in generate_hdf5
+    for out in pool.imap(encode_func, folders_to_encode):
+  File ""/nfs/scistore16/itgrp/jelbers/miniconda3/envs/variantworks/lib/python3.7/multiprocessing/pool.py"", line 748, in next
+    raise value
+AssertionError: There is a mismatch in the entries order in the draft and draft2ref file: draft:4194672, draft2ref:4194781
+```
+
+```sh
+samtools view ../9.bam |cut -f 1|grep -B 5 -A 5 '4194672'
+
+m54067_210310_022505/4194647/2053_13288
+m54067_210310_022505/4194647/13375_24834
+m54067_210310_022505/4194647/24919_36135
+m54067_210310_022505/4194647/36210_47943
+m54067_210310_022505/4194647/48024_59324
+m54067_210310_022505/4194672/11921_16354
+m54067_210310_022505/4194781/0_474
+m54067_210310_022505/4194781/550_5298
+m54067_210310_022505/4194781/5377_10291
+m54067_210310_022505/4194781/10369_15096
+m54067_210310_022505/4194781/15174_19826
+```
+
+```sh
+samtools view ../9.ccs-all.bam |cut -f 1|grep -B 5 -A 5 '4194672'
+m54067_210310_022505/4194592/ccs
+m54067_210310_022505/4194622/ccs
+m54067_210310_022505/4194629/ccs
+m54067_210310_022505/4194645/ccs
+m54067_210310_022505/4194647/ccs
+m54067_210310_022505/4194672/ccs
+m54067_210310_022505/4194781/ccs
+m54067_210310_022505/4194803/ccs
+m54067_210310_022505/4194806/ccs
+m54067_210310_022505/4194823/ccs
+m54067_210310_022505/4194829/ccs
+```",jelber2,https://github.com/NVIDIA/VariantWorks/issues/169

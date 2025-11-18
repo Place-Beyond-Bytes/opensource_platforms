@@ -1,0 +1,279 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjQyNTk5Ng==,Line 1155 writetouch to non-existent file,CLOSED,2014-06-24T21:05:06Z,2014-06-26T14:54:22Z,2014-06-26T14:54:22Z,"Hello,
+
+I am trying to run the PILEUP -> VCF_EXTRACT -> SPLIT workflow through gotcloud vc --conf my.config. On line 1155 from this commit (https://github.com/statgen/gotcloud/commit/f03fca07453a332a3c3ccd3061d9f4ef8edf7022#diff-e67da9ac72c8206f6cf7f682a0022e05) the code is: 
+
+writeTouch(""$vcf"");
+
+but $vcf does not exist. There is a $vcf.gz file that exists in that directory. When I manually gunzip the .vcf.gz file in that directory and re-run make it successfully runs through the workflow and creates the expected output. 
+
+If I look at the old umake.pl code that is distributed as standalone code this is simply a touch not a writeTouch command. With the old umake.pl I had no issues running this workflow.
+
+Best,
+Karyn Meltz Steinberg
+",kmurphy902,https://github.com/statgen/gotcloud/issues/4
+MDU6SXNzdWUxMDE5NjA3MjA=,`$val` is not initialized in one branch,CLOSED,2015-08-19T18:03:49Z,2015-08-20T03:53:28Z,2015-08-20T03:53:28Z,"I'm getting the error
+
+```
+Use of uninitialized value $val in concatenation (.) or string at /tmp/ptr-seqshop/gotcloud/bin/align.pl line 998.
+```
+
+At https://github.com/statgen/gotcloud/tree/master/bin/align.pl#L992, should there be `$val = ''`?
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/8
+MDU6SXNzdWUxMDE5ODAwMzY=,"A GC-content graph is bounded (0,120)",CLOSED,2015-08-19T19:36:29Z,2015-12-04T05:44:05Z,2015-12-04T05:44:05Z,"At https://github.com/statgen/gotcloud/blob/fe80263131766c65862cc3692bc9c5c174f98fe3/src/qplot/src/BamQC.cpp#L1065 and https://github.com/statgen/gotcloud/blob/fe80263131766c65862cc3692bc9c5c174f98fe3/src/qplot/src/BamQC.cpp#L1072, the graph of GC-content has x-axis limits of `(0,120)` .  Should it be `(0,100)`?
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/9
+MDU6SXNzdWUxMTc0NDc5MTM=,Print errors/warnings to STDERR/STDOUT,CLOSED,2015-11-17T20:54:21Z,2023-10-03T23:09:37Z,2023-10-03T23:09:37Z,"Please print out any warnings/errors to STDOUT/STDERR in addition to any `.err` files.
+",schelcj,https://github.com/statgen/gotcloud/issues/13
+MDU6SXNzdWUxMjAzMDQxMjY=,Align test fails using gotcloud.1.17.5,CLOSED,2015-12-04T00:26:19Z,2015-12-15T21:34:05Z,2015-12-15T21:34:05Z,"I am configuring a Docker image to run GotCloud. Below are the steps taken while testing on a base image with all the requirements. 
+
+```
+$ wget https://github.com/statgen/gotcloud/archive/gotcloud.1.17.5.tar.gz
+$ tar -xzf gotcloud.1.17.5.tar.gz -C /usr/local
+$ cd /usr/local/gotcloud-gotcloud.1.17.5/src
+$ make
+$ cd /usr/local/gotcloud-gotcloud.1.17.5
+$ scripts/check_requirements.sh
+WARNING:  '/usr/local/gotcloud/bin' does not exist.  Continuing...
+Good, you appear to have 'java' installed
+Good, you appear to have 'make' installed
+Good, you appear to have 'libssl' installed at the correct level
+#============================================================
+#   '/usr/local/gotcloud/test/umake' does not exist so you cannot test this install
+#   Install it by doing 'sudo dpkg -i gotcloud-test_*.deb'
+#============================================================
+```
+
+So it is not recognizing that gotcloud exists due to the specific version name, I realize that if I did a `git clone` this issue would not arise, or I could move `gotcloud-gotcloud.1.17.5` to `gotcloud`. Proceeding...
+
+```
+$ ./gotcloud align --test /root/testalign
+Removing any previous results from: /root/testalign/aligntest
+Running GOTCLOUD TEST, test log in: /root/testalign/aligntest.log
+File sizes of 10 FASTQ input files referenced in '/usr/local/gotcloud-gotcloud.1.17.5/test/align/indexFile.txt' = 0.00 GB
+Total temp space will be about 0.00 GB
+Total space for BAM files will be about 0.00 GB
+Be sure you have enough space to hold all this data
+Created /root/testalign/aligntest/Makefiles/align_Sample1.Makefile
+Created /root/testalign/aligntest/Makefiles/align_Sample2.Makefile
+Created /root/testalign/aligntest/Makefiles/align_Sample3.Makefile
+---------------------------------------------------------------------
+Waiting while samples are processed...
+Running make -f /root/testalign/aligntest/Makefiles/alignAll.Makefile > /root/testalign/aligntest/Makefiles/alignAll.Makefile.log 2> /root/testalign/aligntest/Makefiles/alignAll.Makefile.err...
+
+Processing finished in 68 secs with no errors reported
+Use of uninitialized value $ENV{""USER""} in concatenation (.) or string at /usr/local/gotcloud-gotcloud.1.17.5/scripts/runcluster.pl line 36.
+Use of uninitialized value $ENV{""USER""} in concatenation (.) or string at /usr/local/gotcloud-gotcloud.1.17.5/scripts/runcluster.pl line 36.
+Use of uninitialized value $ENV{""USER""} in concatenation (.) or string at /usr/local/gotcloud-gotcloud.1.17.5/scripts/runcluster.pl line 36.
+Use of uninitialized value $ENV{""USER""} in concatenation (.) or string at /usr/local/gotcloud-gotcloud.1.17.5/scripts/runcluster.pl line 36.
+Results from DIFF will be in /root/testalign/diff_logfiles_results.txt
+Failed Makefile results validation. See mismatches in /root/testalign/diff_logfiles_results.txt
+Comparison failed, test case FAILED.
+CMD=/usr/local/gotcloud-gotcloud.1.17.5/scripts/diff_results_align.sh /root/testalign /usr/local/gotcloud-gotcloud.1.17.5/test/align/expected
+```
+
+So it seems as though the fastq files are not being recognized since it claims a total size of 0GB for them, even though the path to the files is correct. Please let me know if additional information is required, thanks.
+",mkolovic,https://github.com/statgen/gotcloud/issues/14
+MDU6SXNzdWUxMjE4MTQ4MDk=,Avoid the large scheduler overhead for short jobs,OPEN,2015-12-11T23:46:21Z,2017-03-24T22:11:33Z,,"**To use job arrays:**
+
+I see two methods:
+1. All instances of `runcluster.pl` have a mutex.  When `runcluster.pl` runs, it:
+   1. writes a jobfile the directory `in_queue`
+   2. acquires the mutex, using `flock`.
+   3. checks how many other jobfiles have been written to that directory
+   4. if some threshold has been met (eg, the oldest jobfile is > 30 seconds old, or there are > 50 jobfiles), it gathers up all the jobfiles, submits them as a job array, and removes them from that directory.
+   5. if its jobfile doesn't get run in a minute, it submits it as a normal job.
+2. All instances of `runcluster.pl` simply write out a jobfile.  A daemon (just a separate job running parallel to `make`) watches the output directory and deals with submitting job arrays.
+
+Options for `runcluster.pl` to know the jobid to watch:
+- The submitter writes a file mapping from script filename to jobid.  `runcluster.pl` first waits for this file to be created, and then waits for its job.
+- `runcluster.pl` sets the jobname in the script, and then queries by job name.
+  - On flux, `#PBS -N foo` will name a job.  I can't find a way to query a job by its `PBS_JOBNAME`, but I can view the name with `Job_Name = (.*)` in `qstat -f <jobid>`, so at least it would provide a nice sanity check.
+  - On Slurm, we have `squeue --name=job_name`.
+- `runcluster.pl` chooses the array id and puts it into the job's script's filename
+  - On both slurm and flux, the array indexes can be specified with commas (like `1,14,42,66` rather than a simple range `14-18`).  Jobs' scripts' filenames could be of the format `<random_job_array_id>--<much_longer_random_string>`.  After writing a scriptfile, `runcluster.pl` could check whether a collision had occurred.  Then `runcluster.pl` would know the `PBS_ARRAYID`/`SLURM_ARRAY_TASK_ID` to query.
+  - Flux appears to allow arbitrarily large array ids.  Slurm has a configuration variable `MaxArraySize`, which appears to actually limit the maximum array id.  `scontrol show config | grep MaxArraySize` is 20k on `nomosix`.  If something goes wrong, a worker job would just fail.
+- Each worker writes its job id into `foo.jobid` right next to `foo.ok`
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/15
+MDU6SXNzdWUxMjIzNzA5ODg=,Use gcGetOptions to autogen documentation,OPEN,2015-12-15T21:28:44Z,2017-03-24T22:10:53Z,,"[gcGetOptions](https://github.com/statgen/gotcloud/blob/master/bin/gcGetOptions.pm) is already generating the `--help` output for a couple scripts.
+1. It should be used for more scripts.
+2. It should also generate mediawiki syntax for use on [the wiki](http://genome.sph.umich.edu/).
+
+For reference, also see [this script](https://github.com/hyunminkang/apigenome/blob/6042b0fa25ce290d9a9dbc5f14119332233802b6/scripts/wGetOptions.pm).
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/16
+MDU6SXNzdWUxMjIzNzk2MTc=,Test on slurm and flux/torque,OPEN,2015-12-15T22:15:21Z,2017-03-24T22:11:23Z,,"1. `./gotcloud test` should support `--batchtype`.
+2. Testing on a cluster should be better-documented. For example, [here](http://genome.sph.umich.edu/wiki/GotCloud:_Source_Releases).
+3. I should manually use it.
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/17
+MDU6SXNzdWUxMjI2MTY1MzE=,Use a better `system` function,OPEN,2015-12-16T22:20:07Z,2017-03-24T22:11:11Z,,"( This issue should wait until we've merged the `runcluster.pl` changes on branch `peter-develop` into `master`.)
+
+[System::Command](https://metacpan.org/pod/System::Command) will handle stderr and stdout.  Some examples of its use are [here](https://github.com/statgen/csg-mapper/search?utf8=%E2%9C%93&q=system).
+
+To use that, we need to:
+1. Understand, fix, and clean our cpanfile mess.  Chris recommends moving to Carton, which builds on cpanm (and its cpanfile).  Then somehow link the two Makefiles.  Because of our reliance on `MAKECMDGOALS` in `src/Makefile`, submakes probably won't work.
+2. Switch the `system` with `$qout` in `runcluster.pl`, which is one that would really benefit from capturing stdout and stderr.  Check what `qstat` and `squeue` output to stdout and stderr, and whether they're the same.  Otherwise, combine stderr and stdout.
+
+@schelcj Is [Open3](http://perldoc.perl.org/IPC/Open3.html) worth using?  I like sticking to core perl when possible, and I don't see any immediate problems with Open3.
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/18
+MDU6SXNzdWUxMjUyMDAwNDA=,Track job resource usage on Flux,CLOSED,2016-01-06T15:36:13Z,2016-02-29T18:57:17Z,2016-02-29T18:57:17Z,"- [x] Fetch job results from a dedicated email account.
+- [ ] Use jobnames or timing to select jobs from the current `make`.
+- [ ] Summarize `resources_used.cput`, `resources_used.mem`, and `resources_used.walltime`.
+- [ ] Assert `Exit_status=0`.
+- [ ] Classify jobs by task before summaries.  Use jobnames?
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/19
+MDU6SXNzdWUxMjU1NDE0MTU=,Update documentation on the wiki,OPEN,2016-01-08T04:34:52Z,2017-03-24T22:11:04Z,,"For reference, I've listed all gotcloud-related pages at http://genome.sph.umich.edu/wiki/Talk:GotCloud.
+- The wiki contains some out-of-date information, which should be labeled more clearly.
+- The [main page](http://genome.sph.umich.edu/wiki/GotCloud) should direct new users to installation instructions and then a tutorial more quickly.
+  - For installation, we should recommend an approach.  Do we suggest using the `.deb` or downloading a release from github?  Is it `.deb` for admins, and github for non-admins?
+    - Do we need to remove references to ftp://share.sph.umich.edu/gotcloud/?  Or bring it up to date?
+  - Can we replace all testing information with `gotcloud test`?  It doesn't support `--batch`.  Does it need to support batches before we can recommend it exclusively?
+- We don't have much information on `gotcloud indel`.
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/20
+MDU6SXNzdWUxMzA3NjY2Mzk=,Create `gotcloud archive ...` to record what was done,OPEN,2016-02-02T18:08:04Z,2016-02-02T18:08:04Z,,"After we process data, we'd like for other people to be able to repeat our steps.
+
+We need to record
+- the commands that were run
+- their arguments
+- their versions
+
+We could get this information:
+- while running `align.pl,` `umake.pl`, and `pipeline.pl`.
+- parsed out of the Makefile
+  - Then just remove any lines starting with `for`, `mkdir`, etc.
+  - How to figure out which targets we want, and in what order?  Maybe use `make --dry-run`?
+- parsed out of the Makefile's output
+  - Not all pipelines prefix important commands with `@`, so this won't work.
+
+We could get the versions:
+- hard-coded because the programs are included in the repository
+- by checking them
+  - eg, to get the version of `bwa`, run `bwa |& grep -Pio '(?<=version: ).+`
+  - This handles commands that are overridden in `$PATH`.
+
+Alternatively, we could just write simple instructions and scripts for doing all of this manually.
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/21
+MDU6SXNzdWUxNjc2NzcwNDQ=,unify SAMTOOLS_SORT_EXE vs SAMTOOLS_EXE and BAMUTIL vs BAM_EXE,CLOSED,2016-07-26T18:25:07Z,2016-09-06T14:58:38Z,2016-09-06T14:58:38Z,"I want to just set `SAMTOOLS_SORT_EXE = $(SAMTOOLS_EXE)`.  This could cause problems, but I certainly hope not.
+
+`BAMUTIL` is used only by `umake.pl`, for `clipOverlap`. `BAM_EXE` is used only by `align.pl` and some places in config-derived pipelines.  I could set `BAMUTIL = $(BAM_EXE)`, but that might cause problems.
+",pjvandehaar,https://github.com/statgen/gotcloud/issues/26
+MDU6SXNzdWUyMTY2NTIxNjc=,Specify dependencies more fully,OPEN,2017-03-24T05:01:33Z,2017-04-08T21:01:12Z,,"When installing on a fresh Ubuntu 16.10 server, I had to do `sudo apt-get install make cmake java-common default-jre libssl1.0.0 g++ libz-dev libncurses5-dev`.
+
+`scripts/check_requirements.sh`:
+- informed me about `make java-common default-jre`
+- suggested `libssl0.9.8` which is no longer available (and `libssl1.0.0` passes the tests anyways)
+- complained about missing `/usr/local/gotcloud/test/umake` even though I have `./gotcloud/test/umake`
+- missed `cmake g++ libz-dev libncurses5-dev`",pjvandehaar,https://github.com/statgen/gotcloud/issues/27
+MDU6SXNzdWUyMTY2NTc3MDI=,`cd src && make test` is failing on Ubuntu 16.10,CLOSED,2017-03-24T05:33:41Z,2017-03-24T07:04:47Z,2017-03-24T07:04:47Z,"(`gcc 6.2.0`)
+
+The error:
+
+```
+<...>
+g++  -std=c++0x -ggdb -O0 -pipe -Wall  -I../libStatGen/include -I. -I../include/ -I../tabix  -D__ZLIB_AVAILABLE__ -D_FILE_OFFSET_BITS=64 -D__STDC_LIMIT_MACROS -DDATE=""\""Fri Mar 24 01:25:27 EDT 2017\"""" -DVERSION=""\""0.1.1\"""" -DUSER=""\""cephas\""""  -o bin/debug/glfFlex   obj/debug/GlfLikelihoods.o obj/debug/MathGold.o obj/debug/Main.o obj/debug/index.o    ../libStatGen/libStatGen_debug.a   -lm -lz
+obj/debug/index.o: In function `ks_combsort_offt':
+<...>/gotcloud/src/glfFlex/index.c:22: undefined reference to `__ks_insertsort_offt'
+obj/debug/index.o: In function `ks_introsort_offt':
+<...>/gotcloud/src/glfFlex/index.c:22: undefined reference to `__ks_insertsort_offt'
+collect2: error: ld returned 1 exit status
+../libStatGen/Makefiles/Makefile.ext:43: recipe for target 'bin/debug/glfFlex' failed
+<...>
+```
+
+`gotcloud/src/glfFlex/index.c` contains `KSORT_INIT(offt, pair64_t, pair64_lt)` which is defined  [here](https://github.com/statgen/gotcloud/blob/master/src/tabix/ksort.h#L70) in `gotcloud/src/tabix/ksort.h`.
+
+When I remove the `inline` before `void __ks_insertsort_##name(type_t *s, type_t *t)`, the problem goes away.
+
+Also, why does this error occur with `make test` and `make debug` but not `make`?  And what is `bin/debug/` for?
+
+Comparison of final lines of `make test` and `make`:
+```
+# make test:
+g++  -std=c++0x -ggdb -O0 -pipe -Wall  -I../libStatGen/include -I. -I../include/ -I../tabix  -D__ZLIB_AVAILABLE__ -D_FILE_OFFSET_BITS=64 -D__STDC_LIMIT_MACROS -DDATE=""\""Fri Mar 24 02:20:05 EDT 2017\"""" -DVERSION=""\""0.1.1\"""" -DUSER=""\""cephas\""""  -o bin/debug/glfFlex   obj/debug/GlfLikelihoods.o obj/debug/MathGold.o obj/debug/Main.o obj/debug/index.o    ../libStatGen/libStatGen_debug.a   -lm -lz
+# make:
+g++  -std=c++0x       -O4 -pipe -Wall  -I../libStatGen/include -I. -I../include/ -I../tabix  -D__ZLIB_AVAILABLE__ -D_FILE_OFFSET_BITS=64 -D__STDC_LIMIT_MACROS -DDATE=""\""Fri Mar 24 02:20:07 EDT 2017\"""" -DVERSION=""\""0.1.1\"""" -DUSER=""\""cephas\""""  -o bin/glfFlex     obj/GlfLikelihoods.o obj/MathGold.o obj/Main.o obj/index.o      ../libStatGen/libStatGen.a     -lm -lz
+```
+
+I get the same error if I use the `make` line but replace `obj/index.o` with `obj/debug/index.o`.
+
+Comparison of lines producing `obj/debug/index.o` in `make test` and `obj/index.o` in  `make`:
+```
+# make test
+gcc -ggdb -O0 -pipe -Wall  -I../libStatGen/include -I. -I../include/ -I../tabix  -D__ZLIB_AVAILABLE__ -D_FILE_OFFSET_BITS=64 -D__STDC_LIMIT_MACROS -DDATE=""\""Fri Mar 24 02:25:50 EDT 2017\"""" -DVERSION=""\""0.1.1\"""" -DUSER=""\""cephas\"""" -o obj/debug/index.o -c index.c
+# make
+gcc       -O4 -pipe -Wall  -I../libStatGen/include -I. -I../include/ -I../tabix  -D__ZLIB_AVAILABLE__ -D_FILE_OFFSET_BITS=64 -D__STDC_LIMIT_MACROS -DDATE=""\""Fri Mar 24 02:25:34 EDT 2017\"""" -DVERSION=""\""0.1.1\"""" -DUSER=""\""cephas\"""" -o obj/index.o -c index.c
+```
+
+If I use the `make` line but output to `obj/debug/index.o`, then the `make test` linking line works.
+
+It looks like the problem is the `-O0` when compiling `obj/debug/index.o`.  If I change that, everything works.",pjvandehaar,https://github.com/statgen/gotcloud/issues/28
+MDU6SXNzdWUyMTY2ODE4MzQ=,`gotcloud test` fails on Ubuntu 16.10,OPEN,2017-03-24T07:23:08Z,2017-04-08T22:12:19Z,,"## `indel`
+`HWE_LPVAL` and `HWE_LLR` often differ by up to 1% in:
+```
+test/indel/expected/indel/final/all.genotypes.vcf.gz
+test/indel/expected/indel/final/merge/all.genotypes.20.bcf
+```
+
+## `beagle` & `thunder`
+Fails because I'm missing the perl module `LWP/UserAgent.pm`.  `perl -MCPAN -e 'install Bundle::LWP'` can install it, fixing the issue.
+
+
+`nan` was replaced by `NaN` in:
+```
+test/umake/expected/beagletest/beagle/chr20/chr20.filtered.PASS.beagled.vcf.gz
+test/umake/expected/beagletest/beagle/chr20/split/bgl.1.chr20.PASS.1.vcf.gz
+test/umake/expected/beagletest/thunder/chr20/ALL/split/chr20.filtered.PASS.beagled.ALL.split.1.vcf.gz
+test/umake/expected/thundertest/thunder/chr20/ALL/thunder/chr20.filtered.PASS.beagled.ALL.thunder.1.vcf.gz
+test/umake/expected/thundertest/thunder/chr20/ALL/thunder/chr20.filtered.PASS.beagled.ALL.thunder.vcf.gz
+```
+
+Lots of `.conf` files got re-ordered, but the ones I checked were all identical when sorted.",pjvandehaar,https://github.com/statgen/gotcloud/issues/29
+MDU6SXNzdWU1NzQ5NDY3MzA=,Fail encountered because of the verison of libStatGen in src/ is too old,OPEN,2020-03-03T21:10:28Z,2020-03-04T18:03:18Z,,"Hi There,
+
+I encountered errors when compiling in scr/. 
+I've fixed the error by replacing the libStatGen in src/ with the latest version (https://github.com/statgen/libStatGen.git). But it took me a while to find out the errors I met were because of the old version of libStatGen included in src/. 
+You may want to replace src/libStatGen with the most recent version, in case other users met same problems.
+
+Thanks!",yaohuayang-uva,https://github.com/statgen/gotcloud/issues/30
+MDU6SXNzdWU4MDY3MTcxNzc=,"vcfCooker; gotocloud install error, ubuntu 20.04",OPEN,2021-02-11T20:30:24Z,2021-02-11T20:45:17Z,,"Hi, I was trying to use vcfCooker but it seems that gotocloud need to be installed. I tried but getting the following error: It seems I have gotocloud executable but test failed and no vcfCooker executable was created. Any help?
+```
+cc1plus: all warnings being treated as errors
+make[2]: *** [../Makefiles/Makefile.common:81: obj/Chromosome.o] Error 1
+make[2]: Leaving directory '/home/ubuntu/rujescu/gotcloud/src/libStatGen/general'
+make[1]: *** [Makefiles/Makefile.base:15: general] Error 2
+make[1]: Leaving directory '/home/ubuntu/rujescu/gotcloud/src/libStatGen'
+make: *** [Makefile:113: libStatGen] Error 2
+ubuntu@ubuntu-Precision-7730:~/rujescu/gotclo
+```",zillurbmb51,https://github.com/statgen/gotcloud/issues/31
+MDU6SXNzdWU5MTM2NDY5ODQ=,Tried initializing software with cd src/; make; cd .. but got unanticipated error,OPEN,2021-06-07T14:57:50Z,2021-06-07T17:09:27Z,,"```
+command entered: cd src/; make; cd ..
+
+error code when running: 
+make -C samtools 
+make[1]: Entering directory `
+/gotcloud-gotcloud.1.17.5/src/samtools'
+gcc -pthread  -o samtools bam_index.o bam_plcmd.o sam_view.o bam_cat.o bam_md.o bam_reheader.o bam_sort.o bedidx.o kprobaln.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o bam2bcf.o bam2bcf_indel.o errmod.o sample.o cut_target.o phase.o bam2depth.o padding.o bedcov.o bamshuf.o faidx.o dict.o stats.o stats_isize.o bam_flags.o bam_split.o bam_tview.o bam_tview_curses.o bam_tview_html.o bam_lpileup.o libbam.a ../htslib/libhts.a -lcurses  -lm -lz 
+**/usr/bin/ld: cannot find -lcurses**
+collect2: error: ld returned 1 exit status
+make[1]: *** [samtools] Error 1
+make[1]: Leaving directory `
+gotcloud-gotcloud.1.17.5/src/samtools'
+make: *** [samtools] Error 2
+```
+",carversh,https://github.com/statgen/gotcloud/issues/32
+I_kwDOAIeZOc6FIqqG,Got error when Downloading gotcloud on AWS,OPEN,2024-04-09T14:53:18Z,2024-04-09T14:53:18Z,,"Hi,
+I was not able to find the AMI for gotcloud in AWS so I have followed the installation process recommended. Once I downloaded the source file, I cd'd into src and typed make.
+I get the following error
+
+Chromosome.cpp: In constructor ‘Chromosome::Chromosome(const string&, unsigned int, bool)’:
+Chromosome.cpp:42:15: error: ‘*this.Chromosome::gs’ is used uninitialized [-Werror=uninitialized]
+   42 |     if (this->gs) delete gs;
+      |         ~~~~~~^~
+cc1plus: all warnings being treated as errors
+make[2]: *** [../Makefiles/Makefile.common:81: obj/Chromosome.o] Error 1
+make[2]: Leaving directory '/home/ubuntu/gotcloud-latest/src/libStatGen/general'
+make[1]: *** [Makefiles/Makefile.base:15: general] Error 2
+make[1]: Leaving directory '/home/ubuntu/gotcloud-latest/src/libStatGen'
+make: *** [Makefile:116: libStatGen] Error 2
+
+
+
+Thanks",rmn8,https://github.com/statgen/gotcloud/issues/33

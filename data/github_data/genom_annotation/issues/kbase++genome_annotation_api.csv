@@ -1,0 +1,64 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNjcxNTcyMDE=,Typo in kbase.yml owners,CLOSED,2016-07-23T00:41:22Z,2016-08-02T16:49:34Z,2016-08-02T16:49:34Z,"@scanon: Mike is written as ""mseddon"" here: https://github.com/kbase/genome_annotation_api/blob/master/kbase.yml#L14
+",rsutormin,https://github.com/kbase/genome_annotation_api/issues/1
+MDU6SXNzdWUxNzMwNzc1MDE=,Type inconsistency for Feature_data.feature_quality_score field,OPEN,2016-08-24T22:56:51Z,2016-08-24T23:09:00Z,,"This is where it's declared:
+https://github.com/kbase/genome_annotation_api/blob/master/GenomeAnnotationAPI.spec#L113
+It looks like data API returns string instead of list<string> for this field in some features (for instance when CDS features are requested for genome kbasetest:1466036531200/3702_Ensembl_chr2_genome_legacy, ref=8020/60/1 in CI).
+Java client breaks with message:
+
+```
+com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.util.ArrayList out of VALUE_STRING token
+ at [Source: us.kbase.common.service.JsonClientCaller$UnclosableInputStream@787582d3; line: 1, column: 2028] (through reference chain: us.kbase.common.service.JobState[""result""]->genomeannotationapi.GenomeAnnotationData[""feature_by_id_by_type""]->genomeannotationapi.FeatureData[""feature_quality_score""])
+```
+",rsutormin,https://github.com/kbase/genome_annotation_api/issues/11
+MDU6SXNzdWUxNzMwNzkxNjE=,Type inconsistency for Summary_data,OPEN,2016-08-24T23:08:00Z,2016-08-24T23:21:20Z,,"Defined here:
+https://github.com/kbase/genome_annotation_api/blob/master/GenomeAnnotationAPI.spec#L150-L187
+
+Data API get_summary function returns value with different structure which looks like:
+
+```
+{
+    annotation : {
+        external_source=Genbank, 
+        release=annotation release is not present, 
+        external_source_date=10-JUN-2013, 
+        feature_type_counts={gene=4418, CDS=4418}, 
+        original_source_filename=genome.gbk
+    }, 
+    assembly : {
+        assembly_source_id=genome.1_2016_08_18_17_47_36.fa, 
+        assembly_source=Genbank, 
+        contig_ids=[contig1], 
+        num_contigs=1, 
+        assembly_source_date=10-JUN-2013, 
+        gc_content=0.0, dna_size=4274760
+    }, 
+    taxonomy : {
+        kingdom=kingdom not present, 
+        scientific_lineage=[Unknown], 
+        scientific_name=Unknown, 
+        genetic_code=0, 
+        taxonomy_id=-1, 
+        organism_aliases=[No organism aliases present]
+    }
+}
+```
+
+I added some work-around synchronizing data with expected type:
+https://github.com/rsutormin/genome_annotation_api/blob/be04506aecef4b2aa8fc528df799456a9e3053ac/lib/GenomeAnnotationAPI/GenomeAnnotationAPIImpl.py#L974-L1000
+",rsutormin,https://github.com/kbase/genome_annotation_api/issues/12
+MDU6SXNzdWUxNzMwODEzMTI=,Error getting summary for one of public genomes,OPEN,2016-08-24T23:24:32Z,2016-08-24T23:24:39Z,,"Error is thrown when get_summary is requested for genome kbasetest:1466036531200/Red_Algae_Ensembl, ref=8020/39/1 in CI:
+
+```
+Traceback (most recent call last):
+  File ""/kb/module/bin/../lib/GenomeAnnotationAPI/GenomeAnnotationAPIServer.py"", line 93, in _call_method
+    result = method(ctx, *params)
+  File ""/kb/module/lib/GenomeAnnotationAPI/GenomeAnnotationAPIImpl.py"", line 972, in get_combined_data
+    summary = ga.get_summary()
+  File ""/usr/local/lib/python2.7/dist-packages/doekbase/data_api/annotation/genome_annotation/api.py"", line 644, in get_summary
+    return self.proxy.get_summary()
+  File ""/usr/local/lib/python2.7/dist-packages/doekbase/data_api/annotation/genome_annotation/api.py"", line 2513, in get_summary
+    latest_summary = refs[all_summary_types[-1]][0]
+IndexError: list index out of range
+```
+",rsutormin,https://github.com/kbase/genome_annotation_api/issues/13

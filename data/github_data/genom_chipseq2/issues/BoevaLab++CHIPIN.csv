@@ -1,0 +1,64 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4Mzg3NzcyMjE=,Error when loading hg38 reference genome,CLOSED,2021-03-23T14:19:21Z,2021-03-24T11:48:45Z,2021-03-24T11:48:45Z,"## Bug description
+
+When running the following command I get an error message:
+
+`CHIPIN_normalize(path_to_bw=pathToFiles, type_norm=""quantile"", RPKM=pathToRPKMfile, sample_name=sampleName, output_dir=outputFolder, organism=""hg38"")`
+
+> Error in CHIPIN_normalize(path_to_bw = bw_path, type_norm = ""quantile"",  : 
+  object 'TSS_hg38' not found
+
+## Proposed solution
+When loading `data(""TSS_hg38"")` the resulting dataframe is called `hg38TSS` instead of `TSS_hg38`. Changing the following lines in the `functions_CHIPIN.R` file solved the problem for me.
+
+line 1925:  from `D_TSS=TSS_hg38` into `D_TSS=hg38TSS`
+line 2074: from `D_TSS=TSS_hg38` into `D_TSS=hg38TSS`
+
+## Session Info
+
+
+R version 3.6.3 (2020-02-29)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS  10.16
+
+",sgunz,https://github.com/BoevaLab/CHIPIN/issues/2
+I_kwDODpxdCM5XUJF0,tiger package,OPEN,2022-11-25T20:04:40Z,2024-10-09T11:16:52Z,,"Installation problem:
+
+   ERROR: dependency ‘tiger’ is not available for package ‘CHIPIN’
+─  removing ‘/private/var/folders/03/53rtpjv14yl16q6gc7g3k4vh0000gn/T/RtmpAQ8wPV/Rinst215b6382035d/CHIPIN’
+         -----------------------------------
+   ERROR: package installation failed
+Error: Failed to install 'CHIPIN' from GitHub:
+  ! System command 'R' failed
+In addition: Warning message:
+package ‘tiger’ is not available for this version of R
+
+Tiger was removed from CRAN repository.   https://cran.r-project.org/web/packages/tiger/index.html
+",alexandremarcil,https://github.com/BoevaLab/CHIPIN/issues/8
+I_kwDODpxdCM5k3g7f,"how to adapt this for analysis of paired-end reads with different fragment lengths (ChIP, INPUT)",OPEN,2023-05-02T11:46:49Z,2023-05-02T11:46:49Z,,"In my project, I need to analyse coverage of ChIP-seq signal from two ranges of fragment lengths. I bin reads into smallBin (30-150bp) and bigBin (150-300 bp).  Relative proportion of reads in these bins has to be preserved in order to be of any use to my question. 
+
+What do you suggest I should do? 
+
+Thanks",ykumar22,https://github.com/BoevaLab/CHIPIN/issues/9
+I_kwDODpxdCM6Y8XbH,Organisms and Galaxy package,OPEN,2024-10-04T09:51:36Z,2024-10-09T11:31:11Z,,"Hi, 
+
+Thanks for developing this great normalization technique!
+
+I have two questions:
+
+- Do you update the package concerning the available reference genomes? You offer mm9 and mm10, but we want to use the latest mm39.
+- Have you written a Galaxy wrapper for CHIPIN?
+
+Thanks and best,
+
+Joachim",joachimwolff,https://github.com/BoevaLab/CHIPIN/issues/12
+I_kwDODpxdCM6fCsFw,error message relating to mat.gz files,OPEN,2024-11-18T11:42:44Z,2024-12-05T08:25:26Z,,"When running CHIPIN I get the following error which may be a bug in the code as it's looking for a ""...mat.mat.gz"" file:
+
+  cannot open file '/lustre/projects/Research_Project-MRC190311/ATACSeq/youthgems_aut/bigwigs/dups_removed/chipin/neun/11290_0629FC_NEUN_230515_S44_filt.nodup.mat.mat.gz': No such file or directory
+Execution halted",Philippa-W,https://github.com/BoevaLab/CHIPIN/issues/13
+I_kwDODpxdCM6fCskb,Error message,OPEN,2024-11-18T11:43:36Z,2024-11-18T11:43:36Z,,"In our group we are getting the following error when trying to run CHIPIN: 
+
+Error in normalize.quantiles(dataToNormHUGE_ordered_grouped, copy = TRUE) :
+  ERROR; return code from pthread_create() is 22
+Calls: CHIPIN_normalize -> quantile_norm -> normalize.quantiles
+Execution halted",Philippa-W,https://github.com/BoevaLab/CHIPIN/issues/14

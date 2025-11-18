@@ -1,0 +1,4296 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,author_type,login
+7bdd54b3ff8ef0c442444a8fd49cf3beb582dc06,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix bug when plotting not specified (#214)
+
+* feat(output): add make_plots option to control plot generation
+
+* feat(visualisation): move regions parameter to script parameters for plotnado",2024-11-08T12:46:13Z,Bot,alsmith151
+2a3cc36705d3d174e0f22e79cc48ed92dc60a253,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(plotnado visualisation): Generates genome browser style tracks if requested (#213)
+
+* feat(visualisation): add rule for generating Plotnado visualisations
+
+* feat(plotting): add PlotFiles class for generating genome browser plots
+
+* feat(plotting): add run_plotnado script for generating genome browser plots
+
+* feat(tests): add plotting_coordinates.bed to test data and update .gitignore
+
+* feat(config): add user input for plotting and integrate plotting coordinates in user inputs
+
+* fix: bug in design stopped inputs and ips from being paired
+
+* fix(design): remove duplicate IP paths in DesignIP class
+
+* feat(config): allow optional plotting coordinates input based on user selection
+
+* feat(config): add geo_submission_files and plotting options to configuration
+
+* fix(geo_submission): use force option for symlink creation to avoid errors
+
+* fix(visualisation): update regions to use plotting_coordinates from config
+
+* feat(workflow): include visualisation rules in RNA, ATAC, and ChIP snakefiles
+
+* feat(config): add user input for plotting genes in configuration setup
+
+* feat(plotting): update plotting configuration and remove unused make_plots option
+
+* fix(plotnado): update DataFrame input to use pathlib for file paths and adjust genome parameter
+
+* fix(tests): add additional test region to plotting_coordinates.bed
+
+* feat(plotnado): add genes track to plotting and update configuration for gene input
+
+* feat(visualisation): add genes parameter to plotting rule and update user input handling in tests
+
+* fix(design): correct plotting_coordinates type handling and update user input in tests",2024-11-06T20:43:50Z,Bot,alsmith151
+4b1faaa152b76c19fd1add63ce028aa27bb3affc,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(geo submission): Place files in correct directory and make GEO required metadata (#211)
+
+* Refactor common.smk to include md5sum rules for fastq and bam files
+
+* Refactor GEOFiles class to include md5sum rules for fastq, bam, and bigwig files
+
+* Refactor GEOFiles class to include md5sum rules for fastq, bam, and bigwig files
+
+* Refactor common.smk to use SAMPLE_NAMES instead of SAMPLES for md5sum rules
+
+* Add option to generate GEO submission files and simplify file handling in RNAOutput classes
+
+* Refactor md5sum rules to organize output paths for fastq, bam, and bigwig files
+
+* Set APPTAINER_CACHEDIR only if not already defined in test_pipelines.py
+
+* Refactor GEOFiles and common.smk to streamline GEO submission file handling and consolidate md5sum outputs
+
+* Fix md5sum rule to navigate back to the parent directory after generating md5sums.txt
+
+* Remove 'scale' option from user inputs and set it to 'yes' for chip assay in test pipelines
+
+* Add GEO metadata handling for ChIP and CUT&TAG assays and enhance validation for 'ip' field
+
+* Add predict_organism function to identify species based on genome input
+
+* Add geo_submission rule inclusion to ATAC, Chip, RNA, and SNP snakefiles
+
+* Remove geo_symlink and md5sum rules from common.smk to streamline workflow
+
+* Add geo_submission rules for symlinking files and generating checksums
+
+* Refactor predict_organism function: move to design.py and simplify implementation
+
+* Refactor geo_submission rules: enhance get_files_for_symlink function and update linked_files output
+
+* Add samples_table.txt to md5sums output in GEOFiles class
+
+* Fix md5sum command and improve dataframe parsing in geo_submission rules
+
+* Update samples_table rule to use parameters for dataframe conversion and output path
+
+* Fix parameter reference in samples_table rule for dataframe conversion
+
+* Add localrules to samples_table for improved workflow management
+
+* Add protocol rule and script for data processing protocol generation
+
+* Add peaks property to SNPOutput class for future enhancements
+
+* Refactor SNPOutput class by commenting out unused properties and methods for improved code clarity
+
+* Add macs2 version function and update peak calling logic in data processing protocol script
+
+* Add conditional parameters for featureCounts in count_bam rule to handle paired reads
+
+* Refactor SNPOutput class by removing unused properties and methods for improved clarity; add dynamic count options for featureCounts in count_bam rule
+
+* Refactor count_bam rule to use dynamic options for featureCounts based on paired reads
+
+* Refactor count_bam rule to dynamically retrieve count files and improve scaling factor handling; update R script to use correct metadata for DGEList
+
+* Update get_files_for_symlink function to conditionally filter bigwig files based on assay type
+
+* Add extra count files to get_files_for_symlink function for RNA assay
+
+* Fix variable reference for RNA assay in get_files_for_symlink function
+
+* Fix appending of count files in get_files_for_symlink function for RNA assay",2024-11-06T11:04:15Z,Bot,alsmith151
+5b1075360696af87359c1e1042a6998df2ce1c0e,Alastair Smith,49727900+alsmith151@users.noreply.github.com,feat(config): add 'seacr' as an option for peak calling method (#212),2024-11-05T11:52:38Z,Bot,alsmith151
+b09d7ef8d6e90382fd8cb268fec644c1ebac403b,dependabot[bot],49699333+dependabot[bot]@users.noreply.github.com,"chore(deps): update pulp requirement from <=2.7.0 to <=2.9.0 (#200)
+
+Updates the requirements on [pulp](https://github.com/coin-or/pulp) to permit the latest version.
+- [Release notes](https://github.com/coin-or/pulp/releases)
+- [Changelog](https://github.com/coin-or/pulp/blob/master/HISTORY)
+- [Commits](https://github.com/coin-or/pulp/compare/1.5.8...2.9.0)
+
+---
+updated-dependencies:
+- dependency-name: pulp
+  dependency-type: direct:production
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2024-08-09T07:40:21Z,Bot,dependabot[bot]
+4420540a30e5a73a55ccfdd852c380d48a555a89,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Refactor exogenous_norm.smk to include runtime resource for align_paired and align_single rules (#206),2024-08-09T07:39:54Z,Bot,alsmith151
+6736dfeec0e90aa822019447209dd985969c7089,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix seacr (#205)
+
+* add resouces to fragment bedgraph and fix logging
+
+* bugfix
+
+* scale resources fragment bdg
+
+* fix sort
+
+* make bamtobed log temp
+
+* rm temp files",2024-07-31T09:54:34Z,Bot,CChahrour
+f5a12b0926b4172028c5b2bc902ef1084e2fb603,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,filter not paired mapped reads for fragment bedgraph (#204),2024-07-28T11:21:46Z,Bot,CChahrour
+3f89590afedf45f909dba0c149e222f884a7a20e,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Refactor pileup_default.smk to use sorted BAM file for bedtools conversion (#203),2024-07-25T17:54:12Z,Bot,alsmith151
+6c9fdcc1204d7543b5da316a856be08325060548,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(pipeline): Added -s option to allow for scaling resources (memory and time) (#202)
+
+* Refactor pyproject.toml to remove drmaa dependency
+
+* feat: add container def file
+
+* feat: Add option to scale memory and time resources for pipeline
+
+* Add seqnado.sif to .gitignore
+
+* Refactor assay-specific Snakefiles to include SCALE_RESOURCES variable
+
+The commit refactors the assay-specific Snakefiles (`snakefile_atac`, `snakefile_chip`, `snakefile_snp`) to include the `SCALE_RESOURCES` variable. This variable is used to scale memory and time resources for the pipeline. The default value is set to 1, but it can be customized by setting the `SCALE_RESOURCES` environment variable.
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* Refactor Snakefiles to include SCALE_RESOURCES variable
+
+* Refactor define_memory_requested and define_time_requested functions
+
+* Refactor assay-specific Snakefiles to include SCALE_RESOURCES variable
+
+* Refactor define_memory_requested and define_time_requested functions
+
+* Refactor define_memory_requested and define_time_requested functions to fix calculation bug
+
+* Refactor peak_call_grouped.smk to use define_memory_requested function for memory resource calculation
+
+* Refactor peak_call_grouped.smk to use define_memory_requested function for memory resource calculation
+
+* Refactor peak_call_grouped.smk to use define_memory_requested function for memory resource calculation
+
+* Ensure that the define_*_requested functions are imported in all rules",2024-07-25T13:00:26Z,Bot,alsmith151
+6230dd995f3b83509adce989c51cea97337f53c6,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix(docs) correct install instructions (#201)
+
+* Refactor installation script to correctly set environment variables
+
+* Refactor installation script to correctly set environment variables",2024-07-25T12:22:47Z,Bot,alsmith151
+1b169063235034a815aa600ea6692b0627a24a38,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Merge develop with faster tests (#199)
+
+* Use caching for tests
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-31T14:54:23Z,Bot,CChahrour
+60453e41a1e9a534dd0074b082fb16266d977a49,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Merge faster tests (#198)
+
+* Use Caching in test workflow to increase speed
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-31T14:36:08Z,Bot,CChahrour
+f85fd9e4b3d4890d194682c44ff27bac16f2da94,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#196)
+
+* Refactor HeatmapFiles class to include make_heatmaps property in design.py
+
+* Refactor NonRNAOutput class in design.py to remove computed_field decorator
+
+* fix: correct query function to provide both the ip and control if requested
+
+* Refactor control lambda function in peak_call_chip.smk to allow null control files
+
+* Refactor query function in DesignIP class to return IPExperiment object
+
+* Refactor FastqFile model to handle resolved and absolute paths
+
+* Refactor peak_call_grouped.smk to add runtime and mem resources for lanceotron_no_input_consensus rule
+
+* feat: Refactor pileup_norm.smk to use tile instead of tiles
+
+The commit message suggests refactoring the `pileup_norm.smk` file to use the `tile` parameter instead of `tiles`.
+
+* fix: test in parallel
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-31T01:48:34Z,Bot,CChahrour
+6e46fad0b0870b4b18f9ff049acd38f124e4b1f4,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#194)
+
+* Refactor HeatmapFiles class to include make_heatmaps property in design.py
+
+* Refactor NonRNAOutput class in design.py to remove computed_field decorator
+
+* fix: correct query function to provide both the ip and control if requested
+
+* Refactor control lambda function in peak_call_chip.smk to allow null control files
+
+* Refactor query function in DesignIP class to return IPExperiment object
+
+* Refactor FastqFile model to handle resolved and absolute paths
+
+* Refactor peak_call_grouped.smk to add runtime and mem resources for lanceotron_no_input_consensus rule
+
+* feat: Refactor pileup_norm.smk to use tile instead of tiles
+
+The commit message suggests refactoring the `pileup_norm.smk` file to use the `tile` parameter instead of `tiles`.
+
+* fix typo design
+
+* fix tests fastq path
+
+* fix merge in design
+
+* fix config
+
+* reinstate snp into design
+
+* revert peaks and design
+
+* fixed typo from merge peak calls
+
+* simplify tests
+
+* update test order
+
+* correct test order
+
+* revert test order
+
+* split tests
+
+* increase cores for tests
+
+* revert single test
+
+* merge
+
+* merge develop to master
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-29T07:56:51Z,Bot,CChahrour
+ee9e26f37bdccd71722beb6cae402d5f78405a91,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#193)
+
+* Refactor HeatmapFiles class to include make_heatmaps property in design.py
+
+* Refactor NonRNAOutput class in design.py to remove computed_field decorator
+
+* fix: correct query function to provide both the ip and control if requested
+
+* Refactor control lambda function in peak_call_chip.smk to allow null control files
+
+* Refactor query function in DesignIP class to return IPExperiment object
+
+* Refactor FastqFile model to handle resolved and absolute paths
+
+* Refactor peak_call_grouped.smk to add runtime and mem resources for lanceotron_no_input_consensus rule
+
+* feat: Refactor pileup_norm.smk to use tile instead of tiles
+
+The commit message suggests refactoring the `pileup_norm.smk` file to use the `tile` parameter instead of `tiles`.
+
+* fix typo design
+
+* fix tests fastq path
+
+* fix merge in design
+
+* fix config
+
+* reinstate snp into design
+
+* revert peaks and design
+
+* fixed typo from merge peak calls
+
+* simplify tests
+
+* update test order
+
+* correct test order
+
+* revert test order
+
+* split tests
+
+* increase cores for tests
+
+* revert single test
+
+* merge
+
+* merge develop to master
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-28T23:15:51Z,Bot,CChahrour
+b6cb95f5a1e79e6f506044cd45df827117412476,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#192)
+
+* Refactor HeatmapFiles class to include make_heatmaps property in design.py
+
+* Refactor NonRNAOutput class in design.py to remove computed_field decorator
+
+* fix: correct query function to provide both the ip and control if requested
+
+* Refactor control lambda function in peak_call_chip.smk to allow null control files
+
+* Refactor query function in DesignIP class to return IPExperiment object
+
+* Refactor FastqFile model to handle resolved and absolute paths
+
+* Refactor peak_call_grouped.smk to add runtime and mem resources for lanceotron_no_input_consensus rule
+
+* feat: Refactor pileup_norm.smk to use tile instead of tiles
+
+The commit message suggests refactoring the `pileup_norm.smk` file to use the `tile` parameter instead of `tiles`.
+
+* fix typo design
+
+* fix tests fastq path
+
+* fix merge in design
+
+* fix config
+
+* reinstate snp into design
+
+* revert peaks and design
+
+* fixed typo from merge peak calls
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-05-28T20:09:36Z,Bot,CChahrour
+ba75033e55b8d154e68436560635b26feb947b7a,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix se with inputs (#190)
+
+* align output names for macs peaks if broad
+
+* increase resources for attempts for macs
+
+* remove blank row in out bed files
+
+* revert macs option SE handling
+
+* revert the PE options for macs
+
+* peak calling design sorted
+
+* fix peak control match
+
+* amend config slurm queue
+
+* fix get control for peaks
+
+* lint design
+
+* fix lancetron no input rule
+
+* changes defaults in config
+
+* update snp snakefile
+
+* add snp to design and test initial
+
+* update config for snp
+
+* typo in tests
+
+* fixed config for tests
+
+* create common rules
+
+* fix snp tests
+
+* update envs
+
+* fix inputs for se in design
+
+* fix design to handle se and pe with or without inputs
+
+* update spikein with input from stats files
+
+* less stringent spike in filter bams
+
+* remove quality filter from spike in bam filter
+
+* change peak calling method for atac to macs and remove from chip tests
+
+* update fastq files to test
+
+* move multiple peak calling test to atac
+
+* update test data
+
+* less stringent filtering for spikein
+
+* put peak callers back to chip
+
+* macs for atac only
+
+* test peak callers on atac
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2024-05-28T16:20:35Z,Bot,CChahrour
+4059dc15d99c9a1a5bdb7ba15944ffb0569dce2f,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix macs output naming (#186)
+
+* align output names for macs peaks if broad
+
+* increase resources for attempts for macs
+
+* remove blank row in out bed files
+
+* revert macs option SE handling
+
+* revert the PE options for macs
+
+* peak calling design sorted
+
+* fix peak control match
+
+* amend config slurm queue
+
+* fix get control for peaks
+
+* lint design
+
+* fix lancetron no input rule
+
+* changes defaults in config
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2024-05-28T16:17:50Z,Bot,alsmith151
+05915f4e0ec8f42714ced2732281e9dadcacc2b4,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix: heatmaps always created and peak files absent (#183)
+
+* Refactor HeatmapFiles class to include make_heatmaps property in design.py
+
+* Refactor NonRNAOutput class in design.py to remove computed_field decorator
+
+* fix: correct query function to provide both the ip and control if requested
+
+* Refactor control lambda function in peak_call_chip.smk to allow null control files
+
+* Refactor query function in DesignIP class to return IPExperiment object
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2024-05-28T16:15:29Z,Bot,alsmith151
+396b94bc33efef67f804e0977199b515c7972c84,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Refactor FastqFile model to handle resolved and absolute paths (#189),2024-05-28T16:09:15Z,Bot,alsmith151
+67dcdb85b03c66becf151e97522e4895a6d64a68,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Refactor pileup_norm.smk to use tile instead of tiles (#188)
+
+The commit message suggests refactoring the `pileup_norm.smk` file to use the `tile` parameter instead of `tiles`.",2024-05-28T16:08:44Z,Bot,alsmith151
+9a7b5708448a73e51354af5e940e5191f682b2b8,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Reinstate snp pipeline (#185)
+
+* align output names for macs peaks if broad
+
+* increase resources for attempts for macs
+
+* remove blank row in out bed files
+
+* revert macs option SE handling
+
+* revert the PE options for macs
+
+* peak calling design sorted
+
+* fix peak control match
+
+* amend config slurm queue
+
+* fix get control for peaks
+
+* lint design
+
+* fix lancetron no input rule
+
+* changes defaults in config
+
+* update snp snakefile
+
+* add snp to design and test initial
+
+* update config for snp
+
+* typo in tests
+
+* fixed config for tests
+
+* create common rules
+
+* fix snp tests
+
+* update envs
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2024-05-28T16:05:12Z,Bot,alsmith151
+943ca8051ee1868070c38182d6d1cc869abec527,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix: ensure pipeline starts in fully resolved directory (#184),2024-04-30T16:45:37Z,Bot,alsmith151
+c00b1bca7b7f00d07ac2822412bcb4f2e3fff354,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Re-build the design to better cope with single/paired/input samples  (#182)
+
+* Refactor hub.smk and create_hub.py to use ""method"" instead of ""pileup_method""
+
+* Fix control not found issues and fix --preset ls
+
+* Fix control duplication issue in DesignIP class
+
+* Fix sample name assignment in DesignIP class
+
+* Refactor DesignIP class to include from_directory method
+
+* Fix control file naming issue in peak_call_chip.smk
+
+* Fix control file naming issue in DesignIP class
+
+* Fix control file naming issue in DesignIP class
+
+* Add pandera to dependencies in pyproject.toml
+
+* Refactor alignment_post_processing.smk and pileup_grouped.smk rules
+
+* Refactor DesignIP class to handle different types of designs
+
+* fix: corrects always adding unscaled to bigwigs
+
+* Refactor get_group_for_sample function in helpers.py to handle missing samples in normalisation groups
+
+* Refactor peak_call_chip.smk to format MACS options and handle control file naming issue
+
+* Fix control file naming issue in test_pipelines.py
+
+* Refactor exogenous_norm.smk and pileup_norm.smk rules to remove unused imports and update sample selection
+
+* Add NormGroups class to handle normalization scaling and merging in snakefile_chip
+
+* Fix bowtie2 options in config_yaml_for_testing function
+
+* Fix condition for checking number of peak lines in validate_peaks rule
+
+* Fix condition for checking number of peak lines in validate_peaks rule
+
+* Refactor pileup_norm.smk to use NORMALISATION_SCALING instead of NORM_GROUPS
+
+* fix: add sample groups to snakefiles
+
+* fix: correct  NormGroup from design
+
+* fix: updated chip test files
+
+* Fix SEACR command in peak_call_chip.smk to handle failure gracefully
+
+* Refactor pileup_norm.smk to remove extendReads and -e options for unpaired samples
+
+* Update deeptools threads to 8 in seqnado/config.py
+
+* Fix scale_method assignment in BigWigFiles model
+
+* Refactor snakefiles to use remove_unwanted_run_files function for cleanup
+
+* Refactor dplyr select and setNames in deseq2.qmd.jinja to use sample_info.sample_name instead of sample_info.sample
+
+* Refactor get_group_for_sample function in helpers.py to include an optional strip parameter
+
+* Refactor calculate_spikein_norm_factors.r to suppress package startup messages and update column names
+
+* Refactor deseq2_rna.smk to remove size_factors output
+
+* Add rule calculate_scaling_factors_spikein to pileup_norm.smk
+
+* Refactor calculate_spikein_norm_factors.r to use relative path for script execution
+
+* Refactor spike-in normalization check in snakefile_rna
+
+* Refactor file names and update read_table to read_delim in calculate_scaling_factors.R
+
+* Refactor dplyr select and setNames in deseq2.qmd.jinja to use sample_info.sample_name instead of sample_info.sample
+
+* Refactor pileup_norm.smk to use input.chromsizes and params.tile_size in tile_regions rule
+
+* fix left_join in deseq2.qmd.jinja to use sample_info.sample_name instead of sample_info.sample
+
+* Fix left_join in deseq2.qmd.jinja to use sample_info.sample_name instead of sample_info.sample
+
+* Fix left_join in deseq2.qmd.jinja to use sample_info.sample_name instead of sample_info.sample
+
+* Refactor snakefile_chip to import remove_unwanted_run_files from seqnado.helpers
+
+* Fix supergroup_by parameter in hub.smk to use None as default value
+
+* Refactor create_hub.py to use ""method"" instead of ""pileup_method"" for ChIP assay
+
+* Refactor symlink_file function in helpers.py to remove debug logging statements",2024-04-23T14:23:33Z,Bot,alsmith151
+6ccb4c907abbf3c76ba3b8649722105e6ee3bf57,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix: control not found issues (#181),2024-04-13T12:24:09Z,Bot,alsmith151
+4699ae1be55ad378663900f0daf0772b606d10d8,alsmith,asmith151@outlook.com,fix: fix --preset ls,2024-04-09T16:02:03Z,Human,alsmith151
+d76a6004146c5550898dcff3237c6f0ef871114a,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Feat increase setup verbosity (#180)
+
+* Refactor name_control assignment in DesignIP class
+
+* Update prefix for peak files in PeakCallingFiles class
+
+* Add FAQ entry for merging multiple samples into a single sample
+
+* updated cli:
+
+* Added clean_symlinks
+* Design looks in more places for files
+
+* Fix symlink creation for empty source paths
+
+* Fix symlink creation for empty source paths
+
+* Update design.py with metadata validation
+
+* Update design.py with metadata validation
+
+* fix: correct metadata validation
+
+* Add merge column to design file for chip assay
+
+* Update scale_method to ""grouped"" in Output class
+
+* Refactor alignment_post_processing.smk to use get_sample_names instead of get_sample_group
+
+* Update peak_calling_method to ""lanceotron"" in NonRNAOutput class
+
+* Update scale_method to ""merged"" in Output class
+
+* Added lanceotron params
+
+* Add container definition for lanceotron_no_input_consensus rule
+
+* Refactor logging verbosity in cli_pipeline function",2024-04-09T15:40:19Z,Bot,alsmith151
+e1c8f6e5d6169c9bcdfb68c12e3fa01cc1878c8c,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Update pileup_method and peak_calling_method to be optional (#177),2024-04-09T12:42:00Z,Bot,alsmith151
+11a2bc76c55286df411da585221c4b446e3a56e8,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Add Codecov for coverage reports (#176),2024-04-05T09:11:35Z,Bot,alsmith151
+9b6ba5474ea72b29fd571f4c0b06c48f0d08299d,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Feat add seacr (#160)
+
+* Add rule fragment_bedgraph for generating bedGraph files
+
+* Add SEACR rule for peak calling
+
+* Add SEACR configuration to config.py
+
+* Fix indentation in deeptools_make_bigwigs rule
+
+* Add 'seacr' as a peak calling method for chip assay
+
+* set library complexity to False. temp fix
+
+* Update pileup_default.smk to include outdir parameter
+
+* Fix awk command in pileup_default.smk
+
+* Add logging to bedgraph generation in pileup_default.smk
+
+* Update peak calling method for chip assay
+
+* Add pathlib import and modify SEACR rule to rename output file
+
+* Update SEACR output file name and format",2024-04-01T16:00:27Z,Bot,alsmith151
+a48548be0b408731b691709796716053d14cd9f1,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Feat parameterise quarto (#170)
+
+* cleanup pileup logs
+
+* cleanup bigwig threads
+
+* correct orlando scaling factors
+
+* Add deseq2_params rule and update deseq2.qmd.jinja
+
+* Update file calculate_spikein_norm_factors.r to write normalization factors to snakemake output
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2024-04-01T13:56:40Z,Bot,alsmith151
+f797427c487a82e1c46903d8b56bc382d4ae941d,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(docs): update docs for new snakemake version (#174)
+
+* feat: updated install script
+
+* Update FAQ and installation instructions",2024-03-29T13:42:22Z,Bot,alsmith151
+fea89be4b330597c984ef795142ba0449a405e7d,Alastair Smith,49727900+alsmith151@users.noreply.github.com, fix(docs): wrong python version used for building docs (#173),2024-03-29T13:38:38Z,Bot,alsmith151
+72c128c018713613f2c3c2a0e5361da4aa61120b,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Update hub.smk and create_hub.py to include new parameters for RNA assay (#172),2024-03-29T13:37:08Z,Bot,alsmith151
+8b904568c6b4662e298fd7451d652e0521911979,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Fix issue with home directory symlinks causing problems with singularity bind mounts (#171),2024-03-29T13:35:50Z,Bot,alsmith151
+9a9e884d2c9e01920d7cada9359766718185a09c,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,moved macs format to config (#169),2024-03-28T16:05:11Z,Bot,CChahrour
+1ddb08e3d67a2c2124557d8860efe1852560e1c8,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feat add transcript counting (#167)
+
+* add salmon RNA quantification
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-03-28T15:51:10Z,Bot,CChahrour
+bdff71b72c6dba04b212106bb64bc16e7118065f,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,update python version for precommit (#163),2024-03-27T13:04:18Z,Bot,CChahrour
+f6b420e88d5341de358a76d6bc1f3cdc6aba1ed4,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,fix tests for ilb comp (#162),2024-03-27T12:02:51Z,Bot,CChahrour
+09663fc75380c4e670d2c7f1b12d488c852f5396,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix add library complexity (#161)
+
+* Add Singularity bind for presets ending with ""s""
+
+* Set APPTAINER_BIND environment variable in cli_pipeline function
+
+* Update Singularity and Slurm configurations
+
+* Refactor APPTAINER_BINDPATH in cli_pipeline function
+
+* Increase runtime for trimgalore_paired rule
+
+* Refactor is_paired method in AssayNonIP class
+
+* Add rule align_single_spikein for aligning single spikein samples
+
+* add align single to ruleorder
+
+* Increase number of jobs to 100 in slurm-singularity profile
+
+* Refactor align_single_spikein rule
+
+* fix exo align mem resources
+
+* Increase runtime for deeptools_make_bigwigs rules
+
+* Add retries option to config.yaml
+
+* Add fastq_screen flag to Output class
+
+* Update QCFiles instantiation in NonRNAOutput and ChIPOutput
+
+* Add library complexity flag to QCFiles instantiation
+
+* add lib comp to config and test
+
+* fix typo in config yaml
+
+* fix align paired rule
+
+* increase memory on sort bam spikein
+
+* move lib comp to remove dupes in config
+
+* update mem resources in all rules
+
+* update mem for index
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2024-03-26T17:47:41Z,Bot,alsmith151
+23d5210a0f9aaaaf2dc4de15940de4b515932b4d,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix add library complexity (#159)
+
+* Add Singularity bind for presets ending with ""s""
+
+* Set APPTAINER_BIND environment variable in cli_pipeline function
+
+* Update Singularity and Slurm configurations
+
+* Refactor APPTAINER_BINDPATH in cli_pipeline function
+
+* Increase runtime for trimgalore_paired rule
+
+* Refactor is_paired method in AssayNonIP class
+
+* Add rule align_single_spikein for aligning single spikein samples
+
+* add align single to ruleorder
+
+* Increase number of jobs to 100 in slurm-singularity profile
+
+* Refactor align_single_spikein rule
+
+* fix exo align mem resources
+
+* Increase runtime for deeptools_make_bigwigs rules
+
+* Add retries option to config.yaml
+
+* Add fastq_screen flag to Output class
+
+* Update QCFiles instantiation in NonRNAOutput and ChIPOutput
+
+* Add library complexity flag to QCFiles instantiation
+
+* add lib comp to config and test
+
+* fix typo in config yaml
+
+* fix align paired rule
+
+* increase memory on sort bam spikein
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-03-26T15:27:39Z,Bot,CChahrour
+fdd002dbf5b6e2002609eca135ad5d21d946cb0a,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix: correct bugs found on interacting with  slurm scheduler (#158)
+
+* Add Singularity bind for presets ending with ""s""
+
+* Set APPTAINER_BIND environment variable in cli_pipeline function
+
+* Update Singularity and Slurm configurations
+
+* Refactor APPTAINER_BINDPATH in cli_pipeline function
+
+* Increase runtime for trimgalore_paired rule
+
+* Refactor is_paired method in AssayNonIP class
+
+* Add rule align_single_spikein for aligning single spikein samples
+
+* add align single to ruleorder
+
+* Increase number of jobs to 100 in slurm-singularity profile
+
+* Refactor align_single_spikein rule
+
+* fix exo align mem resources
+
+* Increase runtime for deeptools_make_bigwigs rules
+
+* Add retries option to config.yaml
+
+* Add fastq_screen flag to Output class
+
+* Update QCFiles instantiation in NonRNAOutput and ChIPOutput
+
+* Add library complexity flag to QCFiles instantiation
+
+* Refactor pytest fixture in test_pipelines.py
+
+* Add genome indices to align_paired_spikein rule
+
+* Update rule order in snakefile_chip
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2024-03-26T15:25:47Z,Bot,alsmith151
+cddd3410bad8bff9e2bd4b1d93e8d648c4a5b880,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Refactor of design and add spike-in support (#157)
+
+* bug fixes for conda release
+
+* remove duplicates from hub (#140)
+
+* add mamba installation to docs (#141)
+
+* Remove wrappers from rules (#144)
+
+* remove wrapper from fastqc
+
+* fix multiqc rule
+
+* Fix chip rx (#145)
+
+* remove old util functions from chip-rx
+
+* fix fastqscreen for inputs
+
+* make fastqscreen an option outside of chiprx
+
+* add fastqscreen conf to tests
+
+* pinned snakemake to v7.32.4
+
+* unpin snakemake
+
+* less specific snakemake pin
+
+* fix typo
+
+* add time for alignment
+
+* Feat upgrade snakemake version (#154)
+
+* fix(deps): cleaned dependencies
+
+* feat: updated profiles
+
+* Update snakemake version in environment files and pyproject.toml
+
+* Update conda-incubator/setup-miniconda version to v3
+
+* Update Python version to 3.12 and add Python dependency for 3.11
+
+* Feat split utils into separate modules (#156)
+
+* Add NormDesign class to utils.py
+
+* Refactor normalisation workflow and add new rules for scaling factors and bigwig normalisation
+
+* Add script to calculate scaling factors
+
+* Add script to calculate scaling normalization factors
+
+* Update normalization and scaling factors in deeptools_make_bigwigs
+
+* Add spikein and scale normalization output files
+
+* Refactor NormDesign to use NormGroup
+
+* Refactor NormGroups class in utils.py
+
+* Add get_group_for_sample function to normalisation.smk
+
+* Add sample_groups and group_samples properties to NormGroups class
+
+* Add get_group_for_sample function to utils.py
+
+* Add pileup_normalisation.smk and related functions
+
+* Add normalization factors output to resources folder
+
+* Refactor get_group method and add new methods for retrieving sample group and grouped samples
+
+* Add spike-in normalization and output size factors
+
+* Refactor design export in seqnado/cli.py
+
+* Add pileup_normalisation rule to snakefiles
+
+* fix: fastq screen rule failing RNA even when not active
+
+* Update pileup_normalisation.smk file
+
+* fix: design missing from function
+
+* Remove 'assay' parameter from NormGroup class
+
+* Remove unused 'assay' parameter in NormGroups.from_design() method
+
+* Refactor get_group_for_sample to use get_sample_group
+
+* Update file paths and remove spaces in scaling factors
+
+* Fix spikein factor file path in pileup_normalisation.smk
+
+* Fix conditional statement for scale argument in define_output_files function
+
+* Update align_paired rule resources in align_rna.smk
+
+* add scale to config for rna
+
+* update config scale
+
+* feat: enable rules to run using snakemake 8+
+
+* feat: split utils into helpers and design
+
+* feat: updated snakefiles
+
+* Add symlink functions for fastq files
+
+* chore: removed symlink fastq
+
+* Refactor imports in seqnado/cli.py
+
+* Update import statements and function calls
+
+* typo misisng ""=""
+
+* additional typos
+
+* Fix formatting issues in design.py and snakefiles
+
+* Update paths for unscaled bigwig files
+
+* Update files property in NonRNAOutput class
+
+* add test data for chip-rx and rna-rx
+
+* feat: split utils into helpers and design
+
+* feat: updated snakefiles
+
+* Add symlink functions for fastq files
+
+* chore: removed symlink fastq
+
+* Refactor imports in seqnado/cli.py
+
+* Update import statements and function calls
+
+* typo misisng ""=""
+
+* additional typos
+
+* Fix formatting issues in design.py and snakefiles
+
+* Update paths for unscaled bigwig files
+
+* Update files property in NonRNAOutput class
+
+* Add NormGroup and NormGroups classes for handling normalization groups
+
+* Add pileup_grouping and peak_call_grouped rules
+
+* Refactor file handling in Output classes
+
+* Update atac rule order
+
+* Add logger to stderr and fix bug in peaks method
+
+* Update pileup_grouping.smk to pileup_grouped.smk
+
+* Update snakefile_chip with new rules and output files
+
+* Refactor ANALYSIS_OUTPUT variable in snakefile_rna
+
+* Update heatmap and pileup rules
+
+* Add spikein option to user_inputs function
+
+* Update typing in design.py
+
+* Refactor output variables in snakefiles
+
+* Update input paths in validate_peaks and generate_hub rules
+
+* Fix conditional statement in generate_hub rule
+
+* Add --cores 4 option to pytest command
+
+* fix: missing qc files from output
+
+* Update output file paths in utils.py
+
+* Remove unused code in seqnado/utils.py
+
+* Add test_rna_size_factors.ipynb to .gitignore
+
+* Add is_path function to check if a path is valid
+
+* Remove ""consensus-peaks"" option from method argument in cli_design function
+
+* Add data.json file to config directory
+
+* Add Optional import to helpers.py
+
+* Add test_pipelines.py for unit testing
+
+* Update treatment paths in peak_call_chip and peak_call_other rules
+
+* Remove unused test files and fixtures
+
+* Refactor Output class to include a new property for bigbed files
+
+* Refactor hub.smk and remove unused function
+
+* Refactor test_pipelines.py to download and extract genome indices and additional files
+
+* Add is_paired property to AssayIP and ExperimentIP classes, and update DesignIP query method to handle IP and control names properly
+
+* Refactor symlink_fastq_files function and format_deeptools_options
+
+* Remove commented out code in hub.smk
+
+* Refactor deeptools options formatting
+
+* Add genome test data and remove unnecessary lines in snakefiles
+
+* Refactor snakefile_atac and snakefile_chip
+
+* Add NormGroups initialization from design
+
+* Add NormGroups and update normalization factors
+
+* Add get_scale_method to ChIPOutput initialization
+
+* Add scale_group column to design dataframe
+
+* Add debug option to create_config function and update helpers.py
+
+* Add pepe_silvia function and get_scale_method to helpers.py
+
+* Update fastq files
+
+* Remove unnecessary print statement in snakefile_chip
+
+* Refactor NormGroups class to handle subset columns in design
+
+* Update file paths in pileup_norm.smk
+
+* Fix wildcard constraints in snakefile_chip
+
+* Fix indentation in get_scale_method function
+
+* Update test_pipelines.py with new config options
+
+* Add pyranges as a dependency
+
+* Update paths and download files in test_pipelines.py
+
+* Update .gitignore to exclude tests/data/ directory
+
+* Update STAR options in config.py
+
+* Remove unnecessary option for star command
+
+* Add spikein scaling option to RNAOutput
+
+* Update size factors file in deseq2_rna.smk
+
+* Update spikein normalization factors in deeptools_make_bigwigs_rna_spikein_plus and deeptools_make_bigwigs_rna_spikein_minus rules
+
+* feat: pipeline exits if run deseq and no column
+
+* Add options to STAR command for RNA assay
+
+* Delete fastq files
+
+* Add deseq2 column to design file
+
+* Add conditional check for vst function
+
+* Update DESeq2 configuration file to include rjson package and output size factors
+
+* Add logging to deeptools_make_bigwigs_rna_spikein_plus and deeptools_make_bigwigs_rna_spikein_minus rules
+
+* Update file path for writing normalization factors
+
+* heatmaps should use normalised bigwigs if present
+
+* Add full QC report to seqnado_output
+
+* Fix typo in get_scale_method parameter name
+
+* Update heatmap.smk to handle unscaled bigwigs
+
+* set apptainer prefix for snakemake
+
+* Update default values for remove_pcr_duplicates and make_heatmaps
+
+* Fix pipeline command in test_pipelines.py
+
+* Add full QC report to QCFiles class
+
+* add get_fastqc_files. corrects single vs paired
+
+* Fix logic in get_fastqc_files function
+
+* peak_call_method can be False
+
+* Add 'False' as an option for peak_calling_method
+
+* Update symlink_file function to print a message instead of using logger
+
+* Add ""scale"" parameter to user_inputs function
+
+* Increased default thread  number
+
+* Update logger level to WARNING
+
+* Commented out code for RNA assay in test_pipelines.py
+
+* fix: inputs not being properly paired
+
+* Update data loading in snakefiles
+
+* Fix r2 FastqFile initialization in Design class
+
+* Fix symlink issue in helpers.py
+
+* Add profile_test configuration file
+
+* fix: issue with apptainer args
+
+* Fix is_paired method to check if r2 path is a file
+
+* Add new functions for extracting cores and apptainer arguments from Snakemake options
+
+* Add imports and extract cores from options
+
+* Fix control variable initialization in peak_call_chip.smk
+
+* Update rule order in peak_call_chip.smk
+
+* fixed: symlinks not working for input samples
+
+* Refactor control variables in peak_call_chip.smk
+
+* Refactor name comparison in DesignIP class
+
+* Refactor control variables to use ""UNDEFINED"" instead of empty lists
+
+* Update rule macs2_no_input to handle undefined control bam
+
+* Commented out apptainer-args in config.yaml
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2024-03-25T12:05:39Z,Bot,alsmith151
+2614a8ea7a63609d2693300d475c8b28127a7bed,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"update snakemake version (#147)
+
+* update snakemake version",2024-02-27T18:48:52Z,Bot,CChahrour
+80fe6e30503f8f9f2be23cb5e7767d618fd3f034,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"fastqscreen added and debug chip-rx (#146)
+
+* bug fixes for conda release
+
+* remove duplicates from hub (#140)
+
+* add mamba installation to docs (#141)
+
+* Remove wrappers from rules (#144)
+
+* remove wrapper from fastqc
+
+* fix multiqc rule
+
+* Fix chip rx (#145)
+
+* remove old util functions from chip-rx
+
+* fix fastqscreen for inputs
+
+* make fastqscreen an option outside of chiprx
+
+* add fastqscreen conf to tests",2024-02-27T17:48:14Z,Bot,CChahrour
+c15d43db1c4da92eead6d145b4c965dce23e5f05,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(chip and atac): Option to generate merged peak calls if ""merge"" key is present in design (#134)
+
+* feat: added consensus peaks into chip and atac
+
+* feat: added snakemake_design to define_output_files
+
+* Update lanceotron_no_input_consensus rule
+
+* feat: added consenus bigwigs and bigbed to hub
+
+* Fix log file path in consensus_peaks rule and update get_hub_input function
+
+* Update paths for consensus peaks and bigwigs",2024-02-16T15:55:45Z,Bot,alsmith151
+116eec67b65a205542085b1bb3d8b7efe5962041,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"fix hub and edit docs (#142)
+
+* bug fixes for conda release
+
+* remove duplicates from hub (#140)
+
+* add mamba installation to docs (#141)",2024-02-09T17:31:10Z,Bot,CChahrour
+07f84208d5e96785af86f0b4892c2b2a7f890659,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,bug fixes for conda release (#139),2024-02-08T12:18:27Z,Bot,CChahrour
+f9f1da503855a2b2f48421b2c11ee9d493ee263d,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"fix: chip input issue (#136)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+* Feature add config rerun (#126)
+
+* add option to rerun config
+
+* update config docs with rerun
+
+* move sigularity fix to faq in docs (#127)
+
+* feat(pipeline): handle failed peak calls (#131)
+
+* fix: add validate peaks rule
+
+* Add get_peak_files function to retrieve peak files based on assay type
+
+* fix(pipeline): inputs not used for peak call (#132)
+
+* Develop (#128)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+* Feature add config rerun (#126)
+
+* add option to rerun config
+
+* update config docs with rerun
+
+* move sigularity fix to faq in docs (#127)
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* fix: ""f"" missing for all get_control_X functions.
+
+Whoops...
+
+* fix: multiple errors with get_control_X files
+
+* fix: removed touch sentinel
+
+* fix: && removed at end of lines
+
+* fix: make blank file if peak calls fail
+
+* fix: validate peaks wrong param supplied
+
+---------
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>
+
+* Fix: chip input issue (#135)
+
+* fix symlinking issue for input fastq files
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2024-02-07T17:42:06Z,Bot,CChahrour
+94e31ae6e934d152012b6f037b0e6d7724f5c9f0,alsmith,asmith151@outlook.com,Merge branch 'master' of github.com:alsmith151/SeqNado,2024-02-05T17:25:47Z,Human,alsmith151
+6e64d2dcb5a304ba527fb05a04c597377443da99,alsmith,asmith151@outlook.com,chore(CI): removed publish to testpypi,2024-02-05T17:25:16Z,Human,alsmith151
+35975185a900ce021c23c5dbb855cf082082caab,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"feat(pipeline): Bugfixes to ATAC and ChIP-seq pipelines 
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+* Feature add config rerun (#126)
+
+* add option to rerun config
+
+* update config docs with rerun
+
+* move sigularity fix to faq in docs (#127)
+
+* feat(pipeline): handle failed peak calls (#131)
+
+* fix: add validate peaks rule
+
+* Add get_peak_files function to retrieve peak files based on assay type
+
+* fix(pipeline): inputs not used for peak call (#132)
+
+* Develop (#128)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+* Feature add config rerun (#126)
+
+* add option to rerun config
+
+* update config docs with rerun
+
+* move sigularity fix to faq in docs (#127)
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* fix: ""f"" missing for all get_control_X functions.
+
+Whoops...
+
+* fix: multiple errors with get_control_X files
+
+* fix: removed touch sentinel
+
+* fix: && removed at end of lines
+
+* fix: make blank file if peak calls fail
+
+* fix: validate peaks wrong param supplied
+
+---------
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2024-02-05T16:57:28Z,Bot,CChahrour
+03fa79a5b1fdc6f11f96f6381465d6732d213a1b,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#128)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+* Feature add config rerun (#126)
+
+* add option to rerun config
+
+* update config docs with rerun
+
+* move sigularity fix to faq in docs (#127)
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-02-03T09:37:34Z,Bot,CChahrour
+3cebc80702c8beac753e9f9c55c093e516661444,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix: removed backslash (#124)
+
+Need to match an actual S char not \S.
+
+Thanks Copilot",2024-02-01T17:43:45Z,Bot,alsmith151
+27039e38f8584211d414135d02b00b6355da3a5e,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#123)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+* add entrypoint and chmod profile (#122)
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-01-29T15:30:47Z,Bot,CChahrour
+610722db777f2fc2e4e525e71f1aed9fd74628cd,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#120)
+
+* Fix slurm preset (#118)
+
+* require snakemake<8
+
+* fix escape character and whitespace errors
+
+* Delete setup.cfg file
+
+* fix: split peak call rules
+
+* tests: added all peak call methods to atac test
+
+* Update output file paths in
+alignment_post_processing.smk
+
+* Update file paths in hub.smk
+
+* fix: updated wildcards for bigBed files
+
+* Refactor test_seqnado_config_creation function and
+add missing options to config_atac.yml
+
+* Update config file for chip sequencing
+
+* fix: seqnado-design
+
+* chore: removed commented code
+
+* Fix file path in lanceotron_no_input rule
+
+* Fix metadata and experiment creation in DesignIP
+class
+
+* Fix symlink_files function to handle both paired
+and single-end assays
+
+* Add log and wrapper for fastqc_raw_single rule
+
+* update config if ucsc is null
+
+* Fix config (#119)
+
+* remove split fastq from config and all rules
+
+* clean up config and fix spelling of indices
+
+* remove test config files
+
+* update default heatmap options
+
+* return to config but with small changes
+
+* refactor config.py
+
+* fix typo in config.py
+
+* use indices consistently for genome indices
+
+* update config process in docs
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-01-26T15:09:26Z,Bot,CChahrour
+c85b6478ab3a2b160dc6cbbb728b05f192e7cfad,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feature/chip spikein (#116)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: removed seqnado import. Not in container. (#73)
+
+* fix: Enable profile to work on new JADE cluster (#70)
+
+* feat: added new slurm profile
+
+* fix: updated all memory values for cluster usage
+
+* fix: ""false"" missing from is_off function. (#72)
+
+* fix: ChIP-rx pipeline when duplicate samples present (#71)
+
+* fix: deduplicated normalisation
+
+* feat: added check for presence of spikein index
+
+* fix: typo in deseq2 key
+
+* fix blacklist populating from cookiecutter
+
+* Fix profile for jade cluster (#83)
+
+* fix blacklist populating from cookiecutter (#81)
+
+* fix profile for jade
+
+* fix bugs in deseq2 report (#87)
+
+* make raw bams temp (#97)
+
+* Fix rna pipeline (#98)
+
+* small fixes for deseq2
+
+* fix deseq2 report minimal design sample and deseq2
+
+* add docs for minimal deseq2
+
+* Feat add attempts for potential oom jobs (#101)
+
+* Create dependabot.yml (#93)
+
+* Update dependabot.yml (#94)
+
+* Update dependabot.yml (#95)
+
+* feat: added attempts to multiqc
+
+* feat: attempts added to alignment counts
+
+* feat: attempts added to multiqc
+
+* feat: added attempts to heatmap
+
+* feat: enabled snakefmt precommit
+
+* fix: typo in heatmap.smk
+
+* fix: typo in alignment_counts
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* add attempts to sorting (#102)
+
+* Fix snp pipeline (#103)
+
+* rule all in snp called twice
+
+* update default config to shared resources
+
+* make deseq2 optional
+
+* fix split fastq
+
+* test snps
+
+* fix snp tests and config
+
+* fix snp test and configs
+
+* remove resources from plot heatmap
+
+* add hub info to snp test
+
+* increase resources
+
+* fix call snps
+
+* make snp raw bams temp
+
+* resolve conflicts
+
+* feat: added consensus peak calling (#90)
+
+Performs merging of bam files and re-calls peaks using lancotron. Provides increased accuracy for quantitative differences in peaks
+
+* add chip ref norm with concat genome
+
+* add split_bam.py
+
+* split with samtools
+
+* amended norm to orlando method
+
+* add rx to chip as an option
+
+* fix fastqscreen to run
+
+* fix scaling factors for deeptools
+
+* change heatmap to scale regions and add metaplot
+
+* changed config to jinja2
+
+* add deseq2 template
+
+* change config file ext to yml
+
+* fix indentation in too options
+
+* update chiprx in snakefile
+
+* fix typos for rna config
+
+* add preset genomes to config
+
+* fix for genome other
+
+* made jinja env work in other dir
+
+* updated chip test for jinja config
+
+* debug tests
+
+* remove --no-input from testpipeline
+
+* fix rna test
+
+* fix type in orlando spike in py
+
+* remove config test from test_pipeline.yml
+
+* tweek heatmap time limit
+
+* deseq and heatmap changes
+
+* tidy up star folder
+
+* update deseq2 template
+
+* added go and gsea to deseq2 template
+
+* fix star temp files cleanup
+
+* fix typo in star align rule
+
+* merge master into chip
+
+* removed dupe arg cli
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2024-01-18T17:44:53Z,Bot,CChahrour
+23248aa92555ec282279c7cb5dc9aded1f31a97f,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(rna): fixes issues when running rna pipeline (#114)
+
+* Fix DESeq2 output file name
+
+* Update sample_name computation in FastqFile class
+
+* DESeq2 to deseq2
+
+* Fix conditional statement for running DESeq2
+
+* Refactor define_output_files function to use
+pathlib for creating hub_txt path
+
+* Fix index column in pd.read_csv() function
+
+* Modified hub path
+
+* Update project name in deseq2_rna.smk and
+snakefile_rna",2024-01-18T13:53:16Z,Bot,alsmith151
+f62f8fa1b52e8584cd594b2fb1cbecc3b3fc8d6f,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Update README.md (#111),2024-01-13T15:25:30Z,Bot,alsmith151
+d18821ca21109cdba971a861bea224395dace519,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"docs: Add initial seqnado documentation (#110)
+
+* feat(docs): added documentation
+
+* Update package installation in build_docs.yml
+
+* Update FAQ link in mkdocs.yml
+
+* Update design file format in pipeline.md",2024-01-13T15:15:51Z,Bot,alsmith151
+bd89613706d3099b11310fbed2d57fe55bc1c6b1,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix tests 13 01 24 (#109)
+
+* fix: corrected conflicts in utils
+
+* feat: added --cores option to tests
+
+* feat: cores option passed to tests
+
+* fix: ""spikein""
+
+* feat: show failed logs added by default",2024-01-13T13:56:57Z,Bot,alsmith151
+1d79ba10a8e86c764586f5c4f1646fcef6c7f398,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feature/chip spikein (#108)
+
+* add chip ref norm with concat genome
+
+* add split_bam.py
+
+* split with samtools
+
+* amended norm to orlando method
+
+* add rx to chip as an option
+
+* fix fastqscreen to run
+
+* fix scaling factors for deeptools
+
+* change heatmap to scale regions and add metaplot
+
+* changed config to jinja2
+
+* add deseq2 template
+
+* change config file ext to yml
+
+* fix indentation in too options
+
+* update chiprx in snakefile
+
+* fix typos for rna config
+
+* add preset genomes to config
+
+* fix for genome other
+
+* made jinja env work in other dir
+
+* updated chip test for jinja config
+
+* debug tests
+
+* remove --no-input from testpipeline
+
+* fix rna test
+
+* fix type in orlando spike in py
+
+* remove config test from test_pipeline.yml
+
+* tweek heatmap time limit",2024-01-12T17:22:30Z,Bot,CChahrour
+6588fd2b5458ecad4cee1aab7d0253415f107a39,alsmith,asmith151@outlook.com,Add new test files and update .gitignore,2024-01-12T17:22:03Z,Human,alsmith151
+0d74d94ff3ca7faabc7dd2575da2627477134f46,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix snp pipeline (#103)
+
+* rule all in snp called twice
+
+* update default config to shared resources
+
+* make deseq2 optional
+
+* fix split fastq
+
+* test snps
+
+* fix snp tests and config
+
+* fix snp test and configs
+
+* remove resources from plot heatmap
+
+* add hub info to snp test
+
+* increase resources
+
+* fix call snps
+
+* make snp raw bams temp
+
+* resolve conflicts",2024-01-12T17:21:03Z,Bot,CChahrour
+72c42e25988fe1e7b6457f4e14430d8c02e41865,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feat add attempts for potential oom jobs (#101)
+
+* Create dependabot.yml (#93)
+
+* Update dependabot.yml (#94)
+
+* Update dependabot.yml (#95)
+
+* feat: added attempts to multiqc
+
+* feat: attempts added to alignment counts
+
+* feat: attempts added to multiqc
+
+* feat: added attempts to heatmap
+
+* feat: enabled snakefmt precommit
+
+* fix: typo in heatmap.smk
+
+* fix: typo in alignment_counts
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>
+Co-authored-by: alsmith <asmith151@outlook.com>",2024-01-12T17:20:13Z,Bot,CChahrour
+21f74f03212936b241e90af14cc1241a3f74ff8d,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix: ChIP-rx pipeline when duplicate samples present (#71)
+
+* fix: deduplicated normalisation
+
+* feat: added check for presence of spikein index",2024-01-12T17:18:53Z,Bot,alsmith151
+c9df224ab010ba257276b3b23d03041f15f6e732,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps",2024-01-12T17:18:02Z,Bot,alsmith151
+12263ddaa440d0000827aa6d050e812ecf6428db,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps",2024-01-12T17:17:42Z,Bot,CChahrour
+e3f279e1e0caeaad1be2e6d2eebd0c602d8ed82d,CChahrour,catherine.chahrour@gmail.com,add singularity path to tests,2024-01-12T17:16:50Z,Human,CChahrour
+9d0d26ea3353ed608abb575a9827c0718a851b8c,CChahrour,catherine.chahrour@gmail.com,remove large file from tests,2024-01-12T17:15:41Z,Human,CChahrour
+86d2141033bc69ae229a38ff16c32cd511033e94,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(pipeline): alter the way in which fastq files are fed into the pipeline (#107)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: removed seqnado import. Not in container. (#73)
+
+* fix: Enable profile to work on new JADE cluster (#70)
+
+* feat: added new slurm profile
+
+* fix: updated all memory values for cluster usage
+
+* fix: ""false"" missing from is_off function. (#72)
+
+* fix: ChIP-rx pipeline when duplicate samples present (#71)
+
+* fix: deduplicated normalisation
+
+* feat: added check for presence of spikein index
+
+* fix: typo in deseq2 key
+
+* fix blacklist populating from cookiecutter
+
+* Fix profile for jade cluster (#83)
+
+* fix blacklist populating from cookiecutter (#81)
+
+* fix profile for jade
+
+* fix bugs in deseq2 report (#87)
+
+* make raw bams temp (#97)
+
+* Fix rna pipeline (#98)
+
+* small fixes for deseq2
+
+* fix deseq2 report minimal design sample and deseq2
+
+* add docs for minimal deseq2
+
+* Feat add attempts for potential oom jobs (#101)
+
+* Create dependabot.yml (#93)
+
+* Update dependabot.yml (#94)
+
+* Update dependabot.yml (#95)
+
+* feat: added attempts to multiqc
+
+* feat: attempts added to alignment counts
+
+* feat: attempts added to multiqc
+
+* feat: added attempts to heatmap
+
+* feat: enabled snakefmt precommit
+
+* fix: typo in heatmap.smk
+
+* fix: typo in alignment_counts
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* add attempts to sorting (#102)
+
+* Fix snp pipeline (#103)
+
+* rule all in snp called twice
+
+* update default config to shared resources
+
+* make deseq2 optional
+
+* fix split fastq
+
+* test snps
+
+* fix snp tests and config
+
+* fix snp test and configs
+
+* remove resources from plot heatmap
+
+* add hub info to snp test
+
+* increase resources
+
+* fix call snps
+
+* make snp raw bams temp
+
+* resolve conflicts
+
+* feat: added consensus peak calling (#90)
+
+Performs merging of bam files and re-calls peaks using lancotron. Provides increased accuracy for quantitative differences in peaks
+
+* Add new test files and update .gitignore
+
+* Refactor code and update experiment design
+
+* Update DesignIP class to use 'assays' instead of
+'experiments'
+
+* Refactor align_single rule in align.smk
+
+* Update fastq_trim.smk workflow rules
+
+* Update paths for control files in peak_call.smk
+
+* Add query method to Design and DesignIP classes
+
+* Refactor fastqc rule and add wrapper for
+fastqc_trimmed
+
+* Refactor QC rules in seqnado workflow
+
+* Add QC reports for different stages of the
+pipeline
+
+* Add pydantic to dependencies
+
+* Remove unnecessary code and update pipeline config
+
+* Fix fastq file symlinking and include qc rules
+
+* Fix file path and symlink issues
+
+* Add dependencies and update file paths for seqnado
+workflow
+
+* Fix fastqc_dir path in qc.smk
+
+* Refactor get_fastqc_files function signature
+
+* Refactor design generation and add error handling
+for missing fastq files
+
+* Refactor fastq file handling in cli_design
+function
+
+* Refactor DesignIP instantiation in cli.py
+
+* Refactor symlink_files function and update
+DesignIP class
+
+* Update RNA workflow and experiment configuration
+
+* Update requires-python and snakemake version
+
+* fix(deps): fix pulp version
+
+* Update dependencies in pyproject.toml
+
+* Refactor test_snp.py file
+
+* Remove wildcard constraints from snakefile_atac
+
+* Feature/chip spikein (#108)
+
+* add chip ref norm with concat genome
+
+* add split_bam.py
+
+* split with samtools
+
+* amended norm to orlando method
+
+* add rx to chip as an option
+
+* fix fastqscreen to run
+
+* fix scaling factors for deeptools
+
+* change heatmap to scale regions and add metaplot
+
+* changed config to jinja2
+
+* add deseq2 template
+
+* change config file ext to yml
+
+* fix indentation in too options
+
+* update chiprx in snakefile
+
+* fix typos for rna config
+
+* add preset genomes to config
+
+* fix for genome other
+
+* made jinja env work in other dir
+
+* updated chip test for jinja config
+
+* debug tests
+
+* remove --no-input from testpipeline
+
+* fix rna test
+
+* fix type in orlando spike in py
+
+* remove config test from test_pipeline.yml
+
+* tweek heatmap time limit
+
+* Add QC reports for different stages of the
+pipeline
+
+* Refactor symlink_files function and update
+DesignIP class
+
+* Refactor test_snp.py file
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2024-01-12T17:08:09Z,Bot,alsmith151
+aa5707147a7008cc57a6d77e409073e6732d60f5,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#104)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: removed seqnado import. Not in container. (#73)
+
+* fix: Enable profile to work on new JADE cluster (#70)
+
+* feat: added new slurm profile
+
+* fix: updated all memory values for cluster usage
+
+* fix: ""false"" missing from is_off function. (#72)
+
+* fix: ChIP-rx pipeline when duplicate samples present (#71)
+
+* fix: deduplicated normalisation
+
+* feat: added check for presence of spikein index
+
+* fix: typo in deseq2 key
+
+* fix blacklist populating from cookiecutter
+
+* Fix profile for jade cluster (#83)
+
+* fix blacklist populating from cookiecutter (#81)
+
+* fix profile for jade
+
+* fix bugs in deseq2 report (#87)
+
+* make raw bams temp (#97)
+
+* Fix rna pipeline (#98)
+
+* small fixes for deseq2
+
+* fix deseq2 report minimal design sample and deseq2
+
+* add docs for minimal deseq2
+
+* Feat add attempts for potential oom jobs (#101)
+
+* Create dependabot.yml (#93)
+
+* Update dependabot.yml (#94)
+
+* Update dependabot.yml (#95)
+
+* feat: added attempts to multiqc
+
+* feat: attempts added to alignment counts
+
+* feat: attempts added to multiqc
+
+* feat: added attempts to heatmap
+
+* feat: enabled snakefmt precommit
+
+* fix: typo in heatmap.smk
+
+* fix: typo in alignment_counts
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>
+Co-authored-by: alsmith <asmith151@outlook.com>
+
+* add attempts to sorting (#102)
+
+* Fix snp pipeline (#103)
+
+* rule all in snp called twice
+
+* update default config to shared resources
+
+* make deseq2 optional
+
+* fix split fastq
+
+* test snps
+
+* fix snp tests and config
+
+* fix snp test and configs
+
+* remove resources from plot heatmap
+
+* add hub info to snp test
+
+* increase resources
+
+* fix call snps
+
+* make snp raw bams temp
+
+* resolve conflicts
+
+---------
+
+Co-authored-by: alsmith <asmith151@outlook.com>
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2023-08-31T07:54:08Z,Bot,CChahrour
+28d6e8e84b55b219a6c87cdb765cc4340f9a04e5,dependabot[bot],49699333+dependabot[bot]@users.noreply.github.com,"Update snakemake requirement from <=7.30 to <=7.32.3 (#100)
+
+Updates the requirements on [snakemake](https://github.com/snakemake/snakemake) to permit the latest version.
+- [Release notes](https://github.com/snakemake/snakemake/releases)
+- [Changelog](https://github.com/snakemake/snakemake/blob/v7.32.3/CHANGELOG.md)
+- [Commits](https://github.com/snakemake/snakemake/compare/v2.4.8...v7.32.3)
+
+---
+updated-dependencies:
+- dependency-name: snakemake
+  dependency-type: direct:production
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",2023-08-30T20:17:55Z,Bot,dependabot[bot]
+ec0508c8c3d92df0a1121536e7de251d14f12bfc,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Update dependabot.yml (#95),2023-08-08T17:07:44Z,Bot,alsmith151
+d08aa81d85b4bd0e21ff118a13b127ef52cb296a,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Update dependabot.yml (#94),2023-08-08T17:06:47Z,Bot,alsmith151
+42a629bc606c22ea4668f64fc2eb681f42069071,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Create dependabot.yml (#93),2023-08-08T17:04:53Z,Bot,alsmith151
+be4eedc78d36c1cc720bf1a1673f1d77377e69eb,Alastair Smith,49727900+alsmith151@users.noreply.github.com,feat: added --version flag to pipeline (#91),2023-08-08T15:21:23Z,Bot,alsmith151
+40fb83b0704d21bd02b8a61b2e68a874e3a7644c,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,fix sort resource (#92),2023-08-08T15:20:27Z,Bot,CChahrour
+c145741460616bce53d30cdacc60b0221c006001,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix deseq2 report (#89)
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2023-08-08T14:16:25Z,Bot,alsmith151
+148b7f63af7a8abc60fc289c4d3a97adb1e333b4,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix: fixed slurm singularity profile (#88),2023-08-08T14:13:46Z,Bot,alsmith151
+bcd83a67fdc163a626cf81ffed31f15fe3439f06,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix: passed -m 900M to samtools sort (#85),2023-08-08T11:26:50Z,Bot,alsmith151
+26334a9683ba1f627e7e4e8b7fdde51760e6ea58,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Fix: downgrade snakemake version (#84)
+
+* chore: fix snakemake version at <=7.30.2
+
+* chore: fix version
+
+* chore: downgrade snakemake version on more setup files",2023-08-08T11:03:40Z,Bot,alsmith151
+23ad7bcd5c78ccc5be029d8567cb160b91f242e0,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,fix blacklist populating from cookiecutter (#81),2023-07-24T11:11:23Z,Bot,CChahrour
+11bfe0617a883718345bf45bd591d2ee0b7c293e,alsmith,asmith151@outlook.com,fix: typo in deseq2,2023-06-26T18:14:43Z,Human,alsmith151
+01564cb18df0aba53fc0b861be549100e2387e93,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Upgrade to v0.1.7 (#76)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: removed seqnado import. Not in container. (#73)
+
+* fix: Enable profile to work on new JADE cluster (#70)
+
+* feat: added new slurm profile
+
+* fix: updated all memory values for cluster usage
+
+* fix: ""false"" missing from is_off function. (#72)
+
+* fix: ChIP-rx pipeline when duplicate samples present (#71)
+
+* fix: deduplicated normalisation
+
+* feat: added check for presence of spikein index
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2023-06-20T12:00:12Z,Bot,alsmith151
+2a37ba58539452aac649e59bf5261320a314ba15,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: update seqnado (#75)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: removed seqnado import. Not in container. (#73)
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2023-06-19T17:20:25Z,Bot,alsmith151
+bbd3dd2697a17fa7e60f4809b2ce6fd345336ece,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix:  Corrects tests erroring when downloading indicies (#74)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests
+
+* Feat split fastq files (#65)
+
+* feat: add fastq_split option
+
+* add fastq_split option to atac chip and rna & test
+
+* add num of parts to split fastq to config
+
+* update test for snp with split and call snps
+
+* feat: Added chip-rx assay (#68)
+
+* feat: Added chip-rx assay
+
+* Added rule to align spike-in reads to spike-in reference
+* Added script and rule to count spike-in reads
+* Script also calculates normalization factor
+* Added rules to generate normalised bigwigs
+
+* feat: completed v1 of chip-rx
+
+* fix: Added hub.smk rules to add output design rule
+
+* commented out snps
+
+* fix: Corrected datashare path
+
+---------
+
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2023-06-17T13:37:20Z,Bot,alsmith151
+f65e1efeffbb215e0cfa614d768b10658d121ab2,alsmith,asmith151@outlook.com,feat: increase timelimits for lanceotron jobs,2023-05-17T09:59:24Z,Human,alsmith151
+35658f7a51307feb0ed35d9f753575970314e491,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"chore: Removed duplicate rules and condensed rules  (#67)
+
+* Unified heatmap rules
+
+* Cleaned post processing rule names
+
+* fix: hub_rna.smk
+
+Not needed after the last PR
+
+* chore: removed pileup_rna.smk
+
+Input files can only be made from the `deeptools_make_bigwigs_rna_*`
+rule.
+
+* feat: collated peak_call_chip and _atac
+
+- Combined peak_call_chip and peak_call_atac into one rule
+
+- Now using just treatment wildcard
+
+- Extracting control by combining sample and antibody
+
+* chore: removed old peak call rules
+
+* chore: removed transcriptomics hub
+
+* chore: moved utils_chipseq.py to utils.py
+
+* fix: incorrect import in cli design
+
+* fix: renamed chip_utils import
+
+* fix: corrected lanceotron callPeaksInput
+
+* fix: added pileup ruleorder",2023-05-12T15:29:00Z,Bot,alsmith151
+d9a631c105d355f56e5725594886f0a937ef4da1,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix: increase the minimum job time for long running tasks (#66)
+
+* fix: Increased time limits for job execution.
+
+* All long running jobs increased to 4 hours
+* Medium jobs increased to 2 hours
+* Short jobs unchanged the default in the profile (1hr)
+
+* fix: missing comma",2023-05-05T17:05:49Z,Bot,alsmith151
+febf070c0dfe1406cbfd9f3d5aa7b6f3097f0ed0,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Generate hubs using TrackNado (#63)
+
+* feat: added tracknado as a dependency
+
+* feat: updated hub generation
+
+* feat: Added `define_output_files` function
+
+This cleans-up the snakefiles a bit and makes it easier to add new
+output files. The config dictionary is unpacked so it's quite easy to
+add new conditions as we add more functionality.
+
+* feat: Now using `get_output_files` function .
+
+* feat: All boolean flags in config set correctly
+
+Ensured that all yes/no flags in the config file are set to true/false
+within the pipeline.
+
+Corrected any == 'yes' comparisons.
+
+* fix: Updated `hub.smk` for new tracknado version
+
+* feat: Inverting counts for minus strand RNA
+
+* fix: Corrected hub generation
+
+* chore: Ensured tests generate hubs
+
+* feat: Removed un-needed  global variables
+
+* fix: `hub.smk` removed old global variables
+
+* Also formatted the code with black
+
+* fix: Corrected config key errors
+
+* fix: Missing `off` values for `is_off`",2023-05-03T12:16:32Z,Bot,alsmith151
+44ab6727d418809593d3135e6f2a918984c96a98,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix: Use absolute link for readme logo (#64),2023-05-03T12:01:53Z,Bot,alsmith151
+903ebc8a7f07e17de5f6ad2c7ff39282c2822e1b,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(CI): Corrects releases. (#59)
+
+1. Only publish to pypi on release.
+2. Only publish to test_pypi on master branch",2023-05-02T13:44:02Z,Bot,alsmith151
+d23ba5fefc5730484142c8728093db89c970747d,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Develop (#58)
+
+* remove large file from tests
+
+* publish only on push to master
+
+* add singularity path to tests",2023-04-26T16:56:13Z,Bot,CChahrour
+d9724a2a7e41c2109bdaeaf85d58eab3ad4e163e,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix config (#57)
+
+* fix config
+
+* rename rule blacklist
+
+* fix rna optional output
+
+* fix rna config
+
+* add snp tests and fix rna config
+
+* fix snp
+
+* fix shift atac reads
+
+* update config
+
+* subset snp fastqs
+
+* tidy package directory
+
+* tidy old directories",2023-04-26T11:01:01Z,Bot,CChahrour
+4b1db69897dd9c98ffb78633211b3e00e6d87986,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Feat make tasks optional (#55)
+
+* commit
+
+* fix tool option align post
+
+* edit cookiecutter for optionaloutput
+
+* add make bw to rna cookie cutter
+
+* added quotes on yamls
+
+* removed static path to sing image",2023-04-24T16:23:56Z,Bot,CChahrour
+c80892b75d5d7745ad69b420f5c46c76de11bcb7,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix cookiecutter template (#54)
+
+* fix typo r in homer
+
+* fixed readme for each assay type
+
+* remove hooks from cookiecutter",2023-04-14T14:23:49Z,Bot,CChahrour
+d002def5445fe8dd7b1f79be335bc4ddbf7b1867,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Changed container for new seqnado_pipline and _report (#53)
+
+* Changed container for new seqnado_*
+
+* Checking that the error log is not present after a run
+
+* Updated pipeline github action
+
+* Changed container for lanceotron to seqnado_extra
+
+* Re-test containers after upload
+
+* Incorrect tag used for seqnado_extra container
+
+* Only publishing to test_pypi if branch is develop
+
+* Testing new container",2023-04-12T12:15:54Z,Bot,alsmith151
+e055a7ce8ecba1d47f71f95003a7f238cbfa48e7,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,Update publish_package.yml (#52),2023-04-11T11:11:43Z,Bot,CChahrour
+4a256a2db2e5f4536e9cbc04cec7a8260e3e6c7c,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"Fix heatmaps (#51)
+
+* fix heatmaps for chip
+
+* heatmap for each sample
+
+* split heatmap rules for chip and atac
+
+* fix plot heatmap resources
+
+* only build a package with push to master
+
+* fix typo
+
+* fix typo",2023-04-11T10:17:18Z,Bot,CChahrour
+56f26ec262837164200bb0792822cf82cd9232e0,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(packaging): Fixes issues with missing command line options on package install (#50)
+
+* Updated manifest and workflow
+
+* Updated workflow
+
+* Using a minimal environment
+
+* Updated conda setup
+
+* Updated cli to take cookiecutter options
+
+* Removed version information
+
+* Added setuptools_scm
+
+* Updated manifest to include data
+
+* Moved install info into pyproject.toml
+
+* Added publish workflow
+
+* Updated gitignore
+
+* Attempt to fix error uploading package to testpypi
+
+* Removing ucsc_hub_maker dependency as not on pypi
+
+* Ignoring optional dependencies.",2023-04-05T14:46:13Z,Bot,alsmith151
+4a2a37c40ebedb9130fe1bcc50fca8a980922d72,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(packaging): Fix missing cookiecutter repo for seqnado config (#49)
+
+* Updated manifest and workflow
+
+* Updated workflow
+
+* Using a minimal environment
+
+* Updated conda setup
+
+* Updated cli to take cookiecutter options",2023-04-05T13:01:00Z,Bot,alsmith151
+e8f1945a2a6e5fe2010ef4cec65465bbf893818d,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"Update README.md (#46)
+
+* Update README.md
+
+* Added logo to readme
+
+* Added logo to pipeline run terminal output",2023-04-04T15:46:44Z,Bot,alsmith151
+7b66974103602ca65a7c2cf3db66c62a844077dc,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(tests): Ensures all tests are running correctly for the current version of the package (#48)
+
+* Updated peak calling pairing function
+
+* Updated configuration files
+
+* Fixed tests for current version of the package",2023-04-04T15:46:10Z,Bot,alsmith151
+02111f686fc60308653c275e89949018d7602161,Alastair Smith,49727900+alsmith151@users.noreply.github.com,fix(pipeline): Checking blacklist option (#47),2023-04-04T15:17:00Z,Bot,alsmith151
+f742a179453d460f388f04cee187dfabe18154e6,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(package): Remove unwanted files and directories (#45)
+
+* Removed unwanted files and directories
+
+* Adds more installation instructions to readme",2023-03-31T18:09:30Z,Bot,alsmith151
+ab4c43e8daf4022d1150e67d064ca0ed01882e22,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat: Overhaul of pipeline to add new features and stability (#44)
+
+* Started pipeline re-write in snakemake
+
+* Completed chipseq pipeline in snakemake
+
+* Fixed chipseq errors
+
+* Updated snakemake chip pipeline test
+
+* Updated chip pipeline code
+
+* Bug fix for pipeline interaction with singularity
+
+* Updated setup
+
+* Pinned samtools dependency
+
+* Fixed QC bugs and other minor bugs
+
+* Updated config_chip.yml and qc.smk
+
+* Updated pipeline with new test
+
+* Fixed wrong input parameter in multiqc_bam-X
+
+* Allowed both single and paired end bigwigs to be made simultaneously
+
+* Added empty blacklist parameter
+
+* Removed commented section
+
+* Updated ChIP pipeline test for snakemake
+
+* Moved old tests
+
+* Moved old tests
+
+* Updated rules
+
+* Updated setup
+
+* Updated packaging
+
+* Commented out chromsizes
+
+* Updated config files and setup.cfg
+
+* Added all pipelines to cli
+
+* Updated use_singularity function
+
+* Updated pairing utilities
+
+* Updated snakemake rules for pipeline with fixes
+
+* Added ASSAY global variable
+
+* Added ATAC snakefile
+
+* Moved shfit_alignments into filter_alignments
+
+* Added default profile for the cluster
+
+* Small updates to chipseq config and rules
+
+* updated container
+
+* Updated sample specification
+
+* Updated generic rules
+
+* Changed sample specification functions
+
+* Updated setup.cfg
+
+* Added design key
+
+* Removed symlink fastq files
+
+* Improved sample specification
+
+* Updated rules to cope with new specification
+
+* Updated test for just paired samples temporarily
+
+* Updated conda env
+
+* Partial update to readme
+
+* Renamed tests
+
+* Corrected fastqc_raw input specification
+
+* Updated workflow to include singularity/apptainer
+
+* Moved config files to separate folder
+
+* Added profiles into package data for use in pipe
+
+* Added test data to tests folder
+
+* Updated manifest to include profiles
+
+* Updated readme. Still needs editing
+
+* Removed old test data and tests
+
+* Fixed a bug in control files symlink if NA
+
+* Slow re-work of cli
+
+* Updated actions workflow
+
+* Updated pipeline with atac samples
+
+* Added RNA pipeline
+
+* Updates for rna pipeline integration
+
+* Updated align and post align rules
+
+* Added rna pipeline test
+
+* Updated workflow
+
+* Workflow update
+
+* Update python version
+
+* Using rsbamtk for atac shift
+
+* Updated ChIP-seq snakefile
+
+* fix: atac shift not running
+
+* Removed rule
+
+* fix: Fixed star genome dir generation fixture
+
+* Updated rules
+
+* Re-indexed file after shifting
+
+* Updated RNA-seq hub
+
+* Updated rna hub making
+
+* Added bam index to filtered bam
+
+* Moved bamtk to optional
+
+* Renamed index rule
+
+* Made star log
+
+* Updated STAR resources
+
+* Updated gitignore
+
+* removed peak call methods from RNA
+
+* Removed pybedtools from package
+
+* Installed the atac optional packages
+
+* Fixed RNA-seq KeyError
+
+* Commented out index_filtered_bam
+
+* Fixes rule errors after rename (#35)
+
+* Removed channels for better environment setup
+
+* BREAKING CHANGE: Replace cgat-core with snakemake (#25)
+
+* Started pipeline re-write in snakemake
+
+* Completed chipseq pipeline in snakemake
+
+* Fixed chipseq errors
+
+* Updated snakemake chip pipeline test
+
+* Updated chip pipeline code
+
+* Bug fix for pipeline interaction with singularity
+
+* Updated setup
+
+* Pinned samtools dependency
+
+* Fixed QC bugs and other minor bugs
+
+* Updated config_chip.yml and qc.smk
+
+* Updated pipeline with new test
+
+* Fixed wrong input parameter in multiqc_bam-X
+
+* Allowed both single and paired end bigwigs to be made simultaneously
+
+* Added empty blacklist parameter
+
+* Removed commented section
+
+* Updated ChIP pipeline test for snakemake
+
+* Moved old tests
+
+* Moved old tests
+
+* Updated rules
+
+* Updated setup
+
+* Updated packaging
+
+* Commented out chromsizes
+
+* Updated config files and setup.cfg
+
+* Added all pipelines to cli
+
+* Updated use_singularity function
+
+* Updated pairing utilities
+
+* Updated snakemake rules for pipeline with fixes
+
+* Added ASSAY global variable
+
+* Added ATAC snakefile
+
+* Moved shfit_alignments into filter_alignments
+
+* Added default profile for the cluster
+
+* Small updates to chipseq config and rules
+
+* updated container
+
+* Updated sample specification
+
+* Updated generic rules
+
+* Changed sample specification functions
+
+* Updated setup.cfg
+
+* Added design key
+
+* Removed symlink fastq files
+
+* Improved sample specification
+
+* Updated rules to cope with new specification
+
+* Updated test for just paired samples temporarily
+
+* Updated conda env
+
+* Partial update to readme
+
+* Renamed tests
+
+* Corrected fastqc_raw input specification
+
+* Updated workflow to include singularity/apptainer
+
+* Moved config files to separate folder
+
+* Added profiles into package data for use in pipe
+
+* Added test data to tests folder
+
+* Updated manifest to include profiles
+
+* Updated readme. Still needs editing
+
+* Removed old test data and tests
+
+* Fixed a bug in control files symlink if NA
+
+* Slow re-work of cli
+
+* Updated actions workflow
+
+* Updated pipeline with atac samples
+
+* Added RNA pipeline
+
+* Updates for rna pipeline integration
+
+* Updated align and post align rules
+
+* Added rna pipeline test
+
+* Updated workflow
+
+* Workflow update
+
+* Update python version
+
+* Using rsbamtk for atac shift
+
+* Updated ChIP-seq snakefile
+
+* fix: atac shift not running
+
+* Removed rule
+
+* fix: Fixed star genome dir generation fixture
+
+* Updated rules
+
+* Re-indexed file after shifting
+
+* Updated RNA-seq hub
+
+* Updated rna hub making
+
+* Added bam index to filtered bam
+
+* Moved bamtk to optional
+
+* Renamed index rule
+
+* Made star log
+
+* Updated STAR resources
+
+* Updated gitignore
+
+* removed peak call methods from RNA
+
+* Removed pybedtools from package
+
+* Installed the atac optional packages
+
+* Fixed RNA-seq KeyError
+
+* Commented out index_filtered_bam
+
+* feat(pipeline): Pipeline now follows snakemake conventions (#26)
+
+* initial reorganisation of .smk rules
+
+* update rules path in atac snakefile
+
+* cookiecutter added
+
+* cookiecutter config atac added
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>
+
+* chore: Fix github workflow (#27)
+
+* Removed channels for better environment setup
+
+* Updated workflow
+
+* Added channels to env
+
+* Sorted env for catherine
+
+* Fixed indentation
+
+* Removed old rna pipeline
+
+* chore(packaging): Chore rearrange package (#31)
+
+* Removed channels for better environment setup
+
+* Moved workflow and cookiecutter to package dir
+
+* Removed old snakefiles
+
+* After pre-commit
+
+* Added profiles
+
+* validated align
+
+* Added cookeicutter
+
+* Updated workflow
+
+* Added config
+
+* Added tests
+
+* Added other files
+
+* Reformatted files
+
+* Moved workflow to package
+
+* Added back linting steps
+
+* Fixed issue with rna pipeline test
+
+* Currently ignoring conda based tests
+
+* feat(package): add config using cookiecutter (#33)
+
+* add config using cookiecutter
+
+* fix(packaging): Fixed entry points. 
+
+Package should now install.
+
+* fix(cli): decorated cli_pipeline function.
+
+Both cli functions need to be decorated to function.
+
+* fix(cli): Typo in file
+
+* test conda profiles
+
+* test pipeline using singularity
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>
+
+* Renamed ngs-pipeline
+
+* Updated readme
+
+* Renamed package
+
+* remove if from cmd in cly.py
+
+* rename snakefiles
+
+* adds config instructions to readme
+
+* Edits readme
+
+* adds snakemake min_version to snakefiles and updates paths to resources in cookiecutter json
+
+* changes name of config_rna.yml in cookiecutter
+
+* debugs rna remove duplicates rule
+
+* divides hub.smk rule for rna from chip/atac
+
+* Fixes naming issues
+
+* Added build to ignore path
+
+* fix indentation in shift atac alignment rule
+
+* update storage in preset profiles
+
+* Adds local singularity preset
+
+* Fixes alignment shift rule by adding new script
+
+* Fixed some issues with hub generation
+
+* Updated pileup method
+
+* Fixes test config_rna.yml
+
+* fix syntax error hub.smk
+
+* Adds latency wait to profile
+
+* Sets bowtie2 max memory stopping OOM errors
+
+* Removes indexing rule
+
+* Sets max mem for index_bam, also causing OOM error
+
+* Removes un-needed code in peak call rule
+
+* Removes un-needed code in pileup rule
+
+* Removed commented code and un-needed .smk files
+
+* Removes reindex_bam from picard remove dups
+
+* Fixes some rule errors bugs still present.
+
+* Resolve merge conflicts
+
+---------
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>
+
+* feat(pipeline): Updates rules to move bam files to subfolders rather than rely on sentinel values. (#36)
+
+* Replaces filtering sentinels with moving bam files
+
+* Removed filtering sentinel from alignment_counts.smk
+
+* Updated snakefiles after rename
+
+* Trim not trimming
+
+* Updated RNA align for new rule
+
+* Typo with temp
+
+* Fixes errors after changing output file paths
+
+* Added missing subprocess
+
+* Added index to remove_blacklist
+
+* Updated genomic hub script. Appears to function now.
+
+* add trimming options to chip cookiecutter
+
+* Removed reliance on symlinking.
+
+* feat(pipeline): Added design matrix creation CLI (#39)
+
+* fix(pipeline): Added options to trim_galore (#40)
+
+This was previously breaking the dev version of the code.
+
+* Using realpath to remove recursive symlink errors
+
+* Fixes column specification checking
+
+* All outputs moved to seqnado_output
+
+* Updated missing seqnado_outputs
+
+* Missing realpath for input samples
+
+* Changed trim temp dir
+
+* Fixes incorrect filenames after trimming and qc
+
+* Fixes issue with fastqc on trimmed files
+
+* Fixes renaming bugs and reduces resources
+
+* update config to design
+
+* update path to design in config
+
+* Fix macs2 output location
+
+* Fixes issue assigning ip to control
+
+* Container does not have the latest version of hub maker.
+
+* Need to return an empty dict not none.
+
+* Need to populate the dict with blank strings
+
+* Changes fastq_* to fastqc_*
+
+* Removes any comment lines in bed file.
+
+* Increased memory requirements for homer peak calls
+
+* Fixed hub color-by for atac
+
+* fix path for bedtobigbed log
+
+* add snp workflow and design to config
+
+* add bcftools to environment for snp
+
+* removed design from config
+
+* update readme
+
+* fix typo in readme
+
+* edit conda env name in readme
+
+* fix typo readme
+
+* add heatmap to chip
+
+* fix heatmap error
+
+* add heatmaps to snakefile_atac
+
+* Fixed typos
+
+* add RNAseq report
+
+* add deseq2 to rna
+
+* change deseq2 rule to local rule
+
+* fix input variant.smk
+
+* Updated manifest.in
+
+* Ensured scripts folder is present (#43)
+
+* build package for pypi
+
+* Ignore dist/
+
+---------
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>
+Co-authored-by: CChahrour <catherine.chahrour@gmail.com>",2023-03-31T16:34:16Z,Bot,alsmith151
+c8f605c9d1b6d4002f96bf6d63d5c8fdac1bc867,Catherine Chahrour,74187550+CChahrour@users.noreply.github.com,"feat(package): add config using cookiecutter (#33)
+
+* add config using cookiecutter
+
+* fix(packaging): Fixed entry points. 
+
+Package should now install.
+
+* fix(cli): decorated cli_pipeline function.
+
+Both cli functions need to be decorated to function.
+
+* fix(cli): Typo in file
+
+* test conda profiles
+
+* test pipeline using singularity
+
+---------
+
+Co-authored-by: Alastair Smith <49727900+alsmith151@users.noreply.github.com>",2023-02-06T17:58:25Z,Bot,CChahrour
+9edf284b0bf17c8c589ccd95fb6a9f7f3d9a5486,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"chore(packaging): Chore rearrange package (#31)
+
+* Removed channels for better environment setup
+
+* Moved workflow and cookiecutter to package dir
+
+* Removed old snakefiles
+
+* After pre-commit
+
+* Added profiles
+
+* validated align
+
+* Added cookeicutter
+
+* Updated workflow
+
+* Added config
+
+* Added tests
+
+* Added other files
+
+* Reformatted files
+
+* Moved workflow to package
+
+* Added back linting steps
+
+* Fixed issue with rna pipeline test
+
+* Currently ignoring conda based tests",2023-02-01T12:27:43Z,Bot,alsmith151
+21312b8429038e8635c1bf52265652e4a409557b,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"chore: Fix github workflow (#27)
+
+* Removed channels for better environment setup
+
+* Updated workflow
+
+* Added channels to env
+
+* Sorted env for catherine
+
+* Fixed indentation
+
+* Removed old rna pipeline",2023-01-25T17:41:06Z,Bot,alsmith151
+719bb0b48a7f6eee13e650144378363a51db31ac,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(pipeline): Pipeline now follows snakemake conventions (#26)
+
+* initial reorganisation of .smk rules
+
+* update rules path in atac snakefile
+
+* cookiecutter added
+
+* cookiecutter config atac added
+
+Co-authored-by: Catherine Chahrour <74187550+CChahrour@users.noreply.github.com>",2023-01-25T14:05:31Z,Bot,alsmith151
+41f30964de01f932625a1f39f7ee0f6590c367f0,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"BREAKING CHANGE: Replace cgat-core with snakemake (#25)
+
+* Started pipeline re-write in snakemake
+
+* Completed chipseq pipeline in snakemake
+
+* Fixed chipseq errors
+
+* Updated snakemake chip pipeline test
+
+* Updated chip pipeline code
+
+* Bug fix for pipeline interaction with singularity
+
+* Updated setup
+
+* Pinned samtools dependency
+
+* Fixed QC bugs and other minor bugs
+
+* Updated config_chip.yml and qc.smk
+
+* Updated pipeline with new test
+
+* Fixed wrong input parameter in multiqc_bam-X
+
+* Allowed both single and paired end bigwigs to be made simultaneously
+
+* Added empty blacklist parameter
+
+* Removed commented section
+
+* Updated ChIP pipeline test for snakemake
+
+* Moved old tests
+
+* Moved old tests
+
+* Updated rules
+
+* Updated setup
+
+* Updated packaging
+
+* Commented out chromsizes
+
+* Updated config files and setup.cfg
+
+* Added all pipelines to cli
+
+* Updated use_singularity function
+
+* Updated pairing utilities
+
+* Updated snakemake rules for pipeline with fixes
+
+* Added ASSAY global variable
+
+* Added ATAC snakefile
+
+* Moved shfit_alignments into filter_alignments
+
+* Added default profile for the cluster
+
+* Small updates to chipseq config and rules
+
+* updated container
+
+* Updated sample specification
+
+* Updated generic rules
+
+* Changed sample specification functions
+
+* Updated setup.cfg
+
+* Added design key
+
+* Removed symlink fastq files
+
+* Improved sample specification
+
+* Updated rules to cope with new specification
+
+* Updated test for just paired samples temporarily
+
+* Updated conda env
+
+* Partial update to readme
+
+* Renamed tests
+
+* Corrected fastqc_raw input specification
+
+* Updated workflow to include singularity/apptainer
+
+* Moved config files to separate folder
+
+* Added profiles into package data for use in pipe
+
+* Added test data to tests folder
+
+* Updated manifest to include profiles
+
+* Updated readme. Still needs editing
+
+* Removed old test data and tests
+
+* Fixed a bug in control files symlink if NA
+
+* Slow re-work of cli
+
+* Updated actions workflow
+
+* Updated pipeline with atac samples
+
+* Added RNA pipeline
+
+* Updates for rna pipeline integration
+
+* Updated align and post align rules
+
+* Added rna pipeline test
+
+* Updated workflow
+
+* Workflow update
+
+* Update python version
+
+* Using rsbamtk for atac shift
+
+* Updated ChIP-seq snakefile
+
+* fix: atac shift not running
+
+* Removed rule
+
+* fix: Fixed star genome dir generation fixture
+
+* Updated rules
+
+* Re-indexed file after shifting
+
+* Updated RNA-seq hub
+
+* Updated rna hub making
+
+* Added bam index to filtered bam
+
+* Moved bamtk to optional
+
+* Renamed index rule
+
+* Made star log
+
+* Updated STAR resources
+
+* Updated gitignore
+
+* removed peak call methods from RNA
+
+* Removed pybedtools from package
+
+* Installed the atac optional packages
+
+* Fixed RNA-seq KeyError
+
+* Commented out index_filtered_bam",2022-12-01T16:57:13Z,Bot,alsmith151
+0f2b4f1920530997f4276e41263960d529750d02,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"fix(pipeline): Fix slurm oversubscription (#24)
+
+* Fixes wrong kwarg passed to P.run.
+
+* Fixes wrong kwarg for threads passed to P.run",2022-01-13T13:01:47Z,Bot,alsmith151
+040689d3d84585994d14780fd3cb7a0cbcfac1eb,jrharman,joerharman@gmail.com,"fix(pipelnine rna): Fix for STAR --readFilesIn parameter paired end (#23)
+
+This should fix the issue with reading files in paired end instead of single end. Not sure if a conditional is needed for single end, but considering concatenation is done prior to running the pipeline I expect not.",2021-10-23T12:58:12Z,Human,JoeHarman
+70269bac413d014190b1c783ae66d9d30f95a703,Alastair Smith,49727900+alsmith151@users.noreply.github.com,"feat(pipeline): Add lanceotron peak calling method (#19)
+
+* Added lanceotron pypi package as dependent
+
+* Added lanceotron as optional dependency
+
+* Added lanceotron call peaks task
+
+* Added lanceotron section to config files
+
+* Ensuring only bed format is used
+
+* Enabled lot/homer/macs peaks calling by default
+
+* Installing optional lanceotron dependencies
+
+* Skipping bed header for lot peaks
+
+* Changed homer peaks suffix (#14)
+
+* Updated documentation and adding example configs (#18)
+
+Co-authored-by: Joe Harman <joe.harman@gmail.com>
+
+* Fixed incorrect blacklist parameter (#20)
+
+* Changed pinned python and numpy versions
+
+* Using conda to ensure numpy version is correct
+
+* Removed macs from environment.yml
+
+* Added macs as optional package
+
+* Added numpy version to macs package
+
+* Updated optional dependencies
+
+* Adjusted numpy version requirements
+
+* Try dropping macs2
+
+* Try dropping macs3
+
+* Default macs version to macs2
+
+* Ignoring macs for peak calling
+
+Co-authored-by: jrharman <joerharman@gmail.com>
+Co-authored-by: Joe Harman <joe.harman@gmail.com>",2021-10-12T11:53:18Z,Bot,alsmith151
+547d589014a1580743a7f759e50bf822ebd4ed41,Alastair Smith,49727900+alsmith151@users.noreply.github.com,Fixed incorrect blacklist parameter (#20),2021-10-04T15:28:55Z,Bot,alsmith151
+cfc7aae96ccc4d0769345cc775538006fdbf4d56,jrharman,joerharman@gmail.com,"Updated documentation and adding example configs (#18)
+
+Co-authored-by: Joe Harman <joe.harman@gmail.com>",2021-08-03T12:15:11Z,Human,JoeHarman
+8591bdaa4a1322a37bed325bf2dc94ee87336ada,alsmith151,49727900+alsmith151@users.noreply.github.com,Changed homer peaks suffix (#14),2021-07-19T07:13:22Z,Bot,alsmith151
+0b6136d1e7b89ad4b38d0ac1449f30d3a4a6cbb3,alsmith151,49727900+alsmith151@users.noreply.github.com,Removed intermediate unsorted bam file (#13),2021-07-15T10:11:25Z,Bot,alsmith151
+45b0fd195f5de1c50d27931001f73160c0a4aa66,alsmith151,49727900+alsmith151@users.noreply.github.com,"Fix hub colors (#12)
+
+* Added colors to hub
+
+* Added same option to rna pipeline
+
+* Ensured that colors are strings
+
+* Typo in replacement
+
+* Corrected colour dictionary",2021-07-14T11:59:20Z,Bot,alsmith151
+719df2d7971147563746c45db8949fb1eac005b4,alsmith151,49727900+alsmith151@users.noreply.github.com,"Fix RNA pipeline (#11)
+
+* Allowing R1|2 in alignment regex
+
+* Using sentinel file for trimming
+
+* Corrected issues with RNA pipeline",2021-07-14T11:11:08Z,Bot,alsmith151
+4345d790a9518515d645f10d66b5db4c6f5eb55c,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-07-12T09:17:12Z,Bot,alsmith151
+828cda352d80e58143bdee6d426b3bdb48cffaf3,alsmith,asmith151@outlook.com,Fixed error after merging,2021-07-09T14:35:56Z,Human,alsmith151
+7d213dcd91aaff9e5284b4d53b6b6723dccec57e,alsmith,asmith151@outlook.com,Fixed further conflicts,2021-07-09T14:13:58Z,Human,alsmith151
+3d040cd7a5e0489bde243801a777db274ba5fa09,alsmith,asmith151@outlook.com,Fixed conflicts,2021-07-09T14:06:55Z,Human,alsmith151
+0c52cb6f9efb8e1605703cc976b6ae8af193a628,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-07-09T12:17:16Z,Bot,alsmith151
+e674a399fad1426983bd22eb598151ea9d163703,alsmith151,49727900+alsmith151@users.noreply.github.com,"Major pipeline updates (#10)
+
+* Duplicated config files
+
+* Moved misc scripts
+
+* Renamed pipeline
+
+* Will now accept a more generic config.yml file name
+
+* Added RNA pipeline
+
+* Small changes to RNA pipeline
+
+* Minor formating
+
+* Updates
+
+* Rename of yaml
+
+* Added RNA pipeline to cli
+
+* FeatureCounts to lowercase
+
+* Increased job memory
+
+* Updated alignment task
+
+* Added support for single end sequencing
+
+* Updated README.md
+
+* Fixed old task name
+
+* Added single end file
+
+* Updated README.md
+
+* Renamed test
+
+* Renamed
+
+* Added missing option
+
+* Updated older parameters
+
+* Need to ignore trimmed part of file name
+
+* Removed .gz ext
+
+* Sorting before converting to bigbed
+
+* Added test fasta
+
+* Added test for chip pipeline
+
+* Fixed issues with homer bigwig generation
+
+* Correct genome size
+
+* Ensure that crashes occur during testing by raising exception
+
+* Macs peak calling on by default
+
+* Will have a single and paired end test
+
+* Added single end test
+
+* Adjusted single trimming regex to cope with ATAC naming
+
+* Added test for ATAC
+
+* Added test file for single end ChIP
+
+* Added hg19 gtf file. Just chr21
+
+* Updated rna config file
+
+* Updated config
+
+* Updated config further
+
+* Changed command
+
+* Updated test
+
+* Updated test
+
+* Removed old joint test
+
+* Modified trimming regex
+
+* Typo in indicies location
+
+* Added star options
+
+* Older run parameters swapped for newer
+
+* Added packages required for RNA pipeline
+
+* Modified bigwig output regex
+
+* Updated test
+
+* Removed old test data",2021-07-09T12:05:28Z,Bot,alsmith151
+34f780cde50680e76389e9e0a2c8188d84fce373,alsmith,asmith151@outlook.com,Added symlink exists check. Changed trimming input to glob,2021-07-06T11:51:48Z,Human,alsmith151
+943fda8b425c4fbcb811a1e7ca89a168ac4ce41b,alsmith,asmith151@outlook.com,Updated fastq renaming. Added homer/deeptools suffixes,2021-07-06T11:45:17Z,Human,alsmith151
+3b752a6ded06ac627ea47881e96b75309b481e4f,alsmith151,49727900+alsmith151@users.noreply.github.com,"Enable bigwig generation and peak calling using Homer (#9)
+
+* Added options to create homer tagdirs
+
+* Added bedgraphtobigwig and moved pip section
+
+* Added homer to environment.yml
+
+* Added homer to environment.yml
+
+* Added homer make bigwigs task
+
+* Added homer call peaks
+
+* Removed macs2 and 3 from setup.py. Should be conda installed
+
+* Added gevent as a dependency
+
+* Added pyyaml as a dependency
+
+* Added pysam to env.yaml
+
+* Removed pybedtools and pysam from environment
+
+* Removed pybedtools
+
+* Added get_chromsizes_from_ucsc. Extracted from pybedtools
+
+* Removed pybedtools
+
+* Removed chromsizes function
+
+* Pipeline will now start correctly
+
+* Corrected typo
+
+* Updated config.yml with new options
+
+* Missed run_options prefix
+
+* Incorrect option changed
+
+* Turning off deduplication as it's  slow for testing
+
+* Changes to duplicate filtering options
+
+* Missed join for call_peaks_macs
+
+* Added a 'full' task to ensure peaks/bigwigs are called/made
+
+* Renamed macs options and added placeholder for testing
+
+* Renamed macs options
+
+* Renamed macs options
+
+* Changed testing params for macs
+
+* Incorrect regex
+
+* Fixed issues with homer bigwigs and peaks naming
+
+* Ignoring test run folder
+
+* Updated config file
+
+* Removed breakpoint
+
+* Replaced test data with fastq containing all reads chr6:157,097,182-157,102,015 (h3k27ac)
+
+* Removed ATAC as not helpful
+
+* Added symlink option to hub section
+
+* Re-write of hub generation. Now more similar to capture pipeline
+
+* Checking for homer peaks calling
+
+* Formatting
+
+* Removed pickle",2021-07-06T11:08:40Z,Bot,alsmith151
+3824c0bd8382c8966aa142975a197864891dd47a,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-27T10:09:39Z,Bot,alsmith151
+88212407e06aad959c3abacd09c6a6f7f4efbdbd,alsmith151,49727900+alsmith151@users.noreply.github.com,"Bug fixes (#8)
+
+* Fixed typo in alignments_filter_options
+
+* Fixed typo in alignments_filter_options
+
+* Removed --gzip before --dont-gzip
+
+* Specified maximum cores for trimming
+
+* Added modified cores into command
+
+* Ensured that alignment_filter_options is not 'None'
+
+* Removed breakpoint
+
+* Typo
+
+* Fixed typo call_peaks, input_file -> control_file
+
+* Formatted with black
+
+* Join appended statement
+
+* Statement now a string
+
+* Output name converted to prefix
+
+* Typo in replace
+
+* Typo in output_prefix
+
+* Replacing _peaks.narrowPeak for prefix
+
+* Added genome_chrom_sizes
+
+* Add set_up_chromsizes to utils
+
+* Moved set_up_chromsizes to pipeline
+
+* Updated environment.yml
+
+* Pybedtools now a dependency
+
+* Small updates",2021-04-27T10:09:07Z,Bot,alsmith151
+3600c3f0a6faee389f195d27497a7fac5c6dcbb7,alsmith151,49727900+alsmith151@users.noreply.github.com,"Fix peak calling (#7)
+
+* Removed bowtie2 metrics option
+
+* Added samtools stats
+
+* Updated multiqc task
+
+* Fixed typo
+
+* Fixed alignment_multiqc_output
+
+* Removed outdir",2021-04-22T11:28:55Z,Bot,alsmith151
+34852f78aaa523905c287e3dcd9c46dba607f586,alsmith151,49727900+alsmith151@users.noreply.github.com,"Changed alignment stats method to samtools stats. (#6)
+
+* Removed bowtie2 metrics option
+
+* Added samtools stats
+
+* Updated multiqc task
+
+* Fixed typo
+
+* Fixed alignment_multiqc_output",2021-04-21T11:08:39Z,Bot,alsmith151
+7d2b4ebbfe0fda68e2f7e390eed4a625dd5b2ad0,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-21T11:02:09Z,Bot,alsmith151
+749442f97e7cfc963c16cef006e87b66460a4faa,alsmith151,49727900+alsmith151@users.noreply.github.com,"Enable merging of hubs between runs. (#5)
+
+* Added hub_append
+
+* Added logic to reload previous hub and append to it.",2021-04-21T10:59:56Z,Bot,alsmith151
+c6cb2b01fba667c045048ee125f1d93056bed2d3,alsmith151,49727900+alsmith151@users.noreply.github.com,"Fix bigWig and hub generation (#4)
+
+* Altered trimming regex to cope with R1.fastq.gz
+
+* Changed test data names
+
+* Typo in CREATE_BIGWIGS
+
+* Removed breakpoint
+
+* Removed breakpoint",2021-04-21T08:38:51Z,Bot,alsmith151
+7a974781cf3a074ce56484b21393c2f82da77232,alsmith151,49727900+alsmith151@users.noreply.github.com,"Merge pull request #3 from alsmith151/develop
+
+Fix hub creation bugs",2021-04-20T17:54:52Z,Bot,alsmith151
+10b7094ccf2f192e1a7015b9dda59f323ee2a4d7,asmith,asmith151@outlook.com,Removed typo,2021-04-20T17:40:57Z,Human,alsmith151
+12c091096cb1a90c01fc422bd6c6ab51dc618d75,asmith,asmith151@outlook.com,fastq_format now global code,2021-04-20T17:39:34Z,Human,alsmith151
+4feee3cc037fc5d47ccb30d179f34031a64cfbd9,asmith,asmith151@outlook.com,Added missing active_if (s),2021-04-20T17:34:04Z,Human,alsmith151
+05d5db870daa424d9d36fcb52fd989c2f99172dc,asmith,asmith151@outlook.com,Added extra follows to hub,2021-04-20T17:26:06Z,Human,alsmith151
+283411300aa5432f87d2c16914a30b2d6ac6cc80,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-20T16:14:55Z,Bot,alsmith151
+fabe7e7b73226ca1be6db89651efd590fda95030,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-20T16:13:54Z,Bot,alsmith151
+1d869f8333793cca1e67a4bfccfb37e2113b2c3a,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-20T16:01:17Z,Bot,alsmith151
+b4d279779dea5ce9ea137cff014b080316b56bd1,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-20T16:00:22Z,Bot,alsmith151
+d6b3c51295bfdd39bc67f663cf42b43136710bdf,alsmith151,49727900+alsmith151@users.noreply.github.com,Update README.md,2021-04-20T15:59:28Z,Bot,alsmith151
+106e39f390804a6a5643f8d054fa3eede3a70870,alsmith151,49727900+alsmith151@users.noreply.github.com,"Merge pull request #2 from alsmith151/rename
+
+Re-develop and rename",2021-04-20T15:44:53Z,Bot,alsmith151
+a4ab602f43590dc02545e87aded6ce65f802db7f,asmith,asmith151@outlook.com,Reduced samtools memory for alignment,2021-04-20T15:32:03Z,Human,alsmith151
+0fbf169f9283432287cf2f849c90accee2278ac1,asmith,asmith151@outlook.com,Changed test call to correct name,2021-04-20T15:16:53Z,Human,alsmith151
+2cfe4903792a7747acc5b5d4777072c49acffe9b,asmith,asmith151@outlook.com,pyBigWig added to environment,2021-04-20T15:06:40Z,Human,alsmith151
+d4b1e42aedde395f473d36199bcbcbbef4a7c434,asmith,asmith151@outlook.com,Updated cli call,2021-04-20T15:05:52Z,Human,alsmith151
+a31c2b0e879cfea5c070c7267d27f28f5b37cdb9,asmith,asmith151@outlook.com,Small updates to yml,2021-04-20T14:57:59Z,Human,alsmith151
+610e518ccef9c93a23fd5edfc72267a2304d52e9,asmith,asmith151@outlook.com,Added more dependencies,2021-04-20T14:57:15Z,Human,alsmith151
+6dcf3208728a534ffca60c5a5e6a552b5822de11,asmith,asmith151@outlook.com,Updated env name,2021-04-20T14:50:25Z,Human,alsmith151
+7822d1cd12efa5f9cf2500f1416bde42c6ff052c,asmith,asmith151@outlook.com,Updated setup.py with new info,2021-04-20T14:50:03Z,Human,alsmith151
+02527818e46d24a33e6b11b46d821f7a7cb9b9fb,asmith,asmith151@outlook.com,Renamed pipeline,2021-04-20T14:49:13Z,Human,alsmith151
+de7797edeb3f5ed7da27319f5816f76ad9956b0d,asmith,asmith151@outlook.com,Added gitignore,2021-04-20T14:47:56Z,Human,alsmith151
+f396dfe2b0860c3e77f3f295c511f238ebd493e8,asmith,asmith151@outlook.com,Turned off peak calling by default to aid testing,2021-04-20T14:41:17Z,Human,alsmith151
+ce5228ebfb99bf0d6a2facba29cd5339178f0769,asmith,asmith151@outlook.com,Small fixes,2021-04-20T14:40:47Z,Human,alsmith151
+9cf6a43cb592a8ab61f44fc6fa5410cee9cc2c6b,asmith,asmith151@outlook.com,Fixed peak calling,2021-04-20T14:40:07Z,Human,alsmith151
+10fbca110d19984fb87751e41cb8772f3f0c599a,asmith,asmith151@outlook.com,Fixed issues with alignment,2021-04-20T13:06:29Z,Human,alsmith151
+74845d0a24703d605e5fec43dc0db869bd30d425,asmith,asmith151@outlook.com,Typo in dirname,2021-04-20T12:16:02Z,Human,alsmith151
+8fadcf742edcd96ff2719877be18cbf702e381a1,asmith,asmith151@outlook.com,Updated test files,2021-04-20T12:12:06Z,Human,alsmith151
+461f79d9e365cf62b05b550e5a3ee84cd25d9af0,asmith,asmith151@outlook.com,Trim options changed,2021-04-20T11:57:36Z,Human,alsmith151
+679ff4b193dae3f21feb4914e68f6fd27e009ebf,asmith,asmith151@outlook.com,Missing not,2021-04-20T11:56:39Z,Human,alsmith151
+96f9a3aa5e60c16b03769759ace880225741e469,asmith,asmith151@outlook.com,Small cli updates to allow pipeline to run,2021-04-20T11:47:52Z,Human,alsmith151
+7e7a613f97d6a77f1b5567dbd519e16d9631a818,asmith,asmith151@outlook.com,Added basic pipeline test,2021-04-20T11:47:07Z,Human,alsmith151
+0fec0009a22929a119628933e69c6d6135a89ba5,asmith,asmith151@outlook.com,Small config modifications,2021-04-20T11:46:40Z,Human,alsmith151
+9240604e10e6a07f6a6884713d0afa90eccfc188,asmith,asmith151@outlook.com,Added test files,2021-04-20T11:46:17Z,Human,alsmith151
+9e472523438e504d95ca4a467dcb4249d0bccd9c,asmith,asmith151@outlook.com,Renamed chipseq_pipeline.yml to config.yml,2021-04-20T11:24:33Z,Human,alsmith151
+6ef66e7e22585708d0eef79282c244c0794a9d6e,asmith,asmith151@outlook.com,Wget moved to pip dep,2021-04-20T10:44:50Z,Human,alsmith151
+cd636bb74d0b34b95da111237252d740a11df701,asmith,asmith151@outlook.com,Added wget to environment,2021-04-20T10:43:32Z,Human,alsmith151
+d80f0525ceeac75fb53d05bf6683419872a34ea3,asmith,asmith151@outlook.com,Stopped pipeline from running fastq_format without make,2021-04-19T14:29:57Z,Human,alsmith151
+b416d39286f95c4ca9914adcfabe1af87593814b,asmith,asmith151@outlook.com,Fixed issue with obtaining path,2021-04-19T14:29:20Z,Human,alsmith151
+04bd5bc97e4147b4127ae7e5e9abef624b301a45,asmith,asmith151@outlook.com,Changed pipeline to cli,2021-04-19T14:21:53Z,Human,alsmith151
+abd0971aff466df6538d0cecebcb9a6352a84410,asmith,asmith151@outlook.com,Moved macs3 to pip dependency,2021-04-19T14:20:33Z,Human,alsmith151
+20ebf0d10c7cf6df27e608f44eca62081ff74196,asmith,asmith151@outlook.com,Added minimal setup.py,2021-04-19T14:17:17Z,Human,alsmith151
+6f29004a86531c16f62dd84221d4fb84297cbaa4,asmith,asmith151@outlook.com,Updated yaml and pipeline accordingly,2021-04-19T14:17:03Z,Human,alsmith151
+7d09ce0230cb6d8bb57a8ae9efbe51b5039bf06c,asmith,asmith151@outlook.com,Added README,2021-04-19T14:00:13Z,Human,alsmith151
+7949efb9e03f1d98258bf79819adad1e2f7c94e6,asmith,asmith151@outlook.com,Added LICENCE,2021-04-19T13:59:55Z,Human,alsmith151
+8b2ba2eaba5c9c549dd2e291dbf1dd21a00f7c63,asmith,asmith151@outlook.com,Removed missing moved file,2021-04-19T13:55:18Z,Human,alsmith151
+90b941941cf3feca2a4afd944486315bbd0736c1,asmith,asmith151@outlook.com,Deleted moved files,2021-04-19T13:54:55Z,Human,alsmith151
+5febab31104d54ad9cabcc90fa4f3300e8b2de90,asmith,asmith151@outlook.com,Updated dependencies,2021-04-19T13:54:33Z,Human,alsmith151
+d9eb771bc01e1bd128c4e21c42334b4c224500a9,asmith,asmith151@outlook.com,Moved pipeline,2021-04-19T13:54:16Z,Human,alsmith151
+7ce53cfd3dde4c543b972488675899e2bba625d2,asmith,asmith151@outlook.com,Added utils.py,2021-04-19T13:53:35Z,Human,alsmith151
+755ecf0541789991434eade5bc0ce1f1267393df,asmith,asmith151@outlook.com,Added cli with click,2021-04-19T13:53:20Z,Human,alsmith151
+4a1575848c79d5007f8f6e3d045f86c7066a68a8,asmith,asmith151@outlook.com,Major re-write of pipeline to simplify for use,2021-04-19T13:52:56Z,Human,alsmith151
+d2d988927f49c815f47667e9ee4f65261b162f87,asmith,asmith151@outlook.com,Added environment and testing dependencies,2021-04-19T11:16:10Z,Human,alsmith151
+7f162194c58c1d37bbc0be82dc28b18644dd69f2,asmith,asmith151@outlook.com,Moved python scripts,2021-04-19T11:00:30Z,Human,alsmith151
+000f6894cd91b699e4d96351e4c37eb573643bc3,asmith,asmith151@outlook.com,Added workflow template,2021-04-19T10:59:32Z,Human,alsmith151
+8c6be82c9e898c214373eddb97c34cc2ab654bfc,alsmith,asmith151@outlook.com,Added most recent modifications,2021-04-15T11:37:53Z,Human,alsmith151
+a27b03a1aa917b53f9041b6aa2bb4897e567aeed,alsmith,asmith151@outlook.com,Updated with latest changes,2020-10-23T13:40:25Z,Human,alsmith151
+31e2ef9e38c567dbe013f0bb105234cbe0876626,alsmith,asmith151@outlook.com,Updates to chipseq_pipeline.py. Now enables the use of Lance-o-tron for in-house peak calling.,2020-05-15T16:12:28Z,Human,alsmith151
+9cf51f3296d70b598aa324d5f21e1f41e25558a1,alsmith,asmith151@outlook.com,Corrected call peaks final,2020-04-01T16:11:19Z,Human,alsmith151
+09439abd6bb2b21fffef88fd6294c4cdbc2e764d,alsmith,asmith151@outlook.com,Corrected call peaks again,2020-04-01T15:52:08Z,Human,alsmith151
+d3f76f4fcbb16cf1591d4255a8f2d7c5b21d10ee,alsmith,asmith151@outlook.com,Corrected call peaks,2020-04-01T15:50:07Z,Human,alsmith151
+549b958fd9fc7f9901cd627d66cb68ddf2174d92,alsmith,asmith151@outlook.com,"Changes to call_peaks funtion, now will correctly call peaks without input samples",2020-04-01T15:35:20Z,Human,alsmith151
+1d23f3aa22ea8d04b8b4339e76e45f598baacea3,alsmith,asmith151@outlook.com,"Changes to call_peaks funtion, now will correctly call peaks without input samples",2020-04-01T14:53:12Z,Human,alsmith151
+83e553d0035bc8b4d77eeb10d4e8d0e08829bd9e,alsmith,asmith151@outlook.com,Changes to align_reads_*. Now check if blacklist or bowtie2_options in keys not try to access the value to prevent error.,2020-04-01T11:56:12Z,Human,alsmith151
+23a210204ab4e8d4fdecdef57fa1e2fe37944787,alsmith,asmith151@outlook.com,Added script to download files from GEO archive.,2020-04-01T09:46:12Z,Human,alsmith151
+365d9cd672687da45029a07c24095ecee639e4ef,alsmith,asmith151@outlook.com,Correction to align_reads_* functions. Now will remove the sorted bam file following removal of blacklist regions. Updated yml file with blacklist parameter,2020-01-24T17:20:19Z,Human,alsmith151
+02174d0145455c996c0b49928c7d21054429288d,alsmith,asmith151@outlook.com,Enabled blacklist filtering to be applied to the bam file,2020-01-24T14:47:56Z,Human,alsmith151
+c5c99e2c7ada9e9c9b7100ae18352783b48cbcff,alsmith,asmith151@outlook.com,Updated yml file to comply with single and paired end trimming,2020-01-24T10:38:48Z,Human,alsmith151
+d7f9322caf224a68e9c505c2a6f07351c848672e,alsmith,asmith151@outlook.com,Added support for both single and paired end reads,2020-01-24T10:37:50Z,Human,alsmith151
+313b48b218bf2bff8baa27c482b2c80619e4bc10,alsmith,asmith151@outlook.com,First commit. First tested draft of the pipeline completed,2020-01-23T17:25:25Z,Human,alsmith151

@@ -1,0 +1,199 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3MTI0MTg2Ng==,FYI - tar files created on OSX give wierd messages on Linux,CLOSED,2015-04-27T10:16:51Z,2015-04-28T08:35:57Z,2015-04-28T08:35:57Z,"Heng, just in case anyone contacts you about it, untarring on Linux will give this message:
+
+```
+% tar jxvf fermikit.tar.bz2
+tar: Ignoring unknown extended header keyword `SCHILY.dev'
+tar: Ignoring unknown extended header keyword `SCHILY.ino'
+tar: Ignoring unknown extended header keyword `SCHILY.nlink'
+<snip>
+```
+
+Apparently it is harmless: http://lifeonubuntu.com/tar-errors-ignoring-unknown-extended-header-keyword/
+",tseemann,https://github.com/lh3/fermikit/issues/1
+MDU6SXNzdWU3MTM4NjI4NA==,GFA output?,CLOSED,2015-04-27T20:03:51Z,2015-04-29T21:54:51Z,2015-04-28T01:36:45Z,"Could the cleaned assembly graphs be output in GFA? What would need to be written?
+",ekg,https://github.com/lh3/fermikit/issues/2
+MDU6SXNzdWU3MTk5NTc3OA==,(ha)ploidy,CLOSED,2015-04-29T21:32:19Z,2015-07-23T15:14:57Z,2015-07-23T12:49:55Z,"is it possible to change the ploidy for the variant calling steps (can't see a flag)?
+",Perugolate,https://github.com/lh3/fermikit/issues/3
+MDU6SXNzdWU3MzcwNjE5Ng==,fermikit-0.12.tar.bz2 has weird Mac OS extensions,CLOSED,2015-05-06T18:52:16Z,2015-07-23T17:53:28Z,2015-07-23T17:20:06Z,"Extracting `fermikit-0.12.tar.bz2` on Linux causes tar to fail with a non-zero exit status due to non-standard BSD extensions in the tar file.
+
+```
+$ tar xf fermikit-0.12.tar.bz2 
+tar: Ignoring unknown extended header keyword 'LIBARCHIVE.creationtime'
+tar: Ignoring unknown extended header keyword 'SCHILY.dev'
+tar: Ignoring unknown extended header keyword 'SCHILY.ino'
+tar: Ignoring unknown extended header keyword 'SCHILY.nlink'
+```
+
+See [Fix Tar Errors on OS X](http://lee.greens.io/blog/2014/05/06/fix-tar-errors-on-os-x/) and [superuser](http://superuser.com/questions/318809/linux-os-x-tar-incompatibility-tarballs-created-on-os-x-give-errors-when-unt).
+
+The fix is to set set an environment variable before creating the tar file on Mac OS.
+
+``` sh
+export COPYFILE_DISABLE=true
+```
+",sjackman,https://github.com/lh3/fermikit/issues/4
+MDU6SXNzdWU3Njg1MjMzNQ==,pipeline questions,CLOSED,2015-05-15T20:42:17Z,2015-05-17T13:18:48Z,2015-05-17T07:24:33Z,"Hi Heng,
+
+Few quick questions. Starting from BAM,
+- should duplicates be removed when converting to fastq?
+- seeing as you are not using pair information, does it matter if reads in the input fastq are in the order they come from the sorted BAM file? i.e. can I skip a `bamshuf` step?
+- you have `htsbox abreak` taking unsorted SAM as input. Is unsorted required, or can it be sorted?
+
+Cheers,
+Shane
+",mcshane,https://github.com/lh3/fermikit/issues/5
+MDU6SXNzdWU4NTUzNDc4NA==,joint calling,OPEN,2015-06-05T13:35:43Z,2015-06-05T14:51:46Z,,"Hi Heng,
+
+Great tool.  Do you have any advice for joint calling of multiple samples?
+
+I obtained a reasonable looking call set by first running your `run-calling` script on each sample individually.  Then I ran the following on the bams produced:
+
+`fermi.kit/htsbox pileup -cuf hs37d5.fa *.bam | bcftools view -Oz output.vcf.gz`
+
+Is this a sensible approach? Obviously filtering still needs to performed.
+
+cheers,
+
+Jared
+",jaredo,https://github.com/lh3/fermikit/issues/6
+MDU6SXNzdWU5NDA2MTE2NQ==,Error in last command of run-calling,CLOSED,2015-07-09T14:15:46Z,2015-07-13T16:45:45Z,2015-07-13T16:24:09Z,"I'm getting an error in the last cmd of the run-calling script, specifically with the htsbox abreak command.  The perl script, run-calling, has this syntax for the last command:
+$cmd .= ""$root/htsbox abreak -cu $prefix.unsrt.sam.gz | gzip -1 > $prefix.sv.vcf.gz;\n"";
+
+Which looks like it is passing ""-cu"" flag to htsbox abreak, however those don't appear to be valid options:
+
+Usage:   htscmd abreak [options] <aln.sam>|<aln.bam>
+
+Options: -b        assume the input is BAM (default is SAM)
+         -l INT    exclude contigs shorter than INT [150]
+         -q INT    exclude alignments with mapQ below INT [10]
+         -m FLOAT  exclude alignments overlapping another long alignment by FLOAT fraction [0.5]
+         -g INT    join alignments separated by a gap shorter than INT bp [500]
+
+Note: recommended BWA-SW setting is '-b9 -q16 -r1 -w500'
+
+Thanks.
+Jon
+",nextgenusfs,https://github.com/lh3/fermikit/issues/7
+MDU6SXNzdWUxMDc4MTU2MDM=,High RAM usage on simulated samples,OPEN,2015-09-22T22:30:49Z,2015-09-22T23:41:34Z,,"Hi,
+
+I have 50x simulated 1000g data with ART (http://www.niehs.nih.gov/research/resources/software/biostatistics/art/). I'm trying to run fermikit on this data and our cluster is killing the job when it passes 170G RAM.  Do you have any suggestions for decreasing memory usage?
+
+```
+fermi.kit/fermi2.pl unitig -s3g -t16 -l126 -p art_50x_fermikit ""fermi.kit/seqtk mergepe NA12877_50x_1.fq.gz NA12877_50x_2.fq.gz"" > art_50x_fermikit.mak
+make -f art_50x_fermikit.mak
+fermi.kit/run-calling -t16 reference/hg19_random.fa art_50x_fermikit.mag.gz | sh
+```
+
+The only thing in the log is the following:
+
+```
+bash -c '/u/mtaschuk/git/fermikit/fermi.kit/bfc -s 3g -t 16 <(~/git/fermikit/fermi.kit/seqtk mergepe NA12877_50x_1.fq.gz NA12877_50x_2.fq.gz) <(~/git/fermikit/fermi.kit/seqtk mergepe NA12877_50x_1.fq.gz NA12877_50x_2.fq.gz) 2> art_50x_fermikit.ec.fq.gz.log | gzip -1 > art_50x_fermikit.ec.fq.gz'
+```
+
+I'm using NA12877 vcf from GiaB, converted to fasta reference, and then simulating using ART with the following characteristics:
+- read length: 126
+- mean fragment length: 500
+- standard deviation: 120
+- average coverage: 50x
+- paired end
+- error model: HiSeq 2500
+",morgantaschuk,https://github.com/lh3/fermikit/issues/9
+MDU6SXNzdWUxMTA5NzUwNzA=,Sorting; low sensitivity,CLOSED,2015-10-12T13:27:45Z,2015-10-12T14:38:25Z,2015-10-12T13:39:13Z,"Dear Heng,
+Looks like a great tool and I tried to use it for a subset of the Anopheles 1000 Genomes data (https://www.malariagen.net/apps/ag1000g/phase1-AR3/index.html). 
+The first problem I encountered is at the sorting stage: once the first sam was made, fermi proceeded to sort it and generated ~150k tiny sam files - I had to kill it eventually.
+The second issue: I ran clean up manually and genotyped with GATK, as GATK had been originally used to genotype after BWA-mapping the same reads to reference. When we compare the BWA and Fermikit genotypes, the Fermi pipeline results in ~18x fewer variants. What would be the key parameters that could help with this, please?
+Best,
+Chris
+",KrzysztofMKozak,https://github.com/lh3/fermikit/issues/10
+MDU6SXNzdWUxMTEzOTkwNzE=,Can FermiKit be run on Amplicon data from targeted re-sequencing,OPEN,2015-10-14T13:33:08Z,2015-10-15T19:11:35Z,,"Hi Heng,
+
+Always interested to test out new software that you put out. I am doing a lot of targeted resequencing with Illumina TruSight Amplicon data of tumour-only samples. I have been looking for some assembly-based methods since there are some tandem-duplications and large indels in some of our samples that are difficult to detect with standard methods. I just tested this out on one of my samples and at the end I have no variants at all. The sorted bam file doesn't appear to have anything aligned against the reference.
+
+Just wanted to check whether in principal fermikit will work on this data before I dive too deep into debugging and trying alternate parameters from the standard defaults on the Readme.
+
+Cheers
+",dgaston,https://github.com/lh3/fermikit/issues/11
+MDU6SXNzdWUxNDQ0Njk4MDY=,Call SV jointly?,CLOSED,2016-03-30T05:40:59Z,2016-03-30T15:47:51Z,2016-03-30T15:47:51Z,"Hi Heng,
+
+You mentioned the SNP and small InDels can be called jointly. I am wondering can you call structural variation (SV) jointly? For example, if I have multiple samples, how do I know if a large inversion is common or not. Thanks!
+
+-Jinliang
+",yangjl,https://github.com/lh3/fermikit/issues/12
+MDU6SXNzdWUxNTM4MDM3NDA=,using fermikit to generate a reference graph,OPEN,2016-05-09T15:30:19Z,2016-05-11T09:01:10Z,,"We are working on generating sequence graphs for use as the reference system in vg. I'm completing a first pass at bluntifying the overlap graph that can be pulled out of fermikit's intermediate mag files, which is a necessary step for our alignment and indexing algorithms. We have done a lot of testing on bidirectional string graphs, and so the use of these should be straightforward. It is just an issue of cleaning up the bluntification algorithm and understanding the best way to make the assembly graphs.
+
+The ideal pattern would be to generate a pan genomic reference by assembling all the sequence data from a set of samples into a graph. Reading the Fermi paper it seems that some of the steps in that assembly process might not perform well in a multi sample assembly. Specifically the bubble popping algorithm in fermi has a diploid assumption. Has this been resolved in fermi2 and fermikit? Is it configurable, and if not would of be an easy change for me to make?
+
+I am curious if there might be other contradictory aspects to this approach. Any advice would be welcome.
+",ekg,https://github.com/lh3/fermikit/issues/13
+MDU6SXNzdWUxNzIxOTA3MjI=,Classify complex SV calling from fermikit ?,OPEN,2016-08-19T18:23:00Z,2016-08-30T22:57:33Z,,"Hi Heng,
+
+Thank you for developing the fermikit. I am trying your fermikit tools on a 30x whole genome sequencing population data. I successfully run the fermikit so far. But I wonder is there a way to classify the complex structure variation besides deletion and insertion called in fermikit? I just start this population level CNV project and very new to this kind of analysis. Thank you for help.
+
+Cheers,
+wenbin 
+",wenbinmei,https://github.com/lh3/fermikit/issues/14
+MDU6SXNzdWUyNDAwNTUyNjE=,"""seqtk mergepe"" is correct for multiple Lane fq DATA ?",OPEN,2017-07-03T02:46:44Z,2017-07-03T02:46:44Z,,"Hi Heng,
+I have one sample with PE100 sequence data, and it's multi-lane PE data like ""sample.L01.read_1.fq.gz, sample.L01.read_2.fq.gz, sample.L02.read_1.fq.gz sample.L02.read_1.fq.gz"". I want to call small variants and structural variations by using all clean data.
+how should do? ",zhangaaaaa,https://github.com/lh3/fermikit/issues/15
+MDU6SXNzdWUyNDY4MTEwODc=,Please add a license,CLOSED,2017-07-31T16:13:32Z,2020-11-30T22:58:17Z,2020-11-30T22:58:17Z,"What is a the license? Please consider adding a LICENSE file to the GitHub repository.
+For instructions, see https://help.github.com/articles/adding-a-license-to-a-repository/",tmozgach,https://github.com/lh3/fermikit/issues/16
+MDU6SXNzdWUzMzMxNDg3NTE=,Can it call variants on tetraploid species?,OPEN,2018-06-18T06:39:02Z,2018-06-18T06:39:02Z,,,afzm,https://github.com/lh3/fermikit/issues/18
+MDU6SXNzdWUzMzQ1OTQ3MjE=,Error in make,OPEN,2018-06-21T17:49:29Z,2022-08-15T14:27:10Z,,"When I run the command make -f prefix.mak, I get the error
+fermi.kit/bfc -1s 3g -k 61 -t 16 prefix.ec.fq.gz 2> prefix.flt.fq.gz.log | gzip -1 > prefix.flt.fq.gz
+/bin/bash: line 1: 13973 Segmentation fault      fermi.kit/bfc -1s 3g -k 61 -t 16 prefix.ec.fq.gz 2> prefix.flt.fq.gz.log
+     13974 Done                    | gzip -1 > prefix.flt.fq.gz
+make: *** [prefix.flt.fq.gz] Error 139
+How can I solve this?",Addicted-to-coding,https://github.com/lh3/fermikit/issues/19
+MDU6SXNzdWUzMzQ2NzA0MTU=,Error in running fermikit,OPEN,2018-06-21T21:49:39Z,2018-06-21T21:49:39Z,,"When I try to run the software using:
+fermi.kit/run-calling -t16 ~/reference.genome/chr19_new.fa prefix.mag.gz | sh, I get the error
+ERROR: failed to locate the BWA index. Please run 'fermi.kit/bwa index -p ~/reference.genome/chr19_new.fa ref.fa'.
+When I run this command on my .fa file, I get the error
+[user@login2 test_fermikit]$ fermi.kit/bwa index -p ~/reference.genome/chr19_new.fa a.fa
+[bwa_index] Pack FASTA... [bns_fasta2bntseq] Failed to allocate 0 bytes at bntseq.c line 303: Success
+",Addicted-to-coding,https://github.com/lh3/fermikit/issues/20
+I_kwDOAgMqtc5hoDWE,make: nothing to be done for all,OPEN,2023-03-23T16:40:17Z,2023-03-23T16:41:28Z,,"Hi,
+
+I ran the first step to get DO50374T.mak.
+**fermi2.pl unitig -s3g -t16 -l150 -p DO50374T DO50374T.fq > DO50374T.mak**
+Then run make:
+**make -f DO50374T.mak**
+
+But it continue to say: **make: Nothing to be done for 'all'**. So what is the reason of the problem? below is the content of DO50374T.mak. Thanks!
+
+
+```
+PREFIX=DO50365T
+
+EXE_FERMI2=/home/xiz978/anaconda3/bin/fermi2
+EXE_ROPEBWT2=/home/xiz978/anaconda3/bin/ropebwt2
+EXE_BFC=/home/xiz978/anaconda3/bin/bfc
+GENOME_SIZE=3g
+K_UNITIG=51
+K_CLEAN=56
+K_TRIM=61
+K_MERGE=76
+N_THREADS=16
+
+INPUT=cat DO50365T.fq.gz
+
+SHELL:=/bin/bash
+export SHELLOPTS:=errexit:pipefail
+
+all:$(PREFIX).mag.gz
+
+$(PREFIX).ec.fq.gz:
+    bash -e -o pipefail -c '$(EXE_BFC) -s $(GENOME_SIZE) -t $(N_THREADS) <($(INPUT)) <($(INPUT)) 2> $@.log | gzip -1 > $@'
+
+$(PREFIX).flt.fq.gz:$(PREFIX).ec.fq.gz
+    $(EXE_BFC) -1s $(GENOME_SIZE) -k $(K_TRIM) -t $(N_THREADS) $< 2> $@.log | gzip -1 > $@
+
+$(PREFIX).flt.fmd:$(PREFIX).flt.fq.gz
+    $(EXE_ROPEBWT2) -dNCr $< > $@ 2> $@.log
+
+$(PREFIX).pre.gz:$(PREFIX).flt.fmd
+    $(EXE_FERMI2) assemble -l $(K_UNITIG) -m $(K_MERGE) -t $(N_THREADS) $< 2> $@.log | gzip -1 > $@
+
+$(PREFIX).mag.gz:$(PREFIX).pre.gz
+    $(EXE_FERMI2) simplify -CSo $(K_CLEAN) -m $(K_MERGE) -T $(K_UNITIG) $< 2> $@.log | gzip -1 > $@
+```",zengxi-hada,https://github.com/lh3/fermikit/issues/21

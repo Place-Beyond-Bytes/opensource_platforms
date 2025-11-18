@@ -1,0 +1,1129 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MTY5MTEwODg=,Add multiqc module,OPEN,2019-11-04T00:02:47Z,2020-03-23T20:22:55Z,,Create a [MultiQC module](https://multiqc.info/docs/#writing-new-modules) that uses the JSON output of [`khtools extract_coding`](https://github.com/czbiohub/kh-tools/pull/8) and can be added to the [nf-core/kmermaid](https://github.com/nf-core/kmermaid/pull/17) pipeline,olgabot,https://github.com/czbiohub-sf/orpheum/issues/9
+MDU6SXNzdWU1MTcyNTEwMzk=,Expand extract_coding to work on long reads,OPEN,2019-11-04T16:07:35Z,2020-03-23T20:23:38Z,,"For long reads, can't just try all six-frame translations as this is actually the whole molecule. Need to test every start codon (ATG) to stop codons, as started here: https://github.com/czbiohub/kh-analysis/pull/2/files
+
+Would still do a jaccard index overlap of the k-mers from each possible reading frame to the known proteins, and then take all ""valid"" reading frames.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/10
+MDU6SXNzdWU1MjA1NDc5NzE=,Use extract_kmers rust module to count protein k-mers,OPEN,2019-11-10T03:30:58Z,2020-03-23T20:22:40Z,,https://github.com/czbiohub/extract_kmers/,olgabot,https://github.com/czbiohub-sf/orpheum/issues/13
+MDU6SXNzdWU1MjA1NDgxNDQ=,Allow for k-mer comparison of many fasta proteomes,OPEN,2019-11-10T03:33:14Z,2020-03-23T20:23:18Z,,"Example usage:
+
+```
+khtools compare *.fa.gz
+```
+
+Would output either a:
+
+- A single similarity matrix of all-by-all k-mer similarity for a particular k-mer size and protein encoding
+- A tidy, SQL-like table of k-mer similarities across many k-mer sizes and protein encodings
+
+Thinking of using this on the Quest for Orthologs reference proteome dataset: http://www.ebi.ac.uk/reference_proteomes/
+
+cc @bluegenes -- any thoughts?",olgabot,https://github.com/czbiohub-sf/orpheum/issues/14
+MDU6SXNzdWU1MzkyMTI3OTA=,"Rust-ify ""translate""",OPEN,2019-12-17T17:36:27Z,2020-07-28T00:36:10Z,,Talked to @phoenixAja about this ... `translate` currently takes up to 1.5 days on some single cell datasets ,olgabot,https://github.com/czbiohub-sf/orpheum/issues/17
+MDU6SXNzdWU1NjU0OTU5MjQ=,"Add an ""eject"" option for k-mer comparison",CLOSED,2020-02-14T18:48:43Z,2020-03-23T20:17:34Z,2020-03-23T20:17:34Z,"If two sequences have a jaccard similarity of 0 when k=4, they will have a jaccard similarity of 0 for all larger k-long sub sequences. By adding this ""eject"" option and setting all larger ksize jaccards as 0, this would greatly reduce compute time.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/27
+MDU6SXNzdWU1NjkyMTAwNjI=,BUG: coding_scores.csv for extract_coding isn't accurate for the number of frames per sample,CLOSED,2020-02-21T22:10:26Z,2020-04-23T03:03:52Z,2020-04-23T03:03:52Z,"E.g. for this output, there's a total of 443,833 predicted proteins, but only 325,437 read IDs. 
+
+
+```
+(diamond)
+ Fri 21 Feb - 13:46  ~/data_sm/tabula-microcebus/analyses/kmermaid/blood_cross_species/protein_ksize7 
+ olga@x86_64-conda_cos6-linux-gnu  bioawk -c fastx ' { print $name } ' extract_coding/J7_B000578_B009057_S223__coding_reads_peptides.fasta | wc -l
+443833
+(diamond)
+ Fri 21 Feb - 13:46  ~/data_sm/tabula-microcebus/analyses/kmermaid/blood_cross_species/protein_ksize7 
+ olga@x86_64-conda_cos6-linux-gnu  bioawk -c fastx ' { print $name } ' extract_coding/J7_B000578_B009057_S223__coding_reads_peptides.fasta | sort | uniq | wc -l
+325437
+```
+
+Turns out some of these are because the R1 and R2 weren't treated differently, e.g. here there is one reading frame for `A00111:133:H3VGJDSXX:3:2153:18738:34100 1:N:0:TTTGACAGGCTG+TCATTACATGAT` but 6 (!!?!?) for `A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT `:
+ 
+```
+$ fgrep -A 1 'A00111:133:H3VGJDSXX:3:2153:18738:34100' $peptide_fasta
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 1:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -3 jaccard: 1.0
+ENLKAAQEEYVKRALANSLACQGKYTPSGQAG
+--
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 1 jaccard: 0.6666666666666666
+GCGGGARRWRGGGGRRRGGRGGGGGGRRGGGGR
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 2 jaccard: 1.0
+GAGAARGGGAGGAGAGGGGGGGGGGGAGGGGAG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 3 jaccard: 0.6153846153846154
+VRGRRAAVARGGRAPAGGAGGGGGGAPGGGGP
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -1 jaccard: 0.7037037037037037
+PGPPPPGAPPPPPPAPPAGARPPRATAARRPRT
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -2 jaccard: 0.9565217391304348
+PAPPPPAPPPPPPPPPPPAPAPPAPPPRAAPAP
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -3 jaccard: 0.6923076923076923
+RPPPPRRPPPPPPRPPRRRPPPPRHRRAPPPH
+```
+
+
+This makes the nucleotide sequence confusing as there's multiple jaccards:
+
+```
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 1 jaccard: 0.6666666666666666
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 2 jaccard: 1.0
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: 3 jaccard: 0.6153846153846154
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -1 jaccard: 0.7037037037037037
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -2 jaccard: 0.9565217391304348
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+>A00111:133:H3VGJDSXX:3:2153:18738:34100 2:N:0:TTTGACAGGCTG+TCATTACATGAT translation_frame: -3 jaccard: 0.6923076923076923
+GGGTGCGGGGGCGGCGCGCGGCGGTGGCGCGGGGGGGGCGGGCGCCGGCGGGGGGGGCGGGGGGGGGGGGGGGGGGGGCGCCGGGGGGGGGGGGGCCGGG
+```",olgabot,https://github.com/czbiohub-sf/orpheum/issues/30
+MDU6SXNzdWU1NzAwNzE0MjI=,Get protein-coding sensitivity/specificity of extract_coding,OPEN,2020-02-24T19:12:58Z,2020-03-23T20:17:07Z,,Randomly sample mappable regions of the genome and get the protein coding sequences,olgabot,https://github.com/czbiohub-sf/orpheum/issues/31
+MDU6SXNzdWU1NzIxMjU5NjA=,Failure if input file is empty,CLOSED,2020-02-27T14:29:30Z,2020-03-03T17:16:38Z,2020-03-03T17:16:38Z,"If the input file has no reads, then the summary JSON/serialization doesn't work.
+
+```
+Error executing process > 'extract_coding (ENSPPYT00000031987)'
+
+Caused by:
+  Process `extract_coding (ENSPPYT00000031987)` terminated with an error exit status (1)
+
+Command executed:
+
+  khtools extract-coding \
+    --molecule dayhoff \
+    --coding-nucleotide-fasta ENSPPYT00000031987__molecule-dayhoff__coding_reads_nucleotides.fasta \
+    --csv ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv \
+    --json-summary ENSPPYT00000031987__molecule-dayhoff__coding_summary.json \
+    --peptides-are-bloom-filter \
+    ptprc_bam_translations__molecule-dayhoff.bloomfilter \
+    ENSPPYT00000031987_R1_trimmed.fastq.gz > ENSPPYT00000031987__molecule-dayhoff__coding_reads_peptides.fasta
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Loading existing bloom filter from ptprc_bam_translations__molecule-dayhoff.bloomfilter and making sure the ksizes match
+  WritinDone!
+  Writing nucleotide sequence from reads WITH protein-coding translation frame nucleotides to ENSPPYT00000031987__molecule-dayhoff__coding_reads_nucleotides.fasta
+
+  0it [00:00, ?it/s]
+  0it [00:00, ?it/s]
+  Writing coding scores of reads to ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv
+  Writing extract_coding summary to ENSPPYT00000031987__molecule-dayhoff__coding_summary.json
+```
+
+Here is the Python traceback:
+
+```pytb
+  Traceback (most recent call last):
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/bin/khtools"", line 8, in <module>
+      sys.exit(cli())
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 764, in __call__
+      return self.main(*args, **kwargs)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 717, in main
+      rv = self.invoke(ctx)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 1137, in invoke
+      return _process_result(sub_ctx.command.invoke(sub_ctx))
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 956, in invoke
+      return ctx.invoke(self.callback, **ctx.params)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 555, in invoke
+      return callback(*args, **kwargs)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/khtools/extract_coding.py"", line 690, in cli
+      maybe_write_json_summary(coding_scores, json_summary)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/khtools/extract_coding.py"", line 503, in maybe_write_json_summary
+      json.dump(metadata, fp=f)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/__init__.py"", line 179, in dump
+      for chunk in iterable:
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/encoder.py"", line 431, in _iterencode
+      yield from _iterencode_dict(o, _current_indent_level)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/encoder.py"", line 405, in _iterencode_dict
+      yield from chunks
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/encoder.py"", line 405, in _iterencode_dict
+      yield from chunks
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/encoder.py"", line 438, in _iterencode
+      o = _default(o)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/json/encoder.py"", line 179, in default
+      raise TypeError(f'Object of type {o.__class__.__name__} '
+  TypeError: Object of type int64 is not JSON serializable
+
+```
+
+Changing to the work directory, turns out the input file was empty!
+
+```
+(base)
+ ✘  Thu 27 Feb - 06:19  ~/code/nf-predictorthologs   origin ☊ phoenix/bam-bed-intersect ✔ 
+  cd /Users/olgabot/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26
+ll
+(base)
+ Thu 27 Feb - 06:19  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  ll
+Permissions Size User    Date Modified Git Name
+.rw-r--r--     0 olgabot 27 Feb  6:13   -- .command.begin
+.rw-r--r--  2.8k olgabot 27 Feb  6:13   -- .command.err
+.rw-r--r--  2.8k olgabot 27 Feb  6:13   -- .command.log
+.rw-r--r--     0 olgabot 27 Feb  6:13   -- .command.out
+.rw-r--r--  9.7k olgabot 27 Feb  6:13   -- .command.run
+.rw-r--r--   514 olgabot 27 Feb  6:13   -- .command.sh
+.rw-r--r--     0 olgabot 27 Feb  6:13   -- .command.trace
+.rw-r--r--     1 olgabot 27 Feb  6:13   -- .exitcode
+.rw-r--r--     0 olgabot 27 Feb  6:13   -- ENSPPYT00000031987__molecule-dayhoff__coding_reads_nucleotides.fasta
+.rw-r--r--     0 olgabot 27 Feb  6:13   -- ENSPPYT00000031987__molecule-dayhoff__coding_reads_peptides.fasta
+.rw-r--r--    62 olgabot 27 Feb  6:13   -- ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv
+.rw-r--r--    46 olgabot 27 Feb  6:13   -- ENSPPYT00000031987__molecule-dayhoff__coding_summary.json
+lrwxr-xr-x   117 olgabot 27 Feb  6:13   -- ENSPPYT00000031987_R1_trimmed.fastq.gz -> /Users/olgabot/code/nf-predictorthologs/work/9a/7a9ab737c105127137beae04ec2e5e/ENSPPYT00000031987_R1_trimmed.fastq.gz
+lrwxr-xr-x   131 olgabot 27 Feb  6:13   -- ptprc_bam_translations__molecule-dayhoff.bloomfilter -> /Users/olgabot/code/nf-predictorthologs/work/21/2ae1cb1ba8142d7b244a3264c17aac/ptprc_bam_translations__molecule-dayhoff.bloomfilter
+(base)
+ Thu 27 Feb - 06:19  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  cat  ENSPPYT00000031987__molecule-dayhoff__coding_summary.json | jq .
+parse error: Unfinished JSON term at EOF at line 1, column 46
+(base)
+ ✘  Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  cat  ENSPPYT00000031987__molecule-dayhoff__coding_summary.json
+{""input_files"": [], ""jaccard_info"": {""count"": %                                                                                             (base)
+ Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  ll ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv
+Permissions Size User    Date Modified Git Name
+.rw-r--r--    62 olgabot 27 Feb  6:13   -- ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv
+(base)
+ Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  cat ENSPPYT00000031987__molecule-dayhoff__coding_scores.csv
+read_id,jaccard_in_peptide_db,n_kmers,classification,filename
+(base)
+ Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  gzcat ENSPPYT00000031987_R1_trimmed.fastq.gz | less -S
+(base)
+ Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  ll  /Users/olgabot/code/nf-predictorthologs/work/9a/7a9ab737c105127137beae04ec2e5e/ENSPPYT00000031987_R1_trimmed.fastq.gz
+Permissions Size User    Date Modified Git Name
+.rw-r--r--    40 olgabot 27 Feb  6:12   -- /Users/olgabot/code/nf-predictorthologs/work/9a/7a9ab737c105127137beae04ec2e5e/ENSPPYT00000031987_R1_trimmed.fastq.gz
+(base)
+ Thu 27 Feb - 06:20  ~/code/nf-predictorthologs/work/63/1abe19bc1d2e3df8ccf049908e2d26   origin ☊ phoenix/bam-bed-intersect ✔ 
+  gzcat  /Users/olgabot/code/nf-predictorthologs/work/9a/7a9ab737c105127137beae04ec2e5e/ENSPPYT00000031987_R1_trimmed.fastq.gz
+```",olgabot,https://github.com/czbiohub-sf/orpheum/issues/33
+MDU6SXNzdWU1NzIzMTc2Nzc=,Make a 1.0.0 release!!,CLOSED,2020-02-27T19:50:42Z,2020-05-12T03:30:23Z,2020-05-12T03:30:23Z,Need this for nextflow stuff to not die,olgabot,https://github.com/czbiohub-sf/orpheum/issues/36
+MDU6SXNzdWU1NzU3OTUzNjM=,read_id in coding peptides output if not using precomputed peptide bloom filter,OPEN,2020-03-04T21:34:45Z,2020-03-23T20:17:08Z,,"I think the `read_id` is being written before each read's output?
+
+command:
+```
+khtools extract-coding --verbose --molecule protein --peptide-ksize 5 uniprot_sprot.fasta.gz ../orthopep_out/preprocess/pear/MMETSP0143.pear_assembled.fq.gz > test.out
+```
+
+For these two reads (each originally 50bp PE, merged with PEAR prior to `extract_coding`):
+read A: 
+```
+@SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1
+CGCGCCGCCGAGGCCGCCGGTCGGGTAGAGCGCGTCGCCGCCGAGGAGCTGCGGCTTGGACGCGAAGCCGGTGCCCGCC
++
+CCCFFFFFHHHHHIIIIIIIBHHFF6>BEDIIIDIIIDIIDIIDIIDDIID=E@=E;HGHEGIGIIHHHHHDFFFF@@?
+```
+read B:
+```
+@SRR1296789.16444 HISEQ2_0952:4:1101:13214:7401 length=50/1
+GCGCGGCGATGCTCGGCATCACCGGCTGCCTGATCCACGAGCTCCTCGGCGTCGACGCGCTCTACCCGACCGGCGGCCTCGGCGGCGC
++
+CCCFFFFFHHHHHIIIIIIIIIIIIIIIIHFHGHFFFFIIIIIIIIIIIIDBDDBDDDCECA@6FHIHFIIIIIIHHHHHFFFFFCBB
+```
+
+the output is:
+
+read A:
+```
+SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1
+>SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1 translation_frame: 1 jaccard: 1.0
+RAAEAAGRVERVAAEELRLGREAGAR
+>SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1 translation_frame: 3 jaccard: 1.0
+RRRGRRSGRARRRRGAAAWTRSRCP
+>SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1 translation_frame: -1 jaccard: 1.0
+GGHRLRVQAAAPRRRRALPDRRPRRR
+>SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1 translation_frame: -2 jaccard: 1.0
+AGTGFASKPQLLGGDALYPTGGLGGA
+>SRR1296789.13899 HISEQ2_0952:4:1101:6298:6561 length=50/1 translation_frame: -3 jaccard: 1.0
+RAPASRPSRSSSAATRSTRPAASAA
+```
+read B:
+```
+SRR1296789.16444 HISEQ2_0952:4:1101:13214:7401 length=50/1
+>SRR1296789.16444 HISEQ2_0952:4:1101:13214:7401 length=50/1 translation_frame: 2 jaccard: 1.0
+RGDARHHRLPDPRAPRRRRALPDRRPRRR
+>SRR1296789.16444 HISEQ2_0952:4:1101:13214:7401 length=50/1 translation_frame: 3 jaccard: 1.0
+AAMLGITGCLIHELLGVDALYPTGGLGG
+>SRR1296789.16444 HISEQ2_0952:4:1101:13214:7401 length=50/1 translation_frame: -3 jaccard: 1.0
+AAEAAGRVERVDAEELVDQAAGDAEHRR
+```
+
+Output doesn't have the extra read id's when using a precomputed bloom fliter, e.g. 
+```
+khtools extract-coding --molecule protein --peptide-ksize 7 --peptides-are-bloom-filter uniprot_sprot.fasta.molecule-protein_ksize-7.bloomfilter.nodegraph  test_reads0143_5.fq  > test5_bf.out
+```",bluegenes,https://github.com/czbiohub-sf/orpheum/issues/37
+MDU6SXNzdWU1NzU4NDc5Nzk=,Rename to .. something else,CLOSED,2020-03-04T22:46:29Z,2020-04-29T00:00:31Z,2020-04-29T00:00:31Z,"For ""kmerslay"" - Because I came here to slay",olgabot,https://github.com/czbiohub-sf/orpheum/issues/38
+MDU6SXNzdWU1NzU5MDk5NDY=,Support all-by-all comparison for noncoding / nucleotides,OPEN,2020-03-05T00:25:52Z,2020-03-23T20:23:01Z,,Use reduced nucleotide alphabet for DNA/RNA homology search,olgabot,https://github.com/czbiohub-sf/orpheum/issues/39
+MDU6SXNzdWU1NzU5MjY5OTc=,Provide pre-computed bloom filters for extracting protein coding,OPEN,2020-03-05T01:16:23Z,2020-03-23T20:17:08Z,,"Context:
+- Computing a bloom filter for [MERC database](https://data.mmseqs.com/) (34 GB of gzipped fasta files!!!) took many hours.. would be good to provide it precomputed with recommended k-mer sizes and alphabet encodings on Open science framework  - osf.io
+
+Thanks for the idea @bluegenes !",olgabot,https://github.com/czbiohub-sf/orpheum/issues/40
+MDU6SXNzdWU1NzcxMDQ5MDA=,Change to GitHub Actions for testing,CLOSED,2020-03-06T18:35:23Z,2020-03-23T19:35:34Z,2020-03-23T19:35:34Z,"related: https://github.com/czbiohub/kh-tools/issues/36
+
+Lets us use: https://github.com/pypa/gh-action-pypi-publish for releases",olgabot,https://github.com/czbiohub-sf/orpheum/issues/41
+MDU6SXNzdWU1NzcxNDM2NDA=,Refactor extract_coding to be object oriented,CLOSED,2020-03-06T19:55:14Z,2020-04-23T03:02:23Z,2020-04-23T03:02:22Z,Probably will happen when it gets Rust-ified: https://github.com/czbiohub/kh-tools/issues/17,olgabot,https://github.com/czbiohub-sf/orpheum/issues/42
+MDU6SXNzdWU1Nzg2OTUxNDg=,Rename/alias `bloom-filter` to `index`?,CLOSED,2020-03-10T16:09:26Z,2020-04-23T03:01:54Z,2020-04-23T03:01:54Z,"In the future, we might change the data structure used to store the reference proteome's $k$-mers (https://github.com/czbiohub/kh-tools/issues/45), so `bloom-filter` may not be accurate, plus it may be off-putting to some users. Plus, the term `index` is already used by many tools, such as [samtools index](http://www.htslib.org/doc/samtools-index.html) and [sourmash index](https://sourmash.readthedocs.io/en/latest/command-line.html).
+
+Related: https://github.com/czbiohub/kh-tools/issues/38. Should probably be done before/around the same time as other renaming.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/44
+MDU6SXNzdWU1Nzg3MDE0MjI=,Use XOR filter instead of bloom filter for storing reference proteome,OPEN,2020-03-10T16:18:45Z,2020-03-10T16:21:28Z,,"Currently, the `extract-coding` implementation can take up to a day (24h) on deeply sequenced RNA-seq samples, and I would like it to take minutes. One method of reducing this time is to use a data structure with faster set membership queries than a bloom filter, such as an XOR filter ([blog post](https://lemire.me/blog/2019/12/19/xor-filters-faster-and-smaller-than-bloom-filters/).
+
+XOR filters are more computational expensive to create than bloom filters, and cannot be modified once created, but for the purposes of testing whether a read contains k-mers present in the reference proteome, this will work quite well.
+
+Citations:
+- https://arxiv.org/abs/1912.08258
+
+### Potential implementations
+
+Python
+- https://github.com/GreyDireWolf/pyxorfilter
+
+Rust
+- https://github.com/codri/xorfilter-rs 
+- https://github.com/bnclabs/xorfilter
+  - seems the most developed, has the most contributors and most recent commits
+- https://github.com/Polochon-street/rustxorfilter
+
+Thanks @luizirber for the paper and @phoenixAja for the idea of using them here!",olgabot,https://github.com/czbiohub-sf/orpheum/issues/45
+MDU6SXNzdWU1ODA2ODcxMzY=,More strict filtering of low-complexity sequences,OPEN,2020-03-13T15:46:54Z,2020-03-23T20:17:09Z,,"For the sample `SRR306772_GSM752626_mmu_lv_F_1` from the Brawand2011 dataset, here is the breakdown of the number of translation frames per read:
+
+```
+df.n_frames.value_counts()
+```
+
+Results in:
+
+```
+1    17395707
+2      182090
+3       19943
+4        5708
+5        1712
+6        1068
+Name: n_frames, dtype: int64
+```
+
+I don't think that many of the 3, 4, 5, 6 translation frames are real... they are mostly low-complexity sequences. Here are some of the sequences with 3, 4, 5, 6.
+
+<details>
+
+
+```
+--- n_frames: 3 - read_id: SRR306772.33576531
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: 1 jaccard: 1.0
+FSSSSSSPALLF
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: 3 jaccard: 1.0
+LLLLFVSGSAF
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: -3 jaccard: 1.0
+KSRAGDEEEEE
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: 1 jaccard: 1.0
+TTCTCCTCCTCCTCTTCGTCTCCGGCTCTGCTTTTTC
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: 3 jaccard: 1.0
+TTCTCCTCCTCCTCTTCGTCTCCGGCTCTGCTTTTTC
+>SRR306772.33576531 Ibis_Run100408:5:84:17115:3453/1 translation_frame: -3 jaccard: 1.0
+TTCTCCTCCTCCTCTTCGTCTCCGGCTCTGCTTTTTC
+
+--- n_frames: 3 - read_id: SRR306772.37340081
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -1 jaccard: 1.0
+SLSLSLSLFRLY
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -2 jaccard: 1.0
+LSLSLSLSSDF
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -3 jaccard: 1.0
+SLSLSLSLPTL
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -1 jaccard: 1.0
+GTAAAGTCGGAAGAGAGAGAGAGAGAGAGAGAGAGA
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -2 jaccard: 1.0
+GTAAAGTCGGAAGAGAGAGAGAGAGAGAGAGAGAGA
+>SRR306772.37340081 Ibis_Run100408:5:94:5610:2947/1 translation_frame: -3 jaccard: 1.0
+GTAAAGTCGGAAGAGAGAGAGAGAGAGAGAGAGAGA
+
+--- n_frames: 3 - read_id: SRR306772.36912807
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: 2 jaccard: 1.0
+SRAGDEEEEEK
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: -2 jaccard: 1.0
+FLLLLFVSGSA
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: -3 jaccard: 1.0
+FSSSSSSPALL
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: 2 jaccard: 1.0
+AAGCAGAGCCGGAGACGAAGAGGAGGAGGAGAAAG
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: -2 jaccard: 1.0
+AAGCAGAGCCGGAGACGAAGAGGAGGAGGAGAAAG
+>SRR306772.36912807 Ibis_Run100408:5:93:4524:8030/1 translation_frame: -3 jaccard: 1.0
+AAGCAGAGCCGGAGACGAAGAGGAGGAGGAGAAAG
+
+--- n_frames: 4 - read_id: SRR306772.30193174
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: 1 jaccard: 1.0
+RRRRGGGER
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: 2 jaccard: 1.0
+GDEEEEEKG
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: -2 jaccard: 1.0
+TFLLLLFVS
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: -3 jaccard: 1.0
+PFSSSSSSP
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: 1 jaccard: 1.0
+CGGAGACGAAGAGGAGGAGGAGAAAGGTT
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: 2 jaccard: 1.0
+CGGAGACGAAGAGGAGGAGGAGAAAGGTT
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: -2 jaccard: 1.0
+CGGAGACGAAGAGGAGGAGGAGAAAGGTT
+>SRR306772.30193174 Ibis_Run100408:5:76:7436:21222/1 translation_frame: -3 jaccard: 1.0
+CGGAGACGAAGAGGAGGAGGAGAAAGGTT
+
+--- n_frames: 4 - read_id: SRR306772.3328140
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: 2 jaccard: 1.0
+KNKEEEKEEEEEEEDE
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: 3 jaccard: 0.9
+RIRRRRRRKKRRRRMR
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: -1 jaccard: 1.0
+SSSSSSSSSSFSSSLFF
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: -3 jaccard: 1.0
+LILLLLFFLLLLLLIL
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: 2 jaccard: 1.0
+GAAGAATAAGGAGGAGGAGAAGGAGGAAGAAGAGGAGGAGGAGGATGAGGA
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: 3 jaccard: 0.9
+GAAGAATAAGGAGGAGGAGAAGGAGGAAGAAGAGGAGGAGGAGGATGAGGA
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: -1 jaccard: 1.0
+GAAGAATAAGGAGGAGGAGAAGGAGGAAGAAGAGGAGGAGGAGGATGAGGA
+>SRR306772.3328140 Ibis_Run100408:5:9:2630:14978/1 translation_frame: -3 jaccard: 1.0
+GAAGAATAAGGAGGAGGAGAAGGAGGAAGAAGAGGAGGAGGAGGATGAGGA
+
+--- n_frames: 4 - read_id: SRR306772.22642371
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 1 jaccard: 1.0
+RRRRKKKKERKKERKKERKEKKRKE
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 2 jaccard: 1.0
+GGGGRRRKKERKKERKKEKKRKEK
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 3 jaccard: 1.0
+EEEEEEERKKERKKERKKRKEKKR
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: -3 jaccard: 0.8125
+LFFSFLFFLSFFLSFFLSSSSSSS
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 1 jaccard: 1.0
+AGGAGGAGGAGGAAGAAGAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAAGAA
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 2 jaccard: 1.0
+AGGAGGAGGAGGAAGAAGAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAAGAA
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: 3 jaccard: 1.0
+AGGAGGAGGAGGAAGAAGAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAAGAA
+>SRR306772.22642371 Ibis_Run100408:5:56:19662:11136/1 translation_frame: -3 jaccard: 0.8125
+AGGAGGAGGAGGAAGAAGAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAGAAAAGAAAAGAAAAGAAAAGAA
+
+--- n_frames: 5 - read_id: SRR306772.45537107
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: 1 jaccard: 0.9090909090909091
+EKRRRGGRGGGGGGGEE
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: 2 jaccard: 1.0
+KKEEEEEEEEEEEEVKK
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -1 jaccard: 1.0
+PSSPPPPPPPLPPLLLF
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -2 jaccard: 0.9090909090909091
+LLHLLLLLLLFLLFFFF
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -3 jaccard: 1.0
+FFTSSSSSSSSSSSSFF
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: 1 jaccard: 0.9090909090909091
+GAAAAAAGAAGAAGAGGAGGAAGAGGAGGAGGAGGAGGAGGAGGTGAAGAAGG
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: 2 jaccard: 1.0
+GAAAAAAGAAGAAGAGGAGGAAGAGGAGGAGGAGGAGGAGGAGGTGAAGAAGG
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -1 jaccard: 1.0
+GAAAAAAGAAGAAGAGGAGGAAGAGGAGGAGGAGGAGGAGGAGGTGAAGAAGG
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -2 jaccard: 0.9090909090909091
+GAAAAAAGAAGAAGAGGAGGAAGAGGAGGAGGAGGAGGAGGAGGTGAAGAAGG
+>SRR306772.45537107 Ibis_Run100408:5:114:6372:12654/1 translation_frame: -3 jaccard: 1.0
+GAAAAAAGAAGAAGAGGAGGAAGAGGAGGAGGAGGAGGAGGAGGTGAAGAAGG
+
+--- n_frames: 5 - read_id: SRR306772.5737618
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 1 jaccard: 1.0
+RGERERERERG
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 2 jaccard: 1.0
+AEREREREREE
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 3 jaccard: 1.0
+RRERERERERN
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: -2 jaccard: 1.0
+FLSLSLSLSLR
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: -3 jaccard: 1.0
+SSLSLSLSLSA
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 1 jaccard: 1.0
+CGCGGAGAGAGAGAGAGAGAGAGAGAGAGAGGAAC
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 2 jaccard: 1.0
+CGCGGAGAGAGAGAGAGAGAGAGAGAGAGAGGAAC
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: 3 jaccard: 1.0
+CGCGGAGAGAGAGAGAGAGAGAGAGAGAGAGGAAC
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: -2 jaccard: 1.0
+CGCGGAGAGAGAGAGAGAGAGAGAGAGAGAGGAAC
+>SRR306772.5737618 Ibis_Run100408:5:14:18213:9906/1 translation_frame: -3 jaccard: 1.0
+CGCGGAGAGAGAGAGAGAGAGAGAGAGAGAGGAAC
+
+--- n_frames: 5 - read_id: SRR306772.35819109
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 1 jaccard: 1.0
+PQPPPPPPPPTPPPPPQQQP
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 2 jaccard: 0.9285714285714286
+HNHHHHHHHQHHHHHHNNNH
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 3 jaccard: 1.0
+TTTTTTTTTNTTTTTTTTT
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: -1 jaccard: 1.0
+VVVVVVVVVVLVVVVVVVVV
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: -3 jaccard: 1.0
+GCCCGGGGGVGGGGGGGGC
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 1 jaccard: 1.0
+CCACAACCACCACCACCACCACCACCACCAACACCACCACCACCACCACAACAACAACCAC
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 2 jaccard: 0.9285714285714286
+CCACAACCACCACCACCACCACCACCACCAACACCACCACCACCACCACAACAACAACCAC
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: 3 jaccard: 1.0
+CCACAACCACCACCACCACCACCACCACCAACACCACCACCACCACCACAACAACAACCAC
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: -1 jaccard: 1.0
+CCACAACCACCACCACCACCACCACCACCAACACCACCACCACCACCACAACAACAACCAC
+>SRR306772.35819109 Ibis_Run100408:5:90:9807:4631/1 translation_frame: -3 jaccard: 1.0
+CCACAACCACCACCACCACCACCACCACCAACACCACCACCACCACCACAACAACAACCAC
+
+--- n_frames: 6 - read_id: SRR306772.14087879
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 1 jaccard: 1.0
+HTHTHTHTH
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 2 jaccard: 1.0
+THTHTHTH
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 3 jaccard: 1.0
+HTHTHTHT
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -1 jaccard: 1.0
+VCVCVCVCV
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -2 jaccard: 1.0
+CVCVCVCV
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -3 jaccard: 1.0
+VCVCVCVC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 1 jaccard: 1.0
+CACACACACACACACACACACACACAC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 2 jaccard: 1.0
+CACACACACACACACACACACACACAC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: 3 jaccard: 1.0
+CACACACACACACACACACACACACAC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -1 jaccard: 1.0
+CACACACACACACACACACACACACAC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -2 jaccard: 1.0
+CACACACACACACACACACACACACAC
+>SRR306772.14087879 Ibis_Run100408:5:35:9860:15792/1 translation_frame: -3 jaccard: 1.0
+CACACACACACACACACACACACACAC
+
+--- n_frames: 6 - read_id: SRR306772.27055943
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 1 jaccard: 1.0
+GRERRRRKRRRRRRKRRRRKRRRRR
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 2 jaccard: 0.9230769230769231
+EGRGGGGRGGEGGGRGGGGRGGGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 3 jaccard: 1.0
+KGEEEEEEEEKEEEEEEEEEEEEE
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -1 jaccard: 1.0
+PPPPPLPPPPLPPPSPPLPPPPLPS
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -2 jaccard: 1.0
+LLLLLFLLLLFLLLLLLFLLLLSL
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -3 jaccard: 1.0
+SSSSSSSSSSSSSFSSSSSSSSPF
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 1 jaccard: 1.0
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 2 jaccard: 0.9230769230769231
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: 3 jaccard: 1.0
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -1 jaccard: 1.0
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -2 jaccard: 1.0
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+>SRR306772.27055943 Ibis_Run100408:5:68:7487:12395/1 translation_frame: -3 jaccard: 1.0
+GGAAGGGAGAGGAGGAGGAGGAAGAGGAGGAGAAGGAGGAGGAAGAGGAGGAGGAGGAAGAGGAGGAGGAGGAGG
+
+--- n_frames: 6 - read_id: SRR306772.19914390
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 1 jaccard: 1.0
+EREREREREREER
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 2 jaccard: 1.0
+RERERERERERRE
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 3 jaccard: 1.0
+ERERERERERGE
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -1 jaccard: 1.0
+LSPLSLSLSLSLS
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -2 jaccard: 1.0
+SLLSLSLSLSLSL
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -3 jaccard: 1.0
+LSSLSLSLSLSL
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 1 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 2 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: 3 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -1 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -2 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+>SRR306772.19914390 Ibis_Run100408:5:50:2171:8819/1 translation_frame: -3 jaccard: 1.0
+GAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGAGGAGAGAG
+```
+
+</details>
+
+Indeed, many of these are low complexity, and short peptide seuqences. An initial step towards this could be setting a false positive threshold, which would set a minimum for the length of the translation given an alphabet. 
+
+Another possibility is that if there are ""valid"" translations from both positive and negative strands (which is very unlikely except for the [ambigrammatic Narnavirus](https://www.nature.com/articles/s41598-019-54181-3)), then don't call that read as ""coding.""",olgabot,https://github.com/czbiohub-sf/orpheum/issues/46
+MDU6SXNzdWU1ODM5NjUxODk=,Valid translation frames shouldn't be from opposite strands,OPEN,2020-03-18T19:50:44Z,2020-03-18T19:50:44Z,,,olgabot,https://github.com/czbiohub-sf/orpheum/issues/48
+MDU6SXNzdWU1ODU4ODc0OTc=,"Rename/alias ""extract-coding"" to ""translate""",CLOSED,2020-03-23T02:41:30Z,2020-04-23T03:01:38Z,2020-04-23T03:01:38Z,"`extract-coding` is too wordy, and `translate"" is more biologically relevant. `translate` is also ""intuitive"" to as biologists may be like ""ooh I want to translate my RNA-seq reads""",olgabot,https://github.com/czbiohub-sf/orpheum/issues/50
+MDU6SXNzdWU1ODY0OTI1ODA=,"Add --sensitive and --specific flags to ""translate""",OPEN,2020-03-23T20:18:59Z,2020-03-23T20:19:16Z,,"### `--sensitive` picks up protein-coding sequences in divergent species
+
+ Pick up distantly related sequences that are similar to your database. Uses longer k-mers from a reduced alphabet (e.g. `dayhoff` with `ksizes=14,15,16`). Helpful if your RNA-seq data to translate is very diverged from your database, e.g. an unannotated model organism.
+
+### `--specific` finds only what was in the database
+
+Detect only the *protein* sequences that are present in your database, e.g. with `encoding=protein` and `ksizes=10,11,12`. This ensures that the predicted protein translations only correspond to the sequences to the database. Helpful if you know what protein sequences you are looking for, e.g. only transcription factors.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/51
+MDU6SXNzdWU1ODcyNzE0MDI=,Revamp indexing and translating to use multiple bloom filters of different encodings and ksizes,OPEN,2020-03-24T20:51:35Z,2020-03-24T20:51:35Z,,"Currently, the two steps to get one's translated RNA-seq reads are:
+
+1. `kh-tools bloom-filter` - creates an index in the form of a Bloom filter (a `khmer.Nodegraph` file) containing k-mers from the database, of a single k-mer size and a single encoding, 
+2. `kh-tools extract-coding`
+
+
+I propose to change this to:
+
+### 1. `sencha index`
+
+In this step, create an index in the form of a folder of multiple k-mer sizes and encodings. Each encoding and ksize would take 50MB (using 4 tables of size 1e8 for the `khmer.Nodegraph` generation), so if we do ~5 ksizes per protein, dayhoff, hp encodings then this would be up to 3 * 5 * 50 MB = 750 MB, which I think is fairly manageable. 
+
+One question would be whether the output of this would be a file or a folder. A single file is most convenient, but what format would that take? A Python pickle file containing 15 `khmer.NodeGraph` objects? A tar.gz file actually containing 15 `khmer.NodeGraph` objects? For reference: The `STAR --genomeGenerate` flag makes a folder of size ~60-150 GB.
+
+### 2. `sencha translate`
+
+In this step, use pre-determined, preset flags like Bowtie such as `--sensitive` and `--very-sensitive`. Also allow for more divergent species with `
+
+- Sensitive: Use longer protein k-mers (e.g. 9, 10, 11)
+- `--very-sensitive`
+
+Sensitive/specific ref: https://github.com/czbiohub/kh-tools/issues/51
+
+Rename Ref: https://github.com/czbiohub/kh-tools/issues/38
+
+Submitting before i lose it",olgabot,https://github.com/czbiohub-sf/orpheum/issues/52
+MDU6SXNzdWU1OTUyMzQyNDQ=,Add sonarcloud code quality/smell analysis,OPEN,2020-04-06T15:58:54Z,2020-04-06T15:58:54Z,,"So that we get cool outputs like this that tell us where our code sucks: https://sonarcloud.io/dashboard?id=dib-lab_sourmash&pullRequest=925
+
+Example GitHub PR comments: https://github.com/dib-lab/sourmash/pull/925",olgabot,https://github.com/czbiohub-sf/orpheum/issues/55
+MDU6SXNzdWU2MDUxNjAwMzI=,Update summary json with new csv,CLOSED,2020-04-23T00:41:41Z,2020-04-24T03:50:00Z,2020-04-24T03:50:00Z,"With the new CSV output https://github.com/czbiohub/kh-tools/pull/57 (yay!)
+
+For this CSV from the output: https://github.com/czbiohub/kh-tools/blob/e360b0dc6699ee143a10891dca6202370b67a48e/tests/data/translate/SRR306838_GSM752691_hsa_br_F_1_trimmed_subsampled_n22__alphabet-dayhoff_ksize-12.csv
+
+The final ""classification"" (maybe should be called something else since it's not true machine learning classification with test/train data? maybe `categorization`)
+
+### Per-read calls
+
+If *any* of the frames is coding, then that read is called coding, the remaining are non-coding, unless the reads too short in nucleotide or peptide space.
+
+
+  | translation_category | n_coding_frames
+-- | -- | --
+SRR306838.10559374 Ibis_Run100924_C3PO:6:51:17601:17119/1 | Coding | 1
+SRR306838.6196593 Ibis_Run100924_C3PO:6:29:16733:12435/1 | Non-coding |  
+SRR306838.20767303 Ibis_Run100924_C3PO:6:104:6864:5062/1 | Non-coding |  
+SRR306838.12582274 Ibis_Run100924_C3PO:6:62:11779:17975/1 | Non-coding |  
+SRR306838.13334230 Ibis_Run100924_C3PO:6:66:16579:20350/1 | Non-coding |  
+SRR306838.2740879 Ibis_Run100924_C3PO:6:13:11155:5248/1 | Coding | 1
+SRR306838.6813354 Ibis_Run100924_C3PO:6:32:10591:13073/1 | Non-coding |  
+SRR306838.23113368 Ibis_Run100924_C3PO:6:114:13840:18459/1 | Non-coding |  
+SRR306838.10872941 Ibis_Run100924_C3PO:6:53:6164:10522/1 | Non-coding |  
+SRR306838.6192120 Ibis_Run100924_C3PO:6:29:5833:11991/1 | Non-coding |  
+SRR306838.21295280 Ibis_Run100924_C3PO:6:106:2590:13965/1 | Non-coding |  
+SRR306838.21201208 Ibis_Run100924_C3PO:6:106:2763:5109/1 | All translation frames have stop codons |  
+SRR306838.18327923 Ibis_Run100924_C3PO:6:92:9077:13885/1 | Coding | 1
+SRR306838.4880582 Ibis_Run100924_C3PO:6:23:17413:5436/1 | Coding | 1
+SRR306838.21417895 Ibis_Run100924_C3PO:6:107:8793:5012/1 | Coding | 1
+SRR306838.17165743 Ibis_Run100924_C3PO:6:86:18789:18450/1 | All translation frames have stop codons |  
+SRR306838.21229494 Ibis_Run100924_C3PO:6:106:6163:7753/1 | All translation frames have stop codons |  
+SRR306838.21218773 Ibis_Run100924_C3PO:6:106:16921:6743/1 | All translations shorter than peptide k-mer size + 1 |  
+SRR306838.20124664 Ibis_Run100924_C3PO:6:101:4701:5309/1 | Non-coding |  
+SRR306838.16841308 Ibis_Run100924_C3PO:6:85:6205:5805/1 | Non-coding |  
+SRR306838.1531 Ibis_Run100924_C3PO:6:1:15718:1062/1 | Read length was shorter than 3 * peptide k-mer size |  
+SRR306838.2318 Ibis_Run100924_C3PO:6:1:15779:1141/1 | Read length was shorter than 3 * peptide k-mer size |  
+adversarial_low_complexity_peptide | Low complexity peptide in dayhoff6 alphabet |  
+
+Maybe it would be worth adding this `translation_categories.csv` as an ouptut, too? In addition to the verbose one?
+
+For the `classification_value_counts`, that should sum to the total number of reads, and in this case that is 23.
+
+Here's what the json for `classification_value_counts` should look like:
+
+```
+        'classification_value_counts': {
+            'All translations shorter than peptide k-mer size + 1': 1,
+            'All translation frames have stop codons': 3,
+            'Coding': 5,
+            'Non-coding': 11,
+            'Low complexity nucleotide': 0,
+            'Read length was shorter than 3 * peptide k-mer size': 2,
+            'Low complexity peptide in dayhoff6 alphabet': 1},
+```
+",olgabot,https://github.com/czbiohub-sf/orpheum/issues/59
+MDU6SXNzdWU2MDg3Mjg0MDg=,How big of a bloom filter should one use?,OPEN,2020-04-29T02:05:59Z,2020-04-29T15:51:15Z,,"
+I think the current default is 1e8, with 4 tables, which is 50MB.
+
+At some point I calculated the number of protein k-mers in ENSEMBL human as ~4 x 10^7, so 10^8 is a pretty good upper bound, and those files are ~50M which is reasonable. I think uniprot opsithokonta was on a similar order of magnitude, but uniprot UNIREF (everything!!) was more like 10^11 I think, but that includes microbes which have their own rules
+
+```
+(base)
+ Tue 28 Apr - 19:01  ~/code/kmer-hashing/kh-tools   origin ☊ master ✔ 29☀ 
+  ll *bloomfilter
+Permissions Size User    Date Modified Git Name
+.rw-r--r--   25M olgabot  4 Nov  2019   -N Homo_sapiens.GRCh38.pep.all.fa__tablesize1e8_ntables2.bloomfilter
+.rw-r--r--   50M olgabot 27 Oct  2019   -N Homo_sapiens.GRCh38.pep.all.fa__tablesize1e8_ntables4.bloomfilter
+.rw-r--r--  500M olgabot 27 Oct  2019   -N Homo_sapiens.GRCh38.pep.all.fa__tablesize1e9_ntables4.bloomfilter
+.rw-r--r--  5.0G olgabot 27 Oct  2019   -N Homo_sapiens.GRCh38.pep.all.fa__tablesize1e10_ntables4.bloomfilter
+.rw-r--r--   50M olgabot 27 Oct  2019   -N Homo_sapiens.GRCh38.pep.all.fa__tablesize100000000_ntables4.bloomfilter
+```
+
+cc @bluegenes ",olgabot,https://github.com/czbiohub-sf/orpheum/issues/62
+MDU6SXNzdWU2MTY5OTcwMzk=,add option to output csv as parquet,CLOSED,2020-05-12T22:14:56Z,2020-05-29T21:24:26Z,2020-05-29T21:24:26Z,,bluegenes,https://github.com/czbiohub-sf/orpheum/issues/68
+MDU6SXNzdWU2MTkzMDMyODg=,add github action for auto linting with black,OPEN,2020-05-15T22:23:48Z,2020-05-15T22:24:25Z,,https://github.com/czbiohub/sencha/pull/69,pranathivemuri,https://github.com/czbiohub-sf/orpheum/issues/70
+MDU6SXNzdWU2MjY3ODc2OTk=,Add option to ignore short sequences when building an index,OPEN,2020-05-28T20:18:24Z,2020-05-28T20:18:24Z,,"If the k-mer size is ""long,"" e.g. 33 as may be necessary for a very reduced alphabet like hydrophobic-polar (alphabet size = 2), then some sequences in the provided fasta may be the k-mer length or shorter, which throws an error. Thus, the option to ignore short sequences should be added. I can't think of a joke here to lighten the mood as I have a headache, but hopefully that was clear!",olgabot,https://github.com/czbiohub-sf/orpheum/issues/71
+MDU6SXNzdWU2MjY4MDg1NDQ=,"Ignore k-mers with stop codons, Selenocysteine and other nontraditional amino acids",OPEN,2020-05-28T20:55:33Z,2020-05-28T20:55:33Z,,,olgabot,https://github.com/czbiohub-sf/orpheum/issues/72
+MDU6SXNzdWU2MjY4MTI5NTQ=,Warn users if the bloom filter table size is too small,OPEN,2020-05-28T21:03:57Z,2020-05-28T21:03:57Z,,,olgabot,https://github.com/czbiohub-sf/orpheum/issues/73
+MDU6SXNzdWU2Mjc1NjMxMzU=,"Actually have documentation, either on readthedocs or github.io",OPEN,2020-05-29T21:47:19Z,2020-05-29T21:47:19Z,,"Right now there are *some* documentation pages but it's quite disorganized and unclear where to start. At some point the documentation should be beefed up, potentially with a tutorial, and hosted on either https://readthedocs.org/ or through GitHub pages (github.io)",olgabot,https://github.com/czbiohub-sf/orpheum/issues/76
+MDU6SXNzdWU2Mjg2NjEzNzc=,Update to sourmash Nodegraph instead of khmer to allow for computation of minimum read length,OPEN,2020-06-01T19:10:35Z,2020-07-28T00:37:02Z,,"With this PR: https://github.com/dib-lab/sourmash/pull/1009 - the `sourmash` `Nodegraph` now becomes more appealing to use instead of `khmer`'s `Nodegraph`. This is because the `n_unique_kmers` attribute that is now added, allows for computation of the minimum necessary read length for a given false positive rate with this equation:
+
+![Screen Shot 2020-05-29 at 2 06 53 PM](https://user-images.githubusercontent.com/806256/83444864-de9ce180-a400-11ea-9fc7-51ae8ffdfe23.png)
+",olgabot,https://github.com/czbiohub-sf/orpheum/issues/77
+MDU6SXNzdWU2MzEyNDkxMDg=,What to do about B and Z amino acid letters?,OPEN,2020-06-05T01:38:06Z,2020-06-05T01:40:56Z,,"### Motivation
+
+In working on this PR: https://github.com/czbiohub/sencha/pull/74, I've added the `debug=False` option to `sencha.index.make_protein_index` and discovered a few issues with creating an index on real data, specifically amino acid characters beyond the usual 20-letter alphabet:
+
+```
+/home/olga/code/sencha/sencha/index.py - 2020-06-04 18:23:07,875 DEBUG: The k-mer ""BFDKVSNEP"" contained non-amino acid characters: B, skipping
+The k-mer ""KIYIGTPPZ"" contained non-amino acid characters: Z, skipping
+/home/olga/code/sencha/sencha/index.py - 2020-06-04 18:23:07,876 DEBUG: The k-mer ""KIYIGTPPZ"" contained non-amino acid characters: Z, skipping
+```
+
+Here's an amino acid to 3-letter code to 1-letter code table stolen from [here](http://www.fao.org/3/y2775e/y2775e0e.htm):
+
+Amino acid | Three letter code | One letter code
+-- | -- | --
+alanine | ala | A
+arginine | arg | R
+asparagine | asn | N
+aspartic acid | asp | D
+asparagine or aspartic acid | asx | B
+cysteine | cys | C
+glutamic acid | glu | E
+glutamine | gln | Q
+glutamine or glutamic acid | glx | Z
+glycine | gly | G
+histidine | his | H
+isoleucine | ile | I
+leucine | leu | L
+lysine | lys | K
+methionine | met | M
+phenylalanine | phe | F
+proline | pro | P
+serine | ser | S
+threonine | thr | T
+tryptophan | trp | W
+tyrosine | tyr | Y
+valine | val | V
+
+Here it mentions how asparagine (N) + aspartic acid (D), and glutamine (Q) + glutamic acid (E) may not be distinguishable. Furthermore, [this](http://www.cryst.bbk.ac.uk/education/AminoAcid/the_twenty.html) page mentions specifically:
+
+> Sometimes it is not possible two differentiate two closely related amino acids, therefore we have the special cases:
+> - asparagine/aspartic acid - asx - B
+> - glutamine/glutamic acid - glx - Z
+
+Which means:
+
+- `B` --> `D` or `N`
+- `Z` --> `E` or `Q`
+
+Biologically, this can happen because the protein sequences are validated using [Mass Spectrometry](https://en.wikipedia.org/wiki/Mass_spectrometry), and the difference in mass between asparagine (N) and aspartic acid (D), or glutamine (Q) and glutamic acid (E), may be undetectable. So the researchers use the ambiguous letter to represent the residue could be either of the two amino acids.
+
+### What is the effect?
+
+Well, it may not have **too** much of an effect for some reduced alphabets. For example, the current Dayhoff mapping, `D`, `E`, `N` and `Q` all map to the same category:
+
+```python
+DAYHOFF_MAPPING = {
+...
+    # Acid and amide
+    ""D"": ""c"",
+    ""E"": ""c"",
+    ""N"": ""c"",
+    ""Q"": ""c"",
+...
+```
+
+https://github.com/czbiohub/sencha/blob/7b63521a6da9216aeabea42a512115678261cd43/sencha/sequence_encodings.py#L32
+
+However, this may is not true for *all* alphabets, e.g for SDM12, they all map to different categories:
+
+
+```python
+SDM12_MAPPING = {
+...
+    ""D"": ""b"",
+...
+    ""E"": ""c"",
+...
+    ""N"": ""d"",
+...
+    ""Q"": ""e"",
+...
+```
+
+https://github.com/czbiohub/sencha/blob/7b63521a6da9216aeabea42a512115678261cd43/sencha/sequence_encodings.py#L165
+
+
+
+### What to do about this?
+
+Some options are:
+
+1. Ignore all k-mers containing B or Z
+2. Randomly choose one of `D` or `N` for `B`, and `E` or `Q` for `Z`
+    1. E.g. for the k-mer `ABA`, randomly choose one of `ADA` and `ANA` to add
+    1. E.g. for the k-mer `AZA`, randomly choose one of `AQA` and `AEA` to add
+3. Add *both* versions of the replacement. 
+    1. E.g. for the k-mer `ABA`, add both `ADA` and `ANA`
+    1. E.g. for the k-mer `AZA`, add both `AQA` and `AEA`
+
+Thoughts? cc @bluegenes ",olgabot,https://github.com/czbiohub-sf/orpheum/issues/78
+MDU6SXNzdWU2MzgyMTc5MjM=,Consider using MyST for Sphinx-compatible Markdown documentation,OPEN,2020-06-13T19:30:28Z,2020-06-15T19:13:43Z,,"Learned about this from: https://github.com/dib-lab/sourmash/pull/1021
+
+From [MyST](https://myst-parser.readthedocs.io/en/latest/index.html) documentation:
+
+> MyST allows you to write Sphinx documentation entirely in markdown. MyST markdown provides a markdown equivalent of the reStructuredText syntax, meaning that you can do anything in MyST that you can do with reStructuredText. It is an attempt to have the best of both worlds: the flexibility and extensibility of Sphinx with the simplicity and readability of Markdown.
+
+",olgabot,https://github.com/czbiohub-sf/orpheum/issues/79
+MDU6SXNzdWU2NjY2Njg3MzM=,"Parallelize ""translate""",CLOSED,2020-07-28T00:35:32Z,2020-10-11T02:25:42Z,2020-10-11T02:25:42Z,"`sencha translate` currently happens in serial, but since every read is independent of one another, then each read could be translated separately. The function would need to `yield` or return the rows for the summary CSV, in addition to writing the protein/nucleotide fastas toa file. Maybe each process could write to a temporary file, then the main/pooled process could concatenate the fastas? As long as the `coding_peptides.fasta` and `coding_nucleotides.fasta` have their read IDs in the same order then I think that works!",olgabot,https://github.com/czbiohub-sf/orpheum/issues/83
+MDU6SXNzdWU2Njk5NjM4NDM=,sencha translate memory allocation error,CLOSED,2020-07-31T16:00:20Z,2020-10-11T02:24:29Z,2020-10-11T02:24:29Z,"When running `nf-predictorthologs` with this Makefile:
+
+```
+REFSEQ_FASTA=/home/olga/data_lg/czbiohub-reference/ncbi/refseq/releases/refseq-release201--2020-07-21/nonredundant-protein/complete__nonredundant_protein.faa.gz
+BUSCO_METAZOA=/home/olga/data_sm/immune-evolution/databases/busco/orthodb-v10/metazoa_odb10/metazoa_odb10.fasta
+OUTDIR_BASE=/mnt/data_sm/home/olga/pipeline-results/bat/nf-predictorthologs
+WORK_DIR=/mnt/data_sm/home/phoenix/pipeline-work/bat/nf-predictorthologs
+BAM_BASE=/mnt/data_sm/home/phoenix/batlas/BatBams/immune-tissue-softlinks
+
+busco_metazoa:
+	nextflow run czbiohub/nf-predictorthologs \
+		-profile docker \
+		--bam ${BAM_BASE}/*.bam \
+		--proteome_search_fasta ${REFSEQ_FASTA} \
+		--proteome_translate_fasta ${BUSCO_METAZOA} \
+		--translate_jaccard_threshold 0.95 \
+		--translate_peptide_ksize 9,10,11,12,13,14,15,16,17,18,19,20,21 \
+		--translate_molecule protein,dayhoff \
+		-with-tower \
+		--outdir ${OUTDIR_BASE}--$@/ \
+		-w ${WORK_DIR} \
+		--single_end \
+		-resume \
+		--search_noncoding \
+		--max_cpus 90 \
+		--max-memory 500.GB \
+		--max_time 200.h \
+		-r peptide-ksize-tokenize
+```
+
+ I ran into this error with `sencha translate`: 
+
+full nextflow output:
+```
+executor >  local (19)
+[c1/6b89f6] process > get_software_versions                                               [100%] 1 of 1 ✔
+[07/907966] process > sambamba_dedup (1)                                                  [100%] 1 of 1, cached: 1 ✔
+[83/cd2196] process > sambamba_index (1)                                                  [100%] 1 of 1, cached: 1 ✔
+[2a/1520f5] process > samtools_fastq_no_intersect (null)                                  [100%] 1 of 1, cached: 1 ✔
+[48/0ed104] process > fastqc (bat2-BM_possorted_genome_bam_dedup)                         [100%] 1 of 1, cached: 1 ✔
+[5d/f8abfe] process > fastp (bat2-BM_possorted_genome_bam_dedup)                          [100%] 1 of 1, cached: 1 ✔
+[c6/a5c75d] process > make_protein_index (metazoa_odb10.fasta__molecule-protein_ksize-20) [100%] 13 of 13, cached: 13 ✔
+[c0/39d6ad] process > translate (bat2-BM_possorted_genome_bam_dedup)                      [ 68%] 17 of 25, failed: 17, retries: 12
+[8b/d9e069] process > diamond_prepare_taxa (taxdmp)                                       [100%] 1 of 1, cached: 1 ✔
+[6c/037c1e] process > diamond_makedb (complete__nonredundant_protein.faa)                 [100%] 1 of 1, cached: 1 ✔
+[-        ] process > diamond_blastp                                                      -
+[fa/792356] process > gunzip_infernal_db (Rfam.cm.gz)                                     [100%] 1 of 1, cached: 1 ✔
+[-        ] process > infernal_cmsearch                                                   -
+[58/189bc4] process > multiqc                                                             [100%] 1 of 1 ✔
+[bd/f711ec] process > output_documentation                                                [100%] 1 of 1, cached: 1 ✔
+-[nf-core/predictorthologs] Pipeline completed with errors-
+WARN: Tower request field `workflow.errorMessage` exceeds expected size | offending value: `18285345it [1:50:35, 2731.00it/s]
+18285640it [1:50:35, 2790.98it/s]
+18285920it [1:50:35, 2775.29it/s]
+18286199it [1:50:35, 2772.55it/s]
+18286488it [1:50:35, 2804.68it/s]
+18286769it [1:50:35, 2804.12it/s]
+18287050it [1:50:35, 2800.52it/s]
+18287331it [1:50:36, 2715.45it/s]
+18287604it [1:50:36, 2705.99it/s]
+18287876it [1:50:36, 2707.45it/s]
+18288155it [1:50:36, 2729.29it/s]
+18288431it [1:50:36, 2735.95it/s]
+18288705it [1:50:36, 2697.60it/s]
+18289014it [1:50:36, 2804.42it/s]
+18289319it [1:50:36, 2873.36it/s]
+18289608it [1:50:36, 2830.20it/s]
+18289893it [1:50:36, 2752.49it/s]
+18290170it [1:50:37, 2685.12it/s]
+18290440it [1:50:37, 2648.12it/s]
+18290733it [1:50:37, 2726.00it/s]
+18291014it [1:50:37, 2748.38it/s]
+18291198it [1:50:37, 2755.74it/s]
+Traceback (most recent call last):
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/bin/sencha"", line 8, in <module>
+    sys.exit(cli())
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 829, in __call__
+    return self.main(*args, **kwargs)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 782, in main
+    rv = self.invoke(ctx)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 610, in invoke
+    return callback(*args, **kwargs)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 597, in cli
+    translate_obj.set_coding_scores_all_files()
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 386, in set_coding_scores_all_files
+    df = self.score_reads_per_file(reads_file)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 361, in score_reads_per_file
+    ) in self.maybe_score_single_read(description, sequence):
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 332, in maybe_score_single_read
+    scores = self.check_peptide_content(description, sequence)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 289, in check_peptide_content
+    self.file_handles[""noncoding_nucleotide""], seqname, sequence
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 155, in maybe_write_fasta
+    write_fasta(file_handle, description, sequence)
+  File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 115, in write_fasta
+    file_handle.write("">{}\n{}\n"".format(description, sequence))
+OSError: [Errno 12] Cannot allocate memory`, size: 3112 (max: 255)
+Error executing process > 'translate (bat2-BM_possorted_genome_bam_dedup)'
+
+Caused by:
+  Process `translate (bat2-BM_possorted_genome_bam_dedup)` terminated with an error exit status (1)
+
+Command executed:
+
+  sencha translate \
+    --molecule protein \
+    --peptide-ksize 17 \
+    --jaccard-threshold 0.95 \
+    --noncoding-nucleotide-fasta bat2-BM_possorted_genome_bam_dedup__noncoding_reads_nucleotides.fasta \
+    --coding-nucleotide-fasta bat2-BM_possorted_genome_bam_dedup__coding_reads_nucleotides.fasta \
+    --csv bat2-BM_possorted_genome_bam_dedup__coding_scores.csv \
+    --json-summary bat2-BM_possorted_genome_bam_dedup__coding_summary.json \
+    --peptides-are-bloom-filter \
+    metazoa_odb10__molecule-protein_ksize-17.bloomfilter \
+    bat2-BM_possorted_genome_bam_dedup_R1_trimmed.fastq.gz > bat2-BM_possorted_genome_bam_dedup__coding_reads_peptides.fasta
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  18285345it [1:50:35, 2731.00it/s]
+  18285640it [1:50:35, 2790.98it/s]
+  18285920it [1:50:35, 2775.29it/s]
+  18286199it [1:50:35, 2772.55it/s]
+  18286488it [1:50:35, 2804.68it/s]
+  18286769it [1:50:35, 2804.12it/s]
+  18287050it [1:50:35, 2800.52it/s]
+  18287331it [1:50:36, 2715.45it/s]
+  18287604it [1:50:36, 2705.99it/s]
+  18287876it [1:50:36, 2707.45it/s]
+  18288155it [1:50:36, 2729.29it/s]
+  18288431it [1:50:36, 2735.95it/s]
+  18288705it [1:50:36, 2697.60it/s]
+  18289014it [1:50:36, 2804.42it/s]
+  18289319it [1:50:36, 2873.36it/s]
+  18289608it [1:50:36, 2830.20it/s]
+  18289893it [1:50:36, 2752.49it/s]
+  18290170it [1:50:37, 2685.12it/s]
+  18290440it [1:50:37, 2648.12it/s]
+  18290733it [1:50:37, 2726.00it/s]
+  18291014it [1:50:37, 2748.38it/s]
+  18291198it [1:50:37, 2755.74it/s]
+  Traceback (most recent call last):
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/bin/sencha"", line 8, in <module>
+      sys.exit(cli())
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 829, in __call__
+      return self.main(*args, **kwargs)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 782, in main
+      rv = self.invoke(ctx)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 1259, in invoke
+      return _process_result(sub_ctx.command.invoke(sub_ctx))
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 1066, in invoke
+      return ctx.invoke(self.callback, **ctx.params)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/click/core.py"", line 610, in invoke
+      return callback(*args, **kwargs)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 597, in cli
+      translate_obj.set_coding_scores_all_files()
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 386, in set_coding_scores_all_files
+      df = self.score_reads_per_file(reads_file)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 361, in score_reads_per_file
+      ) in self.maybe_score_single_read(description, sequence):
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 332, in maybe_score_single_read
+      scores = self.check_peptide_content(description, sequence)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 289, in check_peptide_content
+      self.file_handles[""noncoding_nucleotide""], seqname, sequence
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 155, in maybe_write_fasta
+      write_fasta(file_handle, description, sequence)
+    File ""/opt/conda/envs/nf-core-predictorthologs-1.0dev/lib/python3.7/site-packages/sencha/translate.py"", line 115, in write_fasta
+      file_handle.write("">{}\n{}\n"".format(description, sequence))
+  OSError: [Errno 12] Cannot allocate memory
+
+Work dir:
+  /mnt/data_sm/home/phoenix/pipeline-work/bat/nf-predictorthologs/79/577bfef928dfa73852045aefd36cc4
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+One more CTRL+C to force exit
+
+Makefile:9: recipe for target 'busco_metazoa' failed
+make: *** [busco_metazoa] Interrupt
+```",phoenixAja,https://github.com/czbiohub-sf/orpheum/issues/85
+MDU6SXNzdWU2NzIyMTkwMzk=,"Consider using ""sourmash search --containment"" for ""translate""",OPEN,2020-08-03T17:10:26Z,2020-08-03T17:49:53Z,,"Currently, `sencha translate` uses a simple match of whether 100% of the k-mers from the reading frame, match the reference proteome. But a ""Franken k-mer"" situation can happen where the reading frame has 100% match, but the k-mers are all from different genes. Using `sourmash search --containment` would only search for ""consecutive"" k-mers that all appear in a single gene (or maybe family of genes??) and would be an improvement over the current method.
+
+![image](https://user-images.githubusercontent.com/806256/89208279-e3048880-d570-11ea-9f2b-77f829133a80.png)
+
+Thanks to @bluegenes for the idea!",olgabot,https://github.com/czbiohub-sf/orpheum/issues/86
+MDU6SXNzdWU2NzQ0MjEzNjk=,Output gzipped fasta files,OPEN,2020-08-06T15:56:33Z,2021-12-30T15:29:59Z,,"Some deep sequencing experiments can have protein fasta files on the order of several gigabytes, so to alleviate disk space I think it is a good idea to add an option to output to gzipped.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/87
+MDU6SXNzdWU3MTg3NDIwOTA=,rename sencha to leaftea,OPEN,2020-10-11T02:26:56Z,2020-10-11T02:28:18Z,,"would effect kmermaid, predict-orthologs requirements and main.nf where sencha translate is used currently",pranathivemuri,https://github.com/czbiohub-sf/orpheum/issues/94
+MDU6SXNzdWU3MTg3NDIxNzk=,rename jaccard to containment,OPEN,2020-10-11T02:27:44Z,2020-10-11T02:27:44Z,,"From Olga on PR #93 To keep things clean, in a future PR, I'd like to rename jaccard --> containment because after talking with @bluegenes I've realized it's not truly a Jaccard score. The denominator isn't the union of all k-mers total between the read's translation frame and the database, but the number of k-mers in that translation frame. So it's technically not accurate and someone who is really nitpicky about what Jaccard means would be annoyed with the naming.
+
+would require renaming of jaccard threshold etc flags
+would effect kmermaid, predict-orthologs pipelines",pranathivemuri,https://github.com/czbiohub-sf/orpheum/issues/95
+MDU6SXNzdWU5NTQyNDk2ODI=,boolean requirement leads to invalid value for '--csv' and '--parquet',CLOSED,2021-07-27T20:40:33Z,2021-07-29T04:49:06Z,2021-07-29T04:49:06Z,"Snakemake workflow here: https://github.com/taylorreiter/2021-orpheum-nbhds
+
+```
+rule orpheum_translate_sgc_nbhds:
+    input:
+        ref=""outputs/orpheum_index/rgnv_original_sgc_nbhds_plass_assembly_protein_ksize7.bloomfilter.nodegraph"",
+        fastq=""outputs/rgnv_sgc_original_results/{library}_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.fa.gz""
+    output:
+        pep=""outputs/orpheum/{library}_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.faa"",
+        nuc= ""outputs/orpheum/{library}_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.nuc_coding.fna"",
+        nuc_noncoding = ""outputs/orpheum/{library}_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.nuc_noncoding.fna"",
+        csv=""outputs/orpheum/{library}_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.coding_scores.csv""
+    conda: ""envs/orpheum.yml""
+    benchmark: ""benchmarks/orpheum_translate_{library}_plass_assembly.txt""
+    resources: mem_mb = 16000
+    threads: 1
+    shell:'''
+    orpheum translate --noncoding-nucleotide-fasta {output.nuc_noncoding} --coding-nucleotide-fasta {output.nuc} --csv {output.csv} {input.ref} {input.fastq} > {output.pep}
+    '''
+```
+
+e.g. 
+```
+orpheum translate --peptides-are-bloom-filter --noncoding-nucleotide-fasta outputs/orpheum/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.nuc_noncoding.fna --coding-nucleotide-fasta outputs/orpheum/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.nuc_coding.fna --csv outputs/orpheum/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.coding_scores.csv outputs/orpheum_index/rgnv_original_sgc_nbhds_plass_assembly_protein_ksize7.bloomfilter.nodegraph outputs/rgnv_sgc_original_results/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.fa.gz > outputs/orpheum/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.faa
+```
+
+leads to the error:
+```
+Error: Invalid value for '--csv': 'outputs/orpheum/4001_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.coding_scores.csv' is not
+a valid boolean.
+```
+
+The help message states:
+```
+  --csv BOOLEAN                   Name of csv file to write with all sequence
+                                  reads and their coding scores
+  --parquet BOOLEAN               Name of parquet file to write with all
+                                  sequence reads and their coding scores
+```
+
+@bluegenes provides a patch on branch https://github.com/czbiohub/orpheum/tree/bluegenes/patch-args",taylorreiter,https://github.com/czbiohub-sf/orpheum/issues/100
+MDU6SXNzdWU5NjIyMTQ3NTk=,orpheum translate assigns all reads to non-coding with a jaccard index of 0,OPEN,2021-08-05T21:35:59Z,2021-08-10T18:10:46Z,,"Environment (orpheum version 1.0.5.dev22+ga76c3f3, sourmash version 4.2.1, khmer version 2.1.1)
+```
+channels:
+   - conda-forge
+   - bioconda
+   - defaults
+dependencies:
+   - sourmash
+   - pip
+   - pip:
+       - git+https://github.com/czbiohub/orpheum@master
+```
+Code:
+```
+orpheum index --molecule protein --peptide-ksize 10 --save-as tmp_pan_genome_reference_k10.nodegraph pan_genome_reference.faa
+
+orpheum translate --peptide-ksize 10  --peptides-are-bloom-filter --noncoding-nucleotide-fasta tmp.nuc_noncoding --coding-nucleotide-fasta tmp.nuc --csv tmp.csv --json-summary tmp.json tmp_pan_genome_reference_k10.nodegraph ../outputs/rgnv_sgc_original_results/4000_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.fa.gz > tmp.pep
+```
+
+Also tried it removing `--peptides-are-bloom-filter` and feeding it the protein sequences directly.
+
+I ran these commands on ~600 fastq files, and they all produced empty `*pep` files and full `*nuc_noncoding` files. 
+All of the reads in nuc noncoding have a jaccard of 0
+```
+>SRR2145359.148924__HWI-ST431:257:C1DT9ACXX:6:1101:8013:97867/1__translation_frame:2__jaccard:0.0
+AATATTCTCACAACTTACAGACCAGTTCTTGGTCATCAGGAACTATGCGAAAATAACGAATGGTTTGTTTGCCAGGATCATTGGCAAAATTAGTGCACTTA
+>SRR2145359.174446__HWI-ST431:257:C1DT9ACXX:6:1102:18950:21974/2__translation_frame:1__jaccard:0.0
+ACAATATTCTCACAACTTACAGACCAGTTCTTGGTCATCAGGAACTATGCGAAAATAACGAATGGTTTGTTTGCCAGGATCATTGGCAAAATTAGTGCAC
+>SRR2145359.175662__HWI-ST431:257:C1DT9ACXX:6:1102:17565:22992/1__translation_frame:3__jaccard:0.0
+TATTGCAGAATGGTAAGTGCACTAATTTTGCCAATGATCCTGGCAAACAAACCATTCGTTATTTTCGCATAGTTCCTGATGACCAAGAACTGGTCTGTAAG
+>SRR2145359.175662__HWI-ST431:257:C1DT9ACXX:6:1102:17565:22992/1__translation_frame:-1__jaccard:0.0
+TATTGCAGAATGGTAAGTGCACTAATTTTGCCAATGATCCTGGCAAACAAACCATTCGTTATTTTCGCATAGTTCCTGATGACCAAGAACTGGTCTGTAAG
+>SRR2145359.237474__HWI-ST431:257:C1DT9ACXX:6:1102:10897:63195/2__translation_frame:-3__jaccard:0.0
+AGTGCACTAATTTTGCCAATGATCCTGGCAAACAAACCATTCGTTATTTTCGCATAGTTCCTGATGACCAAGAACTGGTCTGTAAGTTGTGAGAATATTG
+>SRR2145359.253930__HWI-ST431:257:C1DT9ACXX:6:1102:8178:73159/1__translation_frame:-3__jaccard:0.0
+ACTAATTTTGCCAATGATCCTGGCAAACAAACCATTCGTTATTTTCGCATAGTTCCTGATGACCAAGAACTGGTCTGTAAGTTGTGAGAATATTGTCTCAA
+>SRR2145359.256097__HWI-ST431:257:C1DT9ACXX:6:1102:14263:74274/1__translation_frame:3__jaccard:0.0
+GAAAGAGGATTGAGACAATATTCTCACAACTTACAGACCAGTTCTTGGTCATCAGGAACTATGCGAAAATAACGAATGGTTTGTTTGCCAGGATCATTGGC
+>SRR2145359.257134__HWI-ST431:257:C1DT9ACXX:6:1102:7530:75048/1__translation_frame:2__jaccard:0.0
+TAATGAAGTTTACGTATTGCAGAATGGTAAGTGCACTAATTTTGCCAATGATCCTGGCAAACAAACCATTCGTTATTTTCGCATAGTTCCTGATGACCAAG
+```
+
+The protein db I'm working with has 37K protein sequences in it, half of which came directly from fastq files I ran orpheum against (e.g., I megahit assembled the fastq files, prokka predicted protein seqs, and add them to a final fasta file of all of my protein sequences). So both with a k of 7 and 10 I expect many matches. I'm not sure what I'm doing wrong here. Any help would be greatly appreciated! 
+
+I'm attaching my db of protein sequences as well as one of my read files. 
+[pan_genome_reference.faa.gz](https://github.com/czbiohub/orpheum/files/6941799/pan_genome_reference.faa.gz)
+[4000_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.fa.gz](https://github.com/czbiohub/orpheum/files/6941802/4000_GCF_900036035.1_RGNV35913_genomic.fna.gz.cdbg_ids.reads.fa.gz)
+
+",taylorreiter,https://github.com/czbiohub-sf/orpheum/issues/103
+MDU6SXNzdWU5NzI4OTE3MjU=,Output only noncoding reads in --noncoding-nucleotide-fasta ,OPEN,2021-08-17T17:01:32Z,2021-08-17T17:01:32Z,,"Hello! I have a request/suggestion for the behavior of `--noncoding-nucleotide-fasta`.
+I'm currently trying to assess whether orpheum works on bacterial sequences, and one metric I'm using to assess accuracy is the % of noncoding nucleotide reads that still map to a reference CDS set (e.g., all genes in a genome). I noticed that the reads output in --noncoding-nucleotide-fasta have two problems for this use case. 
+1) reads are repeated because all coding frames are output. Only the read name changes however, the nucleotides remain the same. It would be more helpful to have each read occur in the file only once.
+2) reads that are coding, but in a different translation frame, are still output. This isn't really helpful, as the read contains coding nucleotides, just in a different frame than is indicated by the read name. It would be more helpful if only reads that contain no coding sequences in any ORF were output to this file. 
+
+I can see where the way that `--noncoding-nucleotide-fasta` currently behaves could be useful for other use cases, would it maybe be possible to keep the current implementation, as well as support another, possibly by a flag like `--output-all-translation-frames` or something like that. 
+
+Phrasing this in a different way, I am requesting that `--noncoding-nucleotide-fasta` (or some other flag) contain only the number of reads indicated as ""Non-coding"" by the ""categorization_counts"" section of the summary json file output by orpheum
+
+```
+  ""categorization_counts"": {
+    ""Translation is shorter than peptide k-mer size + 1"": 18,
+    ""Translation frame has stop codon(s)"": 9486,
+    ""Coding"": 109672,
+    ""Non-coding"": 48419,
+    ""Low complexity nucleotide"": 0,
+    ""Read length was shorter than 3 * peptide k-mer size"": 0,
+    ""Low complexity peptide in protein20 alphabet"": 0
+  },
+```
+
+Thinking about this more, it would be really cool from a benchmarking perspective if there was a flag that would enable each read set in the summary json file to be output into it's own file. So, each of the categories below would end up as a file. That would be incredibly useful.
+
+```
+  ""categorization_counts"": {
+    ""Translation is shorter than peptide k-mer size + 1"": 18,
+    ""Translation frame has stop codon(s)"": 9486,
+    ""Coding"": 109672,
+    ""Non-coding"": 48419,
+    ""Low complexity nucleotide"": 0,
+    ""Read length was shorter than 3 * peptide k-mer size"": 0,
+    ""Low complexity peptide in protein20 alphabet"": 0
+  },
+```
+```
+  ""histogram_n_coding_frames_per_read"": {
+    ""Number of reads with 1 putative protein-coding translations"": 77100,
+    ""Number of reads with 2 putative protein-coding translations"": 29707,
+    ""Number of reads with 4 putative protein-coding translations"": 103,
+    ""Number of reads with 3 putative protein-coding translations"": 2762
+  },
+```",taylorreiter,https://github.com/czbiohub-sf/orpheum/issues/104
+I_kwDOCsQ3vs4913k6,[Question] Use of Orpheum for non mammalian species ?,OPEN,2021-10-27T15:00:58Z,2021-10-27T15:00:58Z,,"Hello !
+
+I have recently started to learn scRNAseq analysis. I have read some parts of your paper about Kmermaid and Orpheum and I found it a very promising approach as we are studying, indeed, a species with no reference genome, and it's closely relates specie's genome is also of poor quality (highly fragmented).
+
+We are now at a time where we have to decide if we should try and go for a de novo assembly so we can get valuable insights with scRNAseq data later on. I could be really interested in using kermermaid and orpheum, although this sentence in the paper caught my eye : ""_Thus, using a mammalian protein reference database, orpheum can unlock the potential of single-cell RNA-seq atlases for any placental mammal_."" So what if the specie we are studying is a reptile ? Would that work well too in your opinion ?
+
+Thank you for your help !
+
+Best,
+
+Roxane",RxLoutre,https://github.com/czbiohub-sf/orpheum/issues/105
+I_kwDOCsQ3vs5NoYVr,Accept 10x bam as input and output tagged bam,OPEN,2022-07-12T17:49:12Z,2022-07-12T17:53:40Z,,"Since 10x creates a bam file as output, it would be most backwards-compatible to output a NEW bam file with the translated sequences as a tag. e,g, `OR:Z:PRTEINSEQ`. 
+
+This may be dependent on IO as orpheum could work in parallel on the same bam file, which may be helpful vs performing 10,000 separate orpheum translate.",olgabot,https://github.com/czbiohub-sf/orpheum/issues/106

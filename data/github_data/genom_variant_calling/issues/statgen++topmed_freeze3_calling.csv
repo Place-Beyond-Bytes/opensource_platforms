@@ -1,0 +1,36 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzMDY2NjUwNzU=,Compile errors when using gcc 5.4.0,CLOSED,2018-03-19T22:44:19Z,2018-03-21T23:22:03Z,2018-03-21T23:22:03Z,"Hi I followed the build instructions in the README but encountered several warning and a compile error in cramore.cpp:
+g++ -pipe -std=c++0x -g -O3 -fopenmp -I. -I../htslib -I../htslib/htslib -D__STDC_LIMIT_MACROS -o cramore.o -c cramore.cpp
+cramore.cpp: In function ‘int32_t runVerifyPairID(int32_t, char**)’:
+cramore.cpp:719:20: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+       char* sbcd = ""."";
+                    ^
+cramore.cpp: In function ‘int32_t runClusterMultinomEM(int32_t, char**)’:
+cramore.cpp:1367:20: **error**: ‘isnan’ was not declared in this scope
+  if ( isnan(llks[r]) )
+                    ^
+cramore.cpp:1367:20: note: suggested alternative:
+In file included from /usr/include/c++/5/random:38:0,
+                 from /usr/include/c++/5/bits/stl_algo.h:66,
+                 from /usr/include/c++/5/algorithm:62,
+                 from cramore.cpp:10:
+/usr/include/c++/5/cmath:641:5: note:   ‘std::isnan’
+     isnan(_Tp __x)
+     ^
+cramore.cpp: In function ‘int32_t runSimulContam(int32_t, char**)’:
+cramore.cpp:329:28: warning: ignoring return value of ‘int sam_write1(samFile*, const bam_hdr_t*, const bam1_t*)’, declared with attribute warn_unused_result [-Wunused-result]
+  sam_write1(out, header, b);
+                            ^
+cramore.cpp:403:28: warning: ignoring return value of ‘int sam_write1(samFile*, const bam_hdr_t*, const bam1_t*)’, declared with attribute warn_unused_result [-Wunused-result]
+  sam_write1(out, header, b);   
+
+
+ubuntu@ip-172-31-0-216:~/topmed_freeze3_calling$ gcc --version
+gcc (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+ubuntu@ip-172-31-0-216:~/topmed_freeze3_calling$ uname -a
+Linux ip-172-31-0-216 4.4.0-1052-aws #61-Ubuntu SMP Mon Feb 12 23:05:58 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+",wshands,https://github.com/statgen/topmed_freeze3_calling/issues/1

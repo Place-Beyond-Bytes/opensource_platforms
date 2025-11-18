@@ -1,0 +1,454 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGxVcrM5N1CrQ,Could not load nf-core/config profiles,CLOSED,2022-07-15T08:37:41Z,2023-11-14T21:53:08Z,2023-08-25T09:02:56Z,"### Description of the bug
+
+When I launch the pipeline I get the following error 
+
+cat nf.output
+/var/spool/slurm/d/job35576642/slurm_script: ligne13: bioinfo/nfcore-Nextflow-v21.10.6: Aucun fichier ou dossier de ce type
+N E X T F L O W  ~  version 0.17.3
+Launching 'nf-core/genomeannotator' - revision: cbd878f799 [dev]
+WARNING: Could not load nf-core/config profiles: https://raw.githubusercontent.com/nf-core/configs/master/nfcore_custom.config
+Unknown configuration profile: 'genotoul'
+
+Here is may command line : 
+nextflow run nf-core/genomeannotator -r dev -profile genotoul --assemblyfirst_assembly.fasta --rnaseq_samples sample_sheet.csv --proteins proteins.fasta --outdir output --aug_species human
+
+genotoul is one of the profiles found in https://raw.githubusercontent.com/nf-core/configs/master/nfcore_custom.config
+
+
+### Command used and terminal output
+
+```console
+command used :
+nextflow run nf-core/genomeannotator -r dev -profile genotoul --assemblyfirst_assembly.fasta --rnaseq_samples sample_sheet.csv 
+
+
+cat .nextflow.log
+juil.-15 10:30:04.213 [main] DEBUG nextflow.cli.Launcher - $> /home/klopp/save/bin/nextflow run nf-core/genomeannotator -r dev -profile genotoul --assembly Cyathomix_first_assembly.fasta --rnaseq_samples sample_sheet.csv --proteins proteins.fasta --outdir output --aug_species caenorhabditis
+juil.-15 10:30:04.275 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 0.17.3
+juil.-15 10:30:04.911 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/klopp/.nextflow/assets/nf-core/genomeannotator/.git/config; branch: master; remote: origin; url: https://github.com/nf-core/genomeannotator.git
+juil.-15 10:30:05.094 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/klopp/.nextflow/assets/nf-core/genomeannotator/.git/config; branch: master; remote: origin; url: https://github.com/nf-core/genomeannotator.git
+juil.-15 10:30:05.777 [main] DEBUG nextflow.scm.AssetManager - Git config: /home/klopp/.nextflow/assets/nf-core/genomeannotator/.git/config; branch: master; remote: origin; url: https://github.com/nf-core/genomeannotator.git
+juil.-15 10:30:05.777 [main] INFO  nextflow.cli.CmdRun - Launching 'nf-core/genomeannotator' - revision: cbd878f799 [dev]
+juil.-15 10:30:05.790 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /home/klopp/.nextflow/assets/nf-core/genomeannotator/nextflow.config
+juil.-15 10:30:05.792 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/klopp/.nextflow/assets/nf-core/genomeannotator/nextflow.config
+juil.-15 10:30:05.918 [main] DEBUG nextflow.config.ConfigBuilder - Setting config profile: 'genotoul'
+juil.-15 10:30:06.338 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+nextflow.exception.AbortOperationException: Unknown configuration profile: 'genotoul'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:80)
+	at org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:74)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrap.callConstructor(ConstructorSite.java:84)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:60)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:235)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:247)
+	at nextflow.config.ConfigBuilder.checkValidProfile(ConfigBuilder.groovy:309)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:210)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:59)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at nextflow.config.ConfigBuilder.buildConfig0(ConfigBuilder.groovy:285)
+	at nextflow.config.ConfigBuilder$buildConfig0$2.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:174)
+	at nextflow.config.ConfigBuilder.buildConfig(ConfigBuilder.groovy:235)
+	at nextflow.config.ConfigBuilder$buildConfig$1.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:52)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:154)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:166)
+	at nextflow.config.ConfigBuilder.build(ConfigBuilder.groovy:460)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:175)
+	at nextflow.cli.Launcher.run(Launcher.groovy:380)
+	at nextflow.cli.Launcher.main(Launcher.groovy:529)
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+nfcore-Nextflow-v21.10.6
+HPC
+slurm",chklopp,https://github.com/nf-core/genomeannotator/issues/5
+I_kwDOGxVcrM5UwTX4,Could not run test using Docker,CLOSED,2022-10-25T06:49:47Z,2023-08-31T07:30:03Z,2023-08-31T07:30:03Z,"### Description of the bug
+
+When I run test for genomeannotator, I got the following errror:
+
+
+ ```
+Error executing process > 'NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG (config)'
+
+Caused by:
+  Process `NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG (config)` terminated with an error exit status (1)
+
+Command executed:
+
+  mkdir -p augustus_config
+  cp -R config/* augustus_config/
+
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG"":
+      augustus: $(echo $(augustus  | head -n1 | cut -f2 -d "" "" | sed ""s/[)]//"" | sed ""s/[(]//"" ))
+  END_VERSIONS
+
+Command output:
+  (empty)
+
+Command error:
+  Unable to find image 'quay.io/biocontainers/augustus:3.4.0--pl5262h5a9fe7b_2' locally
+  3.4.0--pl5262h5a9fe7b_2: Pulling from biocontainers/augustus
+  c1a16a04cedd: Already exists
+  4ca545ee6d5d: Already exists
+  9045f8e140e3: Pulling fs layer
+  9045f8e140e3: Verifying Checksum
+  9045f8e140e3: Download complete
+  9045f8e140e3: Pull complete
+  Digest: sha256:db15c7f970ce92b36b5f657062bd948634d0c4c162b21fc67916b6ba23ea1770
+  Status: Downloaded newer image for quay.io/biocontainers/augustus:3.4.0--pl5262h5a9fe7b_2
+  cp: can't stat 'config/*': No such file or directory
+
+```
+
+
+### Command used and terminal output
+
+```console
+$ nextflow run nf-core/genomeannotator -r dev -profile test,docker --outdir genomeannotator_test_001
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+- Nextflow version version 22.04.4 build 5706
+- executor: local
+- Hardware: HPC
+- Container engine: Docker
+- OS: CentOS Linux 7",yuifu,https://github.com/nf-core/genomeannotator/issues/10
+I_kwDOGxVcrM5UwUtc,Could not run test using Singularity,CLOSED,2022-10-25T06:54:08Z,2023-08-31T07:29:26Z,2023-08-31T07:29:26Z,"### Description of the bug
+
+
+
+```
+Error executing process > 'NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG (config)'
+
+Caused by:
+  Failed to pull singularity image
+  command: singularity pull  --name depot.galaxyproject.org-singularity-augustus-3.4.0--pl5262h5a9fe7b_2.img.pulling.1666680659902 https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5262h5a9fe7b_2 > /dev/null
+  status : 255
+  message:
+    FATAL:   Error making http request: Head ""https://depot.galaxyproject.org/singularity/augustus:3.4.0--pl5262h5a9fe7b_2"": x509: certificate has expired or is not yet valid: current time 2022-10-25T15:51:00+09:00 is after 2021-09-30T14:01:15Z
+
+
+
+
+Pulling Singularity image https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img [cache /data2/harukao/projects/2018/stRamDA/results/20221025_test_genomeannotator/work/singularity/containers.biocontainers.pro-s3-SingImgsRepo-biocontainers-v1.2.0_cv1-biocontainers_v1.2.0_cv1.img.img]
+```
+
+### Command used and terminal output
+
+```console
+$ nextflow run nf-core/genomeannotator -r dev -profile test,singularity --outdir genomeannotator_test_002
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+- Nextflow version version 22.04.4 build 5706
+- executor: local
+- Hardware: HPC
+- Container engine: Singularity
+- OS: CentOS Linux 7",yuifu,https://github.com/nf-core/genomeannotator/issues/11
+I_kwDOGxVcrM5jY_dj,TE annotation and soft masking,OPEN,2023-04-14T04:38:12Z,2023-04-14T04:38:12Z,,"### Description of feature
+
+I noticed that you use Dfam as your repeat library. Could you consider to add  DNApipeTE and REPET which are tools for de novo annotation and soft masking of transposable elements (TEs) in genome assemblies, similar to The Extensive de novo TE Annotator (EDTA) and RepeatMasker.
+
+DNApipeTE is a pipeline that includes several steps for TE annotation and soft masking, including repeat identification, classification, and masking. DNApipeTE utilizes several other tools, including RepeatModeler, RepeatMasker, and RepeatExplorer, to perform these tasks. The output of DNApipeTE includes a consensus library of repeat sequences, as well as annotations of putative TE locations in the genome, and a soft-masked genome assembly.
+
+REPET is another pipeline that includes several steps for TE annotation and soft masking, including repeat identification, classification, clustering, and masking. REPET utilizes several other tools, including RepeatModeler, RepeatMasker, and PILER, to perform these tasks. The output of REPET includes a consensus library of repeat sequences, as well as annotations of putative TE locations in the genome, and a soft-masked genome assembly.
+
+EDTA is a tool that is specifically designed for de novo annotation of transposable elements (TEs) in genome assemblies. The output of EDTA includes a consensus library of repeat sequences, as well as annotations of putative TE locations in the genome.
+
+Both DNApipeTE and REPET provide similar functionalities to EDTA and RepeatMasker, and the output of these pipelines can be used for downstream analyses. However, the specific algorithms and parameters used by these pipelines may differ, resulting in different outputs and soft masking results. The choice of which tool to use will depend on the specific needs of the analysis and the characteristics of the genome assembly being analyzed.
+
+Thank you for considering.
+
+Best wishes,
+
+Michal",mictadlo,https://github.com/nf-core/genomeannotator/issues/14
+I_kwDOGxVcrM5jZGED,Adding more RNA-Seq predictions,OPEN,2023-04-14T05:14:24Z,2023-08-25T08:57:51Z,,"### Description of feature
+
+Hi,
+I recently came across Mikado which is a pipeline to identify the most useful or “best” set of transcripts from multiple transcript assemblies. Our approach leverages transcript assemblies generated by multiple methods to define expressed loci, assign a representative transcript and return a set of gene models that selects against transcripts that are chimeric, fragmented or with short or disrupted CDS. Loci are first defined based on overlap criteria and each transcript therein is scored based on up to 50 available metrics relating to ORF and cDNA size, relative position of the ORF within the transcript, UTR length and presence of multiple ORFs. Mikado can also utilize blast data to score transcripts based on proteins similarity and to identify and split chimeric transcripts. Optionally, junction confidence data as provided by [Portcullis](https://github.com/maplesond/portcullis) can be used to improve the assessment. The best-scoring transcripts are selected as the primary transcripts of their respective gene loci; additionally, Mikado can bring back other valid splice variants that are compatible with the primary isoform.
+
+![giy093fig1](https://user-images.githubusercontent.com/588297/231946974-c409f5db-f1a1-4b7a-aa49-d982571c5b38.jpeg)
+
+Mikado uses GTF or GFF files as mandatory input. Non-mandatory but highly recommended input data can be generated by obtaining a set of reliable splicing junctions with Portcullis_, by locating coding ORFs on the transcripts using either [Transdecoder](https://github.com/TransDecoder/TransDecoder/) or [Prodigal](https://github.com/hyattpd/Prodigal), and by obtaining homology information through either [BLASTX](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download) or [DIAMOND](https://github.com/bbuchfink/diamond/).
+
+Could the output from Mikado be used to train Augustus, GlimmerHMM and SNAP?
+
+Than you for considering.
+
+Best wishes,
+
+Michal",mictadlo,https://github.com/nf-core/genomeannotator/issues/15
+I_kwDOGxVcrM5vwU1H,Parallelize repeatmasking,OPEN,2023-08-31T07:24:03Z,2023-08-31T07:24:03Z,,"### Description of feature
+
+Currently, RepeatMasker runs on chunks of the assembly, containing full scaffolds/chromosomes. For highly contiguous assemblies, this can mean excessively long run times. Investigate whether repeat masking can be performed on sub-regions of the scaffolds in parallel without losing repeat regions. ",marchoeppner,https://github.com/nf-core/genomeannotator/issues/17
+I_kwDOGxVcrM5v74ku,Pipeline fail at REPEATMASKER_STAGELIB,OPEN,2023-09-01T19:45:55Z,2024-07-12T15:39:01Z,,"### Description of the bug
+
+I am running the most current version of @marchoeppner dev branch on Tower on a real dataset. The workflow passed repeat masking and produced the `consensi.fa` file but failed very quickly at the subsequent staging process with: 
+```
+cp: can't stat '/.nextflow/assets/marchoeppner/genomeannotator/assets/repeatmasker/my_genome.fa': No such file or directory
+```
+Since I ran this on Tower it's a little difficult to debug things in the `.nextflow/assets` directory so this isn't obvious to me yet where this `my_genome.fa` file was supposed to come from.
+
+### Command used and terminal output
+
+```console
+nextflow run 'https://github.com/marchoeppner/genomeannotator' \
+		 -name tick_annotation_test \
+		 -params-file 'https://api.tower.nf/ephemeral/zSnWhzERlz_Z4e-E6h2gng.json' \
+		 -with-tower \
+		 -r dev \
+		 -profile docker
+Params:
+pri_prot_target = 5
+custom_config_base = https://raw.githubusercontent.com/nf-core/configs/master
+evm_weights = /.nextflow/assets/marchoeppner/genomeannotator/assets/evm/weights.txt
+plaintext_email = false
+monochrome_logs = false
+pasa_nmodels = 1000
+spaln_q = 5
+max_cpus = 16
+spaln_taxon = ixodscap
+pri_rnaseq = 4
+max_multiqc_email_size = 25.MB
+max_time = 240.h
+aug_chunk_length = 3000000
+nevm = 10
+tracedir = ${params.outdir}/pipeline_info
+validate_params = true
+npart_size = 200000000
+max_intron_size = 20000
+aug_species = human
+pri_wiggle = 2
+version = false
+spaln_options = -M
+publish_dir_mode = copy
+aug_training = false
+t_prot = P
+t_est = E
+pasa_config_file = /.nextflow/assets/marchoeppner/genomeannotator/assets/pasa/alignAssembly.config
+min_prot_length = 35
+aug_options = --alternatives-from-evidence=on --minexonintronprob=0.08 --minmeanexonintronprob=0.4 --maxtracks=3
+multiqc_title = test run
+pri_trans = 4
+pasa = false
+custom_config_version = master
+max_memory = 128.GB
+dummy_gff = /.nextflow/assets/marchoeppner/genomeannotator/assets/empty.gff3
+spaln_protein_id_targeted = 90
+nproteins = 200
+proteins = s3://nf-hifi2genome/tick_annotation/2023-08-25-all-tick-species-proteins.fasta
+assembly = s3://nf-hifi2genome/tick_annotation/Arcadia_Amblyomma_americanum_asm001_purged_cleanedup1.fasta
+pri_est = 4
+pri_prot = 3
+min_contig_size = 5000
+evm = false
+email = elizabeth.mcdaniel@arcadiascience.com
+schema_ignore_params = genomes,saveReference,igenomes_base,igenomes_ignore,enable_conda,save-reference
+genomes:
+pasa_aligner = minimap2
+ncrna = false
+igenomes_ignore = true
+outdir = s3://nf-hifi2genome/tick_annotation/genomeannotator
+help = false
+show_hidden_params = false
+t_rnaseq = E
+rm_db = https://www.dfam.org/releases/Dfam_3.5/families/Dfam_curatedonly.h5.gz
+busco_lineage = arthropoda_odb10
+trinity = false
+spaln_protein_id = 60
+```
+
+
+### Relevant files
+
+[nf-2ZIBaSqCJUU5ME.log](https://github.com/nf-core/genomeannotator/files/12501138/nf-2ZIBaSqCJUU5ME.log)
+
+
+### System information
+
+Run on Tower with Nextflow version 23.04.3, using Docker profile",elizabethmcd,https://github.com/nf-core/genomeannotator/issues/18
+I_kwDOGxVcrM58kEAG,rnaseq_align.nf error,OPEN,2024-01-19T07:31:25Z,2024-01-21T09:36:15Z,,"### Description of the bug
+
+Hi! I'm using genomeannotator for the assembly annotation of a microalgae. As inputs I have the assembly, some RNA-Seq libraries and a protein database created by myself.
+
+### Command used and terminal output
+
+```console
+nextflow run nf-core/genomeannotator -r cbd878f -profile docker --assembly ../Assembly/Canu/Pilon_results/pilon_pilon_3/pilon_pilon_3.fasta --proteins uniref90.fasta --rnaseq_samples ../RNASeq_fastq/rnaseq_samples.csv --max_intron_size 5000 --outdir . --aug_species toxoplasma --spaln_taxon toxogond --aug_config_dir . --aug_config_container . -c config_genomeannotator.txt
+
+Nextflow 23.10.1 is available - Please consider updating your version to it
+N E X T F L O W  ~  version 23.10.0
+Launching `https://github.com/nf-core/genomeannotator` [jovial_brenner] DSL2 - revision: cbd878f7997d367ccbe952648e114ad25962963f
+
+
+------------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~'
+  |\ | |__  __ /  ` /  \ |__) |__         }  {
+  | \| |       \__, \__/ |  \ |___     \`-._,-`-,
+                                        `._,._,'
+  nf-core/genomeannotator v1.0dev
+------------------------------------------------------
+Core Nextflow options
+  runName             : jovial_brenner
+  containerEngine     : docker
+  launchDir           : /media/Assembly_annotation
+  workDir             : /media/Assembly_annotation/work
+  projectDir          : /home/fperez/.nextflow/assets/nf-core/genomeannotator
+  userName            : fperez
+  profile             : docker
+  configFiles         : /home/fperez/.nextflow/assets/nf-core/genomeannotator/nextflow.config, /media/Assembly_annotation/config_genomeannotator.txt
+
+Input/output options
+  assembly            : ../Assembly/Canu/Pilon_results/pilon_pilon_3/pilon_pilon_3.fasta
+  outdir              : .
+  rnaseq_samples      : ../RNASeq_fastq/rnaseq_samples.csv
+  proteins            : uniref90.fasta
+
+Options for pipeline behavior
+  max_intron_size     : 5000
+  dummy_gff           : /home/fperez/.nextflow/assets/nf-core/genomeannotator/assets/empty.gff3
+
+Options for ab-initio gene finding
+  aug_species         : toxoplasma
+  aug_config_container: .
+  aug_config_dir      : .
+
+Options for protein data processing
+  spaln_taxon         : toxogond
+
+Options for PASA behavior
+  pasa_config_file    : /home/fperez/.nextflow/assets/nf-core/genomeannotator/assets/pasa/alignAssembly.config
+
+Options for EvidenceModeler behavior
+  evm_weights         : /home/fperez/.nextflow/assets/nf-core/genomeannotator/assets/evm/weights.txt
+
+!! Only displaying parameters that differ from the pipeline defaults !!
+------------------------------------------------------
+If you use nf-core/genomeannotator for your analysis please cite:
+
+* The nf-core framework
+  https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+  https://github.com/nf-core/genomeannotator/blob/master/CITATIONS.md
+------------------------------------------------------
+executor >  local (3)
+[0b/7e3452] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG (Assembly_annotation)                    [  0%] 0 of 1
+executor >  local (4)
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_STAGECONFIG (Assembly_annotation)                                   -
+[52/f5d136] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:ASSEMBLY_PREPROCESS:GAAS_ASSEMBLYFILTERBYSIZE (pilon_pilon_3)                [100%] 1 of 1, cached: 1 ✔
+[3d/6cb819] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:ASSEMBLY_PREPROCESS:GAAS_FASTACLEANER (pilon_pilon_3)                        [100%] 1 of 1, cached: 1 ✔
+[6e/2e3768] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:ASSEMBLY_PREPROCESS:GAAS_FASTASTATISTICS (pilon_pilon_3)                     [100%] 1 of 1, cached: 1 ✔
+[8f/5e4436] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMODELER (pilon_pilon_3)                                                [  0%] 0 of 1
+[69/78da24] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMASKER:FASTASPLITTER (pilon_pilon_3 - pilon_pilon_3.filtered.clean.fa) [100%] 1 of 1, cached: 1 ✔
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMASKER:GUNZIP                                                          -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMASKER:REPEATMASKER_STAGELIB                                           -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMASKER:REPEATMASKER_REPEATMASK                                         -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:REPEATMASKER:REPEATMASKER_CAT_FASTA                                          -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:GAAS_FASTACLEANER (uniref90)                             -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:EXONERATE_FASTACLEAN                                     -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:GAAS_FASTAFILTERBYSIZE                                   -
+[00/d29213] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:SPALN_MAKEINDEX (pilon_pilon_3)                          [100%] 1 of 1, cached: 1 ✔
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:SPALN_ALIGN                                              -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:SPALN_MERGE                                              -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:AUGUSTUS_ALIGNTOHINTS                                    -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:HELPER_SPALNTOGMOD                                       -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:HELPER_SPALNTOEVM                                        -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SPALN_ALIGN_PROTEIN:HELPER_SPALNTOTRAINING                                   -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:STAR_INDEX (pilon_pilon_3)                                      -
+[bd/e4c8f6] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:SAMPLESHEET_CHECK (rnaseq_samples.csv)                          [100%] 1 of 1, cached: 1 ✔
+[eb/fb6e74] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:FASTP (All)                                                     [100%] 1 of 1, cached: 1 ✔
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:CAT_FASTQ                                                       -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:STAR_ALIGN_PASS_ONE                                             -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:RNASEQ_ALIGN:STAR_ALIGN_PASS_TWO                                             -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:SAMTOOLS_MERGE                                                               -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_BAM2HINTS                                                           -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_PIPELINE:FASTASPLITTER                                              -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_PIPELINE:AUGUSTUS_AUGUSTUSBATCH                                     -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_PIPELINE:AUGUSTUS_FIXJOINGENES                                      -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_PIPELINE:AUGUSTUS_CREATEGFFIDS                                      -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:AUGUSTUS_PIPELINE:AUGUSTUS_GFF2PROTEINS                                      -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:CUSTOM_DUMPSOFTWAREVERSIONS                                                  -
+[-        ] process > NFCORE_GENOMEANNOTATOR:GENOMEANNOTATOR:MULTIQC                                                                      -
+ERROR ~ fromIndex = -1
+
+ -- Check script '/home/fperez/.nextflow/assets/nf-core/genomeannotator/./workflows/../subworkflows/local/rnaseq_align.nf' at line: 35 or see '.nextflow.log' file for more details
+```
+
+
+### Relevant files
+
+The custom config file looks like this:
+
+docker {
+    enabled = true
+    temp = ""/Genome/Assembly_annotation/tmp""
+}
+
+env {
+   TMPDIR = ""/Genome/Assembly_annotation/tmp""
+   TMP = ""/Genome/Assembly_annotation/tmp""
+}
+
+### System information
+
+_No response_",fperezcobos,https://github.com/nf-core/genomeannotator/issues/22
+I_kwDOGxVcrM6LLKfP,Fail at a run using conda profile,OPEN,2024-06-05T05:50:14Z,2024-06-05T05:50:14Z,,"### Description of the bug
+
+I conducted a run using the following command and nextflow.config.
+conda activate nf-core
+nextflow run nf-core/genomeannotator -r dev -profile conda
+
+Command error:
+.command.sh: 行 2: gaas_fasta_filter_by_size.pl: not found such a command
+
+How can I install required executables including the gaas_fasta_filter_by_size.pl script?
+
+P.S. I tried to run with 'nextflow run nf-core/genomeannotator -r dev -profile singularity' before using -profile conda.
+But I encountered the same error as ""#18 Pipeline fail at REPEATMASKER_STAGELIB"".
+In this case, several parameter settings, including singularity.runOptions/singularity.envWhitelist in nextflow.config and SINGULARITY_BIND, had no effect.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",stat-lab,https://github.com/nf-core/genomeannotator/issues/28

@@ -1,0 +1,1700 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MzQ4ODcwNw==,Add python interpreter option to configure ,OPEN,2015-01-06T07:25:30Z,2016-03-20T01:15:48Z,,"If Python version 3 as well as Python version 2.7 are installed and a binary or link called `python` is missing, configure will find and use version 3 (which is not supported by LoFreq). This is easily fixed by creating such link, but it would be even easier if the corresponding interpreter could be set as option to `./configure`.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/1
+MDU6SXNzdWU1MzQ5MTEzNA==,Support for Python3,CLOSED,2015-01-06T08:09:25Z,2017-06-21T06:41:32Z,2017-06-21T06:41:31Z,"...for all scripts in ./src/scripts and also helpers. Should still be able to use 2.7
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/2
+MDU6SXNzdWU1MzYwNTYyNA==,Add info about indel processing steps to website,OPEN,2015-01-07T07:32:37Z,2015-01-07T07:32:37Z,,,andreas-wilm,https://github.com/CSB5/lofreq/issues/3
+MDU6SXNzdWU1MzYwNTY1OQ==,Discuss papers using LoFreq on website,OPEN,2015-01-07T07:33:15Z,2015-01-07T07:33:15Z,,,andreas-wilm,https://github.com/CSB5/lofreq/issues/4
+MDU6SXNzdWU1NDU0Nzk1MA==,region command flag,CLOSED,2015-01-16T07:38:36Z,2015-01-16T08:32:32Z,2015-01-16T08:32:32Z,"Hi,
+
+The command help statements for lofreq call mentions:
+- Regions
+     -r | --region STR            Region in which pileup should be generated [null]
+     -l | --bed FILE              List of positions (chr pos) or regions (BED) [null]
+
+How do we pass a single tuple of say, chr pos-start pos-end, to lofreq call? Does this have to be in bed format, or can this be done from the command line (without needing a file)? 
+",zeneofa,https://github.com/CSB5/lofreq/issues/6
+MDU6SXNzdWU1NDk2ODY2Nw==,Handling of overlapping paired-end reads,OPEN,2015-01-21T02:13:18Z,2015-01-21T12:56:25Z,,"Ideally overlapping paired-end reads shouldn't be counted twice. This could be achieved by proper pre-processing (e.g. [SeqPrep](https://github.com/jstjohn/SeqPrep) and single-end mapping for merged pairs) or internally in LoFreq by making use of samtools ""read-pair overlap detection"". Problem with the latter is that it [bumps up one quality and sets the other to zero](https://sourceforge.net/p/samtools/mailman/message/33063758/) instead of just swallowing the base.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/7
+MDU6SXNzdWU1Njk4MDU1MQ==,Parallelize Viterbi,OPEN,2015-02-09T02:05:56Z,2015-02-09T02:05:56Z,,"After all reads are aligned independently.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/8
+MDU6SXNzdWU1OTE3OTMwNw==,Parallelize alnqual,OPEN,2015-02-27T02:16:07Z,2015-02-27T02:16:07Z,,"To speedup preprocessing. Precomputation also avoids memory problem in on-the-fly computation for high indel error-rate data (keeps data for all piled up reads in memory)
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/9
+MDU6SXNzdWU2MzMwNjYwMQ==,dependency on kaln.h,CLOSED,2015-03-20T21:01:54Z,2015-03-21T07:58:06Z,2015-03-21T07:58:06Z,"I can't get lofreq to compile against the latest 1.2.x version of samtools.  It seems to depend on kaln.h which is no longer in the samtools 1.2.x repo. 
+",bwkchee,https://github.com/CSB5/lofreq/issues/10
+MDU6SXNzdWU2NTE1MTY2NQ==,Support for FORMAT and Sample fields in LoFreq Somatic,OPEN,2015-03-30T07:18:04Z,2015-03-31T12:48:42Z,,"Simply add AF and possibly number of orphans for now. Take from Info in case of tumor and compute in within uniq in case of normal
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/11
+MDU6SXNzdWU2NzA1MTkzOA==,Allow to feed uniform indel and indel alignment qualities to call functions,OPEN,2015-04-08T05:25:54Z,2015-04-08T05:25:54Z,,"Useful for debugging and circumventing preprocessing and duplication of BAM where not necessary
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/12
+MDU6SXNzdWU2NzMzNTI2OA==,Not compiling against htslib 1.2,CLOSED,2015-04-09T10:54:41Z,2017-06-21T06:28:40Z,2017-06-21T06:28:40Z,"Hi!
+I just noticed that compilation fails when passing a new version of htslib.
+
+The error is (shortened)
+
+```
+bam_md_ext.c:54: error: conflicting types for ‘seq_nt16_int’
+/home/ozagordi/tmp/htslib-1.2/htslib/hts.h:186: note: previous declaration of     ‘seq_nt16_int’ was here
+make[1]: *** [bam_md_ext.o] Error 1
+make[1]: Leaving directory `/home/ozagordi/tmp/lofreq/src/lofreq'
+```
+
+I managed to compile successfully by following the steps in .travis.yml
+
+Thanks for lofreq!
+",ozagordi,https://github.com/CSB5/lofreq/issues/13
+MDU6SXNzdWU2ODg1MTkxMw==,base quality filtering is actually just masking during variant call but doesnt' remove bases,OPEN,2015-04-16T05:58:10Z,2015-04-16T05:58:10Z,,"Raised by gmy on sourceforge's lofreq:discussion mailing list.
+
+Either really implement this as filter (i.e. also remove in DP[4] and DP) or make clear it's just temporary masking (or have both)
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/14
+MDU6SXNzdWU2ODg1MzA4NQ==,Index violation in IDAQ for indel calling in Pacbio,OPEN,2015-04-16T06:09:33Z,2015-04-16T06:09:33Z,,"u_within_limits() in bam_md_ext.c handles the problem (which might be a feature) for now. Larger bandwith settings might help, but will slow things down even more.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/15
+MDU6SXNzdWU2OTA0Mjg5NQ==,--only-indels should work without  --call-indels ,OPEN,2015-04-17T01:30:19Z,2015-04-17T01:30:19Z,,"When using --only-indels as argument to the call commands --call-indels should be implied.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/16
+MDU6SXNzdWU2OTUyNDUwNQ==,pseudo-parallel indel calling might miss indels at borders,OPEN,2015-04-20T07:17:53Z,2015-04-20T07:17:53Z,,"Will not matter much in practice (e.g. get roughly 30 pooled commands for a ecoli which makes LoFreq blind to 30-1 positions).
+
+Reported by isovic
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/17
+MDU6SXNzdWU3MDYzMzI2NQ==,Replace user option Bonferroni factor with Bonferroni threshold,OPEN,2015-04-24T09:06:42Z,2015-04-24T09:06:42Z,,"As discussed with NN and IS on 2015-04-24
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/18
+MDU6SXNzdWU3MTg3MDY3NA==,Possibly unconsistent count of forward/reverse reads,CLOSED,2015-04-29T13:10:01Z,2015-04-29T13:49:56Z,2015-04-29T13:49:56Z,"Hi Andreas,
+I already anticipated by mail this observation I made. I simulated forward and reverse reads in quite equal amount and the alignment seems to agree. Nevertheless, the counts of the INFO tag DP4 are strange. For example:
+
+```
+##fileformat=VCFv4.0
+##fileDate=20150429
+##source=lofreq call -f cns.fasta --no-default-filter -r sample_cons_Pol:1-188 -o /tmp/lofreq2_call_parallelKepDFM/0.vcf.gz hq_2_cons_sorted.bam
+##reference=cns.fasta
+...
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
+sample_cons_Pol 50      .       C       G       85      PASS    DP=1109;AF=0.005410;SB=0;DP4=1103,0,6,0
+sample_cons_Pol 328     .       A       G       8400    PASS    DP=3231;AF=0.100898;SB=0;DP4=2886,9,325,1
+```
+
+Any thought? I'm using
+
+```
+version: 2.1.2a
+commit: v2.1.2a-92-g6f6e173
+build-date: Apr  9 2015
+```
+
+Thanks!
+",ozagordi,https://github.com/CSB5/lofreq/issues/19
+MDU6SXNzdWU4NDA1MzU0Nw==,"Allow ""--overwrite"" option",CLOSED,2015-06-02T14:41:05Z,2017-06-21T06:41:01Z,2017-06-21T06:41:01Z,"First, thanks for the very useable and documented package.  This is just a feature request/enhancement.  
+
+It would be great to have a ""--overwrite"" option to allow lofreq to overwrite existing output files if the user chooses.  As it is, the user must go through and delete files before rerunning lofreq.
+",seandavi,https://github.com/CSB5/lofreq/issues/20
+MDU6SXNzdWU4ODk5MzE5MQ==,add genotyping support,OPEN,2015-06-17T11:44:58Z,2015-10-07T08:05:29Z,,"just copy logic from somewhere else
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/21
+MDU6SXNzdWUxMDA5NzU3NTc=,Unable to call SNVs at positions where >50% of bases get filtered,OPEN,2015-08-14T09:41:35Z,2015-08-14T09:47:55Z,,"This was introduced as a hack to avoid calling SNVs on consensus indels (which might not be visible due to missing indel qualities). See call_vars() in lofreq_call.c. One way of dealing with this might be to enforce indel qualities (would avoid trouble with ""missing"" indels as well). 
+
+Intially reported by John Jianwei Che
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/22
+MDU6SXNzdWUxMDgxNjYwMDQ=,installing optional tools,CLOSED,2015-09-24T16:28:56Z,2017-05-15T15:05:09Z,2017-05-15T13:33:12Z,"I was able to download the binary. However, I wanted to use the optional tools as well. It looks like the only way to get them is by downloading the source. I did that. I copied them to a location in my $PATH. However, when I run `lofreq vcfplot` or `lofreq2_vcfplot.py`, I get:
+
+```
+FATAL: Couldn't find LoFreq modules. Are you sure your PYTHONPATH is set correctly?
+```
+
+I also tried navigating to `lofreq-2.1.2/src/tools` and running `python setup.py install`, but then I get an error:
+
+```
+Traceback (most recent call last):
+  File ""setup.py"", line 8, in <module>
+    import setup_conf
+ImportError: No module named setup_conf
+```
+
+How do I get setup_conf?
+
+Is there a better way to install optional tools?
+",igordot,https://github.com/CSB5/lofreq/issues/23
+MDU6SXNzdWUxMTIwMjcwMzQ=,Just tag removed variants with a filter instead of fully removing them,OPEN,2015-10-18T16:02:05Z,2018-06-04T02:35:20Z,,"Suggested by Daniel Gómez Sánchez
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/24
+MDU6SXNzdWUxMjQwMDU4MjQ=,"Additional way to avoid alignment issues, esp. in noisy data",OPEN,2015-12-28T01:49:19Z,2015-12-28T01:49:19Z,,"See FPs in Pacbio data on or next to true (consensus) indels or SNVs: resp. other type is wrongly called on same or neighboring site. This could also happen in pooled data with non-consensus variants. Can't simply disallow multiallelic calls, which is a useful feature in other contexts (e.g. viral quasispecies). Easiest but hacky approach is to remove one of the two overlapping/neighbouring variants as post filter and keep the one with higher Q or AF.
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/26
+MDU6SXNzdWUxMjYxNTcyMjk=,LoFreq v.2.1.2 pre-compiled for OS X does not works in some OS versions,OPEN,2016-01-12T11:21:02Z,2016-01-12T12:27:05Z,,"Pre-compiled version does not work in OS X 10.8.5 (12F2560) but it works in OS X 10.9.5 (13F1507), because of the **libSystem.B.dylib**:
+
+```
+dyld: Symbol not found: ___exp10
+  Referenced from: lofreq
+  Expected in: /usr/lib/libSystem.B.dylib
+```
+
+I understand that it could not be compiled for every OS, but I would appreciate if it could be specified somewhere for which version could be used, because it does not complain until it needs this function.
+
+It is not a major issue, because when I compiled the source in my computer is working perfectly, but for a final user it could be a problem.
+",magicDGS,https://github.com/CSB5/lofreq/issues/27
+MDU6SXNzdWUxMjYxNTg2MDI=,Compilation fails with samtools v.1.3 and htslib v.1.3,CLOSED,2016-01-12T11:28:31Z,2019-12-19T13:38:33Z,2019-12-19T13:38:33Z,"When configure with pre-compiled **samtools-1.3** and **htslib-1.3**, make produce the following error:
+
+```
+In file included from bam_md_ext.c:38:0:
+samtools-1.3/bam.h:189:28: error: conflicting types for ‘seq_nt16_int’
+ #define bam_nt16_nt4_table seq_nt16_int
+                            ^
+bam_md_ext.c:54:12: note: in expansion of macro ‘bam_nt16_nt4_table’
+ const char bam_nt16_nt4_table[] = { 4, 0, 1, 4, 2, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 4 };
+            ^
+In file included from htslib-1.3/htslib/sam.h:30:0,
+                 from bam_md_ext.c:37:
+htslib-1.3/htslib/hts.h:255:18: note: previous declaration of ‘seq_nt16_int’ was here
+ extern const int seq_nt16_int[];
+                  ^
+In file included from bam_md_ext.c:43:0:
+samutils.h:47:14: warning: ‘op_cat_str’ defined but not used [-Wunused-variable]
+ static char *op_cat_str[] = {
+              ^
+make[1]: *** [bam_md_ext.o] Error 1
+make: *** [all-recursive] Error 1
+```
+",magicDGS,https://github.com/CSB5/lofreq/issues/28
+MDU6SXNzdWUxMjY0MjY4OTQ=,Call variants when the reference is an N,CLOSED,2016-01-13T14:18:53Z,2016-01-21T13:28:29Z,2016-01-21T13:28:29Z,"Some flag could be provided for allow calling variants when there is an N in the reference. As we discuss by email, it could be done just replacing the N for a random reference; but it will be very useful for the final user to be allow to output this kind of variants.
+
+Including this in the code could be done by:
+- When the reference is an N, replace it by a base that have no coverage in the data. Using a reference with 0 coverage will allow to output any variant that is found. Nevertheless, it could be an issue if each base (ATCG) is in at least one read, so it would not be reported if it is a reference SNP.
+- Perform the calling using the replaced N as a reference.
+- Change the reference to N again before reporting the variant.
+
+The first point could be change by using the consensus variant approach as in previous versions.
+",magicDGS,https://github.com/CSB5/lofreq/issues/30
+MDU6SXNzdWUxMjcxNDE2MjY=,Filtering can use excessive amounts of memory if vcf file contains many variants ,CLOSED,2016-01-18T02:15:43Z,2016-01-26T03:00:10Z,2016-01-26T03:00:10Z,"Happens because vcf file is loaded fully into memory to determine multiple testing correction threshold. Easily fixed by loading twice, once to determine thresholds and then a second time to apply them.
+
+Initially reported by Kanika Arora (NYG)
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/31
+MDU6SXNzdWUxMjk0ODUzNzE=,Request: Accept several BAM files in call,OPEN,2016-01-28T15:33:16Z,2016-01-29T13:40:09Z,,"There could be at least two cases were this is needed for the final user:
+- Call variants using information for several samples: this could increment the power if you are looking for low frequency variants when shared between samples. Another important fact of call SNPs for several samples at the same time is that the strand bias could be computed using more information (more coverage).
+- Call variants using replicates: sometimes two samples from the same population are taken, but calling variants with them together (although they are going to be manage independently) will increase the power.
+
+Of course, the final user could merge the BAM files to obtain a huge one and call the variant on that one whatever is the case; nevertheles, sometimes impossible to handle, because too many samples are used. I think that the _htslib_ pileup function can handle several BAM and this could be easy to implement, just taking all the parameters after the last flag as input files and pass them to it.
+",magicDGS,https://github.com/CSB5/lofreq/issues/32
+MDU6SXNzdWUxMzkyNTYzNzc=,reporting strand bias,CLOSED,2016-03-08T11:44:51Z,2016-03-08T13:34:21Z,2016-03-08T13:34:21Z,"Lofreq assigns a Phred-scaled score for strand bias. Why use Phred scores? Is it possible to report the raw probability scores? What does it mean when a site has a Phred score SB=0?
+",george-githinji,https://github.com/CSB5/lofreq/issues/33
+MDU6SXNzdWUxNDY4NDAxMzY=,Allow sam or uncompressed BAM output,OPEN,2016-04-08T07:23:14Z,2016-04-08T07:28:57Z,,,andreas-wilm,https://github.com/CSB5/lofreq/issues/34
+MDU6SXNzdWUxNTcwNDA5NTA=,Error while running LoFreq somatic,CLOSED,2016-05-26T17:50:49Z,2017-06-21T06:27:27Z,2017-06-21T06:27:27Z,"Hi, 
+
+I am getting an invalid syntax error, when I try to run lofreq somatic mode.
+$lofreq somatic
+
+  File ""Reference/Apps/LoFreq/lofreq_star-2.1.2/bin/lofreq2_somatic.py"", line 378
+    def rlx_to_str(self, sample_type, (num_snv_tests, num_indel_tests)):
+                                      ^
+SyntaxError: invalid syntax
+
+Can you please help me fix it.
+
+Thanks, 
+Ashini
+",abolia,https://github.com/CSB5/lofreq/issues/36
+MDU6SXNzdWUxNjI4NjkzNTM=,What does the AF column really mean?,CLOSED,2016-06-29T08:34:19Z,2016-06-30T05:39:53Z,2016-06-29T12:13:22Z,"With Lofreq, what does the AF column really represent? My assumption is that it is the minority variant allele frequency. It appears to range between 0 and 1, does that mean that a variant at 1.0 frequency is an actual SNP? Is there some documentation on interpreting these outputs? Many thanks and sorry if this is naive. 
+",george-githinji,https://github.com/CSB5/lofreq/issues/37
+MDU6SXNzdWUxNjYxMjY4NjU=,Key SOMATIC in  field INFO is not defined in the VCF file header for of  indel calls,CLOSED,2016-07-18T15:50:16Z,2016-10-25T18:28:59Z,2016-08-30T10:53:41Z,"Hi, 
+
+I used picard-tools-1.141 SortVcf to sort VCF file produced by lofreq (version 2.1.2). Then the sorted VCF file will be combined with indel calls from other algorithms (as suggested in somaticseq pipeline). Picard gave me 
+""Exception in thread ""main"" java.lang.IllegalStateException: **Key SOMATIC found in VariantContext field INFO at 1:11113181 but this key isn't defined in the VCFHeader**.  We require all VCFs to have complete VCF headers by default.""
+
+My VCF file example:
+`##fileformat=VCFv4.0
+## fileDate=20160713
+## source=lofreq call -d 101000 -f /home/proj/MDW_genomics/xu/galgal5/galgal5.fa --verbose --no-default-filter -b 1 --call-indels -a 0.010000 -C 6 -s -S /scratch/xu/MDV_project/bqsr/S10_normal_stringent.snvs.vcf.gz,/scratch/xu/MDV_project/bqsr/S10_normal_stringent.indels.vcf.gz --no-default-filter -r 1:1-98101272 -o /tmp/3464340.1.lofn.q/lofreq2_call_parallel1xcqSq/0.vcf.gz /scratch/xu/MDV_project/bqsr/918-3_S10.tumor.bam
+## reference=/home/proj/MDW_genomics/xu/galgal5/galgal5.fa
+## INFO=<ID=DP,Number=1,Type=Integer,Description=""Raw Depth"">
+## INFO=<ID=AF,Number=1,Type=Float,Description=""Allele Frequency"">
+## INFO=<ID=SB,Number=1,Type=Integer,Description=""Phred-scaled strand bias at this position"">
+## INFO=<ID=DP4,Number=4,Type=Integer,Description=""Counts for ref-forward bases, ref-reverse, alt-forward and alt-reverse bases"">
+## INFO=<ID=INDEL,Number=0,Type=Flag,Description=""Indicates that the variant is an INDEL."">
+## INFO=<ID=CONSVAR,Number=0,Type=Flag,Description=""Indicates that the variant is a consensus variant (as opposed to a low frequency variant)."">
+## INFO=<ID=HRUN,Number=1,Type=Integer,Description=""Homopolymer length to the right of report indel position"">
+## FILTER=<ID=min_dp_6,Description=""Minimum Coverage 6"">
+## FILTER=<ID=max_dp_100000,Description=""Maximum Coverage 100000"">
+## FILTER=<ID=sb_fdr,Description=""Strand-Bias Multiple Testing Correction: fdr corr. pvalue > 0.001000"">
+## FILTER=<ID=indelqual_bonf,Description=""Indel Quality Multiple Testing Correction: bonf corr. pvalue < 0.010000"">
+## INFO=<ID=UNIQ,Number=0,Type=Flag,Description=""Unique, i.e. not detectable in paired sample"">
+## INFO=<ID=UQ,Number=1,Type=Integer,Description=""Phred-scaled uniq score at this position"">
+## FILTER=<ID=uq_fdr,Description=""Uniq Multiple Testing Correction: fdr corr. pvalue < 0.000100"">
+# CHROM  POS ID  REF ALT QUAL    FILTER  INFO
+
+1   5177961 .   GA  G   110 PASS    DP=12;AF=0.416667;SB=0;DP4=2,5,2,3;INDEL;HRUN=9;SOMATIC;UQ=63`
+
+My question is how can I modify my VCF FILE header to solve this small problem?
+
+Best regards,
+Hongen
+",hongenxu,https://github.com/CSB5/lofreq/issues/38
+MDU6SXNzdWUxNzM5MTExMTc=,temporary file creation error,CLOSED,2016-08-30T01:41:19Z,2017-06-21T06:27:14Z,2017-06-21T06:27:14Z,"I have many Illumina datasets (> 1000 samples from different individuals within a population) which I will analyze with LoFreq.
+
+If I run ""LoFreq call"" one a single set of aligned reads, all goes smoothly.
+
+However, if I submit all  1000+ independent jobs to the compute cluster (SGE), then many of them return with an error:
+
+ERROR(lofreq_call.c|main_call:1394): Couldn't open /tmp/lofreq2-call-dyn-bonf.9pEkER
+
+But with a different suffix:   e.g.   lofreq2-call-dyn-bonf.nydjvL   or  lofreq2-call-dyn-bonf.uHy7CC  , etc.
+
+I noticed that LoFreq uses ""mktemp"" in lofreq_call.c.  But I have read that ""mktemp"" is unsafe and that ""mkstemp"" should be used instead.
+
+I tried editing the source file from ""mktemp"" to ""mkstemp"" but I got a segfault at run time (I may be lacking the zlib devel version, maybe that's why)
+
+please note that when I run the same exact command alone (i.e. without 1000 other simultaneous jobs), then it executes perfectly fine, no error message.
+
+Maybe there can be an option for the user to give a temporary/working directory to LoFreq, to aovid the ""mktemp"" problem entirely?
+",map2085,https://github.com/CSB5/lofreq/issues/39
+MDU6SXNzdWUxODQzNDc3NzE=,Calling MNV,OPEN,2016-10-20T21:40:38Z,2017-08-24T05:31:33Z,,"Hi, 
+
+I wanted to check with you if Lofreq can call multi-nucleotide variants (MNV). e.g. AG>ACT. I created a simulated bam with this MNP and Lofreq wasnt able to call it. I used --call-indels paramter also, thinking it can call it as SNV and indel if not MNV, but it didnt call anything. Please let me know if there are any parameters I can tweak in order to make it work. 
+
+Thanks,
+Ashini
+",abolia,https://github.com/CSB5/lofreq/issues/40
+MDU6SXNzdWUxODQ3MzYwNjU=,Strand-bias: only apply if distribution is opposite?,OPEN,2016-10-24T02:27:23Z,2020-06-22T20:58:51Z,,"Matters esp. for high coverage data where huge numbers make any diff look significant
+Implement and benchmark and first
+",andreas-wilm,https://github.com/CSB5/lofreq/issues/41
+MDU6SXNzdWUxODc4MjAwMzU=,Print the p-values,CLOSED,2016-11-07T20:35:30Z,2016-11-11T01:16:12Z,2016-11-11T01:16:12Z,Is there a way to print the actual p-value that is associated with each variant? ,george-githinji,https://github.com/CSB5/lofreq/issues/42
+MDU6SXNzdWUyMDYxMjk4NDA=,Error compiling lofreq,CLOSED,2017-02-08T08:40:10Z,2017-06-21T06:29:29Z,2017-06-21T06:29:29Z,"I am compiling lofreq using this 
+
+```
+ ./configure SAMTOOLS=/apps/samtools/1.2.1 HTSLIB=/apps/htslib/1.2.1/ --
+prefix=/apps/lofreq/2.1.3
+```
+
+And it starts to compile 
+
+```
+configure: Configuring LoFreq_Star (version 2.1.3a) for your system...
+
+            |             ____|
+            |       _ \   |     __|  _ \   _` |
+            |      (   |  __|  |     __/  (   |
+           _____| \___/  _|   _|   \___| \__, |
+                                             _|
+
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for style of include used by make... GNU
+checking for gcc... /apps/gcc/5.3.0/bin/gcc
+checking whether the C compiler works... yes
+```
+. .... truncated 
+
+But then it lands on this issue. 
+
+```
+> checking whether to build with debug information... no
+> checking for /apps/samtools/1.2.1/bam.h... no
+> configure: error: bam.h not found
+```
+
+I get this error against htslib 1.2.1 and 1.3.1 and the same with samtools 1.2.1 and 1.3.1. I am not sure how to resolve this error. What compilation steps do you recommend. 
+",george-githinji,https://github.com/CSB5/lofreq/issues/43
+MDU6SXNzdWUyMDc4ODIwMDQ=,Variant not called at 12% AF,CLOSED,2017-02-15T18:04:53Z,2019-12-19T13:57:43Z,2019-12-19T13:57:43Z,"I've attached a .bam that shows evidence of two variants of significant depth (here's an IGV snapshot):
+
+<img width=""237"" alt=""screen shot 2017-02-15 at 11 01 01 am"" src=""https://cloud.githubusercontent.com/assets/1120643/22988080/322ef0a0-f36e-11e6-9e4c-aed3ebb707ec.png"">
+
+While I am able to detect the first one with lofreq, the second one fails to appear, with any set of cmdline options I can think of. Could someone have a look at this and explain why the ~12% AF variant at chr7:148506396 A / C is not reported by lofreq? I am using lofreq 2.1.1.
+
+[missing_variant.bam.zip](https://github.com/CSB5/lofreq/files/777950/missing_variant.bam.zip)
+",EReckase,https://github.com/CSB5/lofreq/issues/44
+MDU6SXNzdWUyMTQwMjQxMjY=,The variants of Low frequence ,CLOSED,2017-03-14T10:14:27Z,2017-11-01T14:44:00Z,2017-03-17T05:50:47Z,How can I call the variants that allele frequence is under 1% ? Is there any parameter can be set?,Tinalxt,https://github.com/CSB5/lofreq/issues/45
+MDU6SXNzdWUyMTczNzEzNDA=,Quality scores capped at 49314,OPEN,2017-03-27T20:51:04Z,2017-03-28T14:36:11Z,,"Hi Andreas, 
+
+In my analysis, the quality scores from Lofreq seem to reach a plateau at 49,314. Is this the maximum quality score a variant can have? And if so, is there a way to change this value and set it to something else?
+
+Thank you so much.
+
+Ashini",abolia,https://github.com/CSB5/lofreq/issues/46
+MDU6SXNzdWUyMTc5MzUwNzM=,Substitution and indel tests,CLOSED,2017-03-29T16:34:13Z,2017-04-04T14:01:03Z,2017-03-30T13:04:55Z,"Hi Andreas,
+
+After a Lofreq run, I saw messages like ""Number of substitution tests and indel tests are: ... respectively"". I am wondering what do these tests do? Are they necessary for Lofreq and for the output? If they can be turned off, how can I do that? I didn't find an input option that could do that.
+
+Thank you very much,
+Zheng",zeus19900814,https://github.com/CSB5/lofreq/issues/47
+MDU6SXNzdWUyMjYzNTk1MTE=,SyntaxError: Non-ASCII character '\xb6' in file lofreq_star-2.1.2/,CLOSED,2017-05-04T17:52:17Z,2017-06-21T06:25:59Z,2017-06-21T06:25:59Z,"I had previous success running lofreq adn now am getting a syntax error. Any suggestion? The commad I run:
+
+
+$python lofreq_star-2.1.2/bin/lofreq call-parallel --pp-threads 12 -f human_g1k_v37.fa -s -S All_20161122.vcf.gz -l SureSelect.bed -o SampleA_lofreq.vcf SampleA_realigned_recal.bam
+
+  File ""lofreq_star-2.1.2/bin/lofreq"", line 1
+SyntaxError: Non-ASCII character '\xb6' in file lofreq_star-2.1.2/bin/lofreq on line 2, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details
+
+I reinstalled the package incase something strange happend to original installation since I last used the software. Please advice how to fix the error. THanks. ",wdemos,https://github.com/CSB5/lofreq/issues/48
+MDU6SXNzdWUyMjkzOTEzNjk=,DP and DP4 fields,CLOSED,2017-05-17T15:23:01Z,2017-05-22T09:23:33Z,2017-05-18T08:55:30Z,"Hi Andreas, 
+
+Can you please explain how DP and DP4 fields differ? I know DP is raw depth and DP4 is counts for ref and alt on forward & reverse bases. So, I believe DP4 is subset of raw depth and does not include reads with strand bias. Is that correct? 
+We have a variant for which the allele frequency calculated by Lofreq is 3% ( I use -m20 -q 13 and -Q 13) and quality of 290, but when we calculate it from the DP4 counts for ref and alt, it comes out to be 49.19%. IGV also has VAF of 48%, so just wondering how should I go about interpreting these. Should we always calculate the VAF from DP4? 
+Moreover, when I run Lofreq with default settings, it calculates VAF as 47.7% and DP4 estimated VAF is still 49% with a quality of 3586. So, definitely the settings change the allele frequency calculation by Lofreq but why is DP4 not affected by this. Can you please help me solve this issue.
+
+Thank you.",abolia,https://github.com/CSB5/lofreq/issues/49
+MDU6SXNzdWUyNDQzOTIzNzE=,Unable to run call-parallel on filenames with spaces,OPEN,2017-07-20T14:55:07Z,2017-08-21T10:00:50Z,,"Hi,
+I tried to run lofreq like this
+
+    lofreq call-parallel --pp-threads 4 -f 'path with spaces and (parenthesis)/ref_sequence.fna' bam_file.bam -o calls.vcf
+
+and I get a bunch of 
+
+    /bin/sh: -c: line 0: syntax error near unexpected token `('
+
+I know, I know... One should not have path with spaces, but Dropbox recently renamed its folder to `Dropbox (Personal)`. I guess that protecting the file names with `shlex.quote` should do the trick.",ozagordi,https://github.com/CSB5/lofreq/issues/51
+MDU6SXNzdWUyNTEzNDIxOTY=,Issue when run make ,CLOSED,2017-08-18T19:49:45Z,2019-12-19T13:38:33Z,2019-12-19T13:38:33Z,"Hi there,
+
+I am trying to install lofreq on Ubuntu 16.04 and get this following error msg when run make
+
+
+washington@Linux:~/lofreq$ make
+Making all in src/cdflib90
+make[1]: Entering directory '/home/washington/lofreq/src/cdflib90'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/washington/lofreq/src/cdflib90'
+Making all in src/uthash
+make[1]: Entering directory '/home/washington/lofreq/src/uthash'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/washington/lofreq/src/uthash'
+Making all in src/lofreq
+make[1]: Entering directory '/home/washington/lofreq/src/lofreq'
+gcc -DPACKAGE_NAME=\""LoFreq_Star\"" -DPACKAGE_TARNAME=\""lofreq_star\"" -DPACKAGE_VERSION=\""2.1.3.1\"" -DPACKAGE_STRING=\""LoFreq_Star\ 2.1.3.1\"" -DPACKAGE_BUGREPORT=\""wilma@gis.a-star.edu.sg\"" -DPACKAGE_URL=\""\"" -DGIT_VERSION=\""v2.1.3.1-dirty\"" -DPACKAGE=\""lofreq_star\"" -DVERSION=\""2.1.3.1\"" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -D__EXTENSIONS__=1 -D_ALL_SOURCE=1 -D_GNU_SOURCE=1 -D_POSIX_PTHREAD_SEMANTICS=1 -D_TANDEM_SOURCE=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\"".libs/\"" -DSTDC_HEADERS=1 -DHAVE_PTHREAD_PRIO_INHERIT=1 -DHAVE_PTHREAD=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DNDEBUG=/\*\*/ -D_USE_KNETFILE=1 -I.    -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -Wall -I../cdflib90/ -I../uthash -I/home/washington/htslib-1.5 -I/home/washington/samtools-1.5  -g -O2 -pthread -MT bam_md_ext.o -MD -MP -MF .deps/bam_md_ext.Tpo -c -o bam_md_ext.o bam_md_ext.c
+In file included from bam_md_ext.c:38:0:
+/home/washington/samtools-1.5/bam.h:189:28: error: conflicting types for ‘seq_nt16_int’
+ #define bam_nt16_nt4_table seq_nt16_int
+                            ^
+bam_md_ext.c:54:12: note: in expansion of macro ‘bam_nt16_nt4_table’
+ const char bam_nt16_nt4_table[] = { 4, 0, 1, 4, 2, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 4 };
+            ^
+In file included from /home/washington/htslib-1.5/htslib/sam.h:31:0,
+                 from bam_md_ext.c:37:
+/home/washington/htslib-1.5/htslib/hts.h:319:18: note: previous declaration of ‘seq_nt16_int’ was here
+ extern const int seq_nt16_int[];
+                  ^
+In file included from bam_md_ext.c:43:0:
+samutils.h:47:14: warning: ‘op_cat_str’ defined but not used [-Wunused-variable]
+ static char *op_cat_str[] = {
+              ^
+Makefile:467: recipe for target 'bam_md_ext.o' failed
+make[1]: *** [bam_md_ext.o] Error 1
+make[1]: Leaving directory '/home/washington/lofreq/src/lofreq'
+Makefile:403: recipe for target 'all-recursive' failed
+make: *** [all-recursive] Error 1
+
+
+
+can anyone provide and help?
+
+Thank you,
+
+WLD",WashingtondaSilva,https://github.com/CSB5/lofreq/issues/52
+MDU6SXNzdWUyNTM3OTMzMzQ=,VCF sample column,CLOSED,2017-08-29T20:27:11Z,2017-09-13T14:58:11Z,2017-09-13T14:58:11Z,"I've been using LoFreq for a while and haven't had any issues with it. However, recently, I got an error that my VCF was not valid because it did not have a sample column (it stops at `INFO`). Is it possible to add the sample column? If that's not already built in, is it possible to add it somehow with an external tool?",igordot,https://github.com/CSB5/lofreq/issues/53
+MDU6SXNzdWUyNTg3NjA2NzI=,Could not parse threshold,CLOSED,2017-09-19T09:49:00Z,2017-09-20T13:14:59Z,2017-09-19T14:51:31Z,"Hi 
+I am developer and trying to wrap up your lofreq tool for galaxyproject. I have the forms generated and the command executed. 
+
+`lofreq call -f ""/galaxy/database/files/000/dataset_131.dat"" -o ""/galaxy/database/files/000/dataset_132.dat"" --min-bq ""6"" --min-alt-bq ""6"" --def-alt-bq ""0"" --min-jq ""0"" --min-alt-jq ""0"" --def-alt-jq ""0"" --no-baq     --del-baq --no-ext-baq        --min-mq ""0"" --max-mq ""0"" --def-nm-q ""0"" --min-cov ""1"" --max-depth ""1000000""  --src-qual --sig --bon    f --illumina-1.3 --use-orphan --plp-summary-only --no-default-filter --force-overwrite --verbose        ""/galaxy/database/files/000/dataset_129.dat""` 
+
+> dataset_131 is the fasta file (reference_h37rv.fasta)
+> dataset_131 is the output vcf file
+> dataset_132 is the bam file (ext1.bam)
+
+This is though the error, I receive when trying to run the tool:
+FATAL(lofreq_call.c|main_call:1243): Couldn't parse sign-threshold
+
+What does it mean, in program terms (simple terms)?
+
+Regards
+Zipho",zipho,https://github.com/CSB5/lofreq/issues/54
+MDU6SXNzdWUyNzQ0NjIyODM=,lofreq call filter doesn't work,CLOSED,2017-11-16T10:17:21Z,2017-11-22T05:12:05Z,2017-11-22T05:12:05Z,"Hi, 
+
+I installed LoFreq 2.1.2 and 2.1.3.1 from binary packages on Ubuntu. I don't know if it's necessary but Samtools-1.1 and Htslib-1.1 are installed in the PATH. 
+Both versions give me an error when I try to run LoFreq call: 
+
+```
+./lofreq call -f /genome_hg38.fa -o /sample1.lofreq_variants.vcf -l /SeqCap_EZ.hg38.analysis.variant_calling.target.bed.merged  /sample1.alnqual-lofreq.bam --verbose --no-default-filter
+Alive and happily crunching away on pos 17018314 of 1...
+Alive and happily crunching away on pos 121526406 of 10...
+Alive and happily crunching away on pos 25227485 of 12...
+Alive and happily crunching away on pos 31337657 of 17...
+Alive and happily crunching away on pos 54290077 of 4...
+Executing lofreq filter -i /tmp/lofreq2-call-dyn-bonf.iMIoN6 -o /sample1.lofreq_variants.vcf --no-defaults --snvqual-thresh 76 --indelqual-thresh 20
+FATAL(lofreq_filter.c|main_filter:1104): Unrecognized argument found. Exiting...
+
+ERROR(lofreq_call.c|main_call:1529): The following command failed: lofreq filter -i /tmp/lofreq2-call-dyn-bonf.iMIoN6 -o /sample1.lofreq_variants.vcf --no-defaults --snvqual-thresh 76 --indelqual-thresh 20
+```
+
+I already checked the bam-file that I'm using, and it was created using the same reference genome, also the qualities were checked and should be ok. 
+Even when I use the `--no-default-filter` there is still the problem with the filter step. Is there something that I'm doing wrong? 
+
+Thanks
+",Lien-NGSdummie,https://github.com/CSB5/lofreq/issues/55
+MDU6SXNzdWUyODgxMzQzODE=,lofreq call with --no-default-filter,OPEN,2018-01-12T14:23:51Z,2018-01-15T07:52:20Z,,"When I run lofreq call with --no-default-filter it seems, that lofreq filter gets executed anyway. Is this the correct behavior? I do not want to have my variants filtered based on quality.
+
+```
+lofreq call -f hg19.fa -o test --call-indels --no-default-filter --bed ins.pos.interval_list --verbose lofreq.bam
+Alive and happily crunching away on pos 55248973 of chr7...
+Executing lofreq filter -i /tmp/lofreq2-call-dyn-bonf.ygbPrc -o test --no-defaults --snvqual-thresh 20 --indelqual-thresh 23
+Number of substitution tests performed: 0
+Number of indel tests performed: 1
+Successful exit.
+```",thakki,https://github.com/CSB5/lofreq/issues/56
+MDU6SXNzdWUyOTE2NDc2MTc=,VCF file format,CLOSED,2018-01-25T17:14:14Z,2019-12-19T13:46:58Z,2019-12-19T13:46:58Z,"Hi there,
+
+I am trying to run SNPgenie  to calculate nucleotide diversity on my VCF file from a virus population study.  SNPgenie has the following requirement for  VCF 4 files;
+
+ ""FORMAT (4): --vcfformat=4. Like formats 2 and 3, variants have been called from a pooled deep-sequencing sample containing genomes from multiple individuals. For this format, SNPGenie will require AD and DP data in the FORMAT and <SAMPLE> columns, where FORMAT is the final column header before the <SAMPLE> column(s) begins. The order of the data keys in the FORMAT column and the data values in the <SAMPLE> columns must be preserved:
+
+- For reference allele depth, include the AD tag in the FORMAT column, which refers to the read depth value for each allele in the <SAMPLE> column(s), with values for variant allele(s) in the same order as listed in the ALT column (e.g., ""AD"" in the FORMAT column and ""75,77"" in the <SAMPLE> column);
+
+- For coverage (total read depth), include DP in the FORMAT column, which refers to the total read depth in the <SAMPLE> column(s) (e.g., ""DP"" in the FORMAT column and ""152"" in the <SAMPLE> column).
+As usual, you will want to make sure to maintain the VCF file's features, such as TAB(\t)-delimited columns. Unlike some other formats, the allele frequency in VCF is a decimal.""
+
+However, the vcf file from lofreq is missing FORMAT column, please see a head from lofreq output bellow.
+ 
+_""##fileformat=VCFv4.0
+##fileDate=20180118
+##source=lofreq call -f /home/dasilva/Desktop/NGS_files/cns_source_Mont.fa -o SNVs.vcf GATK.bam 
+##reference=/home/dasilva/Desktop/NGS_files/cns_source_Mont.fa
+##INFO=<ID=DP,Number=1,Type=Integer,Description=""Raw Depth"">
+##INFO=<ID=AF,Number=1,Type=Float,Description=""Allele Frequency"">
+##INFO=<ID=SB,Number=1,Type=Integer,Description=""Phred-scaled strand bias at this position"">
+##INFO=<ID=DP4,Number=4,Type=Integer,Description=""Counts for ref-forward bases, ref-reverse, alt-forward and alt-reverse bases"">
+##INFO=<ID=INDEL,Number=0,Type=Flag,Description=""Indicates that the variant is an INDEL."">
+##INFO=<ID=CONSVAR,Number=0,Type=Flag,Description=""Indicates that the variant is a consensus variant (as opposed to a low frequency variant)."">
+##INFO=<ID=HRUN,Number=1,Type=Integer,Description=""Homopolymer length to the right of report indel position"">
+##FILTER=<ID=min_dp_10,Description=""Minimum Coverage 10"">
+##FILTER=<ID=sb_fdr,Description=""Strand-Bias Multiple Testing Correction: fdr corr. pvalue > 0.001000"">
+##FILTER=<ID=min_snvqual_64,Description=""Minimum SNV Quality (Phred) 64"">
+##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+cns_source_Mont	188	.	C	T	302	PASS	DP=1620;AF=0.027160;SB=0;DP4=1552,3,44,0
+cns_source_Mont	189	.	A	G	122	PASS	DP=1624;AF=0.012315;SB=0;DP4=1517,3,20,0_
+
+Is there anything I can do to change the lofreq vcf file output to mach the requirements from SNPgenie?
+
+Thanks a bunch,
+
+-Washington
+
+
+",WashingtondaSilva,https://github.com/CSB5/lofreq/issues/57
+MDU6SXNzdWUzMDE4MjQ3NTg=,germline calls for lofreq somatic,CLOSED,2018-03-02T16:28:07Z,2018-03-06T13:02:24Z,2018-03-06T00:52:52Z,"Hi, 
+
+I am trying to use vcf output from lofreq for input in the [PureCN](https://bioconductor.org/packages/release/bioc/vignettes/PureCN/inst/doc/PureCN.pdf) package. One of the requirements for PureCN is a vcf file that contains both germline and somatic calls in the same VCF. Is this possible at all with lofreq? Or would that be the same as **prefix_tumor_stringent.snvs.vcf.gz**?
+
+Also, I am unable to get germline calls as a separate file either (documentations says ""--germline    Also list germline calls in separate file""), using this command:
+`lofreq somatic -n normal.sorted.indelqual.bam -t tumour.sorted.indelqual.bam -o output_folder/prefix_ -f hg38.fa -d $DBSNP38 --threads 35 --call-indels --germline`
+
+The files I get with this command are:
+prefix_germline.indels.vcf.gz
+prefix_germline.indels.vcf.gz.tbi
+prefix_normal_relaxed.log
+prefix_normal_relaxed.vcf.gz
+prefix_normal_relaxed.vcf.gz.tbi
+prefix_normal_stringent.indels.vcf.gz
+prefix_normal_stringent.indels.vcf.gz.tbi
+prefix_normal_stringent.snvs.vcf.gz
+prefix_normal_stringent.snvs.vcf.gz.tbi
+prefix_somatic_final.indels.vcf.gz
+prefix_somatic_final.indels.vcf.gz.tbi
+prefix_somatic_final_minus-dbsnp.indels.vcf.gz
+prefix_somatic_final_minus-dbsnp.indels.vcf.gz.tbi
+prefix_somatic_final_minus-dbsnp.snvs.vcf.gz
+prefix_somatic_final_minus-dbsnp.snvs.vcf.gz.tbi
+prefix_somatic_final.snvs.vcf.gz
+prefix_somatic_final.snvs.vcf.gz.tbi
+prefix_somatic_raw.indels.vcf.gz
+prefix_somatic_raw.indels.vcf.gz.tbi
+prefix_somatic_raw.snvs.vcf.gz
+prefix_somatic_raw.snvs.vcf.gz.tbi
+prefix_tumor_relaxed.log
+prefix_tumor_relaxed.vcf.gz
+prefix_tumor_relaxed.vcf.gz.tbi
+prefix_tumor_stringent.indels.vcf.gz
+prefix_tumor_stringent.indels.vcf.gz.tbi
+prefix_tumor_stringent.snvs.vcf.gz
+prefix_tumor_stringent.snvs.vcf.gz.tbi
+
+Should I be getting a file named **prefix_germline.snvs.vcf.gz**, as for indels? 
+
+Thank you for your time!",sraorao,https://github.com/CSB5/lofreq/issues/58
+MDU6SXNzdWUzMDIzOTgwMDI=,"""lofreq_call.c|call_snvs"" Skipped when running on bam containing N cigar operator (RNA-seq)",OPEN,2018-03-05T17:49:14Z,2018-03-13T06:41:28Z,,"I'm using Lofreq for variant calling on RNA-seq. However, I'm running into an issue where Lofreq has lost a rather high frequency variant (60% AF) unless run with particular preprocessing (cigar N removal followed by indel realignment and BQSR by GATK3). However, I would prefer to retain read context and would rather not remove the N cigar operators by using GATK4 for BQSR.
+
+The variant is only called when using the GATK3 workflow described above but is not called in the unprocessed or GATK4 bam file. However, I see no reason why a variant which makes up the majority of the reads at a position (and which we have orthogonal confirmation of) would be missed.
+
+We are using Lofreq 2.1.2
+
+For this particular sample we are using ""lofreq call-parallel --no-mq --no-baq"" for variant calling. I've tried different settings but can only call this variant in one particular case.
+
+I did notice that the log file is different, with a major drop in the number of substitution tests depending on the bam file:
+
+**BAM WHERE VARIANT IS CALLED**
+
+INFO [2018-02-26 15:17:52,698]: Adding 18 commands to mp-pool
+Number of substitution tests performed: 4473
+Number of indel tests performed: 0
+INFO [2018-02-26 15:18:13,593]: Executing lofreq filter -i /tmp/lofreq2_call_parallelTdPlsV/concat.vcf.gz -o var/Lofreq/lofreq_calling.vcf --snvqual-thresh 57 --indelqual-thresh 20
+
+**BAM(s) WHERE VARIANT IS MISSED**
+
+INFO [2018-03-05 09:05:33,682]: Adding 18 commands to mp-pool
+Number of substitution tests performed: 858
+Number of indel tests performed: 0
+INFO [2018-03-05 09:06:15,876]: Executing lofreq filter -i /tmp/lofreq2_call_parallelrLKmLE/concat.vcf.gz -o lofreq_calling.vcf --snvqual-thresh 49 --indelqual-thresh 20
+
+The variant is missed in the bam on top and called in the second one
+![missing-variant](https://user-images.githubusercontent.com/18664242/36990257-5703a47c-2061-11e8-9800-03718a013a11.png)
+
+Additional screenshot (bams switched from top to bottom) showing this variant is on both strands
+![screen shot 2018-03-05 at 2 56 48 pm](https://user-images.githubusercontent.com/18664242/37001992-7f4be7f4-2085-11e8-934f-a2e6b22f0c5f.png)
+
+
+**Pileup Summary**
+
+[called_pileup.txt](https://github.com/CSB5/lofreq/files/1781976/called_pileup.txt)
+[missed_pileup.txt](https://github.com/CSB5/lofreq/files/1781977/missed_pileup.txt)
+
+**Lofreq VCFs**
+
+[called_lofreq.vcf.txt](https://github.com/CSB5/lofreq/files/1781981/called_lofreq.vcf.txt)
+[missed_lofreq.vcf.txt](https://github.com/CSB5/lofreq/files/1781982/missed_lofreq.vcf.txt)
+
+I would just like to understand why Lofreq is struggling to call a variant of such high frequency (60%). The variant is obviously there. This is worrisome how easily a variant like this could be missed.
+
+Please let me know if you need anything else from me.
+
+Thanks for your help in advance.
+
+
+
+",akkellogg,https://github.com/CSB5/lofreq/issues/59
+MDU6SXNzdWUzMDg0MjU5MTg=,it is suitable for  somatic calling without normal  ?,CLOSED,2018-03-26T03:56:46Z,2018-03-27T01:29:06Z,2018-03-26T05:18:55Z,"HI,
+   My data is  target panel sequencing data,  and I just have tumor sample ,no matched normal sample.
+so it is OK  for such my case ?? 
+
+thanks !",WinterLi1993,https://github.com/CSB5/lofreq/issues/60
+MDU6SXNzdWUzMTAyNTIwNTc=,lofreq installation error ?,CLOSED,2018-03-31T16:13:43Z,2018-04-05T09:43:34Z,2018-04-05T09:43:34Z,"Hello
+I try to configure with samtools and Hts-lib 1.1 version. Still it showing the same error. How to rectify it.
+Thanks for your comments.
+
+**CMD**
+./configure SAMTOOLS=/data/Likith/samtools-1.1 HTSLIB=/data/Likith/samtools-1.1/htslib-1.1
+
+checking for /data/Likith/htslib-develop/htslib/hts.h... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+**config.status: error: cannot find input file: `Makefile.in'**
+
+",pinninti19,https://github.com/CSB5/lofreq/issues/61
+MDU6SXNzdWUzMTM5NzYzMjE=,Speedup possible by applying early minimum AF filter,OPEN,2018-04-13T05:45:37Z,2018-04-13T05:45:37Z,,Don't compute pmf if af not above set min,andreas-wilm,https://github.com/CSB5/lofreq/issues/62
+MDU6SXNzdWUzMTc4NjUzMTE=,Downsample option,OPEN,2018-04-26T03:32:21Z,2018-04-26T03:32:21Z,,Prio to variant calling to speed up runtime for e.g. ultra high coverage viral samples ,andreas-wilm,https://github.com/CSB5/lofreq/issues/63
+MDU6SXNzdWUzMjUxNzExOTg=,Compilation problem,CLOSED,2018-05-22T07:28:00Z,2018-05-31T05:49:09Z,2018-05-30T12:43:50Z,"Hi, I tried to install latest LoFreq with steps you gave. When running make I run into error: 
+
+`make[1]: *** No rule to make target '/opt/htslib-1.1/samtools-1.1/libbam.a', needed by 'lofreq'.  Stop.
+make[1]: Leaving directory '/opt/LoFreq_2.1.3/lofreq/src/lofreq'
+make: *** [all-recursive] Error 1`",looxon93,https://github.com/CSB5/lofreq/issues/64
+MDU6SXNzdWUzMjgwNTA4NjY=,Threads command raise error,OPEN,2018-05-31T08:56:48Z,2018-05-31T08:56:48Z,,"I am using new version of LoFreq 2.1.3.1 (https://github.com/CSB5/lofreq/raw/master/dist/lofreq_star-2.1.3.1_linux-x86-64.tgz) but there is still problem when I set threads command. I wanted to get LoFreq faster with parallelization by chromosome. I saw, you've also added bed file as input on new version, but it doesn't get any faster, it still works eight hours on 11-17 GB normal-tumor samples. Here is my command line: 
+
+`/opt/LoFreq_2.1.3.1/lofreq_star-2.1.3.1/bin/lofreq somatic --bed /opt/example.bed --normal /opt/merged-normal.bam --tumor /opt/merged-tumor.bam --ref /opt/human_g1k_v37_decoy.fasta  --threads 2 -o test.lofreq.`
+
+I still get same error: 
+`Traceback (most recent call last):
+  File ""/opt/LoFreq_2.1.3.1/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 746, in <module>
+    main()
+  File ""/opt/LoFreq_2.1.3.1/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 557, in main
+    bam_bins = [Region._make(x) for x in bins_from_bamheader(bam)]
+  File ""/opt/LoFreq_2.1.3.1/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 283, in bins_from_bamheader
+    sq_list = sq_list_from_bam_samtools(bam)
+  File ""/opt/LoFreq_2.1.3.1/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 193, in sq_list_from_bam_samtools
+    stderr=subprocess.PIPE)
+  File ""/usr/lib/python2.7/subprocess.py"", line 710, in __init__
+    errread, errwrite)
+  File ""/usr/lib/python2.7/subprocess.py"", line 1327, in _execute_child
+    raise child_exception
+OSError: [Errno 2] No such file or directory`
+
+Thanks! ",looxon93,https://github.com/CSB5/lofreq/issues/65
+MDU6SXNzdWUzMzMwNzU4NDc=,Can it call variants on tetraploid species?,CLOSED,2018-06-17T16:43:52Z,2018-06-21T23:52:39Z,2018-06-21T15:19:31Z,,afzm,https://github.com/CSB5/lofreq/issues/66
+MDU6SXNzdWUzNDY4MDAzNzE=,what is the default filter?,CLOSED,2018-08-01T23:00:25Z,2023-03-20T19:17:38Z,2018-10-26T14:35:07Z,"Dear Andreas,
+
+Can you please summarize what exactly the default filter applied by `lofreq call` consists of? `lofreq filter` does not provide defaults for each argument.
+
+Does the SNV quality p-value, which is controlled by `-a`, include the strand bias test, or only the quality score calculation which is the core of the LoFreq algorithm? Can you please explain why the `-a 1` option may be needed if one uses `--no-default-filter`?  
+
+Also, what is  `dynamic` Bonferroni correction?
+
+How does `dynamic` Bonferroni correction relate to `--no-default-filter`?
+
+Why is this relevant to the `-l` command for targeted regions?
+
+What is ""joinedQ""?
+
+Partial answers to some of these questions are scattered in multiple-responses to questions in the mailing list and on FAQs, but those answers were not comprehensive, sometimes left out details, sometimes referred to older version of Lofreq, etc.
+
+Thank you!",map2085,https://github.com/CSB5/lofreq/issues/67
+MDU6SXNzdWUzNDgwMzQzNDY=,minimum bq error not reported correctly in call-parallel`,OPEN,2018-08-06T18:30:08Z,2018-08-06T18:30:08Z,,"In `lofreq call`, if you set `--min-bq` to higher than the default, but do not set `--min-alt-bq` to the same value, then `lofreq` correctly throws an error:
+
+
+> FATAL(lofreq_call.c|main_call:1366): Minimum base-call quality for all bases (10) larger than minimum base-call quality for alternate bases (6)
+
+However, if you do this in `lofreq call-parallel`, then `lofreq` still  crashes, but reports only a mysterious error message without hinting at the `--min-bq`/`--min-alt-bq` discrepancy, leaving the user puzzled for hours and wasting their time trying to debug other presumed errors in the data preparation, etc.
+
+> INFO [2018-08-03 13:52:41,619]: Adding 14 commands to mp-pool
+> CRITICAL [2018-08-03 13:52:41,659]: Following command failed with status 1: lofreq call -f /tmp/seq.fa -N --call-indels -C 5 -d 9000000000 --min-bq 10 --no-default-filter --verbose /tmp/input.bam --no-default-filter -o /tmp/out.vcf.gz > /tmp/0.log 2>&1
+> 
+> CRITICAL [2018-08-03 13:52:41,736]: Some commands in pool failed. Can't continue
+> 
+
+
+
+It would be helpful if `lofreq call-parallel` also printed the same error message as reported in `lofreq call`.
+
+Thank you
+
+",map2085,https://github.com/CSB5/lofreq/issues/68
+MDU6SXNzdWUzNzQzNzA0MzU=,FATAL(plp.c|compile_plp_col:947): Base qualitiy above allowed maximum detected (255),CLOSED,2018-10-26T12:53:03Z,2018-10-26T14:11:09Z,2018-10-26T14:11:09Z,"How to resolve this error? 
+Note: Using PacBio reads !
+```
+➜  3-unzip /home/urbe/Tools/lofreq_star-2.1.2/bin/lofreq call -f all_p_ctg.fa all_p_ctg.fa.sorted.bam
+FATAL(plp.c|compile_plp_col:947): Base qualitiy above allowed maximum detected (255)
+```",jnarayan81,https://github.com/CSB5/lofreq/issues/69
+MDU6SXNzdWUzODEwOTQ4OTA=,include tools scripts in bioconda build,OPEN,2018-11-15T10:26:25Z,2019-02-24T13:47:26Z,,"Would it be possible to include  the tools scripts in the conda build. I'm using lofreq in a Snakemake workflow and would like to be able to use lofreq2_indel_ovlp.py, which right now isn't included in bioconda package.",Smeds,https://github.com/CSB5/lofreq/issues/70
+MDU6SXNzdWUzODQ4MDA4OTA=,Lofreq vcfplot error,OPEN,2018-11-27T13:43:29Z,2018-11-27T14:27:46Z,,"Hello,
+
+I have lofreq 2.1.3.1 installed (along with python 2.7, samtools 1.2 and htslib 1.2.1 on Centos7),
+I installed lofreq in its standard directory. 
+
+I am trying to run the vcfplot command and i keep getting this error:
+
+`""FATAL: Couldn't find LoFreq modules. Are you sure your PYTHONPATH is set correctly?""`
+
+i check my $PYTHONPATH and it is:
+`:/usr/lib/python2.7/site-packages:/usr/lib64/python2.7/site-packages:/usr/lib64/python2.7/`
+
+I do have PyVcf, Numpy, Scipy and Matplotlob installed (using pip)
+
+When i looked into your code here:
+master/src/tools/scripts/lofreq2_vcfplot.py
+
+i see that you are trying to do the following:
+
+```
+try:
+    from lofreq_star.utils import complement, now
+except ImportError:
+    sys.stderr.write(""FATAL: Couldn't find LoFreq modules.""
+                     "" Are you sure your PYTHONPATH is set correctly?\n"")
+    sys.exit(1)
+```
+
+however when i look in the repo, the ""lofreq_star.utils"" is one directory up that is here:
+master/src/tools/lofreq_star/utils.py
+
+so when i manually go to python terminal (in location: master/src/tools/) and do this:
+from lofreq_star.utils import complement, now
+
+And then run lofreq vcftools, it runs fine:
+
+```
+usage: lofreq2_vcfplot.py [-h] [-v] [--debug] [-i VCF] [--simple]
+                          [--ign-filter] [--maxdp MAXDP] [-o OUTPLOT]
+                          [--indels] [--summary-only]
+lofreq2_vcfplot.py: error: VCF input file argument missing.
+```
+
+Does this make sense ? ",jatintalwar,https://github.com/CSB5/lofreq/issues/71
+MDU6SXNzdWUzOTYwODc1ODE=,Indels not written to the VCF file,CLOSED,2019-01-04T22:23:05Z,2019-12-19T13:54:28Z,2019-12-19T13:54:28Z,"Hi,
+I am trying to perform indel calling with Lofreq on a single sample with the ""lofreq call"" command:
+lofreq call --verbose --call-indels --only-indels --ref human_g1k_v37_.fasta --out lofreq.vcf --region 8:48805815-48805817 --debug --no-default-filter test.bam
+But I do not see any indels being written to the vcf file. 
+Also, I tried the debug option to look at the pileup and you can see that there is an insertion at 8:48805816, but it does not output any indel call in the vcf file. I am also applying --no-default-filter so not sure why it is being missed. Do you have any insights on what might be happening here?
+""""""
+DEBUG(plp.c|compile_plp_col): Processing 8:48805816
+8	48805816	A	A	counts:rv/fw A:904/823 C:2/2 G:3/1 T:0/1 N:0/0 heads:9 tails:7 ins:1666 del:0 hrun=1
+DEBUG(lofreq_call.c|call_alt_ins): 8 48805816: passing down 1740 quals with noncons_ins_counts(1665, 0, 0) to snpcaller()
+DEBUG(lofreq_call.c|call_alt_ins): 8 48805816: passing down 1740 quals with noncons_ins_counts(1, 0, 0) to snpcaller()
+DEBUG(plp.c|compile_plp_col): Processing 8:48805817
+""""""""
+Thanks for your help, 
+Ashini
+
+",abolia,https://github.com/CSB5/lofreq/issues/72
+MDU6SXNzdWUzOTgxMTUzMDQ=,Can I use the value of QD (QUAL/DP) to filter the result of Lofreq?,CLOSED,2019-01-11T03:20:03Z,2019-12-19T13:54:54Z,2019-12-19T13:54:53Z,"Hello, I used Lofreq to call snv and indel. It is a good tool.   We were recommend to use QD to  filter the result of the Haplotypecaller. Can I use the QD (QUAL/DP ) to filter the vcf which produced by Lofreq?
+Thanks",Tiredbird,https://github.com/CSB5/lofreq/issues/73
+MDU6SXNzdWU0MDgwODg3ODI=,Duplicated variants reported,CLOSED,2019-02-08T10:23:16Z,2019-10-05T13:48:51Z,2019-02-14T13:49:52Z,"By accident I discovered that some variables (and one header line) are reported twice in the vcf.
+I have no idea why but I think it's a bug that can create problems in downstream analysis if unnoticed.
+```
+$ for vcf  in *{0,1}.vcf; do echo $vcf; sort $vcf | uniq --count | grep ""      2"";  done
+EM02_T0.vcf                                                                                                                                                                            
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM03_T0.vcf                                                                         
+      2 2   16080806    .   C   T   6696    PASS    DP=1082;AF=0.340111;SB=21;DP4=143,296,222,318    
+      2 4   81189504    .   C   G   27588   PASS    DP=2456;AF=0.478013;SB=23;DP4=621,611,685,534    
+      2 4   81189603    .   A   C   49314   PASS    DP=2692;AF=0.969168;SB=0;DP4=1,1,1374,1314    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM04_T0.vcf                                                                         
+      2 4   81189504    .   C   G   22908   PASS    DP=2218;AF=0.448151;SB=4;DP4=620,560,521,512    
+      2 4   81189603    .   A   C   24280   PASS    DP=2266;AF=0.459841;SB=19;DP4=562,631,559,507    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM09_T0.vcf                                                                         
+      2 4   81189603    .   A   C   7887    PASS    DP=787;AF=0.433291;SB=1;DP4=245,186,208,147    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM10_T0.vcf                                                                         
+      2 4   81189603    .   A   C   31118   PASS    DP=2342;AF=0.544833;SB=5;DP4=538,475,733,594    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM11_T0.vcf                                                                         
+      2 4   81189603    .   A   C   47758   PASS    DP=1708;AF=0.951405;SB=0;DP4=0,0,957,748    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM12_T0.vcf                                                                         
+      2 4   81189589    .   C   T   6849    PASS    DP=753;AF=0.394422;SB=1;DP4=234,149,217,147    
+      2 4   81189603    .   A   C   20294   PASS    DP=709;AF=0.980254;SB=0;DP4=0,0,399,308    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM13_T0.vcf                                                                         
+      2 4   81189504    .   C   G   3614    PASS    DP=338;AF=0.461538;SB=1;DP4=86,91,83,78    
+      2 4   81189603    .   A   C   4033    PASS    DP=340;AF=0.500000;SB=2;DP4=80,86,90,84    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM20_T0.vcf                                                                         
+      2 4   81189603    .   A   C   3496    PASS    DP=283;AF=0.515901;SB=13;DP4=66,68,92,57    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM02_T1.vcf                                                                         
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM03_T1.vcf                                                                         
+      2 2   16080806    .   C   T   6149    PASS    DP=985;AF=0.324873;SB=8;DP4=120,275,172,314    
+      2 4   81189504    .   C   G   23316   PASS    DP=2031;AF=0.486460;SB=20;DP4=508,507,565,448    
+      2 4   81189603    .   A   C   49314   PASS    DP=2118;AF=0.974976;SB=0;DP4=1,1,1095,1021    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM04_T1.vcf                                                                         
+      2 4   81189504    .   C   G   22639   PASS    DP=2209;AF=0.444092;SB=14;DP4=617,570,484,536    
+      2 4   81189603    .   A   C   23883   PASS    DP=2366;AF=0.439138;SB=1;DP4=664,640,550,509    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM09_T1.vcf                                                                         
+      2 4   81189603    .   A   C   7942    PASS    DP=788;AF=0.437817;SB=4;DP4=228,206,198,156    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM10_T1.vcf                                                                         
+      2 4   81189603    .   A   C   33086   PASS    DP=2602;AF=0.528055;SB=23;DP4=580,592,787,641    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM11_T1.vcf                                                                         
+      2 4   81189603    .   A   C   49314   PASS    DP=2661;AF=0.964299;SB=0;DP4=3,2,1500,1154    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM12_T1.vcf                                                                         
+      2 4   81189589    .   C   T   6621    PASS    DP=693;AF=0.415584;SB=1;DP4=210,136,213,130    
+      2 4   81189603    .   A   C   18776   PASS    DP=653;AF=0.978561;SB=0;DP4=0,0,375,278    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM13_T1.vcf                                                                         
+      2 4   81189504    .   C   G   3969    PASS    DP=326;AF=0.509202;SB=0;DP4=71,86,74,95    
+      2 4   81189603    .   A   C   3987    PASS    DP=305;AF=0.537705;SB=3;DP4=78,59,87,80    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">    
+EM20_T1.vcf                                                                         
+      2 4   81189603    .   A   C   4337    PASS    DP=352;AF=0.517045;SB=4;DP4=104,61,108,79    
+      2 ##FILTER=<ID=min_indelqual_20,Description=""Minimum Indel Quality (Phred) 20"">
+
+```",romagnolid,https://github.com/CSB5/lofreq/issues/74
+MDU6SXNzdWU0MTA1NTc0NTI=,lofreq2_add_fake_gt.py python 3 support,OPEN,2019-02-15T00:49:54Z,2020-01-17T03:29:21Z,,"From a previous issue (https://github.com/CSB5/lofreq/issues/53), I found out about the `lofreq2_add_fake_gt.py` script for adding a fake sample column. According to the changelog, LoFreq 2.1.3 added support for Python 3. However, `lofreq2_add_fake_gt.py` gives me an error with Python 3 (it works with Python 2):
+```
+Traceback (most recent call last):
+  File ""/path/lofreq2_add_fake_gt.py"", line 184, in <module>
+    main()
+  File ""/path/lofreq2_add_fake_gt.py"", line 179, in main
+    add_fake_gt(args.vcf_in, args.vcf_out, args.samples)
+  File ""/path/lofreq2_add_fake_gt.py"", line 140, in add_fake_gt
+    vcf_writer.writerow(row)
+TypeError: a bytes-like object is required, not 'str'
+```",igordot,https://github.com/CSB5/lofreq/issues/75
+MDU6SXNzdWU0MTk2OTU4NTc=,Strand bias incorrectly computed in areas with unidirectional reads,CLOSED,2019-03-11T21:38:37Z,2019-03-11T21:47:23Z,2019-03-11T21:47:23Z," I'm seeing some homozygous variants get a strand bias value of 2147483647 (2^31-1) in areas with  purely unidirectional reads (which are pretty common in hybrid capture data). The very high strand bias value leads the variants to be filtered out, and can result in a loss of sensitivity. It also seems incorrect - when all of the reads are in one direction it's just not possible to compute strand bias, and any reported value could be misleading. Maybe a NA or NaN would be a better choice? 
+ Happy to provide some concrete examples. 
+Using version Lofreq 2.1.2",brendanofallon,https://github.com/CSB5/lofreq/issues/76
+MDU6SXNzdWU0MTk2OTY4OTM=,Strand Bias in unidirectional reads,CLOSED,2019-03-11T21:41:16Z,2019-04-05T17:29:42Z,2019-04-05T17:29:42Z,"Hi, 
+
+We are seeing that Lofreq is filtering out homozygous calls (using the default filter) in unidirectional areas (where all the reads are supporting the variant, no ref).  After applying the -no-default-filter, we see the Homozygous variant in unidirectional area is given SB=2147483647, which looks weird, not sure if its calculating the SB score correctly. Is there a way to call these homozygous variants that are on unidirectional reads, without turning off the filter.
+
+When I run in the debug mode:
+""
+DEBUG(plp.c|compile_plp_col): Processing 1:5142629
+1	5142629	C	G	counts:rv/fw A:0/0 C:0/0 G:180/0 T:0/0 N:0/0 heads:3 tails:1 ins:0 del:0 hrun=1
+DEBUG(lofreq_call.c|call_snvs): 1 5142629: passing down 180 quals with noncons_counts (0, 180, 0) to snpcaller(num_snv_tests=3 conf->bonf=3, conf->sig=0.010000)
+DEBUG(lofreq_call.c|call_snvs): low freq snp: 1 5142629 G>G pv-prob:1.31177e-639;pv-qual:6388 counts-raw:180/180=1.000000 counts-filt:180/180=1.000000
+""
+Thanks,
+Ashini
+
+ ",abolia,https://github.com/CSB5/lofreq/issues/77
+MDU6SXNzdWU0MjE2NzYzOTI=,Insertions around homopolymers,OPEN,2019-03-15T19:41:21Z,2019-03-15T19:41:21Z,,"Hi, 
+I am trying to estimate the frequency of insertions in a homopolymer. The ""normal"" sequence has seven consecutive A's and I am trying to estimate the proportion of reads with 6 or 8 (or 9, but that one seems to work...) A's. LoFreq's call algorithm throws the following info in debug:
+```
+KC242800.1	6917	T	T	counts:rv/fw A:0/9 C:0/14 G:0/0 T:26/27648 N:0/0 heads:1 tails:0 ins:843 del:89 hrun=7
+DEBUG(lofreq_call.c|call_indels): Ignoring multi-allelic XY>X:X>XY indel of low AF next to Poly-AT at KC242800.1:6917
+```
+Is there a way to get LoFreq to not ignore the insertions?",jonaudet,https://github.com/CSB5/lofreq/issues/78
+MDU6SXNzdWU0MzMzODM0NjE=,put in check for counts of commands/contigs,OPEN,2019-04-15T16:53:42Z,2019-04-15T16:53:42Z,,"The maximum size for a single string argument is limited to 131072. Some non-model organisms will have references with more contigs than this number. If a check isn't done when lofreq is initiating, the consequence is an OSError stating the arg list is too long. Using bedfiles to break up the commands is a work around, and could be suggested if the check requires exiting.
+
+eg:
+INFO [2019-04-14 08:22:43,872]: Adding 413319 commands to mp-pool
+Traceback (most recent call last):
+  File ""/home/lindb/src/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 746, in <module>
+    main()
+  File ""/home/lindb/src/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 669, in main
+    ""##source=%s"" % ' '.join(sys.argv))
+  File ""/home/lindb/src/lofreq_star-2.1.3.1/bin/lofreq2_call_pparallel.py"", line 174, in concat_vcf_files
+    subprocess.check_call(cmd)
+  File ""/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.7.0/lib/python3.7/subprocess.py"", line 323, in check_call
+    retcode = call(*popenargs, **kwargs)
+  File ""/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.7.0/lib/python3.7/subprocess.py"", line 304, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File ""/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.7.0/lib/python3.7/subprocess.py"", line 756, in __init__
+    restore_signals, start_new_session)
+  File ""/cvmfs/soft.computecanada.ca/easybuild/software/2017/Core/python/3.7.0/lib/python3.7/subprocess.py"", line 1499, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+OSError: [Errno 7] Argument list too long: 'lofreq'",brandonlind,https://github.com/CSB5/lofreq/issues/79
+MDU6SXNzdWU0Mzk1NjgxODA=,How are AFs computed?,OPEN,2019-05-02T12:36:34Z,2021-08-02T17:17:55Z,,"I've read in other closed issues that you suggest not to pre-filter reads because that will distort the signal and that's reasonable but I noticed a strange situation.
+Here's the raw counts of a variant obtained from IGV (reference is T)
+
+```
+chr10:123,241,496
+Total count: 137
+A : 0
+C : 137 (100%, 59+, 78- )
+G : 0
+T : 0
+N : 0
+```
+So, I would expect even with strict filters to see an AF of 100%.
+Instead using `-q 30 -Q 30 -m 30` as quality filters this is what I get
+`
+chr10  123241496   .   T   C   2874    PASS    DP=123;AF=0.788618;SB=0;DP4=0,0,52,71
+`
+Can you help understand why that is happening?",romagnolid,https://github.com/CSB5/lofreq/issues/80
+MDU6SXNzdWU0ODYyODQ2MTc=,DP and DP4 do not add up for indels,OPEN,2019-08-28T10:12:09Z,2019-08-28T10:12:09Z,,"Could you explain how DP is computed for indels and what is the more precise way how to compute the variant allele frequency?
+ 
+For instance for indel:
+chr1    11130752        .       TTCA    T       1955    PASS DP=967;AF=0.072389;SB=4;DP4=400,506,27,43;INDEL;HRUN=2
+
+sum(DP4) = 976 > 967 = DP ... which of the two values is a better estimate of the read coverage of the variant (I have seen this for 77% of all indels)
+
+(DP4[2] + DP4[3]) / sum(DP4) =  (27 + 43) / 976 = 0.071721
+(DP4[2] + DP4[3]) / DP =  (27 + 43) / 967 = 0.072389
+... which of the two values is a better estimate of the variant allele frequency? 
+... to compute the variant allele frequency, should I use:
+""(DP4[2] + DP4[3]) / max(sum(DP4), DP)"" ?
+
+Thank you!
+",ivan-mh,https://github.com/CSB5/lofreq/issues/81
+MDU6SXNzdWU1MDI5ODcxMDA=,LofreqSomatic not calling indel which was called by Lofreq and other callers,CLOSED,2019-10-05T16:53:21Z,2019-10-13T01:31:08Z,2019-10-13T01:31:08Z,"Hi, we are having an issue where an indel was called by Lofreq, Manta, Strelka, and MuTect2, but it was not called by LofreqSomatic. We are having difficulties understanding why LofreqSomatic did not call this indel. The indel can be seen here clearly in this IGV snapshot:
+
+(tumor sample on top, matched normal sample on bottom)
+![chr7_55242464_55242465 copy](https://user-images.githubusercontent.com/10505524/66257944-58df6e00-e76d-11e9-9f58-b4ecd1b090ac.png)
+
+Here is the variant as reported by the other callers:
+
+LoFreq:
+```
+chr7	55242464	.	AGGAATTAAGAGAAGC	A	8187	PASS	DP=1622;AF=0.191122;SB=0;DP4=666,688,151,159;INDEL;HRUN=2
+```
+
+Manta:
+```
+chr7	55242464	MantaDEL:4744:0:0:1:0:0	AGGAATTAAGAGAAGC	A	.	.	END=55242479;SVTYPE=DEL;SVLEN=-15;CIGAR=1M15D;UPSTREAM_PAIR_COUNT=0;DOWNSTREAM_PAIR_COUNT=0;PAIR_COUNT=0
+```
+
+Strelka:
+```
+chr7	55242464	.	AGGAATTAAGAGAAGC	A	.	PASS	SOMATIC;QSI=789;TQSI=1;NT=ref;QSI_NT=3070;TQSI_NT=1;SGT=ref->het;MQ=59.99;MQ0=0;RU=GGAATTAAGAGAAGC;RC=1;IC=0;IHP=3;SomaticEVS=16.34	DP:DP2:TAR:TIR:TOR:DP50:FDP50:SUBDP50:BCN50	960:960:1007,1016:0,0:14,11:827.03:2.75:0.00:0.00	1674:1674:1333,1348:339,340:80,69:1439.73:1.64:0.00:0.00
+```
+
+GATK HaplotypeCaller
+```
+chr7	55242464	.	AGGAATTAAGAGAAGC	A	3754.73	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.912;ClippingRankSum=0.000;DP=1737;ExcessHet=3.0103;FS=0.673;MLEAC=1;MLEAF=0.500;MQ=60.00;MQRankSum=0.000;QD=2.19;ReadPosRankSum=5.727;SOR=0.768	GT:AD:DP:GQ:PL	0/1:1387,328:1715:99:3792,0,57107
+```
+
+GATK MuTect2
+```
+chr7	55242464	rs121913421	AGGAATTAAGAGAAGC	A	.	PASS	DB;ECNT=1;HCNT=24;MAX_ED=.;MIN_ED=.;NLOD=182.27;TLOD=678.72	GT:AD:AF:ALT_F1R2:ALT_F2R1:FOXOG:QSS:REF_F1R2:REF_F2R1	0/1:1380,351:0.193:161:190:.:43287,10906:696:684	0/0:1010,0:0.00:0:0:.:35085,0:524:486
+```
+
+
+Any idea why this would have been missed or not reported by LofreqSomatic? The command we are using is:
+
+```
+    lofreq somatic \
+    -n ""${normalBam}"" \
+    -t ""${tumorBam}"" \
+    -f ""${ref_fasta}"" \
+    --threads 16 \
+    -o ""${lofreq_prefix}"" \
+    -d ""${dbsnp_ref_vcf_gz}"" \
+    -l ""${targets_bed}""
+```
+
+Using Lofreq version 2.1.2 installed by conda.",stevekm,https://github.com/CSB5/lofreq/issues/82
+MDU6SXNzdWU1MTQyOTIwMDQ=,Option to force calls at specific sites?,CLOSED,2019-10-29T23:25:15Z,2019-12-19T13:47:21Z,2019-12-19T13:47:21Z,"Hi, I was wondering if it was possible (or would be possible to add) to force LoFreq to make calls at sites specified in a VCF for instance? I have aligned reads from multiple tissue samples that were physically near one another and have run LoFreq on the the individual sample BAMs. The majority of variant calls appear in all of the individual VCF files but especially for the low-frequency variants there are cases where it will only be called in a few of the samples. If I do a pileup of the reads for all samples I can see that in these cases, there are few variant reads in those samples so probably the independent LoFreq couldn't catch it, but would it be possible to go back and force a call given that it was confidently identified in another sample? If this is not currently possible with LoFreq, any ideas for a workaround? Or would manually parsing the pileup file and looking at the sites that were called independently be the best option?
+
+Thanks,
+Jesse",JesseDGibson,https://github.com/CSB5/lofreq/issues/83
+MDU6SXNzdWU1MzI3MDIzODQ=,effect of capping MQ on reads with MQ 255,CLOSED,2019-12-04T13:58:49Z,2019-12-31T03:10:15Z,2019-12-19T13:53:51Z,"Not sure if understand the behavior of lofreq call correctly here, but I think that:
+
+with `--no-mq` set to anything lower than 255 mapping qualities of 255 will be capped to the new limit *before* the SNP caller sees them? If so, then the effort to turn mqs of 255 into -1 before calculating error probabilities would be futile?
+
+Would that mean that if one wants to cap mapping qualities, one should first remove reads with MQ 255 in a preprocessing step?",wm75,https://github.com/CSB5/lofreq/issues/84
+MDU6SXNzdWU1MzI4MDY3Mzk=,call_pparallel without filtering produces vcf.gz unconditionally,CLOSED,2019-12-04T16:46:59Z,2019-12-19T13:37:41Z,2019-12-19T13:37:41Z,"If the final ouput destination is a file, the script simply copies the concatenated data even if the final file name does not end in.gz:
+
+https://github.com/CSB5/lofreq/blob/f2c00dc3345f9be2a5f400d171cfe942e335cf5f/src/scripts/lofreq2_call_pparallel.py#L722
+
+",wm75,https://github.com/CSB5/lofreq/issues/85
+MDU6SXNzdWU1NDk1OTg0Nzc=,Official tag for 2.1.4?,CLOSED,2020-01-14T14:19:24Z,2020-01-14T15:13:02Z,2020-01-14T15:13:02Z,"I noticed that the changelog has a release date of 2019-01-04 for 2.1.4, could we make an official tag/release for inclusion in bioconda?",johnnygenomics,https://github.com/CSB5/lofreq/issues/87
+MDU6SXNzdWU1NjY0ODM3NDY=,BD/BI tags are missing (no indels were called),CLOSED,2020-02-17T19:34:38Z,2020-02-19T10:56:12Z,2020-02-19T10:56:12Z,"Hi!
+
+I've used the BaseRecalibrator from GATK (v 4.1.4.1), but  no indels were called with `lofreq call-parallel --call-indel ...`. After my investigation it seems that the new GATK do not insert BD and BI tags to the SAM format. I did not find the specific statement from the GATK team of abandoning them except some mention few years ago that they have this intention.
+
+Could you check - am I doing something wrong or GATK BaseRecalibrator should be removed from the best practices. 
+
+Thanks,
+Semion",sleyn,https://github.com/CSB5/lofreq/issues/88
+MDU6SXNzdWU1Njc3NTYxMjM=,LoFreq 2.4 indelqual filter error,CLOSED,2020-02-19T18:29:07Z,2020-06-15T08:09:21Z,2020-06-15T03:19:45Z,"Hi,
+
+It is the continuation of my previous BI/DB issue.
+
+I've tried to do `lofreq indelqual` with the new 2.4 version on my BAM file. The subsequent `lofreq call-parallel` failed saying something about error on the filtering command (sorry - I did not copy the exact error message). With `--no-default-filter` parameter I found that in VCF files indels had only HRUN field, but no DP,AF,SB and DP4.
+
+I've tried to look in BAM file, but for me it looked good - BI/BD tags were added.
+
+With the LoFreq 2.3.1 everything works perfect. So I'll stay with this version for now.",sleyn,https://github.com/CSB5/lofreq/issues/89
+MDU6SXNzdWU1OTczNzAwNDI=,LoFreq 2.1.4 indelqual -dindel issue writing to stdout,OPEN,2020-04-09T15:36:06Z,2020-04-24T00:35:05Z,,"I'm running lofreq indelqual with the -dindel option on CentOS 7.
+
+With the default option to write to stdout it hangs, although if --out is selected to write to file it takes about 30s to generate output.",smrey,https://github.com/CSB5/lofreq/issues/90
+MDU6SXNzdWU2MDAzMzE1NTM=,LOFreq Improvements for HPC - buffers,OPEN,2020-04-15T14:15:48Z,2020-04-21T06:11:51Z,,"Greetings from ACC Cyfronet HPC Software Team
+
+Recently due to COVID outbreak number of genomic jobs on our clusters has significantly raised.
+Unfortunately most of the codes are not dealing well with distributed parallel filesystems like Lustre. This leads to resource underutilization long waiting for results and general frustration
+
+Here is the first set of changes proposed to improve I/O for LOFREQ:
+* **changed buffers to 1MB size**
+* change **fgets** to **fread** to prevent use of smaller read chunks than desired
+
+using big buffer for reading and writing:
+-  reduces numer of syscalls needed to process a file (4k->1M means 256x less syscalls which got a little bit more expensive due to Meltdown/Spectre cpu bugs). 
+- reduces number of RPC in Lustre, and helps with readaheads
+
+In our case job cpu efficiency has rised from 60% to 100% by eliminating disk waits caused by lots of small i/o operations. 
+
+
+Please review proposed changes and if accepted please credit them to Cyfronet HPC Software Team and  Maciej Czuchry m.czuchry (at) cyfronet.pl
+
+[hpc-buffers.patch.gz](https://github.com/CSB5/lofreq/files/4481687/hpc-buffers.patch.gz)
+
+
+",lflis,https://github.com/CSB5/lofreq/issues/91
+MDU6SXNzdWU2MDMxOTcyMzE=,Error when specifying --min-cov parameter,CLOSED,2020-04-20T12:23:10Z,2020-04-20T13:49:27Z,2020-04-20T13:49:27Z,"Hello, I am trying to create a cwl tool (https://github.com/common-workflow-language/common-workflow-language) for **Lofreq call-parallel** in the context of virtual bio hackaton (https://github.com/virtual-biohackathons/covid-19-bh20/wiki).
+
+I have a problem, when I want to specify the ""min-voc"" parameter in the command line, nothing works.
+Otherwise it seems to work normally.
+I use Lofreq from the Docker container **biocontainers/lofreq:2.1.4--py27hc3dfafe_1**
+
+
+#### when I don't specify min-cov:
+```
+INFO [2020-04-20 12:16:59,404]: Using 1 threads with following basic args: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam
+
+INFO [2020-04-20 12:16:59,412]: Adding 4 commands to mp-pool
+Number of substitution tests performed: 33024
+Number of indel tests performed: 3017
+INFO [2020-04-20 12:17:22,679]: Executing lofreq filter -i /tmp/lofreq2_call_parallel1IsoW1/concat.vcf.gz -o SRR11247078.fastqsanger.fastp_markduplicates_realigned_variant.vcf --snvqual-thresh 65 --indelqual-thresh 55
+```
+
+#### when I specify min-cov:
+```
+INFO [2020-04-20 12:09:34,067]: Using 1 threads with following basic args: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min_cov 100 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam
+
+INFO [2020-04-20 12:09:34,076]: Adding 4 commands to mp-pool
+CRITICAL [2020-04-20 12:09:34,095]: Following command failed with status 1: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min_cov 100 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam --no-default-filter -r ""NC_045512:7476-14951"" -o /tmp/lofreq2_call_parallelWetWuj/1.vcf.gz > /tmp/lofreq2_call_parallelWetWuj/1.log 2>&1
+CRITICAL [2020-04-20 12:09:34,101]: Following command failed with status 1: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min_cov 100 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam --no-default-filter -r ""NC_045512:14952-22427"" -o /tmp/lofreq2_call_parallelWetWuj/2.vcf.gz > /tmp/lofreq2_call_parallelWetWuj/2.log 2>&1
+CRITICAL [2020-04-20 12:09:34,106]: Following command failed with status 1: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min_cov 100 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam --no-default-filter -r ""NC_045512:22428-29903"" -o /tmp/lofreq2_call_parallelWetWuj/3.vcf.gz > /tmp/lofreq2_call_parallelWetWuj/3.log 2>&1
+CRITICAL [2020-04-20 12:09:34,111]: Following command failed with status 1: lofreq call --bonf dynamic --min-alt-bq 30 --min-bq 30 --min_cov 100 --min-mq 20 --sig 0.01 --call-indels -f covid19.fa SRR11247078.fastqsanger.fastp_markduplicates_realigned.bam --no-default-filter -r ""NC_045512:1-7475"" -o /tmp/lofreq2_call_parallelWetWuj/0.vcf.gz > /tmp/lofreq2_call_parallelWetWuj/0.log 2>&1
+CRITICAL [2020-04-20 12:09:34,189]: Some commands in pool failed. Can't continue
+INFO [job test-lofreq.cwl] Max memory used: 0MiB
+```
+
+Could you help me understand what the problem is?",cjuigne,https://github.com/CSB5/lofreq/issues/92
+MDU6SXNzdWU2MjY4NjA5MDY=,No output?,OPEN,2020-05-28T22:39:37Z,2020-06-15T01:49:44Z,,"I tried running lofreq with the `call` option: 
+```
+lofreq call -s -S /path/to/dbsnp_147_b37_common_all_20160601.vcf -f \
+  /path/to/Homo_sapiens_assembly19.fasta -o /path/to/output.vcf /path/to/tumor_bam.bam
+```
+
+However, I do not see any calls, and I only see a VCF header in `output.vcf`. All that is in the log is: 
+```
+Number of substitution tests performed: 0
+Number of indel tests performed: 0
+```
+
+Is there a reason why this might be?",vymao,https://github.com/CSB5/lofreq/issues/93
+MDU6SXNzdWU2Mjc3OTUxNzQ=,Handling of soft-clipped bases,CLOSED,2020-05-30T18:48:34Z,2020-06-12T15:30:14Z,2020-06-12T15:30:14Z,"Hi there
+
+I am trying to confirm that soft-clipped bases are not used by LoFreq. I checked paper and documentation but couldn't find an answer. The motivation is to confirm that soft clipping primers from hundreds of overlapping amplicons (e.g. using [primerclip](https://github.com/swiftbiosciences/primerclip)) will truly hide the primer bases from LoFreq. Variant callers that use local realignment will rescue soft-clipped bases, but I believe LoFreq will not (which would be great for my use case).
+
+Thanks
+Roberto",rspreafico-vir,https://github.com/CSB5/lofreq/issues/94
+MDU6SXNzdWU2NDE1MDM0NDQ=,GLIBC problem during installation,CLOSED,2020-06-18T19:39:58Z,2020-06-19T08:55:40Z,2020-06-19T08:55:40Z,"Hi again. I've solved this problem, but just to let you know.
+
+I failed to install lofreq 2.1.5 through conda or use pre-compiled binaries. The problem seems that on our lab CentOS server have GLIBC 2.17, but LoFreq expects 2.23.
+
+The precompiled binaries produced and error `lofreq: /lib64/libm.so.6: version `GLIBC_2.23' not found (required by lofreq)`. Conda installation also failed while testing GLIBC.
+
+Compiling from the source seems work - my test BAM file was processed successfully.",sleyn,https://github.com/CSB5/lofreq/issues/96
+MDU6SXNzdWU2NDMzNTY2NjI=,Confirm that --max-depth is per-base coverage,CLOSED,2020-06-22T20:58:13Z,2020-06-26T15:42:29Z,2020-06-26T09:55:02Z,"Hi there,
+
+just wanted to confirm that `--max-depth` caps coverage at per-base level, as opposed to read level. I have a dataset with pretty uneven coverage (by design, because of the way the assay works) and some of the low-coverage sites seem not to get as much coverage as I anticipated, and I wonder whether that is because I am capping depth.
+
+Thank you!",rspreafico-vir,https://github.com/CSB5/lofreq/issues/97
+MDU6SXNzdWU2NDM5NzMyMDc=,Linux binary v2.1.5 should have statically linked dependencies ,OPEN,2020-06-23T16:16:31Z,2020-06-30T16:36:21Z,,"It would be pretty useful if the precompiled binaries had statically linked dependencies, so users wouldn't have to install them themselves (potentially leading to dependency hell). For instance, when trying to run ""lofreq_star-2.1.5_linux-x86-64/bin/lofreq"" there's an immediate error about a missing shared library - libhts.so.3 in this case. If the binary were statically linked these shared libraries would be included in the binary, saving the users from tracking down and manually installing the libs. 
+",brendanofallon,https://github.com/CSB5/lofreq/issues/98
+MDU6SXNzdWU2NTUxOTM2Mjk=,AF/SNV quality filters are not appliable together,OPEN,2020-07-11T11:43:19Z,2023-09-20T02:53:43Z,,"If I try to filter with -a, -r and -s flags together, I get an error:
+`ERROR(lofreq_filter.c|apply_af_filter:258): Couldn't parse EF from af_char 0.024793. Disabling AF filtering`
+although it runs smoothly using just -a.",stefanches7,https://github.com/CSB5/lofreq/issues/99
+MDU6SXNzdWU2NjI2NzY5MjM=,Running lofreq_star-2.1.5_linux-x86-64 on Linux 3.10.0-862.3.3.el7.x86_64 x86_64,OPEN,2020-07-21T07:09:03Z,2020-07-21T07:27:12Z,,"Hi and thank you for developing lofreq. 
+
+According to your blog: _Download the binary LoFreq distribution matching your system (e.g. Linux or MacOSX) from the dist folder on Github and unpack it. LoFreq can then simply be called with ./lofreq_star-2.1.0/bin/lofreq (assuming you downloaded version 2.1.0). You can move the folder anywhere you like (just preserve its structure) or copy its contents to a system-wide installation path, e.g. /usr/local_
+
+When I try ofreq_star-2.1.5_linux-x86-64 i get the error message: `./lofreq: error while loading shared libraries: libhts.so.3: cannot open shared object file: No such file or director`
+
+lofreq_star-2.1.0 works as described in the blog. 
+
+What could be the issue? 
+
+
+",HagenC,https://github.com/CSB5/lofreq/issues/100
+MDU6SXNzdWU2OTA5NjI3OTk=,invalid vcf output (according to Picard),OPEN,2020-09-02T12:02:00Z,2020-09-16T14:57:34Z,,"Hi, I'm working on integrating lofreq into the bcbio-nextgen framework/pipeline but ran into an issue. 
+
+Bcbio uses gathervcfs (Picard) but does not work since chromsomes/contigs are missing from the lofreq output vcf header. This can be corrected using the Picard UpdateVcfSequenceDictionary tool but it cannot be piped, unfortunately. If possible, I'd rather avoid using temp files or some homegrown script to solve the issue. 
+
+Would it be possible to update lofreq to make it produce vcfs that are accepted by Picard?
+",parlar,https://github.com/CSB5/lofreq/issues/101
+MDU6SXNzdWU3MDc0MjgyOTg=,How to enable lofreq cluster command?,CLOSED,2020-09-23T14:42:06Z,2020-10-05T01:31:27Z,2020-10-05T01:31:26Z,"Hi.
+
+Can I ask a question about installing optional commands? I tried to compile lofreq from the source package but the compiled binary does not show `lowfreq cluster` command. How can I enable `lowfreq cluster` command? The extra command of `lowfreq vcfplot` works fine. 
+
+```
+$ lofreq cluster
+FATAL(lofreq_main.c|main:336): Unrecognized command 'cluster'
+```
+
+The `lofreq` command line output is:
+
+```
+$ lofreq 
+
+       |             ____|                 
+       |       _ \   |     __|  _ \   _` | 
+       |      (   |  __|  |     __/  (   | 
+      _____| \___/  _|   _|   \___| \__, | 
+                                        _| 
+
+Fast and sensitive inference of SNVs and indels
+
+Usage: lofreq <command> [options]
+
+  Main Commands:
+    call          : Call variants
+    call-parallel : Call variants in parallel
+    somatic       : Call somatic variants
+
+  Preprocessing Commands
+    viterbi       : Viterbi realignment
+    indelqual     : Insert indel qualities
+    alnqual       : Insert base and indel alignment qualities
+
+  Other Commands:
+    checkref      : Check that reference fasta and BAM file match
+    filter        : Filter variants in VCF file
+    uniq          : Test whether variants predicted in only one sample really are unique
+    plpsummary    : Print pileup summary per position
+    vcfset        : VCF set operations
+    version       : Print version info
+
+  Samtools Clones:
+    faidx         : Create index for fasta file
+    index         : Create index for BAM file
+    idxstats      : Print stats for indexed BAM file
+
+  Extra Tools (if installed):
+    vcfplot       : Plot VCF statistics
+```
+
+I tried both the GitHub source and `lofreq_star-2.1.5.tar.gz` source package. PyVCF, Scipy, Numpy, and Matplotlib are all installed.
+
+Thanks,
+
+Jung-woo
+",jwsohn,https://github.com/CSB5/lofreq/issues/102
+MDU6SXNzdWU3MDkyNjAxNzA=,indelqual 'unknown op 3 for read' error,OPEN,2020-09-25T20:25:01Z,2023-10-11T23:35:09Z,,"Hi, I'm running LoFreq 2.1.5 with the command:
+```
+lofreq indelqual --dindel --ref hg19a.fa --out indelqual.bam <my_bam>
+```
+
+but I'm getting an error:
+```
+
+FATAL(lofreq_indelqual.c|dindel_fetch_func:195): unknown op 3 for read EXAMPLE:4:1112:9354:2891
+```
+
+I pulled out the read the error references:
+```
+EXAMPLE:4:1112:9354:2891   177     1       14757   0       73M966N2M       15      102516464       0       GGGATGGAGTCTGACACGCGGGCAAAGGCTCCTCCGGGCCCCTCACCAGCCCCAGGTCCTTTCCCAGAGATGCCT     JJJA-JFAJJJFJJJJJJJJJFAJJJJJJJJJJF7FAFAJJJJFJJFJJJJJJJJJJJJJJJJJJJJJFJFAAAA  MD:Z:75 PG:Z:MarkDuplicates     RG:Z:244717     ZJ:Z:14830-15795        NM:i:0  AS:i:75 XS:i:75
+```
+I'm not sure what the issue is though.",mattdoug604,https://github.com/CSB5/lofreq/issues/103
+MDU6SXNzdWU3NDA5MTI3NTE=, Warning: indel calls (before filtering) were made without indel alignment-quality,OPEN,2020-11-11T16:46:19Z,2023-10-17T15:11:13Z,,"Hi,
+
+I ran the lofreq variant calling with --call-indels option, and I see the above warning thrown during the runtime. This is despite running realignment and InDel qual inclusion prior to running call module of lofreq.  The exact wordings of the warning
+```
+indel calls (before filtering) were made without indel alignment-quality! Did you forget to indel alignment-quality to your bam-file?
+```
+
+The output does generate INDELs but not sure if I can trust the result after seeing this warning.
+
+Following commands were run:
+
+```
+lofreq viterbi --verbose -f ref.fasta -o sample_lofreq_realign.bam  sample_bwa_mark_dup.bam
+
+lofreq indelqual --verbose --dindel -f ref.fasta -o sample_lofreq_realign_indelq.bam sample_lofreq_realign.bam
+
+samtools sort -o sample_lofreq_realign_indelq_sorted.bam sample_lofreq_realign_indelq.bam
+
+samtools index sample_lofreq_realign_indelq_sorted.bam
+
+lofreq call --call-indels --min-cov 50 -q 30 -Q 30 -m 20 --verbose -f ref.fasta -o sample_lofreq_realign_indelq_call.vcf sample_lofreq_realign_indelq_sorted.bam
+```
+The reason for running lofreq indelqual instead of GATK’s BQSR because the sample is virus instead of human. 
+
+Mark duplicates was run through Picard using the following code
+```
+ java -jar /opt/packages/picard/2.20.2/picard.jar MarkDuplicates \
+       I=sample_bwa_sorted.bam \
+       O=sample_bwa_mark_dup.bam \
+       M=sample_mark_dup_metrics.txt
+
+ samtools index sample_bwa_mark_dup.bam
+```
+Please let me know how can I fix this issue.
+
+Thanks, Rahil",rahil19,https://github.com/CSB5/lofreq/issues/104
+MDU6SXNzdWU3NDExMzUxMjI=,"Problem finding ""htslib_static.mk"" on make",CLOSED,2020-11-11T23:14:16Z,2021-01-06T07:24:46Z,2021-01-06T07:24:46Z,"I get the following error when I try to make after configuring:
+
+`Making all in src/cdflib90
+make[1]: Entering directory `/home1/dnbuckle/bin/lofreq/src/cdflib90'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/home1/dnbuckle/bin/lofreq/src/cdflib90'
+Making all in src/uthash
+make[1]: Entering directory `/home1/dnbuckle/bin/lofreq/src/uthash'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/home1/dnbuckle/bin/lofreq/src/uthash'
+Making all in src/lofreq
+make[1]: Entering directory `/home1/dnbuckle/bin/lofreq/src/lofreq'
+Makefile:642: /home1/dnbuckle/bin/lib/htslib-1.10.2//htslib_static.mk: No such file or directory
+make[1]: *** No rule to make target `/home1/dnbuckle/bin/lib/htslib-1.10.2//htslib_static.mk'.  Stop.
+make[1]: Leaving directory `/home1/dnbuckle/bin/lofreq/src/lofreq'
+make: *** [all-recursive] Error 1`
+
+I've looked for ""htslib_static.mk"" everywhere I can think of, I've tried rebuilding my htslib, I've tried prayer, nothing seems to fix it.
+
+Thanks in advance for advance for any help,
+DB",dnbuckley,https://github.com/CSB5/lofreq/issues/105
+MDU6SXNzdWU3NTI5MjQ3NTU=,Ignore non ACGT positions in reference,CLOSED,2020-11-29T14:06:04Z,2021-01-06T07:34:06Z,2021-01-06T07:34:06Z,"Doesn't make sense and furthermore produces non-ASCII output. 
+
+See bug reported by Kostiantyn Dreval and Ryan Morin in LoFreq 2 somatic",andreas-wilm,https://github.com/CSB5/lofreq/issues/106
+MDU6SXNzdWU3NTczNTkzNDg=,merging fails during somatic variant calling (in parallel mode),CLOSED,2020-12-04T19:47:30Z,2021-01-06T07:33:23Z,2021-01-06T07:33:23Z,"We have been encountering a fatal error on some genome pairs when we run lofreq somatic with multiple threads. The error message is not particularly informative but I was able to track this problem down to an error during the merging of individual vcfs to the combined vcf. This step was erroring out with a complaint about multi-allelic variants. I found that switching the merge step to use bcftools concat has resolved the issue. If you are interested in a patch I can start a pull request from our forked version of this repo. 
+
+```
+CRITICAL [2020-12-03 20:50:00,103]: The following command failed with code 1: lofreq call-parallel --pp-threads 24 -d 101000 -f /projects/rmorin/projects/gambl-repos/gambl-mutect2-lhilton/ref/lcr-modules-references/genomes/hg38/genome_fasta/genome.fa --verbose --no-default-filter -b 1 -a 0.010000 -C 7 -s -S results/gambl/lofreq-1.0/01-lofreq/genome--hg38/BLGSP-71-26-00400-01A-01E--BLGSP-71-06-00286-99A-01D--unmatched/normal_stringent.snvs.vcf.gz,results/gambl/lofreq-1.0/01-lofreq/genome--hg38/BLGSP-71-26-00400-01A-01E--BLGSP-71-06-00286-99A-01D--unmatched/normal_stringent.indels.vcf.gz results/gambl/lofreq-1.0/00-inputs/bam/genome--hg38/BLGSP-71-26-00400-01A-01E.bam -o results/gambl/lofreq-1.0/01-lofreq/genome--hg38/BLGSP-71-26-00400-01A-01E--BLGSP-71-06-00286-99A-01D--unmatched/tumor_relaxed.vcf.gz
+CRITICAL [2020-12-03 20:50:00,104]: Received the following on stderr:
+CRITICAL [2020-12-03 20:50:00,104]: Somatic SNV caller failed. Exiting
+```
+",rdmorin,https://github.com/CSB5/lofreq/issues/108
+MDU6SXNzdWU3ODYyNTI0ODI=,Issue during the make stage,OPEN,2021-01-14T19:23:48Z,2021-01-15T00:49:43Z,,"I tried to run the make command while following the instructions from readme file.
+When I encountered this error:
+
+`#include ""gsl/gsl_randist.h""` not found
+
+Is anyone else also facing this issue?
+
+In order to combact it, I commented the following two lines in `snpcaller.c`
+`#include ""gsl/gsl_randist.h""`
+`#include ""gsl/gsl_cdf.h""`",Lakshay-sethi,https://github.com/CSB5/lofreq/issues/110
+MDU6SXNzdWU4MjQwMTE2NDU=,lofreq_star-2.1.5_linux-x86-64 : ./lofreq: error while loading shared libraries: libhts.so.3,CLOSED,2021-03-07T20:31:59Z,2022-09-02T21:11:14Z,2021-03-08T07:42:50Z,"According to your blog the installation is simple:
+
+""Installation from Binary Packages
+Download the binary LoFreq distribution matching your system (e.g. Linux or MacOSX) from the dist folder on Github and unpack it. LoFreq can then simply be called with ./lofreq_star-2.1.0/bin/lofreq (assuming you downloaded version 2.1.0). You can move the folder anywhere you like (just preserve its structure) or copy its contents to a system-wide installation path, e.g. /usr/local
+
+cp -rv ./lofreq_star-2.1.0/* /usr/local/""
+
+However running ./lofreq  from gives the following error message: ./lofreq: error while loading shared libraries: libhts.so.3: cannot open shared object file: No such file or directory.
+
+What does that mean and how can I solve it? 
+Thanks.
+",HagenC,https://github.com/CSB5/lofreq/issues/111
+MDU6SXNzdWU4NDAxODAwMjM=,Missing Variant with 90% AF,CLOSED,2021-03-24T21:30:26Z,2021-03-27T03:36:56Z,2021-03-25T15:41:23Z,"Hello, 
+
+We are using LoFreq to detect mutation in a SARS-Cov2 sample, which is working quite well. However, we are puzzled with one mutation missed by LoFreq. As you can see in IGV the SNP has a frequency over > 90%.  What is strange is that at the exact same position there is a deletion reported with an allele frequency of ""0.000294"". 
+
+![Sample_igv_POS28048](https://user-images.githubusercontent.com/64089085/112384771-2f9a0100-8cc5-11eb-9977-13984c15dcb4.png)
+
+I am attaching a bam file here
+[Sample_POS28048.zip](https://github.com/CSB5/lofreq/files/6200525/Sample_POS28048.zip)
+
+Thank you.",npatel-ah,https://github.com/CSB5/lofreq/issues/112
+MDU6SXNzdWU4NTA3MzM4MTk=,I have trouble to run bootstrap,CLOSED,2021-04-05T22:05:29Z,2021-04-09T01:37:37Z,2021-04-09T01:37:37Z,"Hello:
+
+I attempted to build lofreq 2.1.5 for our users on RHEL 7.4 system. By review README, I have the followings in path:
+ module load python/3.7.3-anaconda
+ module load htslib/1.10.2
+ our system has zlib-devel rpm installed
+
+I git clone the source code for this site, however, ./bootstrap command hung, I only notice that autom4te.cache directory has a time stamp change but nothing else.
+
+May you please point out the  possibly reasons and provide suggestion?
+
+Thank you in advance.
+Rong
+
+ ",ryao-mdanderson,https://github.com/CSB5/lofreq/issues/113
+MDU6SXNzdWU4NTk4ODUzODU=,ERROR in temp file ,OPEN,2021-04-16T14:50:05Z,2021-04-28T01:40:11Z,,"Hello, I' m currently performing a variant calling on human fastq with LoFreq, I'm experimentig the issue in the title, and the following error appears:
+ERROR(lofreq_call.c|main_call:1408): Couldn't open /tmp/lofreq2-call-dyn-bonf.m6pt5o
+ERROR(lofreq_call.c|main_call:1408): Couldn't open /tmp/lofreq2-call-dyn-bonf.Q3JZXo
+ERROR(lofreq_call.c|main_call:1408): Couldn't open /tmp/lofreq2-call-dyn-bonf.8NdFDn
+ERROR(lofreq_call.c|main_call:1408): Couldn't open /tmp/lofreq2-call-dyn-bonf.JjJTbv
+
+This error shows up only for some samples of the same run, for other samples the software works perfectly, could you help me in some way?
+Best Regards",robertosirica,https://github.com/CSB5/lofreq/issues/114
+MDU6SXNzdWU5MjcyMjcxMDk=,"Meaning of normal_relaxed, tumor_relaxed, .._stringent (question)",OPEN,2021-06-22T13:20:00Z,2021-06-22T13:20:00Z,,"Hi,
+I was wondering what data exactly we can find in the above mentioned vcf files. My guess is that the normal_relaxed.snv.vcf file contains all snvs that can be found in the normal sample. In the _stringent file more filters have been applied to the \_relaxed file, so we will see a subgroup of the snvs from \_relaxed. 
+The same would apply to the tumor\_ files.
+Is this correct? Because when looking at those files in the a genome browser the mutation frequency seems to be higher in the ""\_normal"" file. So either I mixed something up in my labeling or I understood these files wrong.
+
+Best, Max",max-vdL,https://github.com/CSB5/lofreq/issues/115
+MDU6SXNzdWU5MzczMjc1NTI=,Using LoFreq-NQ?,OPEN,2021-07-05T19:40:46Z,2022-05-13T07:18:58Z,,"Hi, and thanks for developing LoFreq!
+
+We've been looking into using the ""LoFreq-NQ"" approach described in [Wilm 2012](https://pubmed.ncbi.nlm.nih.gov/23066108/), which doesn't take Phred quality values into account and instead uses a 12-parameter model based on the 12 possible nucleotide substitutions. (The main motivation is that the dataset I'm working with right now doesn't have reliable Phred quality values.)
+
+However, I can't seem to find an option for using LoFreq-NQ, or otherwise ignoring individual bases' Phred quality information, when running LoFreq (installed version 2.1.3.1 via bioconda). I can see various options for ignoring BAQ values, and I can see options for filtering bases based on their qualities, but I can't see an option to just ignore all positions' base quality values.
+
+I can see that there is code for LoFreq-NQ distributed with [LoFreq version 0.1 on SourceForge](https://sourceforge.net/projects/lofreq/files/), but I know LoFreq has been developed a lot since this version's release in 2012 :) Is there a recommended ""best practice"" way of currently using LoFreq-NQ, or has the functionality in LoFreq-NQ mostly been deprecated / integrated into the ""main"" version of LoFreq / etc.?
+
+Thank you!",fedarko,https://github.com/CSB5/lofreq/issues/116
+MDU6SXNzdWU5NTM0MjU5OTM=,Adding genotype information,OPEN,2021-07-27T01:53:15Z,2022-08-03T00:30:40Z,,"Hi,
+I'd like to use `lofreq` for my pipeline, but I require genotype information for downstream commands. I tried using `lofreq2_add_sample.py` like so:
+
+```
+./lofreq2_add_sample.py -i in.vcf.gz -o out.vcf.gz -b $BAM
+``` 
+
+However, I get the following error:
+```
+Traceback (most recent call last):
+  File ""./lofreq2_add_sample.py"", line 312, in <module>
+    main()
+  File ""./lofreq2_add_sample.py"", line 307, in main
+    add_plp_to_vcf(args.vcf_in, args.vcf_out, args.bams)
+  File ""./lofreq2_add_sample.py"", line 229, in add_plp_to_vcf
+    for row in vcf_reader:
+_csv.Error: iterator should return strings, not bytes (did you open the file in text mode?)
+
+```
+If I change the read mode for files in the `add_plp_to_vcf` function from 'rb' to 'r' to try and get around this error, I get:
+```
+Traceback (most recent call last):
+  File ""./lofreq2_add_sample.py"", line 312, in <module>
+    main()
+  File ""./lofreq2_add_sample.py"", line 307, in main
+    add_plp_to_vcf(args.vcf_in, args.vcf_out, args.bams)
+  File ""./lofreq2_add_sample.py"", line 245, in add_plp_to_vcf
+    vcf_writer.writerow(row)
+  File ""/usr/lib/python3.8/gzip.py"", line 276, in write
+    data = memoryview(data)
+TypeError: memoryview: a bytes-like object is required, not 'str'
+```
+Do you have a workaround? My python version is 3.8.6. Thanks.",charlesfoster,https://github.com/CSB5/lofreq/issues/117
+MDU6SXNzdWU5ODEwNjM3NzI=,Force overwrite,OPEN,2021-08-27T09:39:15Z,2021-08-27T09:39:15Z,,"It would be useful to have some command option to overwrite already written/unfinished files. Or is there any?
+When snakemake pipeline crashes or I have to abort it, then I am getting ""Cowardly rejecting to overwrite"" error. I would like to deal with it more easily and predictably. ",robinjugas,https://github.com/CSB5/lofreq/issues/118
+MDU6SXNzdWU5ODkwMzE0OTY=,Quality scores,OPEN,2021-09-06T10:36:43Z,2021-11-27T17:15:43Z,,"Hi, I have run LoFreq on nanopore sequencing data from naso-pharyngeal swab samples and have quality scores ranging from  71 to 12410. What do the quality scores mean as I thought they were Phred scores but my scores don't appear to be similar to Phred scores. Please can you help me understand what my quality scores mean?
+
+Thanks!",hannahgoldswain,https://github.com/CSB5/lofreq/issues/119
+MDU6SXNzdWU5OTEyMTM1NjY=,"Problem with ""lofreq call""",CLOSED,2021-09-08T14:37:41Z,2021-09-11T14:47:22Z,2021-09-11T14:47:22Z,"Hello, 
+I did the ""lofreq call"" as usual:
+firstly, I have assessed the quality of alignement with code:
+./lofreq indelqual --dindel -f reference.fa -o file_indelqual.bam file.bam
+
+I got the ""file_indelqual.bam"" file
+
+Secondly, I used this code to obtain the vcf :
+./lofreq call -f + reference.fa --call-indels -o nom.vcf file_indelqual.bam
+
+after this code, it displays: 
+FATAL(plp.c|mpileup:1420): Reference fasta file doesn't seem to contain the right sequence(s) for this BAM file. (mismatch for seq XXX listed in BAM header)
+
+I recheck the samtools, there is no pbl for .sam to .bam
+I can not understand where is the pbl.
+
+Do you have some ideas for solving this pbl?
+
+thanks
+
+",MartinL1106,https://github.com/CSB5/lofreq/issues/120
+I_kwDOAYy7uM4_mH8y,"/bin/sh: line 1: 16782 Killed  and  CRITICAL [2021-11-30 08:43:03,767]: Following command failed with status 137",CLOSED,2021-11-30T08:52:16Z,2021-12-07T10:39:01Z,2021-12-03T13:31:02Z,"Hello I have those type of error in my Lofreq run:
+
+NFO [2021-11-30 08:42:58,602]: Using 30 threads with following basic args: lofreq call --no-default-filter --call-indels -f /home1/datawork/gchevign/Projet_filtration_ta
+ngentielle.dir/08-BCFTools.dir/modified-ref_CA.dir/ONT_ref_Thau_OsHV1_CA.fasta /home1/datawork/gchevign/Projet_filtration_tangentielle.dir/13-LoFreq.dir//lofreq-out.bam
+
+INFO [2021-11-30 08:42:58,661]: Adding 64 commands to mp-pool
+/bin/sh: line 1: 16782 Killed                  lofreq call --no-default-filter --call-indels -f /home1/datawork/gchevign/Projet_filtration_tangentielle.dir/08-BCFTools.di
+r/modified-ref_CA.dir/ONT_ref_Thau_OsHV1_CA.fasta /home1/datawork/gchevign/Projet_filtration_tangentielle.dir/13-LoFreq.dir//lofreq-out.bam --no-default-filter -r ""ONT_Os
+HV-1_Thau:85876-89056"" -o /dev/shm/pbs.8080705.datarmor0/lofreq2_call_parallelldzmhl7s/27.vcf.gz > /dev/shm/pbs.8080705.datarmor0/lofreq2_call_parallelldzmhl7s/27.log 2>&
+1
+CRITICAL [2021-11-30 08:43:03,119]: Following command failed with status 137: lofreq call --no-default-filter --call-indels -f /home1/datawork/gchevign/Projet_filtration_
+tangentielle.dir/08-BCFTools.dir/modified-ref_CA.dir/ONT_ref_Thau_OsHV1_CA.fasta /home1/datawork/gchevign/Projet_filtration_tangentielle.dir/13-LoFreq.dir//lofreq-out.bam
+ --no-default-filter -r ""ONT_OsHV-1_Thau:85876-89056"" -o /dev/shm/pbs.8080705.datarmor0/lofreq2_call_parallelldzmhl7s/27.vcf.gz > /dev/shm/pbs.8080705.datarmor0/lofreq2_c
+all_parallelldzmhl7s/27.log 2>&1
+
+All of the 64 commands have those type of error...
+
+Any suggestion to fix this ?
+
+Best 
+
+Germain
+
+
+",gchevignon,https://github.com/CSB5/lofreq/issues/121
+I_kwDOAYy7uM4_nuS9,No sample column,OPEN,2021-11-30T15:35:17Z,2021-11-30T15:35:17Z,,"Hi,
+
+The following command is not giving me a sample column at the generated VCF. The VCF file stops at the INFO column.
+
+`/home/kalexiou/local/software/lofreq/src/lofreq/lofreq call \`
+`--no-default-filter \`
+`--ref /projects/133-IRTA_Genomas/tomato_genome/Solanum_lycopersicum/SL_4.0/S_lycopersicum_chromosomes.4.00.fa \`
+`--out temp.vcf \`
+`--bed ../../../pcr_products.bed \`
+`-m 20 \`
+`DpTOM10_S10_L001_filtered_sort_pcrCoords.RG.bam`
+
+LoFreq does detect SNP variants, as can be seen from the output below, but these do not appear in the vcf.
+
+`Number of substitution tests performed: 18711`
+`Number of indel tests performed: 0`
+
+Thanks",kostasgalexiou,https://github.com/CSB5/lofreq/issues/122
+I_kwDOAYy7uM5AJNOs,Variants missing in parallel mode,OPEN,2021-12-09T22:57:53Z,2022-02-18T15:35:58Z,,"Hi,
+
+We're looking for somatic/mosaic variants in exome data and there's a particular variant of interest that is not showing up when I run lofreq in parallel mode, however it does show up when I used lofreq in single-threaded mode.  Single-threaded mode takes 10x longer to run so I'd like to use parallelization but I'm uncertain why this variant is omitted during the merging step.
+
+My settings are 
+```
+lofreq call-parallel --pp-threads 16 --ref human_g1k_v37_decoy_plus.fasta --bed Targets_BED.bed -s --call-indels -S gnomad.exomes.r2.0.1.sites.vt.fix.AF001.vcf.gz -o ${prefix}.lofreq.vcf indelqual/${p}.bam
+```
+
+Interestingly, when I check the intermediate files during the run, I do see the variant:
+```
+$ tabix /hpcdata/scratch/15010036.1.all.q/lofreq2_call_paralleljumki42g/21.vcf.gz 4:55594084-55594084
+4	55594084	.	A	G	92	PASS	DP=40;AF=0.150000;SB=0;DP4=25,9,5,1	
+```
+
+But in the final filtered file the variant is absent. 
+
+Also, if I run the analysis in single-threaded mode for the whole exome, or manually for just for this region of interest, the variant shows up in the results, e.g.,
+```
+lofreq call --ref $ref -s -r 4:55594084-55594084 --call-indels -S gnomad.exomes.r2.0.1.sites.vt.fix.AF001.vcf.gz $bam
+``` 
+
+It seems this is not the only variant.  I ran the same BAM file with different threads and it seems the more threads I use the fewer the variants remaining in the VCF file:
+
+1 thread – 103737 variants
+4 threads – 103601
+16 threads – 103601
+30 threads – 103597
+
+I tried this first with v.2.1.3.1 but also tried with v.2.1.5 and I see the same thing.
+
+Any idea why some variants would be missing in parallel mode that are present in single-threaded mode?  
+
+Thanks!
+
+Andrew
+",oleraj,https://github.com/CSB5/lofreq/issues/123
+I_kwDOAYy7uM5BQD3X,lofreq p-value,OPEN,2022-01-05T20:44:12Z,2022-01-05T20:45:32Z,,"A basic question .  . which field in the output .vcf file of lofreq corresponds to the computed p-value (i.e., from Wilm et al. 2012 Eq. (1))? If it is the ""QUAL"" field, then how do I convert a QUAL value like 49314 into a p-value? Thanks",nelsonerikd,https://github.com/CSB5/lofreq/issues/124
+I_kwDOAYy7uM5FkmRy,Warning: Didn't find any variants in input,OPEN,2022-03-12T08:27:43Z,2023-08-10T03:31:12Z,,"Hi There, 
+I am using lofreq to the identification of CRISPR off-targets however when the lowfreq is throwing a warning in the end.
+
+WARNING [2022-03-11 23:33:27,130]: uniq stderr: WARNING(lofreq_uniq.c|main_uniq): Didn't find any variants in input
+
+I wandering what does it mean. No variations in the input files (CRSPR edited and wild type genotypes)??
+
+Thanks 
+",Ram-Nagar,https://github.com/CSB5/lofreq/issues/125
+I_kwDOAYy7uM5KeWOy,Lofreq call-parallel applies filters with --no-default-filter option specified,OPEN,2022-05-26T11:47:38Z,2023-04-11T16:40:55Z,,"I am working with Lofreq2.1.2. I run the following command to call only indels:
+bin/lofreq call-parallel --pp-threads $threads $input -f ${reference} -o ${filename}_indel.vcf -Q 20 -B -m 17 -a 0.01 --only-indels --no-default-filter --call-indels
+
+From intermediate files I observed that indel are called, however, even if I specified ""--no-default-filter"" option, lofreq applies lofreq filter. The result is the loss of all the indels called since all have QUAL lower the default --snvqual-thresh. It is fundamental to me leaving all the raw indel calls since I am working on realign reads to call indel.
+I thank you in advance for your willingness.",gamabunta313,https://github.com/CSB5/lofreq/issues/127
+I_kwDOAYy7uM5LaYPm,lofreq call-parallel will hang forever on subprocess error,OPEN,2022-06-08T19:34:36Z,2022-06-08T19:34:36Z,,"If one of the subprocesses errors (e.g. gets killed by the OOM killer), the parent process will hang forever because there's no timeout on the `pool.join()` here:
+https://github.com/CSB5/lofreq/blob/007a8ba2adc71797990e2fe0f8a869d7b0ea258e/src/scripts/lofreq2_call_pparallel.py#L662
+
+I suggest adding a timeout, even a very large one, to the join.",tfmorris,https://github.com/CSB5/lofreq/issues/128
+I_kwDOAYy7uM5MuyG6,Filter depend on number of cores?,OPEN,2022-06-28T13:15:35Z,2022-06-28T13:15:35Z,,"I run `lofreq call-parallel` with different numbers for `--pp-threads` and get different vcf output:
+
+`lofreq call-parallel --pp-threads 1 --verbose  --ref 'reference.fa' --out variants.vcf   --min-cov 1 --max-depth 1000000  --min-bq 6 --min-alt-bq 6    --min-mq 0 --max-mq 255 --min-jq 0 --min-alt-jq 0 --def-alt-jq 0  --sig 0.01 --bonf dynamic   reads.bam`
+
+```
+##FILTER=<ID=min_snvqual_33,Description=""Minimum SNV Quality (Phred) 33"">
+##FILTER=<ID=min_snvqual_38,Description=""Minimum SNV Quality (Phred) 38"">
+```
+
+`lofreq call-parallel --pp-threads 2 --verbose  --ref 'reference.fa' --out variants.vcf   --min-cov 1 --max-depth 1000000  --min-bq 6 --min-alt-bq 6    --min-mq 0 --max-mq 255 --min-jq 0 --min-alt-jq 0 --def-alt-jq 0  --sig 0.01 --bonf dynamic   reads.bam`
+
+```
+##FILTER=<ID=min_snvqual_38,Description=""Minimum SNV Quality (Phred) 38"">
+##FILTER=<ID=min_snvqual_38,Description=""Minimum SNV Quality (Phred) 38"">
+```
+
+Wondering if this is expected/desired.",bernt-matthias,https://github.com/CSB5/lofreq/issues/131
+I_kwDOAYy7uM5RQexe,cpus count versus available cpus,OPEN,2022-09-06T13:17:52Z,2022-09-06T13:56:10Z,,"Hello,
+
+`lofreq2_call_pparallel.py`uses `multiprocessing.cpu_count()` to ge the number of cpus.
+`multiprocessing.cpu_count()` return the number of cpu in the machine, But this is not the same as the number of cpu **availabl""** to the process. For example, you can run in a taskset context or a batch scheduler like slurm.
+
+see:
+
+```
+$ nproc
+96
+$ taskset -c 1 nproc
+1
+$ taskset -c 1 python3 -c ""import multiprocessing; print(multiprocessing.cpu_count())""
+96
+```
+
+I would suggest to use len(os.sched_getaffinity(0)) instead of multiprocessing.cpu_count()
+
+```
+$ python3 -c ""import os; print(len(os.sched_getaffinity(0)))""
+96
+$ taskset -c 1 python3 -c ""import os; print(len(os.sched_getaffinity(0)))""
+1
+```
+
+NB Mac OSX python does not have os.sched_getaffinity so a portable way to code it would be
+```
+try:
+    num_cpus = len(os.sched_getaffinity(0))
+except AttributeError:
+    num_cpus = multiprocessing.cpu_count()
+```
+
+thus `lofreq2_call_pparallel.py` may launch more parallel jobs via `multiprocessing.Pool` than available cores. 
+each one competing with the others on the same core. 
+
+regards
+
+Eric
+",EricDeveaud,https://github.com/CSB5/lofreq/issues/132
+I_kwDOAYy7uM5pxBC2,Problem of forget to indel alignment-quality to your bam-file,OPEN,2023-06-26T10:33:58Z,2023-07-07T01:54:49Z,,"Hi, I met the problem of `WARNING(lofreq_call.c|main_call): 5 indel calls (before filtering) were made without indel alignment-quality! Did you forget to indel alignment-quality to your bam-file?` when I ran lofreq within Snakemake. 
+Here are the rules:
+```python
+rule indelqual:
+    input:
+        bam = ""03_map2covid.sort.bam""
+    output:
+        ""05_map2covid.lofreq.indelqual.bam""
+    params:
+        ref = ""NC_045512.2.fasta""
+    shell:
+        ""lofreq indelqual --dindel -f {params.ref} -o {output} {input.bam}""
+
+
+rule alnqual:
+    input:
+        bam = ""05_map2covid.lofreq.indelqual.bam""
+    output:
+        ""06_map2covid.lofreq.alqual.bam""
+    params:
+        ref = ""NC_045512.2.fasta""
+    shell:
+        ""lofreq alnqual -b {input.bam} {params.ref} > {output} ""
+
+
+rule lofreq_call:
+    input:
+        indelqual = ""06_map2covid.lofreq.alqual.bam""
+    output:
+        ""07_map2covid.lofreq.vcf""
+    params:
+        ref = ""NC_045512.2.fasta""
+    shell:
+        ""lofreq call --call-indels -f {params.ref} -o {output} 
+```
+
+It's quite strange since there are no problems when run one file with snakemake, but if there are several files to run, it report error of indel alignment-quality.",Xiang-Leo,https://github.com/CSB5/lofreq/issues/133
+I_kwDOAYy7uM5uYkw3,Permant error in the first step,OPEN,2023-08-15T18:37:36Z,2023-08-16T13:22:15Z,,"Hi
+
+What does this error means please?
+```
+
+fi1d18@RBGO-Server2:/data/Continuum/WES/vcf$ ./lofreq_star-2.1.0/bin/lofreq call -f resources_broad_hg38_v0_Homo_sapiens_assembly38.fasta -o vars.vcf NG-27280_CLTSS_LTS_001A_lib506241_7636_2_MarkedDup.bam
+WARNING(lofreq_call.c|warn_old_fai): Index for fasta file (resources_broad_hg38_v0_Homo_sapiens_assembly38.fasta.fai) is older than fasta file! You should reindex (using faidx)!
+[fai_fetch_seq] The sequence ""NC_000001.11"" not found
+FATAL(plp.c|mplp_func:645): Can't compute BAQ or IDAQ without reference sequence
+fi1d18@RBGO-Server2:/data/Continuum/WES/vcf$ 
+```
+I am just certain that the reference genome in this command and for fastq file alignment was the same.
+
+Thanks for any help",beginner984,https://github.com/CSB5/lofreq/issues/134
+I_kwDOAYy7uM5vq2JF,lofreq vcfplot issues ,OPEN,2023-08-30T11:43:36Z,2023-08-31T10:09:48Z,,"Hi,
+I have been having these error/Traceback messages after running lofreq vcfplot. Just wondering if anyone has come across this before and how should I fix this? Thank you very much. 
+
+![image](https://github.com/CSB5/lofreq/assets/143609095/b355d0db-e86c-4067-ad6b-82a48f29a27a)
+
+Regards,
+Ge",Ge-Wu-pir,https://github.com/CSB5/lofreq/issues/135
+I_kwDOAYy7uM5whjrs,how to call multiple-sample variants ,OPEN,2023-09-08T14:55:36Z,2023-09-12T13:34:24Z,,"@andreas-wilm  Hello, how to identify variants in multiple samples at the same time?
+  waiting for your reply!
+thanks you!",ChenDepp,https://github.com/CSB5/lofreq/issues/136
+I_kwDOAYy7uM5zyUwp,subprocess.CalledProcessError: non-zero exit status 1,OPEN,2023-10-13T20:10:13Z,2023-10-16T16:26:15Z,,"Hello,
+
+Thank you for developing the package LoFreq.
+
+I'm trying to call somatic mutations using 'lofreq somatic' function with LoFreq version 2.1.5. However, I keep receiving the error message: 
+CRITICAL [2023-10-12 20:11:48,926]: The following command failed with code 1: lofreq call-parallel --pp-threads 16 -d 101000 -f /scratch.global/balay011/WGS_skChordomas_Bai/reference/Homo_sapiens_assembly38.fasta --verbose --no-default-filter -b 1 -l /scratch.global/balay011/WGS_skChordomas_Bai/reference/Homo_sapiens_assembly38_chrs.bed --call-indels -a 0.100000 --use-orphan -B -N -A /scratch.global/balay011/WGS_skChordomas_Bai/SomaticSNV_calling/work/lofreq/samples/462/SRR14097754.bqsr_BD_BI.bam -o /scratch.global/balay011/WGS_skChordomas_Bai/SomaticSNV_calling/work/lofreq/samples/462/normal_relaxed.vcf.gz
+CRITICAL [2023-10-12 20:11:48,927]: Received the following on stderr:
+CRITICAL [2023-10-12 20:11:48,927]: Somatic SNV caller failed. Exiting
+
+I think the error is coming from the following line in lofreq2_somatic.py file:
+`subprocess.check_call(cmd, stdout=fh_stdout, stderr=fh_stderr)` 
+
+Could you please help me to resolve the issue? Thanks.
+
+Kind regards,
+Agshin",balayev1,https://github.com/CSB5/lofreq/issues/137
+I_kwDOAYy7uM5z5x9n,HTSLIB Variable,OPEN,2023-10-16T07:09:28Z,2023-10-19T05:50:38Z,,"Hi,
+
+What's is wrong with passing value of `--with-htslib` with `${HTSLIB}`?
+
+https://github.com/CSB5/lofreq/blob/54281cd875821257adfd92baa957c13d96fa58c5/configure.ac#L193",mkadlof,https://github.com/CSB5/lofreq/issues/138
+I_kwDOAYy7uM5z-CQI,subprocess.CalledProcessError: non-zero exit status 1,CLOSED,2023-10-16T16:27:28Z,2023-10-27T18:22:16Z,2023-10-27T18:22:15Z,"Hello,
+
+Thank you for developing the package LoFreq.
+
+I'm trying to call somatic mutations using 'lofreq somatic' function with LoFreq version 2.1.5. However, I keep receiving the error message:
+CRITICAL [2023-10-12 20:11:48,926]: The following command failed with code 1: lofreq call-parallel --pp-threads 16 -d 101000 -f /scratch.global/balay011/WGS_skChordomas_Bai/reference/Homo_sapiens_assembly38.fasta --verbose --no-default-filter -b 1 -l /scratch.global/balay011/WGS_skChordomas_Bai/reference/Homo_sapiens_assembly38_chrs.bed --call-indels -a 0.100000 --use-orphan -B -N -A /scratch.global/balay011/WGS_skChordomas_Bai/SomaticSNV_calling/work/lofreq/samples/462/SRR14097754.bqsr_BD_BI.bam -o /scratch.global/balay011/WGS_skChordomas_Bai/SomaticSNV_calling/work/lofreq/samples/462/normal_relaxed.vcf.gz
+CRITICAL [2023-10-12 20:11:48,927]: Received the following on stderr:
+CRITICAL [2023-10-12 20:11:48,927]: Somatic SNV caller failed. Exiting
+
+I think the error is coming from the following line in lofreq2_somatic.py file:
+subprocess.check_call(cmd, stdout=fh_stdout, stderr=fh_stderr)
+
+Python version: 3.10
+
+Could you please help me to resolve the issue? Thanks.
+
+Kind regards,
+Agshin",balayev1,https://github.com/CSB5/lofreq/issues/139
+I_kwDOAYy7uM50MsNP,IndexError: list index out of range,OPEN,2023-10-18T11:10:05Z,2023-10-18T23:29:39Z,,"Hi,
+
+First of all, thank you for this wonderful tool.
+I attempted to run a command to call somatic variants, but unfortunately, the command failed. 
+Could you please suggest a way to troubleshoot this error?
+
+`~/palmer_scratch/km/tools/lofreq_star-2.1.5_linux-x86-64/bin/lofreq somatic -n ~/palmer_scratch/km/ova_low_coverage/sample_05-S02_B/sample_05-S02_B.bam -t ~/palmer_scratch/km/ova_low_coverage/sample_05-S02_P/sample_05-S02_P.bam -l ~/palmer_scratch/km/ova_wes/ref/SureSelect_Human_All_Exon_V5.bed -f ~/palmer_scratch/km/ova_wes/db/human_g1k_v37_decoy.fasta --threads 8 -o sample_05-S02_ -d ~/palmer_scratch/km/ova_wes/db/dbsnp_137.b37.vcf.gz`
+
+CRITICAL [2023-10-18 06:49:50,574]: The following command failed with code 1: lofreq call-parallel --pp-threads 8 -d 101000 -f /home/jc2545/palmer_scratch/km/ova_wes/db/human_g1k_v37_decoy.fasta --verbose --no-default-filter -b 1 -l /home/jc2545/palmer_scratch/km/ova_wes/ref/SureSelect_Human_All_Exon_V5.bed -a 0.100000 --use-orphan -B -N -A /home/jc2545/palmer_scratch/km/ova_low_coverage/sample_05-S02_B/sample_05-S02_B.bam -o sample_05-S02_normal_relaxed.vcf.gz
+CRITICAL [2023-10-18 06:49:50,574]: Received the following on stderr:
+INFO [2023-10-18 06:49:49,659]: Using 8 threads with following basic args: lofreq call -d 101000 -f /home/jc2545/palmer_scratch/km/ova_wes/db/human_g1k_v37_decoy.fasta --verbose --no-default-filter -b 1 -a 0.100000 --use-orphan -B -N -A /home/jc2545/palmer_scratch/km/ova_low_coverage/sample_05-S02_B/sample_05-S02_B.bam
+
+
+
+Traceback (most recent call last):
+
+  File ""/vast/palmer/scratch/lifton/jc2545/km/tools/lofreq_star-2.1.5_linux-x86-64/bin/lofreq2_call_pparallel.py"", line 744, in <module>
+
+    main()
+
+  File ""/vast/palmer/scratch/lifton/jc2545/km/tools/lofreq_star-2.1.5_linux-x86-64/bin/lofreq2_call_pparallel.py"", line 593, in main
+
+    biggest = bins[-1]
+
+IndexError: list index out of range
+
+CRITICAL [2023-10-18 06:49:50,574]: Somatic SNV caller failed. Exiting",min0609,https://github.com/CSB5/lofreq/issues/140
+I_kwDOAYy7uM59fW2q,MGI T7 or T10 data,CLOSED,2024-01-29T12:21:31Z,2024-10-27T19:10:13Z,2024-10-27T19:10:13Z,"Hello, I would like to test LoFreq pipeline in human germline genome. The NGS data were sequenced by MGI T7 or T10 and aligned with bwa-mem2. What pipeline would recommend? Is it recommended to use trimmed fastq? Can I use ""viterbi"", ""indelqual"" and ""call-parallel""?
+",Eduardo-Auer,https://github.com/CSB5/lofreq/issues/141
+I_kwDOAYy7uM5-FNNc,What are the stringent outputs and why do I have different calling results?,OPEN,2024-02-02T16:26:17Z,2024-02-02T16:26:17Z,,"I performed ```lofreq somatic``` to identify somatic variants in a tumor sample T against a normal sample N1, expectedly I get a list of somatic variants. Additionally I get some other files, relaxed, and stringent etc. And these files are for both the normal sample and the tumor samples.  
+
+Then I performed the somatic calling again using the same tumor sample T against a different normal sample N2, I fount that the stringent file for the same tumor sample contains slightly different calling results (I understand and expect the somatic variants are different between the calls. but why is the stringent files --- presumably without the somatic calculation are different for the same tumor sample? ). I wonder why is that? Are there any randomness in the calling process? ",ginnyintifa,https://github.com/CSB5/lofreq/issues/142
+I_kwDOAYy7uM6AbI3p,Lofreq vcfplot - python version 3 support,OPEN,2024-02-26T16:28:20Z,2024-02-26T16:28:20Z,,"Hi, Curious when or how to best modify your vcfplot script to work with python 3. I tried both the conda installation of lofreq and I tried directly running your repo's lofreq v2 script and I get the same error:
+
+/lofreq/src/tools/scripts/lofreq2_vcfplot.py lofreq.vcf
+
+Traceback (most recent call last):
+  File ""/lofreq/src/tools/scripts/lofreq2_vcfplot.py"", line 54, in <module>
+    from lofreq_star.utils import complement, now
+  File ""/lofreq/src/tools/lofreq_star/__init__.py"", line 2, in <module>
+    assert sys.version_info.major == 2 and sys.version_info.minor == 7, (""Need Python 2.7"")
+AssertionError: Need Python 2.7
+",saradunaj,https://github.com/CSB5/lofreq/issues/143
+I_kwDOAYy7uM6HFbA5,Lofreq viterbi,OPEN,2024-04-26T18:59:51Z,2024-11-04T22:27:30Z,,"Hi,
+I recently used Lofreq v 2.1.5 to make variants calls to the HIV WGS data. Before running lofreq I aligned reads to BWA and filtered for properly paired alignment using samtools. After running lofreq commands in the following series: 
+viterbi --> indelqual --> alnqual -->  call, I noticed made some frameshift mutation calls. Upon looking at the alignment on IGV at one of the frameshift mutation region, the top one shows before the lofreq preprocessing and the bottom one after lofreq preprocessing. As you can see the viterbi step introduces insertion and deletion on the same reads resulting in 2 frameshift insertions and deletions reported on 29% of the reads as shown below:
+| Sample | HGVS.g                       | HGVS.c                 | HGVS.p        | lofreq   | Variant_Type       | lofreq_Var_Count |
+| ------ | ---------------------------- | ---------------------- | ------------- | -------- | ------------------ | ---------------- |
+| A      | NC_001802.1:g.5212_5213insCC | HIV1gp4:c.108_109insCC | vpr:p.Ile37fs | 0.290914 | frameshift_variant | 3269             |
+| A      | NC_001802.1:g.5214_5215delTT | HIV1gp4:c.111_112delTT | vpr:p.Ile37fs | 0.295586 | frameshift_variant | 3268             |
+
+Because insertion and deletion are present on the same read it looks more like an artifact than real. How do I fix this? Should I be removing the viterbi step? If so, do I still keep the indelqual and alnqual steps?
+
+I've also found regions where the alignments were completely missing due to BWA (2nd figure attached) and I was wondering if I provide lofreq with raw alignment bam file (containing unmapped reads) instead of filtered proper paired alignment bam, viterbi step can possibly realign the unmapped reads in those regions with gaps?
+<img width=""1434"" alt=""Lofreq_viterbi_realignment_issue"" src=""https://github.com/CSB5/lofreq/assets/32267950/dcc328a1-ba2c-444e-a8f1-66ac68e58e16"">
+<img width=""1055"" alt=""No_read_mapping_region"" src=""https://github.com/CSB5/lofreq/assets/32267950/65561c83-a38e-4690-96bb-1cfbc6d23326"">
+ ",rahil19,https://github.com/CSB5/lofreq/issues/144
+I_kwDOAYy7uM6b28wl,Are there any suggested set of hard filters on lofreq indel file,OPEN,2024-10-25T18:43:18Z,2024-10-25T18:43:18Z,,"Hello,
+I want to analyze 1500 sample indel files and was looking for guidance and suggestions on how to filter them and ensure they are of good quality. The filtration I am looking at 
+1. How to separate insertion and deletion and do we need to do that?
+2. What quality values range we filter them as they range from single digits to 1000s.
+3. What type of filters are needed on HRUN?
+Any suggestions or readings are welcomed.
+
+THank you,
+Tanushree",tanu06,https://github.com/CSB5/lofreq/issues/145
+I_kwDOAYy7uM6eYLx0,"lowfreq ""not available from current channels""",CLOSED,2024-11-13T23:47:16Z,2024-11-14T01:26:45Z,2024-11-14T01:26:45Z,"I am unable to install lowfreq with conda. I tried on a M3 based Ubuntu and a Intel Ubuntu. I get the error below. But conda seems available from current channels actually?!  https://anaconda.org/bioconda/lofreq
+
+```bash
+(base) kratz@linux:~$ conda install lowfreq
+Channels:
+ - conda-forge
+ - bioconda
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): done
+Solving environment: failed
+
+PackagesNotFoundError: The following packages are not available from current channels:
+
+  - lowfreq
+
+Current channels:
+
+  - https://conda.anaconda.org/conda-forge
+  - https://conda.anaconda.org/bioconda
+  - defaults
+
+To search for alternate channels that may provide the conda package you're
+looking for, navigate to
+
+    https://anaconda.org
+
+and use the search bar at the top of the page.
+```",antonkratz,https://github.com/CSB5/lofreq/issues/146
+I_kwDOAYy7uM6fLOvr,How does LoFreq automatically adapt to changes in coverage?,OPEN,2024-11-19T02:35:48Z,2024-11-19T02:35:48Z,,"Hi, 
+In LoFreq's introduction, it states that ""It automatically adapts to changes in coverage and sequencing quality and can therefore be applied to a variety of data-sets e.g. viral/quasispecies, bacterial, metagenomics or somatic data"". Are there specific steps within LoFreq designed to counteract the influence of varying coverage? I haven't found any corresponding explanation in the LoFreq article regarding how it automatically adapts to changes in coverage. How does LoFreq automatically adapt to changes in coverage?
+Thanks",LiuH2020,https://github.com/CSB5/lofreq/issues/148
+I_kwDOAYy7uM6hmoZ6,Does threading not work nicely with Somatic caller?,OPEN,2024-12-02T09:41:45Z,2024-12-02T11:27:45Z,,"I use LoFreq somatic mode for my pipeline and noticed it was running pretty long in single thread (8hrs). I tried using the `--threads` option multiple times with different values, but it never seems to work. It always results in the following error: 
+```
+CRITICAL [2024-12-01 18:31:08,389]: Somatic SNV caller failed. Exiting
+```
+I run it with the following command:
+```
+lofreq somatic  -n normal.bam -t tumor.bam -f ref.fasta -l regions.bed --call-indels --continue
+```
+Is there a reason why this error only pops up when run in multi-threads? 
+If you need additional info, please let me know
+
+Edit: I also use `--continue` if I know the normal and tumor files are complete. ",cappuchinese,https://github.com/CSB5/lofreq/issues/149

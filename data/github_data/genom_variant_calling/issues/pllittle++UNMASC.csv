@@ -1,0 +1,360 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGLk4Mc5BBI0o,Is possible tumor-only samples?,CLOSED,2021-12-30T01:02:31Z,2022-04-12T15:01:35Z,2022-04-12T15:01:35Z,"Hi 
+My data are WGS and not contain any normal samples, consist of  tumor and pre-tumor tissues.
+For variants calling, used GATK-haplotypecaller.
+I understood UNMASC need UMN (pools of unmatched normals). 
+
+Is it possible to use UNMASC for my data? 
+
+thanks ! 
+
+",byeongill,https://github.com/pllittle/UNMASC/issues/3
+I_kwDOGLk4Mc5D1Q-M,panel of normals input,CLOSED,2022-02-15T00:57:13Z,2022-04-12T15:01:56Z,2022-04-12T15:01:56Z,"Hi, after reading the docs I am still a bit confused about exactly how to generate the vcf dataframe as the input into run_UNMASC. The column names for this dataframe mentioned in the docs include: 
+""nAD"" (e.g. 10), control alternate depth
+""nRD"" (e.g. 20), control reference depth
+""tAD"" (e.g. 10), tumor alternate depth
+""tRD"" (e.g. 20), tumor reference depth
+These are possible to generate if starting with a single normal sample and a matched tumor sample, but as I understand it we are meant to be able to use a panel of several unrelated normals which is seemingly not compatible with having only a single column for nAD and nRD. Also, my impression after skimming the Strelka manual is that it seems to require matched tumor/normal samples too, so it is unclear how its output is used in UNMASC if I understood correctly. Do you have a workflow for generating this dataframe from unrelated tumour and normal BAMs and VCFs?",stu2,https://github.com/pllittle/UNMASC/issues/4
+I_kwDOGLk4Mc5G_v3Z,"No package ""smartr""",CLOSED,2022-04-04T01:06:57Z,2022-04-04T19:36:12Z,2022-04-04T19:36:12Z,"Hi.
+When i install UNMASC in R studio (4.1.3 ver), i got error message.
+![image](https://user-images.githubusercontent.com/82578252/161457596-cc59738a-037d-474d-85f8-ddc824aec1d9.png)
+
+I tried to install ""smartr"", but i couldn't find the package.
+Instead, i could find ""smartR"", so installed it. 
+However, same error still appear. 
+
+",byeongill,https://github.com/pllittle/UNMASC/issues/5
+I_kwDOGLk4Mc5JAHyW,About tumor-only calling,CLOSED,2022-05-03T23:34:53Z,2022-05-04T01:43:46Z,2022-05-04T01:43:45Z,"Hi developers,
+I am trying to use UNMASC on my dataset. But I am still a little bit confused about the workflow. 
+1. Can I use other tools like mutect, or if only strelka is allowed, how to run a tumor-only case with configureStrelkaSomaticWorkflow.py? From my understanding, the normal bam file is one of the unmatched normal bam. And for each normal file, run strelka using tumor and this unmatched normal ? And then merged all the snv and indels of each pair? 
+3. `vcf = prep_UNMASC_VCF(outdir,DAT,FILTER, target_fn,anno_fn,ncores)` for here, what is the DAT and FILTER format? so the DAT is the list of tumor-normal paired files? Can you show me a example?
+
+>  DAT: A data.frame containing column names 'FILENAME' for the full
+          vcf filename and 'STUDYNUMBER' for a unique string mapped to
+          the control sample used when calling variants against the
+          same tumor.
+
+Thanks,
+FN",hfl112,https://github.com/pllittle/UNMASC/issues/6
+I_kwDOGLk4Mc5JI8-W,About the annotation,CLOSED,2022-05-05T19:21:25Z,2022-05-06T16:29:52Z,2022-05-05T20:52:37Z,"Hi paul,
+I am now running some testing samples. When doing VEP annotation, you only use --af and gnomad_AF, but in your paper and your code, you mentioned the ExAC_AF. Does --af mean 1000 genome AF right? So do I need to add both ExAC and 1000 AF when annotating the VCFs?
+Another problem is I think it took quite a time to do the steps of strelka and annotation, can I filter out some low-quality or depth candidate mutations of strelka2, which can make VEP running more faster? For my testing case , I found 50k+ ""PASS"" somatic mutations of strelka
+
+Thanks,
+FN",hfl112,https://github.com/pllittle/UNMASC/issues/7
+I_kwDOGLk4Mc5JNTH_,Some problems when running prep_UNMASC_VCF,CLOSED,2022-05-06T18:18:32Z,2022-05-07T02:39:36Z,2022-05-07T02:39:36Z,"Hi Paul,
+After I got all the vep annotations, now I am trying to use pre vcf,
+I found several problems in the code, I am not sure whether it's correct to do so:
+1. in import_VCFs function:
+`if( is.null(FILTER$nDP) || is.numeric(FILTER$nDP) )` should be changed to `if( is.null(FILTER$nDP) || !is.numeric(FILTER$nDP) )  ` ?
+2. in import_ANNO function:
+there is a ""anno = ""should be changed to ""ANNO="" 
+3. a minor problem is when grep CSQ line, you only choose first few lines, For my data, I use almost all chr (because the reference data included all), so I changed n to 5000
+
+But still, I am stuck at  import_ANNO, it looks like there are some problems with my annotation file, which I think is due to a different version of VEP or the custom database? 
+![image](https://user-images.githubusercontent.com/33510929/167194205-02fc10c5-91bb-4eb6-9d4d-bf7160a39b16.png)
+I found the COSMIC id from my database always startswith ""COSV"" instead of ""COSM"". Can you help to look at my vep files? I am not sure what the problem it is.
+[test.txt](https://github.com/pllittle/UNMASC/files/8642862/test.txt)
+
+Thank you,
+FN
+
+",hfl112,https://github.com/pllittle/UNMASC/issues/8
+I_kwDOGLk4Mc5JUROL,Errors when running UNMASC,CLOSED,2022-05-09T17:46:26Z,2022-05-09T22:42:38Z,2022-05-09T22:42:38Z,"Hi,
+I still can't run UNMASC successfully.
+
+1. when I run through UNMSAC::run_UNMASC, I encounter an error like this:
+```
+Error in xy.coords(x, y, setLab = FALSE) : 'x' and 'y' lengths differ
+In addition: Warning messages:
+1: In pos/genome$length[one_index] :
+  longer object length is not a multiple of shorter object length
+2: In pos/genome$length[one_index] + genome$nChr[one_index] :
+  longer object length is not a multiple of shorter object length
+
+```
+Then I found it was caused by genome_plot in run_nClust, so I modify the code and skip this plotting step, then it worked.
+
+2. After this, I encountered an error ""Error in { : task 1 failed - ""could not find function ""ScanBamParam"""" "" in strand step.
+but I've import the packages from Rsamtools, and I can run `ScanBamParam` in R:
+`>  ScanBamParam(which=GRanges(chr,IRanges(start = pos,end = pos)))
+class: ScanBamParam
+bamFlag (NA unless specified):
+bamSimpleCigar: FALSE
+bamReverseComplement: FALSE
+bamTag:
+bamTagFilter:
+bamWhich: 1184 ranges
+bamWhat:
+bamMapqFilter: NA
+`
+I don't know why UNMASC can't recognize these packages?
+
+Any suggestion for these errors?
+Thank you
+FN",hfl112,https://github.com/pllittle/UNMASC/issues/9
+I_kwDOGLk4Mc5JWEKp,About output label,CLOSED,2022-05-10T02:49:24Z,2022-05-17T21:09:43Z,2022-05-17T21:09:43Z,"Hi @pllittle ,
+Sorry for bothering you again.
+1.I found there are several labels at UNMASC somatic mutations's output, so the label is following the criteria from this table? 
+![image](https://user-images.githubusercontent.com/33510929/167528752-2cc4b2f4-d4e2-465c-a879-e0a920630383.png)
+2. what does the ""BAF-like"" label mean?
+3. If I want a high confident somatic mutation list,  does remove muts with AV(FFPE,OXOG, strand bias, and ARTI) enough? should I only keep no_label muts?  How you filter the mutations when you are comparing the PPV with other methods (Figure 4 from your paper)?
+5. If I only keep mutations with no labels in the output, there were only few muts (< 10), and all of these mutations are from chrX, is that possible?
+
+Thanks,
+FN",hfl112,https://github.com/pllittle/UNMASC/issues/10
+I_kwDOGLk4Mc5MZywS,INPUT file error,CLOSED,2022-06-23T05:38:31Z,2022-07-02T04:29:30Z,2022-07-02T04:29:30Z,"Hi, thanks for creating this incredible tool for users using unmatched normal data
+
+Due to my own situation, I couldn't use the tumor_only.sh function you made for user's convenience.
+Instead, I manually used Strelka2 + VEP to make the INPUT files.
+
+Unfortunately, I facing several errors when I use the file I created (Attached many my input files vcf, bed_centromere_fn,dict_chrom_fn in UNMASC::run_UNMASC and target_fn, anno_fn in UNMASC::prep_UNMASC_VCF)
+
+After many debugging trials, current error is
+
+% ------------------------------- %
+% Welcome to the UNMASC workflow! %
+% ------------------------------- %
+Thu Jun 23 23:38:00 2022: Import image ...
+Thu Jun 23 23:38:29 2022: Finding oxoG artifacts ...
+Thu Jun 23 23:38:29 2022: Merge strand info ...
+**Error in `[.data.frame`(strand, , c(""mutID"", ""Chr"", ""Position"", ""Ref"",  : 
+  undefined columns selected**
+
+Would you please look through the input files that I attached and see what's causing the problem.
+If you have difficulties, could you please provide me with your example input files so that I can compare them with mine
+
+Thanks in advance
+
+Jiyun
+
+[UNMASC.zip](https://github.com/pllittle/UNMASC/files/8964240/UNMASC.zip)
+
+### DAT ###
+FILENAME STUDYNUMBER
+1  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195393_vep_somatic.PASS.vcf SRR15195393
+2  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195395_vep_somatic.PASS.vcf SRR15195395
+3  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195397_vep_somatic.PASS.vcf SRR15195397
+4  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195399_vep_somatic.PASS.vcf SRR15195399
+5  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195401_vep_somatic.PASS.vcf SRR15195401
+6  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195404_vep_somatic.PASS.vcf SRR15195404
+7  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195406_vep_somatic.PASS.vcf SRR15195406
+8  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195408_vep_somatic.PASS.vcf SRR15195408
+9  /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195410_vep_somatic.PASS.vcf SRR15195410
+10 /home/jyhong/Project/BRCA/WES/Strelka2/VCF/cjs.51A.high_SRR15195413_vep_somatic.PASS.vcf SRR15195413
+
+### UNMASC::prep_UNMASC_VCF ###
+cjs.51A.high.vcf <- UNMASC::prep_UNMASC_VCF(
+          outdir = outdir,
+          DAT = DAT,
+          anno_fn = anno_fn,
+          target_fn = target_fn,
+          FILTER = NULL,
+          nlines = 100,
+          ncores = 1)
+
+### UNMASC::run_UNMASC ###
+UNMASC::run_UNMASC(
+          tumorID = ""cjs.51A.high"",
+          outdir = outdir,
+          vcf = cjs.51A.high.vcf,
+          bed_centromere_fn = new_cent,
+          tBAM_fn = tBAM,
+          dict_chrom_fn = chr_length,
+          rd_thres = 10,
+          ad_thres = 5,
+          qscore_thres = 30,
+          minBQ = 13, 
+          minMQ = 40,
+          exac_thres = 0.005,
+          gender = NA,
+          hg = ""38"",
+          binom = T)",pigyun906,https://github.com/pllittle/UNMASC/issues/11
+I_kwDOGLk4Mc5MryyO,Issue with prep_UNMASC_VCF,CLOSED,2022-06-27T23:11:27Z,2022-08-10T02:23:33Z,2022-08-10T02:23:33Z,"Hello,
+
+I am having an issue with the import_ANNO function, which might be an due to differences in the version of VEP (104) or the COSMIC database annotation (v96)?
+
+`Import annotation file ...`
+`Parse annotation ...`
+`Process COSMIC ...`
+`Error in `$<-.data.frame`(`*tmp*`, ""CosmicIDs"", value = NA) :`
+`  replacement has 1 row, data has 0`
+`Calls: <Anonymous> -> $<- -> $<-.data.frame`
+`Execution halted`
+
+Here are the first 100 lines from my annotated input file which I am using:
+[anno_file_head.txt](https://github.com/pllittle/UNMASC/files/8996146/anno_file_head.txt)
+
+Not really sure what could be causing the the issue or how to fix it. Please let me know if you have any idea what's causing this or if you need any additional information to figure it out.
+
+Thanks,
+Javier
+",javi-a-lopez,https://github.com/pllittle/UNMASC/issues/12
+I_kwDOGLk4Mc5Uu29C,UNMASC failing on a subset of samples,CLOSED,2022-10-24T22:49:38Z,2022-10-31T12:43:25Z,2022-10-31T12:43:25Z,"Hello,
+
+I am attempting to run UNMASC on a cohort of Agilent SureSelect XT HS2 gene panel samples which were aligned to hg19 using bwa-mem and pre-processed using Agilent AGeNT software (https://www.agilent.com/cs/library/software/public/AGeNTBestPractices.pdf) and am getting some errors. I am attempting to call variants for 177 samples. Of these, 74 samples go through the entire UNMASC workflow with no issues and produce all final output files.
+
+From the remaining 103 samples, I am experiencing two different issues:
+
+1. The most common error occurs during the OXOG/FFPE/ARTI filtering:
+```Subset strand to variants with depth and qscore thresholds and no strand bias ...
+Determine OXOG,FFPE,ARTI status ...
+Number of unique variants = 621
+.621
+tumor VAF segmentation on variants...
+	chr1: 100%
+	chr2: 100%
+	chr3: 100%
+	chr4: 100%
+	chr5: 100%
+	chr6: 100%
+	chr7: 100%
+	chr8: 100%
+	chr9: 100%
+	chr10: 100%
+	chr11: 100%
+	chr12: 100%
+	chr13: 100%
+	chr14: 100%
+	chr15: 100%
+	chr16: 100%
+	chr17: 100%
+	chr19: 100%
+	chr20: 100%
+Error in `$<-.data.frame`(`*tmp*`, ""index"", value = 1:0) : 
+  replacement has 2 rows, data has 0
+Calls: <Anonymous> ... UNMASC_tSEG -> segment_tVAF -> $<- -> $<-.data.frame
+Execution halted
+````
+The exact chromosome this error occurs at varies, most reach up to chr20, but a few samples only manage to complete up to chr 4 or chr7 before failing.
+
+2. Other samples  don't make it that far and just end in a NULL shortly after starting, with no error message:
+```
+% ------------------------------- %
+% Welcome to the UNMASC workflow! %
+% ------------------------------- %
+Sun Oct 23 01:14:14 2022: Import image ...
+Sun Oct 23 01:14:14 2022: Finding oxoG artifacts ...
+Sun Oct 23 01:14:14 2022: Merge strand info ...
+1 2 3 
+4 5 6 
+7 8 9 
+10 11 12 
+13 14 15 
+16 17 18 
+19 20 21 
+22 23 24 
+25 26 27 
+28 29 30 
+
+Sun Oct 23 01:14:15 2022: Finding FFPE artifacts ...
+Sun Oct 23 01:14:15 2022: Merge strand info ...
+1 2 3 
+4 5 6 
+7 8 9 
+10 11 12 
+13 14 15 16 
+17 18 19 
+20 21 22 
+23 24 25 
+26 27 28 29 
+30 
+Sun Oct 23 01:14:18 2022: Finding ARTI artifacts ...
+Sun Oct 23 01:14:18 2022: Merge strand info ...
+1 2 3 
+4 5 6 
+7 8 9 
+10 11 12 
+13 14 15 
+16 17 18 
+19 20 21 
+22 23 24 
+25 26 27 
+28 29 30 
+
+nrow of uniq_vcs = 815
+nANNO ...
+............25 out of 25
+
+Infer H2M status ...
+tANNO ...
+..........21 out of 21
+
+Infer ALLELE_STAT and tANNO ...
+
+nANNO ...
+............25 out of 25
+
+Infer H2M status ...
+tANNO ...
+..........21 out of 21
+
+Infer ALLELE_STAT and tANNO ...
+
+NULL
+
+```
+3. Lastly, a few samples fail immediately upon starting, from what I assume is low sequencing quality or poor quality variant calls?
+```
+% ------------------------------- %
+% Welcome to the UNMASC workflow! %
+% ------------------------------- %
+Sun Oct 23 01:00:39 2022: Calculate mutID and light filtering ...
+Sun Oct 23 01:00:39 2022: LowQCSample b/c low variant count after base filtering ...
+NULL
+```
+
+Any insights into what could be causing these issues would be greatly appreciated and please let me know if you require any additional information in order to determine what may be causing the issue.
+
+Thanks,
+
+Javier",javi-a-lopez,https://github.com/pllittle/UNMASC/issues/13
+I_kwDOGLk4Mc5eyL74,Error in `package_file()`: pllittle/smarter is not a directory.,CLOSED,2023-02-18T05:20:43Z,2023-09-21T00:34:46Z,2023-02-19T14:42:59Z,"Hi, I receive this error when downloading the UNMASC package,
+for this particular step:
+```
+for(pack in req_packs){
+	
+	chk_pack = tryCatch(find.package(pack),
+		error = function(ee){NULL})
+	
+	if( !is.null(chk_pack) ){
+		library(pack,character.only = TRUE)
+		next
+	}
+	
+	if( pack %in% cran_packs ){
+		install.packages(pack,dependencies = TRUE)
+	} else if( pack %in% bioc_packs ){
+		BiocManager::install(pkg = pack,dependencies = TRUE)
+	} else if( pack %in% github_packs ){
+		devtools::install(sprintf(""pllittle/%s"",pack),
+			dependencies = TRUE)
+	}
+	
+}
+```
+
+![image](https://user-images.githubusercontent.com/44961861/219842648-c49fa9b0-b306-4987-8fe2-2f8f7356d49f.png)
+
+thank you!",Noel388,https://github.com/pllittle/UNMASC/issues/14
+I_kwDOGLk4Mc5gkGAq,UNMASC and GATK RGs,OPEN,2023-03-11T16:55:46Z,2023-04-29T19:26:18Z,,"Hi Paul,
+
+I am having some issues with the UNMASC pipeline. I have some samples after preprocessing (AGeNT Trimmer, aligned to hg19, BQSR), duplicates marked by Picard UmiAwareMarkDuplicatesWithMateCigar, and UMI tags extracted and added to the end of the read ID (UMI_VARCAL).
+
+The UNMASC workflow terminates with the following error:
+
+`NULL
+Warning message:
+In fread(dict_chrom_fn, sep = ""\t"", header = FALSE, data.table = FALSE) :
+  Stopped early on line 95. Expected 3 fields but found 6. Consider fill=TRUE and comment.char=. First discarded non-empty line: <<@RG  ID:@A00620:188:HVMYMDSX2:4:1101:6470:1016       LB:157722_lib   PL:ILLUMINA     SM:157722       PU:@A00620:188:HVMYMDSX2:4:1101:6470:1016>>`
+
+Here is the image.rds: https://drive.google.com/file/d/1_j8o6iaqWje1NE9Chw-keyIjOuYLePwF/view?usp=share_link
+
+This looks to me like UNMASC does not expect the read group line to have six fields (RG, ID, LB, PL, SM, PU). However, this seems to be GATK standard and is obligatory for my preprocessing (esp. Picard).
+
+I would greatly appreciate any help with this. Happy to provide any additional information. Thanks in advance.
+
+Best wishes
+
+Christian
+",christianbosselmann,https://github.com/pllittle/UNMASC/issues/15

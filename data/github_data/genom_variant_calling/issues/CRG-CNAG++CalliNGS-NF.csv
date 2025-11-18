@@ -1,0 +1,581 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMTUwMzQ1MDI=,Typo in the title of the flow-chart picture.,CLOSED,2017-03-17T15:19:06Z,2017-04-01T08:40:20Z,2017-04-01T08:40:20Z,*Simplfied* instead of *Simplified*. ,pditommaso,https://github.com/CRG-CNAG/CalliNGS-NF/issues/2
+MDU6SXNzdWUyNjM5NDg4Njg=,Variant calling step failing when using process scratch ,CLOSED,2017-10-09T16:09:51Z,2017-10-09T18:10:56Z,2017-10-09T18:10:56Z,"When using local scratch folder, the step `5_rnaseq_call_variants` returns an error. 
+
+This happens because the `genome.dict` input file contains a reference to a file created in temporary folder not accessible to the task, for example: 
+
+```
+# cat genome.dict 
+@HD	VN:1.5
+@SQ	SN:chr22	LN:51304566	M5:a718acaa6135fdca8357d5bfe94211dd	UR:file:/tmp/nxf.Mzz6eisI1J/genome.fa
+```",pditommaso,https://github.com/CRG-CNAG/CalliNGS-NF/issues/3
+MDU6SXNzdWUyODc0NTc0MTg=,Implement support for GATK4,CLOSED,2018-01-10T14:43:22Z,2020-08-10T16:32:14Z,2020-08-10T16:32:14Z,"Callings should be upgraded to support GTAK4. Unfortunately the new GATK version is not command line compatible with the previous version. 
+
+Using GATK4 the process `3_rnaseq_gatk_splitNcigar` returns the following error: 
+
+```
+ org.broadinstitute.hellbender.exceptions.UserException: '-T' is not a valid command.
+```
+
+To replicate the error run the pipeline with the `gatk4` profile, eg: 
+
+```
+nextflow run CRG-CNAG/CalliNGS-NF -profile gatk4
+```
+",pditommaso,https://github.com/CRG-CNAG/CalliNGS-NF/issues/4
+MDU6SXNzdWU0MTc4MDAxNjQ=,Error in SplitNCigarReads step,CLOSED,2019-03-06T13:21:41Z,2019-03-18T17:13:50Z,2019-03-08T07:44:02Z,"Hi
+
+Thanks for developing and (maintaining?) this pipeline!
+I tried to run it but ran into some issues . Do you have any ideas?
+
+```
+ERROR ~ Error executing process > '3_rnaseq_gatk_splitNcigar (S31)'
+
+Caused by:
+  Process `3_rnaseq_gatk_splitNcigar (S31)` terminated with an error exit status (1)
+
+Command executed:
+
+  # SplitNCigarReads and reassign mapping qualities
+  java -jar /DATA/resources/gatk/GATK-3.7/GenomeAnalysisTK.jar -T SplitNCigarReads           -R Homo_sapiens.GRCh38.dna.primary_assembly.fa -I Aligned.sortedByCoord.out.bam           -o split.bam           -rf ReassignOneMappingQuality           -RMQF 255 -RMQT 60           -U ALLOW_N_CIGAR_READS           --fix_misencoded_quality_scores
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  INFO  01:01:07,799 HelpFormatter - --------------------------------------------------------------------------------
+  INFO  01:01:07,801 HelpFormatter - The Genome Analysis Toolkit (GATK) v3.7-0-gcfedb67, Compiled 2016/12/12 11:21:18
+  INFO  01:01:07,801 HelpFormatter - Copyright (c) 2010-2016 The Broad Institute
+  INFO  01:01:07,802 HelpFormatter - For support and documentation go to https://software.broadinstitute.org/gatk
+  INFO  01:01:07,802 HelpFormatter - [Wed Mar 06 01:01:07 CET 2019] Executing on Linux 4.4.0-142-generic amd64
+  INFO  01:01:07,802 HelpFormatter - OpenJDK 64-Bit Server VM 1.8.0_191-8u191-b12-2ubuntu0.16.04.1-b12
+  INFO  01:01:07,806 HelpFormatter - Program Args: -T SplitNCigarReads -R Homo_sapiens.GRCh38.dna.primary_assembly.fa -I Aligned.sortedByCoord.out.bam -o split.bam -rf ReassignOneMappingQuality -RMQF 255 -RMQT 60 -U ALLOW_N_CIGAR_READS --fix_misencoded_quality_scores
+  INFO  01:01:07,813 HelpFormatter - Executing as m.slagter@coley on Linux 4.4.0-142-generic amd64; OpenJDK 64-Bit Server VM 1.8.0_191-8u191-b12-2ubuntu0.16.04.1-b12.
+  INFO  01:01:07,813 HelpFormatter - Date/Time: 2019/03/06 01:01:07
+  INFO  01:01:07,814 HelpFormatter - --------------------------------------------------------------------------------
+  INFO  01:01:07,814 HelpFormatter - --------------------------------------------------------------------------------
+  INFO  01:01:07,889 GenomeAnalysisEngine - Strictness is SILENT
+  INFO  01:01:08,231 GenomeAnalysisEngine - Downsampling Settings: No downsampling
+  INFO  01:01:08,241 SAMDataSource$SAMReaders - Initializing SAMRecords in serial
+  INFO  01:01:08,286 SAMDataSource$SAMReaders - Done initializing BAM readers: total time 0.04
+  INFO  01:01:08,537 GenomeAnalysisEngine - Preparing for traversal over 1 BAM files
+  INFO  01:01:08,545 GenomeAnalysisEngine - Done preparing for traversal
+  INFO  01:01:08,546 ProgressMeter - [INITIALIZATION COMPLETE; STARTING PROCESSING]
+  INFO  01:01:08,546 ProgressMeter -                 | processed |    time |    per 1M |           |   total | remaining
+  INFO  01:01:08,547 ProgressMeter -        Location |     reads | elapsed |     reads | completed | runtime |   runtime
+  INFO  01:01:08,572 ReadShardBalancer$1 - Loading BAM index data
+  INFO  01:01:08,574 ReadShardBalancer$1 - Done loading BAM index data
+  ##### ERROR ------------------------------------------------------------------------------------------
+  ##### ERROR A USER ERROR has occurred (version 3.7-0-gcfedb67):
+  ##### ERROR
+  ##### ERROR This means that one or more arguments or inputs in your command are incorrect.
+  ##### ERROR The error message below tells you what is the problem.
+  ##### ERROR
+  ##### ERROR If the problem is an invalid argument, please check the online documentation guide
+  ##### ERROR (or rerun your command with --help) to view allowable command-line arguments for this tool.
+  ##### ERROR
+  ##### ERROR Visit our website and forum for extensive documentation and answers to
+  ##### ERROR commonly asked questions https://software.broadinstitute.org/gatk
+  ##### ERROR
+  ##### ERROR Please do NOT post this error to the GATK forum unless you have really tried to fix it yourself.
+  ##### ERROR
+  ##### ERROR MESSAGE: Bad input: while fixing mis-encoded base qualities we encountered a read that was correctly encoded; we cannot handle such a mixture of reads so unfortunately the BAM must be fixed with some other tool
+  ##### ERROR ------------------------------------------------------------------------------------------
+```",slagtermaarten,https://github.com/CRG-CNAG/CalliNGS-NF/issues/5
+MDU6SXNzdWU0NDc5NDU4NjM=,containerOverrides for AWS BATCH,OPEN,2019-05-24T02:02:24Z,2020-08-10T16:36:26Z,,"Hello,
+I am running CalliNGS workflow using AWS BATCH on AWS Sagemaker using AWS s3 storage drives. I am using the following containerOverides:
+```
+containerOverrides={
+        'command': [
+            ""s3://{0}/{1}"".format(workflowBucket, workflowFolderPrefix),
+            ""--reads"", ""s3://nextflowdataegenesis1/RNASeq_workflow/payload_9/raw_fastq_test1/1839-{1,2}_R{1,2}_001.fastq.gz"",
+            ""--genome"", ""s3://nextflowdataegenesis1/RNASeq_workflow/payload_9/reference_test1/Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa"",
+            ""--variants"", ""s3://ngsexperiments/processed_data/WGS_Payload_9_pigs_05_2019/1839_Huck/1839_PL9_sample_short_reads_raw.snps.indels.vcf"",
+            ""--results"", ""s3://nextflowdataegenesis/RNASeq_workflow/results_payload_9/output_RNASeq_variants_payload_9/1839_Huck""
+            
+        ]
+    }
+```
+
+I am getting the following error:
+```
+Waiting for head job to start...
+Head job is running...
+s3://nextflow1/scripts --reads s3://payload_9/raw_fastq_test1/1839-{1,2}_R{1,2}_001.fastq.gz --genome s3://nextflow/RNASeq/payload_9/reference_test1/Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa --variants s3://ngsexperiments/processed_data/WGS_Payload_9_pigs_05_2019/1839_Huck/1839_PL9_sample_short_reads_raw.snps.indels.vcf --results s3://nextflow1/RNASeq_workflow/results_payload_9/output_RNASeq_variants_payload_9/1839_Huck
+Transitioning to Nextflow
+nextflow run ./main.nf --reads s3://nextflow/RNASeq/payload_9/raw_fastq_test1/1839-{1,2}_R{1,2}_001.fastq.gz --genome s3://nextflow/RNASeq/payload_9/reference_test1/Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa --variants s3://ngsexperiments/processed_data/WGS_Payload_9_pigs_05_2019/1839_Huck/1839_PL9_sample_short_reads_raw.snps.indels.vcf --results s3://nextflow1/RNASeq_workflow/results_payload_9/output_RNASeq_variants_payload_9/1839_Huck
+N E X T F L O W  ~  version 19.04.0
+Launching `./main.nf` [fervent_shockley] - revision: ee02720434
+C A L L I N G S  -  N F    v 1.0 
+================================
+genome   : s3://nextflow/RNASeq/payload_9/reference_test1/Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa
+reads    : s3://nextflow/RNASeq/payload_9/raw_fastq_test1/1839-{1,2}_R{1,2}_001.fastq.gz
+variants : s3://ngsexperiments/processed_data/WGS_Payload_9_pigs_05_2019/1839_Huck/1839_PL9_sample_short_reads_raw.snps.indels.vcf
+blacklist: /opt/work/aa6904a6-b74e-4350-a1c5-e631aebfa737/1/data/blacklist.bed
+results  : s3://nextflow1/RNASeq_workflow/results_payload_9/output_RNASeq_variants_payload_9/1839_Huck
+gatk     : /opt/work/aa6904a6-b74e-4350-a1c5-e631aebfa737/1/GenomeAnalysisTK.jar
+Uploading local `bin` scripts folder to s3://nextflow1/dharm_nextflow_logs/runs/tmp/49/0dbd091c08849fbb2c2adcdd095920/bin
+executor >  awsbatch (4)
+[f6/1503b6] process > 1C_prepare_star_genome_index [  0%] 0 of 1
+[ff/3f1fef] process > 1B_prepare_genome_picard     [  0%] 0 of 1
+[a4/92c1de] process > 1D_prepare_vcf_file          [  0%] 0 of 1
+[3f/a4a3d4] process > 1A_prepare_genome_samtools   [  0%] 0 of 1
+Head job FAILED
+executor >  awsbatch (4)
+[f6/1503b6] process > 1C_prepare_star_genome_index [  0%] 0 of 1
+[ff/3f1fef] process > 1B_prepare_genome_picard     [100%] 1 of 1, failed: 1 ✘
+[a4/92c1de] process > 1D_prepare_vcf_file          [  0%] 0 of 1
+[3f/a4a3d4] process > 1A_prepare_genome_samtools   [  0%] 0 of 1
+ERROR ~ Error executing process > '1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)'
+Caused by:
+  Process `1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)` terminated with an error exit status (137)
+Command executed:
+  PICARD=`which picard.jar`
+  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Command exit status:
+  137
+Command output:
+  (empty)
+Command error:
+  [Thu May 16 14:32:17 UTC 2019] picard.sam.CreateSequenceDictionary REFERENCE=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa OUTPUT=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict    TRUNCATE_NAMES_AT_WHITESPACE=true NUM_SEQUENCES=2147483647 VERBOSITY=INFO QUIET=false VALIDATION_STRINGENCY=STRICT COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json
+  [Thu May 16 14:32:17 UTC 2019] Executing as root@ip-10-68-96-187 on Linux 4.14.101-75.76.amzn1.x86_64 amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_121-b13; Picard version: 2.9.0-1-gf5b9f50-SNAPSHOT
+  .command.sh: line 3:   106 Killed                  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Work dir:
+  s3://nextflow1/dharm_nextflow_logs/runs/ff/3f1fef1a119d9c598d6dfaddb2bfa7
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+ -- Check '.nextflow.log' file for details
+executor >  awsbatch (4)
+[f6/1503b6] process > 1C_prepare_star_genome_index [100%] 1 of 1, failed: 1
+[ff/3f1fef] process > 1B_prepare_genome_picard     [100%] 1 of 1, failed: 1 ✘
+[a4/92c1de] process > 1D_prepare_vcf_file          [100%] 1 of 1, failed: 1
+[3f/a4a3d4] process > 1A_prepare_genome_samtools   [100%] 1 of 1, failed: 1
+WARN: Killing pending tasks (3)
+ERROR ~ Error executing process > '1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)'
+Caused by:
+  Process `1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)` terminated with an error exit status (137)
+Command executed:
+  PICARD=`which picard.jar`
+  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Command exit status:
+  137
+Command output:
+  (empty)
+Command error:
+  [Thu May 16 14:32:17 UTC 2019] picard.sam.CreateSequenceDictionary REFERENCE=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa OUTPUT=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict    TRUNCATE_NAMES_AT_WHITESPACE=true NUM_SEQUENCES=2147483647 VERBOSITY=INFO QUIET=false VALIDATION_STRINGENCY=STRICT COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json
+  [Thu May 16 14:32:17 UTC 2019] Executing as root@ip-10-68-96-187 on Linux 4.14.101-75.76.amzn1.x86_64 amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_121-b13; Picard version: 2.9.0-1-gf5b9f50-SNAPSHOT
+  .command.sh: line 3:   106 Killed                  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Work dir:
+  s3://nextflow1/dharm_nextflow_logs/runs/ff/3f1fef1a119d9c598d6dfaddb2bfa7
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+ -- Check '.nextflow.log' file for details
+executor >  awsbatch (4)
+[f6/1503b6] process > 1C_prepare_star_genome_index [100%] 1 of 1, failed: 1
+[ff/3f1fef] process > 1B_prepare_genome_picard     [100%] 1 of 1, failed: 1 ✘
+[a4/92c1de] process > 1D_prepare_vcf_file          [100%] 1 of 1, failed: 1
+[3f/a4a3d4] process > 1A_prepare_genome_samtools   [100%] 1 of 1, failed: 1
+WARN: Killing pending tasks (3)
+ERROR ~ Error executing process > '1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)'
+Caused by:
+  Process `1B_prepare_genome_picard (Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN)` terminated with an error exit status (137)
+Command executed:
+  PICARD=`which picard.jar`
+  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Command exit status:
+  137
+Command output:
+  (empty)
+Command error:
+  [Thu May 16 14:32:17 UTC 2019] picard.sam.CreateSequenceDictionary REFERENCE=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa OUTPUT=Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict    TRUNCATE_NAMES_AT_WHITESPACE=true NUM_SEQUENCES=2147483647 VERBOSITY=INFO QUIET=false VALIDATION_STRINGENCY=STRICT COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json
+  [Thu May 16 14:32:17 UTC 2019] Executing as root@ip-10-68-96-187 on Linux 4.14.101-75.76.amzn1.x86_64 amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_121-b13; Picard version: 2.9.0-1-gf5b9f50-SNAPSHOT
+  .command.sh: line 3:   106 Killed                  java -jar $PICARD CreateSequenceDictionary R= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.fa O= Sus_scrofa.Sscrofa11.1.dna.toplevel_with_PL9_full_plus_pBACN.dict
+Work dir:
+  s3://nextflow1/dharm_nextflow_logs/runs/ff/3f1fef1a119d9c598d6dfaddb2bfa7
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+ -- Check '.nextflow.log' file for details
+
+```
+
+If you don't mind can you please let us know if I am using the right commnets and flags in containertOverrides or I am making some other mistake to run this on AWS Batch. 
+
+Thanks, 
+
+With Regards, 
+Dharm 
+",Dharmendra-G-1,https://github.com/CRG-CNAG/CalliNGS-NF/issues/8
+MDU6SXNzdWU0NTQyMjc5NDg=,samtools: command not found,CLOSED,2019-06-10T15:27:42Z,2020-08-10T16:32:40Z,2020-08-10T16:32:40Z,"`nextflow run CRG-CNAG/CalliNGS-NF --gatk /home/cllcentosvm/GenomeAnalysisTK.jar`
+
+N E X T F L O W ~ version 19.04.1 Launching CRG-CNAG/CalliNGS-NF` [irreverent_pasteur] - revision: e9e0fcf [master]
+C A L L I N G S - N F v 1.0
+genome : /home/cllcentosvm/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/genome.fa
+reads : /home/cllcentosvm/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/reads/rep1_{1,2}.fq.gz
+variants : /home/cllcentosvm/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/known_variants.vcf.gz
+blacklist: /home/cllcentosvm/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/blacklist.bed
+results : results
+gatk : /home/cllcentosvm/GenomeAnalysisTK.jar
+[warm up] executor > local
+executor > local (4)
+[22/5f3c38] process > 1C_prepare_star_genome_index [100%] 1 of 1, failed: 1
+[5c/fed7e8] process > 1A_prepare_genome_samtools [100%] 1 of 1, failed: 1 ✘
+[db/b888c0] process > 1B_prepare_genome_picard [100%] 1 of 1, failed: 1
+[13/3808c1] process > 1D_prepare_vcf_file [200%] 2 of 1, failed: 2 ✘
+WARN: Killing pending tasks (3)
+ERROR ~ Error executing process > '1A_prepare_genome_samtools (genome)'
+
+Caused by:
+Process 1A_prepare_genome_samtools (genome) terminated with an error exit status (127)
+
+Command executed:
+
+samtools faidx genome.fa
+
+Command exit status:
+127
+
+Command output:
+(empty)
+
+Command error:
+.command.sh: line 2: samtools: command not found
+
+Work dir:
+/home/cllcentosvm/work/5c/fed7e8c936daf9d7177e140378b822
+
+Tip: when you have fixed the problem you can continue the execution appending to the nextflow command line the option -resume
+
+-- Check '.nextflow.log' file for details`
+
+",cailiangliang765,https://github.com/CRG-CNAG/CalliNGS-NF/issues/9
+MDU6SXNzdWU0NTc4NjQ0NDk=,picard.jar not found,CLOSED,2019-06-19T08:02:58Z,2020-08-10T16:34:02Z,2020-08-10T16:34:01Z,"nextflow run CRG-CNAG/CalliNGS-NF --gatk /home/ubuntu/tools/GenomeAnalysisTK.jar 
+N E X T F L O W  ~  version 19.04.1
+Launching `CRG-CNAG/CalliNGS-NF` [curious_kilby] - revision: 841638691a [master]
+C A L L I N G S  -  N F    v 1.0 
+================================
+genome   : /home/ubuntu/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/genome.fa
+reads    : /home/ubuntu/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/reads/rep1_{1,2}.fq.gz
+variants : /home/ubuntu/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/known_variants.vcf.gz
+blacklist: /home/ubuntu/.nextflow/assets/CRG-CNAG/CalliNGS-NF/data/blacklist.bed
+results  : results
+gatk     : /home/ubuntu/tools/GenomeAnalysisTK.jar
+[warm up] executor > local
+executor >  local (4)
+[b0/9254bf] process > 1D_prepare_vcf_file          [100%] 1 of 1, failed: 1
+[6c/73da36] process > 1B_prepare_genome_picard     [100%] 1 of 1, failed: 1 ✘
+[28/6cc9ac] process > 1C_prepare_star_genome_index [100%] 1 of 1, failed: 1
+[7f/0b0c2c] process > 1A_prepare_genome_samtools   [100%] 1 of 1, failed: 1
+WARN: Killing pending tasks (3)
+ERROR ~ Error executing process > '1B_prepare_genome_picard (genome)'
+
+Caused by:
+  Process `1B_prepare_genome_picard (genome)` terminated with an error exit status (1)
+
+Command executed:
+
+  PICARD=`which picard.jar`
+  java -jar $PICARD CreateSequenceDictionary R= genome.fa O= genome.dict
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Work dir:
+  /mnt/volume1/data/todo/rnaseq/work/6c/73da36c9a0400e4514e65534e58d6d
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+ -- Check '.nextflow.log' file for details
+(base) ubuntu$ which picard
+/home/ubuntu/anaconda3/bin/picard
+(base) ubuntu$ which picard.jar
+(base) ubuntu$",robertobarrero,https://github.com/CRG-CNAG/CalliNGS-NF/issues/10
+MDU6SXNzdWU1NTA0MTY1MTM=,Using Single end data,CLOSED,2020-01-15T20:37:49Z,2020-01-30T21:00:37Z,2020-01-30T21:00:37Z,"Hi-
+
+I have a single end RNA-seq data set that I would like to use the pipeline on. I've tried, but it seems to only complete processes 1A-1D and doesn't begin any of the others. I'm guessing this is due to only having one fastq, but I'm not 100% that's the issue.
+
+Is there a way to specific to use single end data --- or could you point me in the right direction to update the pipeline for this purpose?
+
+Any help would be appreciated.
+
+Thanks,
+Ben",benkraj,https://github.com/CRG-CNAG/CalliNGS-NF/issues/11
+MDU6SXNzdWU1NzQ3OTkwMzY=,The genomeDir dir name is confusing,CLOSED,2020-03-03T16:44:23Z,2020-08-10T16:38:08Z,2020-08-10T16:38:08Z,"
+The `genomeDir` name is used twice as a variable name: 
+
+https://github.com/CRG-CNAG/CalliNGS-NF/blob/89134343e1f8adf82332ff08631780e38689daab/main.nf#L181
+
+and as a local directory name:
+
+https://github.com/CRG-CNAG/CalliNGS-NF/blob/89134343e1f8adf82332ff08631780e38689daab/main.nf#L193
+https://github.com/CRG-CNAG/CalliNGS-NF/blob/89134343e1f8adf82332ff08631780e38689daab/main.nf#L200
+
+Besides it works it's really confusing when reading the task command. A different name should be used. ",pditommaso,https://github.com/CRG-CNAG/CalliNGS-NF/issues/13
+MDU6SXNzdWU1ODQ2MjQ1NDk=,GATK4 branch does not require separate Picard,CLOSED,2020-03-19T18:47:57Z,2020-08-10T16:33:08Z,2020-08-10T16:33:08Z,"The GATK4 jar has all of the Picard tools integrated, so it is no longer necessary to include a separate jar for Picard in the docker image nor to use the old command syntax which differs from the new GATK4 style.
+
+I have made these changes in a local repository and can submit a PR if you'd like.",jdwheaton,https://github.com/CRG-CNAG/CalliNGS-NF/issues/14
+MDU6SXNzdWU2MDc5MTg3Mjc=,suggest adding docker runOptions to nextflow.config,CLOSED,2020-04-27T23:28:34Z,2020-08-10T16:30:56Z,2020-08-10T16:30:56Z,"hi there,
+
+I'm looking at this after taking your nextflow class last week at Fred Hutch - thanks again for that: it was really helpful.
+
+It might be good to add to the nextflow.config file something like this:
+docker {
+    enabled    = true
+    runOptions = ""-u \$(id -u):\$(id -g)""
+}
+
+because I just ran the pipeline as is from github and now I have files in a work dir that I cannot delete! 
+
+Also enabling docker here would prevent us naive users from having to figure this issue out:
+https://github.com/CRG-CNAG/CalliNGS-NF/issues/9
+
+thanks!
+
+Janet
+
+",jayoung,https://github.com/CRG-CNAG/CalliNGS-NF/issues/16
+MDU6SXNzdWU2MTE0MDM2NDU=,Cannot locate GATK.jar file,CLOSED,2020-05-03T12:30:50Z,2020-08-10T16:27:51Z,2020-08-10T16:27:51Z,"I have over 200 RNAsew raw files and I wanted to run this program on our HPC, which uses slurm as a job scheduler. I keep on getting this error even after downloading the correct version (3.7) of the gatk jar file. Can you help me on how to configure this pipeline to run on HPC?",Jokendo-collab,https://github.com/CRG-CNAG/CalliNGS-NF/issues/17
+MDU6SXNzdWU2MTE0MjE1NDg=,Error: Unable to access jarfile /scratch/oknjav001/transcriptomics/proteogenomics/variabtcalling/gatk/gatk3.7/GenomeAnalysisTK.jar,CLOSED,2020-05-03T14:05:32Z,2020-08-10T16:27:12Z,2020-08-10T16:27:12Z,"I am getting the following error. Can you please help with this
+Error executing process > '3_rnaseq_gatk_splitNcigar (rep1)'
+
+Caused by:
+  Process `3_rnaseq_gatk_splitNcigar (rep1)` terminated with an error exit status (1)
+
+Command executed:
+
+  # SplitNCigarReads and reassign mapping qualities
+  java -jar /scratch/oknjav001/transcriptomics/proteogenomics/variabtcalling/gatk/gatk3.7/GenomeAnalysisTK.jar -T SplitNCigarReads           -R genome.fa -I Aligned.sortedByCoord.out.bam           -o spli
+t.bam           -rf ReassignOneMappingQuality           -RMQF 255 -RMQT 60           -U ALLOW_N_CIGAR_READS           --fix_misencoded_quality_scores
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Error: Unable to access jarfile /scratch/oknjav001/transcriptomics/proteogenomics/variabtcalling/gatk/gatk3.7/GenomeAnalysisTK.jar
+
+Work dir:
+  /scratch/oknjav001/transcriptomics/proteogenomics/analscripts/work/84/39ebb85b80c6ec21edc450c6f70222
+
+Tip: when you have fixed the problem you can continue the execution adding the option `-resume` to the run command line
+",Jokendo-collab,https://github.com/CRG-CNAG/CalliNGS-NF/issues/18
+MDU6SXNzdWU3MDYyNjc1MjQ=,Reading single end reads,OPEN,2020-09-22T10:41:52Z,2021-02-16T18:31:15Z,,"Hi,
+
+I have a single end reads and I would like to use this powerful pipeline to process my samples. Which command can I use to process this type of data since I can see the pipeline only accepts paired end reads.",Jokendo-collab,https://github.com/CRG-CNAG/CalliNGS-NF/issues/19
+MDU6SXNzdWU3MTkwMDU0MjY=,Whether do not  generate star index if provide directly?,OPEN,2020-10-12T03:10:17Z,2021-04-07T04:31:15Z,,,RyanYip-Kat,https://github.com/CRG-CNAG/CalliNGS-NF/issues/20
+MDU6SXNzdWU4MjE0MDcxNjU=,Process POST_PROCESS_VCF failes when order of chromosomes in result.DP8.vcf differs from that in the GRCm38/Annotation/Variation/Mus_musculus.vcf,OPEN,2021-03-03T19:16:18Z,2021-03-03T19:16:18Z,,"To fix, I added a call to `vcf-sort` in the middle of the POST_PROCESS_VCF script - I tried installing and using bcftools, but it requires a header with the ""contig"" section which is not present in these intermediate files, and vcftools is already included in the container. Will submit PR for review.
+
+Error from vcftools on process failure is:
+
+```
+Comparing sites in VCF files...
+  Error: Cannot determine chromosomal ordering of files, both files must contain the same chromosomes to use the diff functions.
+  Found 10 in file 1 and 1 in file 2.
+```
+
+Looking in the working directory associated with the failing task, POST_PROCESS_VCF produces the file `result.DP8.vcf` with chromosomes ordered as `grep -v ""#"" result.DP8.vcf | cut -f 1 | uniq | tr ""\n"" "" ""`:
+
+```bash
+grep -v ""#"" result.DP8.vcf | cut -f 1 | uniq | tr ""\n"" "" ""
+# 10 11 12 13 14 15 16 17 18 19 1 2 3 4 5 6 7 8 9 MT X Y
+singularity exec callings-nf_gatk4.sif vcf-sort result.DP8.vcf > result.DP8.vcf.sorted
+# unix command printed on execution is ""sort -k1,1d -k2,2n""
+grep -v ""#"" result.DP8.vcf.sorted | cut -f 1 | uniq | tr ""\n"" "" ""
+# 1 10 11 12 13 14 15 16 17 18 19 2 3 4 5 6 7 8 9 MT X Y
+grep -v ""#"" filtered.recode.vcf | cut -f 1 | uniq | tr ""\n"" "" ""
+# 1 10 11 12 13 14 15 16 17 18 19 2 3 4 5 6 7 8 9 MT X Y
+```
+
+Possible confounder here is that we are trying to use the Boyle lab's https://github.com/Boyle-Lab/Blacklist for mm10, but using Ensembl build of GRCm38 available from iGenomes - I wrote in a profile into the config as such:
+
+```groovy
+singularity {
+    singularity.enabled = true
+    singularity.cacheDir = './singularity_cache'
+    process {
+        container = 'quay.io/nextflow/callings-nf:gatk4'
+        executor = 'slurm'
+        queue = 'our_queue'
+        memory = 16.GB
+        errorStrategy = 'finish'
+        withLabel: mem_large { memory = 48.GB }
+        withLabel: mem_xlarge { memory = 64.GB }
+            params {
+                genome  = ""iGenomes/Mus_musculus/Ensembl/GRCm38/Sequence/Bowtie2Index/genome.fa""
+                reads = ""reads/*_{1,2}.fastq.gz""
+                variants  = ""iGenomes/Mus_musculus/Ensembl/GRCm38/Annotation/Variation/Mus_musculus.vcf""
+                denylist  = ""iGenomes/Blacklist/lists/mm10-blacklist.v2.bed""
+                results    = ""./results""
+            }
+    }
+```",dylanht,https://github.com/CRG-CNAG/CalliNGS-NF/issues/21
+MDU6SXNzdWU4MzIwNDg0MDY=,could not execute mkdir,CLOSED,2021-03-15T17:47:48Z,2021-03-17T19:01:26Z,2021-03-17T18:59:56Z,"Command error:
+  mkdir: cannot create directory 'genome_dir': Permission denied
+I did make all folders writable before",N/A,https://github.com/CRG-CNAG/CalliNGS-NF/issues/22
+MDU6SXNzdWU5MzE1MzA0OTI=,mm39 variants / black list,OPEN,2021-06-28T12:43:06Z,2021-06-28T12:54:04Z,,"Hello,
+It is more a question than an issue: where would you look for a good resource of known variants for the mm39 assembly (and one for the ""deny list"")? 
+Is it just to soon since mm39 was released to find such data?
+Thank you!",sarahbonnin,https://github.com/CRG-CNAG/CalliNGS-NF/issues/23
+MDU6SXNzdWU5NzYxNjIwMjk=,The on-the-fly two-pass option could be used to avoid the genome regeneration step,CLOSED,2021-08-21T15:31:38Z,2021-08-25T06:42:40Z,2021-08-24T15:01:49Z,"According to the STAR manual...
+
+https://raw.githubusercontent.com/alexdobin/STAR/master/doc/STARmanual.pdf
+
+> 8.3 2-pass mapping with re-generated genome.
+>
+> This is the original 2-pass method which involves genome re-generation step in-between 1st and 2nd
+> passes. Since 2.4.1a, it is recommended to use the on the fly 2-pass options as described above.
+
+It seems to say that genome regeneration is not recommended.
+
+> 8.1 Multi-sample 2-pass mapping.
+> For a study with multiple samples, it is recommended to collect 1st pass junctions from all samples.
+> 1. Run 1st mapping pass for all samples with ""usual"" parameters. Using annotations is recommended either a the genome  generation step, or mapping step.
+> 2. Run 2nd mapping pass for all samples , listing SJ.out.tab files from all samples in --sjdbFileChrStartEnd /path/to/sj1.tab /path/to/sj2.tab ....
+
+Honestly, I am not sure what 2-pass mapping is, but maybe the following script can be improved by omitting the genome re-generation.
+
+https://github.com/CRG-CNAG/CalliNGS-NF/blob/649270265eec29796816810b4ea5103d6ca9aada/modules.nf#L113-L142",kojix2,https://github.com/CRG-CNAG/CalliNGS-NF/issues/26
+I_kwDOBPjbWM4-YOPY,will there be a nf of dna variant calling which need paired samples,OPEN,2021-11-06T15:48:50Z,2022-03-09T02:42:06Z,,"Thanks a lot for building such a powerfule project
+will there be a nf of dna variant calling which need paired samples?
+<br>
+like gatk4 in dna-seq?",asmlgkj,https://github.com/CRG-CNAG/CalliNGS-NF/issues/29
+I_kwDOBPjbWM5A84us,Could not build fai index genome.fa.fai,OPEN,2021-12-28T08:28:43Z,2021-12-28T08:28:43Z,,"I am getting the below error when I try to run this pipeline on HPC with -profile singularity. Our HPC does not support docker. Could you help in solving this?
+
+```nextflow run CalliNGS-NF/ -profile singularity --genome /scratch/oknjav001/sarsCovRNA/CalliNGS-NF/data/genome.fa -c CalliNGS-NF/nextflow.config```
+N E X T F L O W  ~  version 21.10.6
+Launching `CalliNGS-NF/main.nf` [pensive_kalman] - revision: d02d9193b8
+C A L L I N G S  -  N F    v 2.1
+================================
+genome   : /scratch/oknjav001/sarsCovRNA/CalliNGS-NF/data/genome.fa
+reads    : /scratch/oknjav001/sarsCovRNA/CalliNGS-NF/data/reads/rep1_{1,2}.fq.gz
+variants : /scratch/oknjav001/sarsCovRNA/CalliNGS-NF/data/known_variants.vcf.gz
+denylist : /scratch/oknjav001/sarsCovRNA/CalliNGS-NF/data/denylist.bed
+results  : results
+
+executor >  local (4)
+[77/d01b20] process > PREPARE_GENOME_SAMTOOLS (genome)      [  0%] 0 of 1
+[72/3c89cf] process > PREPARE_GENOME_PICARD (genome)        [  0%] 0 of 1
+[03/63ccdb] process > PREPARE_STAR_GENOME_INDEX (genome)    [  0%] 0 of 1
+executor >  local (4)
+[77/d01b20] process > PREPARE_GENOME_SAMTOOLS (genome)      [100%] 1 of 1, failed: 1 ✘
+[-        ] process > PREPARE_GENOME_PICARD (genome)        -
+[03/63ccdb] process > PREPARE_STAR_GENOME_INDEX (genome)    [100%] 1 of 1, failed: 1 ✘
+[66/5dbe33] process > PREPARE_VCF_FILE (known_variants.vcf) [100%] 1 of 1 ✔
+[-        ] process > RNASEQ_MAPPING_STAR                   -
+[-        ] process > RNASEQ_GATK_SPLITNCIGAR               -
+[-        ] process > RNASEQ_GATK_RECALIBRATE               -
+[-        ] process > RNASEQ_CALL_VARIANTS                  -
+[-        ] process > POST_PROCESS_VCF                      -
+[-        ] process > PREPARE_VCF_FOR_ASE                   -
+[-        ] process > ASE_KNOWNSNPS                         -
+Error executing process > 'PREPARE_GENOME_SAMTOOLS (genome)'
+Caused by:
+  Process `PREPARE_GENOME_SAMTOOLS (genome)` terminated with an error exit status (255)
+
+Command executed:
+
+  samtools faidx genome.fa
+
+Command exit status:
+  255
+
+Command output:
+  (empty)
+
+Command error:
+  [fai_build] fail to open the FASTA file genome.fa
+  Could not build fai index genome.fa.fai
+
+Work dir:
+  /scratch/oknjav001/sarsCovRNA/work/77/d01b200797821f93eb4177ceaa3c77
+
+Tip: view the complete command output by changing to the process work dir and entering the command `cat .command.out`
+
+",Jokendo-collab,https://github.com/CRG-CNAG/CalliNGS-NF/issues/30
+I_kwDOBPjbWM5ByFb9,denylisted genome file,OPEN,2022-01-14T13:34:38Z,2022-01-14T13:34:38Z,,"I am working on a project that requires us to test a couple of pipelines and really interested in incorporating this similar pipeline. I am however unaware of what the 'denylisted genome' file would be and its importance in this type of work. Someone help me understand this. thanks. 
+In addition, the link 'http://gatkforums.broadinstitute.org/gatk/discussion/3892/the-gatk-best-practices-for-variant-calling-on-rnaseq-in-full-detail' to the documentation of the gatk workflow is invalid, kindly work on that as well.",okeyoallan,https://github.com/CRG-CNAG/CalliNGS-NF/issues/31
+I_kwDOBPjbWM5EDxK0,Documentation issue?,OPEN,2022-02-17T20:31:47Z,2022-02-17T20:38:55Z,,"The documentation at https://github.com/CRG-CNAG/CalliNGS-NF/blob/master/docker/README.adoc states
+> A Docker container with all tools except the Genome Analysis Toolkit can be built from the Dockerfile present in this folder
+
+However, the Docker file _does_ install GATK as well in https://github.com/CRG-CNAG/CalliNGS-NF/blob/master/docker/Dockerfile#L46:
+>   `&& curl -fsSL https://github.com/broadinstitute/gatk/releases/download/4.1.1.0/gatk-4.1.1.0.zip > gatk-4.zip \`
+
+",pieterlukasse,https://github.com/CRG-CNAG/CalliNGS-NF/issues/32
+I_kwDOBPjbWM5NSnq2,Process `ASE_KNOWNSNPS (SAMPLE123XYZ)` terminated with an error exit status (2)  (More then one variant context at position: chr3:XXXXXXX),OPEN,2022-07-07T02:59:06Z,2022-07-13T09:06:49Z,,,SINGHVJ-Bio,https://github.com/CRG-CNAG/CalliNGS-NF/issues/33
+I_kwDOBPjbWM5YKWtO,Operator `phase` is deprecated,OPEN,2022-12-06T13:26:11Z,2022-12-06T13:26:11Z,,"When trying to run `nextflow run CRG-CNAG/CalliNGS-NF -profile docker` with the  `N E X T F L O W  ~  version 22.10.3` I receive the following error: `Operator 'phase' is deprecated -- it will be removed in a future release`.
+
+Checking the log reveals:
+```
+Dec-06 14:15:45.034 [main] ERROR nextflow.cli.Launcher - @unknown
+groovy.lang.DeprecationException: Operator `phase` is deprecated -- it will be removed in a future release
+	at nextflow.extension.OpCall.checkDeprecation(OpCall.groovy:327)
+	at nextflow.extension.OpCall.invoke1(OpCall.groovy:319)
+	at nextflow.extension.OpCall.invoke0(OpCall.groovy:306)
+	at nextflow.extension.OpCall.invoke(OpCall.groovy:166)
+	at nextflow.extension.OpCall.call(OpCall.groovy:113)
+	at nextflow.plugin.extension.PluginExtensionProvider.invokeExtensionMethod(PluginExtensionProvider.groovy:279)
+	at groovy.runtime.metaclass.NextflowDelegatingMetaClass.invokeMethod(NextflowDelegatingMetaClass.java:59)
+	at org.codehaus.groovy.runtime.callsite.PojoMetaClassSite.call(PojoMetaClassSite.java:44)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at Script_6487ce9d.group_per_sample(Script_6487ce9d:371)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at nextflow.script.FunctionDef.invoke_a(FunctionDef.groovy:65)
+	at nextflow.script.ComponentDef.invoke_o(ComponentDef.groovy:41)
+	at nextflow.script.WorkflowBinding.invokeMethod(WorkflowBinding.groovy:94)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeOnDelegationObjects(ClosureMetaClass.java:408)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:350)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:61)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:194)
+	at Script_3558d273$_runScript_closure1$_closure2.doCall(Script_3558d273:122)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:274)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1035)
+	at groovy.lang.Closure.call(Closure.java:412)
+	at groovy.lang.Closure.call(Closure.java:406)
+	at nextflow.script.WorkflowDef.run0(WorkflowDef.groovy:205)
+	at nextflow.script.WorkflowDef.run(WorkflowDef.groovy:189)
+	at nextflow.script.BindableDef.invoke_a(BindableDef.groovy:52)
+	at nextflow.script.ChainableDef$invoke_a.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at nextflow.script.BaseScript.runDsl2(BaseScript.groovy:208)
+	at nextflow.script.BaseScript.run(BaseScript.groovy:217)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:230)
+	at nextflow.script.ScriptRunner.run(ScriptRunner.groovy:225)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:131)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:354)
+	at nextflow.cli.Launcher.run(Launcher.groovy:487)
+	at nextflow.cli.Launcher.main(Launcher.groovy:646)
+```
+
+I would appreciate any advice that helps me get forward.
+
+Much obliged,
+
+Blaž",HudoGriz,https://github.com/CRG-CNAG/CalliNGS-NF/issues/35
+I_kwDOBPjbWM5ZYqHa,ERROR: Input files reference and features have incompatible contigs,OPEN,2022-12-16T05:43:00Z,2022-12-16T05:43:00Z,,"I don't konw how to set --variants parameter, and what's wrong with the following code: 
+nextflow run main.nf --reads '/home/liukai/postd/msi_project/RNAseq1101/00.CleanData/C15*_RNA_{1,2}.clean.fq.gz' --denylist  ~/db/human_genome_index/hg38/S1667195179_agilent_region.hg38.bed  —variants /home/liukai/db/human_genome_inde
+x/hg38/hg38_VCF/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz   --results my_msi_results_newref   --genome /home/liukai/db/human_genome_index/hg38/hg38_VCF/Homo_sapiens_assembly38.fasta     -profile docker -resume
+
+![image](https://user-images.githubusercontent.com/12771990/208030287-babdaaaf-490c-47a7-8b55-bd81295b935f.png)
+
+![image](https://user-images.githubusercontent.com/12771990/208030147-7c4b7ed0-d79d-4972-838d-8371f9a13688.png)
+
+",kyle-lk,https://github.com/CRG-CNAG/CalliNGS-NF/issues/36

@@ -1,0 +1,74 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NzQyMjYyNDk=,ImportError on test data,CLOSED,2019-07-29T19:51:12Z,2019-10-17T06:04:35Z,2019-10-17T06:04:34Z,"Hi @sitag,
+
+I'm facing an `ImportError: libmkl_rt.so: cannot open shared object file: No such file or directory` trying the pipeline on test data at steps idr and test_macs2.
+
+You can find attached an exemple of the stderr file generated. [stderr.txt](https://github.com/IHEC/integrative_analysis_chip/files/3444049/stderr.txt)
+
+Paul
+",paulstretenowich,https://github.com/IHEC/integrative_analysis_chip/issues/1
+MDU6SXNzdWU0ODcwNzMwNTg=,"using  slurm_singularity backend: ""sbatch: command not found"" on IHEC test data",OPEN,2019-08-29T16:57:21Z,2019-09-14T04:38:06Z,,"Hi @sitag,
+
+I'm trying to run the pipeline on the IHEC test data but using the slurm_singularity backend instead of Local but I habe an sbatch not found error.
+Here is my log file: [ihec_test.log.txt](https://github.com/IHEC/integrative_analysis_chip/files/3556598/ihec_test.log.txt).
+Inside the `stderr.submit` file the error is `/long_path/script.submit: line 3: sbatch: command not found` and the [script.submit.txt](https://github.com/IHEC/integrative_analysis_chip/files/3556623/script.submit.txt) file looks like that.
+
+Thanks in advance for the help,
+Paul",paulstretenowich,https://github.com/IHEC/integrative_analysis_chip/issues/2
+MDU6SXNzdWU2MzE1ODIzMzQ=,Chip.wdl has a limitation of 6 replicates ,CLOSED,2020-06-05T13:17:40Z,2020-06-06T19:50:35Z,2020-06-06T19:50:35Z,"Hi @sitag ,
+
+I am trying to run the ENCODE pipeline for 12 traits samples and 20 controls on HPC. The pipeline worked (passing the piperunner.sh and slurm-singularity as backend), however I just have the outputs for 6 replicates (the 6 first described in the Input.json). I checked the chip.wdl file and in fact the pipeline has a ""restriction"" of 6 replicates: 
+
+### fastqs
+        Array[File] fastqs_rep1_R1 = [] # [merge_id]
+        Array[File] fastqs_rep1_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] fastqs_rep2_R1 = [] # do not define if you have a single replicate
+        Array[File] fastqs_rep2_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] fastqs_rep3_R1 = [] # do not define if you have <=2 replicates
+        Array[File] fastqs_rep3_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] fastqs_rep4_R1 = [] # do not define if you have <=3 replicates
+        Array[File] fastqs_rep4_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] fastqs_rep5_R1 = [] # do not define if you have <=4 replicates
+        Array[File] fastqs_rep5_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] fastqs_rep6_R1 = [] # do not define if you have <=5 replicates
+        Array[File] fastqs_rep6_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep1_R1 = []     # [merge_id]
+        Array[File] ctl_fastqs_rep1_R2 = [] # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep2_R1 = [] # do not define if you have a single control
+        Array[File] ctl_fastqs_rep2_R2 = []   # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep3_R1 = [] # do not define if you have <=2 controls
+        Array[File] ctl_fastqs_rep3_R2 = []   # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep4_R1 = [] # do not define if you have <=3 controls
+        Array[File] ctl_fastqs_rep4_R2 = []   # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep5_R1 = [] # do not define if you have <=4 controls
+        Array[File] ctl_fastqs_rep5_R2 = []   # do not define _R2 array if your sample is not paired end
+        Array[File] ctl_fastqs_rep6_R1 = [] # do not define if you have <=5 controls
+        Array[File] ctl_fastqs_rep6_R2 = []   # do not define _R2 array if your sample is not paired end
+
+Is there any solution to run more than 6 replicates? 
+
+Thanks in advance for your help,
+Gabriella Frosi
+",GFrosi,https://github.com/IHEC/integrative_analysis_chip/issues/5
+MDU6SXNzdWU2MzIwMTIwNTk=,Raw bigwig files step,CLOSED,2020-06-05T22:15:35Z,2020-06-06T19:50:46Z,2020-06-06T19:50:46Z,"Hi @sitag,
+
+I would like to know if your group have an updated version of the ENCODE pipeline with the step related to generation of Raw bigwig files, or a code that could be shared to generate this file.
+
+I am working with the files cloned from dev-organize-output branch. 
+
+Thanks in advance for your help.
+
+Gabriella Frosi
+
+    ",GFrosi,https://github.com/IHEC/integrative_analysis_chip/issues/6
+MDU6SXNzdWU3NDc4MTAxNzM=,Fragment length to rawBW files ,CLOSED,2020-11-20T21:38:01Z,2020-11-21T21:41:34Z,2020-11-21T21:41:34Z,"Hi @sitag ,
+
+I am working with the rawBW files generated by postprocess.sh script. I am using the fragment length calculated by xcor step from ENCODE-ChIP-Seq pipeline. However just the fragment length for IP samples are being calculated. The input files are not being passed to xcor step during the pipeline execution. 
+
+I would like to know how are you obtain the fragment length for input samples to run the postprocess.sh script?  
+
+Thanks in advance for your help.
+
+Gabriella Frosi 
+
+",GFrosi,https://github.com/IHEC/integrative_analysis_chip/issues/7

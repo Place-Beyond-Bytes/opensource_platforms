@@ -1,0 +1,56 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFcXzsc5ESh4Z,AttributeError: 'NoneType' object has no attribute 'max_n',CLOSED,2022-02-21T12:02:54Z,2022-02-24T15:12:46Z,2022-02-24T15:12:46Z,"Hello - Any ideas what is causing this error?
+
+```
+> calculating confusion matrices
+    0 of 45 chunks processedmultiprocessing.pool.RemoteTraceback: 
+""""""
+Traceback (most recent call last):
+  File ""/Users/Matt.Parker/wc/miniconda3/envs/epi2melabs-wf-tb-amr/lib/python3.9/multiprocessing/pool.py"", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File ""/Users/Matt.Parker/wc/miniconda3/envs/epi2melabs-wf-tb-amr/lib/python3.9/multiprocessing/pool.py"", line 48, in mapstar
+    return list(map(*args))
+  File ""src/bam.pyx"", line 353, in bam.calc_confusion_matrices
+  File ""src/bam.pyx"", line 362, in bam.calc_confusion_matrices
+AttributeError: 'NoneType' object has no attribute 'max_n'
+""""""
+```
+Thanks
+
+Matt",mattdmem,https://github.com/TimD1/nPoRe/issues/1
+I_kwDOFcXzsc5EgqA_,Empty Sam File after ralign,CLOSED,2022-02-24T15:15:20Z,2022-07-11T02:21:09Z,2022-07-11T02:21:09Z,"```
+python ~/wc/npore/src/realign.py --bam <BAM> --ref <FASTA> --out_prefix <PREFIX>  --stats_dir ~/wc/npore/guppy5_stats
+```
+Results in an empty sam file with the only error a warning:
+
+```
+lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 12 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+```
+`samtools flagstat` on my bam:
+```
+8898 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+8898 + 0 mapped (100.00% : N/A)
+0 + 0 paired in sequencing
+0 + 0 read1
+0 + 0 read2
+0 + 0 properly paired (N/A : N/A)
+0 + 0 with itself and mate mapped
+0 + 0 singletons (N/A : N/A)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ>=5)
+```
+Contig header line matches contig in the bam file. This is amplicon data - so only small regions of the entire genome is covered.
+
+Any ideas?
+",mattdmem,https://github.com/TimD1/nPoRe/issues/2
+I_kwDOFcXzsc5EkBPX,Clair3 scripts and modifications,CLOSED,2022-02-25T10:34:59Z,2022-07-11T02:22:25Z,2022-07-11T02:22:25Z,"Thanks for sharing this very interesting realignment approach.
+
+I noticed that your `scripts/realign_pipeline.sh` scripts refers to some model training scripts in the `./clair3/` folder that I could not find in the repository. Would you mind sharing these scripts as well?
+Also, could you provide more details of the corresponding modifications that you made to Clair3, particularly the haplotype-phased pileup calling (`clair3-hap`) that you describe in your preprint?",ftostevin,https://github.com/TimD1/nPoRe/issues/3
+I_kwDOFcXzsc5o-2nz,Maximum recommended homopolymer length? ,CLOSED,2023-06-16T20:40:54Z,2023-06-17T06:21:47Z,2023-06-17T06:21:47Z,"I am analyzing a sample with long homopolymer runs. What are the maximum recommended values for  `max_n` and `max_l` ?
+
+Thanks! ",palakpsheth,https://github.com/TimD1/nPoRe/issues/4

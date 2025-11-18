@@ -1,0 +1,182 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNDA4OTc1ODM=,Put older versions (like 1.6) in git history,CLOSED,2017-07-06T09:30:58Z,2020-02-25T09:16:46Z,2020-02-25T09:16:46Z,"To better understand the changes, it’d be useful to redo the master branch to include the older versions.",paulmenzel,https://github.com/matthiasheinig/histoneHMM/issues/1
+MDU6SXNzdWUyNDIwMjc5NjA=,Compilation failure.,CLOSED,2017-07-11T12:21:11Z,2017-09-06T21:47:44Z,2017-09-06T21:47:44Z,"Following the instructions given in the `README`, compilation fails for me with the following error message:
+```
+g++ -I/usr/share/R/include -DNDEBUG `gsl-config --cflags` `/usr/lib/R/bin/Rscript -e ""Rcpp:::CxxFlags()""`     -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-3.3.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -c densities.cpp -o densities.o
+In file included from /usr/include/c++/6/locale:43:0,
+                 from /usr/include/c++/6/iomanip:43,
+                 from /home/pveber/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include/RcppCommon.h:52,
+                 from /home/pveber/R/x86_64-pc-linux-gnu-library/3.3/Rcpp/include/Rcpp.h:27,
+                 from densities.h:31,
+                 from densities.cpp:1:
+/usr/include/c++/6/bits/locale_conv.h: In function ‘bool std::__do_str_codecvt(const _InChar*, const _InChar*, _OutStr&, const _Codecvt&, _State&, std::size_t&, _Fn)’:
+/usr/include/c++/6/bits/locale_conv.h:83:23: error: ‘Rf_error’ is not a member of ‘std::codecvt_base’
+       if (__result == codecvt_base::error)
+                       ^~~~~~~~~~~~
+/usr/include/c++/6/bits/locale_conv.h: In member function ‘bool std::wbuffer_convert<_Codecvt, _Elem, _Tr>::_M_conv_get()’:
+/usr/include/c++/6/bits/locale_conv.h:469:21: error: ‘Rf_error’ is not a member of ‘std::codecvt_base’
+  return __result != codecvt_base::error;
+                     ^~~~~~~~~~~~
+/usr/include/c++/6/bits/locale_conv.h: In member function ‘bool std::wbuffer_convert<_Codecvt, _Elem, _Tr>::_M_conv_put()’:
+/usr/include/c++/6/bits/locale_conv.h:506:22: error: ‘Rf_error’ is not a member of ‘std::codecvt_base’
+      if (__result == codecvt_base::error)
+                      ^~~~~~~~~~~~
+```
+
+Here's my session info:
+```
+> sessionInfo()
+R version 3.3.3 (2017-03-06)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Debian GNU/Linux stretch/sid
+
+locale:
+ [1] LC_CTYPE=fr_FR.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=fr_FR.UTF-8    
+ [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=fr_FR.UTF-8   
+ [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] Rcpp_0.12.11
+
+loaded via a namespace (and not attached):
+ [1] httr_1.2.1      R6_2.2.1        tools_3.3.3     withr_1.0.2    
+ [5] curl_2.6        memoise_1.1.0   git2r_0.18.0    digest_0.6.12  
+ [9] devtools_1.13.2 tcltk_3.3.3    
+```
+
+I can provide additional information if needed. Thanks!",pveber,https://github.com/matthiasheinig/histoneHMM/issues/2
+MDU6SXNzdWUyNTUwOTExNDI=,findInterval fails,CLOSED,2017-09-04T17:11:13Z,2017-09-05T18:51:42Z,2017-09-05T08:23:45Z,"Hi,
+I am running histoneHMM 1.7 on a BAM file (DEEP project) for H3K9me3 and get the following error:
+```R
+Error in findInterval(x, quantile(x, prob = (0:ncomp)/ncomp), rightmost.closed = T) : 
+  'vec' must be sorted non-decreasingly and not contain NAs
+Calls: run.univariate.hmm -> em -> findInterval
+```
+Session:
+```R
+R version 3.3.2 (2016-10-31)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Debian GNU/Linux 7 (wheezy)
+
+locale:
+ [1] LC_CTYPE=en_US       LC_NUMERIC=C         LC_TIME=en_US       
+ [4] LC_COLLATE=C         LC_MONETARY=en_US    LC_MESSAGES=en_US   
+ [7] LC_PAPER=en_US       LC_NAME=C            LC_ADDRESS=C        
+[10] LC_TELEPHONE=C       LC_MEASUREMENT=en_US LC_IDENTIFICATION=C 
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] histoneHMM_1.7 Rcpp_0.12.8   
+```
+Best,
+Peter",N/A,https://github.com/matthiasheinig/histoneHMM/issues/3
+MDU6SXNzdWUzMTM1MDcyNDk=,Compilation failure,CLOSED,2018-04-11T22:16:18Z,2020-05-07T14:14:20Z,2018-04-16T11:30:38Z,"I tried to install it today, but it failed with the following message. Could you please address it? Thanks!
+
+> install.packages(""~/Downloads/histoneHMM_1.6.tar.gz"", repos = NULL, type = ""source"")
+Installing package into ‘/Users/rinaldo/Rlibs’
+(as ‘lib’ is unspecified)
+* installing *source* package ‘histoneHMM’ ...
+** libs
+/usr/local/clang4/bin/clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG `gsl-config --cflags` `/Library/Frameworks/R.framework/Resources/bin/Rscript -e ""Rcpp:::CxxFlags()""`  -I/usr/local/include  -g -O2 -stdlib=libc++ -fPIC  -Wall -g -O2  -c densities.cpp -o densities.o
+In file included from densities.cpp:1:
+In file included from ./densities.h:26:
+In file included from /Users/rinaldo/Rlibs/Rcpp/include/Rcpp.h:27:
+In file included from /Users/rinaldo/Rlibs/Rcpp/include/RcppCommon.h:138:
+/Users/rinaldo/Rlibs/Rcpp/include/Rcpp/exceptions.h:106:53: warning: all paths through this function will call itself [-Winfinite-recursion]
+    inline void warning(const std::string& message) {        // #nocov start
+                                                    ^
+In file included from densities.cpp:1:
+./densities.h:80:8: warning: 'Zero::initialize' hides overloaded virtual function [-Woverloaded-virtual]
+  void initialize();
+       ^
+./densities.h:58:16: note: hidden overloaded virtual function 'Density::initialize' declared here: different number of parameters (2 vs 0)
+  virtual void initialize(double* weight, int T) = 0;
+               ^
+densities.cpp:61:34: warning: all paths through this function will call itself [-Winfinite-recursion]
+double LogNormal::density(int t) {
+                                 ^
+densities.cpp:829:33: warning: all paths through this function will call itself [-Winfinite-recursion]
+double Zinba::logdensity(int t) {
+                                ^
+densities.cpp:1218:13: warning: unused variable 'jN' [-Wunused-variable]
+    int ti, jN, k, kmax;
+            ^
+densities.cpp:2241:12: warning: unused variable 'negbino' [-Wunused-variable]
+    double negbino;
+           ^
+densities.cpp:2268:1: warning: control may reach end of non-void function [-Wreturn-type]
+};
+^
+densities.cpp:2341:18: warning: unused variable 'jN' [-Wunused-variable]
+    int k, kmax, jN;
+                 ^
+densities.cpp:2572:13: warning: unused variable 'jN' [-Wunused-variable]
+    int ti, jN, k, kmax;
+            ^
+In file included from densities.cpp:1:
+In file included from ./densities.h:26:
+In file included from /Users/rinaldo/Rlibs/Rcpp/include/Rcpp.h:69:
+/Users/rinaldo/Rlibs/Rcpp/include/Rcpp/Nullable.h:108:30: error: too many arguments to function call, expected 0, have 1
+            return Rf_isNull(m_sexp);
+                   ~~~~~~~~~ ^~~~~~
+/Users/rinaldo/Rlibs/Rcpp/include/Rcpp/Nullable.h:117:22: note: in instantiation of member function 'Rcpp::Nullable<Rcpp::Vector<14, PreserveStorage> >::Rf_isNull' requested here
+            return ! isNull();
+                     ^
+/Library/Frameworks/R.framework/Resources/include/Rinternals.h:1261:18: note: expanded from macro 'isNull'
+#define isNull                  Rf_isNull
+                                ^
+/Users/rinaldo/Rlibs/Rcpp/include/Rcpp/sugar/functions/sample.h:403:15: note: in instantiation of member function 'Rcpp::Nullable<Rcpp::Vector<14, PreserveStorage> >::isNotNull' requested here
+    if (probs.isNotNull()) {
+              ^
+/Users/rinaldo/Rlibs/Rcpp/include/Rcpp/Nullable.h:106:9: note: 'Rf_isNull' declared here
+        inline bool isNull() const {
+        ^
+9 warnings and 1 error generated.
+make: *** [densities.o] Error 1
+ERROR: compilation failed for package ‘histoneHMM’
+* removing ‘/Users/rinaldo/Rlibs/histoneHMM’
+Warning in install.packages :
+  installation of package ‘/Users/rinaldo/Downloads/histoneHMM_1.6.tar.gz’ had non-zero exit status
+> sessionInfo()
+R version 3.4.4 (2018-03-15)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+Matrix products: default
+BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+[1] compiler_3.4.4 tools_3.4.4    yaml_2.1.18",cattapre,https://github.com/matthiasheinig/histoneHMM/issues/4
+MDU6SXNzdWU0MTM1MTI1MjA=,callRegions output avg.posterior as array type,CLOSED,2019-02-22T17:54:21Z,2019-03-04T14:45:49Z,2019-03-04T14:45:49Z,"Hi,
+
+`callRegions` calculates the average posterior by `tapply`, i.e. `reduced.posterior = apply(elementMetadata(called.granges)[,posterior.col], called2reduced[,2], mean, na.rm=T)`. Since the output of `tapply` is an `array` type by default, the `avg.posterior` field of `reduced.granges` is also of this type.
+
+This turns out to cause breaking errors when using `makeGffAttributes` on `reduced.granges`, as `as.data.frame` in some versions of S4Vectors doesn't seem to properly parse a `DataFrame` with a field of `array` type. This in turns breaks `GR2gff`, and, thus, also breaks `histoneHMM_call_regions.R`.
+
+On our side, one way to fix it is to coerce `reduced.posterior` (and, similarly, `reduced.expression`) to `numeric` before putting them in `mcols (reduced.granges)`.",JohnMCMa,https://github.com/matthiasheinig/histoneHMM/issues/5
+MDU6SXNzdWU0NzUwMzAwMDE=,make new release for conda,CLOSED,2019-07-31T09:18:36Z,2021-06-02T06:29:06Z,2021-06-02T06:29:06Z,"The current git version seems to solve some problems/errors we get with histoneHMM.
+
+Please make a new release so that we can get this also as a new conda version!
+Thank you!",steffenheyne,https://github.com/matthiasheinig/histoneHMM/issues/7
+MDU6SXNzdWU1NzAxMzY1NDE=,typo in histoneHMM_call_differential.R,CLOSED,2020-02-24T20:45:05Z,2020-02-25T08:06:59Z,2020-02-25T08:06:59Z," Hi! I've notcied that there is a missing comma behind this status when I was trying to run the script - 
+ make_option(""--baumwelch"", action=""store_false"",
+              help=""Whether the Baum Welch algorithm should be used for
+                    parameter estimation."")",mkmwong,https://github.com/matthiasheinig/histoneHMM/issues/8
+MDU6SXNzdWU5MDg2OTAzNTQ=,question about input controls,CLOSED,2021-06-01T21:12:50Z,2021-06-02T15:24:47Z,2021-06-02T15:24:46Z,"Hello,
+
+Thank you for your work on histoneHMM! I have been using it to analyze some H3K27me3 ChIP-seq data. I just was wondering if you could clarify for me what the best way to include input controls per sample is, in your opinion? Would it be advisable to call differential peaks between IP & input first, and then use the significant peaks as input into other differential analyses? Or would you simply subtract any peaks that show up in the input as well? (Or something else I missed?)",kmattioli,https://github.com/matthiasheinig/histoneHMM/issues/9

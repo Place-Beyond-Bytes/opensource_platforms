@@ -1,0 +1,267 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1NDc5MjQ1OTQ=,fitMeanVarCurve: Error: no valid set of coefficients,CLOSED,2020-01-10T07:58:46Z,2020-01-12T08:02:16Z,2020-01-10T10:47:40Z,"
+Hi, I am testing MAnorm2 on my ChIP-seq data. Its two samples with two replicates each, of a transcription factor.
+
+To save time I am currently working with one chromosome, I successfully created the input-file with profile_bins:
+
+```
+Produced by profile_bins, version=1.0.0
+
+Equivalent parameter settings:
+peaks=s11_peaks.bed,s12_peaks.bed,s21_peaks.bed,s22_peaks.bed
+reads=S11.bed,S12.bed,S21.bed,S22.bed
+labs=s1,s1,s2,s2
+n=MAnorm2_result
+min-peak-gap=150
+typical-bin-size=2000
+summits=using_middle_points
+shiftsize=100
+paired=False
+keep-dup=all
+method=byBin
+fix-bin-size=False
+
+Summary of peak numbers in peak files:
+peak_file	peaks_after_filtering	peaks_after_merging
+s11_peaks.bed	5491	5491
+s12_peaks.bed	5491	5491
+s21_peaks.bed	5393	5393
+s22_peaks.bed	5393	5393
+
+Divide merged peaks into reference genomic bins:
+9685 bins in total
+
+Summary of read counts in read files:
+read_file	total_reads	redundant_reads	redundancy_ratio
+S11.bed	909875	0	0.0%
+S12.bed	911507	0	0.0%
+S21.bed	908564	0	0.0%
+S22.bed	909814	0	0.0%
+
+Number of reads falling within reference genomic bins:
+read_file	reads_after_filtering	reads_within_bins	within_ratio
+S11.bed	909875	308201	33.9%
+S12.bed	911507	309885	34.0%
+S21.bed	908564	307243	33.8%
+S22.bed	909814	307258	33.8%
+
+Finished, check the output file:
+MAnorm2_result_profile_bins.xls
+
+```
+
+and then in R this happens:
+
+```
+R version 3.6.2 (2019-12-12) -- ""Dark and Stormy Night""
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(MAnorm2)
+MAnorm2 1.0.0 2019-12-01
+> data <- read.table('MAnorm2_result_profile_bins.xls',header = T)
+> norm <- normalize(data, count = 4:7, occupancy = 8:11)
+> conds <- list(s1 = bioCond(norm[4:5], norm[8:9], name = 's1'), s2 = bioCond(norm[6:7], norm[10:11], name = 's2'))
+> conds <- normBioCond(conds)
+> conds <- fitMeanVarCurve(conds, method = 'parametric', occupy.only = TRUE)
+During the parametric fit procedure:
+Error: no valid set of coefficients has been found: please supply starting values
+In addition: Warning message:
+In log(ifelse(y == 0, 1, y/mu)) : NaNs produced
+Execution halted
+```
+
+```
+> head(data)
+  chrom   start     end s1.read_cnt s1.read_cnt.1 s2.read_cnt s2.read_cnt.1 s1.occupancy
+1 chr19 3015000 3016000          52            40          34            43            1
+2 chr19 3028000 3031000          52            46          54            49            1
+3 chr19 3037000 3038000           6             8          12             8            0
+4 chr19 3046000 3047000          18            18           9            11            1
+5 chr19 3066000 3067000          31            47          43            39            0
+6 chr19 3080000 3081500          23            26          23            34            1
+  s1.occupancy.1 s2.occupancy s2.occupancy.1
+1              1            0              0
+2              1            0              0
+3              0            1              1
+4              1            0              0
+5              0            1              1
+6              1            0              0
+```
+
+I could not find any obvious differences to the demo data set, but when I us the local regression method, it works:
+
+```
+> conds <- fitMeanVarCurve(conds, method = 'local', occupy.only = TRUE)
+During the local regression procedure:
+After iteration 1: 382 (3.57%) outlier(s) detected
+After iteration 2: 383 (3.57%) outlier(s) detected
+After iteration 3: 384 (3.58%) outlier(s) detected
+After iteration 4: 384 (3.58%) outlier(s) detected
+Converged.
+```
+",Edert,https://github.com/tushiqi/MAnorm2/issues/1
+MDU6SXNzdWU3ODYwMTI3MTM=, fitMeanVarCurve error ,CLOSED,2021-01-14T14:00:59Z,2021-01-29T05:09:22Z,2021-01-29T05:09:22Z,"
+library(MAnorm2)
+data <- read.table(""D:\\12-8/1-7/epic/MAnorm2/epiccallpeak_0.05_h3k_profile_bins.xls"",header = T)
+norm <- normalize(data, count = 6:7, occupancy = 12:13)
+norm <- normalize(norm, count = 8:9, occupancy = 14:15)
+conds <- list(d65 = bioCond(norm[6:7], norm[12:13], name = ""d65""),d90 = bioCond(norm[8:9], norm[14:15], name = ""d90""))
+conds <- normBioCond(conds
+conds <- fitMeanVarCurve(conds, method = ""parametric"", occupy.only = TRUE,init.coef = c(0.1, 10))
+
+During the parametric fit procedure:
+After iteration 1: coef = (0.0821818, 2.01018); 1361 (0.78%) outlier(s) detected
+After iteration 2: coef = (0.0497606, 2.1688); 1439 (0.82%) outlier(s) detected
+After iteration 3: coef = (0.0276251, 2.63155); 1388 (0.79%) outlier(s) detected
+After iteration 4: coef = (0.0131094, 2.95489); 1379 (0.79%) outlier(s) detected
+After iteration 5: coef = (0.00597452, 3.119); 1418 (0.81%) outlier(s) detected
+After iteration 6: coef = (0.00337247, 3.17739); 1420 (0.81%) outlier(s) detected
+After iteration 7: coef = (0.00145952, 3.1951); 1439 (0.82%) outlier(s) detected
+After iteration 8: coef = (0.000429077, 3.24471); 1451 (0.83%) outlier(s) detected
+After iteration 9: coef = (6.32897e-05, 3.25055); 1459 (0.83%) outlier(s) detected
+After iteration 10: coef = (0.000623793, 3.23509); 1450 (0.83%) outlier(s) detected
+After iteration 11: coef = (0.000624391, 3.23728); 1449 (0.83%) outlier(s) detected
+After iteration 12: coef = (0.00129248, 3.22126); 1438 (0.82%) outlier(s) detected
+After iteration 13: coef = (0.000451543, 3.24328); 1451 (0.83%) outlier(s) detected
+After iteration 14: coef = (0.000940307, 3.22948); 1441 (0.82%) outlier(s) detected
+After iteration 15: coef = (0.00266528, 3.1899); 1427 (0.82%) outlier(s) detected
+After iteration 16: coef = (0.000354502, 3.24825); 1450 (0.83%) outlier(s) detected
+After iteration 17: coef = (0.000917505, 3.23022); 1441 (0.82%) outlier(s) detected
+After iteration 18: coef = (0.00239003, 3.19667); 1431 (0.82%) outlier(s) detected
+After iteration 19: coef = (0.00504742, 3.13537); 1420 (0.81%) outlier(s) detected
+After iteration 20: coef = (0.00144397, 3.2225); 1430 (0.82%) outlier(s) detected
+After iteration 21: coef = (6.27676e-05, 3.2536); 1458 (0.83%) outlier(s) detected
+After iteration 22: coef = (0.000623851, 3.23535); 1450 (0.83%) outlier(s) detected
+After iteration 23: coef = (0.000624447, 3.23728); 1449 (0.83%) outlier(s) detected
+After iteration 24: coef = (0.00133988, 3.2201); 1436 (0.82%) outlier(s) detected
+After iteration 25: coef = (0.000587136, 3.24076); 1450 (0.83%) outlier(s) detected
+After iteration 26: coef = (0.000538113, 3.23912); 1450 (0.83%) outlier(s) detected
+Converged.
+
+There were 50 or more warnings (use warnings() to see the first 50)
+1: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+2: step size truncated due to divergence
+3: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+4: step size truncated due to divergence
+5: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+6: step size truncated due to divergence
+7: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+8: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+9: step size truncated due to divergence
+10: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+11: step size truncated due to divergence
+12: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+13: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+14: step size truncated due to divergence
+15: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+16: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+17: step size truncated due to divergence
+18: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+19: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+20: step size truncated due to divergence
+21: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+22: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+23: step size truncated due to divergence
+24: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+25: glm.fit: algorithm did not converge
+26: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+27: step size truncated due to divergence
+28: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+29: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+30: step size truncated due to divergence
+31: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+32: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+33: step size truncated due to divergence
+34: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+35: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+36: step size truncated due to divergence
+37: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+38: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+39: step size truncated due to divergence
+40: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+41: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+42: step size truncated due to divergence
+43: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+44: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+45: step size truncated due to divergence
+46: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+47: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+48: step size truncated due to divergence
+49: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+50: In log(ifelse(y == 0, 1, y/mu)) : 产生了NaNs
+
+
+Do these warning will affect the final results?
+why the warnings occur?
+Thanks advance!
+
+
+",tan5251,https://github.com/tushiqi/MAnorm2/issues/2
+MDU6SXNzdWU3ODk1MjQwNjg=,Peak files,CLOSED,2021-01-20T01:03:43Z,2021-01-26T08:40:20Z,2021-01-26T08:40:20Z,Do the peak files are produced by using Ip samples to callpeak  with the normalization of Input samples or just using Ip samples to callepeak？,tan5251,https://github.com/tushiqi/MAnorm2/issues/3
+I_kwDODeB-Z848Rdkk,Multi variable analysis,CLOSED,2021-09-29T17:11:34Z,2021-10-04T14:52:28Z,2021-10-04T14:52:28Z,"This isn't really an issue, but I wanted to know if MAnorm2 was capable of multi-variant analysis in the same way DESeq2 is.  For example, if we wanted to remove the effects of a ""condition"" vs the ""group"" in DESeq2 we would use the design `~ group + condition`.  Is there anything like that for MAnorm2?",jeffpkamp,https://github.com/tushiqi/MAnorm2/issues/4
+I_kwDODeB-Z85IABgu,about cutoff for HVP selection?,OPEN,2022-04-19T08:22:51Z,2022-04-21T09:54:55Z,,"Dear MAnorm2 developer,
+We get result of HVPs by HyperChIP of MAnorm2 as follow.
+We wonder what cutoff is better for HVP selection?
+Two questions:
+1. padj<0.05 is one basic cutoff?
+2. What is the role of ""observed.var"" and ""fold.change"" and how can we select them?
+
+###
+#>   observed.mean observed.var prior.var fold.change        pval      padj
+#> 1      4.123172   0.62767325 3.3719506  0.18614545 0.108561188 0.3391233
+#> 2      8.835486   0.01362584 0.2844984  0.04789425 0.008610023 0.1013005
+#> 3      5.794082   0.16260797 1.4398955  0.11293040 0.043945034 0.2164067
+#> 4      4.580327   4.82749982 2.6687559  1.80889526 0.247900708 0.5171521
+#> 5      8.302970   0.07726829 0.3872625  0.19952434 0.122594081 0.3598123
+#> 6      4.440024   1.65003664 2.8669925  0.57552876 0.639231994 0.8224108",xflicsu,https://github.com/tushiqi/MAnorm2/issues/5
+I_kwDODeB-Z85KtLwZ,printing the results of MAnorm2,OPEN,2022-05-31T05:42:59Z,2022-05-31T05:42:59Z,,"Dear Shiqi, 
+
+thank you for your work on MAnorm2 and for the tutorial. Could you please let me know how can I print the results of the function diffTest ? Thank you !
+
+Bogdan",tanasa,https://github.com/tushiqi/MAnorm2/issues/6
+I_kwDODeB-Z85O8StG,issues about Figure2B in the article,CLOSED,2022-08-01T13:25:23Z,2022-08-10T00:54:51Z,2022-08-10T00:54:51Z,"Dear MAnorm2 developer,
+
+I am new to the Chip-Seq Analysis. And recently, I am learing to use MAnorm2 to normalize my data, and also repet the result of Figure2B. Here are my question:
+
+1、What are the X and Y axis of Figure2B mean, how do you rank promoters, is it throught the T statistic? 
+2、And how do you calculate the proportion linked with DEGs？
+
+I am sorry if I asked silly questions. Any answers of you would be appreciated.
+Looking forward to your precious reply. Thanks a lot!!",Harting-Shieh,https://github.com/tushiqi/MAnorm2/issues/7
+I_kwDODeB-Z85jnMWF,"How to get the common, specific peaks list?",OPEN,2023-04-17T13:45:10Z,2023-04-17T13:45:10Z,,"Dear Shiqi,
+
+Using the **MAplot** function, we can visualize the common, X specific, Y specific and others peaks plot.
+
+But, how to get the common, X specific, Y specific and others peaks **list**?
+
+My understanding is that the occupancy state: 0,1, represents whether or not the sample contains the peak. 1 means yes, 0 means no, and if both are 1, then the peak is common. I wonder if my understanding is correct？
+
+Thank you very much for your reply~
+
+
+
+
+
+
+
+
+",zochzh,https://github.com/tushiqi/MAnorm2/issues/8
+I_kwDODeB-Z86P9L0H,Specific difference peak between two tissues,OPEN,2024-07-18T04:11:38Z,2024-07-18T04:11:38Z,,"Hi, I have a preliminary question for you. 
+In a result with no sample duplication, for example, in terms of the sample data, does it mean that the Mval value is positive and the GM12892 group is more open than the GM12891 group? 
+![屏幕截图 2024-07-18 120931](https://github.com/user-attachments/assets/5edefe7f-45e8-4d36-9550-c584be9646b4)
+Because I just learned this part of knowledge, I am not quite clear about this basic question, please reply to me and answer, thank you!",shRDJr,https://github.com/tushiqi/MAnorm2/issues/9

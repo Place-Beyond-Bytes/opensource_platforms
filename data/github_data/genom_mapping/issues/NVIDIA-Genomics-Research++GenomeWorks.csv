@@ -1,0 +1,1186 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NjcwODY3NTA=,document missing,CLOSED,2019-07-11T20:17:42Z,2020-12-04T16:12:48Z,2020-12-04T16:12:48Z,"I get GitHub 404 for this link 
+https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/master/docs/annotated.html
+from this page 
+https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/master/docs/README-SDK.md
+
+I guess the generated HTML is not checked in?
+",cschin,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/33
+MDU6SXNzdWU0Njk3Mjc0NTU=,Path Missing CMakeLists.txt,CLOSED,2019-07-18T11:54:20Z,2020-03-27T07:51:36Z,2019-07-19T11:38:35Z,"I tried to install Claragenomics in ubuntu 18.04 using command cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install,but I'm getting this error
+The source directory /home/vaibhavcurl/ClaraGenomicsAnalysis-master/3rdparty/bioparser
+does not contain a CMakeLists.txt file.
+The source directory
+
+    /home/vaibhavcurl/ClaraGenomicsAnalysis-master/3rdparty/spdlog
+
+  does not contain a CMakeLists.txt file.
+
+",vaibhaw1994kumar,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/40
+MDU6SXNzdWU0NzA0ODg3NDE=,Hitting graph size larger than allowed GPU limits,CLOSED,2019-07-19T18:55:00Z,2019-07-22T14:18:52Z,2019-07-22T14:18:52Z,Observed a graph overflowing the max edges count during a run. Reported in #44 by @SamStudio8,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/45
+MDU6SXNzdWU0NzA3NjY5ODU=,Kernel Error:: Node count exceeded maximum nodes per window,CLOSED,2019-07-21T10:36:27Z,2019-08-06T10:56:15Z,2019-08-06T10:56:14Z,"Observed this error on my `stderr` while running `racon-gpu`, not sure if related to #45? It's [raised by the code here](https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/master/cudapoa/src/cudapoa_batch.cpp#L204).",SamStudio8,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/47
+MDU6SXNzdWU0NzM4NzM3MjI=,Unable to clone,CLOSED,2019-07-29T06:32:09Z,2019-07-29T08:42:46Z,2019-07-29T08:31:31Z,"Hi, 
+The clone command fails with access right error.
+```
+$ git clone --recursive git@github.com:clara-genomics/ClaraGenomicsAnalysis.git
+Cloning into 'ClaraGenomicsAnalysis'...
+The authenticity of host 'github.com (140.82.114.3)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,140.82.114.3' (RSA) to the list of known hosts.
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+Any thought?",mahmoodn,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/53
+MDU6SXNzdWU0NzM5MjY0NTI=,About singlebatch ,CLOSED,2019-07-29T08:46:01Z,2019-07-30T12:14:08Z,2019-07-30T12:14:08Z,"I went to `build/install/benchmarks/cudapoa/` and when I run `singlebatch`, I get the following output
+
+```
+$ ./singlebatch
+2019-07-29 13:14:25
+Running ./singlebatch
+Run on (16 X 3600 MHz CPU s)
+CPU Caches:
+  L1 Data 32K (x8)
+  L1 Instruction 64K (x8)
+  L2 Unified 512K (x8)
+  L3 Unified 8192K (x2)
+Load Average: 0.33, 0.15, 0.16
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+------------------------------------------------------------------
+Benchmark                        Time             CPU   Iterations
+------------------------------------------------------------------
+BM_SingleBatchTest/1          1594 ms         1593 ms            1
+BM_SingleBatchTest/4          2429 ms         2427 ms            1
+BM_SingleBatchTest/16         2687 ms         2685 ms            1
+BM_SingleBatchTest/64         3231 ms         3228 ms            1
+BM_SingleBatchTest/256        8233 ms         8225 ms            1
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  GPU Error:: out of memory /home/mahmood/cactus/cl/ClaraGenomicsAnalysis/cudapoa/src/allocate_block.cpp 46
+Aborted (core dumped)
+```
+
+I would like to test a specific batch size and not variable sizes. It seems that singlebatch is a binary file. Any idea for that?",mahmoodn,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/54
+MDU6SXNzdWU0NzQ1NjkzODc=,Still about single batch,CLOSED,2019-07-30T12:57:07Z,2019-08-29T14:59:35Z,2019-08-29T14:59:35Z,"For my GPU analyses, I tried running single-batch with nv profiler. It seems that there are two kernels only where the dominant one is `generatePOAKernel`.  The other is `generateConsensusKernel` which is not important. So, this benchmark is not going to solve the problem and is only good for generating the graph. Am I right? I am not expert in this field and want to analyze some GPU things. I don't know if that graph generation is a big problem. 
+
+A single run of batch=256, takes 
+  Time = 8094 ms
+  CPU = 8092 ms
+  Iterations = 1
+So, where is GPU in the results? ",mahmoodn,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/57
+MDU6SXNzdWU0ODcwMTE2NzY=,`IndexGenerator` and `Matcher` unable to allocate memory on GPU when number of reads too large,CLOSED,2019-08-29T14:58:21Z,2019-09-19T20:41:37Z,2019-09-19T20:41:37Z,"When running overlaps with a FASTA/FASTQ that is too large (e.g >500MB) the following error is encountered:
+
+```
+terminate called after throwing an instance of 'claragenomics::device_memory_allocation_exception'
+  what():  Could not allocate device memory!
+```
+
+This happens because on-device memory requirements of `IndexGenerator` and `Matcher` scale with size of the input reads.
+
+The solution is to implement a ""chunked"" version of `IndexGenerator` and `Matcher`.",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/94
+MDU6SXNzdWU0ODcwNDIwMjE=,create conda builds for C++ libraries and python modules,OPEN,2019-08-29T15:49:42Z,2020-04-09T15:31:46Z,,"1. Create conda recipes for C++ libs
+2. Create conda recipes for pyclaragenomics
+3. Host releases in conda channel",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/95
+MDU6SXNzdWU0ODcxNTY0NTA=,revert CGA_CU_CHECK_ERR to abort on error,CLOSED,2019-08-29T20:17:39Z,2019-09-05T14:29:06Z,2019-09-05T14:29:06Z,"Revert the CGA_CU_CHECK_ERR functionality to abort on error for Release builds, and `assert(false)` and then abort for Debug builds.
+
+Potentially add cudaDeviceSynchronize in debug builds to catch errors when they occur",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/96
+MDU6SXNzdWU0ODczNTkzNDE=,`IndexGenerator` needs chunked implementation,CLOSED,2019-08-30T08:34:50Z,2019-08-30T23:28:00Z,2019-08-30T23:27:16Z,As solving part of #94 a low-memory (chunked) implementation of `InexGenerator` is required.,vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/98
+MDU6SXNzdWU0ODc0NjE0NjY=,Add build dependencies to Conda for GPUCI builds,CLOSED,2019-08-30T12:38:14Z,2019-08-30T17:16:53Z,2019-08-30T17:16:53Z,"Some recent GPUCI failures have revealed that (eg [this one](https://gpuci.gpuopenanalytics.com/blue/organizations/jenkins/gpuCI-private%2Fclara-genomics-analysis%2Fprb%2Fclara-genomics-analysis-cpu-build/detail/clara-genomics-analysis-cpu-build/1457/pipeline)) have revealed that we are sensitive to what packages are installed on GPUCI VM/docker instances we are running.
+
+Conda should be used as much as possible to allow our tests to run on a clean CI instance. This includes at a minimum:
+
+1. Cmake
+2. Flake",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/101
+MDU6SXNzdWU0ODc3MDI4NzY=,Solve performance regression caused by chunked Index Generator,CLOSED,2019-08-30T23:31:01Z,2019-09-18T09:47:56Z,2019-09-18T09:47:56Z,#100 allows indexing of an arbitarily-large set of sequences but introduces a performance regression. This is caused because several sorted lists of SketchElements now need to be merged together. The merging is not being performed in an optimal way and can be improved by multithreading to run in ~log(N) time. There is also the possibility of performing this on GPU.,vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/103
+MDU6SXNzdWU0ODc3MDMyMjk=,`Matcher` needs chunked implementation,CLOSED,2019-08-30T23:33:28Z,2019-10-29T16:49:00Z,2019-10-29T16:49:00Z,As solving part of #94 a low-memory (chunked) implementation of `Matcher` is required.,vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/104
+MDU6SXNzdWU0ODg2ODQyOTQ=,Sample app for cuda aligner,CLOSED,2019-09-03T15:46:13Z,2019-10-28T12:59:11Z,2019-10-28T12:59:11Z,Write a sample application for cuda aligner,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/106
+MDU6SXNzdWU0ODg2ODU5MTQ=,cuda aligner API to take in max available memory and max ref/query sizes,OPEN,2019-09-03T15:49:04Z,2021-01-26T16:52:25Z,,"1. each aligner batch to take in max memory and max ref/query sizes and determine how many how alignments can be performed in the batch.
+2. provide api to check max alignments possible
+3. actual max alignments may me larger based on inputs processed so far, and actual max can be determined by continually adding and checking return value of add alignment api call
+ ",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/107
+MDU6SXNzdWU0ODg2OTA3ODU=,Add python API for cuda aligner,CLOSED,2019-09-03T15:58:01Z,2019-10-28T13:10:33Z,2019-10-28T13:10:33Z,,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/108
+MDU6SXNzdWU0ODg2OTE0NTQ=,Enable style check for cudamapper,CLOSED,2019-09-03T15:59:18Z,2019-10-28T12:57:36Z,2019-10-28T12:57:35Z,Would just require the CMakeLists.txt in cudamapper folder to have one more line as specified here https://gitlab-master.nvidia.com/genomics/GenomeWorks/blob/master/cudapoa/CMakeLists.txt#L67,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/109
+MDU6SXNzdWU0ODg2OTIxMDA=,Acceleration improvements for Hirschberg,CLOSED,2019-09-03T16:00:30Z,2019-10-29T16:50:39Z,2019-10-29T16:50:39Z,,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/110
+MDU6SXNzdWU0ODg2OTMwNDc=,Evaluate nvBowTie import into CGA,OPEN,2019-09-03T16:02:19Z,2019-09-03T16:02:19Z,,Import nvBowTie into ClaraGenomicsAnalysis SDK from NVBio repo,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/111
+MDU6SXNzdWU0ODg2OTYzNjY=,Increase cudaaligner singlealignment sweep to 1 Mb,OPEN,2019-09-03T16:09:02Z,2019-09-10T21:01:06Z,,Update Myers + Hirschberg benchmark sweep to end at 1 Mb,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/112
+MDU6SXNzdWU0ODg2OTcxNTg=,"Make SDK functions ""current device""-neutral",CLOSED,2019-09-03T16:10:33Z,2019-09-11T14:34:26Z,2019-09-11T14:34:26Z,"If we assume our users use CUDA also outside of our library, we should also ensure that our methods are ""current device""-neutral, i.e. that we reset the device (cudaSetDevice) at the end of each method to the value it had when it entered the method.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/113
+MDU6SXNzdWU0ODg2OTc4ODg=,clang-format: fix member initializer formatting,CLOSED,2019-09-03T16:12:08Z,2019-10-29T11:58:52Z,2019-10-29T11:58:52Z,"clang-format formats the member initializer of a constructor as a single long line regardless of the length of this line.
+For long lines clang-format should introduce line breaks in some sensible way.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/114
+MDU6SXNzdWU0ODg2OTg2NDc=,Improve README for different various parts of the SDK,CLOSED,2019-09-03T16:13:42Z,2020-12-04T16:13:52Z,2020-12-04T16:13:52Z,"Currently READMEs are not setup in an easy to use manner. The following needs to be done - 
+Proper README for each section (main, benchmarks, samples, APIs, tests)
+Link all READMEs from main one to provide connected information from single location",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/115
+MDU6SXNzdWU0ODkyMjk0MDY=,pycga setup.py should run from any folder,CLOSED,2019-09-04T15:20:45Z,2019-09-05T10:39:55Z,2019-09-05T10:39:55Z,Right now `setup.py` only runs from the `pyclaragenomics` folder. This should be runnable from any directory,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/118
+MDU6SXNzdWU0ODk2NjQ5MTY=,Index should accept SketchElement implementation as tempalte parameter,CLOSED,2019-09-05T10:24:44Z,2019-09-13T14:57:42Z,2019-09-13T14:57:42Z,"Currently `Index` works with pointers to `SketchElement`, meaning we have to use `std::vector<std::unique_ptr<SketchElement>>` which is bad for performance and makes it hard to use that data on the GPU.
+Change the implementation so that `Index` (or it's constructor) accepts one implementation of `SketchElement` and then work with `std::vector<SketchElementImpl>`",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/122
+MDU6SXNzdWU0OTAyOTQ0NTU=,Shared objects not being detected by python when importing `claragenomics.bindings`,CLOSED,2019-09-06T12:14:01Z,2019-09-09T13:17:11Z,2019-09-09T13:17:11Z,"When installing pyclaragenomics with venv, the following error is happening when running samples/tests:
+
+
+```
+Traceback (most recent call last):
+  File ""./sample_cudapoa"", line 18, in <module>
+    from claragenomics.bindings import cudapoa
+ImportError: liblogging.so: cannot open shared object file: No such file or directory
+```
+
+
+it seems that if `ClaraGenomicsAnalysis/pyclaragenomics/cga_build/install/lib/` is added to `LD_LIBRARY_PATH` this problem is resolved.
+
+This error does not seem to occur when running in a Conda environment, but does in a venv (as reported by @mimaric ).",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/127
+MDU6SXNzdWU0OTAzNDMxNjk=,genome_simulator slow on large genomes,OPEN,2019-09-06T13:58:33Z,2019-09-06T13:58:50Z,,"After `genome_simulator` prints out
+
+```Simulating genome:
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 120/120 [05:41<00:00,  1.76s/it]
+Simulating reads:
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 120/120 [06:54<00:00,  3.46s/it]
+```
+
+If running with a large genome (e.g 100MB @ 30x) there is a very long period where a single CPU is at 100% utilisation. This can probably be sped up through multiprocessing and/or other means.",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/128
+MDU6SXNzdWU0OTMzMzIzMTU=,After PR #131 results of cudamapper are different,CLOSED,2019-09-13T13:41:28Z,2019-09-25T17:20:15Z,2019-09-25T17:20:15Z,"For a 10 megabases 30x coverage input cudamapper returns different results than before the merge of #131 
+Please investigate and unittest to cover that case.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/133
+MDU6SXNzdWU0OTMzNjM1NDE=,Do final steps of index generation in IndexGPU on GPU,CLOSED,2019-09-13T14:41:54Z,2019-12-04T15:13:28Z,2019-12-04T15:13:28Z,"As specified in PR #134 last part of building index in `IndexGPU`  (done in `details::index_gpu::build_index()`) is still done on the CPU and takes about half of the total time execution time of `IndexGPU` generation.
+
+Look for a way to move it to the GPU",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/135
+MDU6SXNzdWU0OTMzNjk0MTk=,SketchElementImpl::ReadidPositionDirection became new SketchElement,OPEN,2019-09-13T14:53:14Z,2019-12-09T09:19:29Z,,"`SketchElement`/`Minimizer` objects are not used anymore. `IndexGPU` internally relies on `SketchElementImpl::ReadidPositionDirection`. Its output consists of the content of `SketchElementImpl::ReadidPositionDirection` split into three separate arrays.
+
+Look into ways to:
+1) Change the interface of `Index` so that `SketchElementImpl::ReadidPositionDirection` does not have to be split into three arrays
+2) Refactor the code to reflect the current state of not using `SketchElement` objects",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/136
+MDU6SXNzdWU0OTMzNzA5ODE=,Improve exception handling in python bindings,OPEN,2019-09-13T14:56:08Z,2020-04-28T14:59:43Z,,"Currently error codes are simply converted to python RuntimeErrors, whereas it might be more appropriate to throw some of them as ValueErrors based on the type of error status",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/138
+MDU6SXNzdWU0OTMzODQ2NTU=,Create Error class for python bindings,OPEN,2019-09-13T15:22:42Z,2020-05-04T22:03:22Z,,Wrap the C++ error enums into an error class that has a to `__str__` function and can be thrown from within the binding classes,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/139
+MDU6SXNzdWU0OTM0MjMwNzc=,Move enums back to enum classes in C++ CGA,OPEN,2019-09-13T16:49:34Z,2019-09-13T16:49:34Z,,"Because of cython limitations, C++ enum classes had to be converted to enums for compatibility. However, there seem to be some workarounds in cython land to make up for that limitation. Worth investigating those WARs to avoid violating good C++ coding guidelines",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/140
+MDU6SXNzdWU0OTQxMjgyODQ=,[cudaaligner] FormattedAlignment should include `|` and `x` symbols,CLOSED,2019-09-16T15:39:01Z,2019-12-02T13:27:52Z,2019-12-02T13:27:52Z,"`FormattedAlignment` in cudaaligner returns aligned strings in the following format:
+
+```
+ACCGTCA
+ACGC--A
+```
+
+This would be preferable:
+
+```
+ACCGTCA
+||xx  |
+ACGC--A
+```",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/141
+MDU6SXNzdWU0OTQxNjM3NzU=,[cudaaligner] Add character set check to API,OPEN,2019-09-16T16:50:24Z,2021-01-26T16:53:20Z,,"The cudaaligner API only supports `ATCG` alphabet, but the API doesn't check for this in input strings right now, leading to undefined behavior.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/142
+MDU6SXNzdWU0OTU4ODc1Mzc=,[cudapoa] combine benchmarks into single application,CLOSED,2019-09-19T15:52:50Z,2019-10-31T13:44:04Z,2019-10-31T13:44:04Z,Combine cudapoa benchmarks into a single application instead of two. google benchmarks provides a way to select which benchmarks to run based on filters,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/147
+MDU6SXNzdWU0OTU4ODc4NTQ=,[cudaaligner] combine benchmarks into single application,CLOSED,2019-09-19T15:53:29Z,2019-11-04T19:04:16Z,2019-11-04T19:04:16Z,Use google bench filters instead to choose which set of benchmarks to run,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/148
+MDU6SXNzdWU0OTYwMTUzNzQ=,Add CIGAR alignments to cudamapper using cudaaligner,CLOSED,2019-09-19T20:39:50Z,2020-03-06T23:46:07Z,2020-03-06T23:46:07Z,"* Add optional `cigar` attribute to `Overlap` objects.
+* Add `-a` flag to cudamapper for the option of computing alignments
+* Once overlapping is complete, alignments can be completed in batches using cudaaligner.
+* If alignments are computed, they should be added to the `PAF` file (the relevant modification needs to be performed in the `print_paf` function).",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/150
+MDU6SXNzdWU0OTY0ODA3NDg=,[tests] test_wrappers.py test fails without minimap2 and racon in env,CLOSED,2019-09-20T18:06:39Z,2020-12-04T16:14:45Z,2020-12-04T16:14:45Z,"the test_wrappers.py script always fails if minimap2 and racon are not present in the environment, and our documentation currently doesn't require those to be installed. we need to update documentation to take care of that.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/152
+MDU6SXNzdWU0OTcyMDY3Njc=,Use pip to install pyclaragenomics instead of setup.py,CLOSED,2019-09-23T16:37:29Z,2019-11-11T14:14:22Z,2019-11-11T14:14:22Z,There are several benefits to using `pip` to install custom packages instead of running `setup.py` directly. A good summary can be found here - https://stackoverflow.com/questions/15724093/difference-between-python-setup-py-install-and-pip-install/15731459,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/153
+MDU6SXNzdWU0OTg5NTY3MzE=,Graph representation in python and serialization methods,CLOSED,2019-09-26T15:22:52Z,2020-01-13T19:58:11Z,2020-01-13T19:58:11Z,"The python bindings are very helpful to perform alignments and consensus calls, but there currently isn't a good way to work with the resulting graph structures in python.  The structures are available in C++, but there are some nuances to them.  It would be nice if there were some examples (with documentation) of working with the resulting graphs in C++ and some bindings (or a new interface) to work with them in python as well.
+
+It would also be helpful if there were a method that can be called after performing an alignment or consensus call that would serialize the graph (in DOT or some similar format) so it can be easily inspected / visualized after creation. ",jonn-smith,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/157
+MDU6SXNzdWU0OTk0NTgzNTM=,improve alignment error handling in kernel,OPEN,2019-09-27T13:50:12Z,2019-09-27T13:50:12Z,,"In CUDA aligner, some times valid inputs can lead to errors in processing e.g. when the hirschberg processing stack is full. We should have an error handling mechanism which reports when certain alignments could not be processed correctly so they can be reported back to the caller.
+
+
+Specific case - cudaaligner/src/hirschberg_myers_gpu.cu has a `printf(ERROR: Stack full)` case.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/159
+MDU6SXNzdWU1MDA3NDI2NDk=,python build fails when Doxygen not present,CLOSED,2019-10-01T08:29:47Z,2019-10-01T14:56:57Z,2019-10-01T14:56:56Z,"When setup.py first runs `cmake` it is noted that:
+
+```-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE)
+-- Doxygen not found. Doc gen disabled.
+```
+
+but the subsequent `cmake --build ... docs install` call fails.",cjw85,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/162
+MDU6SXNzdWU1MDI1MDQxNjU=,[cudapoa]  Lost lines in MSA output,CLOSED,2019-10-04T08:33:17Z,2019-11-01T00:39:04Z,2019-11-01T00:39:04Z,"In the example `pyclaragenomics/samples/sample_cudapoa`, the maximum sequences per poa is specified as 100, though the outputs are only 99 long. Changing the maximum sequences to 50, results in outputs of length 49. In appears that it is the final input sequence that is lost.",cjw85,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/169
+MDU6SXNzdWU1MDI1MTE0MTA=,[cudapoa] Expose compile-time constants as parameters,CLOSED,2019-10-04T08:49:21Z,2020-04-10T21:03:10Z,2020-04-10T21:03:10Z,There are several constants defined in `cudapoa_kernels.cuh` which control various maximum sizes of graph properties. It would be useful to vary these at runtime.,cjw85,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/170
+MDU6SXNzdWU1MDI1MTQ4MzI=,[cudapoa] CudaPoaBatch.get_msa() incorrectly reports success on failure with large inputs,CLOSED,2019-10-04T08:56:26Z,2019-11-05T16:20:15Z,2019-11-05T16:20:15Z,"The results of at least the python binding can be unexpected when the maximum MSA width is surpassed (default 1024 from `cudapoa_kernels.cuh`). I’ve observed the status be reported as 0 but the results be slightly mangled.
+
+For example I’ve input 70 sequences of ~660bases, the status is 0, and the lengths of the strings returned for the MSA are not equal (often the first being longer than the rest). Taking a one/a few bases away from the inputs gives MSA lines uniformly of length 1023.",cjw85,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/171
+MDU6SXNzdWU1MDI1MzkwMTE=,[cudamapper] Number of overlaps generated has dependency on `index_size`,OPEN,2019-10-04T09:47:18Z,2019-10-04T09:47:18Z,,"A regression appears to have been introduced whereby whatever `index_size` variable is set to affects the number of overlaps comptued. This results in very small differences between the number of overlaps detected prior and after read-level chunking. Example:
+
+```wc -l res_*
+   899904 res_new.out
+   899973 res_old.out```
+```
+
+This is likely to be an off-by-one error at some point in the read-level chunking",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/172
+MDU6SXNzdWU1MDI5NTkzNDI=,Setting the cuda toolkit location with PyClaraGenomics,CLOSED,2019-10-05T12:49:13Z,2019-10-06T20:58:33Z,2019-10-06T20:58:33Z,"It would be useful to override the `CUDA_TOOLKIT_ROOT_DIR` when building the Python bindings. The patch below passes the environment variable `CUDA_TOOLKIT_ROOT_DIR` to CMake if it is set, let me know if you want a P.R for this.
+
+```diff
+--- a/pyclaragenomics/setup.py
++++ b/pyclaragenomics/setup.py
+@@ -35,6 +35,7 @@ class CMakeWrapper():
+         self.cmake_root_dir = os.path.abspath(cmake_root_dir)
+         self.cmake_install_dir = os.path.join(self.build_path, ""install"")
+         self.cmake_extra_args = cmake_extra_args
++        self.cuda_toolkit_root_dir = os.environ.get(""CUDA_TOOLKIT_ROOT_DIR"")
+ 
+     def run_cmake_cmd(self):
+         cmake_args = ['-DCMAKE_INSTALL_PREFIX=' + self.cmake_install_dir,
+@@ -42,6 +43,9 @@ class CMakeWrapper():
+                       '-DCMAKE_INSTALL_RPATH=' + os.path.join(self.cmake_install_dir, ""lib"")]
+         cmake_args += [self.cmake_extra_args]
+ 
++        if self.cuda_toolkit_root_dir:
++            cmake_args += [""-DCUDA_TOOLKIT_ROOT_DIR=%s"" % self.cuda_toolkit_root_dir]
++
+         if not os.path.exists(self.build_path):
+             os.makedirs(self.build_path)
+```
+",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/175
+MDU6SXNzdWU1MTAxNTU4ODM=,Remove Ubuntu dependency,CLOSED,2019-10-21T17:45:45Z,2019-10-28T12:54:55Z,2019-10-28T12:54:55Z,"On Linux distributions which aren't Ubuntu or CentOS, building the source code fails with the 'unrecognized distro' fatal error. This error occurs in Packaging, which is not relevant to building the rest of the code to use on a given machine and should not block this.",kellyrowland,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/193
+MDU6SXNzdWU1MTA4MjM2NzA=,[common] fasta file I/O performance,OPEN,2019-10-22T18:14:05Z,2019-10-22T18:14:05Z,,"Look into other libraries to improve fasta file I/O performance.
+Eric suggested https://github.com/cartoonist/kseqpp",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/195
+MDU6SXNzdWU1MTc2NzI2Njg=,[common] Option to disable doc build,CLOSED,2019-11-05T10:08:38Z,2019-11-13T00:28:34Z,2019-11-13T00:28:34Z,"Please add an option `cga_build_documentation` (or similar) to the cmake options, such that you can opt-out of building the documentation.
+
+Right now the documentation is built if cmake finds doxygen and I'm not aware of any way to turn it off.",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/205
+MDU6SXNzdWU1MTgwODE0MzI=,[CI] Add support for executing gpuCI tests locally through nvidia-docker,CLOSED,2019-11-05T22:13:10Z,2019-11-13T15:39:05Z,2019-11-13T15:39:05Z,Follow https://github.com/rapidsai/cudf/tree/branch-0.11/ci/local,ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/206
+MDU6SXNzdWU1MjMwMzI4MDE=,[cudapoa] Add alignment checks to cudapoa host allocation,OPEN,2019-11-14T18:34:37Z,2019-11-14T18:34:37Z,,Right now cudapoa host allocations don't take into account alignment of datatype like uint16_t. This can lead to problems if the offset becomes odd at any point (till now avoided because sizes are all even),tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/215
+MDU6SXNzdWU1MjQ1NzE0NzU=,[cudamapper] cub cmake setup,CLOSED,2019-11-18T19:29:54Z,2020-05-07T15:02:42Z,2020-05-07T15:02:41Z,The usage of `cub` in CMake can be improved by making the `cub` folder an interface target (similar to what we have to the `utils` folder).,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/218
+MDU6SXNzdWU1MjQ5MjYwMjQ=,[cudaaligner] Mismatch in formatted alignment when running sample,CLOSED,2019-11-19T10:45:12Z,2019-12-07T21:04:37Z,2019-12-07T21:04:36Z,"Steps to reproduce:
+- Fetch pull request #219 changes. 
+- Build CGA and run 'sample_cudaaligner -p'
+- The pairing string does not correspond to the query & target strings.
+
+@tijyojwad reported that when setting query length to 50 and target length to 60 in the sample, then alignments come out fine. But when increasing those to 100 and 110 respectively, then the issue arises.",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/220
+MDU6SXNzdWU1MjUxNDQ2NTY=,[cudamapper] re-architected indexer and matcher,CLOSED,2019-11-19T17:08:47Z,2019-11-27T19:05:16Z,2019-11-27T19:05:16Z,Indexer and matcher re-architected to be a shared component to remove a GPU -> CPU -> GPU copy between the two stages.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/221
+MDU6SXNzdWU1MjUxNDYwNzY=,[cudamapper] optimize overlapper,CLOSED,2019-11-19T17:11:25Z,2019-12-23T23:27:55Z,2019-12-23T23:27:55Z,Optimize the overlapper in cudamapper to keep anchors generated from matcher in GPU memory when finding overlaps. Also port the overlap detection algorithm to GPU completely.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/222
+MDU6SXNzdWU1MjUxNDcyMzc=,[cudamapper] add better hash function for minimizer,CLOSED,2019-11-19T17:13:33Z,2019-11-19T17:14:04Z,2019-11-19T17:14:04Z,Add a better hashing function for the minimizers so that minimizers within a window are better distributed.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/223
+MDU6SXNzdWU1MjUxNTQxNzk=,"[CI] PR tests are marked as pass, even if unit tests fails",CLOSED,2019-11-19T17:26:20Z,2019-11-20T14:19:54Z,2019-11-20T14:19:54Z,"It was observed in https://github.com/clara-genomics/ClaraGenomicsAnalysis/pull/216.
+
+If we take a look at the details of gpuCI/clara-genomics-analysis/gpu-test/ubuntu18.04-cuda10.1:
+https://gpuci.gpuopenanalytics.com/blue/organizations/jenkins/clara-genomics%2Fgpuci%2Fclara-genomics-analysis%2Fprb%2Fclara-genomics-analysis-gpu-build/detail/clara-genomics-analysis-gpu-build/342/pipeline
+We can see that some of the unit tests fail.
+",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/224
+MDU6SXNzdWU1MjcyMDc3NzQ=,[pyclaragenomics] libcudapoa.so not found after sucessful build,CLOSED,2019-11-22T13:53:10Z,2019-11-22T18:38:18Z,2019-11-22T18:38:18Z,"After building `pyclaragenomics` and running `sample_cudapoa` the following error is thrown.
+
+> ImportError: libcudapoa.so: cannot open shared object file: No such file or directory
+
+Build log -
+
+```bash
+$ python setup_pyclaragenomics.py --build_output_folder build/
+-- Building ClaraGenomicsAnalysis libraries as shared objects
+-- Using CUDA 10.1 from /usr/local/cuda-10.1
+-- Build type: Release
+-- Package generator - DEB
+-- Using CUDA 10.1 from /usr/local/cuda-10.1
+-- Enabling Doxygen documentation generation
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
+-- Doxygen not found. Doc gen disabled.
+-- clang-format not found. Auto-formatting disabled.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build
+[  9%] Built target cudamapper_utils
+[  9%] Built target cgaio
+[ 13%] Built target logging
+[ 15%] Linking CXX static library libminimizer.a
+[ 17%] Linking CXX shared library libcudapoa.so
+[ 19%] Linking CXX shared library libcudaaligner.so
+[ 21%] Linking CXX static library libmatcher_gpu.a
+[ 23%] Linking CXX static library libmatcher.a
+[ 25%] Linking CXX static library liboverlapper_triggerred.a
+[ 26%] Built target minimizer
+[ 28%] Built target matcher_gpu
+[ 30%] Built target matcher
+[ 32%] Built target overlapper_triggerred
+[ 34%] Linking CXX static library libindex_gpu.a
+[ 36%] Linking CXX static library libindex_gpu_two_indices.a
+[ 42%] Built target index_gpu
+[ 51%] Built target cudapoa
+[ 59%] Built target index_gpu_two_indices
+[ 61%] Linking CXX executable sample_cudapoa
+[ 82%] Built target cudaaligner
+[ 84%] Linking CXX executable sample_cudaaligner
+[ 86%] Linking CXX executable cudamapper
+[ 88%] Built target sample_cudapoa
+[ 90%] Built target sample_cudaaligner
+[100%] Built target cudamapper
+Install the project...
+Install the project...
+-- Install configuration: ""Release""
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/lib/liblogging.so
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/logging
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/logging/logging.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/logging.cmake
+-- Installing: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/logging-release.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/device_buffer.cuh
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/cudautils.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/stringutils.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/genomeutils.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/graph.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/mathutils.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/cudaversions.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/limits.cuh
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/utils/signed_integer_utils.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/utils.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/lib/libcgaio.so
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/io
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/io/fasta_parser.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cgaio.cmake
+-- Installing: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cgaio-release.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/lib/libcudapoa.so
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudapoa
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudapoa/cudapoa.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudapoa/batch.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudapoa.cmake
+-- Installing: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudapoa-release.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/benchmarks/cudapoa/README.md
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/samples/sample_cudapoa
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/bin/cudamapper
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudamapper.cmake
+-- Installing: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudamapper-release.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/lib/libcudaaligner.so
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudaaligner
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudaaligner/alignment.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudaaligner/cudaaligner.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/include/claragenomics/cudaaligner/aligner.hpp
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudaaligner.cmake
+-- Installing: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/cmake/cudaaligner-release.cmake
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/benchmarks/cudaaligner/README.md
+-- Up-to-date: /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics/build/install/samples/sample_cudaaligner
+Processing /home/cseymour/Code/github/ClaraGenomicsAnalysis/pyclaragenomics
+Building wheels for collected packages: pyclaragenomics
+  Building wheel for pyclaragenomics (setup.py) ... done
+  Created wheel for pyclaragenomics: filename=pyclaragenomics-0.3.0-cp36-cp36m-linux_x86_64.whl size=494354 sha256=42b9d0e80d2cea78ab6f539771d3f2e2ec9043b5f4a742c3151224f2856c54da
+  Stored in directory: /tmp/pip-ephem-wheel-cache-mcsgz45e/wheels/f2/90/27/0a912d86c66c3b8fc0e1b1bb30b233fe9bff7063c960a64c1f
+Successfully built pyclaragenomics
+Installing collected packages: pyclaragenomics
+  Found existing installation: pyclaragenomics 0.3.0
+    Uninstalling pyclaragenomics-0.3.0:
+      Successfully uninstalled pyclaragenomics-0.3.0
+Successfully installed pyclaragenomics-0.3.0
+pyclaragenomics was successfully setup in installation mode!
+```
+
+Putting `build/install/lib` on the `LD_LIBRARY_PATH` results in `sample_cudapoa` running successfully. 
+
+```bash
+$ python samples/sample_cudapoa
+Traceback (most recent call last):
+  File ""samples/sample_cudapoa"", line 17, in <module>
+    from claragenomics.bindings import cuda
+ImportError: libcudapoa.so: cannot open shared object file: No such file or directory
+$ LD_LIBRARY_PATH=./build/install/lib/ python samples/sample_cudapoa 
+Processed group 0 - 999
+```
+
+Extra Info -
+
+os - Ubuntu 16.04
+branch - dev-v0.4.0
+commit - 226834941d9ff7b3f0219ec17a1acdde1fe0fb29",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/230
+MDU6SXNzdWU1Mjc2ODYyMjk=,[pyclaragenomics] Generate a Python wheel for pyclaragenomics,CLOSED,2019-11-24T11:45:48Z,2019-11-27T23:18:55Z,2019-11-27T23:18:55Z,,ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/237
+MDU6SXNzdWU1Mjg4NTM5MDE=,[pyclaragenomics] Improve setup script support for generating wheel package,CLOSED,2019-11-26T16:57:20Z,2019-11-27T23:18:56Z,2019-11-27T23:18:56Z,"As discussed in PR #238 comments:
+1. Use data_files instead of package_data.
+2. Copy the shared libraries in setup.py and not in setup_pyclaragenomics.py
+3.  generate a wheel using pip command",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/240
+MDU6SXNzdWU1MzAxMDk2ODI=,[pyclaragenomics] Python 3.5 wheels not on PyPi,CLOSED,2019-11-29T00:47:13Z,2019-11-29T22:01:23Z,2019-11-29T22:01:23Z,"Hey Guys, Thank you for sorting out wheels, it's a huge help. I can successfully install the 3.6 wheels with pip but I don't think the 3.5 wheels are on PyPi.
+
+```bash
+(venv3.5) $ python --version
+Python 3.5.2
+(venv3.5)  $ pip show pyclaragenomics-cuda10-1
+WARNING: Package(s) not found: pyclaragenomics-cuda10-0
+(venv3.6) $ python --version
+Python 3.6.8
+(venv3.6) pip show pyclaragenomics-cuda10-1
+Name: pyclaragenomics-cuda10-1
+Version: 0.4.0
+Summary: NVIDIA genomics python libraries and utiliites
+Home-page: https://github.com/clara-genomics/ClaraGenomicsAnalysis
+Author: NVIDIA Corporation
+Author-email: None
+License: Apache License 2.0
+Location: .../venv3.6/lib/python3.6/site-packages
+Requires: quast, numpy, flake8, networkx, matplotlib, pytest, tqdm, Cython, sortedcollections
+Required-by: 
+```",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/247
+MDU6SXNzdWU1MzI3NTE3MTA=,[cudamapper] Filter out most common representations,CLOSED,2019-12-04T15:17:28Z,2019-12-11T09:19:06Z,2019-12-11T09:19:06Z,Implement a functionality which lets the user pass a `filtering_parameter` and then in each index remove all sketch elements with representations such that `number_of_sketch_elements_with_that_representation_in_that_index/total_number_of_sketch_elements_in_that_index >= filtering_parameter`,mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/254
+MDU6SXNzdWU1MzQ0NTIxNjg=,[sdk] add htslib as submodule,CLOSED,2019-12-07T21:00:03Z,2020-04-10T20:32:02Z,2020-04-10T20:32:01Z,add htslib as submodule to tie to specific version for stability,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/261
+MDU6SXNzdWU1NDA1NTU3MTU=,[cudamapper] Optimize sorting in overlapper,CLOSED,2019-12-19T20:46:29Z,2020-02-17T15:04:05Z,2020-02-17T15:04:05Z,"cudamapper spends most of its execution time doing sorting at the beginning of the `Overlapper`. This is because `Matcher` groups anchors by representation and `Overlapper` needs them to be grouped by pairs of query and target read_ids
+
+Think of a way to avoid this sort and harmonize the interface between `Matcher` and `Overlapper`.
+
+Alternatively look for ways to reduce the sorting time.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/265
+MDU6SXNzdWU1NDYxOTcyMDM=,[cudamapper] data race in cudamapper,CLOSED,2020-01-07T10:14:42Z,2020-01-08T12:25:54Z,2020-01-08T11:01:13Z,"There is a data race in cudamapper's main.cu, which may result in an out-of-bound read
+
+When the atomic variable `ranges_idx` is `query_target_ranges.size()-1`, two (or more) threads may enter the loop
+https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/67ff96c80bc7fcce589c2af83d93e73bfc7015f4/cudamapper/src/main.cu#L306
+before one of the threads increments `ranges_idx` in next line:
+https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/67ff96c80bc7fcce589c2af83d93e73bfc7015f4/cudamapper/src/main.cu#L308
+For the other thread(s) entering the loop, this will result in a `range_idx` value >= `query_target_ranges.size()` and result in an out-of-bound memory access in line
+https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/67ff96c80bc7fcce589c2af83d93e73bfc7015f4/cudamapper/src/main.cu#L312",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/272
+MDU6SXNzdWU1NDkxNDcyMzA=,[pyclaragenomics] add native namespace packaging to cga,CLOSED,2020-01-13T19:55:43Z,2020-04-10T20:36:03Z,2020-04-10T20:36:03Z,"Update pcga to use native namespace packaging to allow multiple clara genomics repos to share the same namespace
+
+https://packaging.python.org/guides/packaging-namespace-packages/#native-namespace-packages",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/275
+MDU6SXNzdWU1NDkxNDc4MDE=,[cudaaligner] add banding to Myers global alignment,CLOSED,2020-01-13T19:56:57Z,2020-04-17T15:26:19Z,2020-04-17T15:26:19Z,Add banding support to myers bit vector global alignment implementation,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/276
+MDU6SXNzdWU1NDkxNDkyMTE=,[sdk] add cached CUDA allocator,CLOSED,2020-01-13T19:59:57Z,2020-02-10T22:39:39Z,2020-02-10T22:39:39Z,Cached CUDA allocated in CGA to optimize device allocations,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/277
+MDU6SXNzdWU1NTAzODgwNzE=,[CI][pyclaragenomics] Build artifacts distribution,CLOSED,2020-01-15T19:37:39Z,2020-05-04T22:02:25Z,2020-05-04T22:02:25Z,"1. As part of adding a nightly build job, we would like the artifacts(wheel/conda packages) created in that job to be uploaded to PyPI directly. An issue was raised for the rapids ops team to support this:
+https://github.com/rapidsai/ops/issues/618
+1.1 Once this job is up and running, we will need our PyPI credentials to be configured as environment variables and add the upload commands to the build script. 
+
+2. We would like the tests to be focused on the GPU, the modified test cases should be  as described in https://github.com/rapidsai/ops/issues/617 & https://github.com/rapidsai/ops/issues/618#issuecomment-573852496
+
+",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/278
+MDU6SXNzdWU1NTcwNjM2ODQ=,[cudamapper] gaps between GPU kernels in cudamapper,CLOSED,2020-01-29T19:20:03Z,2020-02-26T14:50:06Z,2020-02-26T14:50:06Z,profiling cudamapper indicates some gaps between GPU kernels caused by CPU blocking calls. The causes of these gaps need to be identified and resolved where applicable. ,r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/286
+MDU6SXNzdWU1NjE0NDcyMTY=,About BM_SingleBatchAlignment,CLOSED,2020-02-07T06:28:51Z,2020-03-28T05:27:49Z,2020-03-28T05:27:49Z,May I know more information about `BM_SingleBatchAlignment<AlignerGlobalUkkonen>/256/4096`? What are those 2 numbers?,mahmoodn,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/289
+MDU6SXNzdWU1NjMwNjA4NjA=,[cga] Centralize compilation flags,CLOSED,2020-02-11T09:05:10Z,2021-02-12T23:00:34Z,2021-02-12T23:00:34Z,"Currently every module defines its own compilation flags. In some cases this is the wanted behavior, but in others (C++ standard, warning level..) it causes confusion.
+
+Think about which flags should be set for the whole SDK.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/291
+MDU6SXNzdWU1NjUzNzU5Njc=,[cga] Adapt custom allocator and buffer to be more in line with STL,CLOSED,2020-02-14T14:54:32Z,2020-02-25T08:23:08Z,2020-02-25T08:23:08Z,"DeviceAllocator should have `T* DeviceAllocator<T>::allocate()` instead of `void* DeviceAllocator::allocate()`. This is required in order to use DeviceAllocator for internal temporary arrays in Thrust's algorithms.
+Doing so will enable us to allocate more memory for caching allocator and also reduce time Thrust spends allocating temporary arrays.
+
+This requires substantial changes to design and adaptation of existing usages of `device_buffer` in cudamapper",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/292
+MDU6SXNzdWU1NzA3MzI4MTQ=,[pyclaragenomics] Increase the maximum sequence length limit,CLOSED,2020-02-25T17:43:15Z,2020-07-01T14:37:19Z,2020-07-01T14:37:19Z,"The 1,000 base limit with POA interface makes it quite restrictive for long-read applications and I've only been able to use it for proof of concept ideas. It would great to see this limit removed.",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/299
+MDU6SXNzdWU1NzQ2NTY4NTE=,[cudamapper] Implement multi-layered cache,CLOSED,2020-03-03T13:09:44Z,2020-03-03T17:41:09Z,2020-03-03T17:41:09Z,Host cache currently starts filling at the same time as device cache. therefore if cudamapper is run with the arguments `-c 10 -C 10` host RAM is used but host cache is not used. If cudamapper is run with the arguments `-c 10 -C 15` effective host cache is 5 indices since for the first 10 indices device cache is always used for reads. Host cache should only be invoked when device cache is full.,vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/302
+MDU6SXNzdWU1NzQ2OTc2Mjc=,[cudamapper] segfault when running with multi GPU,CLOSED,2020-03-03T14:14:13Z,2020-06-09T19:57:23Z,2020-06-09T19:57:23Z,"Running with multi-GPU on any sizeable dataset (e.g 20k human ONT reads) is resulting in a segfault:
+
+```
+time /home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamapper /data/20k_reads_shuffled-chrX.fasta /data/20k_reads_shuffled-chrX.fasta -i 30 -w 5 -k 15 -c 30 -F 1e-5 -d 2 > out 
+
+NOTE - Since query and target files are same, activating all_to_all mode. Query index size used for both files.
+Query /data/20k_reads_shuffled-chrX.fasta index 20000
+Target /data/20k_reads_shuffled-chrX.fasta index 20000
+Processing query range: (0 - 1116)
+Processing query range: (1117 - 2230)
+Processing query range: (2231 - 3257)
+Processing query range: (3258 - 4370)
+Processing query range: (4371 - 5444)
+Processing query range: (5445 - 6539)
+Processing query range: (6540 - 7597)
+Processing query range: (7598 - 8664)
+Processing query range: (8665 - 9710)
+[2]    5992 segmentation fault (core dumped)  /home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamappe
+/home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamappe  36.29s user 4.13s system 531% cpu 7.611 total
+```",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/304
+MDU6SXNzdWU1NzQ3ODY1OTI=,[cudamapper] `CachingDeviceAllocator` causing segfault when running with multi-GPU and cache eviction.,CLOSED,2020-03-03T16:25:28Z,2020-03-05T15:00:59Z,2020-03-05T15:00:59Z,"When running with multiple GPUs, a segfault is resulting if CGA is compiled with the flag `-Dcga_enable_allocator=ON`
+
+Command I am running with: `cudamapper /data/20k_reads_shuffled-chrX.fasta /data/20k_reads_shuffled-chrX.fasta -i 30 -w 5 -k 15 -c 30 -F 1e-5 -d 2 >out`
+
+Interestingly, if [device-side cache eviction](https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/dev-v0.5.0/cudamapper/src/main.cu#L351) is disabled, the segfault disappears.
+
+When compiling with  `-Dcga_enable_allocator=OFF` there is no segfault.
+
+Stderr:
+
+```
+ time /home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamapper /data/20k_reads_shuffled-chrX.fasta /data/20k_reads_shuffled-chrX.fasta -i 30 -w 5 -k 15 -c 30 -F 1e-5 -d 2 > out
+NOTE - Since query and target files are same, activating all_to_all mode. Query index size used for both files.
+Query /data/20k_reads_shuffled-chrX.fasta index 20000
+Target /data/20k_reads_shuffled-chrX.fasta index 20000
+Processing query range: (0 - 1116)
+Processing query range: (1117 - 2230)
+Processing query range: (2231 - 3257)
+Processing query range: (3258 - 4370)
+Processing query range: (4371 - 5444)
+[2]    28589 segmentation fault (core dumped)  /home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamappe
+/home/mike/dev/ClaraGenomicsAnalysis/cmake-build-release/cudamapper/cudamappe  21.83s user 2.21s system 353% cpu 6.806 total
+```",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/306
+MDU6SXNzdWU1NzUwOTExNzc=,[cudamapper] remove self-mapped reads,CLOSED,2020-03-04T02:28:19Z,2020-03-06T23:46:07Z,2020-03-06T23:46:07Z,Self-mapped reads should be filtered out by GPU filtering.,vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/308
+MDU6SXNzdWU1NzUwOTIxODg=,[cudamapper] no useful error message when cudamapper pointed to non-existent file.,CLOSED,2020-03-04T02:29:47Z,2020-04-01T15:42:25Z,2020-04-01T15:42:25Z,"A useful error is needed. Right now application does not crash but ends with:
+
+```
+Processing query range (0 - -1)
+```",vellamike,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/309
+MDU6SXNzdWU1NzUzNTU3MzU=,[cudamapper] code clean-up related to fuse_overlaps,CLOSED,2020-03-04T12:17:06Z,2020-06-25T18:50:32Z,2020-06-25T18:50:32Z,"there are some files and tests associated with deprecated `fuse_overlaps` function. Assuming `fuse_overlaps` is no longer used, they can be removed.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/311
+MDU6SXNzdWU1NzU1MTMwNTA=,[cudapoa] make max sequence and graph size configurable,CLOSED,2020-03-04T15:39:44Z,2020-04-08T01:56:08Z,2020-04-08T01:56:08Z,currently the max sizes for sequence and graph are all hard coded based on empirical observations while running racon. these should instead of parameters passed during construction of the cudapoa batch object.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/312
+MDU6SXNzdWU1NzY0MDgzNDk=,[cga] Implement preallocating device allocator,CLOSED,2020-03-05T17:14:36Z,2020-03-09T15:57:34Z,2020-03-09T15:57:34Z,"(De)allocating device memory is expensive. We are currently using `cub::CachingDeviceAllocator` which caches smaller array (see #277), but large arrays (> 500MB) are still being constantly allocated and deallocated.
+
+Implement an allocator which allocates a big chunk of device memory in the beginning and then assigns parts of it, meaning it only has to allocate device memory once in the beginning and deallocate it once at the end",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/315
+MDU6SXNzdWU1NzY0MjQwOTM=,[cudamapper] Have all work for one iteration in one stream,CLOSED,2020-03-05T17:42:09Z,2020-03-12T09:51:10Z,2020-03-12T09:51:10Z,"Currently different kernels of one query - target read pair (iteration) use different streams without a specific need for that.
+
+Make all kernels of one iteration use the same stream. This will
+- prevent possible bugs due to incorrectly synchronized streams
+- enable us to to use stream sync deallocations in caching allocators
+- make it easier to overlap fetching indices from host cache with matcher-overlapper calculations
+- make the profiles cleaner",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/317
+MDU6SXNzdWU1NzY0MjY2NjM=,[cudamapper] Overlap fetching indices from host memory with matcher+overlapper,CLOSED,2020-03-05T17:46:54Z,2020-10-22T14:37:45Z,2020-10-22T14:37:45Z,"Fetch new target index from host cache while matcher+overlapper work on current target index.
+
+On current benchmarks fetching index from device cache takes approximately the same amount of time as doing mathcer + overlapper for it, so it makes sense to overlap those two activities.
+
+Work on this issue can start after issue #317 has been done",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/318
+MDU6SXNzdWU1NzY0MzA0OTk=,[cga] Implement host pool allocator,OPEN,2020-03-05T17:53:53Z,2020-03-05T17:53:53Z,,"Allocating/resizing some host arrays (e.g. when creating host copies of indices) takes a significant amount of time.
+
+Implement host pool allocator.
+Also evaluate the possibility of using implementations from Thrust 1.9.4 or C++17. Currently those do not look like viable options due minimally system requirements on CGA's side.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/319
+MDU6SXNzdWU1NzgwNDQ0MTE=,[cudamapper] CIGAR integration,CLOSED,2020-03-09T16:46:39Z,2020-04-22T15:11:29Z,2020-04-22T15:11:29Z,"CIGAR part uses a custom stream and does not use `device_buffer`/preallocating allocator.
+
+Revisit that implementation, identify necessary changes and implement them
+
+See:
+#307 
+#313 
+#316 
+#318 
+#320 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/321
+MDU6SXNzdWU1Nzk0NTM3MjU=,[cudamapper] debug accuracy issues for drosophila,CLOSED,2020-03-11T18:12:15Z,2020-04-07T14:29:27Z,2020-04-07T14:29:27Z,,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/322
+MDU6SXNzdWU1Nzk0NjEwOTc=,[cudamapper] add end2end binary run test,OPEN,2020-03-11T18:26:01Z,2020-05-06T15:41:33Z,,"Currently we only have unit tests for cudamapper, but nothing that runs the bianry on a dataset end to end. This should be added to gpuCI runs as well, for both single and multi GPU configurations",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/323
+MDU6SXNzdWU1Nzk5NTg0NDc=,cudamapper does not fail with invalid input path,CLOSED,2020-03-12T13:58:49Z,2020-03-13T00:53:00Z,2020-03-13T00:53:00Z,"If you pass an invalid path as fasta input, cudamapper does not report any error.
+(Instead it creates an empty index.)",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/324
+MDU6SXNzdWU1ODM5NTA4ODE=,[cga] Automatically determine compute capability,CLOSED,2020-03-18T19:22:07Z,2020-03-23T19:53:53Z,2020-03-23T19:53:53Z,"Currently we are compiling for default compute capability (I believe sm_35).
+
+For cudamapper one can specify higher compute capability by adding it to `CMakeLists.txt` (https://github.com/clara-genomics/ClaraGenomicsAnalysis/blob/317bce9591cc72285785e8bfc937ac149c44515c/cudamapper/CMakeLists.txt#L22), for example for Volta `-arch=compute_70 -code=sm_70`, but this is not a flexible solution. Setting the value manually brings significant improvements to cudamapper's performance.
+
+Goal: Use `CUDA_SELECT_NVCC_ARCH_FLAGS` (https://cmake.org/cmake/help/v3.10/module/FindCUDA.html) to set this value per default. Ideally have it set on SDK level, but for now just cudammaper would work. I would suggest using `Auto` option, although I'm not sure how this works when using a machine without a GPU or building and packaging it.
+
+Also see issue #291 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/326
+MDU6SXNzdWU1ODgwMDQ2OTU=,[cudamapper] output overlaps in BAM,CLOSED,2020-03-25T21:33:32Z,2020-10-16T23:24:07Z,2020-10-16T23:24:07Z,Support output the overlaps in both PAF and BAM format. Similar to the `-a` option in `minimap2` (described in https://github.com/lh3/minimap2#general-usage),tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/335
+MDU6SXNzdWU1ODkwNTM1Nzg=,Can not find cudaaligner executable after compiling,CLOSED,2020-03-27T11:01:58Z,2020-04-01T15:14:41Z,2020-04-01T15:14:41Z,"Hello,
+
+I want to run `cudaaligner` but after compiling successfully I am unable to find the executable.
+For instance, the `cudamapper` tool is found in the `../ClaraGenomicsAnalysis/build/install/bin` folder. However I have ran `find ../ClaraGenomicsAnalysis -name ""cudaaligner"" -executable -type f` and nothing shows. Can you please help? Thank you.
+BTW: I am not running as sudo as I have no permissions",estebanpw,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/339
+MDU6SXNzdWU1ODk1MzU2NTU=,[cudamapper] example API usage,CLOSED,2020-03-28T08:45:46Z,2020-07-24T17:48:41Z,2020-07-24T17:48:41Z,"Hi!
+
+I really appreciated the example API usage for cudapoa and would like to ask for something similar for cudamapper.
+
+Thanks!
+Armin",armintoepfer,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/340
+MDU6SXNzdWU1ODk4ODA3NDE=,performance drop-down related to CUDA_NVCC_FLAGS,CLOSED,2020-03-29T20:40:36Z,2020-07-08T17:53:12Z,2020-07-08T17:53:12Z,"cudapoa_benchmark seems to be ~10% slower which this line is added to `cmake/CUDA.cmake`:
+`set(CUDA_NVCC_FLAGS ""${CUDA_NVCC_FLAGS} ${ARCH_FLAGS}"")`   ([link here](https://github.com/r-mafi/ClaraGenomicsAnalysis/commit/2b5d632fa66f5471b7ac3c27106af721bf4530a1#diff-d77f46a67237a37b9c4eae17e6a1b741R27))
+
+![image](https://user-images.githubusercontent.com/59714522/77860190-c8459000-71db-11ea-919d-fe9b20d54557.png)
+
+",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/341
+MDU6SXNzdWU1OTEyMTM5ODU=,[cudaaligner] add cudaaligner binary for pairwise global alignment,OPEN,2020-03-31T15:42:54Z,2020-03-31T15:43:23Z,,"A binary to compute pairwise alignment for a set of inputs
+
+Example - Emboss needle app
+
+Raised by @estebanpw in #339 ",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/345
+MDU6SXNzdWU1OTE5MzQ3NTk=,unexpected behavior in cudautils::align,CLOSED,2020-04-01T13:53:12Z,2020-04-14T05:57:10Z,2020-04-14T05:57:10Z,"`cudautils::align<int32_t, 4>` function makes any input a divisible by 4, if it is already divisible by 4, it still adds 4, e.g. `align<int32_t, 4>(1023) = 1024`, `align<int32_t, 4>(1024) = 1028` or `align<int32_t, 4>(0) = 4`. This seems a bit unexpected, we probably do not need to change an input which is already divisible by 4 in this example.
+
+Note: if this behavior changes, `claragenomics::cudapoa::BatchSize` constructors needs to get modified as well, since it is defined based on this current behavior.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/346
+MDU6SXNzdWU1OTE5OTI3MTM=,[cudamapper] read to reference mapping capability,CLOSED,2020-04-01T15:12:06Z,2021-01-26T16:56:06Z,2021-01-26T16:56:06Z,Add support for read to reference mapping to `cudamapper`. Initially assigning to @vellamike ,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/349
+MDU6SXNzdWU1OTY3MDA5NzE=,[cudamapper] package cudamapper components into libcudamapper,CLOSED,2020-04-08T16:20:27Z,2020-04-20T13:28:59Z,2020-04-20T13:28:59Z,"Current cmake structure create separate private libs for indexer, matcher and overlapper. Would be good to combine all of them into a single `libcudamapper` object that the `cudamapper` application links against.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/352
+MDU6SXNzdWU1OTc0OTg0Mzc=,[cudaaligner] use device_copy_n,OPEN,2020-04-09T19:18:58Z,2020-04-09T19:18:58Z,,"cudaaligner uses many `cudaMemcpy`, many (if not all) can be replaced with `device_copy_n`.",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/355
+MDU6SXNzdWU1OTc2NTQ3NTM=,[cudapoa] expose configurable cudapoa sizes to python API,CLOSED,2020-04-10T02:14:17Z,2020-04-29T15:13:31Z,2020-04-29T15:13:31Z,Update cudapoa python API to expose variable sizes for sequences and graphs ,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/356
+MDU6SXNzdWU1OTgwNzIzMTY=,[cudapoa] Remove `exceeded_batch_size` error,CLOSED,2020-04-10T20:14:43Z,2020-05-04T18:10:06Z,2020-05-04T18:10:06Z,"There's a redundancy in error codes in `cudapoa` when it comes to max POAs. POAs can be limited either by the heuristic calculation that accounts for max possible POAs, and also by how much space is left for the scoring matrices. These two currently return different error codes if surpassed, whereas semantically they're the same (i.e. limit how many POAs can be processed in a batch), so they should return the same error.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/358
+MDU6SXNzdWU2MDA0MTk4MzE=,[cga] Move cgalogging and cgaconfig to libcgabase,CLOSED,2020-04-15T16:14:03Z,2020-04-20T13:25:27Z,2020-04-20T13:25:27Z,PR #359 introduces `libcgabase`. `cgalogging` and `cgaconfig` should also be part of it.,mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/369
+MDU6SXNzdWU2MDQ4NTU1OTc=,[cudaaligner] reduce memory footprint of banded myers implementation,CLOSED,2020-04-22T15:36:49Z,2020-08-04T14:24:25Z,2020-08-04T14:24:25Z,Reduce the memory requirements for banded Myers implementation to fit more alignments per batch,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/380
+MDU6SXNzdWU2MDQ4NjQ0ODY=,[pyclaragenomics] Add python API for cudamapper components ,OPEN,2020-04-22T15:49:00Z,2020-04-22T15:49:00Z,,"Add python bindings for `cudamapper` components - `indexer`, `matcher` and `overlapper`",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/381
+MDU6SXNzdWU2MDQ4NjUxNzc=,[cudamapper] generate shared library for cudamapper,OPEN,2020-04-22T15:50:00Z,2020-04-22T15:50:00Z,,Currently only a static `cudamapper` library is generated. Add support for shared library generation as well. A prerequisite for #381 ,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/382
+MDU6SXNzdWU2MDUwMTQxNTA=,[README] PyPI pycga link broken in README,CLOSED,2020-04-22T19:37:11Z,2020-04-22T22:52:18Z,2020-04-22T22:52:18Z,The link on the `pyclaragenomics` readme that points to the PyPI packages is broken. This needs to be merged to master,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/385
+MDU6SXNzdWU2MDUwMTcwMDY=,[pyclaragenomics] upload pyclaragenomics API documentation,CLOSED,2020-04-22T19:41:49Z,2020-08-31T14:14:38Z,2020-08-31T14:14:38Z,publish pyclaragenomics API documentation to public location,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/386
+MDU6SXNzdWU2MDUwOTg2NDI=,[cudapoa] Automatic selection for max_sequence_size and max_sequences_per_poa,CLOSED,2020-04-22T21:52:54Z,2020-12-02T15:59:15Z,2020-12-02T15:59:15Z,"Currently cudapoa requires user input to define maximum sequence size as well as maximum number of sequences per POA. In other words, considering a window of reads, its width and height should be defined by the user. A conservative choice of these parameters can result in sub-optimal memory usage, and potentially reducing GPU occupancy. An optimal value for these parameters can be extracted based on input data.
+
+The initial motivation for the current implementation was to reuse allocated buffers between multiple iterations. But using pre-allocated buffers, we should be able to compute batch size dynamically and more optimally.
+
+This is a suggestion to allow automatic selection of  `max_sequence_size` and `max_sequences_per_poa` after integrating pre-allocated buffers in cudapoa.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/390
+MDU6SXNzdWU2MDUxMzIxMTI=,[cudapoa] Reconcile cudapoa BatchSize API between C++ and Python,OPEN,2020-04-22T23:16:40Z,2020-04-22T23:16:40Z,,"Python API takes in several params as optional, but C++ API only exposes 2 constructors. That means if only some optional args are provided in python API, the rest need to heuristically calculated on the python side. However, heuristics are already implemented on the C++ side and they may diverge over time. Feature request is to update C++ API so it's most seamless compatible with needs of the python API",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/391
+MDU6SXNzdWU2MDUxMzMzMjQ=,[pyclaragenomics] increase cudapoa test coverage,OPEN,2020-04-22T23:19:48Z,2020-04-22T23:23:10Z,,"Add more tests covering the following in pycga cudapoa - 
+
+1. use of different output types
+2. use of different values for alignment
+3. use of custom sizes for sequence and graph sizes
+
+and other parts of the API that are untested",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/392
+MDU6SXNzdWU2MDUxMzQyODg=,[common] Wrapping CUDA stream in another class to catch stream destruction,CLOSED,2020-04-22T23:22:24Z,2020-08-27T14:05:37Z,2020-08-27T14:05:37Z,,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/393
+MDU6SXNzdWU2MDUxMzUyMTg=,[cudamapper] investigate output minimap2 index from cudamapper,CLOSED,2020-04-22T23:24:56Z,2021-01-26T16:57:09Z,2021-01-26T16:57:08Z,minimap2 provides an `index` interface through the `minimap2 index` data structure. investigate if the data structure can be generated through cudamapper so it can plug into the minimap2 flow seamlessly.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/394
+MDU6SXNzdWU2MDc2ODQ4MzA=,[cudapoa] keep member type and allocation size in sync,CLOSED,2020-04-27T16:29:39Z,2020-06-08T14:43:06Z,2020-06-08T14:43:06Z,"The way cudapoa allocates buffers right now is by calculating the size based on type of the struct elements. However, the sizing calculation uses the type explicitly instead of drawing it from the member element directly. This means the type has to be specified in two places, and more importantly updated in two places concurrently, which is the source of many problems.
+
+It would be a good idea to use something like http://www.cplusplus.com/reference/typeinfo/type_info/name/ to keep the types in sync so they only need to be updated in one place.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/396
+MDU6SXNzdWU2MDkxMDQ0MDY=,[cudapoa] Error code 8 on some cases of Bonito sample,CLOSED,2020-04-29T14:30:20Z,2020-05-11T15:26:59Z,2020-05-11T15:26:59Z,"In bonito sample dataset, for about 7 cases, generate consensus in `cudapoa` fails to run successfully. It exits with Error code 8. Would be helpful to investigate why it fails, whether it's a bug or not, and how to fix.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/398
+MDU6SXNzdWU2MDkxMDY4MjE=,[common] remove CUB caching allocator,CLOSED,2020-04-29T14:33:38Z,2020-05-01T16:43:32Z,2020-05-01T16:43:32Z,"Since CUB caching allocator is not being actively used in the SDK and there are semantic differences in how the CUB and preallocator allocator APIs behave, we decided to remove the CUB allocator for now. If need be, it can be brought back from git history.
+
+For some insight into CUB semantics issue, please see https://github.com/clara-genomics/ClaraGenomicsAnalysis/pull/379",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/399
+MDU6SXNzdWU2MDkxNjM4NzM=,[gpuCI] enable CGA nightly tests,CLOSED,2020-04-29T15:48:30Z,2020-06-05T10:19:11Z,2020-06-05T10:19:11Z,Enable nightly tests for `master` and default `dev-vX.Y.Z` branch in CGA repo.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/402
+MDU6SXNzdWU2MTA3OTk0MDU=,[cudapoa] add and use an error code for add_alignment,CLOSED,2020-05-01T15:09:22Z,2020-12-02T16:06:23Z,2020-12-02T16:06:23Z,"`addAlignmentToGraph` in `cudapoa_add_alignment.cu` returns an error code, but this error code is not used and not passed along to the caller functions.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/405
+MDU6SXNzdWU2MTA3OTk4OTQ=,[cudapoa] add and use error code in addAlignmentKernel,CLOSED,2020-05-01T15:10:23Z,2020-05-01T15:11:30Z,2020-05-01T15:11:30Z,"`addAlignmentToGraph` in `cudapoa_add_alignment.cu` returns an error code, but this error code is not used and not passed along to the caller functions.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/406
+MDU6SXNzdWU2MTE5MzYwNzc=,[cudapoa] Replace the usage of `void*` with templated args,CLOSED,2020-05-04T14:51:22Z,2020-06-15T03:52:04Z,2020-06-15T03:52:04Z,"https://github.com/clara-genomics/ClaraGenomicsAnalysis/pull/397 introduces functions that take in `void *` arguments in the kernel host wrappers. A restructuring of the source files in cudapoa can potentially remove this requirement as this is requiring duplication of logic in some files (i.e. heuristics to choose between different sizer types).
+
+example attempt in https://github.com/tijyojwad/ClaraGenomicsAnalysis/tree/jdaw/template-structure-changes",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/407
+MDU6SXNzdWU2MTIwOTA0Njc=,[cudamapper] Improve PAF generation,CLOSED,2020-05-04T18:49:53Z,2020-05-13T15:54:02Z,2020-05-13T15:54:02Z,"New implementation of index caching (#318) is bottlenecked by generation of strings for PAF files (not writing to files themselves). We currently copy read names and lengths into `Overlap` objects using `Overlapper::update_read_names()` and then use `Overlapper::print_paf()`.
+
+Remove read name and length from `Overlap` object and parallelize `Overlapper::print_paf()` for better performance.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/410
+MDU6SXNzdWU2MTI3NTI5NDM=,[cga] Support multiple streams in device_buffer and DevicePreallocatedAllocator,CLOSED,2020-05-05T16:57:36Z,2020-06-26T20:10:57Z,2020-06-26T20:10:57Z,"`DevicePreallocatedAllocator::DeviceAllocate()` currently accept `cudaStream_t`. `DevicePreallocatedAllocator::DeviceFree()` waits on that stream before actually deallocating memory in order to prevent the memory from being deallocated before all work that uses it is done.
+In cases when the same buffer is used by two or more streams it is not possible to wait on all of them and the user has to make sure that all other streams have finished.
+
+The goal it to support associating one allocation with multiple streams.
+
+This should also be supported by `device_buffer`/`buffer`.
+
+Consider using variadic template to pass one or more streams, store them in a `vector` internally and loop over them in `DevicePreallocatedAllocator::DeviceFree()`
+
+This issue is part of issue #318 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/414
+MDU6SXNzdWU2MTM0MjI3MTM=,[cudapoa] analyze accuracy of cudaPOA on long read data,CLOSED,2020-05-06T15:46:14Z,2020-05-19T02:56:32Z,2020-05-19T02:56:32Z,Need to evaluate the accuracy of cudaPOA consensus with long reads against CPU equivalent using Pomoxis metrics.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/416
+MDU6SXNzdWU2MTQwODQ1Mzc=,[pycga] enable doc generation test for pyclaragenomics,OPEN,2020-05-07T14:04:27Z,2020-05-07T14:10:38Z,,Python doc generation only happens successfully when the bindings have been built. However the current sphinx command doesn't fail when bindings aren't built. This issue is to investigate the right way to build sphinx based documentation and enable it in the tests so doc generation is validated on every PR.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/419
+MDU6SXNzdWU2MTU0MTgzNTI=,[SDK] rename SDK to GenomeWorks,CLOSED,2020-05-10T15:42:31Z,2020-06-26T17:34:48Z,2020-06-26T17:34:48Z,Description to be updated once final name of repo is decided,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/424
+MDU6SXNzdWU2MTYwMDI3MDc=,[cudapoa] Re mixed usage of local and global index in banded NW,OPEN,2020-05-11T16:08:29Z,2020-05-11T16:08:29Z,,"In Banded NW in cudaPOA, there are some kernels such as `get_score()` or `set_score()` that accept column index both as local-index (cases such as [here](https://github.com/clara-parabricks/ClaraGenomicsAnalysis/blob/dev-v0.5.0/cudapoa/src/cudapoa_nw_banded.cu#L238), where 0 is passed for column index) or global-index.
+It helps to avoid possible bugs and better maintenance of the code if we make a clear distinction between local and global indices, or simply unify the usage to one case.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/425
+MDU6SXNzdWU2MTY3MDg4ODU=,[cudamapper] Move overlaps post-processing to GPU,OPEN,2020-05-12T14:36:37Z,2020-06-25T18:43:50Z,,"Currently `Overlapper::post_process_overlaps()` and new functionality to be added in PR #422 run on CPU. They should be moved to GPU.
+
+There are two reason for that:
+a) One matcher + overlapper iteration on our benchmark currently takes around 115ms (that number will likely be cut at least in half in the future) and generate 220k overlaps. If done on CPU those overlaps should ideally be post-processed during next matcher + overlapper iteration, giving around 0.5us to process each overlap. Even if we use multiple threads this will still not give us more than 3 - 5us per overlap.
+b) Output generation is likely to move to GPU and for that we would need the overlaps to remain on device. Also, if we decide to pass the data directly to the next application in the pipeline we would also like to avoid having to copy the data back to host just to copy it back to device",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/428
+MDU6SXNzdWU2MTczMjAyNzQ=,[common] Use int32_t for position_in_read_t and number_of_basepairs_t.,OPEN,2020-05-13T10:09:04Z,2020-05-13T10:09:04Z,,"In order to avoid mixing signed and unsigned arithmetic, we should make change the type of `position_in_read_t` and `number_of_basepairs_t` from `uint32_t` to `int32_t`.
+This should not lead to any problems, as we don't expect reads larger than 2x10^9.",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/429
+MDU6SXNzdWU2MTg1MTE2NzE=,[cudapoa] add cudapoa binary for generating msa or consensus,CLOSED,2020-05-14T20:22:08Z,2020-06-30T00:08:47Z,2020-06-30T00:08:47Z,"a binary that takes one or multiple fasta/text files as input and outputs consensus  or MSA or both.
+Improving single-window performance is probably a prerequisite.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/431
+MDU6SXNzdWU2MjA0OTc5MTI=,[CI] Support different image combinations for pull request branch and master/dev branch,OPEN,2020-05-18T20:50:34Z,2020-05-18T20:50:34Z,,,ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/433
+MDU6SXNzdWU2MjA2NjYyNTQ=,[bindings] replace cython with SWIG for python bindings,CLOSED,2020-05-19T04:23:30Z,2020-12-04T16:25:02Z,2020-12-04T16:25:02Z,"Replace cython based python bindings generation with SWIG. 
+
+Based on analysis by @rilango , SWIG provides more generic language extension framework and support multiple target languages such as python, Java, etc. Helpful in scaling CGA bindings to multiple languages through a single frameworks.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/435
+MDU6SXNzdWU2MjE4NzY1NjY=,[cudapoa] increase bandwidth in banded cudapoa,CLOSED,2020-05-20T15:56:54Z,2020-05-27T20:14:48Z,2020-05-27T20:14:48Z,Current implementation of cudapoa banded uses a fixed band width of 128 elements. Investigate ways to increase the fixed band width.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/440
+MDU6SXNzdWU2MjIxMjIwNTQ=,[cudapoa] adding PO-PO alignment,CLOSED,2020-05-20T22:26:00Z,2020-11-30T17:05:19Z,2020-11-30T17:05:19Z,"the current cudaPOA is mainly based on original POA algorithm [[POA 2002](https://doi.org/10.1093/bioinformatics/18.3.452)]. Same author in  another paper [[POA 2004](https://doi.org/10.1093/bioinformatics/bth126)] proposes an extension of the algorithm that allows aligning POA graphs to each other.
+This extension is useful for polishing and MSA applications. It can increase cudaPOA parallelism and help to improve performance of MSA/consensus problems for a single window with large number of sequences.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/441
+MDU6SXNzdWU2MjIxMjQyMDg=,[cudapoa] improve estimation of maximum graph length,CLOSED,2020-05-20T22:31:35Z,2020-12-02T16:25:38Z,2020-12-02T16:25:37Z,"POA graph length depends on the differences between multiple sequences in a window. As this difference can potentially grow by increasing the number of sequences in a window, we can modify heuristics to estimate the maximum graph length in `BatchSize` constructor to take this parameter into account. Using a fixed formula for maximum graph length can be wasteful in some cases and insufficient for some others.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/442
+MDU6SXNzdWU2MjI0ODgzNjk=,[pycga] Pass arguments to setup.py from setup_pyclaragenomics.py directly,OPEN,2020-05-21T13:09:28Z,2020-05-21T14:28:51Z,,"Currently, we are passing these parameters as environment variables to the subprocess, they should be passed directly through pip. (see https://stackoverflow.com/a/49609956)",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/443
+MDU6SXNzdWU2MjU4MDE1MzY=,[cudapoa] error types in cudaPOA,CLOSED,2020-05-27T15:35:22Z,2020-12-04T00:55:54Z,2020-12-04T00:55:54Z,"There is no use of `StatusType::seq_len_exceeded_maximum_nodes_per_window` and can be removed.
+
+On the same note, there is a subtle difference between maximum number of nodes per window and maximum graph dimension. The latter needs to be multiple of 4. We can remove `max_nodes_per_window` in `BatchSize` and only use `max_matrix_graph_dimension`. Same applies for banded version of the variables.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/446
+MDU6SXNzdWU2MjY5MTIyNzM=,Install from source needed for dev functionality,CLOSED,2020-05-29T00:15:47Z,2020-08-05T14:58:48Z,2020-08-05T14:58:48Z,"In order to be able to run cudapoa, it is necessary to install the pyclaragenomics package from source. TODO: Updated documentation on this. ",rahulmohan,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/447
+MDU6SXNzdWU2MzAxNDQ0ODU=,[cudapoa] investigate adaptive banding in cudapoa,CLOSED,2020-06-03T16:29:07Z,2020-08-05T00:14:41Z,2020-08-05T00:14:41Z,design algorithm for adaptive banding suitable for cudapoa implementation.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/448
+MDU6SXNzdWU2MzE1OTY1NDA=,[cudamapper] Perform range-check on program arguments.,OPEN,2020-06-05T13:38:58Z,2020-06-05T13:38:58Z,,"cudamapper takes a series of program arguments parsed with `getopt_long`. For many arguments the program checks if the argument is within valid range, but not for all. Especially checks for negative values, which are invalid for most arguments, are missing.
+We need to go through the arguments and make similar range checks for all arguments.
+",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/451
+MDU6SXNzdWU2MzU4NDcyOTY=,[cudapoa] graph output in cudaPOA,CLOSED,2020-06-10T00:49:02Z,2020-12-02T15:44:42Z,2020-12-02T15:44:42Z,adding `.png` format to export POA graph for a given POA group can be useful. That is a convenient way to visualize pretty large graphs.,r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/454
+MDU6SXNzdWU2Mzg0NjM5OTM=,[logging] remove spdlog as logger dependency,CLOSED,2020-06-15T00:29:27Z,2020-12-14T15:15:33Z,2020-12-14T15:15:33Z,"We have added a lot of hacks to support the logging library for CUDA < 10.0 because `spdlog` uses uninitialized constructors which doesn't play well with old `nvcc`. `spdlog` is also heavily based on templates, which means the library headers spill into the install folder of GenomeWorks, and hence requires `spdlog` to also be shipped in the `install` folder.
+
+Best thing would be to remove `spdlog` as a logger library and instead use a simpler one for now which resolves all of these issues.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/459
+MDU6SXNzdWU2Mzg0NjQyNDI=,[sdk] add CI for CUDA 11 and validate support,CLOSED,2020-06-15T00:30:49Z,2020-10-07T19:46:10Z,2020-10-07T19:46:10Z,Add a CUDA 11 Ubuntu 18.04 test to gpuCI for GenomeWorks,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/460
+MDU6SXNzdWU2Mzg0NjQ0NjA=,[sdk] remove cuda 9.x support,CLOSED,2020-06-15T00:31:54Z,2020-12-04T21:44:05Z,2020-12-04T21:44:05Z,"After CUDA 11 support (issue #460) is officially added, remove explicit CUDA 9 support from SDK.
+",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/461
+MDU6SXNzdWU2MzkyNTE3Mzk=,[cudapoa] toward DRY code by merging estimate_max_poas() and calculate_space_per_poa(),OPEN,2020-06-15T23:26:56Z,2020-06-15T23:26:56Z,,"`estimate_max_poas()` and `calculate_space_per_poa()` in `BatchBlock` class, share some similar logic and with some effort, they can be unified.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/466
+MDU6SXNzdWU2NDA1OTAxOTU=,[tests] upgrade CI harness scripts to be more robust,OPEN,2020-06-17T16:44:09Z,2020-06-17T16:44:09Z,,"Our CI scripts currently written in `bash`, and use a lot of env vars and positional arguments. But this setup is ripe for bugs and errors. It's important to upgrade the scripts to be more robust so our testing system itself doesn't silently break.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/469
+MDU6SXNzdWU2NDE1NzkzMjg=,Permission denied (publickey). fatal: Could not read from remote repository.,CLOSED,2020-06-18T22:11:16Z,2020-06-22T12:45:55Z,2020-06-22T12:45:55Z,"Error on executing the following command:
+$ git clone --recursive git@github.com:clara-genomics/ClaraGenomicsAnalysis.git
+Cloning into 'ClaraGenomicsAnalysis'...
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+Kindly recommend solution.
+Thanks!
+",SuchismitaSahu1993,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/470
+MDU6SXNzdWU2NDQ4MTE0MTM=,"[cudamapper] Default parameters should be hardened against many datasets / GPUs, match those of minimap2",CLOSED,2020-06-24T18:07:33Z,2020-07-13T16:23:58Z,2020-07-13T16:23:58Z,"Cudamapper is supposed to be a drop-in replacement for minimap2. Our default parameters, however, differ from those of minimap2. In addition, they seem to be unstable on many GPUs, causing crashes.
+
+This is a major barrier to entry for users - they want the program to run to completion, even at the expense of performance.
+
+Minimap2 defaults:
+- [x] Minimizer kmer size: 15
+- [x]  Minimizer window size: 10
+- [x] Minimum number of minimizers in a chain: 3
+- [x] Max distance between minimizers before chain is terminated: 5000
+- [x] Minimum overlap size: <500
+- [x] Minibatch size: 500M
+
+Most of these can be addressed by either a single cudamapper parameter or a combination of multiple parameters. 
+
+In the case of minibatch size, it's not so much about matching the number as it is about providing a stable CLI. I find I'm often having to tweak the `-I, -i, -q, -Q, -c, -C, -m` parameters to balance memory usage (e.g. to prevent out-of-memory errors) and performance. I think we should establish safe defaults for long reads on 8GB, 16GB and 32GB memory GPUs. Even though we programatically check for max preallocated memory we often seem to OOM due to index size parameterizations. My vote would be to prioritize stability and provide a one-pager on tuning for max performance (acknowledging the limits of each GPU considering maximum read size).
+",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/471
+MDU6SXNzdWU2NDY5ODU1Mzg=,[pygw] reference to stream getting lost in CudaAlignerBatch object,OPEN,2020-06-28T19:01:58Z,2020-06-28T19:01:58Z,,"The reference to the stream object is getting lost somehow in CudaAlignerBatch object, because of which stream and batch are sometimes getting destroyed out of order. Explicit ref increment/decrement resolves the issue, but this should be handled by the automatic mechanism in python. This issue is to investigate why that's not working.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/476
+MDU6SXNzdWU2NTAxOTgxMzA=,[cudapoa] cudapoa binary input options,CLOSED,2020-07-02T20:53:28Z,2020-11-30T16:56:00Z,2020-11-30T16:56:00Z,"deciding whether to keep option `-M` which currently defines number of POA groups, as it is, or change it to represent maximum number of reads? or simply get rid of it all together.
+On the same note, there is possibly another set of options required to modify default `BatchSize` constructor values.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/483
+MDU6SXNzdWU2NTI2NTYzMzE=,[CI] Add build Slack notifications,CLOSED,2020-07-07T21:21:38Z,2020-09-22T13:48:34Z,2020-09-22T13:48:34Z,Integrate GenomeWorks branch builds with `nvgenomics-ci` slack channel,ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/487
+MDU6SXNzdWU2NTM1NDc5MTY=,[cudamapper] Skip pairs of indices which cause out of memory errors,CLOSED,2020-07-08T19:40:48Z,2020-07-14T14:32:15Z,2020-07-14T14:32:15Z,"Depending on read characteristics some pairs of indices can cause OOM errors.
+Skip such pairs of indices and print a message to the user.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/489
+MDU6SXNzdWU2NTM2MDA4MTY=,[cudamapper] Process skipped pairs of indices separately,OPEN,2020-07-08T21:12:57Z,2020-07-08T21:12:57Z,,Keep a list of pairs of indices which were skipped due to an OOM error (Issue #489). Once all other pairs of indices have been processed go over skipped ones and process them one by one without keeping any other indices on device in order to maximize the amount of available device memory.,mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/490
+MDU6SXNzdWU2NTM2MDQwNzI=,[cudamapper] Split index pairs which cause OOM into multiple pairs of indices,OPEN,2020-07-08T21:19:17Z,2020-07-08T21:19:17Z,,"If a pair of indices causes OOM error even when no other indices are kept on device (Issue #490, also see #489) split indices into several smaller indices and find overlaps.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/491
+MDU6SXNzdWU2NTQ3NTE4MzI=,[cudapoa] customizable number of cells per thread in NW kernels,CLOSED,2020-07-10T12:38:23Z,2020-12-02T15:42:38Z,2020-12-02T15:42:38Z,"In the current implementation, different variations of Needleman-Wunch kernels process score matrix row by row. Each thread processes a fixed number of cells per row at a time, `CELLS_PER_THREAD = 4`. To make this number variable allows adjusting parallelism granularity (e.g. right now, minimum band-width length = `CELLS_PER_THREAD*WARP_SIZE`) and potentially improving performance.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/494
+MDU6SXNzdWU2NTYxOTg2NzQ=,[cudapoa][cudaaligner] adding support for different types of gap penalty,OPEN,2020-07-13T22:49:01Z,2020-07-13T22:56:54Z,,"The current implementation supports constant gap penalty. This issue suggests adding linear, affine and convex types as well.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/496
+MDU6SXNzdWU2NTY4NzMyMTI=,[cudapoa] add tests for banded and adaptive alignment,CLOSED,2020-07-14T20:18:33Z,2020-11-30T22:42:35Z,2020-11-30T22:42:35Z,Add some tests to verify banded-alignment as well as adaptive-alignment. Tests can compare consensus output against full-alignment.,r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/502
+MDU6SXNzdWU2NTY4OTAwNzE=,[cudamapper] Overlaps at the same position in an index are dropped even when query and target files are not the same.,CLOSED,2020-07-14T20:49:11Z,2020-07-23T15:10:06Z,2020-07-23T15:10:06Z,"When using two different FASTA files, reads at index i in the query index and index j in the target index are not overlapped when i == j. This is because of a check that was introduced in https://github.com/clara-parabricks/GenomeWorks/blob/0702c2ffd672fa04887f3b4e82bfd18d1d213218/cudamapper/src/overlapper.cpp#L25, and is valid for all-to-all but not sequence-to-reference overlapping.
+
+The filtering condition should be ignored when not running in all-to-all mode.",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/503
+MDU6SXNzdWU2NTY4OTc3ODU=,[cudamapper] Filtering parameters are too stringent for very small read sets,CLOSED,2020-07-14T21:03:49Z,2020-07-31T00:51:26Z,2020-07-31T00:51:26Z,"While testing cases related to #503 , it became apparent that for very small readsets (e..g, two reads) the default filtering parameter `-F` is too stringent. Values of `-F` smaller than approximately 0.001 produce no overlaps.
+
+The right way to fix this is to properly handle repetitive minimizers. We could do this with a fixed mask, a weighting function like that used in WinnowMap, or by rearchitecting the sketch handling in cudamapper to function like MashMap. As a temporary fix, it might make sense to use a filtering parameter value scaled by the number of reads in the input data (probably growing 1 / (number of reads)^2, with a minimum of 2e-4). ",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/504
+MDU6SXNzdWU2NTczODMyODA=,[cudaaligner] Tests should load data from file,OPEN,2020-07-15T14:12:38Z,2020-07-15T14:12:38Z,,"cudaaligner's tests use hard coded test data. This data should be loaded from data file(s) instead (like cudamapper).
+
+
+cudaaligner's hard coded data: https://github.com/clara-parabricks/GenomeWorks/blob/dev-v0.5.0/cudaaligner/tests/cudaaligner_test_cases.cpp
+
+cudamapper's data and tests: https://github.com/clara-parabricks/GenomeWorks/tree/dev-v0.5.0/cudamapper/data and https://github.com/clara-parabricks/GenomeWorks/tree/dev-v0.5.0/cudamapper/tests",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/505
+MDU6SXNzdWU2NjE5NTI4ODY=,[cudamapper] Create public interface for overlapper,CLOSED,2020-07-20T15:27:22Z,2020-07-21T21:58:19Z,2020-07-21T21:58:19Z,"Similarly to other classes in public interface `Overlapper` should also have a `create_overlapper()` function.
+
+For example see https://github.com/clara-parabricks/GenomeWorks/blob/dbf5b61e0bf11124d8de366e6a4292a36f7b6038/cudamapper/include/claraparabricks/genomeworks/cudamapper/matcher.hpp#L51",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/509
+MDU6SXNzdWU2NjQ4MzY1OTU=,[cudamapper] Create public interface for IndexDescriptor,CLOSED,2020-07-24T00:03:32Z,2020-07-24T18:57:21Z,2020-07-24T18:57:21Z,"As discussed in #508, the read grouping functionality of the IndexDescriptors is useful for creating batches for cudamapper. It should have an entry point to use in the public interface ",nvvishanthi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/514
+MDU6SXNzdWU2NjUxMzg4OTg=,[cudamapper] Expose print_paf() in public interface,CLOSED,2020-07-24T12:35:25Z,2020-08-03T19:22:57Z,2020-08-03T19:22:57Z,As discussed in #508 `print_paf()` should be moved from `cudamapper/src/cudamapper_utils.hpp` into a new file in `cudamapper/include/claraparabricks/genomeworks/cudamapper`,mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/516
+MDU6SXNzdWU2NjUxNDE0MTI=,[cudamapper] Expose IndexDescriptor in public interface,CLOSED,2020-07-24T12:40:11Z,2020-09-03T23:11:19Z,2020-09-03T23:11:19Z,"`IndexDescriptor` is currently not part of public interface. During implementation of cudamapper sample (#508. #340) it turned out that `IndexDescriptor` would be useful in other implementations of cudamapper as well.
+
+Expose `IndexDescriptor` in public interface, probably in the same way e.g. `Matcher` is exposed.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/517
+MDU6SXNzdWU2Njg5MTU0Nzk=,[cudapoa] unifying closely related numerous parameters related to POA graph length,CLOSED,2020-07-30T16:07:49Z,2020-07-31T15:53:02Z,2020-07-31T15:53:02Z,"Currently there are different variables that are closely related to graph length, such as `max_nodes_per_window`, `max_matrix_graph_dimension`, and their banded versions. It makes life much easier to deal with only one parameter instead.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/521
+MDU6SXNzdWU2Njk5NTk5MDY=,[cudapoa] unify CUDA kernels in banded and adaptive NW ,CLOSED,2020-07-31T15:56:12Z,2020-11-05T03:22:26Z,2020-11-05T03:22:26Z,"there are multiple kernels in `cudapoa_nw_banded.cuh` and `cudapoa_nw_adaptive_banded.cuh` which are similar and with some effort can be unified and combined together. Merge them and have them in a separate file, such as `banded_nw_utils.cuh`",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/522
+MDU6SXNzdWU2NzE3NTk1NDU=,[cudamaper] Use events to sync generation and communication streams,OPEN,2020-08-03T03:00:32Z,2020-09-01T13:51:21Z,,"When creating indices in IndexCache synchronize generation and communication streams using events, not `cudaStreamSynchronize()`
+
+Continuation of #318 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/524
+MDU6SXNzdWU2NzE3NjAxMzQ=,[cudamapper] Use stream callback functions to update Index state,OPEN,2020-08-03T03:02:32Z,2020-08-03T03:02:32Z,,"When copying indices from host to device use stream callback functions to update the state indices upon copy completion.
+
+Continuation of #318 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/525
+MDU6SXNzdWU2NzE3NjA3NjM=,[cudamapper] Throw custom exception when Index not found,CLOSED,2020-08-03T03:04:56Z,2020-10-22T14:37:46Z,2020-10-22T14:37:45Z,"Throw custom exceptions when indices are not found in `IndexCache`.
+Continuation of #318 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/526
+MDU6SXNzdWU2NzI4Njg5MDY=,[cudapoa] add description to error codes,CLOSED,2020-08-04T15:11:20Z,2020-12-04T02:56:05Z,2020-12-04T02:56:05Z,"currently we only print out the error code. It helps to have a description added. We can even for some cases, add hints about which corresponding parameters in `BatchConfig` object can be modified to fix the error.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/527
+MDU6SXNzdWU2NzMxNDMzNzc=,[cudapoa] consolidate macros for banded alignment in single header,OPEN,2020-08-04T23:21:41Z,2020-08-04T23:21:41Z,,"Right now the macros for banded alignment like CUDAPOA_BANDED_MATRIX_RIGHT_PADDING are not shared between the kernel code and other sources that determine sizes for bands (such as in batch.cu). For now they're hard coded to specific numbers, but this is error prone. This needs to be fixed to the macros are shared between files.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/528
+MDU6SXNzdWU2NzMzODYzNTU=,[cudamapper] Do not do self-mapping of reads,OPEN,2020-08-05T09:14:37Z,2020-08-05T09:14:54Z,,"When doing all-vs-all do not look for anchors of reads with the same `read_id`. Currently we are doing this for the sake of code simplicity, but this introduces additional overlaps which probably affect accuracy and definitely affect performance by creating additional anchors which take up more space and require time to be processed.
+
+There are two options:
+1) Make `Matcher` not look for anchors with the same `read_id`
+2) If `1)` turns out to be too complicated simply skip matching same indices. This would lead to all read pairs from those indices to be skipped, so option `1)` is preferred",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/531
+MDU6SXNzdWU2ODE5NjU3NTg=,[cudamapper] Index should accept IndexDescriptor,CLOSED,2020-08-19T16:10:15Z,2020-09-15T00:27:03Z,2020-09-15T00:27:03Z,"Currently `Index`'s constructor accepts `first_read` and `number_of_reads` explicitly. Having it accept `IndexDescriptor` would be more elegant.
+
+See discussion in #536 ",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/539
+MDU6SXNzdWU2ODU0ODk5OTg=,[common] Rename device_copy_n to reflect non-blocking behavior,CLOSED,2020-08-25T13:32:52Z,2021-01-26T14:22:33Z,2021-01-26T14:22:33Z,"The version of `device_copy_n` which takes a CUDA stream argument
+https://github.com/clara-parabricks/GenomeWorks/blob/74e6424c156a7ee15b4137d4788a4257ee6482c4/common/base/include/claraparabricks/genomeworks/utils/cudautils.hpp#L138
+should be renamed to `device_copy_n_async` to make the non-blocking behavior more obvious.
+
+
+The blocking three-argument version of `device_copy_n` should remain as is.",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/541
+MDU6SXNzdWU2ODc5NjY2MTc=,[cudamapper] Small improvements to IndexGPU,CLOSED,2020-08-28T10:11:28Z,2020-08-28T15:45:35Z,2020-08-28T15:45:35Z,"While reviewing a PR I noticed
+a) `cudaStreamSynchronize()` is missing a `GW_CU_CHECK_ERR` in
+https://github.com/clara-parabricks/GenomeWorks/blob/d715ab18b9a704726350613b6bb248a741b0d9f3/cudamapper/src/index_gpu.cuh#L781
+
+b) I think the block around the mentioned `cudaStreamSynchronize()`:
+```
+    cudautils::device_copy_n(merged_basepairs_h.data(), ...,  cuda_stream_); // H2D
+
+    cudaStreamSynchronize(cuda_stream_);
+    merged_basepairs_h.clear();
+    merged_basepairs_h.shrink_to_fit();
+
+    // sketch elements get generated here
+    auto sketch_elements = SketchElementImpl::generate_sketch_elements(..., cuda_stream_);
+```
+could be changed to
+```
+    cudautils::device_copy_n(merged_basepairs_h.data(), ...,  cuda_stream_); // H2D
+
+    // sketch elements get generated here
+    auto sketch_elements = SketchElementImpl::generate_sketch_elements(..., cuda_stream_);
+
+    cudaStreamSynchronize(cuda_stream_);
+    merged_basepairs_h.clear();
+    merged_basepairs_h.shrink_to_fit();
+```
+which could potentially allow for a bit more overlapping. @mimaric ?",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/543
+MDU6SXNzdWU2ODkyNDU0ODc=,[cudapoa] reduce register count in cudapoa kernels,CLOSED,2020-08-31T14:19:42Z,2020-09-14T09:05:11Z,2020-09-14T09:05:11Z,The recent changes to banded and adaptive banded have increased the register count in cuda kernels and hence limited occupancy of the kernels. Investigate steps to keep the register count in check.,tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/547
+MDU6SXNzdWU2OTY1MjUxMTQ=,GenomeWorks compiling error,CLOSED,2020-09-09T07:27:34Z,2020-10-08T10:43:57Z,2020-10-08T10:43:57Z,"Hi!
+I am working around two days trying to compile GenomeWorks which included into racon genome assembler.
+GCC = 9.3.0
+cmake = 3.18.20200908-g1d74a64
+make = 4.3
+nvcc = 11.0
+cuDNN = 8.0.2
+nvidia driver = 450.51.06
+
+CMakeCache.txt was manually edited with including `CMAKE_CXX_FLAGS:STRING=-DFMT_USE_USER_DEFINED_LITERALS=0` string
+the error occured whyle the most of work was done: 
+`
+[ 81%] Linking CXX static library ../../lib/libcudaaligner.a
+Reaping winning child 0x55c2e3d8eaf0 PID 14870 
+Live child 0x55c2e3d8eaf0 (lib/libcudaaligner.a) PID 14872 
+Reaping winning child 0x55c2e3d8eaf0 PID 14872 
+Live child 0x55c2e3d8eaf0 (lib/libcudaaligner.a) PID 14874 
+Reaping winning child 0x55c2e3d8eaf0 PID 14874 
+Removing child 0x55c2e3d8eaf0 PID 14874 from chain.
+Considering target file 'GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/build'.
+ File 'GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/build' does not exist.
+  Considering target file 'lib/libcudaaligner.a'.
+  File 'lib/libcudaaligner.a' was considered already.
+ Finished prerequisites of target file 'GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/build'.
+Must remake target 'GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/build'.
+Successfully remade target file 'GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/build'.
+Reaping winning child 0x558a0914daf0 PID 14802 
+Live child 0x558a0914daf0 (GenomeWorks/cudaaligner/CMakeFiles/cudaaligner.dir/all) PID 14879 
+[ 81%] Built target cudaaligner
+Reaping winning child 0x558a0914daf0 PID 14879 
+Removing child 0x558a0914daf0 PID 14879 from chain.
+Reaping losing child 0x560a19aabcb0 PID 14245 
+make: *** [Makefile:171: all] Error 2
+Removing child 0x560a19aabcb0 PID 14245 from chain.
+`
+
+I updated cmake and make, but compilation still aborting.
+I have no a great experience on C-like languages and compilation. May be I don't understand some configs or I have to change something in cmake-generated files?
+
+I hope you can help me to find answers.
+Thanks.",asan-emirsaleh,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/554
+MDU6SXNzdWU3MDIxNzM3NDE=,[pygenomeworks] Support reading compressed PAF as input,OPEN,2020-09-15T18:55:39Z,2020-09-15T18:55:39Z,,"Currently, the evaluate_paf script in pygenomeworks (and the backing readers) require input to be raw text. However, we often use gzip-compressed PAF to save space, and miniasm natively supports reading it. It would be nice to modify our PAF reader to natively support gzipped PAF.",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/559
+MDU6SXNzdWU3MDIxNzY0NTE=,[pygenomeworks] evalute_paf does not properly report the number of incorrect starts/ends,CLOSED,2020-09-15T18:59:57Z,2020-09-23T17:10:21Z,2020-09-23T17:10:21Z,"The evaluate_paf script in pygenomeworks/bin reports a number of correct query/target starts and ends. However, the numbers reported currently are not accurate, as each searched interval increments these variables:
+https://github.com/clara-parabricks/GenomeWorks/blob/88dcc74b17a659e1baf21139920a41d9e0cac7f6/pygenomeworks/bin/evaluate_paf#L195-L198
+
+The proper behavior should instead be to only report the correctness of starts/ends only for the best match.",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/560
+MDU6SXNzdWU3MDY0MDU4ODE=,[cudapoa/cudaaligner] fix compute version to 60,CLOSED,2020-09-22T13:53:26Z,2020-12-03T20:38:12Z,2020-12-03T20:38:12Z,"Because of the perf issue observed in cudapoa and cudaaligner, the max compute version that gives best numbers is compute 60. Update the nvcc flags for cudapoa and cudaaligner to compile to compute 60 only. Accordingly, update GW readme to only support architectures beyond Pascal.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/566
+MDU6SXNzdWU3MDY0MTMzNzQ=,[cudaextender] Add new cuadextender module to GW,CLOSED,2020-09-22T14:02:19Z,2020-10-01T22:19:28Z,2020-10-01T22:19:28Z,"This is a blanket issue for the following tasks
+
+1. create a new API for cuda accelerated extension algorithms
+2. port CUDA x drop algorithm by @gsneha26 and @yatisht into GenomeWorks
+3. add tests and samples for the API and implementation",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/567
+MDU6SXNzdWU3MDcxNjc4MDA=,[sdk] Update the way we fetch CUB,CLOSED,2020-09-23T08:41:43Z,2020-12-07T10:42:16Z,2020-12-07T10:42:16Z,"CUDA 11 ships with CUB, so there is no need to download it separately into `3rdparty` (unless for some reason we need another version)
+
+For pre-CUDA 11, CUB has been moved under Nvidia organization on GitHub: https://github.com/NVIDIA/cub/. Old link still works, but we should update it for consistency.",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/570
+MDU6SXNzdWU3MDc1NTI2MjE=,[pygenomeworks] evaluate_paf script is too slow to be practical for very large PAF files,OPEN,2020-09-23T17:34:33Z,2020-09-23T17:34:44Z,,"Despite updating the evaluate_paf script to handle queries better, the performance of the script is inadequate for large-scale CI jobs. 
+
+One solution to this is to ditch the interval tree data structure and instead rely on sorted PAF input. For large PAF files, this may still take a significant amount of time, though it should significantly reduce the memory usage (requiring only two PAF records to be kept in memory at a time; currently, all truth set records are maintained in memory).
+
+Another option would be to provide random access to bgzipped PAF files, either through TABIX or some other API.",edawson,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/571
+MDU6SXNzdWU3MDgyOTA5Mzk=,[cmake] move version file configuration into base,OPEN,2020-09-24T15:58:13Z,2020-09-24T15:58:13Z,,"The `version.cpp.in` file should be configured once as part of the base module, and all the modules should simply call into the `version.hpp` header. currently that file is being separately configured as part of cudapoa/cudamapper/etc. ",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/572
+MDU6SXNzdWU3MTI5ODE2Mzg=,[cudaextender] Replace cudaextender's hardcoded encoding scheme with cudasequence,OPEN,2020-10-01T16:06:10Z,2020-10-01T19:30:20Z,,`cudaextender/src/ungapped_xdrop.cu` currently uses a hardcoded encoding scheme with fixed scoring matrices and a fixed alphabet. Replace that scheme with the generalized scheme that cudasequence will propose. ,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/574
+MDU6SXNzdWU3MTI5ODY1MTM=,[cudaextender] Check if entropy calculation can be done using a float.,OPEN,2020-10-01T16:12:38Z,2020-10-01T19:30:02Z,,Currently cudaextender uses doubles for entropy calculation during ungapped extension. Check the accuracy implications of moving the calculation to a float. ,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/575
+MDU6SXNzdWU3MTI5OTMyMTI=,[cudaextender] Calculate memory limits based on datastructures used.,OPEN,2020-10-01T16:21:36Z,2020-10-01T19:29:47Z,,"Currently element and memory limits are artifacts of hardcoded global memory limits in SegAlign. To be replaced with actual calculation of memory requirements with sizes of  datastructures taken into consideration. Also currently the max limit is based on total global memory, which should be replaced with memory available from the passed in allocator.",atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/576
+MDU6SXNzdWU3MTI5OTc1NTg=,[cudaextender] Explore configurability of kernel launch parameters.,OPEN,2020-10-01T16:27:34Z,2020-10-01T19:29:33Z,,Currently cudaextender has hardcoded block and grid dimensions. Explore configurability of these based on size of workload. Also explore if these need to be exposed to the user for config. ,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/577
+MDU6SXNzdWU3MTMwMDE2MjQ=,[cudaextender] Make output compression async,OPEN,2020-10-01T16:33:04Z,2020-10-01T19:29:21Z,,Currently cudaextender's output compression is synchronous. Explore dynamic parallelism or kernel replacement for Thrust's stable sort for making the tail end of cudaextender truly async.,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/578
+MDU6SXNzdWU3MTMwNjI4MTY=,[cudaextender] Kernel optimizations,OPEN,2020-10-01T17:54:53Z,2020-10-01T18:00:40Z,,"Investigate kernel optimizations with:
+-  code reuse 
+-  hardcoded limit removal
+-  removal of unnecessary operations like memset",atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/579
+MDU6SXNzdWU3MTMxMjQ0OTE=,[cudaextender] Performance analysis,OPEN,2020-10-01T19:28:45Z,2020-10-01T19:29:07Z,,Investigate performance difference between native SegAlign implementation and cudaextender implementation of ungapped extension.,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/580
+MDU6SXNzdWU3MTMyMjk2NjQ=,[cudaextender] Update readme with cudaextender info,CLOSED,2020-10-01T22:40:08Z,2020-10-20T15:15:33Z,2020-10-20T15:15:33Z,Add cudaextender details to the main project's readme. ,atadkase,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/582
+MDU6SXNzdWU3MTU4NjE4NjY=,[Documentation] Add code blocks instructions for dependencies setup,OPEN,2020-10-06T17:01:38Z,2020-10-06T17:01:53Z,,"Adding code blocks instructions to the README file for GenomeWorks setup steps to include both:
+- Installing all dependencies through Anaconda.
+- Installing all dependencies from source or the system package manager.",ohadmo,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/583
+MDU6SXNzdWU3MTY1ODg4MjA=,[cudapoa] add tests for different band modes,CLOSED,2020-10-07T14:36:19Z,2020-12-02T16:57:10Z,2020-12-02T16:57:10Z,"there are different variations of NW algorithm (full-band, static-band, adaptive-band, traceback static and traceback adaptive bands). We need to add some tests for each case.",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/584
+MDU6SXNzdWU3MTc3MzgyMDM=,[docs] rework documentation for modules in GW,CLOSED,2020-10-08T23:33:11Z,2020-12-03T23:22:57Z,2020-12-03T23:22:57Z,"Move the documentation per module into respective module folders. i.e. add a new `README.md` file under each module such as `cudapoa` or `cudaextender` and add more detailed documentation regarding algorithm, features, limitations, etc in there.",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/586
+MDU6SXNzdWU3MjI1ODM5Mzc=,[cudapoa] overlapping vertical/diagonal update of score matrix with horizontal update,OPEN,2020-10-15T18:52:10Z,2020-10-15T18:52:10Z,,investigate overlapping vertical/diagonal update of score matrix in NW with horizontal update. A crude measurement on a short-read set indicated  up to 40% of the time can be spent on vertical/diagonal update.,r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/587
+MDU6SXNzdWU3MjU2OTczODA=,[cudamapper] bug in extracting kmers,CLOSED,2020-10-20T15:14:05Z,2020-12-03T19:05:46Z,2020-12-03T19:05:46Z,"[here](https://github.com/clara-parabricks/GenomeWorks/blob/dev-v0.6.0/cudamapper/src/cudamapper_utils.cpp#L49), the second argument of `std::substr` is length of the substring, not the end position. Should be changed from `i + kmer_size` to `kmer_size`",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/591
+MDU6SXNzdWU3MzE1NzU3OTY=,How to install GenomeWorks on local machine?,OPEN,2020-10-28T15:58:44Z,2021-02-09T07:02:42Z,,"Hello everyone,
+I am a research scholar, and I need to test GenomeWorks  on sample data. Could anyone please explain how to install and run on my system?
+System details:
+UBUNTU 18.0
+6GB CUDA -enabled NVIDIA GTX 1660Ti
+Intel core-i7 9th Gen
+16GB RAM
+
+Thanks in advance.",kountaydwivedi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/593
+MDU6SXNzdWU3NDM5NzE2MDU=,"[common] DevicePreallocatedAllocator should allocate exactly the amount of memory requested, not more",CLOSED,2020-11-16T16:22:45Z,2020-11-30T17:55:03Z,2020-11-30T17:55:03Z,"`DevicePreallocatedAllocator` currently rounds up allocations to the next size divisible by 256. This comes from the property of `cudaMalloc()` that all its allocations are 256B-aligned (https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#device-memory-accesses).
+As a consequence of this if the last block in memory has e.g. 300 free bytes and 300B are requested those 300 requested bytes will be rounded up to 512B and the allocation will fail due to insufficient memory (for details see PR #598).
+The property of aligning allocations to 256B should be kept, but their sizes should not be rounded up. The allocator should internally be aware that the remaining `((requested_size - 1) / 256 + 1) * 256 - requested_size` bytes are ""junk"".",mimaric,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/600
+MDU6SXNzdWU3NTEzNDc4MjE=,terminate called after throwing an instance of 'std::runtime_error',OPEN,2020-11-26T07:14:35Z,2021-01-21T11:54:35Z,,"```
+root@lt5h8:~/dataset/hg38-1# cudamapper -a 2 hg38-1.mut hg38.fa
+-C / --target-indices-in-host-memory not set, using -Q / --query-indices-in-host-memory value: 10
+-c / --target-indices-in-device-memory not set, using -q / --query-indices-in-device-memory value: 5
+Query file: hg38-1.mut, number of reads: 25
+Target file: hg38.fa, number of reads: 25
+Programmatically looking for max cached memory
+Using device memory cache of 16376457462 bytes
+Device 0 took batch 1 out of 9 batches in total
+Aligning 0 overlaps (0x0) with batch size 0
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  Max alignments must be at least 1.
+Aborted (core dumped)
+```
+
+What causes this problem and how to fix it??",bellstwohearted,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/603
+MDU6SXNzdWU3NTE4NjE2MDE=,[cudapoa] throw an error in case all weights are zero,CLOSED,2020-11-26T23:15:16Z,2020-12-07T17:22:16Z,2020-12-07T17:22:16Z,"heavy-bundle algorithm in POA to generate consensus assumes non-zero base weights. We should check and throw an error in case this assumption is not satisfied, otherwise cudaPOA will potentially generate some incorrect consensus output (since all the paths have the same weight of 0).",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/604
+MDU6SXNzdWU3NTM4NjQzNTg=,[cudapoa] make maximum number of edges per node configurable,OPEN,2020-11-30T22:58:37Z,2020-11-30T22:58:37Z,,"`CUDAPOA_MAX_NODE_EDGES` and `CUDAPOA_MAX_NODE_ALIGNMENTS` with default value of 50 defined in `cudapoa_structs.cuh` have a big impact on memory usage per POA. Consequently maximum number of POAs residing on GPU can increase by using smaller values for these two parameters. Changing these macros to template parameters allows achieving higher parallelism, particularly for processing long reads. 
+As a rule of thumb, the value for these parameters should not exceed maximum number of reads per window. ",r-mafi,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/607
+MDU6SXNzdWU3NjEzNDI5ODk=,[logging] reduce logging overhead,OPEN,2020-12-10T15:33:22Z,2020-12-11T15:10:55Z,,"Suggestions from @ahehn-nv -
+
+1.
+```
+You could avoid the construction of the std::string by directly operating on the stream:
+
+std::ostream& operator << (std::ostream& os, LogLevel level)
+{
+    switch(level)
+    {
+       case critical: os << ""CRITICAL""; break;
+       ...
+    }
+    return os;
+}
+or, if you dislike overloading operators, a similar function void add_prefix(std::ostream& os, LogLevel level).
+```
+ 
+2.
+```
+We could actually base the whole logger on overloading << instead of macros and std::strings, providing a syntax like:
+
+ log(LogLevel::debug) << ""here's some debug integer: "" << some_integer << std::endl;
+Advantages:
+
+common C++ syntax.
+messages become almost no-ops if a higher logging level is selected.
+Disadvantage:
+
+more templates -> Slightly higher compilation times.
+```",tijyojwad,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/616
+MDU6SXNzdWU3OTAzMzQ5MDY=,Can GenomeWorks work without CUDA? Can it work parallelize through MPI?,CLOSED,2021-01-20T21:24:56Z,2021-01-21T09:02:56Z,2021-01-21T09:02:56Z,,yurivict,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/619
+MDU6SXNzdWU4MDk1NDczNTg=,[cudaaligner] Disabled caching device-allocator may trigger OOM in cudaaligner,OPEN,2021-02-16T18:25:58Z,2021-02-16T18:25:58Z,,"AlignerGlobalMyersBanded's `reset_max_bandwidth(...)` runs out of device memory when the caching device-allocator is disabled at compilation. (This allocator is enabled by default.)
+It is unclear if cudaaligner respects the `max_device_memory` setting passed at construction at all in this case.",ahehn-nv,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/630
+MDU6SXNzdWU4MTU0MDE4NDE=,format.h is broken and breaks CUDA compile,OPEN,2021-02-24T11:46:21Z,2021-02-25T14:39:10Z,,"There's a misplaced set of quotes in format.h file that prevents CUDA integration into RAVEN (error2 build fail).:
+
+This showed up when I was trying to compile RAVEN for CUDA in </raven/build/_deps/genomeworks-src/3rdparty/spdlog/include/spdlog/fmt/bundled/format.h>
+
+Pulled solution from here: https://www.gitmemory.com/issue/yuzu-emu/yuzu/2597/507715224
+
+Changed Line 3475 from:
+FMT_CONSTEXPR internal::udl_formatter<Char, CHARS...> operator""""_format() {
+
+To (remove quotes):
+FMT_CONSTEXPR internal::udl_formatter<Char, CHARS...> operator_format() {",cement-head,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/637
+MDU6SXNzdWU4ODExMDk5Nzg=,[pygenomeworks] pinned dependencies.,CLOSED,2021-05-08T17:51:16Z,2021-05-13T11:36:13Z,2021-05-13T11:36:13Z,"Hey all,
+
+I'm looking to depend on `genomeworks-cuda-10-2` in `bonito` but the current set of pinned dependencies are too restrictive.
+
+Specifically, the troubles are with the requirement on `numpy==1.16.3` and the use of [h5py](https://github.com/h5py/h5py/blob/3.1.0/setup.py#L28) and [cupy](https://github.com/cupy/cupy/blob/master/setup.py#L34).
+
+",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/647
+MDU6SXNzdWU4ODExNjY5NzA=,[pygenomeworks] logger chatter.,OPEN,2021-05-08T18:44:58Z,2021-05-18T12:47:08Z,,"When creating a `CudaPoaBatch` object a default logger is initialized and outputs to `stderr`.
+
+```python
+>>> from genomeworks.cudapoa import CudaPoaBatch
+>>> CudaPoaBatch(1000, 1000, 3724032)
+GenomeWorks logger not initialized yet. Initializing default logger now.
+Initialized GenomeWorks logger with log level ERROR
+```
+
+Can the logger be initialized from Python with a stream to avoid this output?  
+",iiSeymour,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/648
+MDU6SXNzdWU5MzEyODU2ODM=,How to fix cudaErrorInvalidDeviceFunction exception for cudamapper,CLOSED,2021-06-28T08:00:08Z,2021-07-09T08:36:24Z,2021-07-09T08:36:24Z,"Hi, 
+
+When I ran ""cudamapper 1.fasta 2.fasta"", I met with an error ""cudaErrorInvalidDeviceFunction"". The screen shows below:
+> Initialized GenomeWorks logger with log level ERROR
+> -C / --target-indices-in-host-memory not set, using -Q / --query-indices-in-host-memory value: 10
+> -c / --target-indices-in-device-memory not set, using -q / --query-indices-in-device-memory value: 5
+> Query file: 1.fasta, number of reads: 1
+> Target file: 2.fasta, number of reads: 1
+> Programmatically looking for max cached memory
+> Using device memory cache of 12493416039 bytes
+> Device 0 took batch 1 out of 1 batches in total
+> terminate called after throwing an instance of 'thrust::system::system_error'
+>   what():  scan failed on 2nd step: cudaErrorInvalidDeviceFunction: invalid device function
+> Aborted (core dumped)
+
+
+Also, I tried to run the test cases for cudamapper, 19 tests failed with the below exception:
+
+> ...
+> [----------] 5 tests from TestCudamapperIndexCaching
+> [ RUN      ] TestCudamapperIndexCaching.test_index_cache_same_query_and_target
+> unknown file: Failure
+> C++ exception with description ""scan failed on 2nd step: cudaErrorInvalidDeviceFunction: invalid device function"" thrown in the test body.
+> [  FAILED  ] TestCudamapperIndexCaching.test_index_cache_same_query_and_target (20 ms)
+> ...
+
+My linux system is Ubuntu 21.04.
+My GenomeWorks program is the lastest dev version (9fd8232). My cuda version is 11.3.  
+My GPU is GTX 1080ti and arch flag for compilation is 6.1.
+What should I do to fix the problem described above?",wzboy1984,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/655
+MDU6SXNzdWU5MzczNzUzNDU=,cudamapper error using bam output,OPEN,2021-07-05T21:33:13Z,2021-07-06T00:57:58Z,,"Hi folks,
+I'm trying cudamapper with this command:
+`/opt/GenomeWorks-2021.02.2/bin/cudamapper PAG33026_pass_concat.fastq.gz ../hg19a.fa -B > cudamapper_2021_02_02_GM24385.bam`
+
+which outputs quite a lot of output to stdout/stderr, from which I have reported the unique lines below:
+```
+Initialized GenomeWorks logger with log level ERROR
+-C / --target-indices-in-host-memory not set, using -Q / --query-indices-in-host-memory value: 10
+-c / --target-indices-in-device-memory not set, using -q / --query-indices-in-device-memory value: 5
+ Query file: PAG33026_pass_concat.fastq.gz, number of reads: 9983679
+Target file: ../hg19a.fa, number of reads: 84
+Programmatically looking for max cached memory
+Using device memory cache of 24899308094 bytes
+Device 0 took batch 1 out of 1790 batches in total
+[E::sam_hrecs_update_hashes] Duplicate entry ""5"" in sam header
+print_sam: could not add header value
+[E::sam_hrecs_update_hashes] Duplicate entry ""5"" in sam header
+print_sam: could not add header value
+[E::sam_hrecs_update_hashes] Duplicate entry ""5"" in sam header
+print_sam: could not add header value
+...
+[E::sam_hrecs_update_hashes] Duplicate entry ""19"" in sam header
+print_sam: could not add header value
+[E::sam_hrecs_update_hashes] Duplicate entry ""22"" in sam header
+print_sam: could not add header value
+[E::sam_hrecs_update_hashes] Duplicate entry ""5"" in sam header
+print_sam: could not add header value
+[E::bgzf_flush] File write failed (wrong size)
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  ERROR, print_sam: could not write alignment
+Aborted (core dumped)
+```
+In practise I think I get the ""Duplicate entry ""N"" "" error for each read that is processed.",RichardCorbett,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/656
+MDU6SXNzdWU5NzAyNzQ2MzQ=,Buils fails with gcc 9.3,CLOSED,2021-08-13T10:29:04Z,2021-08-17T08:17:08Z,2021-08-13T13:12:30Z,"Hi,
+
+I tried to build racon and as part of it genomeworks is built. Per default I had gcc9.3 installed and the build of GenomeWorks failed. When I tried to build it separately from racon I had the same problem. I was able to install it nicely when switching back to gcc8. 
+
+I got this error message:
+09:55:56  [ 36%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/cudaaligner.cpp.o
+09:55:56  [ 36%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner_global_ukkonen.cpp.o
+09:55:56  [ 38%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner.cpp.o
+09:55:56  [ 38%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner_global.cpp.o
+09:55:56  [ 38%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/alignment.cpp.o
+09:55:56  [ 39%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/alignment_impl.cpp.o
+09:55:56  [ 39%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner_global_myers.cpp.o
+09:55:56  [ 40%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/ukkonen_cpu.cpp.o
+09:55:56  [ 40%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner_global_myers_banded.cpp.o
+09:55:56  [ 40%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/aligner_global_hirschberg_myers.cpp.o
+09:55:56  [ 42%] Building CXX object cudaaligner/CMakeFiles/cudaaligner.dir/src/needleman_wunsch_cpu.cpp.o
+09:56:00  [ 43%] Linking CXX static library libcudaaligner.a
+09:56:00  [ 43%] Built target cudaaligner
+09:56:39  Scanning dependencies of target cudapoa
+09:56:39  [ 45%] Building CXX object cudapoa/CMakeFiles/cudapoa.dir/src/cudapoa.cpp.o
+09:56:39  [ 45%] Building CXX object cudapoa/CMakeFiles/cudapoa.dir/version.cpp.o
+09:56:39  [ 45%] Linking CXX static library libcudapoa.a
+09:56:39  [ 45%] Built target cudapoa
+09:56:39  Makefile:162: recipe for target 'all' failed
+09:56:39  make: *** [all] Error 2
+
+Unfortunately, I cannot easily extract the Makefile for these builds as I am building singularity images in a build pipeline. 
+
+Dominik",dominik-handler,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/660
+MDU6SXNzdWU5OTIzMTU2MTE=,Floating Point Exception in Racon,OPEN,2021-09-09T14:46:13Z,2021-09-09T14:46:13Z,,"Hi,
+
+Thanks for great software. Running latest version of racon (commit b591b12c22539948782704446989893bde826a29) and hitting a floating point exception on GPU, but CPU works. The racon authors [directed me here](https://github.com/lbcb-sci/racon/issues/58#issuecomment-915875871). Thanks for your help!
+
+I'm attaching what I hope is a reproducible example. [racon_debug.zip](https://github.com/lbcb-sci/racon/files/7117517/racon_debug.zip)
+
+```
+root@a5698f05c7c3:/data/racon_trouble# racon -m 8 -x -6 -g -8 -w 500 --include-unpolished -t 4 --cudapoa-batches 1 --cudaaligner-batches 4 --cuda-banded-alignment filtered.fastq output.paf polished-input.fa
+Using 1 GPU(s) to perform polishing
+Initialize device 0
+[CUDAPolisher] Constructed.
+[racon::Polisher::initialize] loaded target sequences 0.000033 s
+[racon::Polisher::initialize] loaded sequences 0.006921 s
+[racon::Polisher::initialize] loaded overlaps 0.001669 s
+GPU 0: Aligning with band width 68
+[racon::CUDAPolisher::initialize] allocated memory on GPUs for alignment 0.989071 s
+Alignment skipped by GPU: 415 / 921
+[racon::Polisher::initialize] aligning overlaps [====================] 0.035475 s
+[racon::Polisher::initialize] transformed data into windows 0.001138 s
+[racon::CUDAPolisher::polish] allocated memory on GPUs for polishing 1.352416 s
+Floating point exception (core dumped)
+```
+",schorlton,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/662
+I_kwDOC02oTc47gU4g,Build fails with gcc 7 and 8,CLOSED,2021-09-16T15:11:32Z,2021-09-17T12:18:50Z,2021-09-17T12:18:50Z,"Hi!
+I am attempting to build GenomeWorks but it crashes with the following errors.
+
+After `make -j install`:
+
+[ 44%] Built target cudapoa
+Makefile:162: recipe for target 'all' failed
+make: *** [all] Error 2
+
+Then, I try just `make` and see this one (I also see ith with `make -j` but further up.
+
+/home/dennistpw/packages/GenomeWorks/3rdparty/spoa/src/simd_alignment_engine.cpp:12:14: fatal error: immintrin.h: No such file or directory
+     #include <immintrin.h> // AVX2 and lower
+              ^~~~~~~~~~~~~
+compilation terminated.
+3rdparty/spoa/CMakeFiles/spoa.dir/build.make:110: recipe for target '3rdparty/spoa/CMakeFiles/spoa.dir/src/simd_alignment_engine.cpp.o' failed
+make[2]: *** [3rdparty/spoa/CMakeFiles/spoa.dir/src/simd_alignment_engine.cpp.o] Error 1
+CMakeFiles/Makefile2:413: recipe for target '3rdparty/spoa/CMakeFiles/spoa.dir/all' failed
+make[1]: *** [3rdparty/spoa/CMakeFiles/spoa.dir/all] Error 2
+Makefile:162: recipe for target 'all' failed
+make: *** [all] Error 2
+
+I saw on another issue that it may be compiler issue so I switch between gcc/g++ 7 and 8, and no luck.
+
+I ran `make VERBOSE=1 2>&1 | tee verbose_build.log` and have attached the logs below if that would be more useful!
+
+Versions:
+- `Ubuntu 18.04.5 LTS (GNU/Linux 4.9.253-tegra aarch64)`
+- `Python 3.6.9`
+- `CUDA Version 10.2.300`
+- `cmake version 3.10.2`
+- GPU generation Volta
+- autoconf and automake both installed
+
+Any help would be greatly appreciated, thank you! :)
+
+[verbose_build.log](https://github.com/clara-parabricks/GenomeWorks/files/7178957/verbose_build.log)
+",tristanpwdennis,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/663
+I_kwDOC02oTc47puM2,cudamapper terminates while doing an all-vs-all mapping,OPEN,2021-09-20T10:13:14Z,2021-09-20T10:13:14Z,,"I'm trying to do an all-vs-all mapping with cudamapper (dev branch, git-baab5668) and it terminates with an exception:
+
+```console
+$ cudamapper SRR.unmapped.choped.fastq.gz SRR.unmapped.choped.fastq.gz
+Initialized GenomeWorks logger with log level ERROR
+-C / --target-indices-in-host-memory not set, using -Q / --query-indices-in-host-memory value: 10
+-c / --target-indices-in-device-memory not set, using -q / --query-indices-in-device-memory value: 5
+NOTE - Since query and target files are same, activating all_to_all mode. Query index size used for both files.
+Query file: SRR.unmapped.choped.fastq.gz, number of reads: 249455
+Target file: SRR.unmapped.choped.fastq.gz, number of reads: 249455
+Programmatically looking for max cached memory
+Using device memory cache of 33390691615 bytes
+Device 0 took batch 1 out of 1 batches in total
+terminate called without an active exception
+Aborted
+```
+
+Environment is CentOS 7 with an NVIDIA Tesla V100-PCIE-32GB. Thank you!",alanorth,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/664
+I_kwDOC02oTc475z5D,[cudamapper] compared to minimap2,OPEN,2021-09-23T04:44:12Z,2021-09-23T04:44:12Z,,"Hi,
+
+I've tried doing alignment by cudamapper over 3 datasets, and compared to that by minimap2. 
+The time costs don't reduce much when compared to minimap2. In some cases, the running speeds of cudamapper are slower than minimap2, as shown in the below table.
+
+  | Name | wall time(s) | mem peak(G) | note
+-- | -- | -- | -- | --
+data 1 | cudamapper | 650.63 | 10.87 | v100, 16G
+  | minimap2_v2.20 | 1687.86 | 31.53 | -t 32 -k 17 -w 17 -x ava-ont
+data 2 | cudamapper | 11193 | 39.76 | v100, 16G
+  | minimap2_v2.20 | 4491 | 19.21 | -t 32 -k 17 -w 17 -x ava-ont
+data 3 | cudamapper | 5958 | 27.4 | NVIDIA TITAN xp, 12G
+  | minimap2_v2.20 | 4590 | 54.02 | -t 32 -x ava-ont
+
+Also, the sensitivity of the cudamapper alignments is lower than that of minimap2, which leads to the poorer assembly results based on cudamapper alignments of the 3 above datasets. The algorithm of cudamapper might need to be modified to get alignment results similar to minimap2. 
+",wzboy1984,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/665
+I_kwDOC02oTc5EohQj,[cudapoa] Kernel error,OPEN,2022-02-26T08:32:32Z,2022-02-26T08:32:32Z,,"Hello,
+I tried updating GenomeWorks inside Racon from v0.5.3 to v2021.02.2 (and even v2021.02.0), and get kernel errors while using `BandMode::full_band` (only cudapoa is enabled, without bands):
+
+`_deps/genomeworks-src/cudapoa/src/cudapoa_batch.cuh:451] Kernel Error: Traceback in Needleman-Wunsch algorithm failed. in batch 8
+Suggestion  : You may retry with a different banding mode.`
+
+Got any suggestions what could be causing this? I have two tests with the same data, one [with](https://github.com/lbcb-sci/racon/blob/master/test/racon_test.cpp#L454-L470) QV the other [without](https://github.com/lbcb-sci/racon/blob/master/test/racon_test.cpp#L472-L488), and the first one finishes successfully while the other yields the error above and the process hangs.
+
+Thank you and best regards,
+Robert",rvaser,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/666
+I_kwDOC02oTc5vsAXA,GenomeWorks fails to compile with CUDA 12,OPEN,2023-08-30T14:30:06Z,2024-09-23T18:50:15Z,,"I'm trying to compile GenomeWorks using the lastest CUDA version, and there seem to be some breaking changes in thrust that generates some compilation errors, here are the errors reported when doing `make -j install`:
+
+```
+In file included from /home/qaguado/GenomeWorks/cudaaligner/src/batched_device_matrices.cuh:25,                                                                                                            
+                 from /home/qaguado/GenomeWorks/cudaaligner/src/ukkonen_gpu.cu:18:                                                                                                                         
+/home/qaguado/GenomeWorks/common/base/include/claraparabricks/genomeworks/utils/pinned_host_vector.hpp:23:10: fatal error: thrust/system/cuda/experimental/pinned_allocator.h: No such file or directory   
+   23 | #include <thrust/system/cuda/experimental/pinned_allocator.h>                                                                                                                                      
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                                                                                                                      
+compilation terminated.                                                                                                                                                                                    
+In file included from /home/qaguado/GenomeWorks/cudaaligner/src/batched_device_matrices.cuh:25,                                                                                                            
+                 from /home/qaguado/GenomeWorks/cudaaligner/src/hirschberg_myers_gpu.cuh:20,                                                                                                               
+                 from /home/qaguado/GenomeWorks/cudaaligner/src/hirschberg_myers_gpu.cu:17:                                                                                                                
+/home/qaguado/GenomeWorks/common/base/include/claraparabricks/genomeworks/utils/pinned_host_vector.hpp:23:10: fatal error: thrust/system/cuda/experimental/pinned_allocator.h: No such file or directory   
+   23 | #include <thrust/system/cuda/experimental/pinned_allocator.h>                                                                                                                                      
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                                                                                                                      
+compilation terminated.                                                                                                                                                                                    
+CMake Error at cudaaligner_generated_ukkonen_gpu.cu.o.Release.cmake:220 (message):                                                                                                                         
+  Error generating                                                                                                                                                                                         
+  /home/qaguado/GenomeWorks/build/cudaaligner/CMakeFiles/cudaaligner.dir/src/./cudaaligner_generated_ukkonen_gpu.cu.o
+```
+
+I tried to fix the error by doing the following changes in `/common/base/include/claraparabricks/genomeworks/utils/pinned_host_vector.hpp` (from [this NVIDIA forum answer](https://forums.developer.nvidia.com/t/thrust-pinned-memory-in-cuda-12-0/242093/3)):
+
+``` c++
+// ...
+
+//#include <thrust/system/cuda/experimental/pinned_allocator.h>
+#include <thrust/system/cuda/memory_resource.h>
+#include <thrust/mr/allocator.h>
+#include <thrust/system/cpp/memory.h>
+
+// ...
+
+//using pinned_host_vector = std::vector<T, thrust::system::cuda::experimental::pinned_allocator<T>>;
+template <typename T>
+using pinned_host_vector = std::vector<T, thrust::mr::stateless_resource_allocator<T, thrust::cuda::universal_host_pinned_memory_resource>>;
+```
+
+But it still fails with the following error:
+
+```
+/usr/include/c++/9/bits/alloc_traits.h:556:25: error: no matching function for call to ‘__do_alloc_on_move(thrust::mr::stateless_resource_allocator<claraparabricks::genomeworks::cudaaligner::batched_devi
+ce_matrices<unsigned int>::device_interface, thrust::system::cuda::detail::cuda_memory_resource<cudaMallocHost, cudaFreeHost, thrust::pointer<void, thrust::cuda_cub::tag, void, thrust::use_default> > >&, thrust::mr::stateless_resource_allocator<claraparabricks::genomeworks::cudaaligner::batched_device_matrices<unsigned int>::device_interface, thrust::system::cuda::detail::cuda_memory_resource<cudaMallocHost, cudaFreeHost, thrust::pointer<void, thrust::cuda_cub::tag, void, thrust::use_default> > >&, __pocma)’
+```
+
+Are there any plans to make GenomeWorks compatible with CUDA 12?
+
+Thanks",quim0,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/668
+I_kwDOC02oTc6N-AqD,"#include ""seqio.h"" //TODO add this to 3rdparty",OPEN,2024-06-29T16:25:33Z,2024-06-29T16:25:33Z,,"<img width=""185"" alt=""image"" src=""https://github.com/NVIDIA-Genomics-Research/GenomeWorks/assets/66343484/e897beb4-eb1c-4065-9f7b-3d422ce481c2"">
+
+What does TODO mean? When I compile, it shows that there is no seqio.h file. How can I solve this problem?",CTForGitHub,https://github.com/NVIDIA-Genomics-Research/GenomeWorks/issues/670

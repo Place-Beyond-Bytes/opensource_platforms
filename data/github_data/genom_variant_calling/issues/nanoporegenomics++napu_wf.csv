@@ -1,0 +1,148 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOH1_IO85iW32n,Uncaught error from thread while running pipeline on card_pipeline_small_test,CLOSED,2023-03-31T23:19:10Z,2023-04-06T22:56:02Z,2023-04-05T21:07:47Z,"We're getting the following error while trying to run the pipeline using the command `java -Xmx500g -jar ../cromwell-85.jar run cardEndToEndVcf.wdl --inputs inputs.json` on the card_pipeline_small_test sample:
+
+inputs.json file:
+```
+{
+  ""cardEndToEndVcfMethyl.referenceFasta"": ""../card_pipeline_small_test/chr14.fasta"",
+  ""cardEndToEndVcfMethyl.referenceVntrAnnotations"": ""../card_pipeline_small_test/human_hs37d5.trf.bed"",
+  ""cardEndToEndVcfMethyl.inputUnphasedMethylBam"" : ""../card_pipeline_small_test/HG002_Guppy6_cpg_chr14.bam"",
+  ""cardEndToEndVcfMethyl.threads"" : 10,
+  ""cardEndToEndVcfMethyl.referenceName"": ""grch37_chr14"",
+  ""cardEndToEndVcfMethyl.sampleName"": ""hg002""
+}
+```
+
+
+The output on terminal is:
+
+```
+[2023-03-31 16:04:14,42] [info] Running with database db.url = jdbc:hsqldb:mem:beca7322-c088-4f40-8c4f-c526eae8954a;shutdown=false;hsqldb.tx=mvcc
+[2023-03-31 16:04:16,41] [info] Running migration RenameWorkflowOptionsInMetadata with a read batch size of 100000 and a write batch size of 100000
+[2023-03-31 16:04:16,43] [info] [RenameWorkflowOptionsInMetadata] 100%
+[2023-03-31 16:04:16,67] [info] Running with database db.url = jdbc:hsqldb:mem:0e6e9d3a-f4a2-4605-9a2d-72a85aad21d3;shutdown=false;hsqldb.tx=mvcc
+[2023-03-31 16:04:17,01] [info] Slf4jLogger started
+[2023-03-31 16:04:17,15] [info] Workflow heartbeat configuration:
+{
+  ""cromwellId"" : ""cromid-279a2b2"",
+  ""heartbeatInterval"" : ""2 minutes"",
+  ""ttl"" : ""10 minutes"",
+  ""failureShutdownDuration"" : ""5 minutes"",
+  ""writeBatchSize"" : 10000,
+  ""writeThreshold"" : 10000
+}
+[2023-03-31 16:04:17,19] [info] Metadata summary refreshing every 1 second.
+[2023-03-31 16:04:17,19] [info] No metadata archiver defined in config
+[2023-03-31 16:04:17,19] [info] No metadata deleter defined in config
+[2023-03-31 16:04:17,20] [info] WriteMetadataActor configured to flush with batch size 200 and process rate 5 seconds.
+[2023-03-31 16:04:17,20] [info] KvWriteActor configured to flush with batch size 200 and process rate 5 seconds.
+[2023-03-31 16:04:17,22] [info] CallCacheWriteActor configured to flush with batch size 100 and process rate 3 seconds.
+[2023-03-31 16:04:17,27] [info] JobRestartCheckTokenDispenser - Distribution rate: 50 per 1 seconds.
+[2023-03-31 16:04:17,29] [info] JobExecutionTokenDispenser - Distribution rate: 20 per 10 seconds.
+[2023-03-31 16:04:17,32] [info] SingleWorkflowRunnerActor: Version 85
+[2023-03-31 16:04:17,33] [info] SingleWorkflowRunnerActor: Submitting workflow
+[2023-03-31 16:04:17,36] [info] Unspecified type (Unspecified version) workflow f67d1a2c-b908-4300-8e83-ee8cf7e20f60 submitted
+[2023-03-31 16:04:17,42] [info] SingleWorkflowRunnerActor: Workflow submitted ^[[38;5;2mf67d1a2c-b908-4300-8e83-ee8cf7e20f60^[[0m
+[2023-03-31 16:04:17,44] [info] 1 new workflows fetched by cromid-279a2b2: f67d1a2c-b908-4300-8e83-ee8cf7e20f60
+[2023-03-31 16:04:17,45] [info] WorkflowManagerActor: Starting workflow ^[[38;5;2mf67d1a2c-b908-4300-8e83-ee8cf7e20f60^[[0m
+[2023-03-31 16:04:17,50] [info] WorkflowManagerActor: Successfully started WorkflowActor-f67d1a2c-b908-4300-8e83-ee8cf7e20f60
+[2023-03-31 16:04:17,50] [info] Retrieved 1 workflows from the WorkflowStoreActor
+[2023-03-31 16:04:17,53] [info] WorkflowStoreHeartbeatWriteActor configured to flush with batch size 10000 and process rate 2 minutes.
+[2023-03-31 16:04:17,62] [info] MaterializeWorkflowDescriptorActor [^[[38;5;2mf67d1a2c^[[0m]: Parsing workflow as WDL 1.0
+[2023-03-31 16:04:18,53] [info] Workflow polling stopped
+[2023-03-31 16:04:18,53] [^[[38;5;1merror^[[0m] Uncaught error from thread [cromwell-system-akka.dispatchers.engine-dispatcher-52]: null, shutting down JVM since 'akka.jvm-exit-on-fatal-error' is enabled for ActorSystem[cromwell-system]
+java.lang.StackOverflowError: null
+        at wdl.transforms.base.ast2wdlom.package$.$anonfun$astNodeToString$1(ast2wdlom.scala:24)
+        at scala.Option.map(Option.scala:242)
+        at wdl.transforms.base.ast2wdlom.GenericAst.getAttributeAs(GenericAst.scala:67)
+        at wdl.transforms.base.ast2wdlom.GenericAst.getAttributeAs$(GenericAst.scala:63)
+        at wdl.draft3.transforms.ast2wdlom.Draft3GenericAst.getAttributeAs(Draft3GenericAstNode.scala:7)
+        at wdl.transforms.base.ast2wdlom.AstNodeToKvPair$.$anonfun$astNodeToKvPair$1(AstNodeToKvPair.scala:14)
+        at common.transforms.package$CheckedAtoB$.$anonfun$runThenCheck$1(package.scala:20)
+        at wdl.transforms.base.ast2wdlom.GenericAst.$anonfun$getAttributeAsVector$2(GenericAst.scala:80)
+        at cats.data.Chain$.$anonfun$traverseViaChain$3(Chain.scala:795)
+        at cats.Eval$.loop$1(Eval.scala:317)
+        at cats.Eval$.cats$Eval$$evaluate(Eval.scala:363)
+        at cats.Eval$FlatMap.value(Eval.scala:284)
+        at cats.data.Chain$.traverseViaChain(Chain.scala:817)
+        at cats.instances.VectorInstances$$anon$1.traverse(vector.scala:100)
+        at cats.instances.VectorInstances$$anon$1.traverse(vec
+.
+and 1000 lines more this
+```
+",nikhita-damaraju,https://github.com/nanoporegenomics/napu_wf/issues/2
+I_kwDOH1_IO85jwic7,Multiple input bams,CLOSED,2023-04-18T18:50:54Z,2023-11-15T18:51:09Z,2023-11-15T18:51:09Z,"Hello,
+
+I was wondering if you had a procedure to integrate multiple input bams? Do I add them as a list of strings to the json file or is there currently not functionality for this?
+
+Thanks so much for your efforts to this point!",wharvey31,https://github.com/nanoporegenomics/napu_wf/issues/3
+I_kwDOH1_IO85uhUkq,Different sample names in hapdiff_unphased.vcf.gz_size_filtered.vcf,CLOSED,2023-08-17T04:30:09Z,2023-08-21T00:30:29Z,2023-08-21T00:30:29Z,"Hi, I tried to run the Quick demo, but got this error. Please advise. Thanks
+
+
+[2023-08-16 17:30:07,27] [info] WorkflowManagerActor: Workflow b723869b-5486-4002-8528-d607428b4ad7 failed (during ExecutingWorkflowState): Job runMarginPhase.combineVcfs:NA:1 exited with return code 255 which has not been declared as a valid return code. See 'continueOnReturnCode' runtime attribute for more details.
+Check the content of stderr for potential additional information: /home/eger/projects/CARD_LRS/card_pipeline_small_test/cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/execution/stderr.
+ [First 3000 bytes]:+ SV_FILTERED=/cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/1565723404/hapdiff_unphased.vcf.gz_size_filtered.vcf
++ SMALL_FILTERED=/cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/-490589013/PMDV_FINAL.phased.vcf.gz_size_filtered.vcf
++ zcat -f /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/1565723404/hapdiff_unphased.vcf.gz
++ python3 /opt/vcf_filter_size.py greater 25
++ bgzip
++ tabix -p vcf /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/1565723404/hapdiff_unphased.vcf.gz_size_filtered.vcf
++ zcat -f /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/-490589013/PMDV_FINAL.phased.vcf.gz
++ python3 /opt/vcf_filter_size.py less 25
++ bgzip
++ tabix -p vcf /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/-490589013/PMDV_FINAL.phased.vcf.gz_size_filtered.vcf
++ bcftools concat -a /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/-490589013/PMDV_FINAL.phased.vcf.gz_size_filtered.vcf /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/1565723404/hapdiff_unphased.vcf.gz_size_filtered.vcf -o hg002.merged_small_svs.vcf
+Different sample names in /cromwell-executions/cardEndToEndVcfMethyl/b723869b-5486-4002-8528-d607428b4ad7/call-margin_phase/runMarginPhase/a4543c92-3556-48de-a9a1-06a4f7fc497f/call-combineVcfs/inputs/1565723404/hapdiff_unphased.vcf.gz_size_filtered.vcf. Perhaps ""bcftools merge"" is what you are looking for?
+
+[2023-08-16 17:30:11,90] [info] WorkflowManagerActor: Workflow actor for b723869b-5486-4002-8528-d607428b4ad7 completed with status 'Failed'. The workflow will be removed from the workflow store.
+[2023-08-16 17:30:26,59] [info] SingleWorkflowRunnerActor workflow finished with status 'Failed'.
+[2023-08-16 17:30:26,90] [info] Workflow polling stopped",saraheger,https://github.com/nanoporegenomics/napu_wf/issues/7
+I_kwDOH1_IO85wM2DU,r10 branch works with GRCh38 but not chm13 reference files,OPEN,2023-09-05T17:10:18Z,2023-09-25T17:35:56Z,,"Hi,
+
+ Using the r10 branch pipeline, I ran `shasta.wdl` (in memory) separately and then `cardEndToEndVcf.wdl` with: 
+`referenceFasta` : GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+`vntr_annotations` : human_GRCh38_no_alt_analysis_set.trf.bed. 
+
+This finished successfully but when I tried to use GCF_009914755.1_T2T-CHM13v2.0_genomic.fna and chm13.bed `call-dv_t` fails. Here is the stderr:
+
++ '[' '!=' '' ']'
+/cromwell-executions/cardEndToEndVcfMethyl/247d673d-5a2a-4102-b971-7d70bc9e3ad3/call-dv_t/
+execution/script: line 29: [: !=: unary operator expected
++ ln -s /cromwell-executions/cardEndToEndVcfMethyl/247d673d-5a2a-4102-b971-7d70bc9e3ad3/ca
+ll-dv_t/inputs/659282024/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna ref.fa
++ samtools faidx ref.fa
++ ln -s /cromwell-executions/cardEndToEndVcfMethyl/247d673d-5a2a-4102-b971-7d70bc9e3ad3/ca
+ll-dv_t/inputs/866278875/minimap2.bam reads.bam
++ ln -s /cromwell-executions/cardEndToEndVcfMethyl/247d673d-5a2a-4102-b971-7d70bc9e3ad3/ca
+ll-dv_t/inputs/866278875/minimap2.bam.bai reads.bam.bai
++ REGION_ARG=
++ '[' false == true ']'
++ /opt/deepvariant/bin/run_deepvariant --model_type ONT_R104 --ref ref.fa --reads reads.ba
+m --sample_name COL_387 --output_vcf dv.vcf.gz --num_shards 20
+I0901 18:58:27.728373 140017185417024 run_deepvariant.py:364] Re-using the directory for i
+ntermediate results in /cromwell-executions/cardEndToEndVcfMethyl/247d673d-5a2a-4102-b971-
+7d70bc9e3ad3/call-dv_t/tmp.ba860b8c/tmp513pcojf
+
+Should I be using different chm13 reference files? Or is there a different fix I can try? Any advice would be appreciated.
+
+Thank you!
+Sarah",saraheger,https://github.com/nanoporegenomics/napu_wf/issues/8
+I_kwDOH1_IO86CH-cu,Long runtime and performance concerns running Napu with toy data,OPEN,2024-03-13T05:09:06Z,2024-03-14T13:42:42Z,,"Hi developers, 
+
+I have run Napu using toy data downloaded from the github page with the thread 10 specified in the JSON file. 
+
+It has been running for 5 days now. Is this normal? How much time does Napu typically take to run?
+
+It would be helpful to know the estimated time for running Napu to me.
+
+Thanks!",jjuhyunkim,https://github.com/nanoporegenomics/napu_wf/issues/12
+I_kwDOH1_IO86IDUYy,CPU Platform for shasta_inmem_t Task,CLOSED,2024-05-07T08:03:11Z,2024-05-07T16:57:23Z,2024-05-07T16:57:23Z,"Hello,
+
+I have a question regarding line 124 in the `shasta_inmem_t task` within the `shasta.wdl` file:
+
+https://github.com/nanoporegenomics/napu_wf/blob/33ac672fdbcd6ba144b360c9aacfdde4ee68b121/wdl/tasks/shasta.wdl#L124
+
+Is it necessary to specify the CPU platform as ""AMD Rome""? I am planning to run the pipeline on AWS. If using AMD Rome is required, could anyone suggest suitable instance types?
+
+Thank you,
+Xinyu",Xinyu-Sun,https://github.com/nanoporegenomics/napu_wf/issues/13

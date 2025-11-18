@@ -1,0 +1,147 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+826b446d323d5e9bb7e47a958f1a7802bf3dd7c7,Indraniel,indraniel@gmail.com,"+ fix variable in the HaplotypeCaller command
+
+- to be consistent i should use the ${chromosome} variable everywhere the ${chr} variable was used.
+-  i changed the variable name from the code snippet so that it is more clear from the reading",2020-07-07T17:42:16Z,indraniel
+32613055ee667dce2461501371d432be1692086b,Indraniel,indraniel@gmail.com,"+ simplify gnarlygenotyper description
+
+-  keep things as simple as possible for the moment.
+
+    i'm not entirely clear about all the details regarding the Gnarlygenotyper",2020-07-07T17:24:25Z,indraniel
+0670b3bc789b7f4640f53c8391c2d1d37b94b1db,indraniel,indraniel@gmail.com,"+ adjust ReblockGVCF.wdl url location
+
+  - this is just to reflect how this repository has changed locations
+    from https://github.com/indraniel to https://github.com/hall-lab",2020-07-06T21:23:06Z,indraniel
+76edfe49a6390fa9d794ca8cb01d5a12d59381b6,indraniel,indraniel@gmail.com,+ add in user github links,2020-07-06T21:09:37Z,indraniel
+6bcd3d13b9c5bb031a838cec2066b60723be4c4e,indraniel,indraniel@gmail.com,+ add in a paragraph break,2020-07-06T20:37:16Z,indraniel
+ba479b6e4a2b894154295bae46748a8e1e138a0b,indraniel,indraniel@gmail.com,"+ update README
+
+  - describe the main alterations from the original Broad WDL
+  - give a short description regarding the GVCF inputs that are supplied
+    as inputs to this pipeline",2020-07-06T20:35:11Z,indraniel
+b1e1a72c1086aaf6acbd39843030da3e14e464da,indraniel,indraniel@gmail.com,+ add in a LICENSE,2020-04-30T21:28:46Z,indraniel
+5141001250b600749babae19d7b914cff8729a78,indraniel,indraniel@gmail.com,"+ add in a README
+
+  - this is just a start of a basic README for now.",2020-04-30T21:25:56Z,indraniel
+916c0092025d3b45bf240c6a4437d1fe44603d9e,indraniel,indraniel@gmail.com,"+ add an example inputs tsv file
+
+  - this is a 2 sample chromosome 1 and 2 1000 Genome test case",2020-04-30T21:24:26Z,indraniel
+e695f207a75776a95ab71cedebb1aba4b0256cf6,indraniel,indraniel@gmail.com,+ include example input cromwell json file,2020-04-30T21:01:53Z,indraniel
+2a17edc828bbbd499a7b6dffa38f02d3c9f1e4fa,indraniel,indraniel@gmail.com,"+ include the tranches, metrics, and vcfs in the final output
+
+    - the prior successful workflow didn't place the output vcf shards
+      into the ""final"" output location.  Additionally, the tranches file
+      should be noted as well.",2020-04-30T20:55:26Z,indraniel
+1471df4e6fd37f1ba0d0aef187312c14cf02b71e,indraniel,indraniel@gmail.com,"+ account for the single CollectMetricsSharded task failure
+
+  - we observed a failure with an error message like so:
+
+    ""Execution failed: generic::unknown: pulling image:
+     docker pull: running [""""docker"""" """"pull"""" """"us.gcr.io/broad-gatk/gatk@sha256:cc8981d0527e716775645b04a7f59e96a52ad59a7ae9788ddc47902384bf35aa""""]:
+     exit status 1 (standard error: """"failed to register layer: Error processing tar file(exit status 1):
+     write /opt/miniconda/envs/gatk/lib/python3.6/site-packages/Bio/Sequencing/Applications/__pycache__/_Novoalign.cpython-36.pyc:
+     no space left on device\n"""")""
+
+   This may have been just a transient error; but, just in case, we'll increase the allocated disk size
+
+   The the following google genomics jobs for the gory details:
+
+     projects/washu-genome-inh-dis-analysis/operations/4915043661782274284",2020-04-30T20:52:12Z,indraniel
+5c1b285a8741abdd69dd7677326caa403255cb99,indraniel,indraniel@gmail.com,Move intermediate list into a filename with .list suffix,2020-04-30T20:52:10Z,indraniel
+4a3bda0a22841b52e82b0f58262fa2bc37edd8de,indraniel,indraniel@gmail.com,Write inputs into intermediate list to avoid too many command line arguments,2020-04-30T20:52:07Z,indraniel
+b46fe8d4f4e5e4614075e2d2edd29830d6a815fe,indraniel,indraniel@gmail.com,"+ more GenotypeGVCFs & ImportGVCFs updates
+
+  - increase the memory and disk size to address the current set of
+    failures
+
+  hopefully this addresses the TileDB errors and other disk issue error
+  cases",2020-04-30T20:52:05Z,indraniel
+0a5dcd9bdda769d43f606745bfb7f265bf053e85,indraniel,indraniel@gmail.com,"+ setting preemptible to 1 for GenotypeGVCFs task
+
+  - give it one shot on the cheaper preemptible route, otherwise take
+    the more definite, but expensive compute",2020-04-30T20:52:01Z,indraniel
+5e689ff1f9010905949998a0ad10266ba8237001,indraniel,indraniel@gmail.com,"+ temporarily reset the preemptible tries back to 2
+
+  - Eddie is doing an analysis on start and end times before we attempt to change the preemptible tries",2020-04-30T20:51:57Z,indraniel
+db5490e8200735668c26f3172e82eb3181d48d36,indraniel,indraniel@gmail.com,"+ update memory and preemptible tries for the 3rd attempt
+
+  - increased the memory and preemptible tries for the ImportGVCFs and GenotypeGVCFs tasks.
+    Hopefully this will make things more optimal based on our current quotas",2020-04-30T20:51:54Z,indraniel
+ddaa674df896d554bf0e971dfa720687583c41e3,Eddie Belter,ebelter@gmail.com,GenotypeGVCFs uses 4 cpus,2020-04-30T20:51:52Z,ebelter
+2610f84e283eebee060bf0a522f0d78df2f30689,indraniel,indraniel@gmail.com,Slightly increase memory,2020-04-30T20:51:49Z,indraniel
+1741e8f61b498ea484058fafd7a09c68b9c2f29c,indraniel,indraniel@gmail.com,Allow 2 preemptible tries for most tasks,2020-04-30T20:51:45Z,indraniel
+634f85307ddaabe7dd024fda3d5f46a861bc630a,indraniel,indraniel@gmail.com,"+ enable the allow_old_rms_mapping_quality_annotation_data option
+
+  - our inputs GVCFs are from GATK 3.5 and expect the old style mapping quality annotations",2020-04-30T20:51:41Z,indraniel
+11319eab9c7016585dfe40a84f193299540dcd16,indraniel,indraniel@gmail.com,"+ don't use the GnarlyGenotyper for now
+
+  - we need to run ReblockGVCF on all of the input GVCFs first
+  - gonna punt for that later, right now we want to see how the VQSR steps work on this new pipeline",2020-04-30T20:51:37Z,indraniel
+2fc005a59392c8ed4d68c96f71a6fea2311cbb0d,indraniel,indraniel@gmail.com,"+ add in the ReblockGVCF WDL
+
+  - this was obtained via Terra (via a side email conversation with
+    Laura Gauthier at the Broad Institute -- See subject ""Another
+    GnarlyGenotyper Question"" on 2020-02-04).
+
+    Reblocking is needed to run the GnarlyGenotyper",2020-04-30T20:51:26Z,indraniel
+63ce0716b0c5f189da4babb2404401155e25e197,indraniel,indraniel@gmail.com,"+ double the size of the GnarlyGenotyper disk space
+
+  - one of the jobs ran out of disk space at its current setting",2020-04-30T20:51:22Z,indraniel
+82f434f3fc66d17d496a09617c97f119171fe56b,indraniel,indraniel@gmail.com,+ account for requester pays buckets,2020-04-30T20:50:22Z,indraniel
+1499cefbf32b7f3fd02937fbcd61551c713067f6,indraniel,indraniel@gmail.com,"+ adjust script to submit workflow
+
+  - account for the dependency task file
+  - update the inputs and workflow wdl",2020-04-30T20:33:48Z,indraniel
+e80e8959b2bbb52f062d7fa3c594b041eebe0307,indraniel,indraniel@gmail.com,+ use the correct input path,2020-04-30T20:33:45Z,indraniel
+d0beac48742d9248539d34910e08e5482c9ce2c1,Eddie Belter,ebelter@gmail.com,Do not scatter intervals,2020-04-30T20:33:36Z,ebelter
+9de6b0bb7aa4d1ed6e5bfa1e170b00978a9fd23e,Eddie Belter,ebelter@gmail.com,"JG WDL
+
+add Tasks prefix
+correct final output intervals",2020-04-30T20:29:06Z,ebelter
+514f0fc81b9e2bf7c7af457a37532d0d07822296,Eddie Belter,ebelter@gmail.com,Correct tasks WDL CheckSamplesUnique command,2020-04-30T20:29:03Z,ebelter
+2c2ab738847f35012930ff88813ed6c327a6014f,Eddie Belter,ebelter@gmail.com,"Tasks JGT WDL
+
+correct inputs to collect gvcfs tasks
+add disk, and use GiB",2020-04-30T20:29:00Z,ebelter
+335111ca0e4a30d9f3e35e9d05997b17c49b4b0b,indraniel,indraniel@gmail.com,"+ adjust how to count number of samples
+
+  - use the groups recommendations",2020-04-30T20:28:58Z,indraniel
+338bc7b2cf2dddc54f312b778af395c3c248ee33,indraniel,indraniel@gmail.com,"+ don't subscatter when using GnarlyGenotyper
+
+  - we're using the unpadded intervals directly; so we don't need to
+    subscatter even further.",2020-04-30T20:28:55Z,indraniel
+2a7aa0193ee614e0610ae5968c9db0e180a1a413,indraniel,indraniel@gmail.com,"+ remove/add SplitIntervalList and CollectGVCFs tasks
+
+  - remove SplitIntervalList
+  - add CollectGVCFs
+
+  CollectGVCFs were taken from the older WDL",2020-04-30T20:28:51Z,indraniel
+b011db4a464bdd53cc3e387ac68042da45a51030,indraniel,indraniel@gmail.com,+ add in the CollectGVCFs step,2020-04-30T20:28:48Z,indraniel
+09a4e9b098ba91155c324702e1999397d93064d4,indraniel,indraniel@gmail.com,"+ directly use the unpadded intervals
+
+  - avoid going through GATK SplitIntervals;  not sure how it's working
+    at the moment",2020-04-30T20:28:44Z,indraniel
+910ed088e7e595a69c116fae6158e58ee0d2414e,indraniel,indraniel@gmail.com,+ add the example input json to the new JointGenotyping WDL,2020-04-30T20:28:41Z,indraniel
+f64afc2bcf5b9826cf430867c1f35e6dcb5f017a,indraniel,indraniel@gmail.com,"+ adjust CheckSamplesUnique task
+
+  - account for the way we shard up our gvcfs by sample and chromosome",2020-04-30T20:28:38Z,indraniel
+c79c3ee1d2c739e177ce19f0cb0310434e86bcb7,indraniel,indraniel@gmail.com,"+ introduce Tasks.ComputeNumSamples
+
+  - this new task will calculate ""num_gvcfs"" or the number of samples
+    involved in this call set",2020-04-30T20:28:36Z,indraniel
+902e9b8e0c7361abe02ff71ae2e4581d9b6e7bf1,indraniel,indraniel@gmail.com,+ enable the GnarlyGenotyper,2020-04-30T20:28:33Z,indraniel
+ee253c5545f2bd253a5be7e9a0639c6d5ff718d3,indraniel,indraniel@gmail.com,"+ remove the fingerprinting
+
+  - this fingerprinting check doesn't seem necessary for us
+
+    According to Laura Gauthier at the Broad:
+
+        An early version of GenomicsDB mixed up samples if more than one
+        batch was used to import.  The fingerprinting is effectively a
+        regression test against that.",2020-04-30T20:28:30Z,indraniel
+fbb4a8377090d60cc50308459c78a8796b9178a2,indraniel,indraniel@gmail.com,"+ use the local tasks
+
+  - don't use the github reference tasks",2020-04-30T20:28:27Z,indraniel
+4d469c79259e3f33a2321c4c58489a63ced6a6c7,indraniel,indraniel@gmail.com,"+ starting point of the latest WDL pipeline
+
+  - this is based upon the latest Broad workflow from January 2020",2020-04-30T20:08:42Z,indraniel

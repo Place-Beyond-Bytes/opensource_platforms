@@ -1,0 +1,34 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1NDk5ODk5NTE=,preprocess_dataset  TypeError: __init__() takes at least 3 arguments (1 given),CLOSED,2020-01-15T06:21:01Z,2020-04-09T10:31:40Z,2020-04-09T10:16:59Z,"Hello, I want to use this software to get the clip-seq data motif, but it shows error like this.
+###STEP 1: Filter raw bed-file
+INPUT: .//bed/test/positive_raw.bed
+OUTPUT: .//bed/test/positive.bed
+STEP 1 finished (filtering resulted in 258 good binding sites)
+###STEP 2: Elongate binding sites by 20 nt for structure prediction
+INPUT: .//bed/test/positive.bed
+OUTPUT: .//bed/test/positive_long.bed
+STEP 2 finished
+###STEP 3: Fetch nucleotide sequence for elongated binding sites
+INPUT: .//bed/test/positive_long.bed
+OUTPUT: .//temp/test/positive_long.fasta
+STEP 3 finished
+###STEP 4: Reformat nucleotide sequences into viewpoint format (binding sites in uppercase, elongation in lowercase)
+INPUT: .//temp/test/positive_long.fasta
+OUTPUT: .//fasta/test/positive.fasta
+STEP 4 finished
+###STEP 5: Calculate RNAshapes
+INPUT: .//fasta/test/positive.fasta
+OUTPUT: .//shapes/test/positive.txt
+Traceback (most recent call last):
+  File ""/home/chendenghui/miniconda3/envs/sshmm_env/bin/preprocess_dataset"", line 342, in <module>
+    sys.exit(main(sys.argv))
+  File ""/home/chendenghui/miniconda3/envs/sshmm_env/bin/preprocess_dataset"", line 283, in main
+    calculate_rna_shapes_from_file(shapePositiveFileName, fastaPositiveFileName, 10)
+  File ""/home/chendenghui/miniconda3/envs/sshmm_env/lib/python2.7/site-packages/sshmm/structure_prediction.py"", line 35, in calculate_rna_shapes_from_file
+    contexts = translateIntoContexts(firstField)
+  File ""/home/chendenghui/miniconda3/envs/sshmm_env/lib/python2.7/site-packages/sshmm/structure_prediction.py"", line 9, in translateIntoContexts
+    bg = fgb.BulgeGraph()
+TypeError: __init__() takes at least 3 arguments (1 given)
+
+Could you give me some suggestions? 
+",tianxiahuihui,https://github.com/eldariont/ssHMM/issues/1

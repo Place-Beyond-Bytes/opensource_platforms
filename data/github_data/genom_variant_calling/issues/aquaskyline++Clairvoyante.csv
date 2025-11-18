@@ -1,0 +1,926 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzODMxMzg4Njg=,TypeError in callVarBam.py,CLOSED,2018-11-21T14:19:05Z,2018-11-22T10:05:08Z,2018-11-22T10:05:08Z,"Hi @aquaskyline, 
+
+thanks for delivering this tool! might be my only hope for variant calling from a bam file - that's all I have for the moment, alongside an assembled not-too-bad draft genome.
+
+I was thus trying to call variants on whole genome - [section](https://github.com/aquaskyline/Clairvoyante#how-to-call-variant-directly-from-bam). 
+
+## Case 1: with pypy in $PATH
+
+### Error
+
+If I leave pypy in $PATH, get an error on script execution:
+```
+$ python ../clairvoyante/callVarBam.py --ref_fn ../../amphioxus/hm2/amphio_A_ref_D.fa --bam_fn ../../amphioxus/hm2/ph_on_hm2/aligned.bam --call_fn test_amphio
+Traceback (most recent call last):
+  File ""../clairvoyante/callVarBam.py"", line 218, in <module>
+    main()
+  File ""../clairvoyante/callVarBam.py"", line 214, in main
+    Run(args)
+  File ""../clairvoyante/callVarBam.py"", line 65, in Run
+    chkpnt_fn = CheckFileExist(args.chkpnt_fn, sfx="".meta"")
+  File ""../clairvoyante/callVarBam.py"", line 46, in CheckFileExist
+    if not os.path.isfile(fn+sfx):
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+```
+
+This looks like a classical python2/3 confusion, which I don't really understand because 
+
+> Clairvoyante was written in Python2 (tested on Python 2.7.10 in Linux and Python 2.7.13 in MacOS).
+
+
+### Environment
+
+```
+$ python --version
+Python 2.7.12
+$ pip -V
+pip 18.1 from /scratch/beegfs/monthly/aechchik/Clairvoyante/pypy-5.8-linux_x86_64-portable/site-packages/pip (python 2.7)
+
+$ pip show tensorflow   
+$ python -c 'import tensorflow as tf; print(tf.__version__)'
+1.5.0
+
+$ pip show blosc
+Name: blosc
+Version: 1.6.2
+Summary: Blosc data compressor
+Home-page: http://github.com/blosc/python-blosc
+Author: Francesc Alted
+Author-email: faltet@gmail.com
+License: https://opensource.org/licenses/BSD-3-Clause
+Location: /Home/aechchik/.local/lib/pypy2.7/site-packages
+Requires:
+Required-by:
+
+$ pip show intervaltree
+Name: intervaltree
+Version: 2.1.0
+Summary: Editable interval tree data structure for Python 2 and 3
+Home-page: https://github.com/chaimleib/intervaltree
+Author: Chaim-Leib Halbert, Konstantin Tretyakov
+Author-email: chaim.leib.halbert@gmail.com
+License: Apache License, Version 2.0
+Location: /scratch/beegfs/monthly/aechchik/Clairvoyante/pypy-5.8-linux_x86_64-portable/site-packages
+Requires: sortedcontainers
+Required-by:
+
+$ pip show numpy
+Name: numpy
+Version: 1.15.4
+Summary: NumPy: array processing for numbers, strings, records, and objects.
+Home-page: http://www.numpy.org
+Author: NumPy Developers
+Author-email: numpy-discussion@python.org
+License: BSD
+Location: /Home/aechchik/.local/lib/pypy2.7/site-packages
+Requires:
+Required-by:
+```
+
+## Case 2: without pypy in $PATH
+
+### Error
+
+If I remove pypy in $PATH, get an error for pypy not found:
+```
+$ python ../clairvoyante/callVarBam.py --ref_fn ../../amphioxus/hm2/amphio_A_ref_D.fa --bam_fn ../../amphioxus/hm2/ph_on_hm2/aligned.bam --call_fn test_amphio
+which: no pypy in (/software/UHTS/Analysis/samtools/1.8/bin:/home/aechchik/.local/bin:/mnt/common/lsf/9.1/linux2.6-glibc2.3-x86_64/etc:/mnt/common/lsf/9.1/linux2.6-glibc2.3-x86_64/bin:/software/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/software/var/lib/snapd/snap/bin:/home/aechchik/bin/)
+Error: pypy executable not found
+```
+
+Anyways I thought this script was [not compatible with pypy](https://github.com/aquaskyline/Clairvoyante/#folder-stucture-and-program-descriptions) anyways 
+
+> Model Training and Variant Caller Scripts. Scripts in this folder are NOT compatible with pypy. Please run with python.
+
+### Environment
+```
+$ python --version
+Python 2.7.12
+$ pip -V
+pip 18.1 from /home/aechchik/.local/lib/python2.7/site-packages/pip (python 2.7)
+
+$ pip show tensorflow   
+$ python -c 'import tensorflow as tf; print(tf.__version__)'
+1.5.0
+
+$ pip show numpy
+Name: numpy
+Version: 1.15.1
+Summary: NumPy: array processing for numbers, strings, records, and objects.
+Home-page: http://www.numpy.org
+Author: Travis E. Oliphant et al.
+Author-email: None
+License: BSD
+Location: /software/lib64/python2.7/site-packages
+Requires:
+Required-by: tensorflow, tensorflow-tensorboard, tensorboard, Keras-Preprocessing, Keras-Applications, pbh5tools, pbcore, xarray, weblogo,
+ torchvision, Theano, seaborn, scipy-sugar, pytest-doctestplus, pyqtgraph, pyplink, PeakUtils, patsy, optimix, numpy-sugar, ndarray-listen
+er, nb2plots, MOFA, matplotlib-venn, limix, limix-plot, limix-core, glimix-core, ggplot, colormath, brent-search, tables, pandas, pandas-p
+link, numexpr, numba, netCDF4, matplotlib, limix-legacy, liknorm, hdmedians, h5py, fastcluster, cyvcf2, cftime, Bottleneck, biopython, bco
+lz
+
+$ pip show blosc
+Name: blosc
+Version: 1.5.1
+Summary: Blosc data compressor
+Home-page: http://github.com/blosc/python-blosc
+Author: Francesc Alted, Valentin Hänel
+Author-email: faltet@gmail.com, valentin@haenel.co
+License: http://www.opensource.org/licenses/mit-license.php
+Location: /software/lib64/python2.7/site-packages
+Requires:
+Required-by:
+
+$pip show intervaltree
+Name: intervaltree
+Version: 2.1.0
+Summary: Editable interval tree data structure for Python 2 and 3
+Home-page: https://github.com/chaimleib/intervaltree
+Author: Chaim-Leib Halbert, Konstantin Tretyakov
+Author-email: chaim.leib.halbert@gmail.com
+License: Apache License, Version 2.0
+Location: /Home/aechchik/.local/lib/python2.7/site-packages
+Requires: sortedcontainers
+Required-by:
+```
+
+I  am not really sure on how to proceed, do you have a hint on this? 
+
+Any help would be greatly appreciated
+
+Thanks, 
+Amina
+",aechchiki,https://github.com/aquaskyline/Clairvoyante/issues/4
+MDU6SXNzdWUzOTA1MDIyNTk=,PASS flag for SNP and VCF header,CLOSED,2018-12-13T03:25:19Z,2019-01-18T08:32:58Z,2019-01-18T08:32:58Z,"For certain applications it would be helpful to provide a PASS flag for trustworthy SNPs.
+
+Also please consider to extend the VCF header with e.g. chromosome names and length. 
+Thanks
+Fritz
+",fritzsedlazeck,https://github.com/aquaskyline/Clairvoyante/issues/5
+MDU6SXNzdWU0MDQ0NTY2NDQ=,Error when no variant identified as result of low coverage,CLOSED,2019-01-29T19:44:51Z,2019-02-01T03:11:47Z,2019-02-01T03:11:47Z,"In case of calling SNPs and there is no sufficient coverage to support the variant,This error is raised;
+
+elay 3 seconds before starting variant calling ...Delay 7 seconds before starting variant calling ...Delay 5 seconds before starting variant calling ...
+
+
+```
+Loading model ...
+Loading model ...
+Loading model ...
+Traceback (most recent call last):
+  File ""/stornext/snfs5/next-gen/scratch/fritz/centra_programs_pipelines/conda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 316, in <module>
+    main()
+  File ""/stornext/snfs5/next-gen/scratch/fritz/centra_programs_pipelines/conda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 312, in main
+    MakeCandidates(args)
+  File ""/stornext/snfs5/next-gen/scratch/fritz/centra_programs_pipelines/conda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 168, in MakeCandidates
+    matches.append( (refPos, SEQ[queryPos]) )
+```
+
+Thanks,
+",MeHelmy,https://github.com/aquaskyline/Clairvoyante/issues/6
+MDU6SXNzdWU0MDQ5NTk4Mzk=,can't call variant using  bam file from minmap2,CLOSED,2019-01-30T20:53:40Z,2019-02-01T03:28:51Z,2019-02-01T03:11:47Z,"Clairvoyante doesn't work with bam file resulted from minmap2; 
+Aligning command;
+
+`minimap2 -ax map-pb -H -MD -t 10 hs37d5_mainchr.fa subreads.fasta.gz | samtools sort -@ 10 -o subreads.bam -  && samtools index subreads.bam`
+
+Then calling variant;
+
+`clairvoyante.py callVarBam   --chkpnt_fn ./trainedModels/fullv3-pacbio-ngmlr-hg001+hg002+hg003+hg004-hg19/learningRate1e-3.epoch100.learningRate1e-4.epoch200   --bam_fn subreads.bam --ref_fn  hs37d5_mainchr.fa   --minCoverage 2 --ctgName 1   --call_fn 1_vcf.tmp  --threads 2`
+
+Error raised;
+
+```
+Delay 9 seconds before starting variant calling ...
+Loading model ...
+Traceback (most recent call last):
+  File ""conda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 316, in <module>
+    main()
+  File ""conda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 312, in main
+    MakeCandidates(args)
+  File ""/cconda3_64/envs/clairvoyante-1.0.0-1/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 168, in MakeCandidates
+    matches.append( (refPos, SEQ[queryPos]) )
+IndexError: string index out of range
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+ExtractVariantCandidates.py or GetTruth.py exited with exceptions. Exiting...
+(clairvoyante-1.0.0-1) -bash-4.1$ samtools view: writing to standard output failed: Broken pipe
+```
+
+Thanks",MeHelmy,https://github.com/aquaskyline/Clairvoyante/issues/7
+MDU6SXNzdWU0MTU1MzY3NzY=,AttributeError: 'IntervalTree' object has no attribute 'search',CLOSED,2019-02-28T09:55:25Z,2019-03-15T15:20:27Z,2019-03-01T02:20:27Z,,BryanHepworth,https://github.com/aquaskyline/Clairvoyante/issues/10
+MDU6SXNzdWU0MTU1NDAwNjk=,taskset: failed to parse CPU list,CLOSED,2019-02-28T10:02:50Z,2019-03-01T10:12:15Z,2019-02-28T11:21:32Z,"Hello,
+
+Thanks very much for this tool, I'm keen to see whether we can get improved SNV calling for our WGS projects. 
+I installed Clairvoyante yesterday and am trying to run it on our computing cluster (so I followed the instructions in the readme for 'not having root access'). I am trying to call variants across chr22 in ONT data using the following script:
+
+```
+#!/bin/bash
+#$ -V
+#$ -S /bin/bash
+#$ -cwd
+#$ -pe shmem 4
+
+set -e
+set -x
+
+module load python/3.5.2-gcc5.4.0
+module load gcc/5.4.0
+source ~/tf1.8_py/bin/activate
+cd ~/Clairvoyante/
+
+python clairvoyante/callVarBamParallel.py \
+       --chkpnt_fn trainedModels/fullv3-ont-ngmlr-hg001-hg19/learningRate1e-3.epoch999 \
+       --ref_fn ../references/hs37d5lam.fasta \
+       --bam_fn ../bams/germline-pass-all-minimap2-md-chr22.bam \
+       --sampleName germline-minimap2-chr22 \
+       --output_prefix ../calling/germline-minimap-chr22 \
+       --threshold 0.3 \
+       --minCoverage 4 \
+       --tensorflowThreads 4 \
+       --pypy ../apps/pypy-5.8-linux_x86_64-portable/bin/pypy \
+       --samtools ../apps/samtools/1.4.1/bin/samtools \
+       > commands.sh
+export CUDA_VISIBLE_DEVICES=""""
+
+grep 'ctgName 22' commands.sh > commands_subset.sh
+chmod 755 commands_subset.sh
+./commands_subset.sh
+```
+
+I get the following error:
+
+```
+taskset: failed to parse CPU list: %s
+Delay 0 seconds before starting variant calling ...
+callVar.py exited with exceptions. Exiting...
+```
+
+Having looked at callVarBam.py I wondered whether this might be a but because I can't see where the variable cpuSet is used (if I'm remembering correctly), but equally realise it's more likely that I'm missing something!
+Apologies if I've missed some crucial/useful information out of this post.
+
+Many thanks for your help,
+Hannah",hr283,https://github.com/aquaskyline/Clairvoyante/issues/11
+MDU6SXNzdWU0MTU1NjYzNTM=,problem in ,CLOSED,2019-02-28T11:02:38Z,2019-02-28T17:13:49Z,2019-02-28T17:13:49Z,"Hi
+I need a program for calling variants on Pacbio reads. Freebayes is very slow (10 hours for 1Mbp reference genome) and most of the variants are missed with the coverage of 50. I hope that your package can help me.
+
+I installed using these line (I have not curl)
+```
+git clone --depth=1 https://github.com/aquaskyline/Clairvoyante.git
+cd Clairvoyante
+wget http://www.bio8.cs.hku.hk/trainedModels.tbz 
+tar trainedModels.tbz -jxf
+
+pip install tensorflow --user
+pip install blosc --user
+pip install intervaltree --user
+pip install numpy --user
+
+wget 'http://www.bio8.cs.hku.hk/training.tar'
+tar -xf training.tar
+```
+
+Firstly, ""Quick Start with Variant Calling"" is a bit unclear for me. when I download from   ""I need some results now"" part, what should I do then to get some demo variant calls?
+Next  part titled ""Call variants from at known variant sites using a BAM file and a trained model"" needs testingData folder which i did not download it.  So, I dismiss it and run the next part.
+
+I run  
+```
+ python ../clairvoyante/callVar.py --chkpnt_fn ../trainedModels/fullv3-illumina-novoalign-hg001+hg002-hg38/learningRate1e-3.epoch500 --tensor_fn tensor_can_chr21 --call_fn tensor_can_chr21.vcf
+```
+ and faced this:
+
+```
+Loading model ...
+From /mnt/scratch/majid001/installed/Clairvoyante/clairvoyante/clairvoyante_v3.py:60: conv2d (from tensorflow.python.layers.convolutional) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.conv2d instead.
+From /home/majid001/.local/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+From /mnt/scratch/majid001/installed/Clairvoyante/clairvoyante/clairvoyante_v3.py:66: max_pooling2d (from tensorflow.python.layers.pooling) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.max_pooling2d instead.
+From /mnt/scratch/majid001/installed/Clairvoyante/clairvoyante/clairvoyante_v3.py:108: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+From /home/majid001/.local/lib/python3.6/site-packages/tensorflow/python/training/saver.py:1266: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+Restoring parameters from /mnt/scratch/majid001/installed/Clairvoyante/trainedModels/fullv3-illumina-novoalign-hg001+hg002-hg38/learningRate1e-3.epoch500
+Traceback (most recent call last):
+  File ""../clairvoyante/callVar.py"", line 266, in <module>
+    main()
+  File ""../clairvoyante/callVar.py"", line 262, in main
+    Run(args)
+  File ""../clairvoyante/callVar.py"", line 47, in Run
+    Test(args, m, utils)
+  File ""../clairvoyante/callVar.py"", line 183, in Test
+    PrintVCFHeader(args, call_fh)
+  File ""../clairvoyante/callVar.py"", line 157, in PrintVCFHeader
+    print >> call_fh, '##fileformat=VCFv4.1'
+TypeError: unsupported operand type(s) for >>: 'builtin_function_or_method' and '_io.TextIOWrapper'. Did you mean ""print(<message>, file=<output_stream>)""?
+```
+Versions  and files in folder
+```
+python -c 'import tensorflow as tf; print(tf.__version__)'
+1.13.1
+python --version
+Python 3.6.7
+/mnt/scratch/majid001/installed/Clairvoyante$ ls
+LICENSE.md  clairvoyante     dataPrepScripts  port23.py              python_requirements.txt  training
+README.md   clairvoyante.py  jupyter_nb       pypy_requirements.txt  trainedModels
+
+```
+Would you please help me?
+
+",sinamajidian,https://github.com/aquaskyline/Clairvoyante/issues/12
+MDU6SXNzdWU0MTY0MDk1Njk=,genome assembly,CLOSED,2019-03-02T15:47:09Z,2019-03-06T03:21:02Z,2019-03-06T03:21:02Z,"Dear Developper,
+can this tool be used to correct genome assemblies like with Nanopolish or Medaka?
+
+Cheers
+Luigi",lfaino,https://github.com/aquaskyline/Clairvoyante/issues/13
+MDU6SXNzdWU0MTgyNDk2NjA=,exit for empty bam,CLOSED,2019-03-07T11:00:13Z,2019-11-23T03:20:41Z,2019-11-23T03:20:41Z,"Hi
+Congrats for the publication!
+I run the code `callVarBam.py`, It stuck for hours with no error. I checked the bam file and found out that it was empty! It would better if it exited with an error.
+",sinamajidian,https://github.com/aquaskyline/Clairvoyante/issues/14
+MDU6SXNzdWU0MjI4NDExNzQ=,zsh: no such option,CLOSED,2019-03-19T16:47:46Z,2019-03-20T03:15:42Z,2019-03-20T03:15:42Z,"Hello,
+
+That might be a python/bash issue more than one related to Clairvoyante, but I am unable to launch 
+clairvoyante.py callVarBamParallel.
+I installed via conda. 
+
+Here is my commands.sh script
+```
+clairvoyante.py callVarBamParallel \
+--chkpnt_fn /media/urbe/MyBDrive/masurca_assembly_analysis/trainedModels/fullv3-illumina-novoalign-hg002-hg38/learningRate1e-3.epoch999 \
+--ref_fn final.genome.scf.fasta \
+--bam_fn arc.sorted.bam \
+--sampleName ARC_ancestor \
+--output_prefix ARC_ancestor_clairvoyante \
+--threshold 0.125 \
+--minCoverage 4 \
+--includingAllContigs \
+--tensorflowThreads 4
+```
+
+Then I ran
+`export CUDA_VISIBLE_DEVICES=""""`
+And
+`cat commands.sh | parallel -j4`
+which returns 
+```
+zsh: no such option: chkpnt_fn /media/urbe/MyBDrive/masurca_assembly_analysis/trainedModels/fullv3_illumina_novoalign_hg002_hg38/learningRate1e_3.epoch999 \
+zsh: no such option: ref_fn final.genome.scf.fasta \
+zsh: no such option: bam_fn arc.sorted.bam \
+zsh: no such option: sampleName ARC_ancestor \
+zsh: no such option: output_prefix ARC_ancestor_clairvoyante \
+zsh: no such option: threshold 0.125 \
+zsh: no such option: minCoverage 4 \
+zsh: no such option: includingAllContigs \
+zsh: no such option: tensorflowThreads 4
+usage: callVarBamParallel.py [-h] [--chkpnt_fn CHKPNT_FN] [--ref_fn REF_FN]
+                             [--bed_fn BED_FN] [--refChunkSize REFCHUNKSIZE]
+                             [--bam_fn BAM_FN] [--vcf_fn VCF_FN]
+                             [--output_prefix OUTPUT_PREFIX]
+                             [--includingAllContigs [INCLUDINGALLCONTIGS]]
+                             [--tensorflowThreads TENSORFLOWTHREADS]
+                             [--threshold THRESHOLD]
+                             [--minCoverage MINCOVERAGE] [--qual QUAL]
+                             [--sampleName SAMPLENAME]
+                             [--considerleftedge [CONSIDERLEFTEDGE]]
+                             [--samtools SAMTOOLS] [--pypy PYPY]
+                             [--delay DELAY]
+callVarBamParallel.py: error: unrecognized arguments: 
+
+```
+Thanks for your help",N/A,https://github.com/aquaskyline/Clairvoyante/issues/15
+MDU6SXNzdWU0MjI4ODA3NzY=,Is a docker image available?,CLOSED,2019-03-19T18:12:07Z,2019-03-27T02:31:47Z,2019-03-27T02:31:47Z,"Hi,
+
+I'm having some problems running Clairvoyante in parallel using the conda installation on a BAM file generated from minimap2 and one of the nanopore models.
+
+I ran the following command:
+```bash
+clairvoyante.py callVarBamParallel \
+    --chkpnt_fn learningRate1e-3.epoch999 \
+    --ref_fn chr20.fa \
+    --bam_fn giab.hg002.2D.bam \
+    --sampleName giab.hg002.2D \
+    --output_prefix giab.hg002.2D \
+    --threshold 0.125 \
+    --minCoverage 4 \
+    --tensorflowThreads 4 \
+    > commands.sh
+export CUDA_VISIBLE_DEVICES=""""
+cat commands.sh | parallel -j4
+```
+
+However `commands.sh` is empty & it gave the following error which was repeated many times:
+```
+Delay 6 seconds before starting variant calling ...
+  Loading model ...
+  samtools: error while loading shared libraries: libcrypto.so.1.0.0: cannot open shared object file: No such file or directory
+  Failed to load reference seqeunce. Please check if the provided reference fasta chr20.fa and the ctgName chr20 are correct.
+  samtools: error while loading shared libraries: libcrypto.so.1.0.0: cannot open shared object file: No such file or directory
+  Failed to load reference seqeunce.
+  Traceback (most recent call last):
+    File ""/opt/conda/bin/clairvoyante/callVarBam.py"", line 225, in <module>
+      main()
+    File ""/opt/conda/bin/clairvoyante/callVarBam.py"", line 221, in main
+      Run(args)
+    File ""/opt/conda/bin/clairvoyante/callVarBam.py"", line 138, in Run
+      c.CVInstance.wait()
+    File ""/opt/conda/lib/python2.7/subprocess.py"", line 1099, in wait
+      pid, sts = _eintr_retry_call(os.waitpid, self.pid, 0)
+    File ""/opt/conda/lib/python2.7/subprocess.py"", line 125, in _eintr_retry_call
+      return func(*args)
+    File ""/opt/conda/bin/clairvoyante/callVarBam.py"", line 30, in CheckRtCode
+      c.CTInstance.kill(); c.CVInstance.kill()
+    File ""/opt/conda/lib/python2.7/subprocess.py"", line 1279, in kill
+      self.send_signal(signal.SIGKILL)
+    File ""/opt/conda/lib/python2.7/subprocess.py"", line 1269, in send_signal
+      os.kill(self.pid, sig)
+  OSError: [Errno 3] No such process
+```
+
+I am running this using a docker container I have made [`lifebitai/clairvoyante:latest`](https://hub.docker.com/r/lifebitai/clairvoyante)
+
+Dockerfile:
+```Dockerfile
+FROM continuumio/miniconda:4.5.4
+
+# Install procps so that Nextflow can poll CPU usage
+RUN apt-get update && apt-get install -y procps gcc && apt-get clean -y 
+RUN conda install conda=4.6.7
+
+RUN pip install tensorflow==1.9.0 && \
+    pip install blosc && \
+    pip install intervaltree==2.1.0 && \
+    pip install numpy
+
+RUN conda config --add channels conda-forge && \
+    conda install -c conda-forge pypy2.7==5.10.0 && \
+    conda install -c conda-forge python-blosc==1.8.1 && \
+    conda install -c conda-forge intervaltree==2.1.0
+
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+    pypy get-pip.py && \
+    pypy -m pip install --no-cache-dir intervaltree==2.1.0
+
+RUN conda config --add channels bioconda && \
+    conda install -c bioconda clairvoyante && \
+    clairvoyante.py
+
+RUN apt-get install parallel -y
+
+RUN conda install -c bioconda samtools openssl=1.0 && \
+    conda install -c bioconda htslib && \
+    conda install -c bioconda vcflib
+```
+
+To generate the BAM file I download the following file `s3://giab/data/AshkenazimTrio/HG002_NA24385_son/CORNELL_Oxford_Nanopore/giab.hg002.2D.fastq` before aligning it to hg19 reference genome using minimap2. I then then sorted & indexed it before marking duplicates.
+
+The FASTA file is `chr20` from hg19. It seems like the problem is something to do with the `ctgName` or one of the samtools libraries.
+
+Do you know what the issue is & how it can be resolved?
+
+Thanks in advance, any help would be much appreciated",PhilPalmer,https://github.com/aquaskyline/Clairvoyante/issues/16
+MDU6SXNzdWU0MjUzODg4ODQ=,Non-model species training,CLOSED,2019-03-26T12:29:13Z,2019-04-13T01:21:40Z,2019-04-13T01:21:40Z,"Hi,
+
+I'd like to apply Clairvoyante on plant species for SNPs and SV detection using PacBio reads. I'm trying to follow your training notebook but I come to some issues I hope you can help me solve to set up correctly the analysis.
+
+1. I don't have a ""true variants"" VCF to compare the calls as I have only samples I need to call variants for. As far as I can see, I need it to generate the necessary files for starting the prediction (dataPrepScripts/GetTruth.py). Is there any way around this?
+2. I figured out that training best performs when multiple samples and whole genome calls are used. The notebook reports a training based on just 2 chromosomes, I guess just to learn how to do it. Are also the limits on range used for the same purpose or is there any other reason for that?
+3. How should I take care of repeats? I guess I should mask them somehow before training, but how? Is this the information contained in chr21.bed and chr22.bed files? 
+
+Thanks in advance,
+
+Andrea",andreaminio,https://github.com/aquaskyline/Clairvoyante/issues/17
+MDU6SXNzdWU0Mjc3MDQ3MjY=,FILTER and INFO fields,CLOSED,2019-04-01T13:26:47Z,2019-04-02T13:05:49Z,2019-04-02T13:05:28Z,"Hello,
+it seems clairvoyante tends not to fill those 2 filters. Is it the expected behaviour? 
+
+```
+A_Seg296	7630007	.	A	C	999	.	.	GT:GQ:DP:AF	0/1:999:354:0.4972
+A_Seg296	7630172	.	AC	A	999	.	.	GT:GQ:DP:AF	0/1:999:299:0.5485
+```
+
+Or does it mean Clairvoyante did not understand what kind of variant those are? 
+Thank you ",N/A,https://github.com/aquaskyline/Clairvoyante/issues/18
+MDU6SXNzdWU0MjkyMDcyMzc=,genotype and estimated allele frequency,CLOSED,2019-04-04T10:42:00Z,2019-04-13T01:21:29Z,2019-04-13T01:21:29Z,"Hi,
+I have a question regarding the genotype and estimated allele frequency. I have several lines showing a genotype of 1/1 with an allele frequency of 0.0000
+Example:
+
+incorrect frequency:
+chr10   71861  .       C       G       47      .       .       GT:GQ:DP:AF     1/1:47:5:0.0000
+chr10   71862   .       C       T       33      .       .       GT:GQ:DP:AF     1/1:33:2:0.0000
+
+I also get correctly estimated frequencies:
+chr10   71517   .       C       T       287     .       .       GT:GQ:DP:AF     1/1:287:37:0.7568
+
+IGV of incorrect frequency (chr10   71861):
+![hom_c_g](https://user-images.githubusercontent.com/16762600/55548580-0e086f00-56d4-11e9-8378-ab168f27472d.png)
+
+Looking in the IGV, it shows that the genotype is correct but the frequency is 0. The read depth also doesn't reflect the number of reads at that position. 
+
+IGV of correct frequency (chr10   71517) :
+![correct_frequency](https://user-images.githubusercontent.com/16762600/55549623-9720a580-56d6-11e9-8de7-36d94707f979.png)
+
+I even don't see any big differences in the mapping for correctly called frequencies.
+Is there anything I have to consider/change?
+
+Thank you
+Alex",axgraf,https://github.com/aquaskyline/Clairvoyante/issues/19
+MDU6SXNzdWU0Mjk0OTI1NDE=,taskset fails to set pid XXX's affinity,CLOSED,2019-04-04T21:32:15Z,2019-04-08T06:42:48Z,2019-04-08T06:42:48Z,"Hi Ruibang,
+
+I'm trying to use the tool on grape. I was able to set it to work on our department's cluster but for some instances it happens that I get this error when running callVarBam.py:
+
+```
+Delay 9 seconds before starting variant calling ...
+taskset: failed to set pid XXXX's affinity: Invalid argument
+callVar.py exited with exceptions. Exiting...
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+samtools view: writing to standard output failed: Broken pipe
+```
+
+It happens when I have multiple processes running on the same machine (I give 8 cores/4Gb of ram for each chromosome analysis), when I have more than 2 processes running together at least one dies with this message.
+
+Looking at the code, I see that a taskset is call using the variabel set at line 101:
+```
+    cpuSet = "","".join(str(x) for x in random.sample(xrange(0, maxCpus), numCpus))
+    taskSet = ""taskset -c %s"" % cpuSet
+```
+this makes me guess that the random selection of the cores (8 out of 80 in the machine) may be the origin of the issue, as more instances are run on the same machine the probability of selecting a second time a cpu already in use increases.
+
+Is there any workaround to this issue?
+
+Andrea",andreaminio,https://github.com/aquaskyline/Clairvoyante/issues/20
+MDU6SXNzdWU0MzA0MDI5NTA=,Allele frequency greater than 1,CLOSED,2019-04-08T11:41:20Z,2019-04-13T12:33:54Z,2019-04-13T09:40:09Z,"Hello, 
+
+for some of my calls, Clairvoyante reports af greater than 1 
+```
+1.3333
+1.3333
+1.3333
+1.1667
+1.1667
+1.1667
+1.1667
+1.1667
+1.1429
+1.1111
+```
+It's a bit difficult to interpret. How are the af computed? 
+Here is my command
+`clairvoyante.py callVarBamParallel --chkpnt_fn trainedModels/fullv3-illumina-novoalign-hg002-hg38/learningRate1e-3.epoch999 --ref_fn A_set.fa --bam_fn A.sorted.bam --output_prefix Aset --threshold 0 --minCoverage 1 --includingAllContigs --tensorflowThreads 4` 
+
+Thanks for your help.
+
+EDIT: here is the line from the vcf
+`A_Seg295	5570899	.	T	TC	138	.	.	GT:GQ:DP:AF	1/1:138:7:1.1429`
+
+EDIT2: from another vcf, with more lines 
+```
+bcftools view Aset.clairvoyante.vcf.gz |awk -F""\t|:"" '{if($16 > 1) print $0}'     
+A_Seg257	743430	.	C	CA	999	.	.	GT:GQ:DP:AF	1/1:999:138:1.0072
+A_Seg281	115501	.	C	CT	999	.	.	GT:GQ:DP:AF	1/1:999:79:1.0127
+A_Seg281	165545	.	T	TC	295	.	.	GT:GQ:DP:AF	1/1:295:15:1.0667
+A_Seg283	28	.	A	AC	292	.	.	GT:GQ:DP:AF	1/1:292:16:1.0625
+A_Seg295	15309556	.	T	TC	199	.	.	GT:GQ:DP:AF	1/1:199:99:1.0101
+A_Seg295	15391885	.	A	AAC	198	.	.	GT:GQ:DP:AF	1/1:198:7:1.1429
+A_Seg296	13980837	.	A	AC	417	.	.	GT:GQ:DP:AF	1/1:417:132:1.0076
+A_Seg48	1768346	.	G	GC	372	.	.	GT:GQ:DP:AF	1/1:372:164:1.0061
+A_Seg72	211872	.	A	AT	999	.	.	GT:GQ:DP:AF	1/1:999:36:1.0278
+
+```
+I also notived most of my variants actually have an af of 0. 
+```
+A_Seg192	40932	.	A	C	69	.	.	GT:GQ:DP:AF	1/1:69:2:0
+A_Seg192	40933	.	GGT	G	48	.	.	GT:GQ:DP:AF	1/1:48:2:0
+A_Seg192	40933	.	GGTGC	G	8	.	.	GT:GQ:DP:AF	0/1:8:2:0
+A_Seg192	40935	.	T	G	112	.	.	GT:GQ:DP:AF	1/1:112:2:0
+A_Seg192	40937	.	C	A	93	.	.	GT:GQ:DP:AF	1/1:93:2:0
+A_Seg192	40939	.	CGA	C	11	.	.	GT:GQ:DP:AF	1/1:11:2:0
+A_Seg192	40940	.	GAC	G	28	.	.	GT:GQ:DP:AF	1/1:28:2:0
+A_Seg192	40941	.	A	T	117	.	.	GT:GQ:DP:AF	1/1:117:2:0
+A_Seg192	40943	.	C	T	97	.	.	GT:GQ:DP:AF	1/1:97:2:0
+A_Seg192	40944	.	T	G	155	.	.	GT:GQ:DP:AF	1/1:155:2:0
+A_Seg192	40945	.	G	T	91	.	.	GT:GQ:DP:AF	1/1:91:2:0
+
+```",N/A,https://github.com/aquaskyline/Clairvoyante/issues/21
+MDU6SXNzdWU0MzMzMjY0MTU=,Score distribution,CLOSED,2019-04-15T14:51:54Z,2019-04-29T02:40:32Z,2019-04-29T02:40:32Z,"Hello (it's me again sorry). 
+How does Clairvoyante compute its score exactly? I have a very intriguing pattern of score distribution, with no score between 501 and 998. 
+Is it a ""normal"" pattern of score distribution? 
+Here on 4 of my samples.
+Thanks a lot
+![score svg](https://user-images.githubusercontent.com/23341393/56142306-b7861500-5f9e-11e9-8a20-abb384ad367b.png)
+",N/A,https://github.com/aquaskyline/Clairvoyante/issues/23
+MDU6SXNzdWU0MzQ2NTg1NjA=,conda installation intervaltree,CLOSED,2019-04-18T08:49:13Z,2019-04-29T02:41:05Z,2019-04-29T02:41:05Z,"I noticed that intervaltree is available on conda now, or is not the right version? See https://anaconda.org/conda-forge/intervaltree
+
+Also note that recent versions of conda use `conda activate <env>` rather than `source activate <env>`.",wdecoster,https://github.com/aquaskyline/Clairvoyante/issues/24
+MDU6SXNzdWU0MzUyMTE2OTM=,Suggesting slight improvement error when no contig specified,CLOSED,2019-04-19T15:19:36Z,2019-11-23T03:20:48Z,2019-11-23T03:20:48Z,"Hello, 
+if no contig list is specified and you are not working with the ""default"", then Clairvoyante will not call any variant because it doesn't know where to call them. So far so good. 
+I think it would be useful, however, if it could throw a warning message such as ""specify a contig list or use the --inclureallcontigs"". 
+
+It took me quite a long while to figure out why I was not getting any output. 
+",N/A,https://github.com/aquaskyline/Clairvoyante/issues/25
+MDU6SXNzdWU0Mzc4NzkzNjI=,samtools should be added as a conda requirement,CLOSED,2019-04-26T23:35:37Z,2019-11-23T03:19:28Z,2019-11-23T03:19:28Z,"Hey, I noticed that samtools isn't a requirement for clairvoyante in conda but that it should be -- nice method btw, congrats on the paper!",pjedge,https://github.com/aquaskyline/Clairvoyante/issues/26
+MDU6SXNzdWU0Mzc4ODIyNjA=,Error running Clairvoyante callVarBam,CLOSED,2019-04-26T23:56:05Z,2019-04-29T02:40:49Z,2019-04-29T02:40:49Z,"I get the following error running Clairvoyante callVarBam:
+```
+clairvoyante.py callVarBam        --chkpnt_fn trainedModels/fullv3-pacbio-ngmlr-hg002-hg19/learningRate1e-3.epoch999        --ref_fn data/genomes/hg19.fa        --bam_fn data/NA12878.1000g/aligned_reads/pacbio/pacbio.blasr.all.44x.bam        --ctgName chr20        --ctgStart 1000000        --ctgEnd 2000000        --call_fn extra_data/NA12878.1000g/variants/clairvoyante.pacbio.blasr.44x.unfiltered/20.vcf.tmp        --sampleName NA24385        --threshold 0.125        --minCoverage 4        --threads 4
+
+Delay 3 seconds before starting variant calling ...
+sched_setaffinity: Invalid argument
+failed to set pid 0's affinity.
+callVar.py exited with exceptions. Exiting...
+samtools view: writing to standard output failed: Broken pipe
+Traceback (most recent call last):
+  File ""/home/pedge/git/longshot_study/scripts/.snakemake.q3qx79aq.clairvoyante.py"", line 60, in <module>
+    assert(s==0)
+AssertionError
+samtools view: error closing standard output: -1
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+```",pjedge,https://github.com/aquaskyline/Clairvoyante/issues/27
+MDU6SXNzdWU0MzgxMzczMzM=,program crashes internally but still writes VCF and successfully returns 0,CLOSED,2019-04-29T03:25:39Z,2019-05-08T03:04:27Z,2019-05-08T03:04:27Z,"I'm using the precomputed model for AJ son to call variants using the NA12878 PacBio 44x data from GIAB (sorted_final_merged.bam). On chromosome 4, the variant calling program crashes internally but still writes an output VCF and returns 0.
+
+```
+clairvoyante.py callVarBam        --chkpnt_fn trainedModels/fullv3-pacbio-ngmlr-hg002-hg19/learningRate1e-3.epoch999        --ref_fn data/genomes/hg19.fa        --bam_fn data/NA12878.1000g/aligned_reads/pacbio/pacbio.blasr.all.44x.bam        --ctgName chr4        --call_fn extra_data/NA12878.1000g/variants/clairvoyante.pacbio.blasr.44x.unfiltered/4.vcf.tmp        --sampleName NA12878        --threshold 0.2        --minCoverage 4        --threads 4
+```
+
+Here's the end of the stderr from the execution:
+```
+Processed 25116000 tensors
+Processed 25117000 tensors
+Processed 25118000 tensors
+Processed 25119000 tensors
+Processed 25120000 tensors
+Processed 25121000 tensors
+Processed 25122000 tensors
+Processed 25123000 tensors
+Processed 25124000 tensors
+Processed 25125000 tensors
+Processed 25126000 tensors
+Traceback (most recent call last):
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/CreateTensor.py"", line 307, in <module>
+    main()
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/CreateTensor.py"", line 303, in main
+    OutputAlnTensor(args)
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/CreateTensor.py"", line 197, in OutputAlnTensor
+    centerToAln[center][-1].append( (refPos, 0, refSeq[refPos - (0 if args.refStart == None else (args.refStart - 1))], SEQ[queryPos] ) )
+IndexError: string index out of range
+Processed 25126859 tensors
+Total time elapsed: 40853.00 s
+Traceback (most recent call last):
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 312, in <module>
+    main()
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 308, in main
+    MakeCandidates(args)
+  File ""/home/pedge/git/longshot_study/.snakemake/conda/7c00edba/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 209, in MakeCandidates
+    can_fp.stdin.write(outline)
+IOError: [Errno 32] Broken pipe: '<fdopen>'
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+```
+
+What should I do?
+
+EDIT: I realized I was tagging with the wrong --sampleName, edited to reduce confusion but that wouldn't have an effect on this output",pjedge,https://github.com/aquaskyline/Clairvoyante/issues/28
+MDU6SXNzdWU0MzgxNDE0NTI=,"High runtime, high memory, low precision and recall using NA12878 data",CLOSED,2019-04-29T03:55:50Z,2019-05-08T03:04:01Z,2019-05-08T03:04:00Z,"I am using the pre-computed model for AJ son to call variants with the 44x PacBio reads for NA12878 from GIAB (sorted_final_merged.bam). Example command  (for chr5) is as follows:
+```
+clairvoyante.py callVarBam        --chkpnt_fn trainedModels/fullv3-pacbio-ngmlr-hg002-hg19/learningRate1e-3.epoch999        --ref_fn data/genomes/hg19.fa        --bam_fn data/NA12878.1000g/aligned_reads/pacbio/pacbio.blasr.all.44x.bam        --ctgName chr5        --call_fn extra_data/NA12878.1000g/variants/clairvoyante.pacbio.blasr.44x.unfiltered/5.vcf.tmp        --sampleName NA12878       --threshold 0.2        --minCoverage 4        --threads 4
+```
+This took 107 CPU-hours (~40 wall-hours) and 28 GB of memory using 4 cpu cores, which indicates that something is wrong.
+Also, it seems that the results returned are bad. I'm observing very low precision and recall on chromosomes that successfully complete, indicating random/bad program output. For example, chromosome 5 has precision=0.5069  and recall=0.4438 at GQ=50 (calculated using ```rtg vcfeval``` against GIAB truth variants inside confident regions).
+
+Do you know what might be going wrong here?
+EDIT: This bam was aligned with BLASR, is clairvoyante very sensitive to using a different aligner for training vs test?",pjedge,https://github.com/aquaskyline/Clairvoyante/issues/29
+MDU6SXNzdWU0NDA2NTkxNTE=,GetTruth.py: error: unrecognized arguments: --noGT 1,CLOSED,2019-05-06T11:44:10Z,2019-05-27T10:38:12Z,2019-05-27T10:38:12Z,"Hello,
+I am trying to launch Clairvoyante with a reference vcf. I get the following error 
+
+```
+GetTruth.py: error: unrecognized arguments: --noGT 1
+Loading model ...
+Traceback (most recent call last):
+  File ""/media/urbe/MyBDrive/masurca_assembly_analysis/Clairvoyante/clairvoyante/callVarBam.py"", line 225, in <module>
+    main()
+  File ""/media/urbe/MyBDrive/masurca_assembly_analysis/Clairvoyante/clairvoyante/callVarBam.py"", line 221, in main
+    Run(args)
+  File ""/media/urbe/MyBDrive/masurca_assembly_analysis/Clairvoyante/clairvoyante/callVarBam.py"", line 138, in Run
+    c.CVInstance.wait()
+  File ""/home/urbe/anaconda3/envs/python_clairvoyante/lib/python2.7/subprocess.py"", line 1384, in wait
+    pid, sts = _eintr_retry_call(os.waitpid, self.pid, 0)
+  File ""/home/urbe/anaconda3/envs/python_clairvoyante/lib/python2.7/subprocess.py"", line 476, in _eintr_retry_call
+    return func(*args)
+  File ""/media/urbe/MyBDrive/masurca_assembly_analysis/Clairvoyante/clairvoyante/callVarBam.py"", line 30, in CheckRtCode
+    c.CTInstance.kill(); c.CVInstance.kill()
+  File ""/home/urbe/anaconda3/envs/python_clairvoyante/lib/python2.7/subprocess.py"", line 1564, in kill
+    self.send_signal(signal.SIGKILL)
+  File ""/home/urbe/anaconda3/envs/python_clairvoyante/lib/python2.7/subprocess.py"", line 1554, in send_signal
+    os.kill(self.pid, sig)
+OSError: [Errno 3] No such process
+
+```
+
+Here is my command line 
+`/clairvoyante.py callVarBamParallel --chkpnt_fn trainedModels/fullv3-illumina-novoalign-hg002-hg38/learningRate1e-3.epoch999 --ref_fn final.genome.scf.fasta --bam_fn $i --output_prefix masurca_$i --threshold 0.05 --minCoverage 1 --includingAllContigs --tensorflowThreads 4 --vcf_fn masurca.arc.sorted.bam.vcf.gz.vcf > commands.sh`
+
+And here is the vcf 
+
+```
+scf7180000001106	2018290	.	A	G	999	.	.	GT:GQ:DP:AF	0/1:999:114:0.4912
+scf7180000001106	2018333	.	C	T	332	.	.	GT:GQ:DP:AF	0/1:332:105:0.4286
+scf7180000001106	2018374	.	T	C	272	.	.	GT:GQ:DP:AF	0/1:272:100:0.38
+scf7180000001106	2033413	.	C	A	39	.	.	GT:GQ:DP:AF	1/1:39:21:0.0476
+scf7180000001106	2033415	.	T	A	198	.	.	GT:GQ:DP:AF	0/1:198:19:0.4737
+scf7180000001106	2033421	.	T	C	134	.	.	GT:GQ:DP:AF	0/1:134:17:0.1765
+scf7180000001106	2038817	.	C	T	115	.	.	GT:GQ:DP:AF	0/1:115:28:0.1071
+scf7180000001106	2040532	.	A	T	60	.	.	GT:GQ:DP:AF	0/1:60:24:0.125
+scf7180000001106	2045126	.	T	A	118	.	.	GT:GQ:DP:AF	1/1:118:2:0.5
+scf7180000001106	2045147	.	G	A	153	.	.	GT:GQ:DP:AF	1/1:153:2:0.5
+
+```
+
+Note that Clairvoyante works well without the vcf_fn option. 
+
+Thank you",N/A,https://github.com/aquaskyline/Clairvoyante/issues/30
+MDU6SXNzdWU0NDQ2OTQxODI=,cannot connect to X server localhost,CLOSED,2019-05-15T23:55:14Z,2019-05-16T11:20:16Z,2019-05-16T11:20:16Z,"I got errors like this
+```
+Delay 9 seconds before starting variant calling ...Delay 2 seconds before starting variant calling ...
+Delay 1 seconds before starting variant calling ...
+Delay 3 seconds before starting variant calling ...
+
+Loading model ...
+Loading model ...
+Loading model ...
+: cannot connect to X server localhost:10.0
+: cannot connect to X server localhost:10.0
+: cannot connect to X server localhost:10.0
+callVar.py exited with exceptions. Exiting...
+samtools view: writing to standard output failed: Broken pipe
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+samtools view: error closing standard output: -1
+Delay 6 seconds before starting variant calling ...
+Loading model ...
+callVar.py exited with exceptions. Exiting...
+samtools view: writing to standard output failed: Broken pipe
+samtools view: writing to standard output failed: Broken pipe
+samtools view: error closing standard output: -1
+samtools view: error closing standard output: -1
+```
+Any suggestions? Thank you.",simoncchu,https://github.com/aquaskyline/Clairvoyante/issues/31
+MDU6SXNzdWU0NDYxODI3MDE=,trainedModels directory,CLOSED,2019-05-20T15:33:25Z,2019-05-24T14:01:11Z,2019-05-24T14:01:11Z,"Hi,
+    I have installed Clairvoyante by anaconda2. However, I cannot find the trainedModels directory in the anaconda2 directory. Also, it cannot be found on github.  So, I'd like to know where can I download the traninedModels? In addition, If I have a new Bam file, should I need to train a new model or just use the trained models?
+
+Best
+Xiaofei",yangxiaofeill,https://github.com/aquaskyline/Clairvoyante/issues/32
+MDU6SXNzdWU0NTUzNTYzNTM=,TrainingModels and new Bam file,CLOSED,2019-06-12T18:17:42Z,2019-06-14T14:54:33Z,2019-06-14T14:54:33Z,"Dear authors,
+         Thanks for your Clairvoyante.
+         I try to use it as you described like:
+
+```
+cd training
+python ../clairvoyante/callVarBam.py \
+       --chkpnt_fn ../trainedModels/fullv3-illumina-novoalign-hg001+hg002-hg38/learningRate1e-3.epoch500 \
+       --bam_fn ../testingData/chr21/chr21.bam \
+       --ref_fn ../testingData/chr21/chr21.fa \
+       --bed_fn ../testingData/chr21/chr21.bed \
+       --call_fn chr21_calls.vcf \
+       --ctgName chr21
+less chr21_calls.vcf
+```
+I have downloaded the training data, however, I cannot find the `trainedModels` directory and also the trained model.  Could you tell me where to download it or tell me how to train a model?
+
+Another question, I want to run clairvoyante on a new BAM file, should I need to train a new model or what I need is just use your trained model?
+
+Best
+Xiaofei
+",yangxiaofeill,https://github.com/aquaskyline/Clairvoyante/issues/34
+MDU6SXNzdWU0NzM5MzA4MjM=,Non-human data?,CLOSED,2019-07-29T08:55:39Z,2019-08-01T13:18:24Z,2019-08-01T13:18:24Z,Does this work with data from organisms other than human? I guess the classifier is biased towards human if it has been trained purely on human data? Would it be possible to train a new model using sequences from other organisms?,royfrancis,https://github.com/aquaskyline/Clairvoyante/issues/36
+MDU6SXNzdWU0Nzc3MDUzNDU=,Failed to tabix the generated vcf files,CLOSED,2019-08-07T04:47:22Z,2019-08-11T05:43:40Z,2019-08-11T05:43:40Z,"Hi,
+I've got problem combining the generated vcf files into one.
+I followed the instructions using vcfcat,vcfstreamsort, and bgziptabix. But I got the following error: Unsorted positions on sequence #1: 103549237 followed by 10000678
+And if I use tabix directly on the vcf files generated, the tabix fails. Does anyone know what causes the problem?",alex538,https://github.com/aquaskyline/Clairvoyante/issues/37
+MDU6SXNzdWU0ODA3MzYxOTA=,callVarBam.py fails with taskset: failed to set pid 0's affinity: Invalid argument,CLOSED,2019-08-14T15:11:27Z,2019-09-30T07:52:19Z,2019-09-30T07:52:19Z,"Hello,
+
+I have noticed that some of the executions of callVarBam.py fail with this error:
+
+`callVarBam.py fails with taskset: failed to set pid 0's affinity: Invalid argument`
+
+At least in my case all the executions are the same with the exception of the --ctgStart ,  --ctgEnd and the --call_fn params.
+
+Also I have noticed that removing the --threads option fixes the issue. Is there any reason for this?
+
+Thanks so much
+Jorge
+",jazberna1,https://github.com/aquaskyline/Clairvoyante/issues/38
+MDU6SXNzdWU0ODc3MzA4MTg=,SNV report is not consistent with the bam file,CLOSED,2019-08-31T05:01:52Z,2019-09-30T07:52:30Z,2019-09-30T07:52:30Z,"Hi,
+
+![image](https://user-images.githubusercontent.com/49969700/64059414-c3d9da00-cbee-11e9-8a64-27c3864ea02c.png)
+![image](https://user-images.githubusercontent.com/49969700/64059428-03a0c180-cbef-11e9-90b3-ce2853cc02c4.png)
+These figures show a INDEL was reported, however there are no INDEL in the bam file.
+
+Could you help us to resolve this problem?
+
+Thanks 
+
+HJ Tsai
+",HJTsai,https://github.com/aquaskyline/Clairvoyante/issues/39
+MDU6SXNzdWU0OTgxOTczMTA=,Is model of human genome applicable to variant calling on bacterial data ?,CLOSED,2019-09-25T10:32:22Z,2019-09-30T07:51:47Z,2019-09-30T07:51:47Z,"Hi, i want to know if i can use ""fullv3-ont-ngmlr-hg001-hg19"" as a model for a variant calling from bam files generate with minion sequencing on bacterial genome.
+thanks",jupollet,https://github.com/aquaskyline/Clairvoyante/issues/40
+MDU6SXNzdWU1MDUyMzg5MDA=,Applying full support for the IUPAC nucleotide code standard for better robustness?,CLOSED,2019-10-10T12:30:29Z,2019-11-23T03:21:02Z,2019-11-23T03:21:01Z,"Hello,
+
+I am got the following error when testing clairvoyante on my  data. By examining where the error occurs, I guess this error could be solved by applying full support to the IUPAC nucleotide code standard? Thanks in advance!
+
+Loading model ...
+Traceback (most recent call last):
+  File ""/home/jxyue/Projects/Varathon/build/conda_clairvoyante_env/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 312, in <module>
+    main()
+  File ""/home/jxyue/Projects/Varathon/build/conda_clairvoyante_env/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 308, in main
+    MakeCandidates(args)
+  File ""/home/jxyue/Projects/Varathon/build/conda_clairvoyante_env/bin/dataPrepScripts/ExtractVariantCandidates.py"", line 169, in MakeCandidates
+    pileup[pos][base] += 1
+KeyError: 'Y'
+
+Best,
+Jia-Xing",yjx1217,https://github.com/aquaskyline/Clairvoyante/issues/41
+MDU6SXNzdWU1MTIyNTg4NTA=,Does the pacBio model you have trained can be used for PacBio CCS reads?,CLOSED,2019-10-25T01:44:47Z,2019-11-23T03:21:11Z,2019-11-23T03:21:10Z,"Hi, 
+I want to detect SNP and Indels on PacBio CCS read BAM (ftp://ftp.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/PacBio_SequelII_CCS_11kb/HG002.SequelII.pbmm2.hs37d5.whatshap.haplotag.RTG.10x.trio.bam), is there any model you have trained can be used for calling, or I have the need to train a new model for PacBio CCS reads.
+
+Best",ydLiu-HIT,https://github.com/aquaskyline/Clairvoyante/issues/42
+MDU6SXNzdWU1MzMxMTI1NDE=,GPU conda install docs remove Clairvoyante,CLOSED,2019-12-05T04:13:41Z,2019-12-07T06:07:43Z,2019-12-07T06:07:43Z,"Hi folks!
+
+I'm just installing the GPU version of Clairvoyante using the ""Using bioconda"" instructions and have found that the  `conda remove tensorflow` results in the following:
+
+```
+The following packages will be REMOVED:
+
+    clairvoyante: 1.02-1       bioconda
+    tensorflow:   1.9.0-py27_0 conda-forge
+```
+I'm presuming that after the subsequent `conda install tensorflow-gpu`, a `conda install -c bioconda clairvoyante` would do the job.  I'll test now but thought I'd flag it in case the development team believes my approach or findings are incorrect and I'm heading down the wrong path.
+
+Cheers
+",CanWood,https://github.com/aquaskyline/Clairvoyante/issues/44
+MDU6SXNzdWU1OTI0NTUxNjQ=,How is the QUAL metric calculated? ,CLOSED,2020-04-02T08:35:27Z,2020-04-03T10:23:03Z,2020-04-03T10:23:03Z,"Hello,
+
+I'm curious as to how the QUAL metric is calculated, and how it should be interpreted?
+
+From my limited analysis, it seems that only variants with a QUAL of 999 should be taken as high quality variants. Does this seem overly stringent?
+
+Thanks,
+
+Phil",flashton2003,https://github.com/aquaskyline/Clairvoyante/issues/45
+MDU6SXNzdWU1OTI2MjY1OTg=,Check that BAM is indexed,CLOSED,2020-04-02T13:20:12Z,2020-05-12T03:36:29Z,2020-05-12T03:36:29Z,"Hello,
+
+Just a small suggestion, but currently, if the BAM file is not indexed, clairvoyante produces 100 lines of error traceback, with this comment at the top.
+
+```
+[main_samview] random alignment retrieval only works for indexed BAM or CRAM files.
+No read has been process, either the genome region you specified has no read cover, or please check the correctness of your BAM input (/home/ubuntu/tm_data/replimune/variant_calling/2020.04.02/RH018A_NGS_Sequence_Data/RH018A_NGS_Sequence_Data.primary_aln.bam).
+```
+
+Could I suggest that you add an explicit check for the index and return a more easily comprehensible error if it isn't there.
+
+Best,
+
+Phil",flashton2003,https://github.com/aquaskyline/Clairvoyante/issues/46
+MDU6SXNzdWU2NjIwMzI5NTM=,PyPy,CLOSED,2020-07-20T16:47:37Z,2020-08-14T13:26:24Z,2020-08-14T13:26:24Z,"Hello! So whenever I try to run something along the lines of the sample mentioned in the instructions:
+
+cd training
+python ../clairvoyante/callVarBam.py \
+       --chkpnt_fn ../trainedModels/fullv3-illumina-novoalign-hg001+hg002-hg38/learningRate1e-3.epoch500 \
+       --bam_fn ../testingData/chr21/chr21.bam \
+       --ref_fn ../testingData/chr21/chr21.fa \
+       --bed_fn ../testingData/chr21/chr21.bed \
+       --call_fn chr21_calls.vcf \
+       --ctgName chr21
+
+
+I keep running into this error: 
+
+Error: pypy executable not found
+
+Do you know what might be causing this? Thanks a ton! 
+
+-Marshall",sledford921,https://github.com/aquaskyline/Clairvoyante/issues/47
+MDU6SXNzdWU2Nzc3NjI4NTI=,PacBio hifi,CLOSED,2020-08-12T14:59:58Z,2020-08-14T13:26:28Z,2020-08-14T13:26:28Z,"Hello,
+
+would Clairvoyante work well with PacBio HiFi? 
+
+thank you!",N/A,https://github.com/aquaskyline/Clairvoyante/issues/48
+I_kwDOBdXLYM472R8B,BAM:the genome region you specified has no read cover,CLOSED,2021-09-22T09:44:15Z,2021-12-30T07:53:18Z,2021-12-30T07:53:18Z,"<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'> No read has been process, either the genome region you specified has no read cover, or please check the correctness of your BAM input (../testingData/chr21/chr21.bam).
+
+how can i sove this problem?
+thankyou!
+",shiying-sxu,https://github.com/aquaskyline/Clairvoyante/issues/49
+I_kwDOBdXLYM475X7P,No output in commands.sh,CLOSED,2021-09-23T00:36:10Z,2021-12-30T07:53:24Z,2021-12-30T07:53:24Z,"Hi,
+
+I tried to run ""python /Clairvoyante/clairvoyante/callVarBamParallel.py --chkpnt_fn /fdb/Clairvoyante/trainedModels/fullv3-illumina-novoalign-hg001+hg002-hg38/learningRate1e-3.epoch500 --bam_fn sorted.winnowmap.aligned.bam --ref_fn /data/zhangy61/Avi_Nath/Wenxue_Li/reference_h38.fa --bed_fn /data/zhangy61/Avi_Nath/Wenxue_Li/HERVK.bed.changed.bedtools --sampleName Pacbio --output_prefix clairvoyante_pacbio --minCoverage 4 > commands.sh"". However, there is no output in commands.sh. Could you please help me look at it?
+
+
+
+
+
+
+
+",zya226,https://github.com/aquaskyline/Clairvoyante/issues/50

@@ -1,0 +1,62 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2ODY3NjIyMA==,5'_to_3'_RNA_Molecule OWL class,OPEN,2015-04-15T13:00:12Z,2015-04-15T13:00:12Z,,"```
+I would like to ask which class in the OWL ontology corresponds to the 
+5'_to_3'_RNA_Molecule entity that is formalised in the paper? The OWL classes 
+are encoded in the format ""RNA0_ ""+7-digit number.
+
+Thanks,
+Despoina
+
+```
+
+Original issue reported on code.google.com by `magka...@gmail.com` on 23 Jan 2012 at 10:57
+",GoogleCodeExporter,https://github.com/BGSU-RNA/rnao/issues/1
+MDU6SXNzdWU0Mzk4ODc0OTg=,Unescaped quotes in `rnao.obo`,OPEN,2019-05-03T05:00:32Z,2019-05-03T05:02:06Z,,"Hi !
+
+Following the [discussion about the status of the RNAO project](https://github.com/OBOFoundry/OBOFoundry.github.io/issues/867) we figured out it would be a good idea to report the possible errors in RNAO files.
+
+`rnao.obo` contains several unescaped quotes in quoted strings, such as:
+```ini
+def: ""A family_11_base_pair is an RNAO_base_pair in which two RNA nucleotides interact by edge-to-edge hydrogen-bonding between the Sugar edges of each base and in which the glycosidic bonds of the two nucleotides are oriented ""cis"" relative to each other."" [RNAO:ROC]
+```
+
+The offenders:
+* `""cis""`
+* `""trans""`
+* `""hairpin loop""` ",althonos,https://github.com/BGSU-RNA/rnao/issues/2
+MDU6SXNzdWU0Mzk4ODg1NDY=,Unreachable RO import caused by outdated URL,OPEN,2019-05-03T05:06:20Z,2019-05-03T05:06:20Z,,"Hi!
+
+The URL used to access the RO uses a direct link to the obofoundry (`http://www.obofoundry.org/ro/ro.owl`), which results in a 404 error when trying to reach it. The new obolibrary PURL should be used instead (`http://purl.obolibrary.org/obo/ro.owl`).",althonos,https://github.com/BGSU-RNA/rnao/issues/3
+MDU6SXNzdWU0Mzk4ODk1NTQ=,Duplicate annotations in `rnao.owl` ,OPEN,2019-05-03T05:12:13Z,2019-05-03T05:12:35Z,,"Hi!
+
+`rnao.owl` contains multiple occurrences of tags that should be unique:
+* in `RNAO:1000308`, multiple `rdfs:comment`
+* in `RNAO:0000000`, multiple `rdfs:comment`
+* in `RNAO:0000059`, multiple `rdfs:label`
+
+This causes ROBOT to fail when it tries to load the `rnao.owl` product.",althonos,https://github.com/BGSU-RNA/rnao/issues/4
+MDU6SXNzdWU0Mzk4OTE0OTE=,Typedefs imported from RO should be refered to using xrefs,OPEN,2019-05-03T05:22:45Z,2019-05-03T05:22:45Z,,"Hi!
+
+The OBO semantics describes the following procedure to use local names for RO (and BFO) relationships:
+1. Declare a local typedef with an unprefixed ID
+2. Add an xref to the actual RO typedef
+
+So for instance the following frame from `rnao.obo`:
+```ini
+[Typedef]
+id: ro.owl#has_quality
+name: has quality
+```
+should instead be declared
+```ini
+[Typedef]
+id: has_quality
+xref: RO:has_quality
+```
+
+See the OBO semantics section [5.9.3](http://owlcollab.github.io/oboformat/doc/obo-syntax.html#5.9.3) and [8.2.2](http://owlcollab.github.io/oboformat/doc/obo-syntax.html#8.2.2) for more information about this mechanism.",althonos,https://github.com/BGSU-RNA/rnao/issues/5
+MDU6SXNzdWU0Mzk4OTI5NDc=,Make `RNAO:1000300` obsolete,OPEN,2019-05-03T05:30:38Z,2019-05-03T05:30:38Z,,"Hi!
+
+Since the last release, ChEBI has added more chemicals, and `RNAO:1000300` (*carboxamidine*) is now available as [`CHEBI:35359`](https://www.ebi.ac.uk/chebi/searchId.do?chebiId=CHEBI:35359).
+",althonos,https://github.com/BGSU-RNA/rnao/issues/6
+MDU6SXNzdWU5MTQ5NjQxMTM=,Add obofoundry topic to repo metadata,CLOSED,2021-06-08T12:25:46Z,2023-03-06T10:14:31Z,2023-03-06T10:14:31Z,"The OBO Foundry has recently created a topics page at https://github.com/topics/obofoundry. It would be great if you could add the `obofoundry` topic to your repository, since it's currently listed as active in the OBO Foundry. If you're not sure how to do that, follow the instructions [here](https://docs.github.com/en/github/administering-a-repository/managing-repository-settings/classifying-your-repository-with-topics).   The main issue for this task is at https://github.com/OBOFoundry/OBOFoundry.github.io/issues/1538 in case you want some more context or to join the larger discussion. ",cthoyt,https://github.com/BGSU-RNA/rnao/issues/7

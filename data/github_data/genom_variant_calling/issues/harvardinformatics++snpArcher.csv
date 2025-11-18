@@ -1,0 +1,2490 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5NjI3OTgyMTU=,Project Name,CLOSED,2021-08-06T14:39:08Z,2021-12-06T18:28:04Z,2021-12-06T18:28:04Z,"shortRead_mapping_variantCalling is both annoying long to type, and, while descriptive, not very memorable. It would be great to come up with a better name for this project / repository.
+
+Let's use this issue to brainstorm. 
+
+A few thoughts:
+* Probably don't really want to have a name that focuses on ""non-model"" or ""non-mammalian vertebrate"" even though those are our initial focus, as that may eventually feel limited.
+* Ultimately the goal of this project is more focused around ease of use than anything else, so a name that hints at that (easyVCF or something along those lines, but better) might be nice.
+* Should be findable via Google, and not something that is used for many projects already.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/10
+MDU6SXNzdWU5NjI3OTk5Mzg=,Add License,CLOSED,2021-08-06T14:41:12Z,2021-09-14T18:01:36Z,2021-09-14T18:01:36Z,"Currently this repository doesn't have a license; it should.
+
+Snakemake uses the MIT license, which may be the easiest default choice.
+
+Thoughts?",tsackton,https://github.com/harvardinformatics/snpArcher/issues/11
+MDU6SXNzdWU5NjI4MDY4MTU=,Develop Test Datasets,CLOSED,2021-08-06T14:49:47Z,2021-09-14T16:16:54Z,2021-09-14T16:16:54Z,"At the moment, we have only ad hoc testing for this pipeline. To facilitate development and distribution, we need both unit tests and one or a few example data sets to package with the repository so users can test and make sure things are working.
+
+For unit tests, given the right input data set (small and fast), we can use Snakemake's automatic unit test generation, described [here](https://snakemake.readthedocs.io/en/stable/snakefiles/testing.html).
+
+For a sample dataset, ideally we want something that runs fast, but also hits as many rules as possible. E.g., the current E. coli data does not run the interval creation rules. It may not be possible to come up with a single dataset that is sufficient for all testing purposes.
+
+Let's use this issue to manage discussion of test data.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/12
+MDU6SXNzdWU5NjI4MTY5NDE=,Use Snakemake Best Practices,CLOSED,2021-08-06T15:02:00Z,2021-09-14T18:02:17Z,2021-09-14T18:02:09Z,"Although we are getting closer to Snakemake best practices, there are still a number of things that we need to do to be fully in compliance with Snakemake [best practice documentation](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html) for distribution and reproducibility.
+
+The outstanding issues that I see are:
+
+- [x] Merge all Snakefiles into a single Snakefile for the entire workflow
+- [x] Move config files to a config subdir and update code to find them in the right place.
+- [x] Set output directories per Snakemake best practices. Note that because of the complexities of the output we can't just dump everything in results, but we probably should get as close as possible.
+    * Set the top level directory for output to results
+    * Set the top level directory for resources downloaded to resource
+- [x] Add additional files requested by WorkflowHub
+    * Code of Conduct
+    * Contribution instructions
+    * Workflow rule graph
+    * Workflow documentation
+    * Config documentation in the form of a config.md. This should include guidance for the low coverage parameters and the interval creation parameters.
+    * Add a YAML file .snakemake-workflow-catalog.yml in the root directory which displays usage instructions. See description [here](https://snakemake.github.io/snakemake-workflow-catalog?rules=true).
+- [x] Add testing. Note this is a separate issue, #12 
+- [x] Add license, #11 
+ 
+If there are other needed tasks, add to this issue. This issue is the main focus of the dev branch right now. Once it is resolved, we'll merge dev into main. 
+
+If any of these tasks seem complex enough that they need more discussion we can convert them to their own issues.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/13
+MDU6SXNzdWU5NjI4MjQ1OTA=,Fastqc or other fastq checks?,CLOSED,2021-08-06T15:10:41Z,2023-11-14T17:06:16Z,2023-11-14T17:06:16Z,"At the moment, we don't run any pre-processing checks on fastq data, whether downloaded from SRA or provided locally, and the only preprocessing we do is adaptor trimming with fastp.
+
+Conceivably we could add additional fastq QC checks to the preprocessing steps, but it is not clear how necessary or useful these are. Most data issues (data from the wrong species or otherwise contaminated, bad sequence quality) will be readily detectable by mapping problems, and it may be simpler and more robust to leave QC checks to that stage.
+
+On the other hand, something like fastqc and a quick kmer coverage plot is easy to generate and could be a useful diagnostic in situations where there are problems.
+
+Thoughts? ",tsackton,https://github.com/harvardinformatics/snpArcher/issues/14
+MDU6SXNzdWU5NjI4Mjk5MjU=,Automatically determine correct coverage parameters,OPEN,2021-08-06T15:16:54Z,2022-09-29T12:22:01Z,,"At the moment, we leave the parameters that need to be changed as user-settable in the config file, with the default being the low coverage option.
+
+In principle, it should be possible to have the default be 'auto', and determine based on the bam coverage stats what the correct values should be. This would be a useful enhancement to add.
+
+This would require calculating mean or median coverage for all bams, and then developing a heuristic rule to call correct parameter values. A simple first enhancement would be to simply fix parameter values for all runs. A more sophisticated alternative would set parameters per-sample, but that would first require determining whether joint genotyping with samples called with different parameter values for GenotypeGVCFs will cause issues.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/15
+MDU6SXNzdWU5NjI4NDU2NjA=,Add Quality Control Outputs,CLOSED,2021-08-06T15:37:51Z,2022-06-28T16:04:47Z,2022-06-28T16:04:47Z,"This pipeline as it stands takes fastq files, and produces bams + filtered vcfs, using GATK standard hard filters. It produces a few quality control outputs, such as basic bam statistics and a few things like SNPs per interval, but we do not produce extensive QC reports or output.
+
+At a minimum, we should add calculations of mappability, coverage, and callable site bed files (using customizable rules for mappability and coverage cutoffs). These will aid in filtering and are necessary for any additional downstream steps. This requires at least the following:
+
+- [x] A rule or rules to calculate per-sample coverage from each bam file in a compressed format. Potentially also use this to produce a summed coverage file and a mean coverage file. Space is an issue as even in bigBedGraph format these can be large files. May want to consider smoothing coverage values for better compression and efficiency of bedGraphs.
+- [x] A rule or rules to calculate mappability for each reference genome and produce a bedGraph of mappability scores
+- [x] A rule or rules to take coverage and mappability bedGraphs and produce a callable sites bed file.
+
+A second level of quality control that would be valuable is an assessment of individual-level problems, ideally to identify individuals with excess missing data or other departures from expectations. This could also include screening for related individuals. Ideally this step would output a variety of sample lists that can be used in downstream filitering, e.g. one of just the high quality unrelated individuals, and one of all high quality individuals regardless of relatedness. First steps here might be:
+
+- [x] A rule or rules to compute missingness per individual and plot missingness vs coverage. 
+- [x] Code that tries to automate the determination of ""bad"" individuals based on configurable cutoffs and deviations from regression line (e.g., individuals with too much missing data relative to predicted for coverage may be problematic even if the absolute level of missingness is not too high)
+- [x] A rule or rules to compute relatedness, and ideally also identify clusters of relatives and select the best based on some objective criteria (missing data?) of the set to retain for analyses that exclude relatives. Methods to calculate relatedness depend to a certain extent on coverage so this may be complicated to implement smoothly and generically.
+
+Another level of quality control would be to implement some basic analyses that can help spot problems. The simplest option here is probably PCA, but various STRUCTURE-like options may also be of interest. 
+
+- [x] A rule or rules to run and plot PCA. 
+    * Need to decide whether haploidifying low-coverage data is worthwhile here. 
+    * Also need to decide how tunable to make LD pruning.
+- [x] A rule or rules to run and plot ADMIXTURE or something similar, perhaps also with pong-style visualizations.
+
+Finally, at the moment we do not provide much in the way of tunable filtering options or other assessments of site-based quality, beyond fixed GATK filter commands and the callable sites bed file. There are of course other options for extending site-based filtering in various ways:
+
+- [x] Add rule to plot distributions of filtering statistics? May be too complicated and of little value, at least until we move towards better variant filtering options. But could also be useful to start to see when filtering options don't do much. This is probably best done in conjunction with, e.g. Ts/Tv rate and things like that.
+- [x] Add rule to implement other site-filtering metrics, such as departures from HWE. Need to be careful here as population structure could be present in many sample sets. Might be a way to use results from PCA/STRUCTURE to define groups to test for HWE departures in, but would likely get hard to automate.
+",tsackton,https://github.com/harvardinformatics/snpArcher/issues/16
+MDU6SXNzdWU5NjI4NDkwNTQ=,Longer Term Roadmap,OPEN,2021-08-06T15:42:19Z,2021-09-14T17:37:57Z,,"Starting this issue as catch-all for lower priority, longer term tasks.
+
+* Containerization would probably be a useful long-term goal and is probably not too difficult considering that everything is already highly conda-ized.
+* Add profiles for other queuing software, e.g. LSF? This will make everything much more broadly useful to a wider community.
+* Deal with variant filtering in a more robust way
+* Add variation annotation with SnpEff
+* Consider adding more variant callers (e.g. FreeBayes, samtools), and especially new(ish) ones like Octopus, Varlociraptor, DeepVariant, although many of the newer variant callers are even more tuned for humans than GATK
+* Add more downstrem analysis options. Most of these would need to be optional modules and probably would be better off in a separate repository, as few users would want to run everything. But, adding in e.g. MK work or integration with ANGSD could have value.
+* Handle sex chromosomes appropriately where known; identify sex chromosomes where unknown but sex of individuals is known?
+* Integrate a tool like pseudo-it to improve cross-species mapping
+* Consider transfering repository to an organization if we intend to add more downstream analysis or use Github for additional related projects (e.g., additional code for first paper).",tsackton,https://github.com/harvardinformatics/snpArcher/issues/17
+MDU6SXNzdWU5OTAxNjExNjQ=,Make it easier for users to supply own reads and reference,CLOSED,2021-09-07T16:35:58Z,2021-09-30T19:25:16Z,2021-09-30T19:25:16Z,"Currently the workflow is setup such that users supply a csv sheet specifying the samples and associated SRRs and reference. This makes running the workflow on public datasets very easy. However, if a user wanted to run the workflow on their own data it is not straightforward. I've made the workflow run on my own data, but it was definitely not straightforward. I had to organize the reads into the directory structure that Snakemake would have made had it downloaded the reads for me, so that the workflow would run everything after the downloading step. 
+
+I still haven't come up with a solution I like to this. Would appreciate ideas/thoughts.",cademirch,https://github.com/harvardinformatics/snpArcher/issues/21
+MDU6SXNzdWU5OTAxNjI2NTQ=,Rewrite README,CLOSED,2021-09-07T16:38:10Z,2022-09-29T12:10:59Z,2022-09-29T12:10:59Z,The readme seems to be pretty out of date. It could use an update.,cademirch,https://github.com/harvardinformatics/snpArcher/issues/22
+I_kwDOD2XAe847VX4I,Intervals without Ns in reference,CLOSED,2021-09-14T00:26:48Z,2021-09-30T19:25:04Z,2021-09-30T19:25:04Z,"Creating this issue to discuss/understand the interval generation for parallelization. I've been running the pipeline on genomes without Ns which prompted this. I wrote a function to split the genome into a user defined number of intervals to scatter on to over come this. I am curious about the reasoning behind splitting at Ns as opposed to arbitrary points along the chromosome/contig. 
+
+Appreciate any thoughts.",cademirch,https://github.com/harvardinformatics/snpArcher/issues/23
+I_kwDOD2XAe847Yj2c,Set up for Workflowhub,CLOSED,2021-09-14T18:03:54Z,2024-03-05T17:17:19Z,2024-03-05T17:17:19Z,"At some point, would like this pipeline to be useable as part of Workflowhub, to allow easy extension with other tools that work from VCFs, for example. Need to add additional files requested by WorkflowHub for this to be possible:
+
+- Code of Conduct
+- Contribution instructions
+- Workflow rule graph
+- Workflow documentation
+- Config documentation in the form of a config.md. This should include guidance for the low coverage parameters and the interval creation parameters.
+- Add a YAML file .snakemake-workflow-catalog.yml in the root directory which displays usage instructions. See description here.
+
+Also need to ensure directory structure is organized properly.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/27
+I_kwDOD2XAe847m_BM,Create list of final data sets ,CLOSED,2021-09-18T16:24:51Z,2021-09-21T16:05:35Z,2021-09-21T16:05:35Z,"Need to list out all data sets, both used and not, from SRA scrap, including genome versions and annotations of each reseq data set. ",sjswuitchik,https://github.com/harvardinformatics/snpArcher/issues/29
+I_kwDOD2XAe847y_Jo,MarkDuplicates memory issues,CLOSED,2021-09-21T20:26:31Z,2021-09-21T20:33:25Z,2021-09-21T20:33:25Z,"@sjswuitchik has run into out of memory issues with MarkDuplicates. For some reason, the picard CLI does not have a           
+ `--java-options` argument like GATK, so there does not appear to be a direct way to give the JVM more memory. The [Snakemake MarkDuplicates wrapper](https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/picard/markduplicates.html) seems to be able to do this, but I'm not entirely sure how. ",cademirch,https://github.com/harvardinformatics/snpArcher/issues/30
+I_kwDOD2XAe84_IVL-,Quality of life improvements,CLOSED,2021-11-20T13:46:38Z,2021-12-09T17:30:07Z,2021-12-09T17:30:07Z,"Starting an issue to track things I see when running this pipeline on real data that don't rise to the level of actual bugs, but that could be worth a fixing just to make things a bit smoother.
+
+- [x] 1. The pipeline leaves a lot of empty directories around as temp/intermediate files get deleted. Not sure how much we care about this, but to me it is a bit annoying. In particular:
+
+    - 00_fastqFiltered will be empty after bam creation finishes
+    - 01_mappedReads/postMerge and 01_mappedReads/preMerge will be empty after bam creation finishes
+    - the 02_bamStats is not particularly well organized and has both top-level and per-BioSample output.
+
+- [x] 2. Some resource requirements could be retuned, usually by increasing memory or adding a memory increment on failure:
+
+    - genmap_map is consistently getting oom-killed with 1Gb of RAM
+    - dedup occasionally oom-killed even with 9Gb of RAM, but these get caught on retry with increasing mem 
+
+- [x] 3. Some log files are broken:
+
+    - rule dedup: the BuildBamIndex logging overwrites the MarkDuplicates logging. I am seeing a lot of ""Error in executing rule dedup"" but can't track down what the error is due to this. From slurm logs some of this may be memory related. 
+
+- [x] 4. Some rules consistently have to be retried; while they seem to complete in the end it might be nice to figure out the issues (could be cluster-specific, though, e.g. using serial-requeue):
+
+    - dedup has this issue but may be memory related
+    - bam2gvcf has this issue but always seems to finish on retry; could be intermittent I/O issues (common on our cluster) or requeuing
+ 
+So far nothing here seems to prevent the pipeline from continuing (except the genmap_map step which has not finished and needs to have a memory increment added). If everyone can add notes here for little things like this to just generally improve smoothness, we can start clearing these in bugfix as people have time.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/40
+I_kwDOD2XAe85CdcE6,Add option to download from ENA,CLOSED,2022-01-26T13:21:12Z,2022-02-02T21:21:54Z,2022-02-02T21:21:54Z,"Some datasets are not available from SRA, but at least based on preliminary spot checking, are available from ENA. While this could be handled with manual downloading and local fastqs, to improve robustness and reliability the best solution is to add an option to download from ENA.
+
+To do this, we will use the Java ENA downloader command line application, and modify the get_fastq_pe rule to try ENA if the NCBI download returns a non-zero exit code. 
+
+Currently working on this issue in the dev branch.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/48
+I_kwDOD2XAe85EB6Am,Gather VCFs tmp dir space,CLOSED,2022-02-17T13:38:18Z,2022-03-09T22:31:42Z,2022-03-09T22:31:42Z,"I have occasionally seen that large datasets run out of temporary directory space for the sort and gather VCF step. After some digging, I believe this is because the Java tmp dir is hard-coded to /tmp, and if you happen to be running on a node without much space in /tmp, you'll have issues. 
+
+The Java tmp directory can be specified either with the _JAVA_OPTIONS environment variable or as part of the command line, so we have at least two options to address this. 
+
+1. Add a note to the readme to have users add ```export _JAVA_OPTIONS=-Djava.io.tmpdir=/new/tmp/dir``` to the run_pipeline.sh script if they are running on a large dataset that might have issues, or add this ourselves to the default run script. 
+2. Add ```-Djava.io.tmpdir=/path/to/tmpdir``` to the gatk commands where temp space may be an issue, pulling the tmp dir location from the config file.
+
+There are probably option options as well. Thoughts?
+",tsackton,https://github.com/harvardinformatics/snpArcher/issues/51
+I_kwDOD2XAe85EDXEV,Rerunning a species set with updating samples,CLOSED,2022-02-17T18:57:23Z,2024-03-05T17:16:47Z,2024-03-05T17:16:47Z,"By default, if a species set has finished running successfully and then you update the sample sheet to include more SRA accessions / BioSamples, snakemake will not catch this and will not do anything.
+
+With some preliminary testing, it seems that adding  `` -R /`snakemake --list-input-changes` `` to the command will work in most cases, as this will force snakemake to rerun any jobs with updated inputs as well as downstream jobs impacted by them. I have some test cases running now; there is also the option of  `` -R `snakemake --list-params-changes` `` which seems to give similar but not quite identical changes. 
+
+The real question is how we should document / approach this, and if we should consider any code changes to facilitate this use case (e.g., automatically looking for changed input files somehow).",tsackton,https://github.com/harvardinformatics/snpArcher/issues/52
+I_kwDOD2XAe85Fvs59,Interval creation errors,CLOSED,2022-03-15T19:50:09Z,2022-06-28T16:03:58Z,2022-06-28T16:03:58Z,"In the interval creation code, we have a sanity check that ensures that a given interval set is the expected length. That is, we check that intervals in the interval list cover 100% of the bases in the list of ATGCmers from the Picard output. If this does not happen, we fail with an error and exit the pipeline.
+
+However, we give no obvious clue as to what to do if this check does fail. Probably the correct answer is that if the number of base pairs missing is small, this doesn't really matter. The one case I have observed this, it arises because there is a scaffold that starts with a T, and then has a stretch of ~5000 Ns. That T is probably an error, to be honest, and in any case it is not going to matter at all if no SNPs are called there. 
+
+Relatedly, the interval creation code probably shouldn't fail if the max BP per interval value is too low, it should just take the smallest value that is useable. 
+
+Ultimately we should probably rewrite most or all of this code so that the pipeline 'just works' and figures out the best set of intervals that is possible to create. Posting this issue to track that task, although this is not high priority at the moment.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/54
+I_kwDOD2XAe85GOUwH,refactoring usage of intervals,CLOSED,2022-03-23T13:56:22Z,2022-06-28T16:03:40Z,2022-06-28T16:03:40Z,"I think we need to reorganize our usage of interval lists in this workflow, because at the moment we are using them very sub-optimally and this is creating a lot of performance problems for large call sets, as well as a great deal of brittleness for updating runs with new samples.
+
+From spending some time looking at the GATK workflows for hg38, I think there are a few lessons we can take, but probably we need to spend a bit more time thinking about how to generalize this widely:
+- As far as I can tell, there is no clear reason why we would need or want to use the same interval lists for the bam2gvcf step and for the subsequent joint genotyping steps. Requiring these intervals to be identical (as we do currently) makes the pipeline brittle, since it is no longer possible to straightforwardly increase the number of intervals to deal with problems with the GenotypeGVCF step in particular. A more robust procedure is to include a merge step after the HaplotypeCaller step, so we end with one gvcf per sample, not one per sample, per interval.
+- The way we handle interval lists in general is, I think, fairly poor, for several reasons. Ideally, we would have a master interval list for a given genome (in the results/refGenome dir, not results/species/refGenome/intervalLists, since this does not depend on the sample at all, just the genome). This should never fail to be created, even if (worse case) it is simply one interval per chromosome/scaffold. Then, for any particular tool, we can create lists from this master list based on need. This allows us to better optimize the size/splitting of interval lists for each tool, as the requirements are different. It will make things a bit more complicated as we need to create interval lists twice, once for bam2vcf and then again for the vcf2DB ->DB2vcf. But I think this will be extremely worthwhile for performance reasons (currently my impression is that for medium/large callsets, we create too many bam2vcf intervals, which greatly slows down Snakemake, and not enough DB2vcf intervals, which means this step sometimes doesn't finish). 
+
+In general we have gotten away with a suboptimal setup because we have mostly processed small callsets and mostly not really cared about the time things take, but neither of these are likely to remain true once we release this into the wild.
+
+So to address this I think requires the following steps:
+1. Rewrite the create intervals rule to create a master interval list, not a series of .list files, and to be designed to be fail-proof, so that a list is created no matter what. This is probably actually a substantial simplification of our existing algorithm, as it is simply a. matter of splitting the genome at Ns.
+2. Write a new pre-bam2vcf step that creates interval lists specific to bam2vcf, and modify the bam2vcf rule to use these lists
+3. Write a new post-bam2vcf step that merges the gvcfs per sample
+4. Write a new pre-vcf2DB rule that creates new intervals for the vcf2DB and DB2vcf steps (and the filter/merge step)
+5. Rewrite the vcf2DB, DB2vcf, and filter/sort/gather rules to use the new intervals; in the process we can probably also treat the genomicsDBI directories as temporary, as they will never be reused
+
+What I am not yet totally sure about is exactly the optimal interval number and size for each step. It is clear that the interval number needs to scale with the number of samples to keep run times manageable, for example, and that we need a much greater number of intervals for the joint genotyping steps than the HaplotypeCaller step. I also believe that for the joint genotyping step there is not a strong reason to only split on Ns/gaps, while for the bam2vcf step this is more important (as HaplotypeCaller needs the local context). We also need to balance scalability to large sample sets with performance at more typical numbers, and it may be reasonable to design with a max sample set in the low thousands (what would be called a 'small sample size' in human genetics). 
+
+None of this should impact existing runs as nothing is changing other than interval steps, although we will probably want to force run the merge gvcf job for finished datasets for clean up purposes, and also force run the master interval list creation step, and probably manually delete/clean up/move results files as needed.
+
+I do think it would be much better to get this right for the version that accompanies the paper.
+
+",tsackton,https://github.com/harvardinformatics/snpArcher/issues/55
+I_kwDOD2XAe85GY17b,Issue with problem intervals / gvcf2DB rule,CLOSED,2022-03-25T15:13:42Z,2022-03-29T17:38:32Z,2022-03-29T17:38:32Z,"Hi, 
+I've been working on using the snpArcher pipeline for some variant calling and have run into an issue that I'm not really sure how to address. Most of the pipeline finished running but there seems to be some kind of hang up with two of the intervals. Every time a gvcf2DB rule is attempted with either of these intervals, the job pops an error with the log saying there is this error:
+```
+htsjdk.samtools.SAMFormatException: Invalid GZIP header
+```
+
+I've checked the map files for each of these intervals and they seem to look identical to all of the other ones that have successfully run. I've also checked the outputs in the 03_gvcf directory for these intervals and they seem to have completed normally ("".done"" file and .raw.g.vcf.gz files present). Do you all have any idea what's going wrong or any suggestions on how I can fix this issue? Thanks for the help and for the really amazing tool!
+-Sam",ArsenaultResearch,https://github.com/harvardinformatics/snpArcher/issues/56
+I_kwDOD2XAe85HIqcO,Using local reference genomes,CLOSED,2022-04-05T16:45:02Z,2022-04-07T01:14:33Z,2022-04-07T01:14:33Z,"Sometimes it may be useful to specify a local reference genome, instead of a one hosted on NCBI. Currently it is fairly straightforward to use local fastq files, but very hacky to use a local reference genome. 
+
+Ideally, we should refactor so that the reference genome download works similarly to the fastq download, where if a path is specified for the reference genome, that is used instead of downloading an accession.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/57
+I_kwDOD2XAe85JNiP8,Consider replacing current download code,CLOSED,2022-05-06T18:48:15Z,2022-07-18T15:49:41Z,2022-07-18T15:49:40Z,"I just came across [this](https://github.com/pachterlab/ffq) which looks like it should simplify a lot of the complex download code we have now, and may be worth looking into switching to using.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/62
+I_kwDOD2XAe85NthcV,get-fastq-pe fails on some SRRs even though fasterq dump gets it,CLOSED,2022-07-13T18:14:52Z,2022-07-18T15:49:24Z,2022-07-18T15:49:24Z,"For example SRR15284758 failed on the rule with a 404 not found, though fasterq-dump was able to download it. Might be an issue with the link structure?",cademirch,https://github.com/harvardinformatics/snpArcher/issues/64
+I_kwDOD2XAe85ONGTq,Rule parameter depends on checkpoint but checkpoint output is not defined as input file for the rule,CLOSED,2022-07-20T22:39:18Z,2022-07-21T00:18:25Z,2022-07-21T00:18:25Z,"Getting this error running the ecoli test using Snakemake 7.3.6. Not sure why the github actions are not hitting this. Will push a fix to dev
+```
+WorkflowError:
+Rule parameter depends on checkpoint but checkpoint output is not defined as input file for the rule. Please add the output of the respective checkpoint to the rule inputs.
+```",cademirch,https://github.com/harvardinformatics/snpArcher/issues/66
+I_kwDOD2XAe85XJm18,get_fastq_pe: fasterq-dump quit with error code 3 ,CLOSED,2022-11-23T17:21:43Z,2022-11-28T15:50:29Z,2022-11-28T15:22:17Z,"Hit this error on get_fastq_pe today:
+
+`disk-limit exeeded!
+fasterq-dump quit with error code 3`
+
+I ran commands locally and managed to get rid of disk-limit error (plenty of space was available) 
+
+`fasterq-dump SRR7774199 -O SCA_5/ -e 8 -t /tmp --disk-limit-tmp 100000000000 --disk-limit 100000000000 -x`
+
+But still, I received error code 3, so I tried a bunch of things. 
+
+I think the issue has to do with how read pairs are split in this accession. Here are commands that don't error:
+fasterq-dump with no output folder specified does not error, but this command produces one fastq file, rather than 2. The same result when --split-files is provided:
+`fasterq-dump SRR7774199`
+
+ffq also runs successfully, but it produces 1 fastq file:
+
+`ffq --ftp SRR7774199 | grep -Eo '""url"": ""[^""]*""' | grep -o '""[^""]*""$' | grep ""fastq"" | xargs curl --remote-name-all --output-dir ffq_SCA_5`
+
+fastq-dump also runs without error, but correctly generates two fastq files when --split-files is specific:
+
+`fastq-dump ./SRR7774199 -O SCA_5/ --split-files`
+
+All three solutions produce 2 paired fastq files without error on other accessions in this bioproject. All accessions originate from bam file uploads, so I wonder if there is an issue with how SRA handles bam file uploads.
+
+tl;dr switching to ffq does not solve this issue, but switching to fastq-dump might…but this project on NCBI might just be garbled",erikenbody,https://github.com/harvardinformatics/snpArcher/issues/79
+I_kwDOD2XAe85ZNFYz,sort/gather step fails with high interval count,OPEN,2022-12-14T13:10:43Z,2024-03-05T17:15:32Z,,"Testing on a dataset with ~12k intervals: the sort/gather step at the end (to collect each genotyped interval into the final vcf) fails. It is not clear if this is a temp file issue, a memory issue, or just a problem with the way we handle very large inputs to bcf concat.
+
+Probably the solution is multiple rounds of merging, which we can investigate. For now, posting this issue in case other people have problems with datasets with >10k intervals to merge. ",tsackton,https://github.com/harvardinformatics/snpArcher/issues/87
+I_kwDOD2XAe85cWrEt,file.rename() in qc.dashboard.render fails across partitions,CLOSED,2023-01-19T15:56:53Z,2024-04-12T18:03:07Z,2024-04-12T18:03:07Z,"If you have snpArcher set up so that the workflow is in, say, a home directory and the working directory is in a different partition, then file.rename() will fail with the ""Invalid cross-device link"" error message. This seems to be a limitation of the file.rename() function when trying to move files between partitions. 
+
+While a minor issue since the qc html still remains in the original scripts directory in this case, it would be worth adding some robustness here. The best option is probably to use file.copy instead, and then remove the original file once file.copy succeeds.
+
+Adding this as an issue for documentation and tracking.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/90
+I_kwDOD2XAe85cmv0I,java space/memory issue for db2vcf step,CLOSED,2023-01-23T19:40:33Z,2024-03-05T17:20:03Z,2024-03-05T17:20:03Z,"the dv2vcf step fails for only the last set of db intervals (originally had 6 intervals fail to finish and subsequently after filtering genome for small scaffolds (<1000 bp) had 1 interval fail to finish). The error that genomicsdbimport generates says out of space error (i used a tmp directory in the working directory so should not run out of memory unless genomicsdbimport uses a different tmp directory (i can can be set with --tmpdir option). The log file of one of these is included below. There was also a notice of a fatal error with java.
+
+[0130.txt](https://github.com/harvardinformatics/snpArcher/files/10483103/0130.txt)
+",subirshakya,https://github.com/harvardinformatics/snpArcher/issues/91
+I_kwDOD2XAe85hKKVC,write_samples.py producing a Type Error,CLOSED,2023-03-18T00:28:37Z,2023-03-23T18:10:52Z,2023-03-23T18:10:52Z,"Hello,
+
+Thank you for putting together this workflow! I am new to bioinformatics, and grateful for this resource. I am trying to run it on ~60 samples of Dark-eyed Junco sequences with a reference genome using an accession number. I've managed to configure things to run on one sample, but am trying to make a sample sheet  through the automated code provided for the remaining samples. When I run it, I receive the following error: TypeError: write_sample_sheet() missing 1 required positional argument: 'ncbi_ref'
+I'm sharing my code below. Any help is appreciated! Thank you!
+<img width=""938"" alt=""image"" src=""https://user-images.githubusercontent.com/32024058/226073352-f9bed61e-0c7b-4ea9-b3b8-48aa2d514456.png"">
+",ediamant,https://github.com/harvardinformatics/snpArcher/issues/96
+I_kwDOD2XAe85jwc-g,Error in rule concat_gvcfs,CLOSED,2023-04-18T18:35:20Z,2024-03-05T17:06:07Z,2024-03-05T17:06:07Z,"Hello! Thank you for the help prior. I'm relatively new to bioinformatics. I am assembling 66 genomes of Dark-eyed Juncos and everything was going well until the 35th genome. I made sure that all those files listed in the input were there for those two birds (2591-24071 and 2591-24073) are there (which they are) and that there is memory available (which there is). Any guidance would be helpful. Thank you very much for your time! Here's the log and the error:
+
+Activating conda environment: .snakemake/conda/45afd75cf38b3a515c78e0d58256e283_
+Writing to /work/6777787.1.pod_smp.q
+Checking the headers and starting positions of 50 files
+Cleaning
+[E::hts_open_format] Failed to open file ""/work/6777787.1.pod_smp.q/00006.bcf"" : No such file or directory
+Cannot write /work/6777787.1.pod_smp.q/00006.bcf: No such file or directory
+Cleaning
+Done
+[Sun Apr  2 21:09:26 2023]
+Error in rule concat_gvcfs:
+    jobid: 2670
+    input: results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0000.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0001.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0002.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0003.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0004.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0005.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0006.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0007.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0008.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0009.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0010.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0011.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0012.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0013.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0014.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0015.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0016.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0017.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0018.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0019.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0020.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0021.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0022.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0023.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0024.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0025.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0026.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0027.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0028.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0029.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0030.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0031.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0032.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0033.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0034.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0035.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0036.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0037.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0038.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0039.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0040.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0041.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0042.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0043.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0044.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0045.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0046.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0047.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0048.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0049.raw.g.vcf.gz, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0000.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0001.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0002.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0003.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0004.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0005.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0006.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0007.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0008.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0009.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0010.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0011.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0012.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0013.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0014.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0015.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0016.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0017.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0018.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0019.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0020.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0021.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0022.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0023.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0024.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0025.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0026.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0027.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0028.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0029.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0030.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0031.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0032.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0033.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0034.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0035.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0036.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0037.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0038.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0039.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0040.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0041.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0042.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0043.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0044.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0045.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0046.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0047.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0048.raw.g.vcf.gz.tbi, results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0049.raw.g.vcf.gz.tbi
+    output: results/GCA_003829775.2/gvcfs/USGS_2591_24071.g.vcf.gz, results/GCA_003829775.2/gvcfs/USGS_2591_24071.g.vcf.gz.tbi
+    log: logs/GCA_003829775.2/concat_gvcfs/USGS_2591_24071.txt (check log file(s) for error details)
+    conda-env: /u/project/pamelaye/eldiaman/Juncos/ElliesProjects/snpArcher/.snakemake/conda/45afd75cf38b3a515c78e0d58256e283_
+    shell:
+       
+        bcftools concat -D -a -Ou results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0000.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0001.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0002.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0003.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0004.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0005.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0006.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0007.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0008.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0009.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0010.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0011.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0012.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0013.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0014.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0015.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0016.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0017.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0018.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0019.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0020.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0021.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0022.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0023.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0024.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0025.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0026.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0027.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0028.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0029.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0030.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0031.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0032.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0033.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0034.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0035.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0036.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0037.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0038.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0039.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0040.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0041.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0042.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0043.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0044.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0045.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0046.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0047.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0048.raw.g.vcf.gz results/GCA_003829775.2/interval_gvcfs/USGS_2591_24071/0049.raw.g.vcf.gz | bcftools sort -T /work/6777787.1.pod_smp.q -Oz -o results/GCA_003829775.2/gvcfs/USGS_2591_24071.g.vcf.gz -
+        tabix -p vcf results/GCA_003829775.2/gvcfs/USGS_2591_24071.g.vcf.gz
+       
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)",ediamant,https://github.com/harvardinformatics/snpArcher/issues/102
+I_kwDOD2XAe85nLTJo,bcftools-1.12 loses intervals at the sort_gather_vcfs step,CLOSED,2023-05-29T16:32:19Z,2023-09-27T20:44:07Z,2023-09-27T20:44:07Z,"I noticed some of the intervals are missing from my final vcf file and I tracked at which step exactly the intervals are being dropped and it is the sort_gather_vcf step.
+I tried the `bcftools concat` command outside the pipeline, and it seems the **version of bcftools** affects the result:
+
+```
+$ conda activate bcftools_test
+$ bcftools -v
+bcftools 1.12
+$ bcftools concat -D -a -Ou filtered_L0001.vcf.gz filtered_L0796.vcf.gz  | bcftools sort -T  -Oz -o  concat_test.12.vcf  - 
+$ wc -l concat_test.10.vcf concat_test.12.vcf
+    58440 concat_test.12.vcf
+```
+ => NO gap interval in the concat_test.12.vcf
+
+changing bcftools version to 1.10:
+``` 
+$ conda activate broodp
+$ bcftools -v
+bcftools 1.10
+$ bcftools concat -D -a -Ou filtered_L0001.vcf.gz filtered_L0796.vcf.gz  | bcftools sort -T  -Oz -o  concat_test.10.vcf  - 
+$ wc -l concat_test.10.vcf
+    69081 concat_test.10.vcf
+```
+ => YES, the gap interval is in the concat_test.10.vcf
+
+In both cases the log files are identical and have no errors:
+```
+Checking the headers and starting positions of 2 files
+Writing to -Oz
+Merging 1 temporary files
+Cleaning
+Done
+```
+
+Here I attach two input vcf files and the gap interval is: `CM051112        7946416 8384147`
+[filtered_L0796.vcf.gz](https://github.com/harvardinformatics/snpArcher/files/11593117/filtered_L0796.vcf.gz)
+[filtered_L0001.vcf.gz](https://github.com/harvardinformatics/snpArcher/files/11593118/filtered_L0001.vcf.gz)
+",osipovarev,https://github.com/harvardinformatics/snpArcher/issues/106
+I_kwDOD2XAe85nSD7x,Incorrect multi-base REF/ALT alleles,CLOSED,2023-05-30T18:47:12Z,2024-06-10T12:07:38Z,2024-06-10T12:07:38Z,"If there is a multinucleotide or complex mutation, it is possible to end up with multi-base REF and ALT alleles, despite there being only a single base variant. E.g., REF = AAA, ALT = ATA. This appears to happen when all the individuals that carry the multi-base variant are removed from the VCF; the REF/ALT of the remaining alleles is not updated.
+
+So for example a tri-allelic site with AAA, ATA, A-- will become AAA, ATA if the A-- individual is removed. 
+
+We have a conceptual fix, but it is not implemented yet. This issue exists to document the problem.
+",tsackton,https://github.com/harvardinformatics/snpArcher/issues/107
+I_kwDOD2XAe85n2BOp,Add snp density visualization to QC module,OPEN,2023-06-05T17:22:46Z,2023-06-05T17:22:46Z,,"I believe a large part of why it took so long to discover #106 is that we don't have any spatial visualization of snp density in the QC output, in part because this would really only make sense to do on the full (non-downsampled) dataset, which is a bit of a pain to work with due to size.
+
+However, it might be useful to compute sometime like a) the intersection between the callable sites bed and the DB-VCF intervals, and b) number of SNPs per DB interval. We could then make a simple scatter plot of those two variables, which should generally be pretty linearly correlated. Would also be a feasible way to quickly visualize things like sex chromosomes (intervals with low SNP density for depth, usually, unless sample has a skewed sex ratio).
+
+Tagging this low priority and enhancement as does not feel critical to address ASAP but keeping issue to remind us later.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/109
+I_kwDOD2XAe85ovEN4,cpus-per-task as required for slurm,CLOSED,2023-06-14T15:30:02Z,2024-04-12T18:01:55Z,2024-04-12T18:01:54Z,"Working on a slurm cluster that does not allow the cpus-per-task command prevented me from running the workflow. I just commented out the bits of slurm_utils.py that have this cpus-per-task and it worked fine. Suggest that we have cpus-per-task as a configurable option in the yaml rather than hard coded, but I am not sure how to best approach this. See this branch edits as an example of what solved my issue [uppmax branch(https://github.com/harvardinformatics/snpArcher/commit/24b3831a11bc3ed6968d4e6f18a068e9e2618351)",erikenbody,https://github.com/harvardinformatics/snpArcher/issues/110
+I_kwDOD2XAe85tppuG,Error in rule create_db_intervals,CLOSED,2023-08-07T14:52:06Z,2023-08-08T20:31:32Z,2023-08-08T20:31:32Z,"Hello, I am running snakemake on the Harvard FASRC shared partition and getting an error at the step: 
+[Fri Aug  4 20:33:02 2023]
+checkpoint create_db_intervals:
+    input: results/GCA_026413385.1/data/genome/GCA_026413385.1.fna, results/GCA_026413385.1/data/genome/GCA_026413385.1.fna.fai, results/GCA_026413385.1/data/genome/GCA_026413385.1.dict, results/GCA_026413385.1/intervals/master_interval_list.list
+    output: results/GCA_026413385.1/intervals/db_intervals/intervals.txt, results/GCA_026413385.1/intervals/db_intervals
+    log: logs/GCA_026413385.1/db_intervals/log.txt
+    jobid: 2
+    benchmark: benchmarks/GCA_026413385.1/db_intervals/benchmark.txt
+    reason: Missing output files: results/GCA_026413385.1/intervals/db_intervals/intervals.txt; Input files updated by another job: results/GCA_026413385.1/intervals/master_interval_list.list, results/GCA_026413385.1/data/genome/GCA_026413385.1.fna.fai, results/GCA_026413385.1/data/genome/GCA_026413385.1.fna, results/GCA_026413385.1/data/genome/GCA_026413385.1.dict
+    wildcards: refGenome=GCA_026413385.1
+    resources: mem_mb=1197, mem_mib=1142, disk_mb=1197, disk_mib=1142, tmpdir=<TBD>
+DAG of jobs will be updated after completion.
+
+Submitted job 2 with external jobid '65339256'.
+[Fri Aug  4 20:33:42 2023]
+Error in rule create_db_intervals:
+    jobid: 2
+    input: results/GCA_026413385.1/data/genome/GCA_026413385.1.fna, results/GCA_026413385.1/data/genome/GCA_026413385.1.fna.fai, results/GCA_026413385.1/data/genome/GCA_026413385.1.dict, results/GCA_026413385.1/intervals/master_interval_list.list
+    output: results/GCA_026413385.1/intervals/db_intervals/intervals.txt, results/GCA_026413385.1/intervals/db_intervals
+    log: logs/GCA_026413385.1/db_intervals/log.txt (check log file(s) for error details)
+    conda-env: /n/holyscratch01/davis_lab/dwhite/snpArcher/.snakemake/conda/abb557a3ad4a64770d7de92755c7727c_
+    shell:
+        
+        gatk SplitIntervals -L results/GCA_026413385.1/intervals/master_interval_list.list         -O results/GCA_026413385.1/intervals/db_intervals -R results/GCA_026413385.1/data/genome/GCA_026413385.1.fna -scatter 270         -mode INTERVAL_SUBDIVISION         --interval-merging-rule OVERLAPPING_ONLY &> logs/GCA_026413385.1/db_intervals/log.txt
+        ls -l results/GCA_026413385.1/intervals/db_intervals/*scattered.interval_list > results/GCA_026413385.1/intervals/db_intervals/intervals.txt
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    cluster_jobid: 65339256
+
+Error executing rule create_db_intervals on cluster (jobid: 2, external: 65339256, jobscript: /n/holyscratch01/davis_lab/dwhite/snpArcher/.snakemake/tmp.viry2rtf/snakejob.create_db_intervals.2.sh). For error details see the cluster log and the log files of the involved rule(s).
+checkpoint create_db_intervals. 
+
+------------------------------
+There is no output to the folder *results/*genome*/intervals/db_intervals
+The master_interval_list.list has been created. 
+The log file is attached - the slurm parameters and command are printed and then it is blank.
+When I run the java command as it is printed in the log file, all *scattered.interval_list files are created.
+[log.txt](https://github.com/harvardinformatics/snpArcher/files/12281330/log.txt)
+
+",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/114
+I_kwDOD2XAe85uIcdA,Error in rule compute_d4,CLOSED,2023-08-12T03:25:46Z,2023-08-21T17:27:22Z,2023-08-21T17:27:22Z,"I have just installed and executed snakemake -d .test/ecoli --cores 1 --use-conda according to the documentation. Now, I am encountering an error.
+[Sat Aug 12 10:16:32 2023]
+Error in rule compute_d4:
+    jobid: 16
+    input: results/GCA_000008865.2/bams/SAMN12676327_final.bam, results/GCA_000008865.2/bams/SAMN12676327_final.bam.bai
+    output: results/GCA_000008865.2/callable_sites/SAMN12676327.mosdepth.global.dist.txt, results/GCA_000008865.2/callable_sites/SAMN12676327.per-base.d4, results/GCA_000008865.2/callable_sites/SAMN12676327.mosdepth.summary.txt
+    log: logs/GCA_000008865.2/compute_d4/SAMN12676327.txt (check log file(s) for error details)
+    conda-env: /ifs1/User/lengliang/yaozc/biosoft/snpArcher/.test/ecoli/.snakemake/conda/5cf955825d414ab876796f0a36009909_
+    shell:
+        mosdepth --d4 -t 1 results/GCA_000008865.2/callable_sites/SAMN12676327 results/GCA_000008865.2/bams/SAMN12676327_final.bam &> logs/GCA_000008865.2/compute_d4/SAMN12676327.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-08-12T101149.778379.snakemake.log
+
+shell:
+snakemake -d .test/ecoli --cores 1 --use-conda
+
+What should I do to address this issue?",weirdo-onlooker,https://github.com/harvardinformatics/snpArcher/issues/119
+I_kwDOD2XAe85ukBuo,environment can't be solved,CLOSED,2023-08-17T12:48:14Z,2023-08-25T15:12:48Z,2023-08-25T15:12:48Z,"Hello,
+I am trying to run snpArcher on the FAS RC shared and intermediate partitions. I had successfully run the pipeline in the past, including the successful completion of building DAG jobs and creating conda environments, but now this error is being thrown. I cloned the repo yesterday. Python v.3.10.9
+
+Here is the err output:
+_________________________
+
+Building DAG of jobs...
+Creating conda environment workflow/envs/sambamba.yml...
+Downloading and installing remote packages.
+Environment for /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/rules/../envs/sambamba.yml created (location: .snakemake/conda/d4ce070fd79db94c65585010a0cbce48_)
+Creating conda environment workflow/envs/fastq2bam.yml...
+Downloading and installing remote packages.
+Environment for /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/rules/../envs/fastq2bam.yml created (location: .snakemake/conda/bd19444950f6d7198b2ef10e58fef0ed_)
+Creating conda environment workflow/modules/qc/envs/admixture.yml...
+Downloading and installing remote packages.
+Environment for /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/modules/qc/envs/admixture.yml created (location: .snakemake/conda/ad396f6e3cc1ce39333877d85180f4bf_)
+Creating conda environment workflow/envs/bam2vcf.yml...
+Downloading and installing remote packages.
+Environment for /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/rules/../envs/bam2vcf.yml created (location: .snakemake/conda/abb557a3ad4a64770d7de92755c7727c_)
+Creating conda environment workflow/modules/qc/envs/qc.yml...
+Downloading and installing remote packages.
+Environment for /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/modules/qc/envs/qc.yml created (location: .snakemake/conda/c7684bc535c943ed3559cb1e722b5d3d_)
+Creating conda environment workflow/modules/qc/envs/subsample_snps.yml...
+Downloading and installing remote packages.
+CreateCondaEnvironmentException:
+Could not create conda environment from /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/modules/qc/envs/subsample_snps.yml:
+Command:
+mamba env create --quiet --file ""/n/holyscratch01/davis_lab/dwhite/snpArcher/.snakemake/conda/d31b712157bc989ecf6e7c76da46d03f_.yaml"" --prefix ""/n/holyscratch01/davis_lab/dwhite/snpArcher/.snakemake/conda/d31b712157bc989ecf6e7c76da46d03f_""
+Output:
+error    libmamba Could not open lockfile '/n/sw/Mambaforge-22.11.1-4/pkgs/cache/cache.lock'
+error    libmamba Could not open lockfile '/n/sw/Mambaforge-22.11.1-4/pkgs/cache/cache.lock'
+Could not solve for environment specs
+Encountered problems while solving:
+  - nothing provides libcblas >=3.8.0,<4.0a0 needed by bcftools-1.12-h3f113a9_0
+
+The environment can't be solved, aborting the operation
+
+__________________
+Thanks for the help,
+Dawson",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/120
+I_kwDOD2XAe85uw1kF,"Error ""incorrect cell order"" in gatk_db_import step",CLOSED,2023-08-20T22:47:57Z,2023-11-14T17:05:47Z,2023-11-14T17:05:47Z,"Hi, 
+
+I am getting a recurring error when I run the gatk_db_import rule. db intervals  0-140 are created correctly, but all intervals above 140 error out. The full error is ""Incorrect cell order found - cells must be in column major order. Previous cell: [ 28, 1004820318 ] current cell: [ 28, 1004820318 ].
+The most likely cause is unexpected data in the input file:
+(a) A VCF file has two lines with the same genomic position
+(b) An unsorted CSV file
+(c) Malformed VCF file (or malformed index)
+See point 2 at: https://github.com/Intel-HLS/GenomicsDB/wiki/Importing-VCF-data-into-GenomicsDB#organizing-your-data""
+
+The cell numbers are different every time, but other than that it is the same error. 
+
+I have tried deleting the gvcf's and rerunning from there, as well as deleting the problematic db_intervals as well as the db_mapfile and rerunning from there. I also tried using bcftools to normalize the vcf's as recommended in the github page linked in the error, but got an improper gzip header error when I ran the pipeline with normalized files. The output from normalizing the files also did not show that it resolved any duplicated positions, so it seems like that is not the problem. 
+
+Attached is a log file from gatk_db_import showing the error. 
+
+Thanks for your help! 
+[0220.txt](https://github.com/harvardinformatics/snpArcher/files/12389343/0220.txt)
+
+
+",reedjohnkenny,https://github.com/harvardinformatics/snpArcher/issues/121
+I_kwDOD2XAe85wN5f3,Error with qc_admixture rule,CLOSED,2023-09-05T20:44:35Z,2023-10-19T14:47:01Z,2023-10-19T14:47:01Z,"Hi all, 
+I have been trying to get the qc_admixture rule to successfully run but keep running into the same error (included below). I assume based on the error message that I need to adjust the chromosome names in some way. Do you all have any recommendations on how I can solve this error? Any assistance you can provide would be very appreciated. 
+Thanks,
+Sam
+
+My chromosome names look like so: 
+>contig_17684__unscaffolded
+>PGA_scaffold2__141_contigs__length_26305080
+
+
+Error message - 
+[Tue Sep  5 16:24:25 2023]
+rule qc_admixture:
+    input: results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bed, results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim, results/Lerg_assemblyV1/Q
+C/Lerg_assemblyV1_E.fam
+    output: results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.3.Q, results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.2.Q
+    jobid: 0
+    reason: Missing output files: results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.2.Q, results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.3.Q
+    wildcards: refGenome=Lerg_assemblyV1, prefix=Lerg_assemblyV1_E
+    resources: mem_mb=8000, mem_mib=7630, disk_mb=1000, disk_mib=954, tmpdir=/tmp
+
+Activating conda environment: .snakemake/conda/5aabced42964e6ba7d428c98db59b6af_
+****                   ADMIXTURE Version 1.3.0                  ****
+****                    Copyright 2008-2015                     ****
+****           David Alexander, Suyash Shringarpure,            ****
+****                John  Novembre, Ken Lange                   ****
+****                                                            ****
+****                 Please cite our paper!                     ****
+****   Information at www.genetics.ucla.edu/software/admixture  ****
+
+Random seed: 43
+Point estimation method: Block relaxation algorithm
+Convergence acceleration algorithm: QuasiNewton, 3 secant conditions
+Point estimation will terminate when objective function delta < 0.0001
+Estimation of standard errors disabled; will compute point estimates only.
+Invalid chromosome code!  Use integers.
+[Tue Sep  5 16:24:25 2023]
+Error in rule qc_admixture:
+    jobid: 0
+    input: results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bed, results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim, results/Lerg_assemblyV1/Q
+C/Lerg_assemblyV1_E.fam
+    output: results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.3.Q, results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.2.Q
+    conda-env: /n/holyscratch01/trible_lab/Users/sarsenault/snpArcher/.snakemake/conda/5aabced42964e6ba7d428c98db59b6af_
+    shell:
+        
+        mv results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim.orig
+        paste <(cut -f 1 results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim.orig | sed 's/[^0-9]//g') <(cut -f 2,3,4,5,6 results/Lerg_asse
+mblyV1/QC/Lerg_assemblyV1_E.bim.orig) >  results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bim
+
+        admixture results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bed 2
+        admixture results/Lerg_assemblyV1/QC/Lerg_assemblyV1_E.bed 3
+
+        mv ""Lerg_assemblyV1_E"".2.* results/Lerg_assemblyV1/QC
+        mv ""Lerg_assemblyV1_E"".3.* results/Lerg_assemblyV1/QC
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message",ArsenaultResearch,https://github.com/harvardinformatics/snpArcher/issues/122
+I_kwDOD2XAe85wPviu,Error in rule dedup,CLOSED,2023-09-06T04:23:46Z,2023-11-14T17:05:00Z,2023-11-14T17:04:59Z,"@erikenbody When I run Snakemake, one of the steps encountered an error, and both the error message and the server administrator indicated that the tmp cache was full. 
+
+How can I modify the tmp directory? 
+
+Note that after modifying the cache directory in the config.yaml file, there was no change in the behavior.",weirdo-onlooker,https://github.com/harvardinformatics/snpArcher/issues/123
+I_kwDOD2XAe85xvjAC,issues during the usage,CLOSED,2023-09-22T06:48:02Z,2023-09-22T12:49:10Z,2023-09-22T12:49:10Z,"I have constructed two CSV files, which are processed with two different sets of resequencing data against the same REF. 
+
+However, when I run the second CSV file, it tells me ""Nothing to be done (all requested files are present and up to date).""
+
+ I suspect there may be an issue with my setup. Here's how I run it: The two .csv files are named PNG1.csv and PNG2.csv, with the following contents:
+
+**PNG1.csv**:
+```
+BioSample,refGenome,refPath,Run,fq1,fq2
+pangolin,GCF_030020395.1,/sdc1/home/hk/pangolin/dataset/Ref_genome/ncbi_dataset/data/GCF_030020395.1/GCF_030020395.1_mManPen7.hap1_genomic.fna,PNG1,/sdc1/home/hk/pangolin/dataset/second/PNG1_1.clean.fq.gz,/sdc1/home/hk/pangolin/dataset/second/PNG1_2.clean.fq.gz
+```
+
+**PNG2.csv**:
+```
+BioSample,refGenome,refPath,Run,fq1,fq2
+pangolin,GCF_030020395.1,/sdc1/home/hk/pangolin/dataset/Ref_genome/ncbi_dataset/data/GCF_030020395.1/GCF_030020395.1_mManPen7.hap1_genomic.fna,PNG2,/sdc1/home/hk/pangolin/dataset/second/PNG2_1.clean.fq.gz,/sdc1/home/hk/pangolin/dataset/second/PNG2_2.clean.fq.gz
+```
+
+Before running each CSV, I change the ""samples"" in workflow/modules/xx/config/config.yaml to the specified .csv file. Is there an issue with my execution process?",weirdo-onlooker,https://github.com/harvardinformatics/snpArcher/issues/125
+I_kwDOD2XAe85zyk_s,Python 3.12 seems to break get_reads(),CLOSED,2023-10-13T21:02:25Z,2023-11-14T17:07:10Z,2023-11-14T17:07:10Z,"The get_reads() [function](https://github.com/harvardinformatics/snpArcher/blob/adfcbe7e12199388b677106d69c65acabcb50372/workflow/rules/common.smk#L120) in common.smk results in spaces being inserted into fastq files in Python 3.12:
+
+```
+File path ' results/data/fastq/ GCF_001447265.1 / SAMN04029017 / SRR2240703 _1.fastq.gz ' starts with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+``` 
+
+This probably has to do with changes to how f-strings are parsed in Python 3.12 (see [here](https://docs.python.org/3/whatsnew/3.12.html#whatsnew312-pep701)), but it is not obvious to me exactly how things are going wrong. ",tsackton,https://github.com/harvardinformatics/snpArcher/issues/132
+I_kwDOD2XAe850Ry0z,add ploidy to haplotype caller,CLOSED,2023-10-18T22:38:35Z,2023-10-19T19:28:33Z,2023-10-19T19:28:32Z,,cademirch,https://github.com/harvardinformatics/snpArcher/issues/133
+I_kwDOD2XAe851_xdg,Error in rule index_reference,CLOSED,2023-11-06T17:16:02Z,2023-11-06T23:47:32Z,2023-11-06T23:47:32Z,"Hi there!
+
+I'm facing an issue while running snpArcher, but I cannot determine the exact source of the problem.
+
+Here is the error that shows where the pipeline stopped:
+
+> Error in rule index_reference:
+>     jobid: 4
+>     input: results/my_ref/data/genome/my_ref.fna
+>     output: results/my_ref/data/genome/my_ref.fna.sa, results/my_ref/data/genome/my_ref.fna.pac, results/my_ref/data/genome/my_ref.fna.bwt, results/my_ref/data/genome/my_ref.fna.ann, results/my_ref/data/genome/my_ref.fna.amb, results/my_ref/data/genome/my_ref.fna.fai, results/my_ref/data/genome/my_ref.dict
+>     log: logs/my_ref/index_ref/log.txt (check log file(s) for error details)
+>     conda-env: /scratch/proj/snpArcher/.snakemake/conda/2148483cdd1a94b3909c4d1d2a1b87b3_
+>     shell:
+>         
+>         bwa index results/my_ref/data/genome/my_ref.fna 2> logs/my_ref/index_ref/log.txt
+>         samtools faidx results/my_ref/data/genome/my_ref.fna --output results/my_ref/data/genome/my_ref.fna.fai >> logs/my_ref/index_ref/log.txt
+>         samtools dict results/my_ref/data/genome/my_ref.fna -o results/my_ref/data/genome/my_ref.dict >> logs/my_ref/index_ref/log.txt 2>&1
+>         
+>         (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+> 
+> Removing output files of failed job index_reference since they might be corrupted:
+> results/my_ref/data/genome/my_ref.fna.sa, results/my_ref/data/genome/my_ref.fna.pac, results/my_ref/data/genome/my_ref.fna.bwt, results/my_ref/data/genome/my_ref.fna.ann, results/my_ref/data/genome/my_ref.fna.amb
+> [Wed Nov  1 23:02:23 2023]
+> Finished job 61.
+> 18 of 68 steps (26%) done
+> Removing temporary output results/my_ref/genmap/my_ref.genmap.bedgraph.
+> Shutting down, this might take some time.
+> Exiting because a job execution failed. Look above for error message
+> Complete log: .snakemake/log/2023-11-01T211947.870896.snakemake.log
+
+
+And here is the end of `logs/my_ref/index_ref/log.txt` file:
+
+> [BWTIncConstructFromPacked] 440 iterations done. 3821549696 characters processed.
+> [BWTIncConstructFromPacked] 450 iterations done. 3843733744 characters processed.
+> [bwa_index] 1306.39 seconds elapse.
+> [bwa_index] Update BWT... 9.61 sec
+> [bwa_index] Pack forward-only FASTA... 7.67 sec
+> [bwa_index] Construct SA from BWT and Occ... 493.67 sec
+> [main] Version: 0.7.12-r1039
+> [main] CMD: bwa index results/my_ref/data/genome/my_ref.fna
+> [main] Real time: 1842.313 sec; CPU: 1830.568 sec
+
+
+I'm attaching the logs and config files here, just in case they prove to be useful. I'm attempting to analyze data for 8 individuals with ~10x coverage, a genome size about 2Gb, and a local reference genome file.
+[2023-11-01T211947.870896.snakemake.log](https://github.com/harvardinformatics/snpArcher/files/13270026/2023-11-01T211947.870896.snakemake.log)
+[config.txt](https://github.com/harvardinformatics/snpArcher/files/13270028/config.txt)
+[log.txt](https://github.com/harvardinformatics/snpArcher/files/13270029/log.txt)
+[resources.txt](https://github.com/harvardinformatics/snpArcher/files/13270030/resources.txt)
+[samples.csv](https://github.com/harvardinformatics/snpArcher/files/13270031/samples.csv)
+
+
+
+For running, inside a pbs job script, I just activate the snakemake env and ran: `snakemake --snakefile workflow/Snakefile --cores 32`
+
+For installation, since I already had a snakemake env, I simply cloned snpArcher, tested it using the ecoli dataset, and everything went well.
+
+Would you know what the problem could be?
+
+
+Thanks!
+Fer",ffertrindade,https://github.com/harvardinformatics/snpArcher/issues/140
+I_kwDOD2XAe852X5JI,Unintended whitespace in fastq paths.,CLOSED,2023-11-09T16:18:05Z,2023-11-14T17:03:45Z,2023-11-14T17:03:44Z,"Hi Team,
+
+I'm using SNPArcher on a resequencing dataset from NCBI SRA. I downloaded the SRA run table for 2 samples for testing purposes and made the necessary modifications as per the documentation. Upon execution of the pipeline I obtain the following error where whitespace is being inserted into the file paths of the read files. 
+
+`Building DAG of jobs...
+File path ' results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _1.fastq.gz ' starts with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path ' results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _1.fastq.gz ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path ' results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _2.fastq.gz ' starts with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+File path ' results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _2.fastq.gz ' ends with whitespace. This is likely unintended. It can also lead to inconsistent results of the file-matching approach used by Snakemake.
+MissingInputException in rule fastp in file /home/trevor/Desktop/snpArcher/workflow/rules/fastq.smk, line 34:
+Missing input files for rule fastp:
+	output: results/GCF_900626175.2/filtered_fastqs/SAMN19471810/SRR14708202_1.fastq.gz, results/GCF_900626175.2/filtered_fastqs/SAMN19471810/SRR14708202_2.fastq.gz, results/GCF_900626175.2/summary_stats/SAMN19471810/SRR14708202.fastp.out
+	wildcards: refGenome=GCF_900626175.2, sample=SAMN19471810, run=SRR14708202
+	affected files:
+     	results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _1.fastq.gz
+     	results/data/fastq/ GCF_900626175.2 / SAMN19471810 / SRR14708202 _2.fastq.gz
+`
+
+I'm not sure why this is happening. ",ChabbyTMD,https://github.com/harvardinformatics/snpArcher/issues/141
+I_kwDOD2XAe852sCRe,snakemake doesn't have access to mamba,CLOSED,2023-11-13T18:49:17Z,2024-03-05T17:23:25Z,2024-03-05T17:23:25Z,"Hello!
+
+Three of us at Princeton have independently run into the same problem that we encounter when trying to run the test on the ecoli data. We each followed the installation/setup instructions. I apologize for not having an error message.
+
+While mamba is installed within the snpArcher conda environment, for reasons I don't understand, snakemake doesn't have access to it for activating/managing the environments it creates. The problem is fixed by creating the snpArcher environment according to the tutorial, and then doing:
+
+`conda install -n snparcher -c conda-forge mamba`
+
+Just posting this here in case there's a more elegant solution for installation/setup for the  documentation. But, the additional conda command above could work for people in the meantime.",brian-arnold,https://github.com/harvardinformatics/snpArcher/issues/142
+I_kwDOD2XAe855miEk,Error in rule create_cov_bed: ModuleNotFoundError: No module named 'pyd4',CLOSED,2023-12-13T17:10:01Z,2024-12-12T13:45:31Z,2024-02-14T02:17:18Z,"Hello, I just set up snakemake and executed the ecoli test command within a login node and then again with the test partition on the FASRC server. The error is:
+
+Traceback (most recent call last):
+  File ""/n/holyscratch01/davis_lab/dwhite/snpArcher/.test/ecoli/.snakemake/scripts/tmpb53k8wei.create_coverage_bed.py"", line 5, in <module>
+    from pyd4 import D4File,D4Builder
+ModuleNotFoundError: No module named 'pyd4'
+[Wed Dec 13 10:30:55 2023]
+Error in rule create_cov_bed:
+    jobid: 14
+    input: results/GCA_000008865.2/summary_stats/all_cov_sumstats.txt, results/GCA_000008865.2/callable_sites/all_samples.d4
+    output: results/GCA_000008865.2/callable_sites/ecoli_test_callable_sites_cov.bed
+    conda-env: /n/holyscratch01/davis_lab/dwhite/snpArcher/.test/ecoli/.snakemake/conda/e6e860e6c3364a4f25a50109432a6090_
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-13T091938.314670.snakemake.log
+
+
+-The .snakemake directory to get the complete log does not exist. Please let me know if there are any logs you would like to see. Thanks for your attention.",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/144
+I_kwDOD2XAe8551Ex_,How to combine NCBI SRA with local data on samplesheet.csv?,CLOSED,2023-12-15T15:48:02Z,2024-01-09T21:18:14Z,2024-01-09T21:18:14Z,"Hello, I have some samples from the SRA that I would like to include along with the local fastqs. I have downloaded the metadata sample sheet from the SRA as directed but I am curious how to combine it with the samplesheet.csv created for the local files? I have attached a version of the sample sheet where I just included the SRA metadata that corresponds with the samplesheet columns created with your python script, so the fq1 and fq2 columns for the SRA are 'NaN'. Should this work?
+[test_SRA_samplesheet.csv](https://github.com/harvardinformatics/snpArcher/files/13687031/test_SRA_samplesheet.csv)
+Thanks for the help!",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/145
+I_kwDOD2XAe856pDSW,Unable to run test after installation,CLOSED,2023-12-27T16:44:59Z,2024-01-07T08:02:00Z,2023-12-29T05:00:17Z,"Dear authors,
+
+I installed snpArcher and snakemake last week and it works well. Today, I installed them on another device and ran:
+
+snakemake -d .test/ecoli --cores 1 --use-conda
+
+it gives me:
+
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/cli.py"", line 1895, in args_to_api
+    dag_api = workflow_api.dag(
+              ^^^^^^^^^^^^^^^^^
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/api.py"", line 326, in dag
+    return DAGApi(
+           ^^^^^^^
+  File ""<string>"", line 6, in __init__
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/api.py"", line 421, in __post_init__
+    self.workflow_api._workflow.dag_settings = self.dag_settings
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/api.py"", line 372, in _workflow
+    workflow.include(
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/workflow.py"", line 1363, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/scratch/users/nus/dbstq/snpArcher/workflow/Snakefile"", line 13, in <module>
+    else:
+  File ""/home/users/nus/dbstq/.conda/envs/snparcher/lib/python3.12/site-packages/snakemake/workflow.py"", line 1363, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/scratch/users/nus/dbstq/snpArcher/workflow/rules/fastq.smk"", line 10, in <module>
+    resources['get_fastq_pe']['threads']
+                            ^^^^^^^^^^^^^
+AttributeError: 'Workflow' object has no attribute 'default_remote_prefix'
+
+I wonder if this is an issue caused by a recent update of snakemake...
+
+Many thanks and best regards,
+
+Qian
+",qt37t247,https://github.com/harvardinformatics/snpArcher/issues/147
+I_kwDOD2XAe856pHtZ,Memory allocation problem on a slurm system,CLOSED,2023-12-27T17:06:37Z,2024-02-14T02:16:23Z,2024-02-14T02:16:23Z,"Hello,
+I was running the workflow for an extensive data set (over 800 samples) on a slrum platform (UPPMAX). I used the GATK approach with intervals. I got an error message like this:
+rule create_cov_bed:
+    input: results/GCA_009792885.1/summary_stats/all_cov_sumstats.txt, results/GCA_009792885.1/callable_sites/all_samples.d4
+    output: results/GCA_009792885.1/callable_sites/lark20231207_callable_sites_cov.bed
+    jobid: 2558
+    benchmark: benchmarks/GCA_009792885.1/covbed/lark20231207_benchmark.txt
+    reason: Missing output files: results/GCA_009792885.1/callable_sites/lark20231207_callable_sites_cov.bed; Input files updated by another job: results/GCA_009792885.1/summary_stats/all_cov_sumstats.txt, results/GCA_009792885.1/callable_sites/all_samples.d4
+    wildcards: refGenome=GCA_009792885.1, prefix=lark20231207
+    resources: mem_mb=448200, mem_mib=427437, disk_mb=448200, disk_mib=427437, tmpdir=<TBD>
+
+sbatch: error: Memory specification can not be satisfied
+sbatch: error: Batch job submission failed: Requested node configuration is not available
+Traceback (most recent call last):
+  File ""/crex/proj/uppstore2019097/nobackup/zongzhuang_larks_working/Final_variant_callinglarks/snpArcher/./profiles/slurm/slurm-submit.py"", line 59, in <module>
+    print(slurm_utils.submit_job(jobscript, **sbatch_options))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/crex/proj/uppstore2019097/nobackup/zongzhuang_larks_working/Final_variant_callinglarks/snpArcher/profiles/slurm/slurm_utils.py"", line 131, in submit_job
+    raise e
+  File ""/crex/proj/uppstore2019097/nobackup/zongzhuang_larks_working/Final_variant_callinglarks/snpArcher/profiles/slurm/slurm_utils.py"", line 129, in submit_job
+    res = subprocess.check_output([""sbatch""] + optsbatch_options + [jobscript])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/sw/apps/conda/latest/rackham/lib/python3.11/subprocess.py"", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/sw/apps/conda/latest/rackham/lib/python3.11/subprocess.py"", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['sbatch', '--partition=core', '--time=7-00:00:00', '--ntasks=8', '--output=logs/slurm/slurm-%j.out', '--account=naiss2023-5-278', '--mem=448200', '/crex/proj/uppstore2019097/nobackup/zongzhuang_larks_working/Final_variant_callinglarks/snpArcher/.snakemake/tmp.fi5cgg1q/snakejob.create_cov_bed.2558.sh']' returned non-zero exit status 1.
+Error submitting jobscript (exit code 1):
+
+Select jobs to execute...
+
+
+There is not enough memory on the slurm system. I'm not sure where the issue is, whether due to I didn't ask for large enough memory in the setting or the HPC simply cannot provide that much memory. Should I probably change the source code to ask for a larger memory allocation for the workflow from the beginning (e.g. more than 1000 nodes)?
+
+Besides, the whole workflow runs not that fast either; for the bam2vcf jobs, it reported a progress of 2% every 24 hours and obviously will go over the time limitation of the snakemake slurm job. Could you please give some suggestions on this? Thanks in advance. 
+
+Best,
+Zongzhuang ",Dictionary2b,https://github.com/harvardinformatics/snpArcher/issues/148
+I_kwDOD2XAe856uuTG,support snakemake >= 8.0,CLOSED,2023-12-29T05:01:17Z,2024-04-10T17:00:18Z,2024-04-10T17:00:18Z,Snakemake made some pretty big changes in their newest release. Seems to break a few things we depend on #147. Using this to document and fix,cademirch,https://github.com/harvardinformatics/snpArcher/issues/149
+I_kwDOD2XAe857d9aL,GATK starts before all bam files are ready,CLOSED,2024-01-09T00:55:55Z,2024-01-09T04:08:41Z,2024-01-09T04:08:41Z,"Dear developers, 
+
+I have 18 samples in my project and it seems GATK starts once a few alignments (bam files) are ready. 
+
+Is it possible to start the GATK (variants calling) once all the alignments are done? 
+
+Many thanks and best regards,
+
+Qian",qt37t247,https://github.com/harvardinformatics/snpArcher/issues/151
+I_kwDOD2XAe859jJhk,job execution failed at concat_gvcfs,CLOSED,2024-01-29T20:30:51Z,2024-02-14T02:15:35Z,2024-02-14T02:15:35Z,"Hello,
+The pipeline failed during concat_gvcfs, but many of the jobs for this rule had been completed successfully, so I am not sure what killed the pipeline. Can you please take a look at the err file?
+[err_ERY335-1.txt](https://github.com/harvardinformatics/snpArcher/files/14089237/err_ERY335-1.txt)
+
+Just in case this is part of the problem, I would like to explain that these data are a mix of SRA and local fastqs, and among the SRA data they are a mix of WGS together with a large majority of targeted-capture sequences for 500 genes. My goal is phylogenetic inference based on the 500 genes. My plan is to filter the final vcf to only include the coordinates of the target exons.
+
+Thank you for your help,
+Dawson",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/153
+I_kwDOD2XAe859tMkJ,issue with test run,CLOSED,2024-01-30T23:41:49Z,2024-02-06T18:32:27Z,2024-02-06T18:32:27Z,"Hi,
+
+I got this error message when I tried to run the test code:
+```
+snakemake -d .test/ecoli --cores 1 --use-conda
+```
+
+```
+[Tue Jan 30 16:31:01 2024]
+Error in rule create_db_intervals:
+    jobid: 21
+    input: results/GCA_003018455.1/data/genome/GCA_003018455.1.fna, results/GCA_003018455.1/data/genome/GCA_003018455.1.fna.fai, results/GCA_003018455.1/data/genome/GCA_003018455.1.dict, results/GCA_003018455.1/intervals/master_interval_list.list
+    output: results/GCA_003018455.1/intervals/db_intervals/intervals.txt, results/GCA_003018455.1/intervals/db_intervals
+    log: logs/GCA_003018455.1/db_intervals/log.txt (check log file(s) for error details)
+    conda-env: /fs/scratch/PAS1554/snpArcher/.test/ecoli/.snakemake/conda/ec2d2883921c842412450a0289e25d36_
+    shell:
+        
+        gatk SplitIntervals -L results/GCA_003018455.1/intervals/master_interval_list.list         -O results/GCA_003018455.1/intervals/db_intervals -R results/GCA_003018455.1/data/genome/GCA_003018455.1.fna -scatter 1         -mode INTERVAL_SUBDIVISION         --interval-merging-rule OVERLAPPING_ONLY &> logs/GCA_003018455.1/db_intervals/log.txt
+        ls -l results/GCA_003018455.1/intervals/db_intervals/*scattered.interval_list > results/GCA_003018455.1/intervals/db_intervals/intervals.txt
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job create_db_intervals since they might be corrupted:
+results/GCA_003018455.1/intervals/db_intervals
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-30T163042.968256.snakemake.log
+```
+
+Thanks
+",vitorpavinato,https://github.com/harvardinformatics/snpArcher/issues/154
+I_kwDOD2XAe85-zCN8,Are genotype likelihoods available?,CLOSED,2024-02-09T14:56:29Z,2024-02-09T15:40:48Z,2024-02-09T15:40:48Z,"Hello, 
+Just a question for you all. Are the genotype likelihoods calculated by HaplotypeCaller accessible somewhere in the output?
+Thanks,
+Dawson",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/156
+I_kwDOD2XAe85_SmBp,encountered same error when setting cores and executing snpArcher on my local machine,CLOSED,2024-02-15T03:45:34Z,2024-02-20T17:11:43Z,2024-02-20T17:11:43Z,"the environment is ok when using ""_**snakemake -d .test/ecoli --cores 1 --use-conda**_"" to test.
+
+I tried to set up the cores using ""_**snakemake --cores 8 --use-conda**_"" and encountered an error.
+![image](https://github.com/harvardinformatics/snpArcher/assets/135928920/44d60c21-e863-46bc-b3b2-b0c6f39e4d8a)
+l also executed my own data, and the same error was happened.
+The error message relates to three files: reference.smk, common.smk, and Snakefile. However, I did not change these files.  l only changed the parameters of resources.ymal.
+
+The code is on the main disk and the sequencing files are on another disk. For testing purposes, I chose three samples to build the sample table.
+![image](https://github.com/harvardinformatics/snpArcher/assets/135928920/714ac6d2-938f-45c4-a085-e1a3f84a9141)
+
+Best wishes
+
+
+",yuan-circle-long,https://github.com/harvardinformatics/snpArcher/issues/158
+I_kwDOD2XAe85_-27N,Remove fastq and bam files,CLOSED,2024-02-21T16:25:50Z,2024-03-05T17:20:22Z,2024-03-05T17:20:22Z,"Dear snpArcher's developpers,
+
+I have one question about your usefull software.
+I'm working on a small server where I can't store all the fastq at the same time. Because snpArcher seems to run mapping and snp_calling on each samples independently, I was wondering if it would be possible for me to add some lines to get rid of the fastq and bam files after the snp_calling, before merging all samples together ? Or will it breake everything ?
+
+Thank you for your answer.
+
+Max Brault",max-hence,https://github.com/harvardinformatics/snpArcher/issues/159
+I_kwDOD2XAe86AwvPF,KeyError in file ,CLOSED,2024-02-29T03:05:19Z,2024-03-05T17:24:32Z,2024-03-05T17:24:32Z,"Hello, when I was running the program, I temporarily needed to delete a part of the content. I made modifications in config/x.csv, and then encountered this error: KeyError in file /data_32T/yaozc/snpArcher_1/workflow/rules/common.smk, line 31: nan.
+
+File ""/data_32T/yaozc/snpArcher_1/workflow/Snakefile"", line 63, in <module>
+File ""/data_32T/yaozc/snpArcher_1/workflow/rules/common.smk"", line 31, in get_output
+File ""/home/hello/.local/lib/python3.8/site-packages/pandas/core/series.py"", line 1007, in getitem
+File ""/home/hello/.local/lib/python3.8/site-packages/pandas/core/series.py"", line 1116, in _get_value
+File ""/home/hello/.local/lib/python3.8/site-packages/pandas/core/indexes/multi.py"", line 2812, in get_loc
+File ""/home/hello/.local/lib/python3.8/site-packages/pandas/core/indexes/multi.py"", line 3187, in _get_level_indexer
+
+How should I handle this?",weirdo-onlooker,https://github.com/harvardinformatics/snpArcher/issues/160
+I_kwDOD2XAe86Bd8SO,issues with packages for creating enviornment,CLOSED,2024-03-06T17:56:57Z,2024-03-07T18:57:34Z,2024-03-07T18:57:34Z,"Hello,
+
+First, thank you for developing what looks to be a beautiful workflow. It will be so nice to have all of the data processing tools in one place and one pipeline. I've been having trouble getting the snparcher snakemake workflow to run after almost a full day of troubleshooting, so here I am. I haven't kept track of everything that I've tried, and I won't try to recount it all here, but I'm wondering if providing a few basics of my OS and a few settings can help guide the process.
+
+I'm using a computer with a Mac M2 chip Sonoma 14.1.1. I'm running a zsh terminal using Rosetta. 
+
+I installed Miniforge by running the Miniforge3-MacOSX-arm64.sh script. I noticed on the Miniforge Github that the mac silicon chips have not been tested, so maybe this is the issue? For what it's worth, I'm able to create a mamba environment and activate it via the instructed commands:
+
+```shell
+mamba create -c conda-forge -c bioconda -n snparcher ""snakemake==7.32.4"" ""python==3.11.4""
+mamba activate snparcher
+``` 
+
+I then clone the Github repo from harvardinformatics, as instructed. When I go to run the test script I get some version of the following error:
+
+```shell
+(snparcher) jason@Jasons-MacBook-Air snpArcher % snakemake -d .test/ecoli --cores 1 --use-conda
+Building DAG of jobs...
+Creating conda environment /Users/jason/snpArcher/workflow/rules/../envs/cov_filter.yml...
+Downloading and installing remote packages.
+CreateCondaEnvironmentException:
+Could not create conda environment from /Users/jason/snpArcher/workflow/rules/../envs/cov_filter.yml:
+Command:
+mamba env create --quiet --file ""/Users/jason/snpArcher/.test/ecoli/.snakemake/conda/065fe9be415abd326cf869269e4d29fa_.yaml"" --prefix ""/Users/jason/snpArcher/.test/ecoli/.snakemake/conda/065fe9be415abd326cf869269e4d29fa_""
+Output:
+Could not solve for environment specs
+The following packages are incompatible
+├─ bedtools 2.30.0  does not exist (perhaps a typo or a missing channel);
+├─ binutils does not exist (perhaps a typo or a missing channel);
+├─ d4tools >=0.3.4  does not exist (perhaps a typo or a missing channel);
+└─ gcc does not exist (perhaps a typo or a missing channel).
+``` 
+Interestingly, if I run the same command several times in a row, each time the error gives a different list of incompatible packages. If I try to install any one package manually with conda, I get the error message below saying the package is not available:
+
+```shell
+(snparcher) jason@Jasons-MacBook-Air snpArcher % conda install gcc
+Channels:
+ - conda-forge
+ - bioconda
+Platform: osx-arm64
+Collecting package metadata (repodata.json): done
+Solving environment: failed
+
+PackagesNotFoundError: The following packages are not available from current channels:
+
+  - gcc
+
+Current channels:
+
+  - https://conda.anaconda.org/conda-forge
+  - https://conda.anaconda.org/bioconda/noarch
+
+To search for alternate channels that may provide the conda package you're
+looking for, navigate to
+
+    https://anaconda.org
+
+and use the search bar at the top of the page.
+``` 
+
+Is this an issue with my using an M2 chip, or maybe some other issue?
+
+Thank you in advance for any guidance you can provide!
+Jason",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/161
+I_kwDOD2XAe86Bia7e,option for allele merging - VCF2TileDBException,CLOSED,2024-03-07T08:33:00Z,2024-04-14T16:26:32Z,2024-04-14T16:26:32Z,"Hi there,
+Thanks for developing and supporting such an efficient and self-contained pipeline! My most recent run (94 samples) failed at gvcf2DB with an error (log [0647.txt](https://github.com/harvardinformatics/snpArcher/files/14521134/0647.txt)):
+
+`terminate called after throwing an instance of 'VCF2TileDBException'
+  what():  VCF2TileDBException : Incorrect cell order found - cells must be in column major order. Previous cell: [ 33, 487571965 ] current cell: [ 33, 487571965 ].
+The most likely cause is unexpected data in the input file:
+(a) A VCF file has two lines with the same genomic position
+(b) An unsorted CSV file
+(c) Malformed VCF file (or malformed index)`
+
+A quick [search](https://gatk.broadinstitute.org/hc/en-us/community/posts/4403240487451-GenomicsDBImport-variants-have-the-same-position-in-Gvcf-file) suggests this is a common issue with GATK that can be addressed by running `bcftools norm` to merge the alleles at the same position prior to GATK. Is there any way to do this or otherwise address this issue in the snpArcher workflow (such as by manually fixing the vcfs and handing them back to the pipeline)? Thanks for your help, very excited to be close to a finished run and first results.",gghill,https://github.com/harvardinformatics/snpArcher/issues/163
+I_kwDOD2XAe86Bo-MZ,sambamba error,CLOSED,2024-03-07T23:24:25Z,2024-03-11T20:45:25Z,2024-03-09T18:18:09Z,"Hi guys,
+
+Sorry to be back so soon. After successfully getting the workflow to run with one sample with very low coverage this morning, I ran it again on two samples. These samples are a more comparable size (~3Gb fastq.gz's) to what I will be running in my upcoming job. The workflow ran great, all the way to sambamba markdup when I got the below error for each file.
+
+This is essentially a wild guess, but maybe it could have something to do with the fact that I manually input phony SRR values in the 'Run' column of the sample sheet - '1' and '2'? I may be grasping at straws there.
+
+```shell
+[Thu Mar  7 14:49:18 2024]
+Error in rule dedup:
+    jobid: 13
+    input: results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.HMR.176/2.bam, results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.HMR.176/2.bam.bai
+    output: results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.HMR.176_final.bam, results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.HMR.176_final.bam.bai
+    log: logs/dmAquExim1.NCBI.p_ctg.fasta/sambamba_dedup/Aj.HMR.176.txt (check log file(s) for error details)
+    conda-env: /Users/johns/test2/.snakemake/conda/58112a9020cd88eaf08ff65323aecdd4_
+    shell:
+        sambamba markdup -t 1 results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.HMR.176/2.bam results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.HMR.176_final.bam 2> logs/dmAquExim1.NCBI.p_ctg.fasta/sambamba_dedup/Aj.HMR.176.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Thu Mar  7 14:50:07 2024]
+Error in rule dedup:
+    jobid: 9
+    input: results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.CL.39/1.bam, results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.CL.39/1.bam.bai
+    output: results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.CL.39_final.bam, results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.CL.39_final.bam.bai
+    log: logs/dmAquExim1.NCBI.p_ctg.fasta/sambamba_dedup/Aj.CL.39.txt (check log file(s) for error details)
+    conda-env: /Users/johns/test2/.snakemake/conda/58112a9020cd88eaf08ff65323aecdd4_
+    shell:
+        sambamba markdup -t 1 results/dmAquExim1.NCBI.p_ctg.fasta/bams/preMerge/Aj.CL.39/1.bam results/dmAquExim1.NCBI.p_ctg.fasta/bams/Aj.CL.39_final.bam 2> logs/dmAquExim1.NCBI.p_ctg.fasta/sambamba_dedup/Aj.CL.39.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-03-07T143624.867501.snakemake.log
+``` 
+
+```shell
+sambamba 0.8.0
+ by Artem Tarasov and Pjotr Prins (C) 2012-2020
+    LDC 1.19.0 / DMD v2.089.1 / LLVM7.0.0 / bootstrap LDC - the LLVM D compiler (0.17.6)
+
+finding positions of the duplicate reads in the file...
+sambamba-markdup: Cannot open file `/var/folders/xn/7zzgchrs3n749xgsx_qxz6vm0000gt/T/sambamba-pid17229-markdup-jmqr/PairedEndsInfocopa2' in mode `w+' (Too many open files)
+``` 
+
+Any ideas?
+
+Thank you!
+Jason",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/165
+I_kwDOD2XAe86Bu2_s,Warning rule qc_qc_plots stops the pipeline,CLOSED,2024-03-08T18:20:32Z,2024-03-08T22:42:59Z,2024-03-08T22:42:58Z,"I'm facing a situation where this rule qc_qc_plots runs correctly, creating the qc_dashboard_interactive.html file, but apparently cannot rename/move the location of this file.
+
+> [Fri Mar  1 06:25:55 2024]
+> rule qc_qc_plots:
+>     input: results/EryCar/QC/eryth_17ind_20240125.eigenvec, results/EryCar/QC/eryth_17ind_20240125.eigenval, results/EryCar/QC/eryth_17ind_20240125.idepth,>
+>     output: results/EryCar/QC/eryth_17ind_20240125_qc.html
+>     jobid: 143
+>     reason: Missing output files: results/EryCar/QC/eryth_17ind_20240125_qc.html; Input files updated by another job: results/EryCar/QC/eryth_17ind_2024012>
+>     wildcards: refGenome=EryCar, prefix=eryth_17ind_20240125
+>     resources: tmpdir=/var/tmp/pbs.9754.blmsvfhpc04.itv.local, mem_mb=2000, mem_mib=1908
+> 
+> Activating conda environment: .snakemake/conda/2163aaf3dd1da2622e91d2dc19ffce36_
+> Waiting at most 5 seconds for missing files.
+> MissingOutputException in rule qc_qc_plots in file /mnt/gen/opt/softwares/snpArcher/workflow/modules/qc/Snakefile, line 164:
+> Job 143  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the >
+> results/EryCar/QC/eryth_17ind_20240125_qc.html
+> Shutting down, this might take some time.
+> Exiting because a job execution failed. Look above for error message
+
+Since the workflow is in a different folder (to which I don't have total access) where my output files are located, I think the pipeline can't move/rename the QC HTML. Is that correct? I can request the administrator to manually give me access, but this isn't the best solution considering other people from my institution will use the pipeline. Do you have any suggestions on that? Maybe creating this HTML directly in the expected output folder?
+
+Thanks!",ffertrindade,https://github.com/harvardinformatics/snpArcher/issues/166
+I_kwDOD2XAe86FZTbU,Question: Can I disable MarkDuplicates?,CLOSED,2024-04-11T15:23:45Z,2024-04-15T16:02:17Z,2024-04-14T16:28:15Z,"Hello,
+I am interested in using this pipeline with GBS data, but the identical start and end sequences make most reads get flagged as duplicates. Is there a simple way to disable mark duplicates or would it require significant alterations to downstream code?
+Thanks!",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/172
+I_kwDOD2XAe86FnGJc,slurm command not appearing on docs page,CLOSED,2024-04-13T15:22:38Z,2024-04-13T17:58:02Z,2024-04-13T16:30:40Z,"Hi guys,
+
+I'm looking to start a run with the new slurm configurations, and looking at the docs page, it shows the below:
+
+<img width=""733"" alt=""Screenshot 2024-04-13 at 8 21 45 AM"" src=""https://github.com/harvardinformatics/snpArcher/assets/36780700/a598e490-6724-403a-b224-0be2a75d1e81"">
+
+It looks like the command is missing. If so, would you mind sending it to me and/or updating the docs page. Thanks so much!
+
+Jason
+",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/176
+I_kwDOD2XAe86GMQrH,KeyError while setting up dry run,CLOSED,2024-04-18T19:01:31Z,2024-04-18T19:53:18Z,2024-04-18T19:53:18Z,"Hi!
+While setting up a dry run to check if everything looks fine, I get the following error.
+
+KeyError in file /mnt/hdd/Naman/Naman_wgs_trial/snparcher_trial/snpArcher/workflow/rules/common.smk, line 25:
+'resource_config'
+  File ""/mnt/hdd/Naman/Naman_wgs_trial/snparcher_trial/snpArcher/workflow/rules/common.smk"", line 25, in <module>
+
+I was wondering if there is something wrong in the way I have setup my config.yaml and sample sheet.
+
+![image](https://github.com/harvardinformatics/snpArcher/assets/81860485/cb5299a7-a4a3-47d2-8728-c02a430bb194)
+",spilornis-ng,https://github.com/harvardinformatics/snpArcher/issues/180
+I_kwDOD2XAe86GMyc2,"Key Error: workflow/rules/common.smk, line 25: 'resource_config'",CLOSED,2024-04-18T20:26:11Z,2024-04-19T18:56:22Z,2024-04-19T18:56:21Z,"Hello again,
+Getting this error in the new update. I have read through the docs but I realize there could be some new different resource config setting within the new snakemake v8 settings that I am failing to modify. The E. coli test works but the dry run for my samplesheet is failing. I have uninstalled and reinstalled with the same results.
+
+##Snakemake version
+8.10.7
+
+##Logs
+snakemake --workflow-profile ./profiles/slurm --dry-run
+
+Using workflow specific profile ./profiles/slurm for setting default command line arguments.
+snpArcher: Using Snakemake 8.10.7
+
+/n/holyscratch01/davis_lab/dwhite/panDryas/snpArcher/workflow/snparcher_utils/init.py:12: FutureWarning: Downcasting behavior in replace is deprecated and will be removed in a future version. To retain the old behavior, explicitly call result.infer_objects(copy=False). To opt-in to the future behavior, set pd.set_option('future.no_silent_downcasting', True)
+samples = pd.read_table(config[""samples""], sep="","", dtype=str).replace(' ', '_', regex=True)
+
+KeyError in file /n/holyscratch01/davis_lab/dwhite/panDryas/snpArcher/workflow/rules/common.smk, line 25:
+'resource_config'
+File ""/n/holyscratch01/davis_lab/dwhite/panDryas/snpArcher/workflow/rules/common.smk"", line 25, in
+
+##Minimal example
+mamba create -c conda-forge -c bioconda -n snparcher ""snakemake>=8"" ""python==3.11.4""
+mamba activate snparcher
+git clone https://github.com/harvardinformatics/snpArcher.git
+cd snpArcher
+snakemake -d .test/ecoli --cores 1 --use-conda # works just fine
+
+##changed config/config.yaml
+sample data sheet: added
+final prefix: s391v1
+bigtemp: ./tmp
+maf: 0.02
+missingness: 0.9
+
+pip install snakemake-executor-plugin-slurm
+
+##Changed cluster parameters
+nano profiles/slurm/config.yaml
+retries: 3
+slurm_partition: ""shared""
+runtime: 500
+
+##modify fastp, add lines to shell command: /n/holyscratch01/davis_lab/dwhite/snpArcher/workflow/rules/fastq.smk
+""--trim_front1=5 ""
+""--trim_front2=5 ""
+""--cut_mean_quality=20""
+""--cut_front ""
+""--cut_tail ""
+""--trim_poly_g ""
+""--trim_poly_x ""
+""--length_required=35 ""
+
+conda activate snparcher
+snakemake --workflow-profile ./profiles/slurm --snakefile ./workflow/Snakefile --notemp --dryrun 
+snakemake --workflow-profile ./profiles/slurm --dry-run # also fails
+
+##Thanks for your attention! Dawson",Erythroxylum,https://github.com/harvardinformatics/snpArcher/issues/182
+I_kwDOD2XAe86GM90d,Error in rule fastp,CLOSED,2024-04-18T20:55:44Z,2024-04-26T08:39:40Z,2024-04-26T08:39:02Z,"Hi!
+Thanks for fixing the previous issue! 
+However, when I am running the code now I get the following error. The log files generated are also empty. 
+
+Error in rule fastp:
+    jobid: 29
+    input: /mnt/hdd/Naman/Naman_wgs_trial/2_clean/Turdus_simillimus_bourdilloni_B0937_R1_paired.fq.gz, /mnt/hdd/Naman/Naman_wgs_trial/2_clean/Turdus_simillimus_bourdilloni_B0937_R2_paired.fq.gz
+    output: results/GCA_013186435.1_ASM1318643v1_genomic/filtered_fastqs/Turdus_simillimus_bourdilloni_B0937/1_1.fastq.gz, results/GCA_013186435.1_ASM1318643v1_genomic/filtered_fastqs/Turdus_simillimus_bourdilloni_B0937/1_2.fastq.gz, results/GCA_013186435.1_ASM1318643v1_genomic/summary_stats/Turdus_simillimus_bourdilloni_B0937/1.fastp.out
+    log: logs/GCA_013186435.1_ASM1318643v1_genomic/fastp/Turdus_simillimus_bourdilloni_B0937/1.txt (check log file(s) for error details)
+    conda-env: /mnt/hdd/Naman/Naman_wgs_trial/snparcher_trial/trial_project/.snakemake/conda/f949ce1fdb59cb745f9cb17349cd25d7_
+    shell:
+        fastp --in1 /mnt/hdd/Naman/Naman_wgs_trial/2_clean/Turdus_simillimus_bourdilloni_B0937_R1_paired.fq.gz --in2 /mnt/hdd/Naman/Naman_wgs_trial/2_clean/Turdus_simillimus_bourdilloni_B0937_R2_paired.fq.gz --out1 results/GCA_013186435.1_ASM1318643v1_genomic/filtered_fastqs/Turdus_simillimus_bourdilloni_B0937/1_1.fastq.gz --out2 results/GCA_013186435.1_ASM1318643v1_genomic/filtered_fastqs/Turdus_simillimus_bourdilloni_B0937/1_2.fastq.gz --thread 1 --detect_adapter_for_pe -j /dev/null -h /dev/null 2> results/GCA_013186435.1_ASM1318643v1_genomic/summary_stats/Turdus_simillimus_bourdilloni_B0937/1.fastp.out > logs/GCA_013186435.1_ASM1318643v1_genomic/fastp/Turdus_simillimus_bourdilloni_B0937/1.txt
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Fri Apr 19 02:18:12 2024]
+Removing output files of failed job fastp since they might be corrupted:
+results/GCA_013186435.1_ASM1318643v1_genomic/summary_stats/Turdus_simillimus_bourdilloni_B0937/1.fastp.out
+",spilornis-ng,https://github.com/harvardinformatics/snpArcher/issues/183
+I_kwDOD2XAe86GZwlj,concat_gvcfs error,CLOSED,2024-04-21T04:46:14Z,2024-04-22T15:49:44Z,2024-04-21T16:59:23Z,"Hi guys,
+
+I'm trying to run snparcher on UCSC's Hummingbird and I'm getting the following error at the concat_gvcfs step:
+`Activating conda environment: .snakemake/conda/751f1c8c63aac0dc4eda59d9299aee0a_
+Writing to /tmp
+Checking the headers and starting positions of 50 files
+Merging 62 temporary files
+[E::hts_open_format] Failed to open file ""/tmp/00001.bcf"" : No such file or directory
+Could not read /tmp/00001.bcf: No such file or directory
+Cleaning
+[Sat Apr 20 20:37:32 2024]
+Error in rule concat_gvcfs:
+    jobid: 0
+`
+2/32 of the samples ran concatenated successfully, but I'm getting error for all of the others. I did have to re-start the workflow at a couple points as I figured out how many jobs I could submit simultaneously. Not sure if that would be an issue. Below is an example of a full log file in case it's helpful.
+[441285.log](https://github.com/harvardinformatics/snpArcher/files/15050675/441285.log)
+
+I'm running the following configuration in the slurm profile:
+[config.yaml.txt](https://github.com/harvardinformatics/snpArcher/files/15050681/config.yaml.txt)
+
+This is the slurm script I submit:
+[nli3_june23.slurm.txt](https://github.com/harvardinformatics/snpArcher/files/15050685/nli3_june23.slurm.txt)
+
+Let me know if I should provide any other info.
+
+Thank you!
+Jason
+
+
+",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/185
+I_kwDOD2XAe86G-jn6,feature request: give a bcftools option,OPEN,2024-04-25T21:42:35Z,2024-04-25T23:04:44Z,,"hey @tsackton and the snpArcher team-
+
+our lab group recently came across [this paper](https://www.nature.com/articles/s41598-022-15563-2) suggesting that `bcftools` might be better suited for non-model organism SNP calling.
+
+Would you all have any bandwidth to implement a `bcftools` snp calling option in addition to what the pipeline has now? 
+
+thanks for considering this!
+Andy",andrewkern,https://github.com/harvardinformatics/snpArcher/issues/186
+I_kwDOD2XAe86HBTgE,Rule Exception in rule bam2gvcf - Attribute error,CLOSED,2024-04-26T08:38:16Z,2024-04-28T16:46:35Z,2024-04-28T16:46:35Z,"![image](https://github.com/harvardinformatics/snpArcher/assets/81860485/0bbf26b4-ef44-4ac6-8820-df03cb698e1b)
+
+Hi! 
+I am getting the above error while running the workflow. I checked the config.yaml in default profile and can't really pin-point the issue.
+Any help will be great!
+
+Thanks!",spilornis-ng,https://github.com/harvardinformatics/snpArcher/issues/187
+I_kwDOD2XAe86H_CMo,Adding additional samples to pipeline,OPEN,2024-05-06T18:09:19Z,2024-05-06T18:59:50Z,,"Hi Tim and Cade,
+
+I have a question about adding additional samples to pipeline. I have previously run ~150 polar bear samples through snpArcher, which worked great, and created a multi-sample vcf file for use in downstream analyses. Now I have another 150 samples that I would like to add to the original set. They were sequenced at separate times, at at slightly lower coverage (10x instead of 15x). Is it possible to set snpArcher up in such a way that I can filter, align, etc the new samples and add them in to the merged vcf of the old samples? Sorry if this has an obvious answer, but I have gone through all the docs and I'm still uncertain. I have attached my sample sheet from the initial run in case that is helpful. 
+
+Thanks!
+Ruth
+[PB1_samples.csv](https://github.com/harvardinformatics/snpArcher/files/15224710/PB1_samples.csv)
+",ruthrivkin,https://github.com/harvardinformatics/snpArcher/issues/190
+I_kwDOD2XAe86H_QDj,running QC module,CLOSED,2024-05-06T18:42:38Z,2024-07-03T18:27:00Z,2024-07-03T18:26:59Z,"Hi guys,
+
+I'm trying to re-run the QC module on some snpArcher output from CCGP data. I can't seem to figure out the below error, as the input file is indeed in place. 
+
+`Assuming unrestricted shared filesystem usage.
+Building DAG of jobs...
+MissingInputException in rule vcftools_individuals in file /Users/johns/snpArcher/workflow/modules/qc/Snakefile, line 26:
+Missing input files for rule vcftools_individuals:
+    output: results/A.eximia/QC/32-Aquilegia.idepth, results/A.eximia/QC/32-Aquilegia.imiss, results/A.eximia/QC/32-Aquilegia.samps.txt, results/A.eximia/QC/32-Aquilegia.FILTER.summary, results/A.eximia/QC/32-Aquilegia.het
+    wildcards: refGenome=A.eximia, prefix=32-Aquilegia
+    affected files:
+        results/A.eximia/32-Aquilegia_raw.vcf.gz`
+
+I have the snpArcher repo in my home directory and the file structure of my project directory is as follows:
+`(snparcher) johns@lscgtech2016mbpro16 snparcher_output % ls -lhR
+total 0
+drwxr-xr-x  5 johns  staff   160B May  6 10:52 results
+
+./results:
+total 0
+drwxr-xr-x  13 johns  staff   416B May  6 11:36 A.eximia
+drwxr-xr-x   4 johns  staff   128B May  6 10:53 og_output
+
+./results/A.eximia:
+total 334018176
+-rwx------@   1 johns  staff   168K Apr 13 14:54 32-Aquilegia_README.pdf
+-rwx------    1 johns  staff   5.0M Apr 13 14:54 32-Aquilegia_callable_sites.bed
+-rwx------    1 johns  staff   137G Apr 13 16:21 32-Aquilegia_raw.vcf.gz
+-rwx------    1 johns  staff   518K Apr 13 14:54 32-Aquilegia_raw.vcf.gz.tbi
+drwxr-xr-x    3 johns  staff    96B May  6 11:20 QC
+-rwx------    1 johns  staff    23G Apr 18 14:16 all_samples.d4
+drwxr-xr-x    4 johns  staff   128B May  6 10:36 config
+-rwx------@   1 johns  staff     0B Apr 13 16:21 done_downloading.txt
+drwx------  792 johns  staff    25K Apr 13 15:18 gvcfs
+
+./results/A.eximia/QC:
+total 0
+
+./results/A.eximia/config:
+total 72
+-rw-r--r--@ 1 johns  staff   431B May  6 11:31 config.yaml
+-rw-r--r--@ 1 johns  staff    32K May  6 10:36 postprocess_samples.csv
+
+./results/A.eximia/gvcfs:
+total 483970536
+-rwx------  1 johns  staff   493M Apr 13 14:55 Aquexi_Ae101.g.vcf.gz
+-rwx------  1 johns  staff   152K Apr 13 14:54 Aquexi_Ae101.g.vcf.gz.tbi
+-rwx------  1 johns  staff   653M Apr 13 14:56 Aquexi_Ae102.g.vcf.gz
+-rwx------  1 johns  staff   156K Apr 13 14:54 Aquexi_Ae102.g.vcf.gz.tbi
+-rwx------  1 johns  staff   810M Apr 13 14:56 Aquexi_Ae103.g.vcf.gz
+-rwx------  1 johns  staff   161K Apr 13 14:54 Aquexi_Ae103.g.vcf.gz.tbi
+-rwx------  1 johns  staff   657M Apr 13 14:56 Aquexi_Ae104.g.vcf.gz
+-rwx------  1 johns  staff   157K Apr 13 14:54 Aquexi_Ae104.g.vcf.gz.tbi
+etc.
+etc.
+etc.
+`
+
+My config.yaml file looks like:
+`##############################
+# Variables you need to change
+##############################
+
+samples: ""config/postprocess_samples.csv""  # name of the sample metadata CSV 
+final_prefix: ""32-Aquilegia"" # prefix for final output files
+tmp_dir: ""tmp/""
+
+##############################
+# Variables you *might* need to change
+##############################
+
+## QC options ##
+nClusters: 3
+GoogleAPIKey:
+min_depth: 2
+scaffolds_to_exclude:
+`
+I added the scaffolds_to_exclude line because I got an error previously.
+
+Thank you in advance for any guidance you can provide!
+Jason
+
+Thanks in advance for any help you can give!
+Jason",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/191
+I_kwDOD2XAe86JAo68,Collect fastp stats fails for samples with multiple runs per BioSample,CLOSED,2024-05-15T19:07:46Z,2024-05-16T13:41:52Z,2024-05-16T13:41:16Z,"We aggregate multi-run fastp output just using cat. However, with the switch to using json output for fastp, this produces invalid json when there are multiple runs for a biosample. 
+
+Therefore, we need an alternate way to do the fastp aggregation. Probably, this means rewriting the collectFastpStats function but open to other ideas. 
+
+Thanks to @Erythroxylum (Dawson White) for uncovering this.",tsackton,https://github.com/harvardinformatics/snpArcher/issues/193
+I_kwDOD2XAe86JKdX5,qc html,OPEN,2024-05-16T19:49:52Z,2024-11-12T13:37:08Z,,"Hey guys,
+
+It's your favorite noob here. I took the filtered.vcf file from the snpArcher output, pruned it for LD using plink, and now I'm trying to feed it back through the qc module to re-produce the nice QC figures you guys coded. If all else fails I can produce my own figures, but your workflow is much cleaner than anything I would write.
+
+I changed the Snakefile a bit, as you can see below. Namely, I deleted the subsample_snps rule and adjusted the plink rule to call the right file.
+
+The qc module runs well until it gets to producing the maps, which is the output I'm most interested in at this point. My workingdir has the config and results directories in it, and the results directory has both the data and summary_stats directories. My command line and output with the error message is below. If I comment out lines 531-573 on the qc_dashboard_interactive.Rmd file the module runs to completion, but neither map is produced.
+
+Thank you in advance for any help you can give!
+Jason
+
+`
+(snparcher) johns@ qc2 % snakemake -s /Users/johns/snpArcher/workflow/modules/qc2/Snakefile -d . --profile /Users/johns/snpArcher/profiles/default --cores 22
+Using profile /Users/johns/snpArcher/profiles/default for setting default command line arguments.
+Assuming unrestricted shared filesystem usage.
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /opt/homebrew/bin/bash
+Provided cores: 22
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count
+--------  -------
+all             1
+qc_plots        1
+total           2
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu May 16 12:06:54 2024]
+localrule qc_plots:
+    input: results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.eigenvec, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.eigenval, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.idepth, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.dist, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.dist.id, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.king, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.imiss, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.3.Q, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.2.Q, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_fai_tmp.txt, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.bed, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.bim, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.fam, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_bam_sumstats.txt, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.FILTER.summary, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.het, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.fna.fai, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.coords.txt
+    output: results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_qc.html
+    jobid: 1
+    reason: Updated input files: results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.coords.txt
+    wildcards: refGenome=20240328.dmAquExim1.NCBI.hap2, prefix=32-Aquilegia
+    resources: mem_mb=2000, mem_mib=1908, disk_mb=1000, disk_mib=954, tmpdir=/var/folders/xn/7zzgchrs3n749xgsx_qxz6vm0000gt/T, mem_mb_reduced=1800
+
+Activating conda environment: .snakemake/conda/e70e9ce0dad747af639b891b79732a30_
+
+
+processing file: qc_dashboard_interactive.Rmd
+  |...............................................    |  92% [unnamed-chunk-15]
+Quitting from lines 531-575 [unnamed-chunk-15] (qc_dashboard_interactive.Rmd)
+Error in `is.finite()`:
+! default method not implemented for type 'list'
+Backtrace:
+  1. plotly::ggplotly(...)
+  2. plotly:::ggplotly.ggplot(...)
+  3. plotly::gg2list(...)
+  4. plotly (local) ggplotly_build(p)
+  5. base::lapply(data, ggfun(""scales_transform_df""), scales = scales)
+     ...
+ 11. ggplot2 (local) f(..., self = self)
+ 12. base::lapply(df[aesthetics], self$transform)
+ 13. ggplot2 (local) FUN(X[[i]], ...)
+ 14. ggplot2 (local) f(..., self = self)
+ 15. ggplot2:::check_transformation(x, new_x, self$scale_name, axis)
+                                                                                                             
+Execution halted
+RuleException:
+CalledProcessError in file /Users/johns/snpArcher/workflow/modules/qc2/Snakefile, line 172:
+Command 'source /Applications/miniforge3/bin/activate '/Users/johns/temp/ccgp_popgen/qc2/.snakemake/conda/e70e9ce0dad747af639b891b79732a30_'; set -euo pipefail;  Rscript --vanilla /Users/johns/temp/ccgp_popgen/qc2/.snakemake/scripts/tmppnkqgn4z.qc_dashboard_render.R' returned non-zero exit status 1.
+[Thu May 16 12:07:20 2024]
+Error in rule qc_plots:
+    jobid: 1
+    input: results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.eigenvec, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.eigenval, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.idepth, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.dist, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.dist.id, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.king, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.imiss, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.3.Q, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.2.Q, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_fai_tmp.txt, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.bed, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.bim, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.fam, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_bam_sumstats.txt, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.FILTER.summary, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.het, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.fna.fai, results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia.coords.txt
+    output: results/20240328.dmAquExim1.NCBI.hap2/QC/32-Aquilegia_qc.html
+    conda-env: /Users/johns/temp/ccgp_popgen/qc2/.snakemake/conda/e70e9ce0dad747af639b891b79732a30_
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-05-16T120653.069723.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
+
+`
+
+Altered Snakefile:
+`
+configfile: ""config/config.yaml""
+include: ""common.smk""
+
+
+samples = snparcher_utils.parse_sample_sheet(config)
+REFGENOME = samples['refGenome'].unique().tolist()
+
+rule all:
+    input:
+        expand(""results/{refGenome}/QC/{prefix}_qc.html"", refGenome=REFGENOME, prefix=config['final_prefix'])
+
+rule check_fai:
+    """"""
+    checks fai file for numeric first column, then do not run plink and rest of workflow if they are all numeric
+    """"""
+    input:
+        vcf = ""results/{refGenome}/{prefix}_raw.vcf.gz"",
+        fai = ""results/{refGenome}/data/genome/{refGenome}.fna.fai"",
+    output:
+        faiResult = ""results/{refGenome}/QC/{prefix}_fai_tmp.txt""
+    resources:
+        mem_mb = lambda wildcards, attempt: attempt * 1000
+    run:
+        check_contig_names(input.fai, output.faiResult)
+
+rule vcftools_individuals:
+    input:
+        vcf = ""results/{refGenome}/{prefix}_raw.vcf.gz""
+    output:
+        depth = ""results/{refGenome}/QC/{prefix}.idepth"",
+        miss = ""results/{refGenome}/QC/{prefix}.imiss"",
+        samps = ""results/{refGenome}/QC/{prefix}.samps.txt"",
+        summ = ""results/{refGenome}/QC/{prefix}.FILTER.summary"",
+        het = ""results/{refGenome}/QC/{prefix}.het""
+    conda:
+        ""envs/vcftools_individuals.yml""
+    params:
+        prefix = lambda wc, input: os.path.join(input.vcf.rsplit(""/"", 1)[0], ""QC"", wc.prefix),
+        min_depth = config[""min_depth""]
+    log:
+        ""logs/{refGenome}/QC/vcftools_individuals/{prefix}.txt""
+    resources:
+        mem_mb = lambda wildcards, attempt: attempt * 4000
+    shell:
+        """"""
+        vcftools --gzvcf {input.vcf} --FILTER-summary --out {params.prefix} &> {log}
+        vcftools --gzvcf {input.vcf} --out {params.prefix} --depth &>> {log}
+        vcftools --gzvcf {input.vcf} --out {params.prefix} --het &>> {log}
+        vcftools --gzvcf {input.vcf} --out {params.prefix} --missing-indv &>> {log}
+        tail -n +2 {output.depth} | awk '$3>{params.min_depth} {{print $1}}'> {output.samps} 2>> {log}
+        """"""
+
+rule plink:
+    """"""
+    Call plink PCA.
+    """"""
+    input:
+        vcf = ""results/{refGenome}/QC/{prefix}_filtered.vcf.gz"",
+        faiResult = ""results/{refGenome}/QC/{prefix}_fai_tmp.txt""        
+    params:
+        prefix = lambda wc, input: input.vcf.replace(""_filtered.vcf.gz"", """")
+    output: 
+        bed = ""results/{refGenome}/QC/{prefix}.bed"",
+        bim = ""results/{refGenome}/QC/{prefix}.bim"",
+        fam = ""results/{refGenome}/QC/{prefix}.fam"",
+        eigenvec = ""results/{refGenome}/QC/{prefix}.eigenvec"",
+        eigenval = ""results/{refGenome}/QC/{prefix}.eigenval"",
+        dist = ""results/{refGenome}/QC/{prefix}.dist"",
+        distid = ""results/{refGenome}/QC/{prefix}.dist.id"",
+        king = ""results/{refGenome}/QC/{prefix}.king""
+    conda:
+        ""envs/plink.yml""
+    log:
+        ""logs/{refGenome}/QC/plink/{prefix}.txt""
+    resources:
+        mem_mb = lambda wildcards, attempt: attempt * 2000
+    shell:
+        #plink 2 for king relatedness matrix (robust to structure) and plink 1.9 for distance matrix
+        """"""
+        plink2 --vcf {input.vcf} --pca 10 --out {params.prefix} --allow-extra-chr --autosome-num 95 --make-bed --make-king square --const-fid --bad-freqs &> {log}
+        plink --vcf {input.vcf} --out {params.prefix} --allow-extra-chr --autosome-num 95 --distance square --const-fid &>> {log}
+        """"""
+
+rule setup_admixture:
+    """"""
+    admixture requires all chromosome names to be integers, this sets them to be 1:n
+    """"""
+    input:
+        bim = ""results/{refGenome}/QC/{prefix}.bim"",
+        fai = ""results/{refGenome}/data/genome/{refGenome}.fna.fai"",
+    output:
+        bim = ""results/{refGenome}/QC/{prefix}.bim_fixed"",
+        bim_back = ""results/{refGenome}/QC/{prefix}.bim.orig""
+    script:
+        ""scripts/contigs4admixture.py""
+
+rule admixture:
+    """"""
+    Call Admixture. First, make a bim file that has no charecters in the chromosomes
+    """"""
+    input:
+        bed = ""results/{refGenome}/QC/{prefix}.bed"",
+        bim = ""results/{refGenome}/QC/{prefix}.bim"",
+        fam = ""results/{refGenome}/QC/{prefix}.fam"",
+        bim_fixed = ""results/{refGenome}/QC/{prefix}.bim_fixed"",
+        bim_back = ""results/{refGenome}/QC/{prefix}.bim.orig""
+    output:
+        admix = ""results/{refGenome}/QC/{prefix}.3.Q"",
+        admix2 = ""results/{refGenome}/QC/{prefix}.2.Q""
+    params:
+        outdir = lambda wc, input: input.bed.rsplit(""/"", 1)[0]
+    log:
+        ""logs/{refGenome}/QC/admixture/{prefix}.txt""
+    resources:
+        mem_mb = lambda wildcards, attempt: attempt * 4000
+    conda:
+        ""envs/admixture.yml""
+    shell:
+        """"""
+        mv {input.bim_fixed} {input.bim} 2> {log}
+
+        admixture {input.bed} 2 &>> {log}
+        admixture {input.bed} 3 &>> {log}
+
+        mv ""{wildcards.prefix}"".2.* {params.outdir} &>> {log}
+        mv ""{wildcards.prefix}"".3.* {params.outdir} &>> {log}
+        """"""
+
+rule generate_coords_file:
+    output: 
+        ""results/{refGenome}/QC/{prefix}.coords.txt""
+    run:
+        out_df = samples.loc[(samples['refGenome'] == wildcards.refGenome)][[""BioSample"", ""long"", ""lat""]]
+        out_df.drop_duplicates(""BioSample"", inplace=True)
+        out_df.dropna(subset=[""long"", ""lat""], thresh=1, inplace=True)
+        out_df.to_csv(output[0], index=False, sep=""\t"", header=False)
+
+rule qc_plots:
+    """"""
+    Call plotting script
+    """"""
+    input:
+        eigenvec = ""results/{refGenome}/QC/{prefix}.eigenvec"",
+        eigenval = ""results/{refGenome}/QC/{prefix}.eigenval"",
+        depth = ""results/{refGenome}/QC/{prefix}.idepth"",
+        dist = ""results/{refGenome}/QC/{prefix}.dist"",
+        distid = ""results/{refGenome}/QC/{prefix}.dist.id"",
+        king = ""results/{refGenome}/QC/{prefix}.king"",
+        miss = ""results/{refGenome}/QC/{prefix}.imiss"",
+        admix3 = ""results/{refGenome}/QC/{prefix}.3.Q"",
+        admix2 = ""results/{refGenome}/QC/{prefix}.2.Q"",
+        faiResult = ""results/{refGenome}/QC/{prefix}_fai_tmp.txt"",
+        bed = ""results/{refGenome}/QC/{prefix}.bed"",
+        bim = ""results/{refGenome}/QC/{prefix}.bim"",
+        fam = ""results/{refGenome}/QC/{prefix}.fam"",
+        sumstats = ""results/{refGenome}/QC/{prefix}_bam_sumstats.txt"",
+        summ = ""results/{refGenome}/QC/{prefix}.FILTER.summary"",
+        het = ""results/{refGenome}/QC/{prefix}.het"",
+        fai = ""results/{refGenome}/QC/{prefix}.fna.fai"",
+        coords = get_coords_if_available
+    params:
+        prefix = lambda wc, input: input.het[:-4],
+        nClusters = config['nClusters'],
+        GMKey = config['GoogleAPIKey']
+    resources:
+        mem_mb = lambda wildcards, attempt: attempt * 2000
+    output: 
+        qcpdf = ""results/{refGenome}/QC/{prefix}_qc.html""
+    conda:
+        ""envs/qc.yml""
+    script:
+        ""scripts/qc_dashboard_render.R""
+`
+",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/195
+I_kwDOD2XAe86JSait,fastq.smk,CLOSED,2024-05-17T17:54:27Z,2024-05-18T04:39:58Z,2024-05-18T04:39:58Z,"Hi,
+I've run snpArcher on a dataset successfully before. Then, I started to work on a new dataset and nothing is working anymore, I did exactly the same everything, after copying and updating the config and sample list files. Tried to run the first dataset and it doesn't work anymore either. I've downloaded the newest version with Snakemake 8 and I get the same error below. The test dataset works though! 
+
+KeyError in file /gpfs/fs7/grdi/genarcc/wp3/annat/snpArcher/workflow/rules/fastq.smk, line 45:
+'sort_reads'
+  File ""/gpfs/fs7/grdi/genarcc/wp3/annat/snpArcher/workflow/Snakefile"", line 7, in <module>
+  File ""/gpfs/fs7/grdi/genarcc/wp3/annat/snpArcher/workflow/rules/fastq.smk"", line 45, in <module>
+
+Do you have any idea what might be going on? Here I attach my more recent sample file.
+Thanks!
+[samples_chum_snparcher_cov1.8.csv](https://github.com/harvardinformatics/snpArcher/files/15355290/samples_chum_snparcher_cov1.8.csv)
+
+
+",atigano,https://github.com/harvardinformatics/snpArcher/issues/196
+I_kwDOD2XAe86J1TZx,AttributeError,CLOSED,2024-05-23T09:43:46Z,2024-07-03T18:27:28Z,2024-07-03T18:27:28Z,"Hi, when i running snpArcher, the run result shows error:
+
+AttributeError in file /data_32T/yaozc/snpArcher_1/workflow/rules/fastq.smk, line 6:
+'Workflow' object has no attribute 'default_remote_prefix'
+  File ""/data_32T/yaozc/snpArcher_1/workflow/rules/fastq.smk"", line 6, in <module>
+
+here is my command:
+`nohup snakemake --use-conda --core 16 > logs/PNG_sequencing_20240523_1.log 2>&1 &
+tail -f  logs/PNG_sequencing_20240523_1.log`
+
+I checked the file fastq.smk and there are no syntax errors. Then i  reset the file about snpArcher, it also have some problem:
+
+subprocess.CalledProcessError: Command 'conda info --json' returned non-zero exit status 127.
+
+here is my command:
+
+`snakemake -d .test/ecoli --core 12 --use-conda`
+
+Thanks
+",OsmanthusZhang,https://github.com/harvardinformatics/snpArcher/issues/197
+I_kwDOD2XAe86KfZ-q,Error with big dataset and slurm,OPEN,2024-05-29T14:32:11Z,2024-05-30T22:27:34Z,,"Dear snparcher developers,
+
+I encounter errors when I run the pipeline on real size datasets. 
+I get this kind of message during bam2gvcf, gvcf2DB, DB2vcf or concat_gvcfs.
+
+```
+Error in rule DB2vcf:
+    message: SLURM-job '12919779' failed, SLURM status is: 'FAILED'For further error details see the cluster/cloud log and the log files of the involved rule(s).
+    jobid: 2590
+    input: results/GCA_015227805.2/genomics_db_import/DB_L0224.tar, results/GCA_015227805.2/data/genome/GCA_015227805.2.fna, results/GCA_015227805.2/data/genome/GCA_015227805.2.fna.fai, results/GCA_015227805.2/data/genome/GCA_015227805.2.dict
+    output: results/GCA_015227805.2/vcfs/intervals/L0224.vcf.gz, results/GCA_015227805.2/vcfs/intervals/L0224.vcf.gz.tbi
+    log: logs/GCA_015227805.2/gatk_genotype_gvcfs/0224.txt, /scratch/mbrault/snpcalling/hrustica/.snakemake/slurm_logs/rule_DB2vcf/GCA_015227805.2_0224/12919779.log (check log file(s) for error details)
+    conda-env: /scratch/mbrault/snpcalling/hrustica/.snakemake/conda/040e922e8494c7bc027131fb77bc2d6d_
+    shell:
+        
+        tar -xf results/GCA_015227805.2/genomics_db_import/DB_L0224.tar
+        gatk GenotypeGVCFs             --java-options '-Xmx180000m -Xms180000m'             -R results/GCA_015227805.2/data/genome/GCA_015227805.2.fna             --heterozygosity 0.005             --genomicsdb-shared-posixfs-optimizations true             -V gendb://results/GCA_015227805.2/genomics_db_import/DB_L0224             -O results/GCA_015227805.2/vcfs/intervals/L0224.vcf.gz             --tmp-dir <TBD> &> logs/GCA_015227805.2/gatk_genotype_gvcfs/0224.txt
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    external_jobid: 12919779
+
+Trying to restart job 2590.
+```
+
+Here are logs linked to this job : 
+- /scratch/mbrault/snpcalling/hrustica/.snakemake/slurm_logs/rule_DB2vcf/GCA_015227805.2_0224/12919779.log : 
+[example_job12919779.log](https://github.com/harvardinformatics/snpArcher/files/15485715/example_job12919779.log)
+
+- logs/GCA_015227805.2/gatk_genotype_gvcfs/0224.txt
+[example_0224.txt](https://github.com/harvardinformatics/snpArcher/files/15485718/example_0224.txt)
+
+- full log
+[full_log.txt](https://github.com/harvardinformatics/snpArcher/files/15485852/full_log.txt)
+
+- config file
+[config.txt](https://github.com/harvardinformatics/snpArcher/files/15485871/config.txt)
+
+
+I gave you here an example with a detailed log but most of the time, for bam2gvcf or concat_gvcfs rules, logs are empty and I can't find any clue to understand the error.
+
+At first sight I would have said that it's a memory error cause the job can restart and work the second or third time.
+But sometimes even with a huge amount of memory the job doesn't work.
+And what worries me is that, I recently tried with an other cluster that has a more recent slurm version and, even if I have the same errors, after the 2nd or 3rd try jobs end up being successul and the pipeline runs until the end.
+
+My main question is then : Is your pipeline set up with a specific version of slurm ?
+Or do I need to better set ""minNmer"", ""num_gvcf_intervals"", ""db_scatter_factor"" parameters to improve the handling of big dataset ?
+
+Tell me if you need more informations.
+
+Thanks a lot !
+
+Maxence Brault",max-hence,https://github.com/harvardinformatics/snpArcher/issues/198
+I_kwDOD2XAe86LigYl,Error with running the command ,CLOSED,2024-06-07T19:57:21Z,2024-06-12T04:01:32Z,2024-06-12T04:01:32Z,"Hi there,
+
+when we are trying to run the command we are encountering this error. 
+
+<img width=""1171"" alt=""image"" src=""https://github.com/harvardinformatics/snpArcher/assets/158214436/ce8d2ac2-38a4-452b-986f-9068d940d5fe"">
+
+the sample sheet is set up as:
+```
+BioSample,refGenome,refPath,fq1,fq2
+SS3_S143,sclscl_ref,/home/sharma267/project1/GCF_000146945.2_ASM14694v2_genomic.fna,/home/sharma267/project1/SS3_S143_L008_R1_001.fastq.gz,/home/sharma267/project1/SS3_S143_L008_R2_001.fastq.gz
+```
+
+and config.yaml looks like this:
+<img width=""841"" alt=""image"" src=""https://github.com/harvardinformatics/snpArcher/assets/158214436/bb168292-2e79-4ff5-bc7e-5a6ff90d2448"">
+
+Also tried putting the reference genome and its path to the config.yaml file but it gives the same error. 
+ 
+We are unable to figure out root of the problem. Could you please help me here?
+Please let me know if more information is needed. 
+Thanks in advance.
+Amit
+",AmitSharma267,https://github.com/harvardinformatics/snpArcher/issues/200
+I_kwDOD2XAe86LqOOW,Error in rule sort_gatherVcfs,CLOSED,2024-06-10T07:33:56Z,2024-06-11T01:07:01Z,2024-06-11T01:07:01Z,"Dear snparcher developers,
+
+I encounter an error rule sort_gatherVcfs when I run the pipeline. The information is as follows:
+============================================
+Checking the headers and starting positions of 1634 files
+[E::hts_idx_load3] Could not load local index file 'results/GCA_013397395.1/vcfs/intervals/filtered_L1020.vcf.gz.tbi' : Too many open files
+Failed to open results/GCA_013397395.1/vcfs/intervals/filtered_L1020.vcf.gz: could not load index
+[W::bgzf_read_block] EOF marker is absent. The input may be truncated
+[E::bcf_hdr_read] Failed to read BCF header
+Could not read VCF/BCF headers from -
+Cleaning
+==================
+I have tried to delete and regenerate this file, but the error remains.
+Many thanks
+Trying",daicy527,https://github.com/harvardinformatics/snpArcher/issues/201
+I_kwDOD2XAe86Lwn0f,Invalid --distribution specification?,CLOSED,2024-06-10T20:34:29Z,2024-06-11T17:41:35Z,2024-06-11T17:41:35Z,"Hi y'all,
+
+Working to get snpArcher running on our HPC and have bumped up against a problem with batch job submission through `snakemake-executor-plugin-slurm`.  The issue is that `sbatch` commands fail with a somewhat cryptic error that I can't track down:
+```
+SLURM job submission failed. The error message was sbatch: error: Invalid --distribution specification
+```
+I've submitted an issue upstream to the [`snakemake-executor-plugin-slurm`](https://github.com/snakemake/snakemake-executor-plugin-slurm/issues/103) crew to see if they have any suggestions and will post back if I get it sorted.
+
+Thanks,
+-brant
+",brantfaircloth,https://github.com/harvardinformatics/snpArcher/issues/202
+I_kwDOD2XAe86L8AVY,Error running the code,CLOSED,2024-06-12T04:11:06Z,2024-06-24T16:16:33Z,2024-06-24T16:16:32Z,"
+Hello there,
+
+I am having issues with running the code.
+
+My sample sheet looks like this-
+```
+SS3_S143,ss3_lib,sclscl_ref,/home/sharma267/project1/GCF_000146945.2_ASM14694v2_genomic.fna,1,/home/sharma267/project1/SS3_S143_L008_R1_001.fastq.gz,/home/sharma267/project1/SS3_S143_L008_R2_001.fastq.gz
+```
+
+I tried running this command
+```
+snakemake -s /home/sharma267/snpArcher/workflow/Snakefile -d /home/sharma267/project1 --cores 4
+```
+It shows me this error
+
+<img width=""1225"" alt=""image"" src=""https://github.com/harvardinformatics/snpArcher/assets/158214436/4ae32f68-3183-467d-b083-d545544785ab"">
+<img width=""1225"" alt=""image"" src=""https://github.com/harvardinformatics/snpArcher/assets/158214436/b09143bd-e8e7-46e4-9357-c64c6ea68de0"">
+
+Please let me know if more information is needed. 
+Thanks in advance.
+Amit",AmitSharma267,https://github.com/harvardinformatics/snpArcher/issues/203
+I_kwDOD2XAe86MW8qZ,Jobs fail to submit before snakemake fails,CLOSED,2024-06-15T12:33:06Z,2024-06-20T19:41:41Z,2024-06-20T19:41:41Z,"Hello!
+
+This may be more of a core `snakemake` issue than a `snpArcher` one, so I'll post an issue there as well.
+
+Basically, the pipeline seems to run fine up until the gvcf2DB step, after which job submission appears to hang for several hours (on `Select jobs to execute...`) before resuming, effectively submitting jobs in large, non-continuous chunks.
+
+This continued until the snakemake processed died after more than 12 hours of being stuck on `Select jobs to execute...` with this error message:
+
+```
+Traceback (most recent call last):
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/cli.py"", line 2078, in args_to_api
+    dag_api.execute_workflow(
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/api.py"", line 589, in execute_workflow
+    workflow.execute(
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/workflow.py"", line 1247, in execute
+    raise e
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/workflow.py"", line 1243, in execute
+    success = self.scheduler.schedule()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/scheduler.py"", line 279, in schedule
+    run = self.job_selector(needrun)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/scheduler.py"", line 603, in job_selector_ilp
+    self._solve_ilp(prob)
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/snakemake/scheduler.py"", line 655, in _solve_ilp
+    prob.solve(solver)
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/pulp/pulp.py"", line 1883, in solve
+    status = solver.actualSolve(self, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/pulp/apis/coin_api.py"", line 112, in actualSolve
+    return self.solve_CBC(lp, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/pulp/apis/coin_api.py"", line 128, in solve_CBC
+    vs, variablesNames, constraintsNames, objectiveName = lp.writeMPS(
+                                                          ^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/pulp/pulp.py"", line 1748, in writeMPS
+    return mpslp.writeMPS(
+           ^^^^^^^^^^^^^^^
+
+  File ""/lustre2/home/nt246_0001/ari22/miniforge3/envs/snparcher/lib/python3.11/site-packages/pulp/mps_lp.py"", line 229, in writeMPS
+    for v, value in c.items():
+
+KeyError: job_2548
+```
+
+Based on the error message I believe the issue might be related to job scheduling with the ILP solver, as during the run it seems to have flipped to using the ""greedy"" solver several times (I've attached the log, which is a resumption of a partially complete run). I'll see if changing the `--scheduler` flag to `greedy` will help, but wanted to put this on your radar in case others run into a similar issue.
+
+I've attached my snakemake log and SLURM profile in case those are helpful.
+ 
+ Thank you!
+[snparcher_wc_ec_20240612.zip](https://github.com/user-attachments/files/15847609/snparcher_wc_ec_20240612.zip)
+
+SLURM profile:
+```
+executor: slurm
+use-conda: True
+jobs: 150 # Have up to N jobs submitted at any given time
+latency-wait: 180 # Wait N seconds for output files due to latency
+retries: 3 # Retry jobs N times.
+
+# These resources will be applied to all rules. Can be overriden on a per-rule basis below.
+default-resources:
+  mem_mb: attempt * 4000
+  mem_mb_reduced: (attempt * 4000) * 0.9 # Mem allocated to java for GATK rules (tries to prevent OOM errors)
+  slurm_partition: ""regular,long7,long30""
+  slurm_account: ""nt246_0001"" # Same as sbatch -A. Not all clusters use this.
+  runtime: # In minutes
+
+# Control number of threads each rule will use.
+set-threads:
+  # Reference Genome Processing. Does NOT use more than 1 thread.
+  download_reference: 1
+  index_reference: 1
+  # Interval Generation. Does NOT use more than 1 thread.
+  format_interval_list: 1
+  create_gvcf_intervals: 1
+  create_db_intervals: 1
+  picard_intervals: 1
+  # Mappability
+  genmap: 2 # Can use more than 1 thread
+  mappability_bed: 1 # Does NOT use more than 1 thread
+  # Fastq Processing. Can use more than 1 thread.
+  get_fastq_pe: 1
+  fastp: 1
+  # Alignment. Can use more than 1 thread, except merge_bams.
+  bwa_map: 4
+  dedup: 4
+  merge_bams: 1 # Does NOT use more than 1 thread.
+  # GVCF
+  bam2gvcf: 2 # Should be run with no more than 2 threads.
+  concat_gvcfs: 1 # Does NOT use more than 1 thread.
+  bcftools_norm: 1 # Does NOT use more than 1 thread.
+  create_db_mapfile: 1 # Does NOT use more than 1 thread.
+  gvcf2DB: 2 # Should be run with no more than 2 threads.
+  # VCF
+  DB2vcf: 2 # Should be run with no more than 2 threads.
+  filterVcfs: 2 # Should be run with no more than 2 threads.
+  sort_gatherVcfs: 2 # Should be run with no more than 2 threads.
+  # Callable Bed
+  compute_d4: 1 # Can use more than 1 thread
+  create_cov_bed: 1 # Does NOT use more than 1 thread.
+  merge_d4: 1 # Does NOT use more than 1 thread.
+  # Summary Stats Does NOT use more than 1 thread.
+  bam_sumstats: 1
+  collect_covstats: 1
+  collect_fastp_stats: 1
+  collect_sumstats: 1
+  # QC Module Does NOT use more than 1 thread.
+  qc_admixture: 1
+  qc_check_fai: 1
+  qc_generate_coords_file: 1
+  qc_plink: 1
+  qc_qc_plots: 1
+  qc_setup_admixture: 1
+  qc_subsample_snps: 1
+  qc_vcftools_individuals: 1
+  # MK Module Does NOT use more than 1 thread.
+  mk_degenotate: 1
+  mk_prep_genome: 1
+  mk_split_samples: 1
+  # Postprocess Module Does NOT use more than 1 thread.
+  postprocess_strict_filter: 1
+  postprocess_basic_filter: 1
+  postprocess_filter_individuals: 1
+  postprocess_subset_indels: 1
+  postprocess_subset_snps: 1
+  postprocess_update_bed: 1
+  # Trackhub Module Does NOT use more than 1 thread.
+  trackhub_bcftools_depth: 1
+  trackhub_bedgraph_to_bigwig: 1
+  trackhub_calc_pi: 1
+  trackhub_calc_snpden: 1
+  trackhub_calc_tajima: 1
+  trackhub_chrom_sizes: 1
+  trackhub_convert_to_bedgraph: 1
+  trackhub_strip_vcf: 1
+  trackhub_vcftools_freq: 1
+  trackhub_write_hub_files: 1
+  # Sentieon Tools. Can use more than 1 thread, except sentieon_bam_stats.
+  sentieon_map: 1
+  sentieon_dedup: 1
+  sentieon_haplotyper: 1
+  sentieon_combine_gvcf: 1
+  sentieon_bam_stats: 1 # Does NOT use more than 1 thread.
+
+# Control other resources used by each rule.
+set-resources:
+  #   # Reference Genome Processing
+  #   copy_reference:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   download_reference:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   index_reference:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Interval Generation
+  #   format_interval_list:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   create_gvcf_intervals:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   create_db_intervals:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   picard_intervals:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Mappability
+  #   genmap:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   mappability_bed:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Fastq Processing
+  #   get_fastq_pe:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   fastp:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Alignment
+  bwa_map:
+    mem_mb: attempt * 4000
+    slurm_partition: ""long7,long30""
+    # runtime:
+    # cpus_per_task:
+  #   dedup:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   merge_bams:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # GVCF
+  #   bam2gvcf: # HaplotypeCaller
+  #     mem_mb: attempt * 2000
+  #     mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task: # Mem allocated to the snakemake job
+  #   concat_gvcfs:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   bcftools_norm:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   create_db_mapfile:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   gvcf2DB: # GenomicsDBImport
+  #     mem_mb: attempt * 2000
+  #     mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # VCF
+  #   DB2vcf: # GenotypeGVCFs
+  #     mem_mb: attempt * 2000
+  #     mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java (tries to prevent OOM errors)
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   filterVcfs:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   sort_gatherVcfs:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Callable Bed
+  #   compute_d4:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  create_cov_bed:
+    mem_mb: attempt * 4000
+    slurm_partition: ""long7""
+  #     runtime:
+  #     cpus_per_task:
+  #   merge_d4:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+
+  #   # Summary Stats
+  #   bam_sumstats:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   collect_covstats:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  #   collect_fastp_stats:
+  #     mem_mb: attempt * 2000
+  #     slurm_partition:
+  #     runtime:
+  #     cpus_per_task:
+  collect_sumstats:
+    mem_mb: attempt * 8000
+    slurm_partition: ""long7,long30""
+#     runtime:
+#     cpus_per_task:
+
+#   # QC Module
+#   qc_admixture:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_check_fai:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_generate_coords_file:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_plink:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_qc_plots:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_setup_admixture:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_subsample_snps:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   qc_vcftools_individuals:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+
+#   # MK Module
+#   mk_degenotate:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   mk_prep_genome:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   mk_split_samples:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+
+#   # Postprocess Module
+#   postprocess_strict_filter:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   postprocess_basic_filter:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   postprocess_filter_individuals:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   postprocess_subset_indels:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   postprocess_subset_snps:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   postprocess_update_bed:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+
+#   # Trackhub Module
+#   trackhub_bcftools_depth:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_bedgraph_to_bigwig:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_calc_pi:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_calc_snpden:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_calc_tajima:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_chrom_sizes:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_convert_to_bedgraph:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_strip_vcf:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_vcftools_freq:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   trackhub_write_hub_files:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+
+#   # Sentieon Tools
+#   sentieon_map:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   sentieon_dedup:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   sentieon_haplotyper:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   sentieon_combine_gvcf:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+#   sentieon_bam_stats:
+#     mem_mb: attempt * 2000
+#     slurm_partition:
+#     runtime:
+#     cpus_per_task:
+```
+",azwadriqbal,https://github.com/harvardinformatics/snpArcher/issues/206
+I_kwDOD2XAe86MiyZM,restricting variant calls ,OPEN,2024-06-17T18:08:41Z,2024-07-03T14:45:46Z,,"We're trying to use SNParcher on some fairly large genomic datasets at the moment (2000 + individuals), and I am anticipating a lot of slow-down at genotyping steps. I was wondering if it's possible to specify variant lists [(e.g]( https://gatk.broadinstitute.org/hc/en-us/articles/360035531852-Intervals-and-interval-lists) to genotype subsequent runs after doing SNP discovery in a smaller panel of individuals (e.g. ~500)?
+Is something like this already implemented? Or if not, any ideas on how to implement?
+
+Thanks!",TonyKess,https://github.com/harvardinformatics/snpArcher/issues/208
+I_kwDOD2XAe86Pv__7,oxford nanopore data,CLOSED,2024-07-16T17:52:56Z,2024-07-30T13:55:48Z,2024-07-30T13:55:48Z,"Hi guys,
+
+I have some ONP resequencing data that I would like to run through snpArcher if possible. I've generated .bams deduplicated with sambamba outside of snpArcher, as ONP data are single end and I wasn't sure how that would be handled. Additionally, the alignment step was taking a super long time. I would now like to generate vcfs for these few samples and run them through the rest of the pipeline. I tried manually making a results directory then a subdirectory with the name of the reference, then dropping the bams and genome files in. When I go to submit the job I get the following error:
+
+```
+Using workflow specific profile /hb/groups/bernardi_lab/Jason_OPOR/snpArcher/profiles/slurm for setting default command line arguments.
+snpArcher: Using Snakemake 8.10.7
+Building DAG of jobs...
+InputFunctionException in rule fastp in file /hb/groups/bernardi_lab/Jason_OPOR/snpArcher/workflow/rules/fastq.smk, line 31:
+Error:
+  ValueError: can only convert an array of size 1 to a Python scalar
+Wildcards:
+  refGenome=DFU_1000_500_no_contaminants.fasta
+  sample=DFU_Big_file_pc2_36_37_38_39
+  run=DFU
+Traceback:
+  File ""/hb/groups/bernardi_lab/Jason_OPOR/snpArcher/workflow/rules/common.smk"", line 218, in get_reads
+  File ""/hb/home/jwjohns/.conda/envs/snparcher/lib/python3.11/site-packages/pandas/core/base.py"", line 418, in item (rule fastp, line 68, /hb/groups/bernardi_lab/Jason_OPOR/snpArcher/workflow/rules/fastq.smk)
+```
+
+I realize that the solution to this may be quite complicated, especially since ONP data are single end reads, but I thought I would drop a note to see if you guys have dealt with this before and have a quick fix. If it's at all complicated I'll probably just run these few samples through the same workflow (haplotypecaller, filtering, QC, etc.), but manually - especially since it's only a few files. Let me know what you think. Thanks!
+",jasonwjohns,https://github.com/harvardinformatics/snpArcher/issues/212
+I_kwDOD2XAe86Qav_r,Restarting the workflow,CLOSED,2024-07-22T13:48:28Z,2024-07-30T13:56:17Z,2024-07-30T13:56:17Z,"Question: if I get an out of memory or time limit error that causes the workflow to quit, will restarting the job with different config.yaml parameters resume at certain checkpoints? 
+
+Thank you!",austinchipps,https://github.com/harvardinformatics/snpArcher/issues/213
+I_kwDOD2XAe86SJASW,Error in concat_gvcfs,OPEN,2024-08-06T23:15:30Z,2024-08-21T00:29:13Z,,"Hi, I've been trying to run snpArcher on genomic resequencing data, but I've been running into an error with the concat_gvcfs step.
+
+The command I'm using is
+```
+snakemake --use-conda --cores 16
+```
+The end of the .snakemake/log file lists an error that looks like this:
+
+Activating conda environment: .snakemake/conda/b78e203ca0a7037a682091b03d0f69dd_
+[Tue Jul 30 16:00:53 2024]
+Error in rule concat_gvcfs:
+    jobid: 14
+    input: results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0000.raw.g.vcf.gz, results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0001.raw.g.vcf.gz, results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0002.raw.g.vcf.gz, results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0003.raw.g.vcf.gz, [...more .raw.g.vcf.gz files to 0021...] results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0000.raw.g.vcf.gz.tbi, results/GCA_026437355.1/interval_gvcfs/EucyKris_LasFloCk_90_En_187/0001.raw.g.vcf.gz.tbi, [...more .raw.g.vcf.gz.tbi files to 0021]
+    log: logs/GCA_026437355.1/concat_gvcfs/EucyKris_LasFloCk_90_En_187.txt (check log file(s) for error details)
+    conda-env: /data/home/miabrecht/CCGP_TidewaterGoby/snpArcher/.snakemake/conda/b78e203ca0a7037a682091b03d0f69dd_
+    shell:
+
+This follows several identical steps with different samples which seem successful. The log files in logs/concat_gvcfs are all empty .txt files. Here is my config file, converted to .txt: [config.txt](https://github.com/user-attachments/files/16516487/config.txt), and I haven't been using a profile yaml file. I'd appreciate any help, thanks!",exkahn,https://github.com/harvardinformatics/snpArcher/issues/214
+I_kwDOD2XAe86TC4mE,Compatibility issue with Python and cov_filter ,OPEN,2024-08-14T23:59:07Z,2024-08-22T22:19:24Z,,"Hello, 
+
+I am trying to do a test run using this code: 
+`snakemake -d .test/ecoli --cores 1 --use-conda`
+
+However, the environment creation for cov_filter is failing with the error: ""Could not create conda environment."" The other packages seemed to download smoothly. I tried to redownload cov_filter independently and got this error: 
+```
+Encountered problems while solving:
+  - nothing provides _python_rc needed by python-3.12.0rc3-rc3_hab00c5b_1_cpython
+Could not solve for environment specs
+The following packages are incompatible
+├─ python 3.10**  is requested and can be installed;
+└─ snakemake >=8  is not installable because there are no viable options
+   ├─ snakemake [8.0.0|8.0.1|...|8.9.0] would require
+   │  └─ snakemake-minimal [8.0.0.* |8.0.1.* |...|8.9.0.* ], which requires
+   │     └─ python >=3.11,<3.13  but there are no viable options
+   │        ├─ python [3.11.0|3.11.1|...|3.12.5] conflicts with any installable versions previously reported;
+   │        └─ python 3.12.0rc3 would require
+   │           └─ _python_rc, which does not exist (perhaps a missing channel);
+   └─ snakemake 8.11.2 would require
+      └─ snakemake-minimal 8.11.2.* , which does not exist (perhaps a missing channel).
+```
+Which I think maybe because it requests Python 3.10, while I am currently using Python 3.11.4 in my snparcher environment. My two ideas would be to create a new environment specifically for cov_filter or to try to merge the dependencies by updating the snparcher environment with this file, but I am worried about messing up other packages and dependencies downstream. Any advice on how to proceed would be greatly appreciated. 
+
+Thank you for your help in advance! ",elizakirsch0,https://github.com/harvardinformatics/snpArcher/issues/216
+I_kwDOD2XAe86UG8kx,Starting from arbitrary VCFs,OPEN,2024-08-24T20:26:05Z,2024-08-25T00:20:04Z,,"Dear @tsackton @erikenbody and other developers,
+
+Thanks for developing such a capable and interesting tool!
+
+I am looking to deploy snpArcher for population genomics projects but the starting data at hand will not always be NGS short read data, but could be based on SNP arrays, panels or simply external pre-processed or published VCFs originally derived from NGS data. In such cases, several of analyses and outputs presented in the QC Dashboard would not strictly apply.
+
+I wonder if there is support such a ""VCF-only"" use-case that side-steps internal mapping and SNP-calling, or if it is something that could be considered for implementation.",andreaswallberg,https://github.com/harvardinformatics/snpArcher/issues/218
+I_kwDOD2XAe86VYmJk,DB2vcf / CombineGVCFs error out with MNPs,OPEN,2024-09-04T20:48:23Z,2024-09-04T20:48:23Z,,"I am running into an error that I initially wanted some help in resolving, but now, I just want to notify you about its existence. The error involves an issue in CombineGVCFs that prevents processing Multi Nucleotide Polymorphisms. 
+
+I am running a small set of 10 samples on a slurm-managed cluster. Previously, eight of these samples (Drosophila simulans collected in 2023) ran successfully. When we added two more samples (D. simulans from 1984 and 1976), the workflow failed. These two samples have been previously mapped by bwa-mem for coverage calculations, so I had no reason to think the data are bad.... now I know that there might be an issue with that 1976 sample (e.g., two flies in the gDNA).   
+
+The workflow runs smoothly until the DB2vcf step, when GenotypeGVCFs is run, then it errors out. The log and error files are attached. 
+
+GATK throws exception: 
+""org.broadinstitute.hellbender.exceptions.GATKException: Error creating iterator over file gendb://results/Dsim_wRi_wMel_genome/genomics_db_import/DB_L0071""
+
+""Caused by: java.io.IOException: GenomicsDB JNI Error: VariantQueryProcessorException : Unhandled overlapping variants at columns 127228851 and 127228852 for row 0""
+
+[0071.txt](https://github.com/user-attachments/files/16875233/0071.txt)
+[5019711.log](https://github.com/user-attachments/files/16875234/5019711.log)
+
+I did a bit of research on this error and discovered that: 
+""[CombineGVCFs will not work if your input file contains MNPs which would result in this type of error](https://gatk.broadinstitute.org/hc/en-us/community/posts/4878827351451-Error-using-CombineGVCFs-Exception-thrown-at-Chr)""
+
+I found the reference position corresponding to columns 127228851 and 127228852 by looking at the offset column of the results/Dsim_wRi_wMel_genome/data/genome/Dsim_wRi_wMel_genome.fna.fai file:
+NW_025416844.1	38922	127196239	80	81
+NW_025416845.1	31969	127235789	80	81
+
+127228851-127196239=> at position 32612 
+
+So, the potential MNP is in the back ~1/6 of NW_025416844.1.... I made some subsetted vcfs of the variants on this scaffold. There were only ~100-500 per sample. See the attached files. 
+
+[Dsimulans_Mer23_wRi_line8A.NW_025416844.1.partial.vcf.txt](https://github.com/user-attachments/files/16880540/Dsimulans_Mer23_wRi_line8A.NW_025416844.1.partial.vcf.txt)
+[Dsimulans_w501.NW_025416844.1.partial.vcf.txt](https://github.com/user-attachments/files/16880542/Dsimulans_w501.NW_025416844.1.partial.vcf.txt)
+[Dsimulans_Riv84_wRi-3.NW_025416844.1.partial.vcf.txt](https://github.com/user-attachments/files/16880548/Dsimulans_Riv84_wRi-3.NW_025416844.1.partial.vcf.txt)
+
+I don't see any variants at position 32612 (the max is 28557), but there are MNPs in the w501 sample. Position 9446 is a MNP in itself, with the call: GTTT,GTTTTT,<NON_REF>,G,GTTTTTTT. There are different SNP vs deletion calls between samples at position 9490. 
+
+Honestly, sample w501 looks problematic. Scaffold NW_025416844.1 is unplaced, but the rest of the genome looks enriched in ""ExcessHet=3.0103"" calls.  I'm going to get rid of this sample for now - it might consist of two flies and I need to track this down. 
+
+I still think this error is of concern to you because someone will come across MNPs sometime, especially in polyploid systems. If I end up sequencing enough w501 flies to recover these MNPs among diploid individuals, it will become a problem for me again. 
+",shelbirussell,https://github.com/harvardinformatics/snpArcher/issues/219
+I_kwDOD2XAe86WYwvJ,workflow continuity,CLOSED,2024-09-12T18:28:02Z,2024-09-12T18:40:38Z,2024-09-12T18:38:18Z,"Hi ya'll,
+
+I'm having some trouble with the workflow running continuously, and what I mean by that is: the workflow isn't continuously submitting new jobs when others complete. I'm working on my university's HPC, and I didn't have this issue ~2 months ago when I was testing the workflow with a smaller dataset. In that time, I've expanded my dataset and had to delete/reinstall snparcher. 
+
+What I'm seeing is that I'll submit the snakemake command from a headnode in a tmux session, jobs are submitted, and the tmux session sits idle with no job completion updates, etc. Jobs will finish and then nothing happens. Then for example, after fastp jobs have finished, I have to resubmit the snakemake command to prompt the submission of bwa-mem jobs. When I was originally running the workflow, the tmux session would have periodical updates of jobs completing and new jobs being submitted. Additionally, I would be notified in tmux if any of the jobs failed. I'm not finding any information in log files that would suggest things are failing, and I'm unsure if this is a snakemake issue or rather something with our university HPC. 
+
+Please let me know if you need any additional information, and thank you in advance for your time. 
+
+Austin
+
+",austinchipps,https://github.com/harvardinformatics/snpArcher/issues/220
+I_kwDOD2XAe86WtI74,"Segmentation Error with ecoli test set. However test set  ci, runs fine ",OPEN,2024-09-16T13:02:44Z,2024-09-16T13:02:44Z,,"Hi, there's probably a tiny bug in the ecoli test data set. 
+I ran the Ci test set, and everything was fine.  
+
+Error messages as follows: 
+
+Activating conda environment: .snakemake/conda/8c6ced9f850bb19441335970459a8c3e_
+/usr/bin/bash: line 2: 212549 Segmentation fault      (core dumped) bcftools concat -D -a -Ou results/GCA_000008865.2/vcfs/intervals/filtered_L0000.vcf.gz 2> logs/GCA_000008865.2/sort_gather_vcfs/ecoli_test_log.txt
+     212550 Done                    | bcftools sort -T /mnt/ebs_cache/HZQWUCGPDNHB/ -Oz -o results/GCA_000008865.2/ecoli_test_raw.vcf.gz - 2>> logs/GCA_000008865.2/sort_gather_vcfs/ecoli_test_log.txt
+
+
+The log file reads:
+
+cat .test/ecoli/logs/GCA_000008865.2/sort_gather_vcfs/ecoli_test_log.txt
+Checking the headers and starting positions of 1 files
+Writing to /mnt/ebs_cache/HUEAETPSKKXY/BEJU2B
+[W::bgzf_read_block] EOF marker is absent. The input may be truncated
+Merging 0 temporary files
+Done
+Cleaning",msinclair-sudo,https://github.com/harvardinformatics/snpArcher/issues/221
+I_kwDOD2XAe86WtNUE,Conda error?,CLOSED,2024-09-16T13:10:16Z,2024-09-27T13:02:14Z,2024-09-27T13:02:13Z,"Hi ya'll,
+
+I'm stuck at the create_gvcf_intervals and create_db_intervals step. I have attached the log file and the slurm log file. Looks like an issue with something in a conda environment? I'm not sure how to best proceed, but my initial thought is to re-create my snparcher environment. 
+
+Thank you for your time,
+
+Austin
+
+[335302.log](https://github.com/user-attachments/files/17013601/335302.log)
+[log.txt](https://github.com/user-attachments/files/17013610/log.txt)
+",austinchipps,https://github.com/harvardinformatics/snpArcher/issues/222
+I_kwDOD2XAe86Xeozh,all-sites VCF question,OPEN,2024-09-23T01:26:58Z,2024-11-18T18:48:33Z,,"Hi,
+
+I'm just wanting to check in regarding how to obtain an all-sites VCF using snpArcher. From what I can tell, I just need to add the -all-sites flag to the GenotypeGVCFs command in the following file if using an interval approach to variant calling: 
+
+/snpArcher/workflow/rules/bam2vcf_gatk_intervals.smk
+
+And do the same for the following file, if not using an interval approach, correct?
+
+/snpArcher/workflow/rules/bam2vcf_gatk.smk
+
+Does that seem right?
+
+Thanks!
+Andre
+
+",AndreMonc,https://github.com/harvardinformatics/snpArcher/issues/223
+I_kwDOD2XAe86a2hS2,Issues with --rerun-incomplete flag,CLOSED,2024-10-18T16:51:54Z,2024-10-24T21:23:58Z,2024-10-24T21:23:58Z,"I have been facing several issues while running the snpArcher pipeline on a SLURM cluster,
+
+Incomplete Files and --rerun-incomplete Flag: Initially, I encountered incomplete output files being generated during the pipeline run due to the job running into memory/time limits. Snakemake recommended using the --rerun-incomplete flag, so I included this flag in my SLURM script to force a re-run of incomplete jobs. However, this led to another issue where jobs that had successfully completed in previous runs were being rerun unnecessarily, even if the output files were already present. 
+
+To address this, I tried removing the --rerun-incomplete flag and just manually deleting the incomplete files that were listed in the error output files. After doing so, Snakemake correctly skipped completed files but  still raised errors for other incomplete files that were detected.
+
+I tried to update the fastp rule to check if sorted FASTQ files exist before running the sortbyname.sh command. After adding this code chunk, I began encountering job failures without clear error messages. Here's the relevant code that was added to the rule:
+
+```
+bash
+Copy code
+# Check if the sorted files exist before sorting
+if [ ! -f {wildcards.run}_sorted_R1.fastq.gz ] || [ ! -f {wildcards.run}_sorted_R2.fastq.gz ]; then
+    sortbyname.sh in={input.r1} out={wildcards.run}_sorted_R1.fastq.gz
+    sortbyname.sh in={input.r2} out={wildcards.run}_sorted_R2.fastq.gz
+fi
+```
+
+The error messages in the otuput files just have ```
+Error in rule fastp:
+    message: SLURM-job '26400547' failed, SLURM status is: 'FAILED'.
+```
+and when I look at the specific .log file, I see this: 
+
+```localrule fastp:
+    input: /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R1_merged.fastq.gz, /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_f
+astq/PMB1951_R2_merged.fastq.gz
+    output: results/GCA_031885435.1/filtered_fastqs/PMB1951/161_1.fastq.gz, results/GCA_031885435.1/filtered_fastqs/PMB1951/161_2.fastq.gz, results/GCA_03
+1885435.1/summary_stats/PMB1951/161.fastp.out
+    log: logs/GCA_031885435.1/fastp/PMB1951/161.txt
+    jobid: 0
+    benchmark: benchmarks/GCA_031885435.1/fastp/PMB1951_161.txt
+    reason: Forced execution
+    wildcards: refGenome=GCA_031885435.1, sample=PMB1951, run=161
+    resources: mem_mb=8000, mem_mib=7630, disk_mb=28887, disk_mib=27549, tmpdir=/tmp/SLURM_26400547, slurm_partition=largemem
+Activating conda environment: .snakemake/conda/3982f812fcb442b517e767bf0ef5aa4a_
+java -ea -Xmx6309m -Xms6309m -cp /project/sedmands_1143/ekirsch/V2_savannahsparrow/snp_archer/snpArcher/.snakemake/conda/3982f812fcb442b517e767bf0ef5aa4a_
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Storing output in storage.
+WorkflowError:
+At least one job did not complete successfully.
+srun: error: b17-13: task 0: Exited with exit code 1
+[Wed Oct 16 13:41:11 2024]
+Error in rule fastp:
+    jobid: 0
+    input: /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R1_merged.fastq.gz, /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R2_merged.fastq.gz
+    output: results/GCA_031885435.1/filtered_fastqs/PMB1951/161_1.fastq.gz, results/GCA_031885435.1/filtered_fastqs/PMB1951/161_2.fastq.gz, results/GCA_031885435.1/summary_stats/PMB1951/161.fastp.out
+    log: logs/GCA_031885435.1/fastp/PMB1951/161.txt (check log file(s) for error details)
+    conda-env: /project/sedmands_1143/ekirsch/V2_savannahsparrow/snp_archer/snpArcher/.snakemake/conda/3982f812fcb442b517e767bf0ef5aa4a_
+    shell:
+        
+        if [ True = ""True"" ]; then
+            # Check if the sorted files exist before sorting
+            if [ ! -f 161_sorted_R1.fastq.gz ] || [ ! -f 161_sorted_R2.fastq.gz ]; then
+                sortbyname.sh in=/project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R1_merged.fastq.gz out=161_sorted_R1.fastq.gz
+                sortbyname.sh in=/project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R2_merged.fastq.gz out=161_sorted_R2.fastq.gz
+            fi
+            fastp --in1 161_sorted_R1.fastq.gz --in2 161_sorted_R2.fastq.gz             --out1 results/GCA_031885435.1/filtered_fastqs/PMB1951/161_1.fastq.gz --out2 results/GCA_031885435.1/filtered_fastqs/PMB1951/161_2.fastq.gz             --thread 1             --detect_adapter_for_pe   
+          -j results/GCA_031885435.1/summary_stats/PMB1951/161.fastp.out -h /dev/null             &>logs/GCA_031885435.1/fastp/PMB1951/161.txt
+            rm 161_sorted_R1.fastq.gz
+            rm 161_sorted_R2.fastq.gz
+        else
+            fastp --in1 /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R1_merged.fastq.gz --in2 /project/sedmands_1143/ekirsch/V2_savannahsparrow/all_fastq/PMB1951_R2_merged.fastq.gz             --out1 results/GCA_031885435.1/filtered_fastqs/PMB1951/161_1.fastq.gz --o
+ut2 results/GCA_031885435.1/filtered_fastqs/PMB1951/161_2.fastq.gz             --thread 1             --detect_adapter_for_pe             -j results/GCA_031885435.1/summary_stats/PMB1951/161.fastp.out -h /dev/null             &>logs/GCA_031885435.1/fastp/PMB1951/161.txt
+        fi
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Storing output in storage.
+WorkflowError:
+At least one job did not complete successfully.
+```
+
+Is,  `reason: Forced execution` what is causing the error, or something else? 
+
+Attaching recent error files below.
+[snpArcher_err_26219931.txt](https://github.com/user-attachments/files/17438489/snpArcher_err_26219931.txt)
+[snpArcher_err_26234438.txt](https://github.com/user-attachments/files/17438490/snpArcher_err_26234438.txt)
+[snpArcher_err_26360276.txt](https://github.com/user-attachments/files/17438491/snpArcher_err_26360276.txt)
+[snpArcher_err_26400546.txt](https://github.com/user-attachments/files/17438492/snpArcher_err_26400546.txt)
+
+
+Thanks so much for the help! ",elizakirsch0,https://github.com/harvardinformatics/snpArcher/issues/225
+I_kwDOD2XAe86buQ3-,default resources runtime issue,OPEN,2024-10-24T21:32:46Z,2024-10-30T22:15:38Z,,"Hello, 
+
+Sorry to open up another issue! I am struggling with continuous slurm ""TIMEOUT"" errors despite setting my runtime to be 1080 minutes (7 days, the maximum length for the partition on the cluster I'm using). My bwa-mem jobs will fail after 24 hours or so: 
+
+```
+Error in rule bwa_map:
+    message: SLURM-job '26605857' failed, SLURM status is: 'TIMEOUT'.
+```
+ and when I look at the .log file and this is the error I see: 
+```
+slurmstepd: error: *** STEP 26605857.0 ON a02-10 CANCELLED AT 2024-10-24T05:31:53 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 26605857 ON a02-10 CANCELLED AT 2024-10-24T05:31:53 DUE TO TIME LIMIT ***
+```
+I am confused why the jobs are being cancelled due to time limit, because I have both the default resources and the specific resources for the bwa-mem rule set to 1080 minutes: 
+
+```
+# These resources will be applied to all rules. Can be overriden on a per-rule basis below.
+default-resources:
+  mem_mb: attempt * 2000
+  mem_mb_reduced: (attempt * 2000) * 0.9 # Mem allocated to java for GATK rules (tries to prevent OOM errors)
+  slurm_partition: ""largemem""
+  slurm_account: ""sedmands_1143""  #Same as sbatch -A. Not all clusters use this.
+  runtime: 10080 # In minutes 
+```
+
+```
+#   # Alignment  
+#   bwa_map:
+#     mem_mb: 256000
+#     slurm_partition: ""largemem""
+#     runtime: 10080
+#     cpus_per_task:
+```
+Could these settings be getting overridden by snparcher somehow? Also this might be an issue more related to my cluster, so I understand if you can't help with fixing it. 
+
+Thank you!",elizakirsch0,https://github.com/harvardinformatics/snpArcher/issues/227
+I_kwDOD2XAe86dFStY,Unknown errors with big datasets,OPEN,2024-11-05T13:06:38Z,2024-11-05T14:57:46Z,,"Hi,
+
+I manage to make snpArcher work on dataset with medium size genomes (400Mb) but I got errors for bigger genomes (2Gb) and when job are taking to much time and ressources. I think I set the slurm/config.yaml properly to ask for big ressources and the cluster I m using is supposed to handle such settings but I got this kind of errors for instance at the bwa_map rule :
+
+```
+Error in rule bwa_map:
+    message: SLURM-job '13562883' failed, SLURM status is: 'NODE_FAIL'. For further error details see the cluster/cloud log and the log files of the involved rule(s).
+    jobid: 252
+    input: results/GCA_902167145.1/data/genome/GCA_902167145.1.fna, results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_1.fastq.gz, results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_2.fastq.gz, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.sa, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.pac, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.bwt, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.ann, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.amb, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.fai
+    output: results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam, results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.bai
+    log: logs/GCA_902167145.1/bwa_mem/SAMN15515513/SRR12460375.txt, /scratch/mbrault/snpcalling/zmays_parviglumis_PRJNA641889/.snakemake/slurm_logs/rule_bwa_map/GCA_902167145.1_SAMN15515513_SRR12460375/13562883.log (check log file(s) for error details)
+    conda-env: /scratch/mbrault/snpcalling/zmays_parviglumis_PRJNA641889/.snakemake/conda/8ca636c300f965c6ac864e051945e276_
+    shell:
+        bwa mem -M -t 8 -R '@RG\tID:6E8\tSM:SAMN15515513\tLB:6E8\tPL:ILLUMINA' results/GCA_902167145.1/data/genome/GCA_902167145.1.fna results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_1.fastq.gz results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_2.fastq.gz 2> logs/GCA_902167145.1/bwa_mem/SAMN15515513/SRR12460375.txt | samtools sort -o results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam - && samtools index results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.bai
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+    external_jobid: 13562883
+```
+
+And in the .snakemake/slurm_logs/rule_bwa_map/GCA_902167145.1_SAMN15515513_SRR12460375/13562883.log : 
+```
+localrule bwa_map:
+    input: results/GCA_902167145.1/data/genome/GCA_902167145.1.fna, results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_1.fastq.gz, results/GCA_902167145.1/filtered_fastqs/SAMN15515513/SRR12460375_2.fastq.gz, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.sa, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.pac, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.bwt, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.ann, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.amb, results/GCA_902167145.1/data/genome/GCA_902167145.1.fna.fai
+    output: results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam, results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.bai
+    log: logs/GCA_902167145.1/bwa_mem/SAMN15515513/SRR12460375.txt
+    jobid: 0
+    benchmark: benchmarks/GCA_902167145.1/bwa_mem/SAMN15515513_SRR12460375.txt
+    reason: Forced execution
+    wildcards: refGenome=GCA_902167145.1, sample=SAMN15515513, run=SRR12460375
+    threads: 32
+    resources: mem_mb=100000, mem_mib=95368, disk_mb=43245, disk_mib=41242, tmpdir=/tmp, mem_mb_reduced=90000, slurm_partition=ecobio,genouest, slurm_account=mbrault, runtime=11520, cpus_per_task=32
+
+Activating conda environment: .snakemake/conda/8ca636c300f965c6ac864e051945e276_
+
+[E::hts_open_format] Failed to open file ""results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.tmp.0000.bam"" : File exists
+[E::hts_open_format] Failed to open file ""results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.tmp.0001.bam"" : File exists
+[E::hts_open_format] Failed to open file ""results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.tmp.0002.bam"" : File exists
+[E::hts_open_format] Failed to open file ""results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.tmp.0003.bam"" : File exists
+[E::hts_open_format] Failed to open file ""results/GCA_902167145.1/bams/preMerge/SAMN15515513/SRR12460375.bam.tmp.0004.bam"" : File exists
+etc...
+```
+
+But still when I look on the slurm cluster at that particular job I find no errors : 
+```
+JobID           JobName      State    Elapsed     ReqMem     MaxRSS  MaxVMSize  AllocCPUS 
+------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- 
+13562883     e5af4995-+  COMPLETED   08:26:43    100000M                               32 
+13562883.ba+      batch  COMPLETED   08:26:43               129620K   5013688K         32 
+13562883.ex+     extern  COMPLETED   08:26:43                  912K    144572K         32 
+13562883.0   python3.11  COMPLETED   08:26:05             26104628K  33043144K         32 
+```
+
+Do you have any clue on what could cause such an error ? I joined the slurm/config.yaml if needed.
+[config.yaml.txt](https://github.com/user-attachments/files/17632894/config.yaml.txt)
+
+Thank you very much,
+
+Max Brault",max-hence,https://github.com/harvardinformatics/snpArcher/issues/229
+I_kwDOD2XAe86eHV6l,Clarification on the output files,CLOSED,2024-11-12T16:42:05Z,2024-11-12T18:43:55Z,2024-11-12T18:43:55Z,"Hi ya'll, I was hoping to get some clarification on some of the output files generated by snpArcher. 1) in the resulting QC directory, how is the filtered.vcf.gz file different from the pruned.vcf.gz file? As I understand it, the pruned.vcf.gz file is what was used to compute the figures, etc. in the final .html file. 2) I also have a .bed file in my QC directory. Does this provide coordinates of the sites in my pruned.vcf.gz file? 
+
+Thank you!",austinchipps,https://github.com/harvardinformatics/snpArcher/issues/230
+I_kwDOD2XAe86ilgCj,Rule collect_sumstats Error.,OPEN,2024-12-09T17:10:51Z,2024-12-14T09:26:30Z,,"Hello team,
+
+I am currently running snparcher on a SGE cluster with torque scheduler with a large (~2TB) multi-lane Illumina whole genome short read sequence data. I have 96 samples sequenced across 4 lanes, each sample has the same library prep per lane. I organized my sample sheet according to snparcher documentation. 2 sample general snippet below;
+
+```
+BioSample,refGenome,refPath,LibraryName,Run,BioProject,fq1,fq2,SampleType
+sample_1,reference_accession,/path/to/reference_genome.fna,lib_sample_1,0,NaN,/path/to/read/directory/sample_1_L001_R1_001.fastq.gz,/path/to/read/directory/sample_1_L001_R2_001.fastq.gz,include
+sample_1,reference_accession,/path/to/reference_genome.fna,lib_sample_1,1,NaN,/path/to/read/directory/sample_1_L002_R1_001.fastq.gz,/path/to/read/directory/sample_1_L002_R2_001.fastq.gz,include
+sample_1,reference_accession,/path/to/reference_genome.fna,lib_sample_1,2,NaN,/path/to/read/directory/sample_1_L003_R1_001.fastq.gz,/path/to/read/directory/sample_1_L003_R2_001.fastq.gz,include
+sample_1,reference_accession,/path/to/reference_genome.fna,lib_sample_1,3,NaN,/path/to/read/directory/sample_1_L004_R1_001.fastq.gz,/path/to/read/directory/sample_1_L004_R2_001.fastq.gz,include
+sample_2,reference_accession,/path/to/reference_genome.fna,lib_sample_2,4,NaN,/path/to/read/directory/sample_2_L001_R1_001.fastq.gz,/path/to/read/directory/sample_2_L001_R2_001.fastq.gz,include
+sample_2,reference_accession,/path/to/reference_genome.fna,lib_sample_2,5,NaN,/path/to/read/directory/sample_2_L002_R1_001.fastq.gz,/path/to/read/directory/sample_2_L002_R2_001.fastq.gz,include
+sample_2,reference_accession,/path/to/reference_genome.fna,lib_sample_2,6,NaN,/path/to/read/directory/sample_2_L003_R1_001.fastq.gz,/path/to/read/directory/sample_2_L003_R2_001.fastq.gz,include
+sample_2,reference_accession,/path/to/reference_genome.fna,lib_sample_2,7,NaN,/path/to/read/directory/sample_2_L004_R1_001.fastq.gz,/path/to/read/directory/sample_2_L004_R2_001.fastq.gz,include
+
+```
+Looking at the stdout, snparcher is reporting the collect_sumstats rule is erroring out with the following message:
+
+```
+RuleException:
+JSONDecodeError in file /path/to/snparcher/dir/workflow/rules/common.smk, line 406:
+Extra data: line 412 column 2 (char 137699)
+  File ""/path/to/snparcher/dir/workflow/rules/sumstats.smk"", line 57, in __rule_collect_sumstats
+  File ""/path/to/snparcher/dir/workflow/rules/common.smk"", line 406, in collectFastpOutput
+  File ""/home/tmugoya/.conda/envs/snparcher/lib/python3.11/json/__init__.py"", line 293, in load
+  File ""/home/tmugoya/.conda/envs/snparcher/lib/python3.11/json/__init__.py"", line 346, in loads
+  File ""/home/tmugoya/.conda/envs/snparcher/lib/python3.11/json/decoder.py"", line 340, in decode
+```
+
+Restarting the workflow results in a similar error.
+
+I would greatly appreciate some insight into this issue.",ChabbyTMD,https://github.com/harvardinformatics/snpArcher/issues/232
+I_kwDOD2XAe86jP0Fl,Error in rule create_cov_bed module pyd4 not found,OPEN,2024-12-13T17:08:39Z,2024-12-14T14:02:06Z,,"Hi snparcher team,
+This appears to be same issue as closed report #144. Looking through that thread, I attempted the suggested workaround by trying to install pyd4 in the conda environment but the package fails to install. I was able to download pyd4 directly from github and install it manually. It works ok when I just try import it into python directly. But when I try to rerun snparcher with the --use-conda flag, the error switches from no module named pyd4 to: ""li
+ne 4, in <module>                                                                                                             
+    from pyd4 import D4File,D4Builder                                                                                         
+  File ""/rhome/tabbo002/.conda/envs/snparcher/lib/python3.11/site-packages/pyd4/__init__.py"", line 5, in <module>
+    from .pyd4 import D4File as D4FileImpl, D4Iter, D4Builder as D4BuilderImpl, D4Writer as D4WriterImpl, D4Merger as D4Merger
+Impl
+ModuleNotFoundError: No module named 'pyd4.pyd4'
+""
+In addition to troubleshooting the bug, can you offer a suggestion to fix my workaround. It has taken over a month to run the pipeline up to this stage, so I am worried about possibly losing my progress.
+Best,
+Tito
+            ",tito-abbo,https://github.com/harvardinformatics/snpArcher/issues/233

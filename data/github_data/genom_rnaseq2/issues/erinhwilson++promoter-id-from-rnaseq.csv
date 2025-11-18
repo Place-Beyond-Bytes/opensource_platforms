@@ -1,0 +1,16 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOEQrN1M5CNKZ0,get_top_gene_set.py Operon flagging bug,CLOSED,2022-01-21T18:02:01Z,2022-01-26T02:47:06Z,2022-01-26T02:47:05Z,"Hi! First off, excellent paper and tool - I really like the streamlined approach to finding promoters in non-model bacteria.
+
+I ran into an issue when running `get_top_gene_set.py` where no matter what I put for `n%` or `min_distance` (i.e. I ran `python3 get_top_gene_set.py rg_data/rg_tpm_mat.tsv locus_tag 100 0 rg_data/sample2condition.txt rg_data/r_gnavus.gb rg_out_data/`) and every gene that was part of the analysis had a `True` boolean in the `op?` column (I suppose this could be possible, but I highly doubt that there wasn't a single gene not part of an operon...).
+
+My best guess is that it is some issue with the formatting of my `.gb` file and how `genbank_utils.py` handles the loci position determination (Here's a[ box link ](https://uchicago.box.com/s/in34hijgrsh1ptgyzjz0ru4adgkfj06e) to the `rg_data/` directory which contains my TPM matrix `.gb` file and `sample2condition.txt` in case you wanted them for the troubleshooting as well as the `rg_out_data/` directory with the faulty file).
+
+This wasn't a major issue for my purposes since I just changed all of the `True` values to `False` values, and just ended up with a bunch of small sequences that I filtered out since they were pretty clearly intergenic regions from an operon.
+
+Thanks in advance, and again thank you for creating this awesome tool!
+
+Jack Arnold
+University of Chicago | PME | Mimee Lab",jackarnold13,https://github.com/erinhwilson/promoter-id-from-rnaseq/issues/1
+I_kwDOEQrN1M5WBLtE,Handle case when seq extraction passes over the 0 coordinate of the genome,OPEN,2022-11-10T02:54:21Z,2022-11-10T07:07:00Z,,"https://github.com/erinhwilson/promoter-id-from-rnaseq/blob/b5493da3b14c1dda61141d7470c3c0bf83dbeab9/extract_upstream_regions.py#L131
+
+This should be handled differently - probably split into two parts with the pos part of the window slice and a negative part of the window slice",erinhwilson,https://github.com/erinhwilson/promoter-id-from-rnaseq/issues/2

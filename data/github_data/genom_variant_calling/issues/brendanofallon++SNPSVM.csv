@@ -1,0 +1,34 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxOTIzNzY4NQ==,max read depth,CLOSED,2013-09-10T04:44:08Z,2013-09-10T12:20:37Z,2013-09-10T12:20:37Z,"Does SNPSVM enforce a maximum read depth, not using more than X many reads to call a variant.  I'm using haloplex so read depth is an issue.
+",Patrick-Reed,https://github.com/brendanofallon/SNPSVM/issues/1
+MDU6SXNzdWUxOTg2ODUzOQ==,SNPSVM needs paired read to do variant calling?,CLOSED,2013-09-22T06:04:06Z,2013-09-23T01:34:48Z,2013-09-22T22:51:47Z,"use a single read BAM, it gives off following warning, and produces an VCF without calls.
+
+Loading module class snpsvm.app.Predictor
+Calling SNPs over 22556 bases with 4 threads in 1 chunks
+java.lang.IllegalStateException: Inappropriate call if not paired read
+        at net.sf.samtools.SAMRecord.requireReadPaired(SAMRecord.java:675)
+        at net.sf.samtools.SAMRecord.getMateUnmappedFlag(SAMRecord.java:702)
+        at snpsvm.bamreading.BamWindow.expand(BamWindow.java:263)
+        at snpsvm.bamreading.BamWindow.advanceTo(BamWindow.java:169)
+        at snpsvm.bamreading.AlignmentColumn.advanceTo(AlignmentColumn.java:173)
+        at snpsvm.bamreading.ReferenceBAMEmitter.emitWindow(ReferenceBAMEmitter.java:149)
+        at snpsvm.bamreading.SNPCaller.run(SNPCaller.java:75)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1146)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:679)
+",jcollimore,https://github.com/brendanofallon/SNPSVM/issues/2
+MDU6SXNzdWUyOTUwNzk5OTM=,SNPSVM not generating output,OPEN,2018-02-07T10:17:32Z,2018-02-07T10:17:32Z,,"Its showing error.
+
+**Command**java -Xmx8g -jar snpsvm.jar predict -R /home/likithreddy/Documents/Genome/hg38.fa -B /media/likithreddy/D1_SEQ_DATA/LikithReddy/SRR098401mem_pesort.bam -M /home/likithreddy/Downloads/SNPSVM-master/models/default.model -V out.vcf
+
+Loading module class snpsvm.app.Predictor
+Calling SNPs over 3209286105 bases with 4 threads in 473 chunks
+   Elapsed       Bases      Bases / sec   % Complete     mem
+-  0:04.19       312188      74507.88      0.01%        525MBWarning: libsvm process executing command /home/likithreddy/Downloads/SNPSVM-master/libsvm-mastersvm-predict -b 1 /home/likithreddy/Downloads/SNPSVM-master/.fe5KC1OEaJ1q.data /home/likithreddy/Downloads/SNPSVM-master/models/default.model /home/likithreddy/Downloads/SNPSVM-master/.fe5KC1OEaJ1q.data.829.output reported an error
+java.lang.IllegalStateException: Result file /home/likithreddy/Downloads/SNPSVM-master/.fe5KC1OEaJ1q.data.829.output does not exist
+	at snpsvm.bamreading.ResultVariantConverter.createVariantList(ResultVariantConverter.java:39)
+	at snpsvm.bamreading.SNPCaller.run(SNPCaller.java:92)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+\ |  1:07.08       489033       7289.75      0.02%      ",pinninti19,https://github.com/brendanofallon/SNPSVM/issues/3

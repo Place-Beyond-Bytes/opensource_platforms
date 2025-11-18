@@ -1,0 +1,31 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MTMzODE0MzI=,'configure' error,CLOSED,2019-10-28T15:33:02Z,2021-03-08T21:25:27Z,2021-03-08T21:25:27Z,"Hello,
+I am trying to install this software and getting the following error:
+
+<img width=""930"" alt=""Screen Shot 2019-10-28 at 11 23 22"" src=""https://user-images.githubusercontent.com/8771757/67691671-5d1a3800-f975-11e9-9994-e8080e9f8321.png"">
+
+I am not well-versed in C++, but perhaps the configure file should be checking for prerequisites to adjacency_list.hpp instead of doing an explicit pre-processor check on it? I'd appreciate your help with this issue. Thanks!
+",pramesh-cfh11,https://github.com/ViennaRNA/RNAblueprint/issues/1
+MDU6SXNzdWU2MTcyNDU1NzI=,Unit tests fail in conda env: undefined reference to clock_gettime(),OPEN,2020-05-13T08:21:01Z,2020-10-16T15:27:49Z,,"When running the unit tests via `make check` inside a conda environment, the linking of `testRNAblueprint` fails with the following error message:
+
+```plain
+/home/felix/miniconda3/envs/rnablueprint/bin/../lib/gcc/x86_64-conda_cos6-linux-gnu/7.3.0/../../../../x86_64-conda_cos6-linux-gnu/bin/ld: testRNAblueprint-main.o: in function `boost::unit_test::timer::timer::elapsed() const':
+main.cc:(.text._ZNK5boost9unit_test5timer5timer7elapsedEv[_ZNK5boost9unit_test5timer5timer7elapsedEv]+0x45): undefined reference to `clock_gettime'
+/home/felix/miniconda3/envs/rnablueprint/bin/../lib/gcc/x86_64-conda_cos6-linux-gnu/7.3.0/../../../../x86_64-conda_cos6-linux-gnu/bin/ld: testRNAblueprint-main.o: in function `boost::unit_test::framework::state::execute_test_tree(unsigned long, unsigned long, boost::unit_test::framework::state::random_generator_helper const*)':
+main.cc:(.text._ZN5boost9unit_test9framework5state17execute_test_treeEmmPKNS2_23random_generator_helperE[_ZN5boost9unit_test9framework5state17execute_test_treeEmmPKNS2_23random_generator_helperE]+0x5b3): undefined reference to `clock_gettime'
+collect2: error: ld returned 1 exit status
+Makefile:674: recipe for target 'testRNAblueprint' failed
+make[2]: *** [testRNAblueprint] Error 1
+```
+
+My conda env was created using the following command:
+
+```bash
+conda create -n rnablueprint c-compiler python boost cxx-compiler perl swig automake autoconf libtool m4
+```
+
+The problem seems to be that `clock_gettime` needs to be linked with `-lrt`, cf. `man clock_gettime`. There it sais "" Link with -lrt (only for glibc versions before 2.17).""  Adding `-lrt` to `testRNAblueprint_LDADD` in `tests/Makefile.am` solves this problem. librt is part of the Linux Standard Base specification, so it should be present everywhere (?).",xileF1337,https://github.com/ViennaRNA/RNAblueprint/issues/2
+MDU6SXNzdWU3MTcxNDc5OTk=,Installation (lib/lib64),CLOSED,2020-10-08T08:47:23Z,2021-03-08T20:22:01Z,2021-03-08T20:22:01Z,"During installation two lib folders are created: lib and lib64
+1) Installation Guide: Hint: in case of a local installation both must be added to the PYTHONPATH
+2) Code update: merge them to only one lib
+",irenekb,https://github.com/ViennaRNA/RNAblueprint/issues/3

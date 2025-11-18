@@ -1,0 +1,23 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4MDgyOTE2Mzc=,Bugs with toil,OPEN,2021-02-15T08:05:15Z,2021-02-15T08:05:15Z,,"Hello,
+
+I tried running `run_toil.sh` on a LSF cluster, but ran into a few problems:
+
+- I tried creating a conda environment using the file `conda_toil_env.yml` and Miniconda 4.9.2. The following packages could not be found. I had to remove the build numbers and in some cases even the version numbers to complete the installation:
+```
+Collecting package metadata (repodata.json): done
+Solving environment: failed
+
+ResolvePackageNotFound: 
+  - nodejs==6.10.3=0
+  - tk==8.5.18=0
+  - readline==6.2=2
+  - setuptools==36.4.0=py27_1
+```
+- Maybe you want to mention in the README that variables inside the `run_toil.sh` script need to be modified before running it, as this may not be obvious to users.
+- The variable `BATCHSYSTEM` is defined but never used, which results in jobs being dispatched on the local machine instead of as LSF jobs. The variable should be passed to toil via the parameter `--batchSystem`.
+- The variable `JOBSTORE` is undefined causing toil to attempt to create files in the root directory. This fails due to lack of permissions and the jobs crash.
+- No runtime limits are configured for LSF jobs. On our cluster, jobs without explicit runtime specification get a default limit of just 10 minutes. Most jobs take longer than this and are terminated prematurely, hence. Is there a way to set a default runtime limit for all jobs? I don't want to go through the hassle of modifying all of the job specifications. I tried using `--maxJobDuration`, but it had no effect.
+
+Many thanks in advance,
+Sebastian",suhrig,https://github.com/CompEpigen/ChIPseq_workflows/issues/2

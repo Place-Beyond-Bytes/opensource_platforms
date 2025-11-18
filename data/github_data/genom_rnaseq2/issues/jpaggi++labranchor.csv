@@ -1,0 +1,51 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNzU1MDg4MzA=,Gencode genome,CLOSED,2018-10-30T14:09:03Z,2019-02-20T01:03:51Z,2019-02-20T01:03:51Z,"Hi!
+
+Thank you for a wonderful tool.
+
+Just a note to anyone using a genome fasta downloaded from Gencode - the format of the chromosome header lines is e.g. >chr1 1, so the create_fasta.py will fall down because the chromosome names don't match to the annotation.
+
+To solve this I added .split("" "")[0] to the genome parser function, see below:
+
+class Genome:
+    def __init__(self, fasta_fn):
+        self.genome = {}
+        with open(fasta_fn) as fp:
+            chrom = fp.readline().strip()[1:]**.split("" "")[0]**
+            print(chrom)
+            seq = ''
+            for line in fp:
+                if line[0] == '>':
+                    self.genome[chrom] = seq
+                    chrom = line.strip()[1:]**.split("" "")[0]**
+                    seq = ''
+                    print(chrom)
+                else:
+                    seq += line.strip().upper()
+
+Not sure if this is maybe worth adding in because I don't think it will break normally formatted fastas.
+
+Best,
+Charlotte",CharlotteAnne,https://github.com/jpaggi/labranchor/issues/1
+MDU6SXNzdWUzNzU1MjY3Mzc=,Model initialisation,CLOSED,2018-10-30T14:44:20Z,2019-07-24T12:50:41Z,2018-11-01T18:22:56Z,"Hi,
+
+When learning the BPs I get the following warning message:
+
+Using TensorFlow backend.
+Loading sequences from hg38_gencode_v29_3SS_seqs.fa
+Read 208571 sequences
+Loading model from ../../software/labranchor/labranchor/2layer.h5
+2018-10-30 14:37:18.897478: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+/****/software/miniconda2/lib/python2.7/site-packages/keras/engine/saving.py:327: UserWarning: Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+  warnings.warn('Error in loading the saved optimizer '
+
+Is this something that will affect the predictions (I get output that looks sensible!), or is it safe to ignore this?
+
+Thanks for your help,
+Charlotte",CharlotteAnne,https://github.com/jpaggi/labranchor/issues/2
+MDU6SXNzdWU3NzUxNjE4NDk=,LaBranchoR python3 version,OPEN,2020-12-28T02:55:09Z,2020-12-28T02:55:09Z,,"Hi,
+
+I really want to use LaBranchoR for the branch point site analysis of newly sequenced variants. I got branch point predicting files with Gencode v35. I also want in silico mutagenesis branch point predicting file with Genecode v35 or directly use the LaBranchoR model. But, uploaded scripts are written with python2 and some functions of Keras are deprecated (So, I think these could induce different predictions about branch points). If you have a plan to update LaBranchoR, please let me know.
+
+Bests,
+Sijae",SIJAE-WOO,https://github.com/jpaggi/labranchor/issues/4

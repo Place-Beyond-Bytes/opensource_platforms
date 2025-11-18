@@ -1,0 +1,137 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxOTcxMDM1MDc=,segfault on ubuntu,CLOSED,2016-12-22T06:25:37Z,2016-12-27T05:56:16Z,2016-12-27T05:56:16Z,"regardless of how I compile, pimc was segfaulting for me on ubuntu today running the DHFR example. will provide details on ubuntu and GCC versions from lab tomorrow.
+
+avi",flamholz,https://github.com/debbiemarkslab/plmc/issues/1
+MDU6SXNzdWUyNTIzNzU4NzM=,0 valid sequences,CLOSED,2017-08-23T18:33:47Z,2017-09-01T18:54:27Z,2017-09-01T18:54:26Z,"I try to run plmc for RNA sequence. Dataset contains 11870 sequences (derived from RFAM database). Input file is fasta format. While running plmc, I always get an error saying that ""0 valid sequences"". What could be the reason to get such error though MSA contains divergent sequences. Please suggest me to rectify this issue.",yazhinia,https://github.com/debbiemarkslab/plmc/issues/2
+MDU6SXNzdWUyNjIyNzc2NDI=,memory consumption leads to seg faults -- suggestion,CLOSED,2017-10-03T01:25:43Z,2019-05-09T06:54:25Z,2019-05-09T06:54:25Z,"I was testing an large alignment (20k sequences by ~2800 positions) that ended being a bit gappy during my alignment. When running plmc without a focus sequence, the calculation runs into a segfault. Looking more closely, this resulted in an overflow for [nFij](https://github.com/debbiemarkslab/plmc/blob/master/src/plm.c#L664). This was actually ""fine"" because malloc converts interprets its argument as unsigned.
+
+However, of course, it eventually would segfault upon starting to actually calculate the second order marginals [here](https://github.com/debbiemarkslab/plmc/blob/master/src/plm.c#L671).  I'm not exactly sure why it didn't happen when [initializing](https://github.com/debbiemarkslab/plmc/blob/master/src/plm.c#L666). 
+
+You are probably very aware that this should be the case, and, in retrospect, it makes sense to me. It might be nice for other novice users, like me, to provide a formula to estimate memory consumption in README.md or the plmc help string. Or even to exit the calculation with an error message saying that the alignment is too big based on this calculation of [nFij](https://github.com/debbiemarkslab/plmc/blob/master/src/plm.c#L664) or something.
+",smsaladi,https://github.com/debbiemarkslab/plmc/issues/5
+MDU6SXNzdWUyOTg5NzQ0MzA=,Out of memory error,CLOSED,2018-02-21T13:42:24Z,2019-03-11T22:12:48Z,2019-03-11T22:12:48Z,"I am trying to run plmc to get parameters for use with EVmutation. The program works fine when I use the examples given in the example folder but when I put in my own sequence alignments I always get output similar to this:
+
+100 valid sequences out of 100
+724 sites
+Effective number of samples: 75.2       (80% identical neighborhood = 1.000 samples)
+Gradient optimization: OUTOFMEMORY
+Error writing parameters
+
+My alignment is in fasta format, aligned with MAFFT. I tried redownloading and configuring a different way. How can I get this program to work...",rsalz,https://github.com/debbiemarkslab/plmc/issues/6
+MDU6SXNzdWU0NDU3NjQyNzQ=,Illegal Instruction on ArchLinux,OPEN,2019-05-18T23:39:55Z,2019-05-18T23:39:55Z,,"Hello, I'm trying to run the program with the EVcouplings pipeline, but the related bug comes from the plmc tool
+
+The program just loaded my .a2m file before dumped the execution
+
+This is the data of the PC I'm using
+```
+Software
+Linux Tostadora 5.1.2-arch1-1-ARCH #1 SMP PREEMPT Wed May 15 00:09:47 UTC 2019 x86_64 GNU/Linux
+```
+```
+Hardware
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+Address sizes:       38 bits physical, 48 bits virtual
+CPU(s):              8
+On-line CPU(s) list: 0-7
+Thread(s) per core:  1
+Core(s) per socket:  4
+Socket(s):           2
+NUMA node(s):        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               15
+Model name:          Intel(R) Xeon(R) CPU           E5310  @ 1.60GHz
+Stepping:            11
+CPU MHz:             1596.242
+BogoMIPS:            3193.01
+Virtualization:      VT-x
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            4096K
+NUMA node0 CPU(s):   0-7
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge
+mca cmov pat pse36 clflush dts acpi mmx fxsr ssesse2 ss ht tm pbe 
+syscall nx lm constant_tsc arch_perfmon pebs bts rep_good 
+nopl cpuid aperfmperf pni dtes64 monitor ds_cpl vmx tm2 
+ssse3 cx16 xtpr pdcm dca lahf_lm pti tpr_shadow vnmi flexpriority dtherm
+```
+and this is the debug information captured by `strace`
+
+[debug.txt](https://github.com/debbiemarkslab/plmc/files/3194610/debug.txt)
+",Nautilus567,https://github.com/debbiemarkslab/plmc/issues/7
+MDU6SXNzdWU0NDYxNjU1OTU=,Conda package,OPEN,2019-05-20T15:00:28Z,2019-05-20T15:00:28Z,,"Hi,
+
+would it be possible to offer plmc as a conda package?",Zethson,https://github.com/debbiemarkslab/plmc/issues/8
+MDU6SXNzdWU2NTU0NDIzNDI=,Focus sequence non-functional if alphabet provided,OPEN,2020-07-12T17:29:22Z,2020-08-18T19:48:28Z,,"When alphabet is specified, all sequence positions are modeled ignoring uppercase/lowercase
+
+Without alphabet ( assumes protein alphabet = a problem for RNAs )
+```
+plmc -c my.model -f target_seq -t 0.10  test.a2m
+Found focus target_seq as sequence 1
+0 valid sequences out of 1 
+433 sites out of 450
+```
+
+With RNA alphabet = all positions are modeled, even lower-case
+```
+plmc -c my.model -f target_seq -t 0.10  -a -AUGC test.a2m
+Found focus target_seq as sequence 1
+1 valid sequences out of 1 
+450 sites out of 450
+```",njrollins,https://github.com/debbiemarkslab/plmc/issues/9
+I_kwDOAvDtAc5Ut-dG,new version gives error when compling in linux,CLOSED,2022-10-24T19:41:00Z,2023-01-12T20:50:16Z,2023-01-12T20:50:16Z,"Hi, 
+compiling this new version in linux (with ot without openmp) yelds an error:
+
+In file included from src/plm.c:15:
+src/include/plm.h:106:20: error: field ‘start’ has incomplete type
+  106 |     struct timeval start;  // sys/time.h
+      |                    ^~~~~
+In file included from src/include/weights.h:4,
+                 from src/weights.c:6:
+src/include/plm.h:106:20: error: field ‘start’ has incomplete type
+  106 |     struct timeval start;  // sys/time.h
+      |                    ^~~~~
+In file included from src/main.c:5:
+src/include/plm.h:106:20: error: field ‘start’ has incomplete type
+  106 |     struct timeval start;  // sys/time.h
+",eagalpern,https://github.com/debbiemarkslab/plmc/issues/12
+I_kwDOAvDtAc5h--oQ,Gradient optimization: ROUNDING_ERROR,OPEN,2023-03-28T12:58:53Z,2023-03-28T14:26:05Z,,"hi,
+ 
+with plmc usage
+my calculation ran to 90 steps but then terminated with the following error. 
+Found focus OsNIP2-1 as sequence 1
+255 valid sequences out of 255 
+298 sites out of 882
+Effective number of samples: 135.2	(80% identical neighborhood = 1.000 samples)
+iter	time	cond	fx	-loglk	||h||	||e||
+1	0.8	39.06	44305.5	44222.6	90.5	1.0
+..................................................................................
+89	88.7	0.07	15355.1	7713.3	124.5	21.8
+90	89.8	0.04	15355.0	7711.4	124.5	21.8
+Gradient optimization: ROUNDING_ERROR
+
+ can someone specify what does the error says? 
+
+my command was 
+plmc -c score_couple -le 16.0 -lh 0.01 -m 100 -g -f uniprot_id2041 aaa.a2m
+",Yogesh1-11,https://github.com/debbiemarkslab/plmc/issues/19
+I_kwDOAvDtAc5jYfXD,How to get a2m MSA?,OPEN,2023-04-14T01:19:26Z,2023-04-14T02:32:18Z,,"I am really new to MSA, would you mind telling me how to get the a2m file that this package required? 
+Thank you very much.",jackhu3301,https://github.com/debbiemarkslab/plmc/issues/20
+I_kwDOAvDtAc54fawa,Confusion on -theta flag ?,OPEN,2023-12-01T19:56:36Z,2024-02-20T19:17:10Z,,"This may seem obvious, but does the -t flag of say 0.2 do the evolutionary reweighting for us? 
+
+I just feel like I'm always confused for all these methods ... EVE, EVMutation etc. if that is done for us, or we need to do that ourselves... 
+
+Sorry for the obvious question :/ 
+Bryce ",brycejoh16,https://github.com/debbiemarkslab/plmc/issues/21
+I_kwDOAvDtAc6Pe5Kt,protein nucleic acid coupling,OPEN,2024-07-14T02:49:48Z,2024-07-15T15:09:55Z,,"Hi, 
+I am interested in studying protein-nucleic acid couplings, like that of transcription factors and RNA binding proteins.  I was looking at the plmc script and was wondering how I should go about specifiying the alphabet argument, if i would like to include both protein and DNA/RNA alphabets. I was planning to make a multiple sequence alignment, with the covarying protein and RNA alphabets concatenated. 
+
+Example
+>DYR_ECOLI/1-159
+MISLIAALAVDRVIGMENAMPWNLPADLAWFKRNTLNKPVIMGRHTWESIG---RPLPGRKNIILSSQPGTD--UUCUUAUCAAGAGCGGUGGAGGGAUCGGCCCAGUGAAGCCCAGCAG--CGGAGCGCAAGUUCUA----UGCUAAUUCCGACAGAAG.
+
+Given an MSA as above containing both protein and RNA alphabets, Would the alphabet argument work ""a -ACDEFGHIKLMNPQRSTVWYU"" model both protein and RNA alphabets. Note that I included U to model Uracil. The other nucleotide characters A,T, C and G is shared between proteins and RNA/DNA. If the above arguement wouldn't work, would I have to change something in the plmc script to distinctly model RNA and protein alphabets, if I am interested in characterizing their co-complex.
+
+Hope my question makes sense !",kamesh2026,https://github.com/debbiemarkslab/plmc/issues/22

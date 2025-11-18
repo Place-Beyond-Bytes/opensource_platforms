@@ -1,0 +1,480 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFJfcUc5S3gMT,config file validation,CLOSED,2022-09-29T05:32:52Z,2022-10-08T09:00:40Z,2022-10-08T09:00:40Z,,kdm9,https://github.com/kdm9/Acanthophis/issues/2
+I_kwDOFJfcUc5S3gVY,Configuration docs,CLOSED,2022-09-29T05:33:38Z,2023-10-04T20:26:02Z,2023-10-04T20:26:02Z,,kdm9,https://github.com/kdm9/Acanthophis/issues/3
+I_kwDOFJfcUc5S3ggZ,Tidy and merge all profiles from all instance of Acanthophis,CLOSED,2022-09-29T05:34:33Z,2023-09-21T11:59:36Z,2023-09-21T11:59:36Z,"- [x] cobra/raven.mpcdf.de
+- [x] ebio-cluster
+- [x] local
+- [x] gcloud-k8s
+- [x] gcloud-monolith",kdm9,https://github.com/kdm9/Acanthophis/issues/4
+I_kwDOFJfcUc5S3gxE,possible rename: holopipe,CLOSED,2022-09-29T05:36:01Z,2023-09-27T19:56:44Z,2023-09-27T19:56:44Z,HOLOgenomics PIPEline. (also hollow pipe),kdm9,https://github.com/kdm9/Acanthophis/issues/5
+I_kwDOFJfcUc54UPel,Unable to run tests: missing 'populate_metadata' in module 'acanthophis',CLOSED,2023-11-30T12:31:16Z,2024-01-30T10:53:15Z,2024-01-30T10:53:15Z,"(Part of review thread https://github.com/openjournals/joss-reviews/issues/6062)
+
+Hello! I tried running the tests for this repo by following the instructions [here](https://github.com/kdm9/Acanthophis/blob/main/tests/README.md) and found the following minor issues:
+
+- The conda environment file is currently not `conda.yml` as per the README, but `environment-setup.yml`
+- In that `environment-setup.yml`, installing msprime from pip failed - see attached log file
+[failed_pip_install_msprime.txt](https://github.com/kdm9/Acanthophis/files/13512718/failed_pip_install_msprime.txt). I found that simply installing msprime from conda-forge worked instead, as per [instructions here](https://tskit.dev/msprime/docs/latest/installation.html).
+  --> Update the .yml accordingly?
+- The last part of the README in the `tests` directory should be updated to reflect the current status of Acanthophis - i.e., 
+  using the instructions from [here](https://github.com/kdm9/Acanthophis#documentation) in the main README, or just link to that.
+  Same for the comment '# once I put this on PyPI:' - I see acanthophis is on PyPI 
+
+And here is a **more major issue**:
+
+-  Running `snakemake --snakefile Snakefile.generate-rawdata -j 8 --use-conda` completed fine and produced the `rawdata`. However, for actually running acanthophis on the generated 
+  test dataset, `snakemake --snakefile Snakefile -j 8 --use-conda`, `Snakefile` and `config.yml` are missing. 
+  I saw that inside the script `test.sh` there are instructions to generate them, using `acanthophis-init`. Please either 
+  tell the user to run `setup.sh` and `test.sh`, or `acanthophis-init`, in the README code block.
+- Having done as above, command `snakemake --snakefile Snakefile -j 8 --use-conda` gives the following error:
+  ```sh
+  AttributeError in file /home/adminbrice/Desktop/research/writing/reviewing_exernal/JOSS/Acanthophis/test_tool/Acanthophis/tests/Snakefile, line 4:
+    module 'acanthophis' has no attribute 'populate_metadata'
+  File ""/home/adminbrice/Desktop/research/writing/reviewing_exernal/JOSS/Acanthophis/test_tool/Acanthophis/tests/Snakefile"", line 4, in <module>
+  ```
+
+",bricoletc,https://github.com/kdm9/Acanthophis/issues/7
+I_kwDOFJfcUc54UfMv,Missing contribution/community guidelines,CLOSED,2023-11-30T13:08:43Z,2024-01-11T17:47:06Z,2024-01-11T17:46:44Z,"(Part of review thread https://github.com/openjournals/joss-reviews/issues/6062)
+
+The three following guidelines are missing, on how to: 1) Contribute to the software 2) Report issues or problems with the software 3) Seek support
+
+(Presumably points 2 and 3 can just be raising issues on the repo)
+Please provide these either in a section in the main README or in a separate `CONTRIBUTING.md` file linked to in the README",bricoletc,https://github.com/kdm9/Acanthophis/issues/8
+I_kwDOFJfcUc54U7rA,Review comments on the JOSS software paper,CLOSED,2023-11-30T14:11:57Z,2024-02-20T10:00:36Z,2024-01-23T14:44:58Z,"(Part of review thread https://github.com/openjournals/joss-reviews/issues/6062)
+
+Overall, the paper reads well, and I am convinced of your pipeline's value both in terms of 
+need for the community, functionality and level of configurability. For the software paper to fully convey this, 
+and to clarify certain points/features, I've provided the following comments below. They mostly relate to 
+providing definitions, more details on the pipeline and use cases, and discussions of design choices and limitations.
+
+In two comments I refer to adding a possible 'Discussion' section to the paper. I'm not sure if this is 
+something that JOSS does or not - if not, it's fine to address the comments directly on lines they refer to.
+
+- For clarity the term 'Hologenomics' should be defined at the very beginning of the paper (currently 'hologenome' is defined only on Line 38). 
+    E.g. in the paper you could tag it after the first sentence of the 'Summary' section: 
+    '...joint discovery of both plant genetic variation and variation [...] of plant-associated microbiomes. We refer to this as hologenomics.'
+
+    Please also define this term in the repo README or `documentation.md`.
+
+- Line 29: 'has attracted many users' do you have a metric for this (e.g. number of git clones, or PyPI downloads)? Otherwise, I would leave this statement out; 
+    it's already obvious in my opinion that this pipeline is valuable, and you have studies that use it (see below).
+
+- Lines 30-31: It seems that Ahrens et al. (2021) discusses using the pipeline only through referring to Murray et al. (2019), in which parts of an earlier version of this pipeline are discussed. 
+    Perhaps state as such: 'this pipeline was first developed in Murray et al. (2019) for use in [x and y], and subsequently used 
+    in Ahrens et al. (2021) for analysing species [x' and y']'. 
+    Also, what are the improvements in the pipeline since Murray et al. (2019)? (I'm not saying there are none)
+    I believe you've added taxonomic identification since then - it would be good to state this.
+
+- Relating to use cases: has Acanthophis been used already in a hologenomics context - i.e. identifying microbial species present on/near 
+    focal plant species? If so, please give an example - it's not clear to me that Ahrens et al. (2021) or Murray et al. (2019) do this.
+    If not, can you discuss how for example Karasov et al. (2022) did 'hologenomics', did they build their own pipeline?
+
+- Relating to hologenomics: I don't think your pipeline does host x microbe genetic association tests, perhaps add one sentence in a 'Discussion' section 
+    about how a user could then seek to do this, after running Acanthophis?
+
+- Line 29: Related to comment above, can you discuss Taxprofiler a little bit more - can Taxprofiler perform taxonomic assignment for plant 
+    reads? If not, say that explicitly. Then, you could state that Acanthophis does both variant calling and taxonomic identification, and so 
+    performs functionality of both Snakemake's variant calling pipeline and the nf-core Taxprofiler pipelines. 
+    Does Acanthophis do anything that they don't? (perhaps genetic distances?) And (being devil's advocate) in what 
+    cases is running Acanthophis better than running those two pipelines independently? 
+    (I guess one obvious answer is analysing plant genomes; can Taxprofiler do hologenomics?)
+
+- Line 36: Why can't your pipeline be run on long-read data (PacBio, ONT)? It is already valuable
+    for the pipeline to target short-read datasets, but it would be nice for the reader to understand 
+    what prevents Acanthophis processing/being useful for long-read data.
+    This could be stated in a 'Discussion' section of the paper. 
+
+- Line 59: why should input reference genomes be uncompressed fasta files? I'm pretty sure that for at least
+    bwa-mem and minimap2, the fasta can be gzipped.
+
+- Line 64: what does 'combines filter-passing alleles back into unique sites' mean? Two clauses back you say that before this filtering 
+    you split multi-allelic variants, so I assume it's not related to that process?
+
+- Lines 66-69: very nice paralellisation strategies!
+
+- Lines 71-74: This sentence is v. hard to understand. I think it'd be clearer to say 'Acanthophis creates taxonomic profiles using any of Kraken2 [etc...], 
+    or using other public sequence databases'. + Give examples of public sequence databases, and also whether the databases are automatically downloaded during execution.
+
+- Line 77: For 'Stage 5: De novo Estimates of Genetic Dissimilarity', you provide means to compute genetic dissimilarity measures from the 
+    reads themselves - i.e. alignment and variant-calling free, which is nice. Does Acanthopis also compute VCF-based dissimilarity measures?
+    If not, please state why not.
+
+- Lines 81-84: please explicitly mention at least some of the tools/stages that MultiQC can run on, to get a sense of what the user can visualise and assess at the end. 
+
+- Perhaps after Line 84, state how independent the stages are: e.g. 'the user can perform all of variant calling, genetic distance estimation and taxonomic profiling isolation', if that's correct
+",bricoletc,https://github.com/kdm9/Acanthophis/issues/9
+I_kwDOFJfcUc57d0j9,[JOSS Review] Installation Instructions in tests wrong .yml file,CLOSED,2024-01-09T00:05:52Z,2024-01-09T16:48:02Z,2024-01-09T16:47:51Z,"Re https://github.com/openjournals/joss-reviews/issues/6062
+
+I am running the example deployment of Acanthophis based on the Readme in the `tests` directory.
+
+The instruction is 
+
+`conda env create -f conda.yml -n acanthophis-demo`
+
+but presumably the correct command should be 
+
+`conda env create -f environment-setup.yml -n acanthophis-demo`
+
+
+",gbouras13,https://github.com/kdm9/Acanthophis/issues/10
+I_kwDOFJfcUc57d2BN,[JOSS Review] Improve `tests` docs,CLOSED,2024-01-09T00:13:09Z,2024-01-09T17:20:35Z,2024-01-09T17:20:34Z,"Re https://github.com/openjournals/joss-reviews/issues/6062
+
+After running
+
+`snakemake --snakefile Snakefile.generate-rawdata -j 8 --use-conda`
+
+which completed perfectly, the instructions say:
+
+""To initialise your own workflow, copy ./Snakefile and ./config.yml to a new directory""
+
+However, there isn't a Snakefile or config.yml file in the tests directory. I assume that you need to start a new project as per the main documentation - it would be good to make this clearer.
+
+George
+
+
+",gbouras13,https://github.com/kdm9/Acanthophis/issues/11
+I_kwDOFJfcUc57d7JT,[JOSS Review] tab/space bug,CLOSED,2024-01-09T00:42:28Z,2024-01-16T09:56:58Z,2024-01-16T09:56:57Z,"
+Re https://github.com/openjournals/joss-reviews/issues/6062
+
+After #11 copying the Snakefile, I ran:
+
+```
+snakemake --snakefile Snakefile -j 8 --use-conda
+```
+
+which yielded an error (at the bottom of this issue).
+
+It can be fixed by replacing tab with spaces in the line
+
+`        ""   --prob-contamination 1e-3""`
+
+in the freebayes rule in the varcall.rules file.
+
+
+```
+Traceback (most recent call last):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/workflow.py"", line 1369, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/Users/a1667917/Documents/Reviews/acanthophis/Acanthophis/tests/Snakefile"", line 18, in <module>
+    rules.varcall.input,
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/workflow.py"", line 1347, in include
+    code, linemap, rulecount = parse(
+                               ^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 1307, in parse
+    for t, orig_token in automaton.consume():
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 110, in consume
+    for t, orig in self.state(token):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 1212, in python
+    for t in self.subautomaton(token.string, token=token).consume():
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 110, in consume
+    for t, orig in self.state(token):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 199, in block
+    yield from self.block_content(token)
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 784, in block_content
+    for t in self.block(e.token):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 199, in block
+    yield from self.block_content(token)
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 784, in block_content
+    for t in self.block(e.token):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 199, in block
+    yield from self.block_content(token)
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 784, in block_content
+    for t in self.block(e.token):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 199, in block
+    yield from self.block_content(token)
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 773, in block_content
+    for t in self.subautomaton(
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 107, in consume
+    for token in self.snakefile:
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/parser.py"", line 1238, in __next__
+    return next(self.tokens)
+           ^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/tokenize.py"", line 541, in _generate_tokens_from_c_tokenizer
+    raise e from None
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/tokenize.py"", line 537, in _generate_tokens_from_c_tokenizer
+    for info in it:
+  File ""<string>"", line 101
+    	""   --skip-coverage 100000""
+    	                           ^
+TabError: inconsistent use of tabs and spaces in indentation
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/cli.py"", line 1887, in args_to_api
+    dag_api = workflow_api.dag(
+              ^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 326, in dag
+    return DAGApi(
+           ^^^^^^^
+  File ""<string>"", line 6, in __init__
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 421, in __post_init__
+    self.workflow_api._workflow.dag_settings = self.dag_settings
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 372, in _workflow
+    workflow.include(
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/workflow.py"", line 1371, in include
+    e = update_lineno(e, self.linemaps)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/exceptions.py"", line 165, in update_lineno
+    ex.lineno = linemaps[ex.filename][ex.lineno]
+                ~~~~~~~~^^^^^^^^^^^^^
+KeyError: '<string>'
+
+```",gbouras13,https://github.com/kdm9/Acanthophis/issues/12
+I_kwDOFJfcUc57d8Z6,[JOSS Review] kraken.rules error,CLOSED,2024-01-09T00:50:04Z,2024-01-09T17:23:49Z,2024-01-09T17:23:49Z,"
+After fixing #12, I ran into this bug.
+
+I tried to fix it, but it seems as though kraken.rules doesn't exist in the source code.
+
+I had v0.2.0 of acanthophis installed via pip 
+
+`pip install acanthophis `
+
+
+
+```
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/cli.py"", line 1887, in args_to_api
+    dag_api = workflow_api.dag(
+              ^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 326, in dag
+    return DAGApi(
+           ^^^^^^^
+  File ""<string>"", line 6, in __init__
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 421, in __post_init__
+    self.workflow_api._workflow.dag_settings = self.dag_settings
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/api.py"", line 372, in _workflow
+    workflow.include(
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/workflow.py"", line 1369, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/Users/a1667917/Documents/Reviews/acanthophis/Acanthophis/tests/Snakefile"", line 24, in <module>
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/snakemake/workflow.py"", line 1369, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/Users/a1667917/mambaforge/envs/someproject/lib/python3.12/site-packages/acanthophis/rules/kraken.rules"", line 53, in <module>
+KeyError: 'all'
+```",gbouras13,https://github.com/kdm9/Acanthophis/issues/13
+I_kwDOFJfcUc57d9oW,[JOSS Review] Source install v1.0.0rc4.dev6 error on OSX,CLOSED,2024-01-09T00:57:15Z,2024-01-23T14:31:51Z,2024-01-23T14:31:50Z,"
+Re https://github.com/openjournals/joss-reviews/issues/6062
+
+After #13 , I instead proceeded with a source install instead of pip
+
+i.e. 
+
+```
+
+mamba create -n someproject python snakemake pip natsort
+mamba activate someproject
+git clone https://github.com/kdm9/Acanthophis.git
+
+cd Acanthophis 
+pip install -e .
+```
+
+which worked 
+
+```
+Installing collected packages: acanthophis
+Successfully installed acanthophis-1.0.0rc4.dev6
+```
+
+Then I tried to run `acanthophis-init`, which did not:
+
+
+```
+cd ..
+acanthophis-init some_project
+```
+
+
+
+
+
+```
+Traceback (most recent call last):
+  File ""/Users/a1667917/mambaforge/envs/someproject/bin/acanthophis-init"", line 8, in <module>
+    sys.exit(init())
+             ^^^^^^
+  File ""/Users/a1667917/Documents/Reviews/acanthophis/Acanthophis/acanthophis/cmd.py"", line 64, in init
+    template_dir = acanthophis.get_resource(""template/"")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'acanthophis' has no attribute 'get_resource'
+```
+
+George
+
+
+
+
+",gbouras13,https://github.com/kdm9/Acanthophis/issues/14
+I_kwDOFJfcUc58J-8g,[JOSS Review] Errors with Mac Installation,CLOSED,2024-01-16T04:19:44Z,2024-01-16T10:52:48Z,2024-01-16T10:52:48Z,"Re https://github.com/openjournals/joss-reviews/issues/6062
+
+On my Macbook M1 I tried this:
+
+```
+git clone https://github.com/kdm9/Acanthophis.git
+mamba env create -f environment-setup.yml -n acanthophis-demo
+conda activate acanthophis-demo
+pip install -U acanthophis # confirmed v0.3.0 was installed 
+cd Acanthophis/tests
+ 
+acanthophis-init .
+ 
+snakemake --snakefile Snakefile.generate-rawdata -j 8 --use-conda
+```
+
+This all ran no problems at all.
+
+I then ran 
+
+```
+snakemake snakemake -j 8 --use-conda --conda-frontend mamba
+```
+
+which errored:
+
+```
+Traceback (most recent call last):
+  File ""/Users/a1667917/mambaforge/envs/acanthophis-demo/lib/python3.11/site-packages/snakemake/cli.py"", line 1886, in args_to_api
+    dag_api = workflow_api.dag(
+              ^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/acanthophis-demo/lib/python3.11/site-packages/snakemake/api.py"", line 326, in dag
+    return DAGApi(
+           ^^^^^^^
+  File ""<string>"", line 6, in __init__
+  File ""/Users/a1667917/mambaforge/envs/acanthophis-demo/lib/python3.11/site-packages/snakemake/api.py"", line 425, in __post_init__
+    self.workflow_api._workflow.dag_settings = self.dag_settings
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Users/a1667917/mambaforge/envs/acanthophis-demo/lib/python3.11/site-packages/snakemake/api.py"", line 372, in _workflow
+    workflow.include(
+  File ""/Users/a1667917/mambaforge/envs/acanthophis-demo/lib/python3.11/site-packages/snakemake/workflow.py"", line 1369, in include
+    exec(compile(code, snakefile.get_path_or_uri(), ""exec""), self.globals)
+  File ""/Users/a1667917/Documents/Reviews/acanthophis/Acanthophis/tests/Snakefile"", line 6, in <module>
+AttributeError: module 'acanthophis' has no attribute 'populate_metadata'
+```
+
+George
+
+",gbouras13,https://github.com/kdm9/Acanthophis/issues/15
+I_kwDOFJfcUc58KAjk,[JOSS Review] Error with Linux Tests - `init` and also Freebayes,CLOSED,2024-01-16T04:28:58Z,2024-01-16T11:36:06Z,2024-01-16T11:18:33Z,"Re https://github.com/openjournals/joss-reviews/issues/6062
+
+I ran the same code for  #15 on a Linux box (Ubuntu 20.04).
+
+```
+git clone https://github.com/kdm9/Acanthophis.git
+mamba env create -f environment-setup.yml -n acanthophis-demo
+conda activate acanthophis-demo
+pip install -U acanthophis # v0.3.0 was installed
+
+cd Acanthophis/tests
+acanthophis-init .
+snakemake --snakefile Snakefile.generate-rawdata -j 8 --use-conda
+snakemake snakemake -j 8 --use-conda --conda-frontend mamba
+```
+
+Unlike #15 on the Mac, the command `acanthophis-init .` did not work as designed - it created a structure like:
+
+```
+config.yml
+environment.yml
+rawdata/
+workflow/
+```
+
+with the `Snakefile` and `rules` subdirectory in the `workflow` directory. I'm not really sure why.
+
+In any case, once I copied the Snakefile, rules directory and `config.schema.yml` file into the correct location, acanthophis did indeed run as expected (the required conda envs were created, almost every rule ran well).
+
+Specifically I ran:
+
+```
+snakemake -j 8 --use-conda --conda-frontend mamba --keep-going
+```
+
+However, there was an error:
+
+```
+Error in rule freebayes:
+    jobid: 277
+    input: rawdata/reference/genome.fa, output/variants/raw_split/bwa~lambda~all_samples.bamlist, output/variants/raw_split/bwa~lambda~all_samples.fosn
+    output: tmp/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:16385-32768.bcf
+    log: output/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:16385-32768.bcf.log (check log file(s) for error details)
+    conda-env: /data/Acanthophis/tests/l/.snakemake/conda/bd7a1f75aa6d5405df665da7e2521080_
+    shell:
+        ( freebayes   --theta 0.01   --ploidy 2   --use-best-n-alleles 4      --min-mapping-quality 30   --min-base-quality 15   --read-max-mismatch-fraction 0.1   --skip-coverage 4000   --prob-contamination 0.05   --strict-vcf   --region 'NC_001416:16385-32768'   --fasta-reference rawdata/reference/genome.fa   --bam-list output/variants/raw_split/bwa~lambda~all_samples.bamlist   --samples output/variants/raw_split/bwa~lambda~all_samples.fosn | bcftools view   -O b6   -o tmp/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:16385-32768.bcf ) >output/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:16385-32768.bcf.log 2>&1
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 16 02:32:33 2024]
+Error in rule freebayes:
+    jobid: 275
+    input: rawdata/reference/genome.fa, output/variants/raw_split/bwa~lambda~all_samples.bamlist, output/variants/raw_split/bwa~lambda~all_samples.fosn
+    output: tmp/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:1-16384.bcf
+    log: output/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:1-16384.bcf.log (check log file(s) for error details)
+    conda-env: /data/Acanthophis/tests/l/.snakemake/conda/bd7a1f75aa6d5405df665da7e2521080_
+    shell:
+        ( freebayes   --theta 0.01   --ploidy 2   --use-best-n-alleles 4      --min-mapping-quality 30   --min-base-quality 15   --read-max-mismatch-fraction 0.1   --skip-coverage 4000   --prob-contamination 0.05   --strict-vcf   --region 'NC_001416:1-16384'   --fasta-reference rawdata/reference/genome.fa   --bam-list output/variants/raw_split/bwa~lambda~all_samples.bamlist   --samples output/variants/raw_split/bwa~lambda~all_samples.fosn | bcftools view   -O b6   -o tmp/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:1-16384.bcf ) >output/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416:1-16384.bcf.log 2>&1
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Exiting because a job execution failed. Look above for error message
+
+```
+
+When I examined the log `output/variants/raw_split/freebayes~bwa~lambda~all_samples/NC_001416\:1-16384.bcf.log` it said 
+
+```
+Failed to read from standard input: unknown file type
+```
+
+If it helps, the remaining DAG jobs are:
+
+```
+job                   count
+------------------  -------
+all                       1
+bcffilter                 2
+bcfmerge                  1
+bcfmerge2group            1
+finalvariantidx           1
+freebayes                 2
+premergevariantidx        2
+vcfstats                  1
+total                    11
+
+Select jobs to execute...
+```
+
+I've inspected the rule's input files, they look as expected (I assume).
+
+George
+
+
+
+
+
+
+
+
+
+
+
+
+",gbouras13,https://github.com/kdm9/Acanthophis/issues/16
+I_kwDOFJfcUc58hBTA,Additional CLI entry point for running the whole workflow,OPEN,2024-01-18T20:52:11Z,2024-01-18T20:52:11Z,,Likely via snaketool. See https://github.com/openjournals/joss-reviews/issues/6062#issuecomment-1897579241,kdm9,https://github.com/kdm9/Acanthophis/issues/18
+I_kwDOFJfcUc58vqsO,Included Dockerfile does not build,CLOSED,2024-01-22T00:48:05Z,2024-01-22T17:35:52Z,2024-01-22T17:35:52Z,"Running `docker build -t acanthophis .` from root of repository and throws following error. It seems Dockerfile is outdated.
+
+```
+16.77 INFO: pip is looking at multiple versions of acanthophis to determine which version is compatible with other requirements. This could take a while.
+16.77 ERROR: Ignored the following versions that require a different python version: 8.0.0 Requires-Python >=3.11; 8.0.1 Requires-Python >=3.11; 8.1.0 Requires-Python >=3.11; 8.1.1 Requires-Python >=3.11; 8.1.2 Requires-Python >=3.11; 8.1.3 Requires-Python >=3.11; 8.2.0 Requires-Python >=3.11; 8.2.1 Requires-Python >=3.11; 8.2.2 Requires-Python >=3.11; 8.2.3 Requires-Python >=3.11
+16.77 ERROR: Could not find a version that satisfies the requirement snakemake>=8 (from acanthophis) (from versions: 1.0, 1.0.1, 1.0.2, 1.1, 1.1.1, 1.1.2, 1.1.3, 1.1.4, 1.2, 1.2.1, 1.2.3, 2.0, 2.1, 2.1.1, 2.2, 2.2.1, 2.2.2, 2.3, 2.4, 2.4.1, 2.4.2, 2.4.3, 2.4.4, 2.4.5, 2.4.6, 2.4.7, 2.4.7.1, 2.4.8, 2.4.9, 2.5, 2.5.1, 2.5.2, 2.5.2.1, 2.5.2.2, 3.0b1, 3.0, 3.1, 3.1.1, 3.2, 3.2.1, 3.2.2, 3.3, 3.4, 3.4.1, 3.4.2, 3.5.0, 3.5.1, 3.5.2, 3.5.3, 3.5.4, 3.5.5, 3.6.0, 3.6.1, 3.7.0, 3.7.1, 3.8.0, 3.8.1, 3.8.2, 3.9.0, 3.9.1, 3.10.0, 3.10.1, 3.10.2, 3.11.0, 3.11.1, 3.11.2, 3.12.0, 3.13.0, 3.13.1, 3.13.2, 3.13.3, 4.0.0, 4.1.0, 4.2.0, 4.3.0, 4.3.1, 4.4.0, 4.5.0, 4.5.1, 4.6.0, 4.7.0, 4.8.0, 4.8.1, 5.0.0, 5.1.1, 5.1.2, 5.1.3, 5.1.4, 5.1.5, 5.2.0, 5.2.1, 5.2.2, 5.2.3, 5.2.4, 5.3.0, 5.3.1, 5.4.0, 5.4.1, 5.4.2, 5.4.3, 5.4.4, 5.4.5, 5.5.0, 5.5.1, 5.5.2, 5.5.3, 5.5.4, 5.6.0, 5.7.0, 5.7.1, 5.7.4, 5.8.0, 5.8.1, 5.8.2, 5.9.0, 5.9.1, 5.10.0, 5.11.0, 5.11.1, 5.11.2, 5.12.0, 5.12.1, 5.12.2, 5.12.3, 5.13.0, 5.14.0, 5.15.0, 5.16.0, 5.17.0, 5.18.0, 5.18.1, 5.19.0, 5.19.1, 5.19.2, 5.19.3, 5.20.0, 5.20.1, 5.21.0, 5.22.0, 5.22.1, 5.23.0, 5.24.0, 5.24.1, 5.24.2, 5.25.0, 5.26.0, 5.26.1, 5.27.2, 5.27.3, 5.27.4, 5.28.0, 5.29.0, 5.30.0, 5.30.1, 5.30.2, 5.31.0, 5.31.1, 5.32.0, 5.32.1, 5.32.2, 6.0.0, 6.0.1, 6.0.2, 6.0.3, 6.0.4, 6.0.5, 6.1.0, 6.1.1, 6.1.2, 6.2.0, 6.2.1, 6.3.0, 6.4.0, 6.4.1, 6.5.0, 6.5.1, 6.5.2, 6.5.3, 6.5.5, 6.6.0, 6.6.1, 6.7.0, 6.8.0, 6.8.1, 6.8.2, 6.9.0, 6.9.1, 6.10.0, 6.11.0, 6.11.1, 6.12.0, 6.12.1, 6.12.2, 6.12.3, 6.13.0, 6.13.1, 6.14.0, 6.15.0, 6.15.1, 6.15.2, 6.15.3, 6.15.4, 6.15.5, 7.0.0, 7.0.1, 7.0.2, 7.0.3, 7.0.4, 7.1.0, 7.1.1, 7.2.0, 7.2.1, 7.3.0, 7.3.1, 7.3.2, 7.3.3, 7.3.4, 7.3.5, 7.3.6, 7.3.7, 7.3.8, 7.4.0, 7.5.0, 7.6.0, 7.6.1, 7.6.2, 7.7.0, 7.8.0, 7.8.1, 7.8.2, 7.8.3, 7.8.5, 7.9.0, 7.10.0, 7.11.0, 7.12.0, 7.12.1, 7.13.0, 7.14.0, 7.14.1, 7.14.2, 7.15.0, 7.15.1, 7.15.2, 7.16.0, 7.16.1, 7.16.2, 7.17.0, 7.17.1, 7.18.0, 7.18.1, 7.18.2, 7.19.0, 7.19.1, 7.20.0, 7.21.0, 7.22.0, 7.23.0, 7.23.1, 7.24.0, 7.24.1, 7.24.2, 7.25.0, 7.25.1, 7.25.2, 7.25.3, 7.25.4, 7.26.0, 7.28.0, 7.28.1, 7.28.2, 7.28.3, 7.29.0, 7.30.0, 7.30.1, 7.30.2, 7.31.0, 7.31.1, 7.32.0, 7.32.1, 7.32.2, 7.32.3, 7.32.4)
+16.77 ERROR: No matching distribution found for snakemake>=8
+------
+Dockerfile:5
+--------------------
+   3 |     WORKDIR /usr/local/src/acanthophis
+   4 |     COPY . .
+   5 | >>> RUN conda config --add channels bioconda &&  mamba install --yes --all snakemake && pip install -e .
+   6 |     
+--------------------
+ERROR: failed to solve: process ""/bin/sh -c conda config --add channels bioconda &&  mamba install --yes --all snakemake && pip install -e ."" did not complete successfully: exit code: 1
+```
+
+For [JOSS Review](https://github.com/openjournals/joss-reviews/issues/6062)",abhishektiwari,https://github.com/kdm9/Acanthophis/issues/19

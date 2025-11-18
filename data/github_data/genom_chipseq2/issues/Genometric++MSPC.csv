@@ -1,0 +1,394 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNTQ0NDg0Mzc=,Sample data,CLOSED,2018-08-27T19:34:31Z,2018-08-28T15:28:51Z,2018-08-28T15:28:51Z,I was trying to download sample data from the link at [https://github.com/Genometric/MSPC/wiki/Sample-data](url) but it seems that the zip file is not there anymore.,marziacremona,https://github.com/Genometric/MSPC/issues/34
+MDU6SXNzdWUzNTQ0OTM2Mzk=,Options for users to specify parser parameters,CLOSED,2018-08-27T21:57:45Z,2018-09-28T16:19:00Z,2018-09-28T16:18:50Z,,VJalili,https://github.com/Genometric/MSPC/issues/35
+MDU6SXNzdWUzNjI0MzcwMTg=,Implement concrete MSPC class,CLOSED,2018-09-21T02:51:21Z,2018-09-22T00:07:08Z,2018-09-22T00:07:08Z,Solved in PR https://github.com/Genometric/MSPC/pull/42,VJalili,https://github.com/Genometric/MSPC/issues/37
+MDU6SXNzdWU0NTYyODI4NzU=,Unhandled Exception:,CLOSED,2019-06-14T14:38:20Z,2019-06-20T03:01:29Z,2019-06-15T23:53:45Z,"Thanks for this software! it runs super fast!
+I got a message that saying dotnet is quit unexpectedly.
+I thought it run through since all fold is generated. But I checked the log output has this message in the middle, showed up 2 times. 
+I rerun it, the same. 
+Can you help me with it? Thank you!
+
+Only the ""Summary statistics"" was missing from these 2 files, so I guess it worked?
+```
+Unhandled Exception: System.ArgumentOutOfRangeException: StartIndex cannot be less than zero.
+Parameter name: startIndex
+   at System.String.Substring(Int32 startIndex, Int32 length)
+   at Genometric.MSPC.CLI.SummaryStats.TruncateString(String value, Int32 maxLength)
+   at Genometric.MSPC.CLI.SummaryStats.RenderRow(Int32 columnwidth, String[] columns)
+   at Genometric.MSPC.CLI.SummaryStats.Create(List`1 samples, Dictionary`2 samplesDict, ReadOnlyDictionary`2 results, ReadOnlyDictionary`2 consensusPeaks, List`
+1 exportedAttributes)
+   at Genometric.MSPC.CLI.Program.Main(String[] args)
+./6.14.19_MSPC_mac2_reps.sh: line 28: 33841 Abort trap: 6           dotnet /Users/ellie/Downloads/mspc_v3.3/CLI.dll -i ${line}*.bed -r bio -s 1E-8 -w 1E-4 -g 1E
+-8 -c 2 -a 0.05 -m lowest
+```",EllieDuan,https://github.com/Genometric/MSPC/issues/81
+MDU6SXNzdWU0NTYzNjYxNjI=,Identical consensus peaks with different thresholds,CLOSED,2019-06-14T17:54:05Z,2019-06-14T18:05:10Z,2019-06-14T18:05:10Z,"It seems that peaks for the same transcription factor, called with different threshold values, return same consensus peak set.",fernandoPalluzzi,https://github.com/Genometric/MSPC/issues/82
+MDU6SXNzdWU0NjIxNjM4MDE=,Automatic filter of ENCODE blacklist,OPEN,2019-06-28T18:47:46Z,2021-08-07T22:49:22Z,,"I think it would be great to add an automatic filtering of known artifacts, such as the ones present in [ENCODE blacklists](https://sites.google.com/site/anshulkundaje/projects/blacklists). 
+
+> Functional genomics experiments based on next-gen sequencing (e.g. ChIP-seq, MNase-seq, DNase-seq, FAIRE-seq) that measure biochemical activity of various elements in the genome often produce artifact signal in certain regions of the genome. It is important to keep track of and filter artifact regions that tend to show artificially high signal (excessive unstructured anomalous reads mapping). 
+
+MSPC could have an additional argument (say, --blacklist ) so that the user can decide not to filter anything (--blacklist none), or to filter out every peak overlapping the ENCODE blacklist corresponding to the genome of reference (--blacklist hg19, --blacklist GRCh38 and so on. The complete list of available blacklists can be found [here](https://sites.google.com/site/anshulkundaje/projects/blacklists)). ",marziacremona,https://github.com/Genometric/MSPC/issues/85
+MDU6SXNzdWU0Nzc0MDIxMzA=,Which is consider as peak enrichment in output,CLOSED,2019-08-06T14:05:44Z,2019-08-19T14:34:50Z,2019-08-19T14:34:49Z,"Hi,
+   I have a question about the output from MSPC. 
+   Do I use p-value (I think this is -log10(p-value)?) or use value in xSquare as the enrichment score for peaks intensity? I would like to determine the peak enrichment in a list of genes. Thank you!
+
+Best,
+Ellie",EllieDuan,https://github.com/Genometric/MSPC/issues/88
+MDU6SXNzdWU1MDY1NzE5MTE=,Incorrect decimal separator,CLOSED,2019-10-14T10:36:31Z,2019-12-02T17:45:10Z,2019-12-02T17:44:27Z,"Using the software with different language configurations, I have detected a new issue. 
+
+When I use my PC in Spanish (with decimal separator "",""), MSPC is not able to detect the typical ""."" separator, which is use in the output of MACS2. If a -log10(pvalue) is 5.454, for example, MSPC detects 10^-5454. Moreover, as MSPC does not report an error, you could use the incorrect result. The only way to make it work properly is change the language or change the separator in the bed files.
+
+I don't know nothing about .NET, but it would be great if you can force the separator to be always a point, regardless of the system language.
+
+Best regards and thanks for the software.",omorante,https://github.com/Genometric/MSPC/issues/96
+MDU6SXNzdWU2MTc1NzY0Mzk=,MSPC cannot continue error,CLOSED,2020-05-13T16:11:46Z,2020-05-19T03:36:04Z,2020-05-14T17:04:06Z,"Hello,
+
+Thanks for making a very useful software! 
+I am using MSPC to generate consensus peaks for my ATAC-Seq experiments. I want to generate consensus peaks per treatment type which I was successfully able to do for one treatment type; however, it fails for the other treatment types after a certain point. Below is an example of the error message:
+```
+ .::...Parsing Samples....::. 
+    #	            Filename	Read peaks#	Min p-value	Mean p-value	Max p-value	
+------	--------------------	-----------	-----------	------------	-----------	`
+  1/11	        273E_IC_peak	    116,172	 1.908E-191	  6.663E-004	 9.993E-003	
+  2/11	        280D_IC_peak	    137,711	 9.204E-185	  1.290E-003	 9.993E-003	
+  3/11	        519C_IC_peak	    139,766	 3.152E-190	  1.465E-003	 9.993E-003	
+  4/11	        551A_IC_peak	    151,793	 3.873E-182	  6.876E-004	 9.993E-003	
+  5/11	        595D_IC_peak	    131,618	 2.306E-168	  5.484E-004	 9.993E-003	
+  6/11	        643C_IC_peak	    148,040	 9.996E-185	  1.167E-003	 9.993E-003	
+  7/11	         704_IC_peak	    135,992	 3.030E-191	  6.284E-004	 9.993E-003	
+Error: error parsing data: An item with the same key has already been added. Key: -2061531644
+You may run mspc with either of [-? | -h | --help] tags for help.
+MSPC cannot continue. 
+```
+I have tried a couple of things but I am getting the same error and I am not really sure how to proceed. This is the basic command (without options) I submit:
+`mspc -i *IC_peak.bed -r bio -w 1e-4 -s 1e-8`
+
+Is it possible to get some insight on how I can solve this please? :slightly_smiling_face:
+
+Many thanks,
+Lara",LaraBM,https://github.com/Genometric/MSPC/issues/123
+MDU6SXNzdWU2MTgzMzI2Mjk=,Automatic threshold determination,OPEN,2020-05-14T15:40:01Z,2024-11-21T01:46:46Z,,"Hi,
+
+is there a systematic way to find meaningful cutoffs for -s/-w? How do you decide on these?
+
+Best,
+Carsten",ckuenne,https://github.com/Genometric/MSPC/issues/126
+MDU6SXNzdWU3MDAzOTMzOTI=,"Consensus peaks, clarification on their definition and impact of the -c option",CLOSED,2020-09-12T22:05:33Z,2020-09-14T12:31:24Z,2020-09-14T12:31:23Z,"Hello
+I discovered MSPC and it seems to be quite useful for our work with peak calling in ATAC-seq datasets.
+
+I have a question regarding the definition of ""consensus peaks"". It is not very clearly explained on the website:
+https://genometric.github.io/MSPC/docs/method/consensus
+
+The definition says 
+
+> A consensus peak is created on a position of genome where is covered by at least one peak from the output sets of the processed replicates.
+
+But in the output folders (each folder created for each of my replicate peak calls, I see multiple outputs (the ""confirmed"", ""stringent"", ""true positives"", etc). I am wondering which of those is used to generate the consensus list.
+
+Secondly,  I noted the -c option, and its usage is again not very clearly explained. 
+
+> -c <value>    Sets minimum number of overlapping peaks before combining p-values.
+
+Does the -c value mean the number of replicates where the peak is in the ""confirmed"" output bed file? And is this a criteria for sending (or not sending) a given peak to the ""consensus"" bed file based on whether it passes this filter?
+
+Thanks
+Alex
+
+",AlexBlais74,https://github.com/Genometric/MSPC/issues/130
+MDU6SXNzdWU3MDA0MDk5NzY=,Curious scores equal 0 (zero) in MSPC consensus file for replicated stringent peaks,CLOSED,2020-09-12T23:07:24Z,2020-09-17T04:26:38Z,2020-09-17T04:26:38Z,"Hello
+I am using mspc version 4.0.1
+I am obtaining an unexpected behavior for the results of the MSPC analysis, where peaks (ATAC-seq, called by MACS2) that are of very high confidence get a score of zero while much lower confidence consensus peaks get an above-zero score. I would like an explanation to help me understand if this is the expected behavior or if I am doing something wrong.
+
+The command I used with MSPC was
+```
+dotnet mspc.dll \
+-i Sample_01_peaks.mspcBED \
+Sample_02.mspcBED \
+Sample_03.mspcBED \
+Sample_04.mspcBED \
+Sample_05.mspcBED \
+Sample_06.mspcBED \
+-r bio -w 1e-5 -s 1e-10 -d 6 \
+--output MSPC_output
+```
+
+
+Peaks are called with MACS2 with p-value cutoff left at default value.  The distribution of scores calculated in R for one of my 6 replicates is as follows:
+```
+       V7                V8                 V9                V10        
+ Min.   :  1.251   Min.   :   3.132   Min.   :   1.374   Min.   :   0.0  
+ 1st Qu.:  4.029   1st Qu.:  10.598   1st Qu.:   8.617   1st Qu.:  56.0  
+ Median :  6.339   Median :  24.337   Median :  22.179   Median : 106.0  
+ Mean   :  9.752   Mean   :  93.057   Mean   :  90.696   Mean   : 150.1  
+ 3rd Qu.: 13.196   3rd Qu.:  89.245   3rd Qu.:  86.703   3rd Qu.: 189.0  
+ Max.   :110.091   Max.   :3742.200   Max.   :3735.730   Max.   :1555.0  
+```
+
+V7: fold-change at peak summit
+V8: -log10pvalue at peak summit
+V9: -log10qvalue at peak summit
+V10: relative summit position to peak start
+
+In the consensus peaks:
+```
+chr9    69304509        69304862        MSPC_Peak_116502        0
+chr9    69305100        69305173        MSPC_Peak_116501        12.332
+chr9    69305437        69306418        MSPC_Peak_116500        0
+```
+
+Same peaks, in the ConsensusPeaks_mspc_peaks.txt file:
+```
+chr     start   stop    name    -1xlog10(p-value)       xSqrd   -1xlog10(Right-Tail Probability)        -1xlog10(AdjustedP-value)
+chr9    69304509        69304862        MSPC_Peak_116502        0       3470.525        0       0
+chr9    69305100        69305173        MSPC_Peak_116501        12.332  56.79   12.332  12.312
+chr9    69305437        69306418        MSPC_Peak_116500        0       8933.281        0       0
+```
+
+The corresponding peaks, in the first of 6 input files from MACSs are:
+```
+chr9	69304514	69304845	peak_152259	1257	.	4.95997	128.515	125.789	57
+chr9	69305100	69305173	peak_152260	123	.	2.02626	14.4003	12.3318	49
+chr9	69305445	69306393	peak_152261	3642	.	8.83607	367.663	
+```
+
+thus -log10(q-values) of about 125, 12 and 367.
+
+Here is a visual example to explain:
+![image](https://user-images.githubusercontent.com/53985544/93006339-fcfa9900-f528-11ea-8c66-041a2e626995.png)
+
+A plot of the xSqrd vs -1xlog10(Right-Tail Probability) gives me this, so at values of chi-square above ~1500, the scores get very bad. Is this a problem with the program not being able to calculate an accurate probability with huge xSqrd values?
+
+![image](https://user-images.githubusercontent.com/53985544/93006459-85c60480-f52a-11ea-9943-6750a30e2384.png)
+
+I don't understand how such a great peak (MSPC_Peak_116500, on the right on the graph) can get a poorer ""score"" than a very short peak. I must be getting something wrong?
+
+Thanks for your help
+
+Alex
+
+
+",AlexBlais74,https://github.com/Genometric/MSPC/issues/131
+MDU6SXNzdWU3ODcwNzc4Mzk=,Change target platform to .NET,CLOSED,2021-01-15T17:50:43Z,2021-02-07T01:08:56Z,2021-02-07T01:08:56Z,`.NET` is the [current latest cross-platform SDK](https://dotnet.microsoft.com/download). We can change MSPS's target platform from `.NET Core` to `.NET`. ,VJalili,https://github.com/Genometric/MSPC/issues/134
+MDU6SXNzdWU4MDUwNzM2NDk=,Add MSPC to `PATH`,OPEN,2021-02-10T01:38:05Z,2021-08-07T22:49:22Z,,"- [ ] Update documentation on how to add MSPC to each OS's `PATH`;
+- [ ] Add a check in the wrapper to assert if MSPC is installed and callable (whether binaries are locally available or the installation directory is added to `PATH`). ",VJalili,https://github.com/Genometric/MSPC/issues/139
+MDU6SXNzdWU4MTI0MDk0ODg=,MSPC should report an appropriate exit code when terminated,CLOSED,2021-02-19T22:46:51Z,2021-02-25T02:47:04Z,2021-02-25T02:47:04Z,"On exit MSPC does not report an exit code, hence a program that relies on MSPC's exit code to evaluate its execution cannot assert the status. ",VJalili,https://github.com/Genometric/MSPC/issues/142
+MDU6SXNzdWU4MTY5MDI2MjY=,Error while running the recent version of MSPC,CLOSED,2021-02-25T23:52:26Z,2021-08-04T01:30:08Z,2021-08-04T01:29:17Z,"Hi, 
+After downloading the most recent version of MSPC, I tried running it but I got the following error message : 
+
+ ` Error:
+    An assembly specified in the application dependencies manifest (mspc.deps.json) was not found:
+    package: 'System.Security.Cryptography.ProtectedData', version: '4.5.0'
+    path: 'runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll' `
+",MeriemBahda,https://github.com/Genometric/MSPC/issues/145
+MDU6SXNzdWU4MTkxNzY3NTc=,Error while running the v5.0.0 and v5.1.0 releases of MSPC ,CLOSED,2021-03-01T19:25:53Z,2021-08-04T01:28:59Z,2021-08-04T01:28:59Z,"Hi, 
+
+I downloaded the 2 latest releases of MSPC ( v5.0.0 and v5.1.0 ) using **Method B: Self-Contained** as shown in the MSPC installation tutorial. 
+I downloaded afterwards the data from the demo.zip file. 
+I then ran mspc using the command `.\mspc.exe -i .\rep*.bed -r bio -w 1e-4 -s 1e-8`
+
+The MSPC program worked and returned the expected output as shown in the attached picture : 
+<img width=""823"" alt=""MSPC output"" src=""https://user-images.githubusercontent.com/65908120/109547798-d2ca7280-7a99-11eb-9410-8be13142bbc0.PNG"">
+
+But it also returned the following error
+<img width=""607"" alt=""Error"" src=""https://user-images.githubusercontent.com/65908120/109547010-e5907780-7a98-11eb-9f17-26c8c382c70f.PNG"">
+
+The files in my MSPC folder when i run the program are the following: 
+* clrcompression.dll
+* clrjit.dll
+* Core.pdb
+* coreclr.dll
+* mscordaccore.dll
+* mspc.exe
+* mspc.pdb
+* rep1
+* rep2
+
+Thank you,
+Meriem 
+",MeriemBahda,https://github.com/Genometric/MSPC/issues/146
+MDU6SXNzdWU4NTQ2ODM1NzA=,What value to set for -c?,CLOSED,2021-04-09T16:39:25Z,2021-06-22T01:46:20Z,2021-06-22T01:46:20Z,"What would you recommend setting for `-c `argument?  I have 24 scATAC datasets.  Each dataset has anywhere from 1000-10000 cells.  Is 50% a good choice?  The cell types are neurons (excitatory/inhibitory), astrocytes, microglia, oligodendrocytes, and OPC's.  I am doing mspc using peaks called separately for each cell type (macs2)",danielcgingerich,https://github.com/Genometric/MSPC/issues/150
+I_kwDOBdseCs5ASzKb,DOTNET CIFS version issues,CLOSED,2021-12-13T15:30:09Z,2021-12-22T18:47:17Z,2021-12-22T18:47:17Z,"Environment: Rocky Linux 8.5 (and 8.4)
+The bundled version of Dotnet in the linux-x64.zip has an issue with CIFS calls depending on how they are called, resulting in empty files being created followed by access denied upon writing:
+
+```
+.::....Saving Results....::.
+Error: Access to the path '/mnt/redacted/ConsensusPeaks_mspc_peaks.txt' is denied.
+```
+
+See here for the bug:  https://github.com/dotnet/runtime/issues/42790
+
+The workaround i used was from here: https://forums.docker.com/t/a-workaround-for-net-writing-to-cifs-volume-yielding-empty-file-and-access-to-the-path-is-denied/110872",TheRealQuantumCheese,https://github.com/Genometric/MSPC/issues/158
+I_kwDOBdseCs5Cb1Oi,output path,CLOSED,2022-01-26T03:33:11Z,2022-01-31T01:03:15Z,2022-01-31T01:03:15Z,"Hi,
+very much like MSPC. I am using it in R, and one thing I can't get to work is the outputpath. No matter what I add here, MSPC defaults to save the output into this folder:
+C:\Users\username\AppData\Local\Temp
+
+Do you know what causes this, and how to make MSPC accept my outputpath ?
+Thanks,
+Oliver",Ollipolli1909,https://github.com/Genometric/MSPC/issues/161
+I_kwDOBdseCs5FQlXv,The number of consensus peaks is greater than that of individual replicates?,CLOSED,2022-03-07T22:06:23Z,2022-09-10T18:40:35Z,2022-09-10T18:40:35Z,"Dear developers,
+
+First, thanks for providing us with such a great package. I wanted to find some ""common"" peaks around 5 biological replicates of a sample with the sample command you presented in the manual: `$MSPC/mspc -i ATAC_D3_*.narrowPeak -w 1e-4 -s 1e-8 -r bio -o D3`. However, I am confused about the consensus peak file which gave me a strange value that is greater than the number of peaks of any replicate. Typically, the number of common peaks should be less than individual replicate, right? I don't know if it is a normal result, or I used inappropriate parameters? Could you please give me some suggestions to solve the problem? Thanks in advance!
+
+> Number of peaks (5 replicates)
+> 53639 ATAC_D3_1_peaks.narrowPeak
+> 69989 ATAC_D3_2_peaks.narrowPeak
+> 152633 ATAC_D3_3_peaks.narrowPeak
+> 68203 ATAC_D3_4_peaks.narrowPeak
+> 95279 ATAC_D3_5_peaks.narrowPeak
+
+> Number of common peaks (MSPC results)
+> 171405 ConsensusPeaks.bed
+
+> Here is some background info：
+> ref genome: hg19
+> peak calling: macs2
+",nzx9581,https://github.com/Genometric/MSPC/issues/162
+I_kwDOBdseCs5GT4pF,Obtaining the actual values of 'inf's,CLOSED,2022-03-24T14:43:10Z,2022-03-25T19:44:41Z,2022-03-25T19:44:41Z,"Hello, 
+
+I just wonder if there is a way to obtain the actual values of the peaks that have p-values as infs in the resultant Consensus files. 
+
+Thank you.",juylmin,https://github.com/Genometric/MSPC/issues/163
+I_kwDOBdseCs5G3veA,Number of consensus peaks and TruePositives are not changing in different runs,CLOSED,2022-03-31T23:55:53Z,2022-10-22T01:47:25Z,2022-10-22T01:46:41Z,"Hello, 
+
+I have two questions which I think related with each other.
+
+When I run mspc with such various values for -w and -s options like; -w 1e-4 -s 1e-8, -w 1e-4 -s 1e-6, -w 1e-1 -s 1e-3 , I am always getting the same number of consensus peaks.
+
+
+And also for different runs, the percentage of Background, Weak, Discarded, FalsePositive are always %0,000 while Stringent , Confirmed, TruePositive ones are %100,000. ( Only Read peaks#  changes, expectedly. )
+
+If you could help me to figure out the reasons I will more than appreciate.
+
+    
+
+",juylmin,https://github.com/Genometric/MSPC/issues/164
+I_kwDOBdseCs5HeyKL,strand information of the Consensus Peaks,CLOSED,2022-04-11T00:59:40Z,2022-10-16T02:54:13Z,2022-10-16T02:54:12Z,I just wonder is there a way to obtain the strand information (either + or -) of the consensus peaks? Thank you.,juylmin,https://github.com/Genometric/MSPC/issues/165
+I_kwDOBdseCs5UWhxA,Is it possible to get original pvalue in consensus peak file?,CLOSED,2022-10-19T15:32:03Z,2023-04-15T21:11:08Z,2022-10-21T13:07:39Z,"Dear developer,
+
+Thank you for providing this brilliant package to us. I have a question about p-value in `ConsensusPeaks.bed` file. The fifth column is -log(pvalue), and I got many `inf` value in this column, which means the peaks are extremely significant? (If I am right). I show these values to my collaborator, and they want the original p-value of these peaks. And I'd like to ask is it possible? Thank you in advance, and have a good day.",nzx9581,https://github.com/Genometric/MSPC/issues/178
+I_kwDOBdseCs5gv6ls,How do I run the self-contained version?,CLOSED,2023-03-14T10:26:16Z,2023-03-16T00:38:37Z,2023-03-16T00:38:37Z,"Hi authors! Thank you for developing this neat little program. However, I have an problem that is not sufficiently documented in the program's wiki (at least not that I could find). I am not able to install .NET for the machine I am planning to run MSPC on because I would be working with a remote HPC cluster. I followed the instruction to install the self-contained version here https://genometric.github.io/MSPC/docs/installation/ but I am unsure as to how to run the program? There are only .pdb files in the generated directory. How do I invoke the command on CLI? 
+
+",sufyazi,https://github.com/Genometric/MSPC/issues/189
+I_kwDOBdseCs5g3_U-,C argument does not accept percentage,CLOSED,2023-03-15T11:02:01Z,2023-03-16T02:52:28Z,2023-03-16T02:52:15Z,"While running MSPC, I wanted to specify 50% for the `c` argument on `rmspc` (from Bioconductor), as described [here](https://genometric.github.io/MSPC/docs/cli/args#c). However, the program threw me a warning `Warning: Invalid C=50, it is set to C=5.` and proceeded to use `5` as the parameter value for the run.
+
+**Context:** I had 5 biological replicated input peak files. The code I use to run `rmspc` specifically was as follows:
+
+```
+results <- mspc(input = input_paths, replicateType = ""Bio"", stringencyThreshold = 1e-8, weakThreshold = 1e-4, gamma = 1e-8, keep = TRUE, multipleIntersections = ""Lowest"", c = 50, alpha = 0.05, inputParserConfiguration = parser_json, outputPath = output_path)
+
+```
+
+Is it because I did not use % symbol? I removed it because my VSCode linter disliked that symbol there so I thought it is going to error out if I run the command. 
+
+Tangential question: Considering the robustness of the MSPC analysis under the hood, do you have any recommendation for the value of C? Would setting it to the number of input samples be too stringent/remove potentially `true` peaks? The default setting is `1`; is there any justification for this design decision that I am not seeing? ",sufyazi,https://github.com/Genometric/MSPC/issues/191
+I_kwDOBdseCs5hQGhx,"Problem about ""Invalid culture info""",CLOSED,2023-03-20T08:18:12Z,2023-04-14T13:01:16Z,2023-04-14T13:01:16Z,"Hi! Recently I want to run the MSPC software to merge the peaks generated by MACS2 form DAP-Seq data. However, When I test the program using the demo data, I encountered an issue about wrong Invalid culture info as following:
+![image](https://user-images.githubusercontent.com/21986615/226282996-396dc8e6-f326-4011-9220-2a554cdba78c.png)
+
+I Tried to add a parser configuration using parameter ""-p"";
+![image](https://user-images.githubusercontent.com/21986615/226283253-6bb5d9c0-837e-4af4-af76-97957c38a78d.png)
+However, it does not work. thus, please help me to figure it out. Thanks.
+
+",xiagjt,https://github.com/Genometric/MSPC/issues/192
+I_kwDOBdseCs5jZ9Rh,I run rmspc  had met some problems,CLOSED,2023-04-14T08:09:37Z,2023-04-18T04:01:17Z,2023-04-18T04:01:17Z,"when i want to run the program to calculate the peak calling in Rstudio of windows,The program will report an error，Does this program not support Windows？ Thansk！
+
+```
+library(rmspc)
+> results <- mspc(input = input, replicateType = ""Technical"",
++                 stringencyThreshold = 1e-8,
++                 weakThreshold = 1e-4, gamma = 1e-8,
++                 keep = FALSE,GRanges = TRUE,
++                 multipleIntersections = ""Lowest"",
++                 c = 2,alpha = 0.05)
+```
+
+> Error in `process_initialize(self, private, command, args, stdin, stdout, …`:
+! Native call to `processx_exec` failed
+Caused by error in `chain_call(c_processx_exec, command, c(command, args), pty, pty_options, …`:
+! Command 'dotnet' not found @win/processx.c:982 (processx_exec)
+Type .Last.error to see the more details.",amateur-boy,https://github.com/Genometric/MSPC/issues/194
+I_kwDOBdseCs6YJnlB,Problem on ubuntu24 - no detected peaks,CLOSED,2024-09-27T11:10:01Z,2024-10-02T01:07:45Z,2024-10-02T01:06:54Z,"Dear MSPC community
+I am trying to use MSPC on my new laptop (ubuntu 24) and I have problem I never encountered. I followed the Self-Contained Method to install it (version 6). With my test bed files, no peaks are detected 
+
+```
+.::...Parsing Samples....::.
+# Filename Read peaks# Min p-value Mean p-value Max p-value
+---- -------------------- ----------- ----------- ------------ -----------
+1/2 tt1 0 0,000E+000 NaN 0,000E+000
+2/2 tt2 0 0,000E+000 NaN 0,000E+000
+
+.::..Analyzing Samples...::.
+[1/4] Initializing
+[2/4] Processing samples
+└── 0/0 (NaN) peaks
+[3/4] Performing Multiple testing correction
+[4/4] Creating consensus peaks set
+```
+
+When I try the test files provided by the demo zip folder, I have only few detected peaks 
+```
+./mspc -i rep*.bed -r bio -w 1e-4 -s 1e-8
+Export Directory: xxxx/mspc/session_20240927_125843874
+
+.::...Parsing Samples....::.
+   #	            Filename	Read peaks#	Min p-value	Mean p-value	Max p-value	
+----	--------------------	-----------	-----------	------------	-----------	
+ 1/2	                rep1	        322	 0,000E+000	  2,336E-003	 1,000E-002	
+ 2/2	                rep2	        548	 0,000E+000	  5,585E-005	 1,000E-003	
+
+.::..Analyzing Samples...::.
+[1/4] Initializing
+[2/4] Processing samples
+  └── 746/746	(100,000 %) peaks processed
+[3/4] Performing Multiple testing correction
+[4/4] Creating consensus peaks set
+
+.::....Saving Results....::.
+
+.::..Summary Statistics..::.
+   #	            Filename	Read peaks#	Background	    Weak	Stringent	Confirmed	Discarded	TruePositive	FalsePositive	
+----	--------------------	-----------	----------	--------	---------	---------	---------	------------	-------------	
+ 1/2	                rep1	        322	  24,534 %	56,832 %	 18,634 %	 49,689 %	 25,776 %	    49,689 %	      0,000 %	
+ 2/2	                rep2	        548	   8,212 %	75,547 %	 16,241 %	 85,949 %	  5,839 %	    85,949 %	      0,000 %	
+
+.::.Consensus Peaks Count.::.
+630
+
+
+Elapsed time: 00:00:09.5912597
+All processes successfully finished.
+
+```
+
+I tried to install the new version of MSPC on an older computer (debian 5). Same command lines to install, same command lines to launch. With the same input files, I obtained coherent data...
+
+```
+./mspc -i rep*.bed -r bio -w 1e-4 -s 1e-8
+Export Directory: xxx/mspc/session_20240927_130445400
+
+.::...Parsing Samples....::.
+   #	            Filename	Read peaks#	Min p-value	Mean p-value	Max p-value	
+----	--------------------	-----------	-----------	------------	-----------	
+ 1/2	                rep1	     53,697	 2.239E-074	  1.085E-003	 1.000E-002	
+ 2/2	                rep2	     37,717	 5.370E-301	  1.520E-004	 9.550E-003	
+
+.::..Analyzing Samples...::.
+[1/4] Initializing
+[2/4] Processing samples
+  └── 60,004/60,004000%)(100.000%) peaks processed
+[3/4] Performing Multiple testing correction
+[4/4] Creating consensus peaks set
+
+::....Saving Results....::.  
+
+.::..Summary Statistics..::.
+   #	            Filename	Read peaks#	Background	    Weak	Stringent	Confirmed	Discarded	TruePositive	FalsePositive	
+----	--------------------	-----------	----------	--------	---------	---------	---------	------------	-------------	
+1/2                    rep1         53,697        47.045%       42.948%          10.006%         26.836%         26.119%            26.836%           0.000%   
+2/2                    rep2         37,717        16.300%       50.354%          33.346%         43.482%         40.218%            43.482%           0.000%   
+
+.::.Consensus Peaks Count.::.
+17,290
+```
+
+EDIT : I firstly suspected a problem with .NET but I tried with different versions (8 - 6 - 5) and it is still the same. I also tried with the R package... same results. 
+
+Any ideas?",EvyDuvernois,https://github.com/Genometric/MSPC/issues/212

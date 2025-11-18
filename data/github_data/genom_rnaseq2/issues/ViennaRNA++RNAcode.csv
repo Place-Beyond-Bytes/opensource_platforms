@@ -1,0 +1,158 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2OTI1MQ==,Conservation graph is inverted for hits on - strand,OPEN,2009-10-15T16:11:55Z,2009-10-15T16:11:55Z,,,wash,https://github.com/ViennaRNA/RNAcode/issues/1
+MDU6SXNzdWUyMDUxMTQ=,Tree estimation fails on short alignment,OPEN,2010-05-24T22:20:31Z,2020-06-08T16:27:55Z,,"For the the following alignment we can't calculate the background model and phyml gives this strange warning and asks for a user input ""type any key to exit"" which is super annoying. 
+
+```
+ a score=0
+
+ s mm9.chr2 94496640 4 + 0 GAAA
+
+ s hg18.chr11 91392746 4 - 0 GAAA
+
+ s panTro2.chr11 90665046 4 - 0 GAAA
+
+ s rheMac2.chr14 28971164 4 + 0 GAAA
+
+ s canFam2.chr18 29504980 4 + 0 GAAA
+```
+",wash,https://github.com/ViennaRNA/RNAcode/issues/2
+MDU6SXNzdWUyMTczMzY=,The package does not compile on a Mac,CLOSED,2010-06-08T22:51:25Z,2010-08-25T19:02:27Z,2010-08-25T19:02:27Z,"The package does not compile on a Mac apparently because  of a malloc.h include in weight.c. 
+
+Possible fix by Lars Barquist:
+
+```
+#if defined(__APPLE__)
+#include <stdlib.h>
+#else
+#include <malloc.h>
+#endif
+```
+
+We don't use weight.c at the moment so we probably just remove the file from the Makefile.
+",wash,https://github.com/ViennaRNA/RNAcode/issues/3
+MDU6SXNzdWU2ODI5MTg=,Strand information in MAF files is ignored. ,OPEN,2011-03-17T21:03:42Z,2011-03-17T21:03:42Z,,"The reference sequence is always interpreted to be in the ""+"" direction even though it might be ""-"" in the MAF input. The GTF output is not correct in this scenario. 
+
+In practice this should not be a problem, because the reference sequence in MAF files is usually in the plus direction. 
+",wash,https://github.com/ViennaRNA/RNAcode/issues/4
+MDU6SXNzdWU4NjQ4MTk0MA==,Add Galaxy wrapper,CLOSED,2015-06-09T07:01:47Z,2019-07-15T08:51:30Z,2019-07-15T08:51:30Z,"This is a tracking bug to let RNAcode users know that we are working on a Galaxy wrapper.
+
+xref: https://github.com/bgruening/galaxytools/issues/137
+",bgruening,https://github.com/ViennaRNA/RNAcode/issues/5
+MDU6SXNzdWUxMDg5MTM3MjA=,Missing git tags for recent release(s),CLOSED,2015-09-29T17:03:33Z,2024-08-22T12:35:17Z,2024-08-22T12:35:17Z,"Currently I only see git tags `Pre1` and `0.2-beta`.
+
+Which source code went into the 0.3 release?
+http://github.com/downloads/wash/rnacode/RNAcode-0.3.tar.gz
+",peterjc,https://github.com/ViennaRNA/RNAcode/issues/6
+MDU6SXNzdWUzMDI3NjE4MDQ=,Accept '.' as gap character,OPEN,2018-03-06T16:06:09Z,2018-03-25T19:45:21Z,,"'.' is frequently used as gap character. 
+
+Should be easy to add: 
+
+https://github.com/wash/rnacode/blob/fe20868df016f3be20351bcbdcecd89cb4d65003/phyml/utilities.c#L4484
+
+and here
+
+https://github.com/wash/rnacode/blob/fe20868df016f3be20351bcbdcecd89cb4d65003/phyml/utilities.c#L4521
+
+
+
+Error output is currently also not very helpful: 
+
+`Unknown character state : �`",bernt-matthias,https://github.com/ViennaRNA/RNAcode/issues/7
+MDU6SXNzdWUzMDY0Mzc1MTU=,Err. in Optimize_Br_Len_Serie,OPEN,2018-03-19T12:12:15Z,2018-03-19T12:12:15Z,,"For the hg38 7 way alignment RNAcode fails with: 
+
+```
+. 0.000010 0.000001 0.000001 0.000001
+. 0.000000 -- -2.983187
+. Err. in Optimize_Br_Len_Serie
+
+. Type any key to exit.
+```",bernt-matthias,https://github.com/ViennaRNA/RNAcode/issues/8
+MDU6SXNzdWUzMDY3NzI2MzI=,mixing of errors and output if output goes to stdout,OPEN,2018-03-20T08:42:37Z,2018-03-20T08:42:37Z,,"If --outfile is not specified error messages and output are mixed. This is because some messages also go to stdout: 
+
+- `. 26 sites are made from completely undetermined states ('X', '-', '?' or 'N')...`
+- ```
+. 0.000010 0.000001 0.000001 0.000001
+. 0.000000 -- -3.616917
+. Err. in Optimize_Br_Len_Serie
+. Type any key to exit.
+```
+
+
+",bernt-matthias,https://github.com/ViennaRNA/RNAcode/issues/9
+MDU6SXNzdWU3MzYwODkxNjg=,./configure: No such file or directory,CLOSED,2020-11-04T12:49:38Z,2021-11-24T15:59:04Z,2021-11-24T15:59:04Z,"Dear RNAcode team,
+
+I am trying to install RNAcode but in the very first step it tells me that there is no configure file. And indeed there is no such file. There is a file called ""configure.ac"" instead. I also tried running the ""autogen.sh"" script, but that doesn't work either. It stays running forever. Do you know a solution for that?
+
+Best,
+Leonor",leonorrib,https://github.com/ViennaRNA/RNAcode/issues/11
+I_kwDOAAHSUM4_KLYj,How to understand the result of RNAcode,CLOSED,2021-11-22T03:32:45Z,2021-11-25T04:53:45Z,2021-11-25T04:49:59Z,"Dear professor,
+
+I have test this software and got the results. Details showed as follwing:
+
+The input file:
+#test_file.ffn
+>k10_contig_16766_fa_2_ffn
+ATGGATTATATTATTAGTATACCGATGGAAGATGGAGAAGACGAAGAATTGTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGCATTACTTATGGAATCTGGAAAAGACATTTCAGACATTATTATCCCAGAGGGAGGATTAGTATGA
+>k21_contig_1018318_fa_2_ffn
+ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAGTTGTGTTTTCCAGATACAGAAAATATGTACGGATTTTTGGATTTACTTTCCGAAAGTGGTAAAGATATTTCAGAAATTATTATCCCAGAGGGCGGATTAGTATGA
+>k7_contig_499132_fa_2_ffn
+ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAATTGTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGCTTTGCTTATGGAATCTGGAAAAGACATTTCAGATATTATTATCCCAGAGGGAGGATTAGTATGA
+>Ph6_contig_121989_fa_2_ffn
+ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAATTGTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGATTTACTTTCTGAATCTGGTAAAGATATTTCAGAAATTATTATACCAGAAGGCGGATTAGTATGA
+
+the command I used:
+#for alignment
+clustalw2 test_file.ffn
+
+#for RNAcode
+RNAcode  test_file.aln --outfile test_file_results.gtf --gtf --best-only --cutoff 0.05 
+
+the results 
+#clustalw2
+**test_file.dnd** 
+`(
+(
+k10_contig_16766_fa_2_ffn:0.01634,
+k7_contig_499132_fa_2_ffn:0.00980)
+:0.04575,
+k21_contig_1018318_fa_2_ffn:0.04248,
+Ph6_contig_121989_fa_2_ffn:0.01634);
+`
+
+**test_file.aln**
+`CLUSTAL 2.1 multiple sequence alignment
+
+
+k21_contig_1018318_fa_2_ffn      ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAGTT
+Ph6_contig_121989_fa_2_ffn       ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAATT
+k10_contig_16766_fa_2_ffn        ATGGATTATATTATTAGTATACCGATGGAAGATGGAGAAGACGAAGAATT
+k7_contig_499132_fa_2_ffn        ATGGATTATATTATTAGTATACCGATGGAAGACGGAGAAGACGAAGAATT
+                                 ******************************** ************** **
+
+k21_contig_1018318_fa_2_ffn      GTGTTTTCCAGATACAGAAAATATGTACGGATTTTTGGATTTACTTTCCG
+Ph6_contig_121989_fa_2_ffn       GTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGATTTACTTTCTG
+k10_contig_16766_fa_2_ffn        GTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGCATTACTTATGG
+k7_contig_499132_fa_2_ffn        GTGTTTCCCAGATACCGAAAATATGTACGGATTTTTAGCTTTGCTTATGG
+                                 ****** ******** ******************** *  ** ***   *
+
+k21_contig_1018318_fa_2_ffn      AAAGTGGTAAAGATATTTCAGAAATTATTATCCCAGAGGGCGGATTAGTA
+Ph6_contig_121989_fa_2_ffn       AATCTGGTAAAGATATTTCAGAAATTATTATACCAGAAGGCGGATTAGTA
+k10_contig_16766_fa_2_ffn        AATCTGGAAAAGACATTTCAGACATTATTATCCCAGAGGGAGGATTAGTA
+k7_contig_499132_fa_2_ffn        AATCTGGAAAAGACATTTCAGATATTATTATCCCAGAGGGAGGATTAGTA
+                                 **  *** ***** ******** ******** ***** ** *********
+
+k21_contig_1018318_fa_2_ffn      TGA
+Ph6_contig_121989_fa_2_ffn       TGA
+k10_contig_16766_fa_2_ffn        TGA
+k7_contig_499132_fa_2_ffn        TGA
+                                 ***
+`
+
+#RNAcode
+`k21_contig_1018318_fa_2_ffn	RNAcode	CDS	2	154	37.78|2.19e-04	+	.	gene_id ""Gene0""; transcript_id ""transcript 0"";
+`
+
+I am confused that the result indicated k21_contig_1018318_fa_2_ffn is conding sequence? Other three sequences are not ?
+
+Thanks a lot.
+",li0604,https://github.com/ViennaRNA/RNAcode/issues/12

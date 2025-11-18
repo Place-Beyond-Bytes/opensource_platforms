@@ -1,0 +1,3012 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMjc2MjMyMzM=,Avoiding to rezip chr-src/ in final steps,CLOSED,2017-05-10T09:44:38Z,2017-07-25T03:25:52Z,2017-07-25T03:25:52Z,"Hi,
+
+Is it possible to avoid rezipping chr-src in the final steps?
+This would speed up creating a new database, depending on the species this could be significant.
+
+regards,
+Evelyne",EvelyneC,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/1
+MDU6SXNzdWUyMjgyMjI5OTk=,"Stuck on ""processing database"" - database not created",CLOSED,2017-05-12T08:32:01Z,2017-08-15T18:32:58Z,2017-08-15T18:32:58Z,"Copy/pasted from a SIFT user, using a MAC:
+
+After a while it exists without creating the database with the following command:
+
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 157 (size ~0.25 GB): 85.00/100.00% **
+
+And I realized that the homo sapiens small test file also runs until this step and stops without an error or warning and the database is not created either. It is my bad that I never checked the database created for the test files and assumed that it was ok as no error messages were printed.
+
+I am thinking this could be due to RAM limitations. I am currently running this on my local computer (16 GB RAM). Do you think that would be the problem? I also tried installing this on our computing cluster, but sift4g is giving errors. Those are I think related to compiler version issues but I am using the version recommended (4.8). The error message (following) points to compiler version which according to stackoverflow can be fixed by compiling with 4.9. So I will try that. 
+
+** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error
+Aborted
+
+",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/2
+MDU6SXNzdWUyMjgyMjY5NzY=,GFF file format,CLOSED,2017-05-12T08:49:13Z,2017-05-12T08:49:53Z,2017-05-12T08:49:22Z,"Via email --- A GFF file for a new genome wasn't working.
+
+Written by SIFT team:
+I looked at your gff file and it's missing a few things.  Please look at the gtf examples like homo_sapiens_small or C.ruddii if the explanation below is unclear.
+
+1) Add rows for ""start_codon"" and ""stop_codon""
+We need this because the program has to demarcate when translation starts and stops (genes can have 5' and 3' UTRs in the exon). 
+
+2) The 9th column is missing some fields that SIFT is looking for. 
+
+2a) The program will look for a protein_id in the 9th column. If you don't have a protein_id, maybe use the transcript id which is usually a 1-1 mapping with a protein id.
+
+2b) For each row, please specify the biotype. It can be protein_coding  
+gene_biotype ""protein_coding"" or noncoding RNA (e.g. ""rRNA"", ""miRNA""), etc. SIFT will only predict on protein_coding rows.
+Here's an example on how to change the 9th column:
+
+OLD:
+HanXRQCP    BioFileConverter    exon    98077    98226    .    -    .    transcript_id ""mRNA:HanXRQCPg0580291""; gene_id ""gene:HanXRQCPg0580291""; gene_name ""Ha
+nXRQCPg0580291"";
+
+NEW:
+HanXRQCP    BioFileConverter    exon    98077    98226    .    -    .    transcript_id ""mRNA:HanXRQCPg0580291""; gene_id ""gene:HanXRQCPg0580291""; gene_name ""Ha
+nXRQCPg0580291""; protein_id ""HanXRQCPg0580291""; gene_biotype ""protein_coding""
+",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/3
+MDU6SXNzdWUyNDE1NzI4Nzg=,requirements gtf files,CLOSED,2017-07-10T00:43:22Z,2019-12-05T12:08:34Z,2017-11-22T15:31:01Z,"Hi Pauline,
+This is not a issue, it is more a question about formatting. I'm trying to build a new database and I create my own gft file.
+Which are the row mandatory (CDS, exon, gene, start_codon, stop_codon, transcript ...)?
+In the readme you said that  the 9th column (attribute column) says gene_biotype ""protein_coding;"" and 2nd column in the gtf file says 'protein_coding'.
+In the 2nd column in the Homo_sapiens.GRCh38.83_trimmed.gtf.gz specifies the database (ensemble, havana...) and I think is correct to leave like that.
+in the 9th column, In which rows (CDS, exon, gene, start_codon, stop_codon, transcript ...) do I have to put the gene_biotype ""protein_coding""?
+Best,
+
+Marco
+",fraca,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/4
+MDU6SXNzdWUyNzAyNDYwMzk=,Bio::DB::IndexedBase::_strip_crnl redefined,CLOSED,2017-11-01T09:22:48Z,2019-11-12T02:54:21Z,2019-11-12T02:54:20Z,"Hi @pauline-ng,
+While running the homo test,  I find there is a error log(repeat 3 times in whole test):
+```
+Subroutine Bio::DB::IndexedBase::_strip_crnl redefined at /public/home/lchen/software/ActivePerl-5.18.4/site/lib/Bio/DB/IndexedBase.pm line 304.
+```
+I'm very confused about that problem, and cannot find a way to sovle it. Hope can get some advise form you. By the way, I stiil get some results(such as below). 
+```
+ll GRCh38.83/
+total 225881
+-rw-r--r-- 1 lt bio       230954285 Nov  1 13:48 21.gz
+-rw-r--r-- 1 lt bio       117688 Nov  1 13:47 21.regions
+-rw-r--r-- 1 lt bio       442 Nov  1 13:53 21_SIFTDB_stats.txt
+-rw-r--r-- 1 lt bio       242 Nov  1 13:50 CHECK_GENES.LOG
+-rw-r--r-- 1 lt bio       926 Nov  1 13:53 homo_sapiens-test.txt
+-rw-r--r-- 1 lt bio       230186 Nov  1 13:48 MT.gz
+-rw-r--r-- 1 lt bio       444 Nov  1 13:48 MT.regions
+-rw-r--r-- 1 lt bio       419 Nov  1 13:53 MT_SIFTDB_stats.txt
+```
+
+And thanks in advance",conniecl,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/5
+MDU6SXNzdWUyNzU3MTkwNjk=,Problem creating genomic database for new organism,CLOSED,2017-11-21T13:51:44Z,2019-12-05T12:07:59Z,2019-11-12T02:56:19Z,"Dear SIFT 4G team
+
+I followed the instructions from ""https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB"" to construct the database for a new organism. In my case, I am constructing the database for Cicer arietinum. I am getting the following error while running the script ""make-SIFT-db-all.pl"" using the following command:
+
+Command:
+perl make-SIFT-db-all.pl -config test_files/cicer_arietinum_config.txt
+
+Log:
+perl make-SIFT-db-all.pl -config test_files/cicer_arietinum_config.txt 
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: ./test_files/cicer_arietinum_genome/fasta/*.fasta: No such file or directory
+/data/ngs/Programs_latest/SIFT4G_v2.0.0/bin/sift4g -d ./test_files/protein_db/uniref90.fasta -q ./test_files/cicer_arietinum_genome/all_prot.fasta --subst ./test_files/cicer_arietinum_genome/subst --out ./test_files/cicer_arietinum_genome/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+
+I also tried running the same script for the test human dataset provided with the package, but I am observing a different error:
+
+Command:
+perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt 
+
+Log:
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/data/ngs/Programs_latest/SIFT4G_v2.0.0/bin/sift4g -d ./test_files/protein_db/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error
+
+My config file for the Cicer arietinum looks like:
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/cicer_arietinum_genome
+ORG=cicer_arietinum
+ORG_VERSION=v1.0
+DBSNP_VCF_FILE=
+
+#Running SIFT 4G
+SIFT4G_PATH=/data/ngs/Programs_latest/SIFT4G_v2.0.0/bin/sift4g
+PROTEIN_DB=./test_files/protein_db/uniref90.fasta
+COMPUTER=mrna
+
+
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+I need help to resolve this error and construction of the database for my organism.
+
+It would be really appreciable if I can be guided to resolve the error mentioned.
+
+I would be thankful for all the help.
+
+Best regards
+Aamir",aamirwkhan06,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/6
+MDU6SXNzdWUzOTAwMzU1NjA=,Issues creating database for new genome version,CLOSED,2018-12-12T02:15:04Z,2019-03-23T23:52:23Z,2019-03-23T23:52:23Z,"Hi,
+
+I am trying to create a database for the EquCab3 version of our genome which is only present on NCBI. This is the code I am running:
+```bash
+perl make-SIFT-db-all.pl -config test_files/EquCab3_config.txt
+```
+
+This is the error that I get:
+```bash
+done making the fasta sequences
+start siftsharp, getting the alignments
+/home/mccuem/durwa004/.conda/envs/sift4g/bin/sift4g -d /home/mccuem/shared/Projects/HorseGenomeProject/Data/Variant_interpretation/sift4g/UniRef90/uniref90.fasta -q /home/mccuem/shared/Projects/HorseGenomeProject/Data/Variant_interpretation/sift4g/EquCab3_db_121018/all_prot.fasta --subst /home/mccuem/shared/Projects/HorseGenomeProject/Data/Variant_interpretation/sift4g/EquCab3_db_121018/subst --out /home/mccuem/shared/Projects/HorseGenomeProject/Data/Variant_interpretation/sift4g/EquCab3_db_121018/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error
+```
+Prior to this error - I get a mixture of these 2 errors multiple times:
+```bash
+Use of uninitialized value $exon_num in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 912.
+Argument """" isn't numeric in addition (+) at generate-fasta-subst-files-BIOPERL.pl line 860.
+```
+It looks like some of the files are being produced - this is the total size of the files in my home directory:
+```bash
+32K	fasta.log
+32K	Log2.txt
+48K	EquCab3
+48K	SIFT_alignments
+48K	SIFT_predictions
+48K	singleRecords_with_scores
+64K	invalid.log
+12M	.panfs.1b2d1f0a.1544496885706510000
+30M	all_prot.fasta
+37M	peptide.log
+66M	gene-annotation-src
+209M	EquCab3.gene.gtf
+595M	fasta
+2.1G	subst
+2.7G	chr-src
+90G	singleRecords
+96G	total
+```
+I have been having issues with the .gtf but think I have it in the right format (I have attached it to the issue).
+[EquCab3.gtf.gz](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/2670198/EquCab3.gtf.gz)
+
+Thanks in advance for your assistance.
+
+Sian
+",durwa004,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/7
+MDU6SXNzdWU0MjQ1NTc0NzQ=,Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 301,CLOSED,2019-03-23T23:51:52Z,2023-04-23T09:35:34Z,2019-04-12T15:44:35Z,"@pauline-ng 
+Hi Pauline，
+I encountered similar problem like Sian.
+A big log file with repetitive warnings like ""Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 301.""
+
+All input  data are from ensemblplant(ftp://ftp.ensemblgenomes.org/pub/plants/release-42/gtf/triticum_aestivum/     and     ftp://ftp.ensemblgenomes.org/pub/plants/release-42/fasta/triticum_aestivum/dna/) 
+
+Any advice?
+
+Thanks,
+Lipeng
+
+_Originally posted by @LipengKang in https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/7#issuecomment-475228113_",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/8
+MDU6SXNzdWU0NDEzMDgwNDU=,regex_error when created database,CLOSED,2019-05-07T15:50:04Z,2019-05-09T01:36:23Z,2019-05-09T01:36:23Z,"Dear SIFT4G team
+
+I followed the README.md to constructed the database for the test human genome in test_files, but I got an error:
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/public/sxzhang/tool/sift4g/bin/sift4g -d /public/sxzhang/tool/SIFT4G_Create_Genomic_DB/test_files/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error
+
+I have tried to solve this problem by updating my g++ version to 6.1.0, but I still got the same error.
+
+Thanks in advance for your advice.",daxian248,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/9
+MDU6SXNzdWU0NTA1MTg3NDg=,Issues in creating a database for a new organism,CLOSED,2019-05-30T21:40:21Z,2019-06-03T23:00:34Z,2019-06-03T23:00:33Z,"Dear SIFT 4G team
+
+Ia trying to create a SIFT database for a plant species. Follow the instructions ( https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/blob/master/README.md), I generated the files required and started to create the database using this command :
+
+```
+perl make-SIFT-db-all.pl -config Sevir_config.txt
+```
+The configuration file is like this :
+
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./Sevir
+ORG=setaria_viridis
+ORG_VERSION=JGI_v2.1
+DBSNP_VCF_FILE=
+
+#Running SIFT 4G
+SIFT4G_PATH=../sift4g/bin/sift4g
+PROTEIN_DB=./protein_db/uniref90.fasta
+COMPUTER=GIS-KATNISS
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+```
+
+
+However, the program stuck at the ""Selecting alignments with median threshold"" step for more than week without giving a warning or breaking message. As shown below: 
+
+```
+converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /share/apps/perlbrew/perls/perl-5.22.1/lib/site_perl/5.22.1/Bio/DB/IndexedBase.pm line 791.
+done making single records template
+making noncoding records file
+Possible precedence issue with control flow operator at /share/apps/perlbrew/perls/perl-5.22.1/lib/site_perl/5.22.1/Bio/DB/IndexedBase.pm line 791.
+done making noncoding records
+make the fasta sequences
+Possible precedence issue with control flow operator at /share/apps/perlbrew/perls/perl-5.22.1/lib/site_perl/5.22.1/Bio/DB/IndexedBase.pm line 791.
+done making the fasta sequences
+start siftsharp, getting the alignments
+../sift4g/bin/sift4g -d ./protein_db/uniref90_test50000.fasta -q ./Sevir/all_prot.fasta --subst ./Sevir/subst --out ./Sevir/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 0.00/100.00% *
+* processing queries: 0.01/100.00% *
+* processing queries: 0.02/100.00% *
+...
+* processing queries: 99.99/100.00% *
+* processing queries: 100.00/100.00% *
+** Searching database for candidate sequences **
+* processing database part 1 (size ~0.25 GB): 0.00/100.00% *
+* processing database part 1 (size ~0.25 GB): 2.50/100.00% *
+...
+* processing database part 1 (size ~0.25 GB): 95.00/100.00% *
+* processing database part 1 (size ~0.25 GB): 97.50/100.00% *
+* processing database part 1 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences **
+* processing database part 1 (size ~1.00 GB): 0.00/100.00% *
+* processing database part 1 (size ~1.00 GB): 2.50/100.00% *
+...
+* processing database part 1 (size ~1.00 GB): 95.00/100.00% *
+* processing database part 1 (size ~1.00 GB): 97.50/100.00% *
+* processing database part 1 (size ~1.00 GB): 100.00/100.00% *
+** Selecting alignments with median threshold: 2.75 **
+(keep running forever)
+```
+
+
+I was trying to trouble shoot this by creating some test files. I truncated the ref90.fa file to a test file with only 500 lines and run the same command with it.  It can run through the program without this issue. 
+
+
+```
+...(same as above)
+* processing queries: 100.00/100.00% *
+* processing queries: 100.00/100.00% *
+* processing queries: 100.00/100.00% *
+
+done getting all the scores
+populating databases
+Unable to read from ./Sevir/singleRecords/scaffold_36.singleRecords_noncoding
+checking the databases
+zipping up ./Sevir/chr-src/*
+All done!
+```
+
+
+Not sure why it get stuck on the original file. The memory allocated was 120G. 
+Please help. Thanks.
+",linf545,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/10
+MDU6SXNzdWU0NjczMDQyMzE=,"Use of uninitialized value within @adj_ends in subtraction (-) at make-single-records-BIOPERL.pl line 198, <IN_TX> line 792",CLOSED,2019-07-12T09:06:27Z,2019-11-12T03:01:32Z,2019-11-12T03:01:32Z,"
+Hi, I'm trying to build a SIFT annotations database but it's proving to be a challenging endeavour. I read other issues that contained similar errors, but since they weren't exactly the same, I decided to post a new one. Sorry if it's redundant.
+
+So this is what I'm getting:
+
+`
+converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /usr/share/perl5/Bio/DB/IndexedBase.pm line 845.
+Subroutine Bio::DB::IndexedBase::_strip_crnl redefined at /usr/share/perl5/Bio/DB/IndexedBase.pm line 304.
+Use of uninitialized value within @adj_ends in subtraction (-) at make-single-records-BIOPERL.pl line 198, <IN_TX> line 792.
+Use of uninitialized value $exon_end in numeric lt (<) at make-single-records-BIOPERL.pl line 214.
+Use of uninitialized value $exon_end in subtraction (-) at make-single-records-BIOPERL.pl line 226.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 270.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 276.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Use of uninitialized value $exon_num in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Argument """" isn't numeric in addition (+) at make-single-records-BIOPERL.pl line 520.
+Use of uninitialized value $coord in concatenation (.) or string at make-single-records-BIOPERL.pl line 572.
+`
+
+From then on, chunks of line 572 and line 520 errors alternate till infinity.
+
+I triple checked that all files are in their proper place and their path well indicated in the config file.
+
+Could you give me some guidance?
+
+Besides this, my gtf file is lacking the start_codon and stop_codon features, but according to this open issue https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/6, the error for that should appear later on. Do you know any tool that automatically edits the annotation file to include start_codon and stop_codon features?
+
+Thank you very much for your time and help.",Arynio,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/11
+MDU6SXNzdWU1MjExMjY3MzU=,can't locate common-utils.pl in @INC,CLOSED,2019-11-11T18:51:11Z,2023-09-09T02:34:19Z,2019-11-12T15:16:48Z,"I am attempting to run the homo_sapiens-test before creating my own genome files.  Even though I am running the make-SIFT-db-all.pl script within the scripts_to_build_SIFT_db directory, the script doesn't seem to be able to locate the files.  If I move the dependency scripts to another location in @INC, it runs for longer, but eventually still fails.  The error I'm getting is below:
+
+
+Can't locate common-utils.pl in @INC (@INC contains: /home/slo236/perl5/lib/perl                                            5 /opt/ohpc/pub/libs/gnu8/ccs/perl/5.30.0/lib/site_perl/5.30.0/x86_64-linux-thre                                            ad-multi /opt/ohpc/pub/libs/gnu8/ccs/perl/5.30.0/lib/site_perl/5.30.0 /opt/ohpc/                                            pub/libs/gnu8/ccs/perl/5.30.0/lib/5.30.0/x86_64-linux-thread-multi /opt/ohpc/pub                                            /libs/gnu8/ccs/perl/5.30.0/lib/5.30.0) at ensembl_gene_format_to_ucsc.pl line 5.
+",sloux,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/12
+MDU6SXNzdWU1MjM5NjY1NjY=,Could I create database without download?,CLOSED,2019-11-17T10:37:35Z,2019-11-17T11:33:10Z,2019-11-17T11:33:10Z,"Hi,
+    Could I give the path of .gff or .fa directly ? The server could not download directly. I want to create database locally.
+    Thanks in advance.
+Best Wishes.
+Liu",ggoodstudydaydayup,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/13
+MDU6SXNzdWU1MjQzNzgyNzY=,How to create a database locally?,CLOSED,2019-11-18T13:46:27Z,2019-12-07T13:15:33Z,2019-11-25T09:07:58Z,"Hi,
+I'm not sure when I support the .gtf and .fa (such as genome, pep) ,  should I have to gzip and change the name ? 
+And I try to run the command, there was nothing in the fasta folder with an error.
+
+""converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: './test_files/malus/fasta/*.fasta': No such file or directory""
+
+Thanks in advance.
+Best Wishes.
+Liu",ggoodstudydaydayup,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/14
+MDU6SXNzdWU1MjU4NDk3NTQ=,make-single-records error,CLOSED,2019-11-20T14:46:48Z,2019-12-16T09:37:00Z,2019-12-16T09:37:00Z,"Hi Pauline, 
+
+I'm having a few more issues with the script.  I'm getting the following error: 
+It will continue to run, but ends up ultimately failing.  Thanks for your help!
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+
+Possible precedence issue with control flow operator at /opt/ohpc/pub/libs/gnu8/ccs/perl/5.30.0/lib/site_perl/5.30.0/Bio/DB/IndexedBase.pm line 845.
+Subroutine Bio::DB::IndexedBase::_strip_crnl redefined at /opt/ohpc/pub/libs/gnu8/ccs/perl/5.30.0/lib/site_perl/5.30.0/Bio/DB/IndexedBase.pm line 304.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+
+With an ultimate failure at:
+** Aligning queries with candidate sequences **
+
+* processing database part 39 (size ~1.00 GB): 7.50/100.00% * *
+Alignment score and position are not consensus.15.00/100.00% *
+
+",sloux,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/15
+MDU6SXNzdWU1MzgyODU2NjU=,Building database error with test data,CLOSED,2019-12-16T09:23:39Z,2019-12-16T10:16:01Z,2019-12-16T10:16:01Z,"Dear Pauline,
+I cannot get prediction files for my data. To trace the error, I used the test data of Homo sapiens to build a database. I deleted the dbSNP and mitochondrial data because my data have no such data. I tested the command to build the database:
+```bash
+ perl make-SIFT-db-all.pl -config test_files/homo_sapiens_test.config
+```
+Although it produced the prediction files, the error shows like this:
+```bash
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at make-single-records-BIOPERL.pl
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 1435.
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 1461.
+done making the fasta sequences
+start siftsharp, getting the alignments
+/home/shiyong/software/SIFT4G/sift4g/bin/sift4g -d /home/shiyong/database/NCBI/UNIREF90/uniref90.fasta -q ./test_files/homo_sapiens_test/all_prot.fasta --subst ./test_files/homo_sapiens_test/subst --out ./test_files/homo_sapiens_test/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 194 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences **
+* processing database part 49 (size ~1.00 GB): 100.00/100.00% *
+
+** Selecting alignments with median threshold: 2.75 **
+* processing queries: 100.00/100.00% *
+
+** Generating SIFT predictions with sequence identity: 100.00% **
+* processing queries: 100.00/100.00% *
+
+done getting all the scores
+populating databases
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+checking the databases
+zipping up ./test_files/homo_sapiens_test/chr-src/*
+All done!
+```
+FIY, the config file (homo_sapiens_test.config) looks like this:
+```bash
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/homo_sapiens_test
+ORG=homo_sapiens
+ORG_VERSION=GRCh38.83
+DBSNP_VCF_FILE=
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/shiyong/software/SIFT4G/sift4g/bin/sift4g
+PROTEIN_DB=/home/shiyong/database/NCBI/UNIREF90/uniref90.fasta
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+```
+I would be appreciated if you provide any suggestions.
+My old post is [here](https://github.com/rvaser/sift4g/issues/5).
+If you need more information, please feel free to contact me.
+
+Best regards,
+Sandy
+",sandyplus,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/16
+MDU6SXNzdWU2MTkyMTUxMDA=,Run each chromosome/contig independently,CLOSED,2020-05-15T20:09:25Z,2020-06-09T04:05:28Z,2020-06-09T04:05:28Z,"Hi Pauline,
+
+I am trying to create a database for a mammalian genome on RefSeq. The run time is quite long (several days), and occasionally the procedure fails due to various errors (out of memory, for instance). I am wondering if it would be okay to parallelize the database creation by running it independently for each chromosome/contig. Then, after all jobs have completed, I would keep the *.gz, *.regions, and *_SIFTDB_stats.txt from each <PARENT_DIR>/<ORG_VERSION>. Do you think this would be okay?
+
+Thanks,
+Jacqueline",jarobin,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/17
+MDU6SXNzdWU2MjEzMjkyNTc=,Error to build my own database,CLOSED,2020-05-19T22:40:08Z,2020-09-29T15:00:41Z,2020-09-29T15:00:41Z,"Hi, I am using your tool to build my own databases, but I have errors below:
+```
+cat: /home/liuq1/mysoftwares/sift/SIFT4G_Create_Genomic_DB/sift_myDB/fasta/*.fasta: No such file or directory
+```
+
+```
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+```
+
+When I check `fasta.log`, it shows that
+```
+0 out of 12 translated to sequences that start with M and end with *
+```
+
+May I know what is wrong here? Thank you.
+
+My input is 
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+#MITO_GENETIC_CODE_TABLE=2
+#MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=/home/liuq1/mysoftwares/sift/SIFT4G_Create_Genomic_DB/sift_myDB/
+ORG=mytest
+ORG_VERSION=mytest
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/liuq1/mysoftwares/sift/sift4g/bin/sift4g
+PROTEIN_DB=/home/liuq1/mysoftwares/sift/SIFT4G_Create_Genomic_DB/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+```",liuqianhn,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/18
+MDU6SXNzdWU2MzI0NzQzOTQ=,What next after seeing X characters in my all_prot.fasta,CLOSED,2020-06-06T13:48:08Z,2020-09-15T00:21:10Z,2020-09-15T00:21:10Z,"Hi SIFT team,
+
+I ran `cat all_prot.fasta | grep -v "">"" | grep X` and I got some output containing XXX as shown below:
+```
+MGLLSFVFGGLGFILIGAHEALLHSSPSSQNKKTKTLFSISLVLFSSFFILNSTLSLFDAHSSNDAVGAALQLQVLSIAFVFLFYSLLPLLSLSFTLPSPLLNLVGAFAFAEEFLLFYLXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXGDDHTPGG
+MVEDGDEVDSMSAETARAIVGHGGVRPLVALCQTGDXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXKEHAAECLQNLTASNENLRKSVISEGGVRSLLAYLDGPLPQESAVGALRNLVGLVPE
+```
+
+What should I do next in order to continue building the database. It seem @pauline-ng previously mentioned that cat cmd, should not print any output, in this case. Do I have to start from the beginning? If so will the files already created be overwritten? 
+
+I am asking because it took a long time to reach this level. If not, how do I restart from where I am currently. I am stuck at:
+
+```
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 200 (size ~0.25 GB): 0.00/100.00% * *
+```
+I also wonder how many parts there is with uniref90?  I divided the uniref90.fasta by 0.25, I got 188 but my sift4g run, indicated above, was processing part 200. Whats the correlation there? I had to run this for days to get to this point.",eyeamnice,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/19
+MDU6SXNzdWU2NjI0NTA3NDg=,"python scripts are in python2, giving users problems",CLOSED,2020-07-21T01:26:35Z,2020-12-06T23:50:17Z,2020-12-06T23:50:17Z,"A few .py scripts in the pipeline were written in python2. Users now using python3 as default, which results in database not being built. I should change to perl or python3.",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/20
+MDU6SXNzdWU2NjUyNzE3MDk=,synonymous variants predicted deleterious by SIFT,CLOSED,2020-07-24T16:12:50Z,2020-07-24T16:12:59Z,2020-07-24T16:12:59Z,"Email thread from a SIFT user. Posted here for posterity:
+
+Awesome Pauline, you have just saved me a lot of troubles. Thank you for your help indeed. I really really appreciate it. I will pass this on to my team and sorry for my bugging you with all these questions.
+
+Best
+Isaac
+
+On Fri, Jul 24, 2020 at 9:48 AM Pauline Ng wrote:
+
+    Hi Isaac,
+
+    I think I get it! Does this happen for a small fraction, like <1% of your synonymous variants?
+
+    When a synonymous amino acid is predicted deleterious, this means the amino acid in the protein sequence is dissimilar to the other protein homologues in the protein alignment.
+
+    The not so interesting explanation is that there  is sequencing error in the reference genome and the reference amino acid is incorrect. The alternative interesting explanation is the amino acid in the protein sequence in your organism has mutated away from the norm. This could indicate a pseudogene if there are lots of deleterious synonymous variants in a given gene. If it's a single amino acid change in a protein, I thought positive evolution would be a possibility, but that's pure speculation.
+
+    We actually use the % of reference amino acids damanging as a QC.  For the human genome, 0.1% of the reference amino acid is predicted damaging. Here's an example:
+    https://sift.bii.a-star.edu.sg/sift4g/public//Homo_sapiens/GRCh37.74/2_SIFTDB_stats.txt
+
+    Reference predictions % damaging: 0.1 2842/2341194
+
+    This is generated for every chromosome in the <chr>_SIFTDB_stats.txt file
+
+    Best,
+
+    Pauline
+
+
+
+    On Fri, Jul 24, 2020 at 9:57 PM Isaac  wrote:
+
+        Hi Pauline,
+
+        My input vcf is the same for both VEP and SIFT. You are absolutely right. The issue is the sift prediction score. All output from both VEP and SIFT matches. For that particular case and a few hundred more, SIFT predicts them to be deleterious but they are all synonymous transcripts. Synonymous transcripts will not be deleterious. I ran sift with option -t, which means to  annotate with all transcripts"" All Nonsynonymous calls from SIFT match with VEP. It is really concerning and your help will be greatly appreciated. If you need any file to troubleshoot, I will gladly provide them
+
+        Thanks
+
+        On Thu, Jul 23, 2020 at 1:17 AM Pauline Ng wrote:
+
+            Hi Isacc,
+
+            The output of SIFT matches VEP for nonsynonymous annotation? So this is not a build problem. Sometimes, there are alternative scripts and SIFT picks the one with the lowest score. Have you tried running it with the ""annotate with all transcripts"" option?
+
+            I am a little confused because in one email you say: ""Although I looked and it seemed like the region we looked at is a region of the genome with no gene."" and in another email it says ""SIFT matches the output from VEP with the same amino acid changes"". So the issue is SIFT prediction scores, and not the gene annotation?
+
+
+            Best,
+            Pauline
+
+            On Thu, Jul 23, 2020 at 3:11 AM Isaac  wrote:
+
+                Hi Pauline,
+
+                Given that I used the method of downloading data from Ensemble directly using the config file (see attached), I am positive it is not a genome build problem. Do you see any problem with my config file? The output from SIFT matches the output from VEP with the same amino acid changes except the SIFT called many synonymous variants deleterious. What else could be the issue?
+
+                Thank you
+                Isaac
+
+                On Tue, Jul 21, 2020 at 7:05 PM Pauline Ng wrote:
+
+                    Hi Isaac,
+
+                    Sounds like a genome build discrepancy. I'd check that the Soy version is exactly the same as VEP, throughout your SIFT config file.
+
+                    Thanks,
+                    Pauline
+
+
+                    On Wed, Jul 22, 2020 Isaac  wrote:
+
+                        Hi Pauline,
+
+                        I successfuly built a SIFT DB for soy. I ran vep and then ran SIFT4g. SIFT called the transcript synonymous and  deleterious, which may not be accurate. What do you think may have caused it? How does SIFT use the variant coordinates? Can there be an off by one error? Although I looked and it seemed like the region we looked at is a region of the genome with no gene. Do you also think it is an issue of SIFT not mapping the genomic location to the right transcript?
+
+                        Thank you
+
+                        -- 
+                        Isaac ",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/21
+MDU6SXNzdWU3MDE1MDUxMzY=,How synonymous variants are predicted to be deleterious,CLOSED,2020-09-14T23:54:47Z,2020-09-29T05:04:17Z,2020-09-29T05:04:17Z,"
+Hi @pauline-ng 
+Once I run SIFT on my variant set, I see variant labelled as synonymous are predicted to be deleterious.
+I understand why some amino acid changes would appear to be tolerated and others not.  But I don’t understand how SIFT predict that no amino acid change (synonymous variants) can be problematic (deleterious)
+Will you please explain it to me? 
+
+chr1 | 3159715 | G | T | ENSBTAT00000016473 | ENSBTAG00000012412 | URB1 | CDS | SYNONYMOUS | S | S | 1576 | 0.02 | 3.09 | 161 | novel | DELETERIOUS
+-- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | --
+chr1 | 5561002 | C | T | ENSBTAT00000052636 | ENSBTAG00000037933 | CDS | SYNONYMOUS | R | R | 84 | 0.03 | 2.68 | 303 | novel | DELETERIOUS
+
+",Kalpi-ds,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/22
+MDU6SXNzdWU3MzY1MzM0MTg=,"build a database ,but the SIFT numeric scores in columns 10-12 too many rows say ""NA"".",CLOSED,2020-11-05T01:23:07Z,2020-11-06T03:21:02Z,2020-11-06T03:21:02Z,"I have build a database,but the SIFT numeric scores in columns 10-12 too many rows say ""NA"". The CHECK_GENES.LOG is like this
+```
+Chr     Genes with SIFT Scores  Pos with SIFT scores    Pos with Confident Scores
+Ghir_A01        0 (0/3764)      0 (0/10735334)  0(0/0)
+Ghir_A02        0 (0/3196)      0 (0/9036410)   0(0/0)
+Ghir_A03        0 (0/3915)      0 (0/10562169)  0(0/0)
+……
+ALL     0 (0/115644)    0 (0/317919423) 0(0/0)
+```
+I think this is a bad database. But i donot know how to solve it.maybe some input file is wrong or something else?",chaimol,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/23
+MDU6SXNzdWU3NDM1MTcwNDE=,Error in built my own database,CLOSED,2020-11-16T06:30:53Z,2021-11-23T05:58:05Z,2020-12-05T14:30:20Z,"Hi, SIFT4G team 
+I had a problem in building my own database using sift4g tools. When execute the perl make-SIFT-db-all.pl -config Glymax_config.txt command, there will be in parent_Dir folder generates all_ prot.fasta file, but without generated a database and no error was return. I don't know where the problem is. Hope your answers, thank you.
+
+My input files are shown below:
+1. Glymax_config.txt
+GENE_DOWNLOAD_SITE=/vol3/agis/wangli_group/sunshichao/soybean/P101SC17040637-01-F004/SIFT4G/Glycine_max/gene-annotation-src/Glycine_max.gene.gtf.gz
+PEP_FILE=/vol3/agis/wangli_group/sunshichao/soybean/P101SC17040637-01-F004/SIFT4G/Glycine_max/gene-annotation-src/soybean.pep.fa
+CHR_DOWNLOAD_SITE=/vol3/agis/wangli_group/sunshichao/soybean/P101SC17040637-01-F004/SIFT4G/database/Glycine_max.Glycine_max_v2.1.dna.toplevel.fa.gz
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=11
+MITO_GENETIC_CODE_TABLENAME=Plant Plastid Code
+
+PARENT_DIR=/vol3/agis/wangli_group/sunshichao/soybean/P101SC17040637-01-F004/SIFT4G/PARENT_DIR
+ORG=Glycine_max
+ORG_VERSION=Gma2.v1
+
+#Running SIFT 4G
+SIFT4G_PATH=/vol3/agis/wangli_group/sunshichao/miniconda3/bin/sift4g
+PROTEIN_DB=/vol3/agis/wangli_group/sunshichao/soybean/P101SC17040637-01-F004/SIFT4G/database/uniref90.fasta
+
+# Sub-directories, don't need to change
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+FASTA_DIR=fasta
+SUBST_DIR=subst
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords/
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+2.  */chr-src/Glycine_max.Glycine_max_v2.1.dna.toplevel.fa
+![image](https://user-images.githubusercontent.com/70623629/99219631-0bf71380-2818-11eb-9d6d-df0991b590c2.png)
+3. */gene-annotation-src/Glycine_max.gene.gtf.gz
+![image](https://user-images.githubusercontent.com/70623629/99219703-347f0d80-2818-11eb-930e-4d749ad9d6f8.png)
+4. */gene-annotation-src/soybean.pep.fa
+![image](https://user-images.githubusercontent.com/70623629/99219765-5082af00-2818-11eb-8880-5d9aa6ba6208.png)
+
+
+",sunshichao0916,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/24
+MDU6SXNzdWU3NDQ1NDY5MjU=,I find a methods for speed the analysis in sift4g to build a new database,CLOSED,2020-11-17T09:04:37Z,2022-11-04T22:32:49Z,2022-03-22T23:17:54Z,"when i use sift4g to build my database , I found it is very slow in use `sift4g` predication . 
+# Speed up the establishment of new databases
+# we can add the threads in use sift4g. Only change file `make-SIFT-db-all.pl` line 109.just add threads before `-d`.
+```
+my $sift4g_command = $meta_hash{""SIFT4G_PATH""} .  "" -t 24 -d "" . $meta_hash{""PROTEIN_DB""} . "" -q "" . $meta_hash{""PARENT_DIR""} . ""/all_prot.fasta --subst "" .  $meta_hash{""PARENT_DIR""} . ""/"" . $meta_hash{""SUBST_DIR""} . "" --out "" .  $meta_hash{""PARENT_DIR""} . ""/"" . $meta_hash{""SIFT_SCORE_DIR""} . "" --sub-results "" ;
+```
+use `-t 24` can use 24 threads to analysis ,The default threads is 8.",chaimol,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/25
+MDU6SXNzdWU3NDc5MjE1OTA=,"error when construct database, and sift4g",CLOSED,2020-11-21T04:18:30Z,2020-11-22T03:35:28Z,2020-11-22T03:34:24Z,"Can we not use --subst ./test_files/homo_sapiens_small/subst  and --sub-results  when construct database? 
+
+I met an error when construct the sift database. ""terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error Aborted (core dumped)""
+
+When I run 'perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt', it
+report ""converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /usr/local/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making single records template
+making noncoding records file
+Possible precedence issue with control flow operator at /usr/local/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making noncoding records
+make the fasta sequences
+Possible precedence issue with control flow operator at /usr/local/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making the fasta sequences
+start siftsharp, getting the alignments
+/workdir/yw2326/SIFT/sift4g/bin/sift4g -d /workdir/yw2326/SIFT/PROTEIN_DB/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error""
+
+Then I go to sift4g, './bin/sift4g -q ./test_files/query.fasta --subst ./test_files/ -d ./test_files/sample_protein_database.fa' it run error ""** Checking query data and substitutions files **
+terminate called after throwing an instance of 'std::regex_error'
+  what():  regex_error
+Aborted (core dumped)"". 
+ If  don't use subst, ""./bin/sift4g -q ./test_files/query.fasta -d ./test_files/sample_protein_database.fa""  it works.
+I have update the gcc to 7.3 version, it still report the error.",yywyaoyaowu,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/26
+MDU6SXNzdWU3NDkyNzIwNzA=,Is the database well constructed? Got ,CLOSED,2020-11-24T01:46:53Z,2020-12-17T14:37:58Z,2020-12-17T14:37:58Z,"Hi SIFT4G_Create_Genomic_DB team.
+
+When I construct the database, I met warning and error. I have checked the data as 'Check the Database pipeline'. But I'm not sure if the database is well constructed. 
+I go to  <PARENT_DIR>/<ORG_VERSION>/ and check the data, zcat <chr>.gz | more , zcat <chr>.gz | grep CDS | more  , CHECK_GENES.LOG seem are all well  produced. Then I checked the pre-files: 
+**_ls -lt <PARENT_DIR>/singleRecords_with_scores/*  no files_** 
+ls -lt <PARENT_DIR>/singleRecords/*  has files
+`ls fasta/* has files
+SIFT 4G Algorithm is running 
+ls SIFT_predictions/* with files
+
+is the 'singleRecords_with_scores' affect the database construction much???? Thanks very much!
+The warning and error I got is : 
+1. 'Use of uninitialized value $fasta_subseq in concatenation (.) or string at make-single-records-BIOPERL.pl line 210, <IN_TX> line 2132.'
+
+2. Argument """" isn't numeric in numeric eq (==) at generate-fasta-subst-files-BIOPERL.pl line 465, <IN_TX> line 265.
+
+3.  Unable to read from /workdir/yw2326/SIFT/SIFT4G_Create_Genomic_DB/Potato_A6_26/singleRecords/chr01.singleRecords_noncoding
+  File ""make_regions_file.py"", line 61
+    print 'check_SIFTDB.py <sorted file> <outfile>'
+SyntaxError: Missing parentheses in call to 'print'. Did you mean print('check_SIFTDB.py <sorted file> <outfile>')?
+
+4. cat: '/workdir/yw2326/SIFT/SIFT4G_Create_Genomic_DB/Potato_A6_26/singleRecords/contig_1381:::fragment_1:::debris.singleRecords':
+Unable to read from /workdir/yw2326/SIFT/SIFT4G_Create_Genomic_DB/Potato_A6_26/singleRecords/contig_1328.singleRecords_noncoding
+
+5. SyntaxError: Missing parentheses in call to 'print'. Did you mean print('check_SIFTDB.py <sorted file> <outfile>')?
+rm: cannot remove '/workdir/yw2326/SIFT/SIFT4G_Create_Genomic_DB/Potato_E4_63/singleRecords_with_scores/contig_977:::debris_scores.Srecords': No such file or d
+checking the databases
+  File ""check_SIFTDB.py"", line 44
+    if predicted_on > 0:
+                       ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File ""check_SIFTDB.py"", line 44
+    if predicted_on > 0:
+
+6. TabError: inconsistent use of tabs and spaces in indentation
+zipping up /workdir/yw2326/SIFT/SIFT4G_Create_Genomic_DB/Potato_E4_63/chr-src/*
+All done!
+",yywyaoyaowu,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/27
+MDU6SXNzdWU3NTY3MjY0MjU=,Error while creating database,CLOSED,2020-12-04T01:42:22Z,2020-12-05T04:46:50Z,2020-12-05T04:46:50Z,"Hi,
+
+I am not sure why this problem encounter during database formatting.
+Error returned ""[ERROR]: missing option -q (query file)""
+
+I follow the command line provided in the manual, which doesn't require query option (-q)
+This is my command line that I used to create the genomic DB: 
+perl make-SIFT-db-all.pl -config ./test_files/R498.txt 
+
+![Uploading Screenshot from 2020-12-04 09-27-22.png…]()
+
+The fasta, single records and subst folders are not empty.
+
+
+
+",ruru-adra,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/28
+MDU6SXNzdWU3NjEzODQyNjY=,Error when construct test database (homo sapiens),CLOSED,2020-12-10T16:22:49Z,2020-12-14T06:28:27Z,2020-12-14T06:28:27Z,"Hi Pauline
+
+I am still fail to build my SIFT4G database. 
+But then I tried to build the homo_sapiens_small sample database. It returned an error during ""making single records file"" 
+
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at make-single-records-BIOPERL.pl line 210, <IN_TX> line 2.
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at make-single-records-BIOPERL.pl line 210, <IN_TX> line 3.
+.
+The SIFT_alignments, SIFT_predictions folders, singleRecords_with_scores are empty. 
+all_prot.fasta, fasta.log, invalid.log and peptide.log was generated. 
+
+I tried ""../../../sift4g/bin/sift4g -d ../protdb/uniprot.fasta -q all_prot.fasta --out SIFT_predictions/"" , returned no error and generated files in the SIFT_prediction folder.
+
+Then I tried SIFT4G,  ""./bin/sift4g -q ./test_files/query.fasta --subst ./test_files/ -d ./test_files/sample_protein_database.fa"". The SIFT4G programme works well. No error found using sample data.
+
+My gcc version is  9.3.0.
+
+Thank you
+",ruru-adra,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/29
+MDU6SXNzdWU3NjgyMzcxMzU=,Process stop while creating the database,CLOSED,2020-12-15T21:55:35Z,2020-12-18T10:17:40Z,2020-12-18T10:17:40Z,"Hi Pauline,
+
+![Screenshot from 2020-12-15 18-06-23](https://user-images.githubusercontent.com/3852095/102276515-e0279480-3f61-11eb-8ca3-502b13c3278e.png)
+
+The command ""perl make-SIFT-db-all.pl -config <config_file>"" that I used for creating the database stopped at 75% without any warning or error.
+Then I tried to run the SIFT4G command (as attached) to see whether it's work or not. However,  I got this warning ""Killedessing database part I etc"" and the process stopped at 72.5%.
+
+Is that means the computer is out of memory while creating the database?
+Please find attached the snapshot of command line that I used and warning.
+
+Thanks,
+
+
+",ruru-adra,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/30
+MDU6SXNzdWU3Njg1MTI1ODg=,file not existed,CLOSED,2020-12-16T06:51:41Z,2020-12-18T01:02:43Z,2020-12-17T14:41:02Z,"Hi, may I ask is this file 'scripts_to_build_SIFT_db/test_files/homo_sapiens_small' functioning? Because When I click on it, it show me error 404 in the page. Thank you",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/31
+MDU6SXNzdWU3Njk1MzUwNjM=,Error in Annotate VCF files with the SIFT Database,CLOSED,2020-12-17T05:27:00Z,2022-06-26T23:13:13Z,2020-12-19T13:52:58Z,"Hi pauline,
+      I'm sorry to disturb you again. When I use the `java -jar <Path to SIFT4G_Annotator> -c -i <Path to input vcf file> -d <Path to SIFT4G database directory> -r <Path to your results folder> -t `command, the program runs, and the output temporary file looks right. But when the final merge, there is no result file output. Did I do something wrong? Can you give me some advice?
+
+Thank you,
+Shichao",sunshichao0916,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/32
+MDU6SXNzdWU3NzAwODkwMzU=,Running error,CLOSED,2020-12-17T14:22:48Z,2020-12-17T23:35:18Z,2020-12-17T14:37:03Z,"Hi, pauline ng, sry for disturb u. When I run, I was getting this kind of error, can u check for me? Thank you...
+Below is my error:
+
+converting gene format to use-able input
+Can't locate Switch.pm in @INC (you may need to install the Switch module) (@INC contains: /home/FYPuser/perl5/lib/perl5 /usr/local/lib/perl5/site_perl/5.32.0/x86_64-linux-thread-multi /usr/local/lib/perl5/site_perl/5.32.0 /usr/local/lib/perl5/5.32.0/x86_64-linux-thread-multi /usr/local/lib/perl5/5.32.0) at gff_gene_format_to_ucsc.pl line 4.
+BEGIN failed--compilation aborted at gff_gene_format_to_ucsc.pl line 4.
+done converting gene format
+no DNA fasta files in ./test_files/coronavirus/chr-src
+
+**Here is my config file:**
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/coronavirus
+ORG=Severe Acute Respiratory Syndrome Coronavirus 2
+ORG_VERSION=ASM985889v3
+DBSNP_VCF_FILE=Homo_sapiens.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=/bigdrive/sift4g/bin/sift4g
+PROTEIN_DB=/bigdrive/SIFT_databases/uniprot_sprot.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/33
+MDU6SXNzdWU3NzA0OTQzMjI=,Error in running process,CLOSED,2020-12-18T01:27:04Z,2020-12-21T06:41:41Z,2020-12-21T06:31:29Z,"Hi, Pauline Ng, sry to disturb u again.  The previous error d solved, now I have another kind of error. The error is listed below:
+
+I d put the DNA fasta file inside the chr-src directory, but it still pop out the error, can u help me to check on this? tq...
+Below is the error:
+
+converting gene format to use-able input
+Unable to open  for reading
+done converting gene format
+no DNA fasta files in ./test_files/coronavirus/chr-src
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/34
+MDU6SXNzdWU3NzEzNzcyOTI=,protein_DB file,CLOSED,2020-12-19T13:03:25Z,2020-12-21T06:43:04Z,2020-12-21T06:32:23Z,"Hi, pauline ng, wanna ask that does we need to change the path for PROTEIN_DB? Thank you",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/35
+MDU6SXNzdWU3NzEzNzg2NzM=,Error when building the sample database,CLOSED,2020-12-19T13:12:08Z,2020-12-21T06:43:47Z,2020-12-21T06:33:03Z,"Hi, pauline ng below is the error that I face while constructing the database, can u check for me, tq..
+
+**Error:**
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: './test_files/homo_sapiens_small/fasta/*.fasta': No such file or directory
+/bigdrive/sift4g/bin/sift4g -d /bigdrive/SIFT_databases/uniprot_sprot.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results
+Can't exec ""/bigdrive/sift4g/bin/sift4g"": No such file or directory at make-SIFT-db-all.pl line 114.
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/36
+MDU6SXNzdWU3NzEzODUwOTE=,Error when run the SIFT Algorithm ,CLOSED,2020-12-19T13:53:51Z,2020-12-21T10:07:57Z,2020-12-21T10:07:57Z,"Hi, pauline ng , I am sry, I just realise that I didn't install the sift4g algorithm file, but when I run the command 'make', it pop out the error as below:
+
+[CP] src/select_alignments.cpp
+In file included from src/select_alignments.cpp:16:0:
+src/select_alignments.hpp:15:29: fatal error: swsharp/swsharp.h: No such file or directory
+compilation terminated.
+Makefile:39: recipe for target 'obj/select_alignments.o' failed
+make: *** [obj/select_alignments.o] Error 1
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/37
+MDU6SXNzdWU3NzIwNDY0MzY=,"I found “SIFT_SCORE=NA”, ""SIFT_MEDIAN=NA"", ""NUM_SEQS=NA"", ""SIFT_PREDICTION=NA"" in my output",CLOSED,2020-12-21T10:21:12Z,2021-01-23T05:40:35Z,2021-01-23T05:40:35Z,"Hi，
+  I tried to build the local database, and it showed “ALL DONE！！”. However, I tested my vcf files and found the  “SIFT_SCORE=NA”, ""SIFT_MEDIAN=NA"", ""NUM_SEQS=NA"", ""SIFT_PREDICTION=NA"" in my results. I don't know how to deal with it, could you give me hand?",wangnan9394,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/38
+MDU6SXNzdWU3NzIwNzUwNTI=,No output after building database,CLOSED,2020-12-21T11:04:25Z,2021-01-23T05:33:07Z,2021-01-23T05:33:07Z,"Hi, pauline ng, after I build the database, the output is empty in the output file, below is the error, can help me to check ah..
+
+Error:
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: './test_files/coronavirus/fasta/*.fasta': No such file or directory
+/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/sift4g/bin/sift4g -d /home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/uniprot-NC_045512.2.fasta -q ./test_files/coronavirus/all_prot.fasta --subst ./test_files/coronavirus/subst --out ./test_files/coronavirus/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/39
+MDU6SXNzdWU3NzI4NzAzNzQ=,Cannot create own database ,CLOSED,2020-12-22T11:24:18Z,2022-03-22T23:15:42Z,2022-03-22T23:15:42Z,"Hi, pauline ng, I managed to create the example database, but when it come to create my own database, it pop out this error as show in below, can u help me to check...
+
+entered mkdir ./test_files/coronavirus/ASM985889v3
+converting gene format to use-able input
+Unable to open  for reading
+done converting gene format
+making single records file
+can't open ./test_files/coronavirus/gene-annotation-src/protein_coding_genes.txt at make-single-records-BIOPERL.pl line 143.
+done making single records template
+making noncoding records file
+can't open ./test_files/coronavirus/gene-annotation-src/noncoding.txt at make-single-records-noncoding.pl line 59.
+done making noncoding records
+make the fasta sequences
+can't open ./test_files/coronavirus/gene-annotation-src/protein_coding_genes.txt at generate-fasta-subst-files-BIOPERL.pl line 387.
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: './test_files/coronavirus/fasta/*.fasta': No such file or directory
+/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/sift4g/bin/sift4g -d /home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/uniref90.fasta -q ./test_files/coronavirus/all_prot.fasta --subst ./test_files/coronavirus/subst --out ./test_files/coronavirus/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/40
+MDU6SXNzdWU3NzI5MzQ5MTU=,config file checking,CLOSED,2020-12-22T13:09:54Z,2021-01-23T05:36:03Z,2021-01-23T05:36:03Z,"Hi, below is my config file, can u check for me if got any error? tq..
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/test_files/corona$
+ORG=Severe Acute Respiratory Syndrome Coronavirus 2
+ORG_VERSION=ASM985889v3
+DBSNP_VCF_FILE=
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/sift4g/bin/sift4g
+PROTEIN_DB=/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/41
+MDU6SXNzdWU3NzQ4MTE5NjI=,"annotate file error, no output",CLOSED,2020-12-26T02:45:43Z,2022-03-22T23:15:55Z,2022-03-22T23:15:55Z,"Hi, pauline Ng, I have successfully run the SIFT 4G annotater, but the output file is empty, below is the command while running:
+can u give me some advise on how to solved this problem? tq
+
+ 
+Chromosome      WithSIFT4GAnnotations   WithoutSIFT4GAnnotations        Progress
+The following chromosomes (or scaffolds/contigs) are not found in the SIFT 4G database and will not be annotated:
+1
+Please contact us if you have any questions.
+/home/FYPuser/zhan/SIFT4G_Create_Genomic_DB-master/test_files/SARS/ASM985889v3/1.regions does not exist
+1                       0                       50                      Completed : 1/1
+
+Merging temp files....
+SIFT4G Annotation completed !
+",zhansia,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/42
+MDU6SXNzdWU3ODg2MTE0NTQ=,how to evaluate the siftddatabase? ,CLOSED,2021-01-19T00:05:15Z,2022-07-24T02:06:14Z,2021-01-19T23:03:00Z,"Hi, pauline
+This is Yaoyao. When I use a new genome, I met a 'warning'. Then I checked the database. My question 1. is the warning affect the database construction?  
+2. how to evaluate if the database is well constructed? 
+
+1. This is the warning I got.  Bioperl for running DB::Fasta is quite important for sift database construction. But I don't see anything wrong. Is this oK?
+**“Possible precedence issue with control flow operator at /home/yw2326/software/miniconda3/lib/site_perl/5.26.2/Bio/DB/IndexedBase.pm line 805.
+done making single records template
+making noncoding records file”**
+
+2. When I check the database as you suggested in the website ""Check the database"". 
+I use  zcat chr01.gz | grep CDS |  awk '($11!=""NA""){print}' | wc -l to check the sites with no sift score. I found 4.3% CDS sites were not with sift score. 
+Then I got to ""CHECK_GENES.LOG"", I got ""ALL     98 (43865/44746)        99 (117728116/118341687)        87(102554181/117728116)"". And you said ""Your database is done if the percentages are high for the last 3 different columns."" I suppose 87% 99% is quite high, right? What's the number for good database?
+Chr     Genes with SIFT Scores  Pos with SIFT scores    Pos with Confident Scores
+chr01   98 (5715/5853)  99 (15569236/15662914)  87(13555622/15569236)
+chr02   98 (4245/4324)  100 (11980016/12034306) 89(10612715/11980016)
+chr03   98 (4342/4416)  99 (11824558/11885076)  89(10505875/11824558)
+chr04   98 (3980/4062)  99 (10687933/10741726)  86(9207919/10687933)
+chr05   99 (2917/2958)  100 (7889554/7918062)   87(6862649/7889554)
+chr06   98 (3887/3955)  100 (9922134/9968730)   86(8492265/9922134)
+chr07   97 (3059/3142)  99 (8457188/8515533)    88(7443496/8457188)
+chr08   98 (3188/3269)  99 (8486670/8544174)    88(7441767/8486670)
+chr09   98 (3194/3255)  100 (8552574/8591423)   88(7505256/8552574)
+chr10   98 (3157/3211)  100 (7853302/7890876)   87(6813450/7853302)
+chr11   98 (3029/3085)  100 (8336085/8374210)   85(7111593/8336085)
+chr12   98 (3152/3216)  99 (8168866/8214657)    86(7001574/8168866)
+
+ALL     98 (43865/44746)        99 (117728116/118341687)        87(102554181/117728116)
+Look forward to your reply. Thanks very much!
+ ",yywyaoyaowu,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/43
+MDU6SXNzdWU3OTAwNTYwMDA=,No  SIFT_score shows in chr*.gz file,CLOSED,2021-01-20T14:58:18Z,2021-01-23T05:30:54Z,2021-01-23T05:30:54Z,"Hi,
+  I use this pipeline to build my datebase, ""All done!"". However, when i check the chr*.gz file, I found that NA in  ""SIFT_score"",NA in ""SIFT_median_sequence_info"". could you give me a hand?
+Here is the pic
+![image](https://user-images.githubusercontent.com/52204680/105192210-d4d41400-5b72-11eb-9b6b-781b590cd6cb.png)
+
+I have checked my all files, it seems all right.
+Thank you so much.",wangnan9394,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/44
+MDU6SXNzdWU4NTgwMzI0NzY=,Problem creating genomic database for new organism_1,CLOSED,2021-04-14T15:51:25Z,2022-03-22T23:16:23Z,2022-03-22T23:16:23Z,"Hi, Pauline
+
+> ""In the gtf file, make sure the 9th column (attribute column) says gene_biotype ""protein_coding;"" for rows which are labelled as exon, CDS, stop_codon, and start_codon.""
+> For each protein, you'll need to annotate exon, CDS, stop_codon, and start_codon. 
+
+I have modified my gtf file to satisfy these criterions, but errors still exists.
+
+```
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: /picb/evolgen/users/gushanshan/projects/probiotics/multiple_whole_genome_alignment/pairwise_combined/formalExper/homologousGroup/PS128_B21_BLS41_comparation/pairwise_multiz/mutationEffectPrediction/formal/sift4g_ps128_database/fasta/*.fasta: No such file or directory
+/picb/evolgen/users/gushanshan/software/sift/sift4/bin/sift4g -d /picb/evolgen/users/gushanshan/database/uniref90/uniref90 -q /picb/evolgen/users/gushanshan/projects/probiotics/multiple_whole_genome_alignment/pairwise_combined/formalExper/homologousGroup/PS128_B21_BLS41_comparation/pairwise_multiz/mutationEffectPrediction/formal/sift4g_ps128_database/all_prot.fasta --subst /picb/evolgen/users/gushanshan/projects/probiotics/multiple_whole_genome_alignment/pairwise_combined/formalExper/homologousGroup/PS128_B21_BLS41_comparation/pairwise_multiz/mutationEffectPrediction/formal/sift4g_ps128_database/subst --out /picb/evolgen/users/gushanshan/projects/probiotics/multiple_whole_genome_alignment/pairwise_combined/formalExper/homologousGroup/PS128_B21_BLS41_comparation/pairwise_multiz/mutationEffectPrediction/formal/sift4g_ps128_database/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+
+```
+By the way, I managed to run test files for human.
+Here is the directory structure:
+```
+-bash-4.2$ ls -lhtR
+.:
+total 39M
+drwxr-xr-x 2 gushanshan evolgen  143 Apr 14 21:41 gene-annotation-src
+-rw-r--r-- 1 gushanshan evolgen   68 Apr 14 21:26 fasta.log
+-rw-r--r-- 1 gushanshan evolgen  544 Apr 14 21:26 invalid.log
+-rw-r--r-- 1 gushanshan evolgen    0 Apr 14 21:26 peptide.log
+drwxr-xr-x 2 gushanshan evolgen  101 Apr 14 21:26 chr-src
+-rw-r--r-- 1 gushanshan evolgen    0 Apr 14 21:26 Log2.txt
+drwxr-xr-x 2 gushanshan evolgen  389 Apr 14 21:25 singleRecords
+-rw-r--r-- 1 gushanshan evolgen 1.3K Apr 14 14:34 sift4g_ps128_database_configure.txt
+-rw-r--r-- 1 gushanshan evolgen    0 Apr 14 14:07 all_prot.fasta
+drwxr-xr-x 2 gushanshan evolgen 3.2K Apr 14 14:07 subst
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 14 14:04 SIFT_predictions
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 14 14:04 singleRecords_with_scores
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 14 14:04 SIFT_alignments
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 14 14:04 fasta
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 14 14:04 LP_PS128
+-rw-r--r-- 1 gushanshan evolgen  24M Apr 13 21:44 uniprot_sprot_species
+drwxr-xr-x 2 gushanshan evolgen    0 Apr 13 21:28 dbSNP
+-rw-r----- 1 gushanshan evolgen 3.5M Apr 13 21:26 ps128.gtf
+
+./gene-annotation-src:
+total 6.9M
+-rw-r--r-- 1 gushanshan evolgen 229K Apr 14 21:25 noncoding.txt
+-rw-r--r-- 1 gushanshan evolgen  145 Apr 14 21:25 protein_coding_genes.txt
+-rw-r--r-- 1 gushanshan evolgen 4.0M Apr 14 21:18 ps128_format.gtf
+
+./chr-src:
+total 4.9M
+-rw-r--r-- 1 gushanshan evolgen 1.0K Apr 14 21:26 directory.index.pag
+-rw-r--r-- 1 gushanshan evolgen    0 Apr 14 21:26 directory.index.dir
+-rw-r----- 1 gushanshan evolgen 3.3M Apr 13 21:25 ps128.fna
+
+./singleRecords:
+total 1.8G
+-rw-r--r-- 1 gushanshan evolgen 1.3G Apr 14 21:26 NZ_LBHS01000002.1.singleRecords_noncoding
+-rw-r--r-- 1 gushanshan evolgen 5.7M Apr 14 21:25 NZ_LBHS01000001.1.singleRecords_noncoding
+-rw-r--r-- 1 gushanshan evolgen    0 Apr 14 21:25 NZ_LBHS01000002.1.singleRecords
+-rw-r--r-- 1 gushanshan evolgen  16K Apr 14 16:36 NZ_LBHS01000001.1.singleRecords_proteins.fa
+-rw-r--r-- 1 gushanshan evolgen  15K Apr 14 16:36 NZ_LBHS01000001.1.invalidRecords
+-rw-r--r-- 1 gushanshan evolgen 4.8K Apr 14 16:36 NZ_LBHS01000002.1.singleRecords_proteins.fa
+-rw-r--r-- 1 gushanshan evolgen 4.6K Apr 14 16:36 NZ_LBHS01000002.1.invalidRecords
+
+./subst:
+total 220K
+-rw-r--r-- 1 gushanshan evolgen 0 Apr 14 16:36 WH27_RS00095.subst
+... a lot of .subst files
+-rw-r--r-- 1 gushanshan evolgen 0 Apr 14 16:36 WH27_RS03910.subst
+
+./SIFT_predictions:
+total 0
+
+./singleRecords_with_scores:
+total 0
+
+./SIFT_alignments:
+total 0
+
+./fasta:
+total 0
+
+./LP_PS128:
+total 0
+
+./dbSNP:
+total 0
+
+```
+
+
+genome, gtf  for creating database and some logs are deposited in supplementary files.
+
+Could you give me some tips to avoid this situation?
+
+Thanks,
+
+Shanshan",AlisaGU,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/45
+MDU6SXNzdWU4OTA2MjM5NzY=,problem for constructing the database of test data,CLOSED,2021-05-13T01:41:08Z,2021-05-13T06:23:55Z,2021-05-13T06:23:55Z,"@pauline-ng Hi, we want to build database for pig. Firstly, we download the PROTEIN_DB from https://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.fasta.gz, we run human_samll_test. But  we can't get the database. here is the output of our progress 
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/vol3/agis/likui_group/yinhongwei/software/miniconda/bin/sift4g -d /vol3/agis/likui_group/yinhongwei/pig/uniprot/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results
+
+we check the dir of subst, it had results of transcipt  and it show likes
+ head ENST00000342101.subst
+M1V
+M1L
+M1L
+M1T
+M1K
+M1R
+M1I
+M1I
+M1I
+M1M
+when we checked the dir of SIFT_predictions, it was empty.
+i didn't know what is the problem and could you give us some guidlines ?",yinhongwei4079,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/46
+MDU6SXNzdWU5MjQ3MzQxMjA=,no data,CLOSED,2021-06-18T09:45:00Z,2022-11-18T14:29:23Z,2021-06-20T09:31:57Z,,BaHole,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/47
+MDU6SXNzdWU5Mjg4OTYxMTI=,SIFT,CLOSED,2021-06-24T06:33:20Z,2022-11-18T11:14:39Z,2021-06-25T13:48:07Z,Hi,BaHole,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/48
+MDU6SXNzdWU5ODg3NTc2NDM=,some error,CLOSED,2021-09-06T04:35:03Z,2022-11-18T11:15:03Z,2022-03-30T06:41:07Z,Hi,BaHole,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/49
+I_kwDOBKAFmM4_jaXl,error,CLOSED,2021-11-29T16:33:05Z,2022-11-18T11:15:24Z,2022-03-22T23:15:19Z,H,BaHole,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/50
+I_kwDOBKAFmM5Fc5gY,can't open files,CLOSED,2022-03-10T13:09:13Z,2022-03-22T23:14:48Z,2022-03-22T23:14:48Z,"I have already installed swith.pm,and put all the files in the right place,can anyone help?Thanks.
+
+converting gene format to use-able input
+Can't locate Switch.pm in @INC (you may need to install the Switch module) (@INC contains: /home/jiayi/miniconda3/lib/perl5/5.32/site_perl /home/jiayi/miniconda3/lib/perl5/site_perl /home/jiayi/miniconda3/lib/perl5/5.32/vendor_perl /home/jiayi/miniconda3/lib/perl5/vendor_perl /home/jiayi/miniconda3/lib/perl5/5.32/core_perl /home/jiayi/miniconda3/lib/perl5/core_perl .) at gff_gene_format_to_ucsc.pl line 4.
+BEGIN failed--compilation aborted at gff_gene_format_to_ucsc.pl line 4.
+done converting gene format
+making single records file
+can't open /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/gene-annotation-src/protein_coding_genes.txt at make-single-records-BIOPERL.pl line 143.
+done making single records template
+making noncoding records file
+can't open /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/gene-annotation-src/noncoding.txt at make-single-records-noncoding.pl line 59.
+done making noncoding records
+make the fasta sequences
+can't open /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/gene-annotation-src/protein_coding_genes.txt at generate-fasta-subst-files-BIOPERL.pl line 387.
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: '/media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/fasta/*.fasta': No such file or directory
+/media/data2/jiayi/sift4g/bin/sift4g -d /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/gene-annotation-src/Kandelia_rename20210915.pro.fasta -q /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/all_prot.fasta --subst /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/subst --out /media/data2/jiayi/sift4g/scripts_to_build_SIFT_db/test_files/kandelia_obovata/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+",dodudoduding,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/51
+I_kwDOBKAFmM5F12gE,** Checking query data and substitutions files ** terminate called after throwing an instance of 'std::regex_error'   what():  regex_error Aborted (core dumped),CLOSED,2022-03-17T00:54:38Z,2022-03-22T23:17:25Z,2022-03-22T23:17:25Z,"my gcc version 9.4 and the update the g++ complier through conda,but the error exit, how could i do for this error? thanks",Jiangjiangzhang6,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/52
+I_kwDOBKAFmM5GS2e2,Errors while populating the databases; all files within singleRecords_with_scores folder removed,CLOSED,2022-03-24T10:58:53Z,2022-03-25T15:25:58Z,2022-03-25T15:25:58Z,"
+Dear Pauline,
+
+I'm running into some error messages (see at the end of this post) while creating my own SIFT database. The strangest thing is that I could see that files were being created in the singleRecords_with_scores folder, and they looked good, but after the programme is done running all contents from this folder are wiped out. I've attempted it once more with higher RAM in case memory was the problem, but I ran into the exact same issue (plus this time I also got warnings because all .fa files in the chr-src folder were already gzipped).
+
+I can confirm there are neither ""X"" nor ""*"" characters (nor duplicate entries) in the all_prot.fasta file. However there are quite a few N characters in the .fa files (in case that matters).
+
+Sorry if this issue has been reported before; I found two instances with similar error code, but they didn't help me.
+
+Thank you very much for any help you may provide.
+
+Best,
+
+Daniel.
+
+************************
+
+Error code:
+
+`populating databases
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File ""make_regions_file.py"", line 68, in <module>
+    get_regions (chrom_file, out_file)
+  File ""make_regions_file.py"", line 31, in get_regions
+    pos = get_pos (first_line)
+  File ""make_regions_file.py"", line 8, in get_pos
+    return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+checking the databases
+zipping up /mnt/lustre/scratch/home/uvi/bg/dkr/sift4g_annotation/scripts_to_build_SIFT_db/test_files/nr_ancestral_dm6/chr-src/*
+All done!`",Arynio,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/53
+I_kwDOBKAFmM5GWh_d,Database creation – can’t open input files for new organism,CLOSED,2022-03-25T03:56:37Z,2022-04-01T08:09:06Z,2022-04-01T08:09:06Z,"Hi Pauline,
+
+I have successfully created the trial human database but can’t create a mango database using NCBI genome and GFF file [https://www.ncbi.nlm.nih.gov/genome/?term=txid29780[orgn](https://www.ncbi.nlm.nih.gov/genome/?term=txid29780%5borgn)]  
+
+**GTF file**
+I believe something is wrong with my GTF file but I’m unsure how to fix it (error code below).  Here is my GTF file and the GFF file that was used to create it. 
+[GCF_011075055.1_CATAS_Mindica_2.1_genomic.gff.gz](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/8347186/GCF_011075055.1_CATAS_Mindica_2.1_genomic.gff.gz)
+[mangifera_indica.assembly_CATAS_Mindica_2.1_edited3.gtf.gz](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/8347191/mangifera_indica.assembly_CATAS_Mindica_2.1_edited3.gtf.gz)
+
+This is what I have done:
+1.	gene_biotype added: I have added = gene_biotype ""protein_coding"" to column 9 for CDS, exon and transcript (wasn’t sure about this one so tried both). 
+2.	I don’t have start or stop codons in column 3 but I see you have “updated the SIFT code to no longer require start/stop codon coordinates in order to build a database.”
+3.	I have checked read/write access with ls -l
+4.	I have triple checked the folders are all in the right spot
+5.	GFF vs GTF: In column 3, the GTF file only has exon, CDS and transcript, it’s missing the ‘gene’ that is in the GFF file (along with other categories e.g. region, tRNA). Was there something wrong with the conversion from GFF to GTF? 
+
+**Error code for:**
+perl make-SIFT-db-all.pl -config mango_files/Alphonso_config.txt
+
+entered mkdir /home/uqmwilk3/sift/scripts_to_build_SIFT_db/mango_files/mango_genome
+/assembly_CATAS_Mindica_2.13/sift/scripts_to_build_SIFT_db/mango_files/mango_genome
+converting gene format to use-able input
+ls: cannot access /gene-annotation-src: No such file or directory
+Unable to open  for reading
+done converting gene format
+/*.gz: No such file or directorys_to_build_SIFT_db/mango_files/mango_genome
+DNA files do not exist or did not unzip properly
+#####################################
+**Genome fasta file**
+- Does this error code also mean there is something wrong with my genome file?
+
+#####################################
+**No MT or plastid:**
+I do not have a MT or plastid so do I just have to:
+1. dna_protein_subs.pl - remove all the code for both the “sub chr_is_plastid” and “sub chr_is_mito”?
+2. config file - remove these two lines:
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+",Melanie-Wilkinson,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/54
+I_kwDOBKAFmM5GzHUa,Questions regarding Query IDs construction,CLOSED,2022-03-31T09:42:48Z,2022-04-12T15:06:08Z,2022-04-12T15:06:08Z,"Dear Pauline and Robert, 
+
+I hope it is alright to ask these questions on here.
+
+I have a question regarding the output.
+The code results in a folder called SIFT_predictions, with alignment fasta files. If I’ve understood it correctly those sequences are with Sw aligned, so pairwise and locally with the query sequence. The identity of the sequences are listed, but what about the query sequence? There is only the ID in the file name (i.e. : ENST000063518). 
+
+1. Can you clarify how those ids come to be?
+2. The sequences are aligned locally, so is it possible to get access to the full query sequence, just with its „ID“?
+3. The SIFT.prediction files provide us with position specific sift scores for the newly constructed queries, how is this information significant to us? Can it be closed back to the original query? Or is the SIFT4g annotator the sole possibility to get position specific sift scores for the query sequence?
+
+Thanks in advance,
+Yakup",yaada100,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/55
+I_kwDOBKAFmM5HpPN0,Questions regarding the results,CLOSED,2022-04-12T15:08:58Z,2022-04-21T02:10:27Z,2022-04-21T02:10:27Z,"Hello Pauline,
+
+I have a couple of questions regarding the protein alignment results.
+If i have understood it correct, the queries(in SIFT_prediction folder) used in the files are acquired from the gtf file, right?
+But they do vary from the sequences found in the gtf file. It seems, like there has been a sequence which has been inserted.
+
+1. Can you explain to me or link me to an explanation on what change is done and how these sequences are created/chosen as query?
+2. Also if the change that is done is just the longest increasing subsequence algorithm, then why does the start and end seem to not change?
+3. Lastly, this Query sequence is locally pairwise aligned(SW) with the collected sequences and sift scores are calculated. But is this sequence, which is found in the files(*.aligned.fasta) the **whole** sequence? Because the whole sequence is aligned, it seems more like a global alignment.
+For example as in here(Homo sapien file):
+
+Found in ENST00000628202.aligned.fasta:
+MAAIPALDPEAEPSMDVILVGSSELSSSVSPGTGRDLIAYEVKANQRNIEDICICCGSLQVHTQHPLFEGGICAPCKDKFLDALFLYDDDGYQSYCSICCSGETLLICGNPDCTRCYCFECVDSLVGPGTSGKVHAMSNWVCYLCLPSSRSGLLQRRRKWRSQLKAFYDRESENPLEMFETVPVWRRQPVRVLSLFEDIKKELTSLGFLESGSDPGQLKHVVDVTDTVRKDVEEWGPFDLVYGATPPLGHTCDRPPSWYLFQFHRLLQYARPKPGSPRPFFWMFVDNLVLNKEDLDVASRFLEMEPVTIPDVHGGSLQNAVRVWSNIPAIRSRHWALVSEEELSLLAQNKQSSKLAAKWPTKLVKNCFLPLREYFKYFSTELTSSL
+length of sequences: 386
+
+Found in Homo_sapiens.GRCh38.pep.all.fa:
+
+ENSP00000486001.1 pep:known chromosome:GRCh38:21:44246352:44261890:-1 gene:ENSG00000142182.8 transcript:ENST00000628202.2 gene_biotype:protein_coding transcript_biotype:protein_coding
+
+MAAIPALDPEAEPSMDVILVGSSELSSSVSPGTGRDLIAYEVKANQRNIEDICICCGSLQMAAIPALDPEAEPSMDVILVGSSELSSSVSPGTGRDLIAYEVKANQRNIEDICICCGSLQVHTQHPLFEGGICAPCKDKFLDALFLYDDDGYQSYCSICCSGETLLICGNPDCTRCYCFECVDSLVGPGTSGKVHAMSNWVCYLCLPSSRSGLLQRRRKWRSQLKAFYDRESENPLEMFETVPVWRRQPVRVLSLFEDIKKELTSLGFLESGSDPGQLKHVVDVTDTVRKDVEEWGPFDLVYGATPPLGHTCDRPPSWYLFQFHRLLQYARPKPGSPRPFFWMFVDNLVLNKEDLDVASRFLEMEPVTIPDVHGGSLQNAVRVWSNIPAIRSRHWALVSEEELSLLAQNKQSSKLAAKWPTKLVKNCFLPLREYFKYFSTELTSSL
+length of sequences: 446
+
+Insert : MAAIPALDPEAEPSMDVILVGSSELSSSVSPGTGRDLIAYEVKANQRNIEDICICCGSLQ",yaada100,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/56
+I_kwDOBKAFmM5JpJfP,How to address poor database statistics,CLOSED,2022-05-13T17:54:25Z,2022-06-07T08:25:55Z,2022-05-24T08:12:08Z,"Hi Pauline,
+
+Thanks for developing this resource to create SIFT4G databases for any organism. It's quite easy to use. I am annotating a new bird genome, the Greater prairie chicken (Tympanuchus cupido). Unfortunately, my database statistics are quite low. When I use UniRef90 as the protein database, I get the following overall stats:
+
+ALL     23 (4351/18874) 39 (16156279/41401234)  15(2441297/16156279)
+
+I thought that maybe a larger database could help, so I tried using the ncbi non-redundant database, but that actually resulted in even worse statistics:
+
+ALL     19 (3572/18874) 33 (13754937/41401234)  6(890807/13754937)
+
+I started with a gff file, and used gffread to convert to gtf. I did not personally create the gff file, but it was created with Maker based on transcriptome data. I am not sure how to assess the quality of this gff. 
+
+Do you have any ideas for how I could improve my overall SIFT database statistics on this organism? When I ran the test cases, I found very high database statistics, so I believe I am running everything correctly. I've pasted my config file below.
+
+Best, 
+Andrew
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/Tympanuchus_cupido_full
+ORG=Typanuchus_cupido
+ORG_VERSION=satsuma
+#DBSNP_VCF_FILE=
+
+#Running SIFT 4G
+SIFT4G_PATH=/redser4/personal/andrew/src/sift4g/bin/sift4g
+PROTEIN_DB=/redser4/personal/andrew/uniprot/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+",andrewSharo,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/57
+I_kwDOBKAFmM5Ks0m6,processing database part 975 than finish，and nothing generate,CLOSED,2022-05-31T02:36:57Z,2022-05-31T03:42:08Z,2022-05-31T03:42:08Z,,wpf95,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/58
+I_kwDOBKAFmM5Me-_L,"Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 37345.",CLOSED,2022-06-24T02:45:32Z,2022-06-24T04:04:46Z,2022-06-24T04:04:46Z,"@pauline-ng
+Hi Pauline，
+
+A big log file with repetitive warnings like ""Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 37345."" 
+
+When I run the sample files, SIFT4G databases created correctly.
+
+I look in the fasta directory for my file , I see protein sequences.
+
+This is my file tree:
+|-- chr-src  genomic.fa.gz
+|-- gene-annotation-src  genomic.gtf.gz
+|-- dbSNP  xx.vcf.gz
+
+My config-file:
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=5
+MITO_GENETIC_CODE_TABLENAME=Invertebrate Mitochondrial
+
+PARENT_DIR=/public/home/lizhimin/biosoft/sift4g/scripts_to_build_SIFT_db/hefeishi_test/hefeishi
+ORG=hefeishi
+ORG_VERSION=GRCh38.83
+# DBSNP_VCF_FILE=hefeishi.LDfilter-SRR-remove.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=~/anaconda3/bin/sift4g
+PROTEIN_DB=/public/home/lizhimin/biosoft/sift4g/scripts_to_build_SIFT_db/hefeishi_test/protein.faa
+
+Any advice?
+
+Thanks,
+LiZhimin
+
+",lizhiminlhy,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/59
+I_kwDOBKAFmM5Mltam,Issue making SIFT database from local genomic and gene annotation file (.gtf),CLOSED,2022-06-26T15:23:50Z,2022-08-15T00:23:19Z,2022-08-15T00:23:19Z,"Hello
+
+I'm trying to make a SIFT database for chromosome 3 of Dictyostelium discoideum in order to analyse some VCF files of SNPs generated for certain genes among various strains. I have followed the protocol outlined for making a SIFT database with local genomic and gene attonation files (.gtf). I have installed all modules which I was prompted to install in order to run `perl make-SIFT-db-all.pl -config <config_file>`.  The script runs until the error `cat: 'test_files/output/fasta/*.fasta': No such file or directory`.  It then ends with 
+`** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **` 
+Are there any common errors I might be making?
+Thank you",frankiefattorini,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/60
+I_kwDOBKAFmM5NJ-O1,SIFT4G_Create_Genomic_DB,CLOSED,2022-07-05T15:33:41Z,2022-07-30T12:47:28Z,2022-07-30T12:47:28Z,"Hello,
+
+I tried with the test files. It's not working either.
+
+ **princy_raagul@AG053360D-07006:/mnt/c/Users/josephine.p.johnson/Documents/Variant_dataset/SIFT/scripts_to_build_SIFT_db$ perl make-SIFT-db-all.pl -config test_files101/homo_sapiens-test.txt**
+entered mkdir ./test_files101/homo_sapiens_small/
+/GRCh38.83dir ./test_files101/homo_sapiens_small/
+converting gene format to use-able input
+ls: cannot access '/gene-annotation-src': No such file or directory
+Unable to open  for reading
+done converting gene format
+/*.gz: No such file or directoryns_small/
+DNA files do not exist or did not unzip properly
+
+[homo_sapiens-test.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/9047651/homo_sapiens-test.txt)
+ot unzip properly",PrincyJohnson,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/61
+I_kwDOBKAFmM5NfUBs,mitochondrial code,CLOSED,2022-07-11T00:12:49Z,2022-07-11T00:14:44Z,2022-07-11T00:14:19Z,"By email from a user.
+
+Hi,
+I was wondering if your program takes into consideration the differences in mitochondrial genetic code and genomic code in order to make predictions in mus musculus.
+Thanks,",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/62
+I_kwDOBKAFmM5NfUPc,building database,CLOSED,2022-07-11T00:15:35Z,2022-11-04T22:30:30Z,2022-11-04T22:30:30Z,"*** Email from user***
+
+ I went through the tutorial on github and created my own database for mus_musculus GRCm39.106. I then compared it to the one you have online (GRCm38.83), and I noticed that:
+
+1. for most chromosomes the newer version had heavier files, which I think makes sense because they updated the genome
+2. In the one online, there are a total of 137 files in the folder while in the one I created there are only 119
+3. When running SIFT4g with the new database on previously ran samples, I get fewer hits. For example, in one VCF I tested, the old database resulted in 53 sites in the output while the new one was only 39
+
+I have attached screenshots of the errors I got during database creation. It seems that some files (not sure what these are), weren't in the directory, so couldn't be processed. I also compared the ""CHECK_GENES.LOG"" file and there are six more of these GL or JH files, so that accounts for the 18 missing files as each records gets three files. My questions are:
+
+1. what are these files and how are they important?
+2. Any idea why I am missing six from the new assembly?
+
+One suspicion I had was that my internet connection was too slow when downloading the ensembl files that maybe some were left out. I am planning to repeat at a place where I have better internet to test this. But I also wanted to check if you had any additional ideas.",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/63
+I_kwDOBKAFmM5Nm5Q3,Issue annotating VCF files with SIFT database,CLOSED,2022-07-12T13:09:27Z,2022-07-14T03:11:04Z,2022-07-14T03:11:03Z,"Hello,
+
+I've created a SIFT database for chromosome 3 of Dictyostelium discoideum using fasta and gff (converted to gtf) files. Running `more CHECK_GENES.LOG` gave the output:
+ `Chr     Genes with SIFT Scores  Pos with SIFT scores    Pos with Confident Scores`
+`DDB0232430      83 (3798/4567)  91 (14959896/16519059)  74(10997369/14959896)`
+When attempting to annotate vcf files containing SNPs within my genes of interest, however, I received the output:
+`Started Running .......`
+`Running in Single transcripts mode`
+`Chromosome      WithSIFT4GAnnotations   WithoutSIFT4GAnnotations        Progress`
+`test_files/output/dicty_2.7/DDB0232430.regions does not exist`
+`DDB0232430                      0                       450                     Completed : 1/1`
+Both of my genes of interest seem to have been included in the various files produced for the alignment. I did not include the vcf file during in the 'dbSNP' file during the database creation process, so could this be the issue? If so, is there a way to create the SIFT database using several VCF files or a merged VCF file containing SNP information for different strains of an organism with different SNPs within the same gene sequence, as I wish to look at a few hundred VCF files and the SNP effects on protein structure.
+Thank you",frankiefattorini,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/64
+I_kwDOBKAFmM5OnTfh,"'Pos with Confident Scores' is low in ""CHECK_GENES.LOG""",CLOSED,2022-07-27T02:00:12Z,2022-07-28T02:30:09Z,2022-07-28T02:30:09Z,"Hi, pauline
+This is pengfei.  I constructed a new datavase. Then I checked the database.  I go to ""CHECK_GENES.LOG"", then got ""ALL     100 (37304/37410)       100 (148558782/148683715)       15(22342363/148558782)"". And you said ""Your database is done if the percentages are high for the last 3 different columns.""  But the 'Pos with Confident Scores' is  low.
+Chr     Genes with SIFT Scores  Pos with SIFT scores    Pos with Confident Scores
+1       99 (1536/1544)  100 (6106447/6111160)   17(1010023/6106447)
+10      100 (1583/1586) 100 (6491552/6493442)   12(793428/6491552)
+11      100 (1656/1661) 100 (6918920/6922883)   14(994782/6918920)
+12      100 (621/623)   100 (2720527/2721496)   11(308259/2720527)
+13      100 (1279/1284) 100 (4639379/4642032)   13(597783/4639379)
+14      100 (786/787)   100 (3394346/3395503)   15(516357/3394346)
+15      100 (1533/1537) 100 (5208466/5212123)   17(868543/5208466)
+16      100 (1186/1188) 100 (5177871/5178717)   19(1002244/5177871)
+17      100 (1078/1081) 100 (4690593/4693044)   10(450682/4690593)
+18      100 (1952/1958) 100 (6976052/6981044)   25(1732116/6976052)
+19      100 (2076/2076) 100 (8342833/8342833)   14(1182843/8342833)
+2       100 (1593/1598) 100 (7236744/7242000)   9(664736/7236744)
+20      100 (569/570)   100 (2484254/2485544)   12(307858/2484254)
+21      100 (892/896)   99 (3738173/3766981)    15(556627/3738173)
+22      100 (1027/1032) 100 (4520633/4525211)   10(456486/4520633)
+23      100 (1152/1153) 100 (3866972/3868343)   18(709417/3866972)
+24      100 (554/554)   100 (2515278/2515278)   10(251265/2515278)
+25      100 (1182/1183) 100 (4439937/4440745)   17(755517/4439937)
+26      100 (716/719)   100 (2842268/2844173)   10(293528/2842268)
+27      100 (421/422)   100 (1802775/1803409)   17(301302/1802775)
+28      99 (528/531)    100 (2425027/2426437)   12(286890/2425027)
+29      100 (1043/1048) 100 (3824056/3834534)   17(644781/3824056)
+3       100 (2121/2127) 100 (7798555/7805777)   17(1320641/7798555)
+4       100 (1288/1292) 100 (5537040/5541068)   13(716239/5537040)
+5       100 (2124/2127) 100 (8413279/8414984)   18(1488746/8413279)
+6       100 (1027/1027) 100 (4114550/4114550)   13(552589/4114550)
+7       100 (2062/2065) 100 (7961434/7965089)   17(1380150/7961434)
+8       99 (1186/1195)  100 (4956491/4963221)   12(595398/4956491)
+9       100 (881/882)   100 (3810505/3811393)   11(436621/3810505)
+MT      0 (0/8) 0 (0/13964)     0(0/0)
+NKLS02000056.1  100 (2/2)       100 (1997/1997) 97(1939/1997)
+NKLS02000065.1  100 (1/1)       100 (483/483)   0(0/483)
+NKLS02000090.1  100 (1/1)       100 (3012/3012) 0(0/3012)
+NKLS02000101.1  100 (1/1)       100 (2267/2267) 100(2267/2267)
+NKLS02000125.1  0 (0/0) 0 (0/0) 0(0/0)
+NKLS02000137.1  0 (0/0) 0 (0/0) 0(0/0)
+NKLS02000210.1  0 (0/0) 0 (0/0) 0(0/0)
+NKLS02000218.1  100 (1/1)       100 (857/857)   0(0/857)
+.
+.
+.
+ALL     100 (37304/37410)       100 (148558782/148683715)       15(22342363/148558782)
+
+Then I find your reply in this issue https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/43#issuecomment-762525915 and you say""your numbers look good to me. ""Genes with SIFT scores"" and ""Pos with SIFT Scores"" are > 95%."" 
+So the database I constructed can be used？
+Look forward to your reply. Thanks very much!",wpf95,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/65
+I_kwDOBKAFmM5QpFYD,"Using human test files: 'Pos with Confident Scores' is low in ""CHECK_GENES.LOG""",CLOSED,2022-08-27T05:18:25Z,2022-08-28T23:05:48Z,2022-08-28T23:05:48Z,"Hi Pauline,
+
+What does it mean when the 3rd column of CHECK_GENES.LOG is low for the human test?
+
+Chr     Genes with SIFT Scores  Pos with SIFT scores    Pos with Confident Scores
+21      99 (810/822)    100 (2261496/2263334)   68(1542519/2261496)
+MT      100 (7/7)       100 (12241/12241)       18(2147/12241)
+
+ALL     99 (817/829)    100 (2273737/2275575)   68(1544666/2273737)
+
+There were no errors in the run (below) but no singleRecords_with_scores were created. 
+
+entered mkdir ./test_files/homo_sapiens_small/GRCh38.83
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/g/data/ht96/Mel_UQ/sift2/sift4g/bin/sift4g -d /g/data/ht96/Mel_UQ/sift2/SIFT_database/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results
+done getting all the scores
+populating databases
+checking the databases
+zipping up ./test_files/homo_sapiens_small/chr-src/*
+All done!",Melanie-Wilkinson,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/66
+I_kwDOBKAFmM5QpKr8,For the annotation of Indel?,CLOSED,2022-08-27T07:13:40Z,2022-08-27T10:42:39Z,2022-08-27T10:42:39Z,"Hello, I have tried this tools and got teh result successfully. But I founf there was no prediction results for small any InDels. I wonder if this tool can predict the impact of Indels? Or any other recommanded tools? 
+
+Thank you very much for any help.",yilunhuangyue,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/67
+I_kwDOBKAFmM5SUvx-,"Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 62209.",CLOSED,2022-09-21T16:03:28Z,2022-09-28T00:59:48Z,2022-09-28T00:59:47Z,"Hi pauline-ng, 
+
+Can you please help me? I am getting the warning in the subject line repeatedly when attempting to generate a SIFT database for the Asian elephant genome. The program does not successfully generate a database. I believe it doesn't move past running ""make-single-records-BIOPERL.pl"". 
+
+My genome fasta, gtf, and peptide fasta files are downloaded from NCBI here: https://www.ncbi.nlm.nih.gov/assembly/GCF_024166365.1. Attached you will find my config file and the file tree of the parent directory. 
+
+Best regards,
+Thuy
+
+[elemax1_config.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/9618345/elemax1_config.txt)
+
+[elemax_tree.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/9618369/elemax_tree.txt)
+
+",thuynnguyen,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/68
+I_kwDOBKAFmM5SXmLR,Can not build my own SIFT database,CLOSED,2022-09-22T06:40:33Z,2022-09-23T13:58:44Z,2022-09-23T03:47:26Z,"Hi,
+
+I have tried to use the SIFT4G to build my own SIFT database for many times, but it still was unsuccessful. can you help me to check it? The details as bellow:
+
+** Searching database for candidate sequences **
+
+processing database part 1 (size ~0.25 GB): 100.00/100.00% *
+** Aligning queries with candidate sequences **
+
+processing database part 1 (size ~1.00 GB): 100.00/100.00% *
+** Selecting alignments with median threshold: 2.75 **
+
+processing queries: 100.00/100.00% *
+** Generating SIFT predictions with sequence identity: 100.00% **
+
+processing queries: 100.00/100.00% *
+done getting all the scores
+populating databases
+cat: /home/scripts_to_build_SIFT_db/test_files/singleRecords/Chr1.singleRecords: No such file or directory
+can't open /home/scripts_to_build_SIFT_db/test_files/singleRecords/Chr1.singleRecords at map-scores-back-to-records.pl line 122.
+Unable to read from /home/scripts_to_build_SIFT_db/test_files/singleRecords_with_scores/Chr1_scores.Srecords
+cat: /home/scripts_to_build_SIFT_db/test_files/singleRecords/Chr1.singleRecords_noncoding.with_dbSNPid: No such file or directory
+Traceback (most recent call last):
+File ""make_regions_file.py"", line 68, in
+get_regions (chrom_file, out_file)
+File ""make_regions_file.py"", line 31, in get_regions
+pos = get_pos (first_line)
+File ""make_regions_file.py"", line 8, in get_pos
+return int (fields[0])
+ValueError: invalid literal for int() with base 10: ''
+rm: cannot remove '/home/scripts_to_build_SIFT_db/test_files/singleRecords_with_scores/Chr1_scores.Srecords': No such file or directory
+
+many thx.",XIAO2Mark,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/69
+I_kwDOBKAFmM5S6lVq,Errors in building my own database for rheMac10,CLOSED,2022-09-29T15:42:57Z,2022-12-06T16:19:24Z,2022-12-06T16:19:24Z,"Hello,
+
+I have had errors in attempting to create a database for rheMac10 (or MMul_10). There already is a database for rheMac8 (MMul_8) for some reference. I have my own FASTA reference and gtf file and have successfully created a test database for the homo-sapiens_test provided as an examples in test_files. I've allowed the program to run in excess of 24 hours so I think I've gotten the maximal output possible so far.
+
+I'll try my best to describe the errors and give my output and config. The latter should differ only from homo_sapiens-test.txt in the following lines:
+
+PARENT_DIR=/home/npb0015/reinforcement_project/
+ORG=macaca_mulatta
+ORG_VERSION=Mmul_10.99
+
+#Running SIFT 4G
+SIFT4G_PATH=/tools/sift4g-1/bin/sift4g
+PROTEIN_DB=/home/npb0015/reinforcement_project/Reference_files/uniprot_sprot.fasta
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=Reference_files/
+CHR_DOWNLOAD_DEST=Reference_files/
+
+The error messages I receive are the following two lines repeated several times:
+
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+
+Then the following repeated several times:
+
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+
+Then the following repeated several times:
+
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+
+And are are at least a hundred thousand blocks like that. Then later on blocks of the following repeated:
+
+Use of uninitialized value $mutated_aa in string eq at generate-fasta-subst-files-BIOPERL.pl line 894
+Use of uninitialized value $aa2 in string eq at generate-fasta-subst-files-BIOPERL.pl line 621.
+Use of uninitialized value $aa2 in string ne at generate-fasta-subst-files-BIOPERL.pl line 626.
+
+When the program is done it seems to populate singleRecords, subst, and fasta folders with a substantive number of files looking correct. The main folder is populated with log files and the Reference_files directory does have txt files. All other directories in the config file and particularly the Mmul_10.99 is never populated. When I annotated a VCF using the directory it seems as though there's no SIFT annotations occuring.
+
+I hope this has been sufficiently detailed and would greatly appreciate help.",npb596,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/70
+I_kwDOBKAFmM5VmJE0,Feature request - sift4g --thread ,CLOSED,2022-11-04T13:19:11Z,2022-11-04T22:34:13Z,2022-11-04T22:34:13Z,"Hi, thanks for your great work.
+
+Can we pass thread num through config file to speed up sift4g process?",m3hdad,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/71
+I_kwDOBKAFmM5WWt6U,"SIFT4G Annotator Standalone annotates only ""NA"" in VCF file",CLOSED,2022-11-14T21:34:51Z,2022-11-29T00:54:06Z,2022-11-29T00:54:06Z,"Hi, 
+
+I'm trying to use the SIFT4G annotator for my vcf file ( in the format requested). Once I feed it through the annotator and try to parse the results file, I only see ""NA"" in all the SIFT annotations. Any thoughts or suggestions would help!
+
+Thanks!",mtejura,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/72
+I_kwDOBKAFmM5ZEGuJ,SIFT4G annotator ,CLOSED,2022-12-13T13:33:03Z,2023-08-31T14:19:43Z,2023-08-31T14:19:43Z,"Dear Pauline, 
+
+I have wanted to use SIFT4G on the 11th chromosome of homo sapiens. 
+To do that I am in need of a proper gene annotation file, so I used as suggested the SIFT4G Annotator.
+The files I've used are basically the provided Database (https://sift.bii.a-star.edu.sg/sift4g/public/Homo_sapiens/GRCh38.83.chr/11.gz), 
+and as for the .vcf file, I used variants provided by clinvar, trimmed for only the 11th chromosome.
+
+I will include the vcf file (in two halfs and .txt) as a attachment. 
+
+To get the gene annotation file, I have used the .jar graphical board as well, as the command option on linux
+(java -jar SIFT4G_Annotator.jar -c -i annotator/eleven.vcf -d 11 -r annotator -t)
+
+**The procedure results in empty files and such an answer:**
+
+_Started Running .......                                                                                                                                                                                                                    Running in Multitranscripts mode                                                                                                                                                                                                                                                                                                                                                                                                                                                      Chromosome      WithSIFT4GAnnotations   WithoutSIFT4GAnnotations        Progress                                                                                                                                                           The following chromosomes (or scaffolds/contigs) are not found in the SIFT 4G database and will not be annotated:                                                                                                                          11                                                                                                                                                                                                                                         Please contact us if you have any questions.                                                                                                                                                                                               eleven/11.regions does not exist                                                                                                                                                                                                           11                      0                       92107                   Completed : 1/1                                                                                                                                                                                                                                                                                                                                                                                               Merging temp files....                                                                                                                                                                                                                     SIFT4G Annotation completed !                                                                                                                                                                                                              Output directory:annotator                                                                                                                                                                                                                 End Time for parallel code: Wed Dec 14 13:24:00 UTC 2022_ 
+
+
+[eleven_vcf.txt_1.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/10218331/eleven_vcf.txt_1.txt)
+[eleven_vcf.txt_2.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/10218335/eleven_vcf.txt_2.txt)
+
+It seems like my variant file is the problem, do you have a suggestion for me how to acquire the proper file?
+
+Best regards,
+Yakup
+",yaada100,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/73
+I_kwDOBKAFmM5a3Ipx,The database was not created successfully by SIFT4G_Create_Genomic_DB,CLOSED,2023-01-08T08:36:41Z,2023-08-31T14:18:59Z,2023-08-31T14:18:59Z,"I can't successfully create the database with the test file
+The error log is detailed below：
+[run.sift4g.err.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/10367980/run.sift4g.err.txt)
+
+The out log is detailed below：
+[run.sift4g.out.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/10367985/run.sift4g.out.txt)
+
+The error log is detailed below：
+![image](https://user-images.githubusercontent.com/118544453/211187335-f31a024f-cebd-4de0-aa34-e55e1daa6b7a.png)
+
+Where directory ASM1036v1.34、directory SIFT_predictions and directory singleRecords_with_scores are empty directories
+",danrans123,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/74
+I_kwDOBKAFmM5c5pgZ,files with lowercase nucleotides,OPEN,2023-01-26T18:56:41Z,2023-01-26T18:56:41Z,,"Dear Pauline,
+
+I am wondering how SIFT4G_Create_Genomic_DB handle lowercase nucleotides included in the genomic fasta *.fa.gz and *.vcf.gz input files? I would prefer to keep *.fa.gz softmasked and the lowercase in *.vcf.gz provides some additional information as well, but if sift4g does not take lowercases on its analysis I will convert to uppercase beforehand. Thank you.
+
+Rom ",romseg,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/75
+I_kwDOBKAFmM5em2-O,I can not creat database,CLOSED,2023-02-16T08:25:16Z,2023-09-23T22:37:42Z,2023-09-23T22:37:21Z,Hi，while I creat a database，i recieve the massage said ‘’Unable to read from /home/zyi/program/sift/SIFT4G_Create_Genomic_DB/test_files/covid_19/singleRecords/MN908947.3.singleRecords_noncoding‘’，please how can i go through. The issue come from the script named make_regions_file.py,NiklausMikaelson12138,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/76
+I_kwDOBKAFmM5hyBC5,Error in building database for new species,CLOSED,2023-03-25T12:37:19Z,2023-08-31T14:21:29Z,2023-08-31T14:21:29Z,"Hello,
+
+I've had some issues generating a database for my species. I have managed to get sift4g to run and it appears it is working. For example this is the output from one of my runs:[superscaffold16.txt](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/files/11068867/superscaffold16.txt)
+
+However, when I try to run Sift4G Annotator, I've realised that no .regions files are generated during my runs, no files populate my SIFT_alignments directory and there are no files in my singleRecords_with_scores directory at the end of the run. Here is what the PARENT_DIR for one of my runs looks like:
+
+shawr@EI-HPC interactive Super-Scaffold_16_PARENTDIR]$ ls -lthr
+total 1.1M
+drwxrwx--- 2 shawr EI_ga011    0 Mar 25 11:19 SIFT_alignments
+drwxrwx--- 2 shawr EI_ga011    0 Mar 25 11:19 dbSNP
+-rwxrwx--- 1 shawr EI_ga011    0 Mar 25 11:20 invalid.log
+-rwxrwx--- 1 shawr EI_ga011    0 Mar 25 11:20 Log2.txt
+drwxrwx--- 2 shawr EI_ga011 6.0K Mar 25 11:20 subst
+drwxrwx--- 2 shawr EI_ga011 4.9K Mar 25 11:20 fasta
+-rwxrwx--- 1 shawr EI_ga011  49K Mar 25 11:20 peptide.log
+-rwxrwx--- 1 shawr EI_ga011   71 Mar 25 11:20 fasta.log
+-rwxrwx--- 1 shawr EI_ga011  51K Mar 25 11:20 all_prot.fasta
+drwxrwx--- 2 shawr EI_ga011  12K Mar 25 12:09 SIFT_predictions
+drwxrwx--- 2 shawr EI_ga011  291 Mar 25 12:09 singleRecords
+drwxrwx--- 2 shawr EI_ga011  110 Mar 25 12:10 Super-Scaffold_16
+drwxrwx--- 2 shawr EI_ga011    0 Mar 25 12:10 singleRecords_with_scores
+drwxrwx--- 2 shawr EI_ga011   77 Mar 25 12:12 chr-src
+drwxrwx--- 2 shawr EI_ga011  112 Mar 25 12:16 gene-annotation-src
+
+
+I have also removed any protein sequences that had any unwanted characters - 'X', '*', '-' 
+
+
+Any help would be really appreciated! 
+Many thanks,
+
+Becky",rebecca-sh,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/78
+I_kwDOBKAFmM5iLHvO,error in building database,OPEN,2023-03-30T07:40:23Z,2023-04-26T11:40:55Z,,"I was trying to create database for Candida tropicalis using genomic assembly fasta file and annotation file in gtf format. I created a config file named C_tropicalis_MYA3404.txt , which is located in test files folder. when i try to run the command :
+**perl make-SIFT-db-all.pl -config test_files/C_tropicalis_MYA3404.txt**
+
+I'm getting the followng error:
+
+**entered mkdir /test_files/C_topicalis_MYA3404
+No such file or directory at /home/mml/programs/scripts_to_build_SIFT_db/common-utils.pl line 80.**
+
+I'm quite new to this, so it might be some very obvious problem. Kindly let me know if i can fix this.
+
+",AmruthaJNC,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/79
+I_kwDOBKAFmM5lD1ge,* processing database part 1 (size ~0.25 GB): 100.00/100.00% *,CLOSED,2023-05-04T08:24:15Z,2023-05-14T05:59:39Z,2023-05-09T22:48:52Z,"Hi Pauline，
+I have some questions about the result I got when I make the SIFT4G database. Here is the result of the Homo sapiens example.
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/public1/home/sc60080/miniconda2/bin/sift4g -d /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/gene-annotation-src/Homo_sapiens.GRCh38.pep.all.fa -q /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/all_prot.fasta --subst /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/subst --out /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 1 (size ~0.25 GB): 100.00/100.00% *
+
+Is it all right? I haven't seen ""All done!"",so I doubt that if this is right.
+And here is the result of my research object.
+
+done making the fasta sequences
+start siftsharp, getting the alignments
+/public1/home/sc60080/miniconda2/bin/sift4g -d /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/Rehmannia_chingii/gene-annotation-src/N01_Chr_genome_final_gene.gff3.pep.fa -q /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/Rehmannia_chingii/all_prot.fasta --subst /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/Rehmannia_chingii/subst --out /public1/home/sc60080/sc60080/ws2/scripts_to_build_SIFT_db/test_files/Rehmannia_chingii/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 1 (size ~0.25 GB): 100.00/100.00% *
+
+
+It seems that I got the same result, but for my research object ,it takes about 30 minutes to making the database, it takes so short time that I can't believe it all done.
+
+Any advice?
+Thanks,
+wangshuo",wanggshuoo,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/80
+I_kwDOBKAFmM5oFBF3,Possible fasta related errors with creating a database,CLOSED,2023-06-07T15:16:58Z,2023-09-23T22:36:47Z,2023-09-23T22:36:46Z,"Hello and thank you in advance for your time. 
+
+I've been working to create a database for _Ursus americanus_ and have been getting error messages that seem to be related to fasta files. I will include my config file and the messages below.
+
+This is what is contained in my config file: 
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=/home/hrclndnn/SIFT/SIFT_databases/uamer
+ORG=Ursus_americanus
+ORG_VERSION=ASM334442v1
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/hrclndnn/SIFT/sift4g/bin/sift4g
+PROTEIN_DB=/home/hrclndnn/SIFT/SIFT_databases/uamer/protein-db/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+
+An abbreviated version of the messages when I run perl /home/hrclndnn/SIFT/scripts_to_build_SIFT_db/make-SIFT-db-all.pl -config /home/hrclndnn/SIFT/scripts_to_build_SIFT_db/test_files/uamer_config.txt:
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at make-single-records-BIOPERL.pl line 210, <IN_TX> line 1.
+...
+(this repeats with additional line numbers following <IN_TX>)
+...
+Use of uninitialized value $fasta_subseq in concatenation (.) or string at generate-fasta-subst-files-BIOPERL.pl line 446, <IN_TX> line 58026.
+... 
+(similarly, this message is repeated with other line numbers following <IN_TX>)
+...
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: /home/hrclndnn/SIFT/SIFT_databases/uamer/fasta/*.fasta: No such file or directory
+/home/hrclndnn/SIFT/sift4g/bin/sift4g -d /home/hrclndnn/SIFT/SIFT_databases/uamer/protein-db/uniref90.fasta -q /home/hrclndnn/SIFT/SIFT_databases/uamer/all_prot.fasta --subst /home/hrclndnn/SIFT/SIFT_databases/uamer/subst --out /home/hrclndnn/SIFT/SIFT_databases/uamer/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+
+
+Please let me know if there's any additional information you need or if you have any suggestions for resolving this issue. 
+
+Thank you.",hclendenin,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/81
+I_kwDOBKAFmM5vy69X,has error during create new database for Culex Tarsalis (invalid chain data),CLOSED,2023-08-31T14:09:46Z,2023-09-01T17:26:04Z,2023-09-01T17:26:04Z,"I followed the steps following Making a SIFT database from local genomic and gene annotation file (.gtf).
+This is the output of i run ""perl make-SIFT-db-all.pl -config /sift4g/culex_tarsalis_config.txt"" to create the database:
+
+##### output ##################################
+
+root@002ba04e1693:/scripts_to_build_SIFT_db# perl make-SIFT-db-all.pl -config /sift4g/culex_tarsalis_config.txt
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/sift4g/bin/sift4g -d /landscape_genetics/SIFT/uniref90.fasta.gz -q /sift4g/run_sift/all_prot.fasta --subst /sift4g/run_sift/subst --out /sift4g/run_sift/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+[ERROR:src/chain.c:69]: invalid chain data
+############################################
+
+
+#### The config file I have is below###########
+GENE_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/gtf//bacteria_11_collection/candidatus_carsonella_ruddii_pv/Candidatus_carsonella_ruddii_pv.ASM1036v1.34.gtf.gz
+PEP_FILE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/pep/Candidatus_carsonella_ruddii_pv.ASM1036v1.34.pep.all.fa.gz
+CHR_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/dna/
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=1
+MITO_GENETIC_CODE_TABLENAME=Standard
+
+PARENT_DIR=/sift4g/run_sift
+ORG=Culex Tarsalis
+ORG_VERSION=v1.0.a1
+
+
+#Running SIFT 4G
+SIFT4G_PATH=/sift4g/bin/sift4g
+PROTEIN_DB=/landscape_genetics/SIFT/uniref90.fasta.gz
+
+# Sub-directories, don't need to change
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+FASTA_DIR=fasta
+SUBST_DIR=subst
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords/
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+###############################
+
+Could you please help me with what is wrong?  Thank you very much!!!
+",Afei99357,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/82
+I_kwDOBKAFmM5v6wYi,Making database for Culex Tarsalis ends without after processing queries with no warning or error,OPEN,2023-09-01T16:01:05Z,2024-10-22T14:03:21Z,,"Hello. thank you for help me with the previous issue. After address the issue, the processing continue to this then stop for no reasons? and I check the database in the <Organ_version> folder, there is no files there at all. Could you please help me with this issue?
+
+#### here is the running code##
+<img width=""855"" alt=""Screenshot 2023-09-01 at 11 57 18 AM"" src=""https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/assets/42871795/0aed9feb-cd24-42c9-9b25-76f80d3da45a"">
+
+####### my config file########
+GENE_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/gtf//bacteria_11_collection/candidatus_carsonella_ruddii_pv/Candidatus_carsonella_ruddii_pv.ASM1036v1.34.gtf.gz
+PEP_FILE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/pep/Candidatus_carsonella_ruddii_pv.ASM1036v1.34.pep.all.fa.gz
+CHR_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/dna/
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=1
+MITO_GENETIC_CODE_TABLENAME=Standard
+
+PARENT_DIR=/sift4g/run_sift
+ORG=Culex Tarsalis
+ORG_VERSION=v1.0.a1
+
+
+#Running SIFT 4G
+SIFT4G_PATH=/sift4g/bin/sift4g
+PROTEIN_DB=/landscape_genetics/SIFT/uniref90.fasta
+
+# Sub-directories, don't need to change
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+FASTA_DIR=fasta
+SUBST_DIR=subst
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords/
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+",Afei99357,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/83
+I_kwDOBKAFmM5wYSl_,Creating SIFT database from local genomic and gtf file with test data does not work,CLOSED,2023-09-07T08:50:44Z,2023-09-07T13:11:53Z,2023-09-07T13:11:52Z,"Hi,
+I am trying to run the homo sapiens test data but I am not managing to create the database.
+
+I used this code: `perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt `
+
+This is the output:
+
+```
+converting gene format to use-able input
+Can't locate Switch.pm in @INC (you may need to install the Switch module) (@INC contains: /home/goliath/miniconda3/lib/site_perl/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/site_perl/5.34.0 /home/goliath/miniconda3/lib/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/5.34.0 .) at gff_gene_format_to_ucsc.pl line 4.
+BEGIN failed--compilation aborted at gff_gene_format_to_ucsc.pl line 4.
+done converting gene format
+making single records file
+Can't locate DBI.pm in @INC (you may need to install the DBI module) (@INC contains: /home/goliath/miniconda3/lib/site_perl/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/site_perl/5.34.0 /home/goliath/miniconda3/lib/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/5.34.0 .) at make-single-records-BIOPERL.pl line 22.
+BEGIN failed--compilation aborted at make-single-records-BIOPERL.pl line 22.
+done making single records template
+making noncoding records file
+Can't locate DBI.pm in @INC (you may need to install the DBI module) (@INC contains: /home/goliath/miniconda3/lib/site_perl/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/site_perl/5.34.0 /home/goliath/miniconda3/lib/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/5.34.0 .) at make-single-records-noncoding.pl line 12.
+BEGIN failed--compilation aborted at make-single-records-noncoding.pl line 12.
+done making noncoding records
+make the fasta sequences
+Can't locate DBI.pm in @INC (you may need to install the DBI module) (@INC contains: /home/goliath/miniconda3/lib/site_perl/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/site_perl/5.34.0 /home/goliath/miniconda3/lib/5.34.0/x86_64-linux-thread-multi /home/goliath/miniconda3/lib/5.34.0 .) at generate-fasta-subst-files-BIOPERL.pl line 23.
+BEGIN failed--compilation aborted at generate-fasta-subst-files-BIOPERL.pl line 23.
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: './test_files/homo_sapiens_small/fasta/*.fasta': No such file or directory
+/home/goliath/software/sift4g/bin/sift4g -d home/goliath/software/funannotate_florida/funannotate_db/uniprot_sprot.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+[ERROR]: invalid database file path 'home/goliath/software/funannotate_florida/funannotate_db/uniprot_sprot.fasta'
+```
+
+And this is my homo-sapiens-test.txt file:
+
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/homo_sapiens_small
+ORG=homo_sapiens
+ORG_VERSION=GRCh38.83
+DBSNP_VCF_FILE=Homo_sapiens.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/goliath/software/sift4g/bin/sift4g
+PROTEIN_DB=home/goliath/software/funannotate_florida/funannotate_db/uniprot_sprot.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+```
+
+I am using a uniport_sprot.fasta file from another package (funannotate) but I think it is the same dataset. 
+
+Any help would be appreaciated!",gubrins,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/84
+I_kwDOBKAFmM5wp4rY,The build database ran successfully but there was no results file,CLOSED,2023-09-11T09:05:16Z,2023-09-21T01:48:46Z,2023-09-15T08:21:23Z,"Hi，
+When I tried to use the Partial Homo sapiens example to build a database, I encountered some weird issues. It ran successfully, but I didn't get any results in the <PARENT_DIR>/<ORG_VERSION> folder .
+
+**The command line and end-of-run interface look like this:**
+
+(sift4g) [root@localhost SIFT4G_Create_Genomic_DB-master]# perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt
+entered mkdir ./test_files/homo_sapiens_small/GRCh38.83
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+sift4g -d /nfs/LJH/zhushi/plants/nr.plant.fa  -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 31 (size ~0.25 GB): 100.00/100.00% *
+
+
+**This is the result file structure:**
+![file structure](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/assets/89383725/4a626e6f-7365-4577-9f7d-04b304f462fa)
+
+
+# In addition to the examples, I had the same problem running my own data.
+
+
+**This is the homo_sapiens-test.txt**
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/homo_sapiens_small
+ORG=homo_sapiens
+ORG_VERSION=GRCh38.83
+DBSNP_VCF_FILE=Homo_sapiens.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=sift4g
+PROTEIN_DB=/nfs/LJH/zhushi/plants/nr.plant.fa 
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+
+
+**This is the chr1D.txt of my data**
+##
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+
+## 
+PARENT_DIR=/nfs/LJH/TEST/sift/JYM/Chr1D
+
+ORG=JYM
+##
+ORG_VERSION=chr1D
+
+#Running SIFT 4G
+## 
+SIFT4G_PATH=sift4g
+
+##
+PROTEIN_DB=/mnt/SOFT/nr
+
+## 
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+
+## 
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+
+I would greatly appreciate your assistance in resolving this issue. If possible, I would like to ask you to check where I might have made a mistake or why I am unable to obtain the result files. If you could provide some guidance or suggestions, I would be very grateful.
+
+Thank you very much!
+
+Best wishes！
+Jinhua Long
+
+
+
+
+
+
+
+
+",abcdefghijklmn97,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/85
+I_kwDOBKAFmM5w8RFI,Perl problem test data,CLOSED,2023-09-13T16:10:03Z,2023-09-26T15:19:30Z,2023-09-14T07:28:18Z,"Hi,
+
+I am running the test data to build a new database, this is the code I use: `perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt`
+
+And this is my config file:
+
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=/mnt/DiscoA/sift4g_2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small
+ORG=homo_sapiens
+ORG_VERSION=GRCh38.83
+DBSNP_VCF_FILE=Homo_sapiens.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=/mnt/DiscoA/sift4g_2/bin/sift4g
+PROTEIN_DB=/home/goliath/software/funannotate/uniprot_sprot.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+```
+
+Being this the output:
+
+```
+converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /home/goliath/miniconda3/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making single records template
+making noncoding records file
+Possible precedence issue with control flow operator at /home/goliath/miniconda3/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making noncoding records
+make the fasta sequences
+Possible precedence issue with control flow operator at /home/goliath/miniconda3/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+done making the fasta sequences
+start siftsharp, getting the alignments
+/mnt/DiscoA/sift4g_2/bin/sift4g -d /home/goliath/software/funannotate/uniprot_sprot.fasta -q /mnt/DiscoA/sift4g_2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/all_prot.fasta --subst /mnt/DiscoA/sift4g_2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/subst --out /mnt/DiscoA/sift4g_2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 2 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences **
+* processing database part 1 (size ~1.00 GB): 100.00/100.00% *
+
+** Selecting alignments with median threshold: 2.75 **
+* processing queries: 100.00/100.00% *
+
+** Generating SIFT predictions with sequence identity: 100.00% **
+* processing queries: 100.00/100.00% *
+
+done getting all the scores
+populating databases
+checking the databases
+zipping up /mnt/DiscoA/sift4g_2/scripts_to_build_SIFT_db/test_files/homo_sapiens_small/chr-src/*
+All done!
+
+```
+
+As you can see, it seems it finishes, but I am not sure about the previous messages about the flow operators. Also, what are exactly the main outputs of this? The ones found in the GRCh38.83 folder?
+
+Thanks in advance!",gubrins,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/86
+I_kwDOBKAFmM5xmYTE,No error message but nothing in results file,OPEN,2023-09-21T00:33:25Z,2023-09-25T22:13:47Z,,"I'm having this issue as well. I've updated my gcc (gcc (GCC) 10.3.0), reinstalled sift4g, and have made sure that I have loaded the updated gcc version before running, but it still does not create a results file.
+
+Here is the command I'm running:
+`perl make-SIFT-db-all.pl -config test_files/homo_sapiens-test.txt`
+
+The homo_sapiens-test.txt file:
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=./test_files/homo_sapiens_small
+ORG=homo_sapiens
+ORG_VERSION=GRCh38.83
+DBSNP_VCF_FILE=Homo_sapiens.vcf.gz
+
+#Running SIFT 4G
+SIFT4G_PATH=/oak/stanford/groups/dpetrov/ksolari/SIFT/sift4g/bin/sift4g
+PROTEIN_DB=/oak/stanford/groups/dpetrov/ksolari/SIFT/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+```
+The screen output:
+```
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+/oak/stanford/groups/dpetrov/ksolari/SIFT/sift4g/bin/sift4g -d /oak/stanford/groups/dpetrov/ksolari/SIFT/uniref90.fasta -q ./test_files/homo_sapiens_small/all_prot.fasta --subst ./test_files/homo_sapiens_small/subst --out ./test_files/homo_sapiens_small/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+```
+contents of homo_sapiens_small output directory:
+```
+-rw-rw----+ 1 ksolari oak_dpetrov 362181 Sep 19 20:19 all_prot.fasta
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 19 20:16 chr-src
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 14 12:05 dbSNP
+drwxrws---+ 2 ksolari oak_dpetrov  69632 Sep 18 11:09 fasta
+-rw-rw----+ 1 ksolari oak_dpetrov     73 Sep 19 20:19 fasta.log
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 18 10:16 gene-annotation-src
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 18 10:16 GRCh38.83
+-rw-rw----+ 1 ksolari oak_dpetrov  62026 Sep 19 20:19 invalid.log
+-rw-rw----+ 1 ksolari oak_dpetrov      0 Sep 19 20:16 Log2.txt
+-rw-rw----+ 1 ksolari oak_dpetrov 362434 Sep 19 20:19 peptide.log
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 18 10:16 SIFT_alignments
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 18 10:16 SIFT_predictions
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 19 20:16 singleRecords
+drwxrws---+ 2 ksolari oak_dpetrov   4096 Sep 18 10:16 singleRecords_with_scores
+drwxrws---+ 2 ksolari oak_dpetrov 102400 Sep 18 11:09 subst
+```
+folder sizes:
+```
+4.0K	./SIFT_alignments
+8.4G	./singleRecords
+4.0K	./SIFT_predictions
+4.0K	./singleRecords_with_scores
+46M	./chr-src
+4.0K	./GRCh38.83
+3.4M	./fasta
+25M	./dbSNP
+21M	./subst
+14M	./gene-annotation-src
+8.5G	.
+```
+
+Any suggestions that anyone can offer will be much appreciated!
+Thank you!!!
+
+Katie",ksolari,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/87
+I_kwDOBKAFmM5xpLE8,chr naming,CLOSED,2023-09-21T10:15:24Z,2023-09-21T10:32:50Z,2023-09-21T10:32:49Z,"@mb47
+
+Please continue your issue here.",pauline-ng,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/88
+I_kwDOBKAFmM57wTF6,error no such file or directory,CLOSED,2024-01-11T10:32:37Z,2024-01-11T12:36:34Z,2024-01-11T12:36:34Z,"I have read [this issue](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/79) as it is exactly the same problem but no matter how I changed the parent directory, it keeps throwing me ""No such file or directory"" error I am so frustrated. I hope anyone can let me know where I did wrong it has been two days of no luck. This is just trying to run the test files.
+
+So the config file looks like this:
+```
+GENE_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/gtf//bacteria_11_collection/candidatus_carsonella_ruddii_pv/Candidatus_carsonella_ruddii_pv.ASM1036v1.34.gtf.gz
+PEP_FILE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/pep/Candidatus_carsonella_ruddii_pv.ASM1036v1.pep.all.fa.gz
+CHR_DOWNLOAD_SITE=ftp://ftp.ensemblgenomes.org/pub/bacteria/release-34/fasta//bacteria_11_collection/candidatus_carsonella_ruddii_pv/dna/
+
+GENETIC_CODE_TABLE=11
+GENETIC_CODE_TABLENAME=11
+MITO_GENETIC_CODE_TABLE=0
+MITO_GENETIC_CODE_TABLENAME=Unspecified
+
+PARENT_DIR=/home/mdn487/db_test #prev: /bigdrive/SIFT_databases//candidatus_carsonella_ruddii_pv
+ORG=candidatus_carsonella_ruddii_pv
+ORG_VERSION=ASM1036v1.34
+
+
+#Running SIFT 4G
+SIFT4G_PATH=/home/mdn487/bin/sift4g/bin/sift4g
+
+# protein database must be uncompressed
+PROTEIN_DB=/maps/projects/bos/people/mdn487/pur_sel//SIFT4G_Create_Genomic_DB/uniprot_sprot.fasta #prev: /bigdrive/SIFT_databases/uniprot_sprot.fasta
+
+
+# Sub-directories, don't need to change
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+FASTA_DIR=fasta
+SUBST_DIR=subst
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords/
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+```
+
+And it looks like this when I ran the command.
+![Screenshot 2024-01-11 at 11 26 18](https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/assets/28356594/7443da90-6c48-4b17-a19a-1583afd14ced)
+
+Mind you that PARENT_DIR has been
+```
+/maps/projects/bos/people/mdn487/pur_sel//SIFT4G_Create_Genomic_DB/
+/maps/projects/bos/people/mdn487/
+```
+And it still won't work.
+
+`ls /home/mdn487` results in 
+```
+bin  db_test  ucph
+```
+
+So it has to be accessible for the program?
+
+I am running out of ideas. Thanks in advance for everyone helping me!
+
+",sagitaninta,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/90
+I_kwDOBKAFmM6Aezs6,Problem with Creating Local Database,CLOSED,2024-02-27T03:11:03Z,2024-03-13T12:42:48Z,2024-03-13T12:42:48Z,"Hello, 
+
+I have successfully created local databases and annotated the whole genome sequences of more than 50 species via SIFT4G. However, I encountered the following issues with four species. 
+
+**1)** I am getting the ""Alignment score and position are not consensus"" error for one species.
+
+* skipping protein [ rna-XM_016942145.3 ]: substitution list has a position out of bounds (line: M1064I, query length = 1063) *
+* skipping protein [ rna-XM_054680350.1 ]: substitution list has a position out of bounds (line: T345T, query length = 344) *
+* skipping protein [ rna-XM_054681160.1 ]: substitution list has a position out of bounds (line: E1093D, query length = 1092) *
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 337 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences **
+Alignment score and position are not consensus.7.50/100.00% *
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+**2)** For three species, the process of creating databases breaks without any error during the alignment: 
+
+* skipping protein [ rna-XM_016925611.2 ]: substitution list has a position out of bounds (line: S176R, query length = 175) *
+* skipping protein [ rna-XM_024345334.2 ]: substitution list has a position out of bounds (line: E348E, query length = 347) *
+* skipping protein [ rna-XM_054681488.1 ]: substitution list has a position out of bounds (line: Q138Q, query length = 137) *
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 337 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences ** 
+
+
+And here is the content of log file:
+
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+Any advice on these would be highly appreciated in advance!",VNF1981,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/91
+I_kwDOBKAFmM6FcrIC,Reference genome,OPEN,2024-04-12T01:50:52Z,2024-04-12T05:49:13Z,,"Hi pauline-ng,
+I have a question about using reference genome to build my SIFT database.
+I have two species (SP1 and SP2, for example). SP1 has a reference genome, while SP2 does not. SNP calling for both species is based on SP1's genome.
+My question is: can I use SP1's genome to build my SIFT database and then annotate VCF files for both species? Or should I only annotate SP1, while SP2 needs its own reference genome?
+My aim is to compare the number of deleterious sites between the two species.
+Maybe it's a very simple question. But I'm really confused as I don't understand the calculation theory well.
+Thanks in advance for your attention and time.
+
+Best,
+Lu",liulu0827,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/92
+I_kwDOBKAFmM6Gf0lt,cat: '/cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/fasta/*.fasta': 没有那个文件或目录,CLOSED,2024-04-22T13:03:11Z,2024-05-29T01:09:59Z,2024-05-29T01:09:59Z,"I have a question, how did the file in this error report get generated and what went wrong with my configuration?
+
+
+
+(sift4G) perl make-SIFT-db-all.pl --config test_files/AK58V4MP.txt 
+converting gene format to use-able input
+Can't locate Switch.pm in @INC (you may need to install the Switch module) (@INC contains: /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/x86_64-linux-thread-multi /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0 /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/5.22.0/x86_64-linux-thread-multi /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/5.22.0 .) at gff_gene_format_to_ucsc.pl line 4.
+BEGIN failed--compilation aborted at gff_gene_format_to_ucsc.pl line 4.
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 300037501 chars.
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput make-single-records-BIOPERL.pl:147
+STACK toplevel make-single-records-BIOPERL.pl:105
+-------------------------------------
+
+done making single records template
+making noncoding records file
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 300037501 chars.
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput make-single-records-noncoding.pl:62
+STACK toplevel make-single-records-noncoding.pl:51
+-------------------------------------
+
+done making noncoding records
+make the fasta sequences
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 300037501 chars.
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput generate-fasta-subst-files-BIOPERL.pl:374
+STACK toplevel generate-fasta-subst-files-BIOPERL.pl:178
+-------------------------------------
+
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: '/cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/fasta/*.fasta': 没有那个文件或目录
+/cluster/home/fanrong/.conda/envs/sift4G/bin/sift4g -d /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/uniref90.fasta -q /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/all_prot.fasta --subst /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/subst --out /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+",fan040,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/93
+I_kwDOBKAFmM6KAHJR,"MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 604927368 chars. ",CLOSED,2024-05-24T12:25:12Z,2024-05-30T09:46:54Z,2024-05-30T09:46:54Z,"Hello, I would like to ask if the error here is caused by my genome is too large, about 14Gb, and I cannot build my own database.
+""MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 604927368 chars. ""I suspect this is the cause of the error，I would like to ask how I should operate to solve this problem.
+
+(sift4G) perl make-SIFT-db-all.pl -config test_files/AK58V4MP.txt 
+converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput make-single-records-BIOPERL.pl:147
+STACK toplevel make-single-records-BIOPERL.pl:105
+-------------------------------------
+
+done making single records template
+making noncoding records file
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 604927368 chars.
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput make-single-records-noncoding.pl:62
+STACK toplevel make-single-records-noncoding.pl:51
+-------------------------------------
+
+done making noncoding records
+make the fasta sequences
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+
+------------- EXCEPTION -------------
+MSG: Each line of the qual file must be less than 65,536 characters. Line 3 is 604927368 chars.
+STACK Bio::DB::IndexedBase::_check_linelength /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:744
+STACK Bio::DB::Fasta::_calculate_offsets /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/Fasta.pm:175
+STACK Bio::DB::IndexedBase::_index_files /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:648
+STACK Bio::DB::IndexedBase::index_dir /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:446
+STACK Bio::DB::IndexedBase::new /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm:361
+STACK main::generateOutput generate-fasta-subst-files-BIOPERL.pl:374
+STACK toplevel generate-fasta-subst-files-BIOPERL.pl:178
+-------------------------------------
+
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: '/cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/fasta/*.fasta': 没有那个文件或目录
+/cluster/home/fanrong/.conda/envs/sift4G/bin/sift4g -d /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/uniref90.fasta -q /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/all_prot.fasta --subst /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/subst --out /cluster/home/fanrong/perl5/scripts_to_build_SIFT_db/test_files/AK58V4MP/SIFT_predictions --sub-results 
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+",fan040,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/94
+I_kwDOBKAFmM6KmFxp,Possible precedence issue with control flow operator at ,CLOSED,2024-05-30T09:51:20Z,2024-06-11T11:55:39Z,2024-06-11T11:55:39Z,"@pauline-ng Hi, i would like to ask which file of my error is wrong?Looking forward to your reply.
+
+this is my prossess:
+perl make-SIFT-db-all.pl -config test_files/AK58V4MP.txt 
+converting gene format to use-able input
+done converting gene format
+making single records file
+Possible precedence issue with control flow operator at /cluster/home/fanrong/.conda/envs/sift4G/lib/perl5/site_perl/5.22.0/Bio/DB/IndexedBase.pm line 791.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+Use of uninitialized value $aa in string eq at make-single-records-BIOPERL.pl line 274.
+Use of uninitialized value $aa in concatenation (.) or string at make-single-records-BIOPERL.pl line 280.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $orig_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value $mutated_aa in string eq at make-single-records-BIOPERL.pl line 551.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+",fan040,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/95
+I_kwDOBKAFmM6OjMv9,Creating local database is always interrupted at aligning step,OPEN,2024-07-05T00:54:56Z,2024-08-04T13:15:18Z,,"Dear Pauline, 
+
+I have been trying to use make-SIFT-db-all.pl to create a database. It all seems to be going well, and files are being created in the directories singleRecords, fasta and subst (the others are empty). However, I get an email saying the slurm job has failed. It says 'Exit code 255', usually after 11h-12h of run at the step of "" Aligning queries with candidate sequences "". Last time it advanced until: 
+
+** Aligning queries with candidate sequences **
+... processing database part 1 (size ~1.00 GB): 47.50/100.00% 
+
+It doesn't seem to be a memory problem, as the jobs are using less memory than I requested. Any suggestion of what can happening?
+
+Below is the config file I'm using. 
+
+Thank you very much for your help!
+
+Best wishes,
+Clarissa-
+
+--
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+
+PARENT_DIR=/n/holyscratch01/edwards_lab/cfcarvalho/Chiroxiphia/Antilophia/07.Non-synonymous/scripts_to_build_SIFT_db
+ORG=chiroxiphia lanceolata
+ORG_VERSION=bChiLan1
+DBSNP_VCF_FILE=
+
+SIFT4G_PATH=~/sift4g/bin/sift4g
+
+PROTEIN_DB=/n/holyscratch01/edwards_lab/cfcarvalho/Chiroxiphia/Antilophia/07.Non-synonymous/scripts_to_build_SIFT_db/GCF_009829145.1/protein.faa
+
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord",clavedec,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/96
+I_kwDOBKAFmM6SHjWd,Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.,OPEN,2024-08-06T18:22:17Z,2024-08-07T16:54:06Z,,"Hello, My config contains the following lines:
+
+```
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=2
+MITO_GENETIC_CODE_TABLENAME=Vertebrate Mitochondrial
+PARENT_DIR=/home/Nicolas/SIFT
+ORG=genus_species
+ORG_VERSION=Species_v1.0
+DBSNP_VCF_FILE=/home/Nicolas/SIFT/dbSNP/annotated_variants.vcf.gz
+#Running SIFT4G, this path works for the Dockerfile
+SIFT4G_PATH=/home/software/sift4g/bin/sift4g
+#PROTEIN_DB needs to be uncompressed
+PROTEIN_DB=/home/Nicolas/SNPEff/uniprot_sprot.fasta
+```
+
+Ive also created the following subdirectories within SIFT
+
+```
+mkdir chr-src #contains sequences.fa.gz
+mkdir dbSNP #contains annotated_variants.vcf.gz
+mkdir gene-annotation-src #contains genes.gtf.gz and protein.pep.all.fa.gz
+```
+
+I run the following commands:
+
+```
+docker run -it --user $(id -u):$(id -g) -v /home/Nicolas/SIFT:/home/Nicolas/SIFT sift4g_db /bin/bash
+
+perl make-SIFT-db-all.pl -config /home/Nicolas/SIFT/Species_SIFT.config.txt
+```
+
+Following some initialized responses, I get these messages:
+
+`Use of uninitialized value in concatenation (.) or string at make-single-records-BIOPERL.pl line 305.
+`
+
+My fasta folder remains empty along with my SIFT_prediction folder",NicMAlexandre,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/97
+I_kwDOBKAFmM6SYVQF,Making database for soybean ends  without warning or error ,OPEN,2024-08-08T13:43:12Z,2024-08-08T13:43:12Z,,"Dear Author
+I have encountered a problem 
+
+** Searching database for candidate sequences **
+processing database part 1 (size ~0.25 GB): 30.00/100.00%
+
+Could you give me some suggestions and help?
+Thank you very much.
+
+best
+Kwame",noobylf,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/98
+I_kwDOBKAFmM6WYJyH,No valid queries to process using bacterial gtf to build database,OPEN,2024-09-12T16:59:54Z,2024-09-12T16:59:54Z,,"Hi Pauline,
+
+I am trying to build a SIFT database for a strain of Neisseria gonorrhoeae that unfortunately is not present in EnsemblBacteria. I am using the gtf and chromosome files from the NCBI (from [here](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/030/075/GCF_013030075.1_ASM1303007v1/)) but I keep running into the same error when trying to build the database. I've pasted the output below, but essentially when I look at the fasta.log file I get a message saying: ""0 out of 2283 translated to sequences that start with M and end with *"". 
+
+I've manually checked and at least the first 2 sequences based on the gtf coordinates should work. I've double checked that the names match up between my chromosome file and my gtf file, I've double checked that they are using proper linux end of line characters, and I've made sure that my chromosome file is uncompressed and my gtf file is gzipped. 
+
+I've looked through any issues here I can find that look similar, one suggested adding in an exon line since NCBI gtfs don't have an exon tag, I tried that as well and no luck. I am deleting all of the generated files in the directory between each try. I am able to run both of the test cases without issues, so I think this must be some kind of file compatibility issue?
+
+Thanks,
+Duncan
+
+Config File:
+```
+GENETIC_CODE_TABLE=11
+GENETIC_CODE_TABLENAME=11
+
+PARENT_DIR=/scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/ngo_sift_db
+ORG=Neisseria gonorrhoeae
+ORG_VERSION=ASM1303007v1
+
+#Running SIFT4G, this path works for the Dockerfile
+SIFT4G_PATH=/home/j/jparkin/dcarru/ngo_WGS/IPNC_data/SIFT/sift4g/bin/sift4g
+
+#PROTEIN_DB needs to be uncompressed
+PROTEIN_DB=/scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/prot_db/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+```
+Output
+```
+converting gene format to use-able input
+done converting gene format
+making single records file
+done making single records template
+making noncoding records file
+done making noncoding records
+make the fasta sequences
+done making the fasta sequences
+start siftsharp, getting the alignments
+cat: '/scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/ngo_sift_db/fasta/*.fasta': No such file or directory
+/home/j/jparkin/dcarru/ngo_WGS/IPNC_data/SIFT/sift4g/bin/sift4g -d /scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/prot_db/uniref90.fasta -q /scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/ngo_sift_db/all_prot.fasta --subst /scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/ngo_sift_db/subst --out /scratch/j/jparkin/dcarru/ngo_WGS/IPNC/SIFT/ngo_sift_db/SIFT_predictions --sub-results
+** Checking query data and substitutions files **
+
+
+** EXITING! No valid queries to process. **
+```
+",dcarru01,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/99
+I_kwDOBKAFmM6c3mXw,Pos with confident scores < 90%,OPEN,2024-11-04T04:41:59Z,2024-11-04T04:45:11Z,,"Hi Pauline,
+
+Thank you for this resource to format SIFT4G databases. I'm attempting to create the human database using a recent ensembl release (GRCh38, v112). However, the `Pos with Confident Scores` are less than 90%. Following are the scores reported in `CHECK_GENES.LOG`
+
+```
+Chr	Genes with SIFT Scores	Pos with SIFT scores	Pos with Confident Scores
+1	99 (9132/9191)	100 (27011926/27017955)	60(16255845/27011926)
+10	100 (3666/3684)	100 (11267510/11269164)	57(6400632/11267510)
+11	99 (6405/6443)	100 (16547144/16551938)	62(10293209/16547144)
+12	99 (5430/5477)	100 (14496123/14500831)	58(8410615/14496123)
+13	99 (1429/1437)	100 (5072825/5073770)	56(2837065/5072825)
+14	99 (3503/3534)	100 (9893613/9896637)	59(5808266/9893613)
+15	99 (3169/3208)	100 (9013810/9017834)	57(5160516/9013810)
+16	99 (4712/4759)	100 (11385585/11391294)	68(7698045/11385585)
+17	99 (6336/6392)	100 (16183935/16189331)	59(9623114/16183935)
+18	99 (1612/1636)	100 (4666645/4669378)	57(2671224/4666645)
+19	100 (6647/6680)	100 (16347154/16351116)	67(10939216/16347154)
+2	99 (6645/6685)	100 (22971896/22975822)	52(12033057/22971896)
+20	99 (2350/2367)	100 (6197276/6198167)	61(3764631/6197276)
+21	99 (932/943)	100 (2792386/2793817)	63(1768235/2792386)
+22	99 (2035/2046)	100 (5501794/5504166)	62(3400959/5501794)
+3	99 (6155/6190)	100 (18213229/18216986)	57(10345147/18213229)
+4	100 (3845/3863)	100 (12160063/12161965)	55(6718884/12160063)
+5	99 (4223/4255)	100 (11855241/11858302)	60(7125778/11855241)
+6	100 (4611/4634)	100 (13653872/13656835)	62(8426507/13653872)
+7	100 (4469/4483)	100 (13028052/13029448)	57(7439183/13028052)
+8	99 (3580/3608)	100 (9393778/9400870)	59(5582444/9393778)
+9	99 (3434/3452)	100 (11081037/11082543)	63(6945343/11081037)
+GL000009.2	100 (1/1)	100 (490/490)	0(0/490)
+GL000194.1	100 (2/2)	100 (1665/1665)	57(956/1665)
+GL000195.1	100 (1/1)	100 (769/769)	0(0/769)
+GL000205.2	0 (0/0)	0 (0/0)	0(0/0)
+GL000213.1	100 (2/2)	100 (6519/6519)	74(4813/6519)
+GL000216.2	0 (0/0)	0 (0/0)	0(0/0)
+GL000218.1	100 (1/1)	100 (1542/1542)	0(0/1542)
+GL000219.1	100 (1/1)	100 (843/843)	81(687/843)
+GL000220.1	0 (0/0)	0 (0/0)	0(0/0)
+GL000225.1	0 (0/0)	0 (0/0)	0(0/0)
+KI270442.1	0 (0/0)	0 (0/0)	0(0/0)
+KI270711.1	100 (2/2)	100 (8394/8394)	80(6736/8394)
+KI270713.1	100 (2/2)	100 (2225/2225)	0(0/2225)
+KI270721.1	100 (1/1)	100 (1010/1010)	100(1010/1010)
+KI270726.1	100 (2/2)	100 (1382/1382)	0(0/1382)
+KI270727.1	100 (4/4)	100 (10658/10658)	85(9024/10658)
+KI270728.1	100 (5/5)	100 (9606/9606)	0(0/9606)
+KI270731.1	100 (1/1)	100 (2748/2748)	65(1782/2748)
+KI270733.1	0 (0/0)	0 (0/0)	0(0/0)
+KI270734.1	100 (4/4)	100 (11308/11308)	62(7033/11308)
+KI270744.1	0 (0/0)	0 (0/0)	0(0/0)
+KI270750.1	0 (0/0)	0 (0/0)	0(0/0)
+MT	100 (7/7)	100 (12241/12241)	18(2147/12241)
+X	100 (3611/3624)	100 (10755922/10757378)	59(6342125/10755922)
+Y	98 (189/193)	100 (617316/617680)	48(295900/617316)
+
+ALL	99 (98156/98820)	100 (280179532/280254627)	59(166320128/280179532)
+```
+
+`grep "">"" all_prot.fasta | wc -l   ##returns 98732`
+
+[Uniref90](https://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.fasta.gz) was utilized for the database creation. 
+
+
+
+May I check if the human database is created okay? 
+
+Secondly, I'm unable to load the [SIFT4G databases](https://sift.bii.a-star.edu.sg/sift4g/) to counter-check. Wondering if there's any issues with the web-site? 
+
+
+Thank you very much for your advice and time. :)
+",mmlian,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/100
+I_kwDOBKAFmM6dK3RM,Making database for sugarcane ends without warning or error,OPEN,2024-11-06T02:20:32Z,2024-11-06T02:20:32Z,,"Hi Pauline,
+      When I used SIFT4G_Create_Genomic_DB to create the sugarcane database, I encountered a problem. While creating databases for each chromosome in sugarcane, some chromosomes successfully created databases, but others did not. There were no warning or error messages for the failures. I don't know why this is happening. Here are the outputs when the process succeeded and failed:
+the succeeded output message：
+
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 364 (size ~0.25 GB): 100.00/100.00% *
+
+** Aligning queries with candidate sequences **
+* processing database part 91 (size ~1.00 GB): 100.00/100.00% *
+
+** Selecting alignments with median threshold: 2.75 **
+* processing queries: 100.00/100.00% *
+
+** Generating SIFT predictions with sequence identity: 100.00% **
+* processing queries: 100.00/100.00% *
+
+the failed output message:
+
+** Checking query data and substitutions files **
+* processing queries: 100.00/100.00% *
+
+** Searching database for candidate sequences **
+* processing database part 364 (size ~0.25 GB): 100.00/100.00% *
+
+Uniref90 was utilized for the database creation.
+The config file:
+
+GENETIC_CODE_TABLE=1
+GENETIC_CODE_TABLENAME=Standard
+MITO_GENETIC_CODE_TABLE=11
+MITO_GENETIC_CODE_TABLENAME=Plant Plastid Code
+
+PARENT_DIR=/xtdisk/apod/xiehx/Deleterious_variants/SIFT/Saccharum/SIFT_Database/Chr8D
+ORG=Saccharum_spontaneum
+ORG_VERSION=Np-X
+
+#Running SIFT 4G
+SIFT4G_PATH=/gpfs/biosoft/app2/python2024/envs/sift4g/bin/sift4g
+PROTEIN_DB=/xtdisk/apod/xiehx/Deleterious_variants/SIFT/Saccharum/SIFT_Database/config/uniref90.fasta
+
+
+# Sub-directories, don't need to change
+GENE_DOWNLOAD_DEST=gene-annotation-src
+CHR_DOWNLOAD_DEST=chr-src
+LOGFILE=Log.txt
+ZLOGFILE=Log2.txt
+FASTA_DIR=fasta
+SUBST_DIR=subst
+ALIGN_DIR=SIFT_alignments
+SIFT_SCORE_DIR=SIFT_predictions
+SINGLE_REC_BY_CHR_DIR=singleRecords
+SINGLE_REC_WITH_SIFTSCORE_DIR=singleRecords_with_scores
+DBSNP_DIR=dbSNP
+
+# Doesn't need to change
+FASTA_LOG=fasta.log
+INVALID_LOG=invalid.log
+PEPTIDE_LOG=peptide.log
+ENS_PATTERN=ENS
+SINGLE_RECORD_PATTERN=:change:_aa1valid_dbsnp.singleRecord
+
+Could you give me some suggestions and help?
+Thank you very much for your advice and time!",Windyxia11,https://github.com/pauline-ng/SIFT4G_Create_Genomic_DB/issues/101

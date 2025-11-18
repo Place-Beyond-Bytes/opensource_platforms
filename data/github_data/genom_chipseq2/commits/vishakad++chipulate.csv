@@ -1,0 +1,227 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,author_type,login
+0da18be596bf7e462d47bef86aff4c71fc9cffbb,vishakad,vishakadatta@gmail.com,Merge branch 'master' of https://github.com/vishakad/chipulate,2019-05-17T13:45:23Z,Human,darthshak
+f8d0b63d2b0ea64ebbea6ac5d8d44ff4cec89572,vishakad,vishakadatta@gmail.com,"Fixes negative BED coordinates bug
+
+Pointed out by @joshuak94. When chromosome coordinates of a peak
+were too close to the beginning of the chromosome, some reads would
+either contain (a) negative start/end coordinates, (b) have an end
+coordinate lower than the start, or (c) have an incorrect read length.
+This commit fixes this bug by ensuring that all fragment start
+coordinates are positive.",2019-05-17T13:42:23Z,Human,darthshak
+261b6e00ee3c52339eaa49a7bc110881fe633c8a,vishakad,vishakad@users.noreply.github.com,"Merge pull request #2 from ivargr/master
+
+Fixed minor bug with nReads (sometimes) being float",2019-04-05T12:14:27Z,Bot,vishakad
+8905babe29cc2743861877e15d083e14c8be1350,Ivar Grytten,ivar.grytten@gmail.com,Fixed minor bug with nReads (sometimes) being float,2019-04-05T11:00:39Z,Human,ivargr
+51c8028d6f028702f3d1254b077eaa62206b8156,vishakad,vishakadatta@gmail.com,"Creates PCR output directory if it does not exist
+
+Earlier commit did not deal with the case when the output/pcr-data/
+directory did not exist on the current working directory from which
+the script is executed. Now, the output/pcr-data sub-directory is
+created when it does not exist.",2019-03-29T07:11:47Z,Human,darthshak
+770f40f8ddd3b2a38074417afd4553c2267ba01a,vishakad,vishakadatta@gmail.com,"Fixes PCR output directory bug
+
+When chipulate.py was executed from a location other than the source
+directory, chipulate would look for PCR distributions within the
+output/ sub-folder of the current working directory rather than the
+script directory. In cases where the output directory is not present,
+this would throw an error.",2019-03-29T07:03:10Z,Human,darthshak
+f2717fa3a3bf5459e676fc34a6fde89d5894534a,vishakad,vishakadatta@gmail.com,"Merge branch 'master' of https://github.com/vishakad/chipulate
+
+This merges the bug fix due to uninitialized variables when chipulate.py
+is not run in FASTQ generation mode with master.",2019-03-28T01:25:57Z,Human,darthshak
+66635cf78dc8c7ba7048ce68adb918874955f43d,vishakad,vishakadatta@gmail.com,"Fix unset termination and region name error
+
+This fixes the error pointed out by @olivertam where the basic example
+could not be run with the following command ---
+
+python3 chipulate.py -i examples/basicExample.tsv
+
+This gave three sets of errors related to generateIntervals being unset,
+as well as inputDf['name'] and terminateFlagBedFasta not being set due
+to the input validation not being run when chipulate is run without
+BED intervals.",2019-03-28T01:22:49Z,Human,darthshak
+7f44775e163e63b0c8f572448a5e80101c2f099b,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+README reflects change in default output prefix of ChIPulate output files.",2019-03-26T06:59:24Z,Bot,vishakad
+36624da465cdfffe630060aa9ff3242c3f1fc956,vishakad,vishakadatta@gmail.com,Fixes output directory creation bug and changes output prefix name.,2019-03-26T06:57:17Z,Human,darthshak
+62b61ebee64781b0e0ce39d755eee93296663629,vishakad,vishakadatta@gmail.com,"Fixed KeyError: ""['strand'] not in index"" issue in FASTQ mode.",2019-03-25T17:24:56Z,Human,darthshak
+93e3d752e364786046c79a4d28285281ef101ae5,vishakad,vishakadatta@gmail.com,Add example and genome files to examples/ folder.,2019-03-25T12:14:12Z,Human,darthshak
+fd3da46192f453c9f53139373e4512722f0c8c83,vishakad,vishakadatta@gmail.com,Merge outputfasta branch,2019-02-02T06:46:09Z,Human,darthshak
+4a29e9e81a60f664ecfe9e3d3db3549be7db963e,vishakad,vishakadatta@gmail.com,"Expand MotifTable and Manuscript.ipynb
+
+MotifTable::sampleFromDistribution() can now handle larger motifs, but
+with the caveat that only sequences in the energy range 0 and 10kBT are
+generated.
+
+Manuscript.ipynb now contains code to generate and plot results of
+motif distortion for motifs of different length. This requires changes
+to paper/data/tf-filename.map.",2019-02-02T06:35:30Z,Human,darthshak
+0931796a0b47bfde139e98274b46f7f82cbf5833,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Updated information on providing summit coordinates and names.",2019-01-04T10:35:56Z,Bot,vishakad
+cbab2302c405b9f0416c2d64965804a6813c518d,vishakad,vishakadatta@gmail.com,Re-factor and expand input validation checks,2019-01-04T09:52:57Z,Human,darthshak
+90cadb1a85d7e2aada0e3250169c8f52174a69ac,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Fix path to IGV paired-end snapshot",2019-01-04T08:36:05Z,Bot,vishakad
+1179a77a2a8551621de34c7af08ccd3b2a6088d9,vishakad,vishakadatta@gmail.com,Give choice between SE/PE runs of bwa in pipeline,2019-01-04T08:34:20Z,Human,darthshak
+b37e995ac6a82a4b8b6b83289e24908aba6c1982,vishakad,vishakadatta@gmail.com,Merge branch 'outputfasta' of https://github.com/vishakad/chipulate into outputfasta,2019-01-04T08:33:35Z,Human,darthshak
+10d0c5fa1a426dfa5bd10947fae204f0b15eba75,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Add IGV snapshot with paired end reads of 50 bp in length.",2019-01-04T08:33:02Z,Bot,vishakad
+9eb5bb8b04f010fb6ab67b69e3ba0f1868570ee0,vishakad,vishakadatta@gmail.com,Add IGV paired end file for README,2019-01-04T08:28:57Z,Human,darthshak
+901c9dabef528ed79f17eee420134686d35333ea,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Add documentation on paired-end mode.",2019-01-04T08:20:45Z,Bot,vishakad
+b0283a1a5612deeb3632d5fb977b2a3e6b5d9fa8,vishakad,vishakadatta@gmail.com,Fixes sys.stderr repeated argument error,2019-01-04T08:11:10Z,Human,darthshak
+56f125920a96dad2fbd3a1b2d9b1e401206c8ade,vishakad,vishakadatta@gmail.com,"Validation checks for BED/FASTQ options.
+
+Also, error messages now print to stderr instead of stdout.",2019-01-04T07:31:32Z,Human,darthshak
+f71d9b484c7cfa6d432d139d2bbf8e3eea1bb26c,vishakad,vishakadatta@gmail.com,Add paired-end functionality to BED/FASTQ generator,2019-01-04T06:48:24Z,Human,darthshak
+4f4f04d620c3f3ea78c78828bf2b2d91e5775467,vishakad,vishakadatta@gmail.com,"Revert ""Rename makeBed to makeBedSE()""
+
+This reverts commit 7fb752e162c242c01f44caac6bec52544734733c.",2019-01-04T04:51:52Z,Human,darthshak
+7519b80a2a8864e886fb12732145ea041b6814c1,vishakad,vishakadatta@gmail.com,"Revert ""Revert ""Add IGV snapshot images for adding to README.md""""
+
+This reverts commit 20c9fa3d4aea4bc4127db15a67bdf9224f1b4f66.",2019-01-04T04:49:38Z,Human,darthshak
+20c9fa3d4aea4bc4127db15a67bdf9224f1b4f66,vishakad,vishakadatta@gmail.com,"Revert ""Add IGV snapshot images for adding to README.md""
+
+This reverts commit d6c239d5a939e7ccf86b4528fcdd328adf18c29e.",2019-01-04T04:49:25Z,Human,darthshak
+7fb752e162c242c01f44caac6bec52544734733c,vishakad,vishakadatta@gmail.com,Rename makeBed to makeBedSE(),2019-01-04T04:42:38Z,Human,darthshak
+d6c239d5a939e7ccf86b4528fcdd328adf18c29e,vishakad,vishakadatta@gmail.com,Add IGV snapshot images for adding to README.md,2019-01-03T09:42:04Z,Human,darthshak
+15fbe1520c2dc91d8e64900585882d2d4b748e94,vishakad,vishakadatta@gmail.com,"Removes findKlDistInfo() from chip_scratch.py
+
+Also, fixes saveFile bug in paper/Manuscript.ipynb, where
+the klDistInfo dict was not written correctly to disk.",2019-01-03T09:39:15Z,Human,darthshak
+3b9da07067ca756c3022029fd8ec86f19f4a18e0,vishakad,vishakadatta@gmail.com,Merge branch 'outputfasta' of https://github.com/vishakad/chipulate into outputfasta,2019-01-03T09:36:14Z,Human,darthshak
+2039accb93c9196659839ff0edc925b0f183e6ee,vishakad,vishakadatta@gmail.com,"Fixes fragmentJitter bug in chipulate.py
+
+- Changing the value of fragmentJitter (through the --fragment-jitter
+argument) was producing no change in the distribution of reads.
+This has been fixed.
+
+- The help description of the --fragment-jitter argument earlier
+indicated that the value of this argument changes the read distribution
+in both ChIP and control samples. This has now been amended to reflect
+ the fact that this only affects the ChIP sample.",2019-01-03T09:18:51Z,Human,darthshak
+827f89210363be80f80dfa08f28951c955dd2684,vishakad,vishakadatta@gmail.com,"Outputs FASTQ instead of FASTA files
+
+A quality score of 42, the highest possible quality,
+with an ASCII base of 33, is now output for each read.
+
+All command-line options that are relevant to
+the Fastq output mode have now been added to
+chipulate.py. This includes --fragment-length, --read-length,
+--fragment-jitter options.
+
+The default summit assignment is now changed from earlier
+commits, where each region's summit is set to the middle of the
+input regions.",2019-01-03T09:18:43Z,Human,darthshak
+fffd340d9c696a9a19accfa5ebe3096c6b5a93de,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Added example of running ChIPulate in FASTQ generation mode.",2019-01-03T09:11:29Z,Bot,vishakad
+d5a19681fb9ceb6e222dadb460768f36e3a6dbcd,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Updated usage information and description of columns in input file.",2019-01-03T06:28:22Z,Bot,vishakad
+ba2e3097afa9901461fc5d98f635d0b08a8c493c,vishakad,vishakadatta@gmail.com,"Outputs FASTQ instead of FASTA files
+
+A quality score of 42, the highest possible quality,
+with an ASCII base of 33, is now output for each read.
+
+All command-line options that are relevant to
+the Fastq output mode have now been added to
+chipulate.py. This includes --fragment-length, --read-length,
+--fragment-jitter options.
+
+The default summit assignment is now changed from earlier
+commits, where each region's summit is set to the middle of the
+input regions.",2019-01-01T11:22:33Z,Human,darthshak
+cf5004f162a5c9cf898258ba0b09939764ef1d9d,vishakad,vishakadatta@gmail.com,"Adds working BED and FASTA generation features
+
+pybedtools is needed in order to run chipulate.py in
+BED + FASTA generation mode. makeBed() in chipulate.py
+creates a BED file of single-end ChIP-seq reads.
+
+Manuscript.ipynb and chip_scratch.py now have functions
+to compute the KL distance of motifs (from the baseline motif) derived at different
+mean extraction and amplification effiicencies.
+
+MotifTable::sampleFromDistribution now assigns the minimum
+BEM energy to sequences whose energies fall below the minimum.",2019-01-01T05:33:00Z,Human,darthshak
+88d57eabc2164534a3d9b71622b9073e29357e46,vishakad,vishakadatta@gmail.com,Stores cell-wise fragment counts in ChipSeq.py,2018-12-26T06:19:10Z,Human,darthshak
+8271b073f3288549a164b3ad23830d07ea28945b,vishakad,vishakadatta@gmail.com,"Add working fasta generator and pipeline.sh
+
+The jupyter notebook outputs two .bed files for
+ChIP and input samples. The pipeline.sh file converts
+these into fasta files and aligns them using bwa.
+samtools is then called to sort and index the alignments.",2018-12-26T04:39:56Z,Human,darthshak
+29dd24e66804c335ffa0a64b09525be45a3676d5,vishakad,vishakadatta@gmail.com,Add cell to Manuscript to make test BED input,2018-12-22T03:57:38Z,Human,darthshak
+0dda21d84e38bf8a4bcc1c39acdefc65366f4287,vishakad,vishakadatta@gmail.com,Makes changes to scratch_todelete,2018-12-13T06:12:09Z,Human,darthshak
+d53d2ada78cc9995e23f9ff7aa8a9b500190118e,vishakad,vishakadatta@gmail.com,Adds new input to scratch_todelete,2018-12-13T05:38:14Z,Human,darthshak
+7f55b097851a7c598ede1398e04a05884311d279,vishakad,vishakadatta@gmail.com,"Adds scratch_todelete, which contains ideas for input to chipulate.",2018-12-13T05:28:09Z,Human,darthshak
+6d47084f9946553a8f1dfffed9fa4cc658df357a,vishakad,vishakadatta@gmail.com,Reverts to commit where hyperGeomSample.cpp is not deleted.,2018-12-13T04:20:22Z,Human,darthshak
+86ddfc6ad11ca7cb784e547f18fbe82330ef3950,vishakad,vishakadatta@gmail.com,"Revert ""Fix remaining TODO on cumBinCounts de-allocation.""
+
+This reverts commit b1d115b6d0c74076ca6d9301bf5666fb43025c37.",2018-12-13T04:19:35Z,Human,darthshak
+b7ffe06df97baea902e8a6981374de231068c54b,vishakad,vishakadatta@gmail.com,Renames hyperGeomSample to hyperGeomModule,2018-12-13T04:08:30Z,Human,darthshak
+b1d115b6d0c74076ca6d9301bf5666fb43025c37,vishakad,vishakadatta@gmail.com,Fix remaining TODO on cumBinCounts de-allocation.,2018-12-11T05:02:04Z,Human,darthshak
+b245e825030b8bf10444fdb40a6767587ed7bc46,vishakad,vishakadatta@gmail.com,Adds hyperGeomSample.cpp,2018-12-11T04:58:39Z,Human,darthshak
+5b1abe5aef9aa07522b7249b70a4eb7bdfe8d2bd,vishakad,vishaka@vishaka-Y510P,Merge branch 'master' of ssh://github.com/vishakad/chipulate into energy_check,2018-11-09T17:15:28Z,Human,N/A
+8ed6b8a75fb20931c4cdf5aaa2a2c45ffb986cd9,vishakad,vishaka@vishaka-Y510P,Commits minor changes before merging to master,2018-11-09T17:07:07Z,Human,N/A
+590a1016f709b2af664e4f92065459f5aee3f48f,vishakad,vishaka@vishaka-Y510P,Cleans up output and redundant cells in Manuscript.ipynb,2018-11-09T16:08:58Z,Human,N/A
+6aaea25dea883fb5ab1066b6d6994c4d0e5631df,vishakad,vishaka@vishaka-Y510P,Corrects error by changing p_occ->p_occ_chip in cell in Section 4.1 in Manuscript.ipynb,2018-10-15T23:44:25Z,Human,N/A
+2c93b1c9c3cb241248ac4a76807ce1beb49e8a3a,vishakad,vishaka@vishaka-Y510P,Removes line_profiler dependency in Manuscript.ipynb,2018-10-15T23:25:13Z,Human,N/A
+043897cc45f718829dcec9ccef99c704d2309471,vishakad,vishaka@vishaka-Y510P,Removes line_profiler dependency in Manuscript.ipynb,2018-10-15T23:15:26Z,Human,N/A
+1f8d947056efff29da8ef72651b57ad3cd58ef78,vishakad,vishaka@vishaka-Y510P,Fixes linebreak errors in previous commit of Manuscripy.ipynb,2018-10-15T20:01:17Z,Human,N/A
+ca7c5b41386bab4f4ce5c07ea3638e425267ba56,vishakad,vishaka@vishaka-Y510P,Changes figure handles for PCR and extraction power law variation plots.,2018-10-15T19:59:01Z,Human,N/A
+b8eba610ef235cbce0f9ea0b5a8d47a1c6da14bf,vishakad,vishaka@vishaka-Y510P,Adds binding energy for unbound state in the GenomeBindingTable class,2018-10-14T01:02:14Z,Human,N/A
+f8567692fc400949ad4c878ff0ac1b8391498bb2,vishakad,vishakad@users.noreply.github.com,Make minor corrections to README.md,2018-10-09T04:15:04Z,Bot,vishakad
+6ab533c1caf1184e5bff993027b77cd2dc64ff5a,vishakad,vishaka@vishaka-Y510P,Adds PCR distribution files to paper/output/pcr-data.,2018-10-09T04:08:19Z,Human,N/A
+0b11ff77d79c1a943794c0491b5aec09ad022a0a,vishakad,vishaka@vishaka-Y510P,Change Animate to chipulate in paper/chip_scratch.py,2018-10-09T04:04:58Z,Human,N/A
+16114b822c9eadb53eb3b25d0711cc19a713285c,vishakad,vishaka@vishaka-Y510P,Renames animate.py to chipulate.py and substitutes ChIPulate for Animate in README.md and source code.,2018-10-09T04:01:15Z,Human,N/A
+44c37589bfbc5537e9c3aa2652f2db7dfb363353,vishakad,vishaka@vishaka-Y510P,Add paper/output empty folder,2018-10-04T04:00:04Z,Human,N/A
+505269d0222647c8f4424ba2fa651d8f5fb48e9e,vishakad,vishakad@users.noreply.github.com,"Add files via upload
+
+These are files for reproducing the results in the manuscript.",2018-10-04T03:36:30Z,Bot,vishakad
+f45c884f97d1cd22f90b6d2a3731743d0af42ecd,vishakad,vishakad@users.noreply.github.com,Create .gitignore,2018-10-04T03:29:34Z,Bot,vishakad
+373504631d0e0f25d0450ccdadb3a8b39bd082d5,vishakad,vishakad@users.noreply.github.com,Add output folder with pre-computed PCR distributions,2018-10-04T03:26:32Z,Bot,vishakad
+a51e4c3addf5130a0e097b785e63b48d2b1bba79,vishakad,vishakad@users.noreply.github.com,Add examples/ folder,2018-10-04T03:23:02Z,Bot,vishakad
+b5030862eb1e18006b6c9c4d0e70f2fde1b4fc68,vishakad,vishakad@users.noreply.github.com,Fix platform dependent path in PCR.py,2018-10-04T03:21:49Z,Bot,vishakad
+312f9feb3d59f9db762a7170d497cc62bb1dceaa,vishakad,vishakad@users.noreply.github.com,"Add files via upload
+
+Adds stand-alone code for running Animate.",2018-10-04T02:56:42Z,Bot,vishakad
+a5e2d9850acabb5bee36105b414920df54bcf562,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Adds licence information, authors, details on reproducing figures and acknowledgements.",2018-10-04T02:49:26Z,Bot,vishakad
+09cb12e84d763d4ed4b362278884e212af0b8165,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Added notes on PCR amplification and the performance of the Animate framework.",2018-10-04T02:39:38Z,Bot,vishakad
+8c89640d244bf478262d16289677923c401cbfec,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Added sub-sections for output types",2018-10-04T02:00:06Z,Bot,vishakad
+c5ca1f8700588ca096142493710804a6e219949f,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Added examples of cooperative and indirect binding.",2018-10-04T01:56:16Z,Bot,vishakad
+1db3a057cac425f70ec482b500654fb80fae822f,vishakad,vishakad@users.noreply.github.com,"Update Readme.md
+
+Included the minimum working example for running Animate.",2018-10-04T00:15:51Z,Bot,vishakad
+033062f275b0e9f606133af3958a4e5631ab32bc,vishakad,vishakad@users.noreply.github.com,"Update Readme.md
+
+Included the minimum working example for running Animate.",2018-10-04T00:15:12Z,Bot,vishakad
+9da6bd02da9607dec23fe206b03a0e63f21e1d18,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Included the minimum working example for running Animate.",2018-10-04T00:14:54Z,Bot,vishakad
+f2026337e898bcdac1927bb5560e1cfa4a6fc0f9,vishakad,vishakad@users.noreply.github.com,Update README.md,2018-10-03T22:46:35Z,Bot,vishakad
+5333e5ab03f777e9aa6263e63f25c202a9e7b515,vishakad,vishakad@users.noreply.github.com,"Update Readme.md
+
+Fixed indentation issue in Readme in the description of input and output files.",2018-10-03T22:44:38Z,Bot,vishakad
+2dcf64f0284b5cce76fbf599328861adbf159965,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Fixed indentation issue in Readme in the description of input and output files.",2018-10-03T22:44:00Z,Bot,vishakad
+714dd673c2166a17e7753fc68e52b68e8342537a,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Fixed line length issue in previous commit.",2018-10-03T22:42:36Z,Bot,vishakad
+6e383dd6e4a77988d6f6786aef91281c5d66340e,vishakad,vishakad@users.noreply.github.com,"Update README.md
+
+Add help information for the animate main file.",2018-10-03T22:40:44Z,Bot,vishakad
+530097c0fade994f2a663e6ff02c412a69ddec2a,vishakad,vishakad@users.noreply.github.com,Create Readme.md,2018-10-03T22:35:35Z,Bot,vishakad
+91b8acdbb9acd45309887f358a88d573397fffb0,vishakad,vishakad@users.noreply.github.com,Initial commit,2018-10-03T22:34:49Z,Bot,vishakad

@@ -1,0 +1,274 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOK7UNvs58bJd1,Method for selecting variant truthset,CLOSED,2024-01-18T04:49:10Z,2024-03-15T12:23:52Z,2024-03-15T12:23:52Z,"## Generating truth VCFs
+
+There is three main ways we can do this. 
+
+1. Simulate variants on the reference assembly
+2. Select a close-ish strain, align the reference assembly to that, and get variants from that alignment
+3. Same as Option 2, but we apply the variants to our sample's assembly and call variants with respec to that mutated reference
+
+Option 1 has the advantage of giving us absolute control over what variants to simulate, at what rate, what the truth variants are etc. The disadvantage is that this doesn't really simulate ""real"" mutational processes - e.g., genes mutating at different rates based on function and compared to intergenic regions. One tool, [mutation-simulator](https://github.com/mkpython3/Mutation-Simulator) does allow for more fine-grained simulations, but we would need to determine what the mutation rates are for each species etc.
+
+Option 2 has the advantage of giving us more natural mutational processes. But had the downside of being a little more complicated to extract true variants, plus having to determine regions of the genome to ignore (due to unmapped regions or high variability etc.)
+
+Option 3 is a kind of hybrid of Options 1 and 2. It has the advantage of removing ambiguity around what our truthset of variants is, while using variants that really do occur between two strains. However, the downside is you're removing some of the challenge caused by the distance between the two strains - it's still a bit artificial.
+
+We all agree that Option 1 is a no go. 
+
+### Selecting the VCF reference
+
+The VCF reference (vcfref) would be a different strain from the same species. One way I have played with doing this selection is to download all complete genome assemblies from refseq
+
+```
+genome_updater.sh -d ""refseq"" -g ""bacteria"" -f ""genomic.fna.gz"" -o GTDB_species_Vibrio_parahaemolyticus -M ""gtdb"" -T ""s__Vibrio parahaemolyticus"" -m -a -t 8 -l ""complete genome""
+```
+
+Create a Mash sketch of those genomes
+
+```
+mash sketch -p 8 -o vpara -s 10000 GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/*.gz
+```
+
+And compute the mash distance to the reference assembly, sorting by the distance column
+
+```
+$ mash dist -p 8 -s 10000 vpara.msh ../../data/references/ATCC_17802__202309.fa | sort -g -k3 | head
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_001558495.2_ASM155849v2_genomic.fna.gz       ../../data/references/ATCC_17802__202309.fa     2.38113e-06     0       9999/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_021730005.1_ASM2173000v1_genomic.fna.gz      ../../data/references/ATCC_17802__202309.fa     0.000388021     0       9839/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_021730065.1_ASM2173006v1_genomic.fna.gz      ../../data/references/ATCC_17802__202309.fa     0.000388021     0       9839/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_019321785.1_ASM1932178v1_genomic.fna.gz      ../../data/references/ATCC_17802__202309.fa     0.00483188      0       8240/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_013393885.1_ASM1339388v1_genomic.fna.gz      ../../data/references/ATCC_17802__202309.fa     0.0145334       0       5835/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_000430425.1_ASM43042v1_genomic.fna.gz        ../../data/references/ATCC_17802__202309.fa     0.0145695       0       5828/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_001244315.1_ASM124431v1_genomic.fna.gz       ../../data/references/ATCC_17802__202309.fa     0.0147041       0       5802/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_001887055.1_ASM188705v1_genomic.fna.gz       ../../data/references/ATCC_17802__202309.fa     0.0147041       0       5802/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_018135645.1_ASM1813564v1_genomic.fna.gz      ../../data/references/ATCC_17802__202309.fa     0.0147874       0       5786/10000
+GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_009764075.1_ASM976407v1_genomic.fna.gz       ../../data/references/ATCC_17802__202309.fa     0.0148448       0       5775/10000
+```
+
+We then select a genome which has some distance from our original - preferably not the lowest distance. The mash distance approximates the average nucleotide identity (actually it is 1-ANI), so we could set an ANI we would like, such as 0.5% and then selecting a genome with a distance close to that.
+
+## Generating truth variants, targets, and mask
+
+With a vcfref selected we now need to figure out what variants exist between the two genomes, what regions we want to target, and what regions we want to mask.
+
+A very simple method here would be just use dnadiff between the two genomes and use the differences as the true variants. However, this will possibly miss variants, or even produce false positives. The way Martin approached this in varifier was to use dnadiff and minimap2 to produce two seperate sets of variants. He then makes probes out of these and maps them back to the reference, requiring perfect matching. If they don't perfectly match, he discards the variant.
+
+This approach for truth variant generation is my preference, however, we need to take this a step or two further. Those false positive variants whose probes don't align should be output as a type of mask - i.e., we should not evaluate variants at these positions because they obviously have problems. We additionally need to identify whih=ch regions of the vcfref we allow variants in (targets). To elaborate, the vcfref is a different strain and so there will be parts of its genome which do not align with the reference assembly. We don't want to assess variants in these regions, just the regions that align. We can take this a step even further and remove regions from the targets that do not have depth 1 when aligning the vcfref and reference assembly as these are either repetitive regions, highly divered regions, or regions that exist in one genome and not the other.
+
+A way of identifying these target regions would be to align the two genomes **using asm5** (or similar) and piping this into `samtools depth` and keeping only positions with 1 in column three. Here is a way of counting the number of different depths in an alignment
+
+```
+$ minimap2 -x asm5 -ac --cs $ref ../../data/references/ATCC_17802__202309.fa | samtools sort -o vpara.bam
+$ samtools depth -aa --reference $ref vpara.bam | cut -f3 | sort | uniq -c
+ 723066 0
+4688603 1
+  15337 2
+```
+
+then to extract these to a bcftools-compatible targets file
+
+```
+samtools depth -aa --reference $ref vpara.bam | awk -F'\t' '$3==1' | cut -f1,2 > vpara.targets
+```
+
+from the [bcftools docs](https://samtools.github.io/bcftools/bcftools.html#common_options)
+
+> Regions can be specified either on command line or in a VCF, BED, or tab-delimited file (the default). The columns of the tab-delimited file can contain either positions (two-column format: CHROM, POS) or intervals (three-column format: CHROM, BEG, END), but not both. Positions are 1-based and inclusive. The columns of the tab-delimited BED file are also CHROM, POS and END (trailing columns are ignored), but coordinates are 0-based, half-open.
+
+The above command will generate the tab-delimited (default) file used by bcftools. We probably should convert this to BED though for more versatility.
+
+We can then subtract any masked regions from this file, or keep the two separate and use [`bcftools filter`](https://samtools.github.io/bcftools/bcftools.html#filter) to keep targets and remove masked.
+
+
+### Reasons for going with Option 3
+
+Here we document our reasoning for deciding to go with the hybrid method for truthset generation.
+
+Initially, we had wanted to take a reference from another strain (VCFREF), align our sample's assembly (REF) to it and then take the set of variants between them as the truthset when calling variants with respect to VCFREF.
+
+To do this, we align VCFREF and REF using both `dnadiff` and `minimap2` with the intention of taking the variants in common between the two. We use `syri` to assess the alignments and pull out the variants. This has the added advantage of also identifyin structural variation between the two genomes, and facilitates visualisation of the alignment of the genomes.
+
+Here is how the alignment and `syri` were run:
+
+```
+threads=2
+vcfref=/data/scratch/projects/punim2009/NanoVarBench/tmp/GTDB_species_Vibrio_parahaemolyticus/2024-01-15_14-03-02/files/GCF_019321785.1_ASM1932178v1_genomic.fna.gz
+ref=/data/scratch/projects/punim2009/data/references/ATCC_17802__202309.fa
+
+minimap2 -t $threads --eqx -c --cs -x asm5 $vcfref $ref | sort -k6,6 -k8,8n > vpara.paf
+fixchr -c vpara.paf -r $vcfref -q $ref -F P --contig_size 10000 --prefix vpara.
+
+ref=$(realpath vpara.fixchr.qry.filtered.fa)
+vcfref=$(realpath vpara.fixchr.ref.filtered.fa)
+
+prefix='vpara.dnadiff'
+delta=""${prefix}.delta""
+delta_filt=""${prefix}.filtered.delta""
+coords=""${prefix}.filtered.coords""
+
+nucmer --maxmatch -p $prefix $vcfref $ref
+delta-filter -1 $delta > $delta_filt
+show-coords -THrd $delta_filt > $coords
+
+syri --nc $threads -c $coords -d $delta_filt -r $vcfref -q $ref --prefix ""${prefix}.""
+
+prefix='vpara.mm2'
+paf=""${prefix}.paf""
+minimap2 -t $threads --eqx -c --cs -x asm5 $vcfref $ref | sort -k6,6 -k8,8n > $paf
+syri --nc $threads -c $paf -r $vcfref -q $ref --prefix ""${prefix}."" -F P
+```
+
+The first issue that arise is the disparity in the number of variants between the two alignment methods. 
+
+This is the `syri` summary of the `dnadiff` alignment
+
+```
+#Structural annotations
+#Variation_type Count   Length_ref      Length_qry
+Syntenic regions        21      4465551 4442403
+Inversions      1       27540   27361
+Translocations  49      626206  646012
+Duplications (reference)        8       12408   -
+Duplications (query)    9       -       1915
+Not aligned (reference) 63      206715  -
+Not aligned (query)     59      -       108500
+
+
+#Sequence annotations
+#Variation_type Count   Length_ref      Length_qry
+SNPs    4447    4447    4447
+Insertions      312     -       1095
+Deletions       369     36850   -
+Copygains       15      -       132923
+Copylosses      18      138966  -
+Highly diverged 52      130597  171447
+Tandem repeats  3       980     919
+```
+
+And here is the `minimap2` summary 
+
+```
+#Structural annotations
+#Variation_type Count   Length_ref      Length_qry
+Syntenic regions        4       4543669 4496192
+Inversions      1       27540   27361
+Translocations  3       451172  477469
+Duplications (reference)        0       0       -
+Duplications (query)    1       -       325
+Not aligned (reference) 3       237193  -
+Not aligned (query)     5       -       149085
+
+
+#Sequence annotations
+#Variation_type Count   Length_ref      Length_qry
+SNPs    413     413     413
+Insertions      65      -       18115
+Deletions       66      25812   -
+Copygains       0       -       0
+Copylosses      1       261     -
+Highly diverged 107     1245193 1231784
+Tandem repeats  0       0       0
+```
+
+Of particular concern is that `dnadiff` discovers and order of magnitude more SNPs abd indels than `minimap2`.
+
+The other concern that comes about from this too is the differences between the two alignments from a structural perspective. e.g., `dnadiff` has 49 translocations compared to `minimap2`'s 3. And these become apparent when we visualise the two alignments with `plotsr`
+
+
+#### dnadiff alignment
+
+```
+plotsr --sr vpara.dnadiff.syri.out --genomes genomes.txt -o vpara.dnadiff.plotsr.png
+```
+
+![vpara dnadiff plotsr](https://github.com/mbhall88/NanoVarBench/assets/20403931/bcab00ec-0cf1-4e15-8680-1fb492d73206)
+
+
+
+#### minimap2 alignment
+
+```
+plotsr --sr vpara.mm2.syri.out --genomes genomes.txt -o vpara.mm2.plotsr.png
+```
+
+![vpara mm2 plotsr](https://github.com/mbhall88/NanoVarBench/assets/20403931/49523026-6957-4e58-9a3d-b65b50f5ab1f)
+
+Of particular concern from these plots is that the start and end of chromosome 1 on vcfref has noticeably different alignments from `dnadiff` and `minimap2`.
+
+---
+
+So, in the end, we elect to go with taking the union of the variants from `dnadiff` and `minimap2` and applying them to REF to create MUTREF. We will then call variants with respect to MUTREF for the analysis.
+
+I will update this issue with exactly how this process is done.",mbhall88,https://github.com/mbhall88/NanoVarBench/issues/1
+I_kwDOK7UNvs58wNR8,Maximum indel length,CLOSED,2024-01-22T03:44:56Z,2024-03-15T12:23:41Z,2024-03-15T12:23:41Z,"What is the maximum length of indels we want to evaluate. I arbitrarily default to 50bp, but am very happy to change this.",mbhall88,https://github.com/mbhall88/NanoVarBench/issues/2
+I_kwDOK7UNvs587R0h,Divergence threshold for variant donor,CLOSED,2024-01-23T11:52:27Z,2024-03-15T12:23:30Z,2024-03-15T12:23:30Z,"Related to #1, one important parameter is how close we want the genome that is ""donating"" variants to be in terms of ANI.
+
+As a refresher, the process is we download all refseq assemblies for the species of a sample and generate a mash distance matrix from our sample's assembly to all of the species assemblies. Mash distance approximates 1-ANI, so a distance of 0.005 is ANI ~99.5%. 
+
+This will obviously also control how many variants we generate in our truth set too. 0.005 seemed like a reasonable first pass to me? Does anyone have any thoughts on different thresholds?
+
+[This paper](https://doi.org/10.1128/mbio.02696-23) has some interesting findings relating to a ""gap"" in ANI values between pairs of the same species in the range 99.2-99.8% ANI. 0.005 falls smack bang in the middle of this, but we take ""the closest"" distance to this, so even if there's a gap, we'd go to the first genome either side of this gap.",mbhall88,https://github.com/mbhall88/NanoVarBench/issues/3
+I_kwDOK7UNvs59A1aQ,Masking repetitive regions,CLOSED,2024-01-24T03:56:36Z,2024-03-15T12:23:20Z,2024-03-15T12:23:20Z,"Do we want to mask repetitive regions of the genome - both from the truthset and the callset?
+
+My (naive) way of approaching this would be to just align the genome to itself and mask any position with a depth >1.",mbhall88,https://github.com/mbhall88/NanoVarBench/issues/4
+I_kwDOK7UNvs59H1Xq,Filtering compatible overlapping truth variants ,CLOSED,2024-01-24T22:16:01Z,2024-03-15T12:23:06Z,2024-03-15T12:23:06Z,"Regarding the filtering of the truth VCF, there is a question about whether to filter out compatible ""overlapping"" variants. This is a question I raised on the bcftools repo (https://github.com/samtools/bcftools/issues/2082).
+
+Essentially, I noticed in the truth VCF we still have variants like this after running `bcftools +remove-overlaps`.
+
+```
+chromosome      28728   62e866df        T       A       .       PASS    .      GT      1/1
+chromosome      28728   e4388ae3        T       TA      .       PASS    .    GT      1/1
+```
+
+and
+
+```
+chromosome      30586   60f6a01c        T       TAACAACACTTGG   .       PASS    .      GT      1/1
+chromosome      30588   a1f621d4        G       A       .       PASS    .    GT      1/1
+```
+
+As Petr pointed out in the above linked issue, there aren't, in fact, overlapping.
+
+As a way of illustrating how this is possible, let's reframe the variant for clarity and provide an example fasta sequence
+
+```
+>chromosome
+GTC
+```
+
+```
+chromosome      2   62e866df        T       A       .       PASS    .      GT      1/1
+chromosome      2   e4388ae3        T       TA      .       PASS    .    GT      1/1
+```
+
+`bcftools consensus` would turn this into 
+
+```
+>chromosome
+GAAC
+```
+
+And for the second example
+
+```
+>chromosome
+CGTAGT
+```
+
+```
+chromosome      3   60f6a01c        T       TAACAACACTTGG   .       PASS    .      GT      1/1
+chromosome      5   a1f621d4        G       A       .       PASS    .    GT      1/1
+```
+
+`bcftools consensus` would turn this into 
+
+```
+>chromosome
+CGTAACAACACTTGGAAT
+```
+
+As mentioned in [this comment](https://github.com/samtools/bcftools/issues/2082#issuecomment-1909009474), the ordering of the variants here is crucial. If you swap the order of the variants in the first example, they then become overlapping variants (see [comment](https://github.com/samtools/bcftools/issues/2082#issuecomment-1909009474)). But as we run `bcftools +remove-overlap` *before* running `bcftools consensus`, we don't need to worry about the ordering.
+
+In our script for generating the truth set and mutated reference I have added a flag that allows us to filter these sorts of positions out if we want. But I am inclined to leave them in as another layer of complexity to explore how the variant callers handle.
+
+Does anyone disagree?",mbhall88,https://github.com/mbhall88/NanoVarBench/issues/5

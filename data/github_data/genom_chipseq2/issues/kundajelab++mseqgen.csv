@@ -1,0 +1,12 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5NTY2NDk3Nzk=,Negative sample generator can return positive samples and isn't GC matched.,OPEN,2021-07-30T11:12:53Z,2021-07-30T11:12:53Z,,"The [function](https://github.com/kundajelab/mseqgen/blob/8078f4057f641d89c9f8a5501e8836af6602e1b1/mseqgen/generators.py#L511) to generate negative (non-peak) input sequences randomly samples across all chromosomes. 
+Issues:
+- You can get a positive sample because peak regions are not excluded.
+- There's no GC-matching.
+
+The parameter that controls negative sampling in the [basepairmodels repo](https://github.com/kundajelab/basepairmodels) is: ```negative-sampling-rate```. 
+If the basepairmodels repo is intended for training only on peak regions or with user-specified negative regions, this parameter shouldn't exist. A temporary fix would be to output a warning when the user selects a ```negative-sampling-rate```>0.
+",juanelenter,https://github.com/kundajelab/mseqgen/issues/7
+I_kwDODU6nJM5Be1D1,Implement batch generator to combine foreground and background loci ,CLOSED,2022-01-11T03:08:48Z,2022-01-13T17:32:55Z,2022-01-13T17:32:55Z,"1. The input json will have new field for background loci
+2. The user will specify #samples for foreground and background (-1 for all)
+3. The `background_only` option will dictate whether the bed file in the background_loci field of the input json will have weight as zero or one for mnll loss (e.g. in case of training background model the weight for background_loci will be 1)",zahoorz,https://github.com/kundajelab/mseqgen/issues/8

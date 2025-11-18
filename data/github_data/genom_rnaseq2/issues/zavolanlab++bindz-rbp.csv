@@ -1,0 +1,173 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NTA2NjI4ODg=,cluster execution support?,CLOSED,2020-07-03T15:30:14Z,2020-08-07T18:40:13Z,2020-08-07T18:40:13Z,"This is a very small, not-expensive (computationally) workflow so I do not think it is necessary. Do we need to add cluster execution support? If so - which engines do we support? Might be a good idea to start with SLURM as we do in **zarp**.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/3
+MDU6SXNzdWU2NTA2ODE3Nzg=,CI Setup,CLOSED,2020-07-03T16:14:00Z,2020-07-04T21:18:38Z,2020-07-04T20:57:49Z,"**Is your feature request related to a problem? Please describe.**
+For the development process we need to set up a CI for this repository.
+
+**Describe the solution you'd like**
+GitHub Actions, Travis, CircleCI (?)
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/4
+MDU6SXNzdWU2NTA5NTQ5Mjk=,Code coverage measure,CLOSED,2020-07-04T20:56:52Z,2020-07-30T17:42:43Z,2020-07-30T17:42:43Z,"**Is your feature request related to a problem? Please describe.**
+In principle, we should use a mechanism to measure code coverage during the testing. I am not sure it if will work for a *snakemake* pipeline but we **should** have it at least for the scripts.
+
+**Describe the solution you'd like**
+I never used any external mechanisms to measure the code coverage - open to suggestions.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/9
+MDU6SXNzdWU2NTA5NjcyOTU=,Pipeline testing with singularity containers for snakemake rules,CLOSED,2020-07-04T22:47:36Z,2020-08-25T15:31:48Z,2020-08-25T15:31:48Z,"**Is your feature request related to a problem? Please describe.**
+For the development time we might work in *conda* virtual environments but for the final version the *snakemake* pipeline should be executable with both `--use-conda` and `--use-singularity` flags. At some point CI needs to be testing the containerized execution as well.
+
+**Describe the solution you'd like**
+Add the call with `--use-singularity` to the CI; conda env. would have to be updated. Is it possible to use singularity on Travis at all?
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/10
+MDU6SXNzdWU2NTE0NDA2OTU=,CI tests with macOS,CLOSED,2020-07-06T10:48:24Z,2020-08-22T16:19:40Z,2020-08-22T16:19:40Z,"**Is your feature request related to a problem? Please describe.**
+We are testing the pipeline on linux, for now. At the end we should add some CI tests that would check if the pipeline will run correctly on macOS as well.
+
+**Describe the solution you'd like**
+I have found this link:  
+https://docs.travis-ci.com/user/multi-os/
+In principle diversifying the tests to difference Operating Systems should be doable; requires more investigation.
+
+**Additional context**
+Working in *conda* environments allows for easy support for distinct operating systems.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/12
+MDU6SXNzdWU2NTIyNTIwNDk=,Pipeline documentation missing,CLOSED,2020-07-07T11:39:03Z,2020-08-12T20:10:15Z,2020-08-12T20:10:15Z,"**Is your feature request related to a problem? Please describe.**
+It is generally a bad idea to merge not documennted code however we have a limitted manpower on this project and I do not want to stop others from the progress. Therefore I will pull request the initial version of the *snakemake* pipeline without the documentation of the rules.
+
+**Describe the solution you'd like**
+At some point in the future the file `./workflow/documentation.md` should contain the documentation for all the rules of the pipeline (just as in the **zarp** project).",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/13
+MDU6SXNzdWU2NTIzODc2NjM=,Combine MotEvo results into one TSV file,CLOSED,2020-07-07T14:50:09Z,2020-07-17T16:58:41Z,2020-07-17T16:58:41Z,"**Is your feature request related to a problem? Please describe.**
+Currently we have a separate results directory for every analysed PWM (as the output of parallell MotEvo runs). It would be nice to gather these results together into a nice table in TSV format.
+
+**Describe the solution you'd like**
+Extend the pipeline with one more step at the end: `combine_MotEvo_results`",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/15
+MDU6SXNzdWU2NTIzOTczMzU=,Plot the binding sites for distinct motifs on the input RNA sequence,CLOSED,2020-07-07T15:02:11Z,2020-08-01T21:22:00Z,2020-08-01T21:22:00Z,"**Is your feature request related to a problem? Please describe.**
+At the end of the pipeline it is always a great idea to visualise the results. Gigabytes of text data are OK for us to work with but at the very last step, for presentation, it is really nice to show off a cool, polished plot. We should summarise our results (binding sites) on a pretty figure.
+
+**Describe the solution you'd like**
+At the end of the pipeline (i.e. after #15, adress #15 first) we should add one more step that will create a plot based on the combined results in the TSV format. We have to start somewhere, so let us start with the heatmaps with annotated binding posterior probabilities we discussed. It would be also very fancy to add miniatures of the PWMs on that plot (so that the end user looks at it and immediately sees all the information). My initial idea is that we have a heatmap, inside the squares we mark the probabilities with color (white=0, red=1) as well as the number; we annotate the rows with the sequence logos; we annotate the columns with the subsequent nucleotides (A,C,G,T) from the user input sequence.
+
+**Additional context**
+Consider the two PWM plotting libraries I found previously:  
+https://logomaker.readthedocs.io/en/latest/
+https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/16
+MDU6SXNzdWU2NjA2ODE0NTI=,Sort binding sites in the final table,CLOSED,2020-07-19T08:07:06Z,2020-07-19T12:30:17Z,2020-07-19T12:30:17Z,"**Is your feature request related to a problem? Please describe.**
+Binding sites are not reported in any meaningful order in the combined TSV table.
+
+**Describe the solution you'd like**
+Rows of the combined TSV table should be sorted by the `binding_posterior` column (highest probability on top). This can be done easilty with `df.sort_values()` method.
+
+**Additional context**
+People would open and quickly inspect this particular table. It should be easy-to-read by human eye.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/20
+MDU6SXNzdWU2NjkwMzUzNDA=,Generating sequence logos for the input PWMs,CLOSED,2020-07-30T18:00:01Z,2020-08-04T17:13:36Z,2020-08-04T17:13:36Z,"**Describe the solution you'd like**
+Extend the pipeline by one more step which will generate sequence logos for all the motifs (in PWM format) provided by the user.
+
+**Additional context**
+Let's take it step-by step. As I mentioned previously, calling a `python` script from within an `R` script from within `snakemake` pipeline is a bad practice. So let's add another rule with will call a script to generate `png` images with sequence logos for all motifs provided in a directory by the user.  
+Such rule could start directly after `create_results_directory` since it does not need to wait for any other input generated during the processing, right?
+This rule would have to be executed in parallel for every motif the user provides. Take a look at the rule `combine_MotEvo_results` and recall the `expand()` mechanism which allows you for such tricks. You will need to add a list of images with `expand()` to the `all` rule as well (as an input, since the `all` rule gathers everything).
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/23
+MDU6SXNzdWU2NzExOTE4NTI=,Non-reproducible md5 checksums of R plots,CLOSED,2020-08-01T20:56:03Z,2021-08-12T15:50:18Z,2021-08-12T15:50:18Z,"**Describe the bug**
+It seems that on every machine the script that plots the heatmap gets executed the md5 checksum of the output is different. The `svg` plot is generally the same, some minor changes appear, as:
+```
+<line x1='772.69' y1='203.91' x2='776.15' y2='203.91' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw4NjQuMDB8NTA0LjAwfDAuMDA=)' />
+```
+vs.
+```
+<line x1='772.69' y1='203.77' x2='776.15' y2='203.77' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' clip-path='url(#cpMC4wMHw4NjQuMDB8NTA0LjAwfDAuMDA=)' />
+```
+The script has been tested on macOS Catalina, Ubuntu, Linux Kali and Travis CI servers. For every machine the checksums are reprodicible however while executing on another machine - the results changes. I believe this is a `ggplot` internal issue...
+
+**Expected behavior**
+We would like to have a reproducible plotting script that generates exactly the same output file regardless of the machine it runs on.
+
+---
+
+For now testing the checksums of the heatmaps in the CI has been turned off.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/24
+MDU6SXNzdWU2NzI5NTg0MzM=,Heatmap annotation with motif's sequence logos,CLOSED,2020-08-04T17:31:19Z,2020-08-07T15:34:32Z,2020-08-07T15:34:32Z,"**Describe the solution you'd like**
+I think we could try to annotate the final heatmap with the sequence logos of the motifs (additionally to the motifs names). I am not sure how well it would look and if it would be readable so maybe you could just implement an optional CLI flag for your plotting script? ""If the flag with paths to the plots is provided then create an exdended heatmap, if not - just a simple one as we have it now"".
+
+If you follow this strategy then I think it would make sense to adjust the unit test so that it tests the ""extended"" version.
+
+Make note that this annotation might be tricky when it comes to scaling. We would like to heatmap to look nicely regardless if it has 10 or 100 motifs... Therefore I would advise you to implement some dynamical scaling of the heigth of the plot (based on the number of motifs?) Actually, this scalling should also be there for the ""basic"" versions of the heatmaps as well, right?
+
+**Describe alternatives you've considered**
+I was considering if we should make another, separate pipeline step with another heatmap but ultimately - this would be more work. I believe it would be easier to just modify we files we already have.
+
+@krish8484  - what do you think?
+
+**This would be the last modification to the data processing for ver. 1.0.0. of the tool**
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/26
+MDU6SXNzdWU2NzUyMTc1Nzg=,plot_sequence_logos incorrect parallelization,CLOSED,2020-08-07T19:05:20Z,2020-08-08T10:52:27Z,2020-08-08T10:52:27Z,"**Describe the bug**
+I have overlooked that bug during the PR; now, while I was inspecting the logs more carefully I see that the rule which plots the sequence logos runs always for all `N` motifs but is also called `N` times (and it keeps overwritting results). What we would like to have is executing the rule `N` times, each of these calls should process `1` motif. Therefore the flag `--input_files` should be `--input_file` and it should just take one PWM file.
+This is still a problem with incorrect expansions (`expand`). You should expand in the heatmap plotting rule not sequence logos plotting. Expansion is called **after** the rule which is being parallelized.
+
+**To Reproduce**
+Just clone the repository and run the integration test. Look closely at the *snakemake* logs @ the terminal.
+
+**Desktop (please complete the following information):**
+ - macOS Catalina
+ - Travis CI builds
+
+**This is a pipeline processing bug - this issue should gain your priority**
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/30
+MDU6SXNzdWU2NzU1OTAzMzU=,Rule error while plotting seq.logos,CLOSED,2020-08-08T21:22:47Z,2020-08-10T06:47:48Z,2020-08-10T06:47:48Z,"**Describe the bug**
+Rule `plot_sequence_logos` raises error while trying to process one of the PWM matrices we did not check during integration tests - the file name is: `PTBP1_M227_0.6`. I believe there is some error with processing the `.`
+I guess we should diversify the input files for our test better...
+
+**To Reproduce**
+Run the pipeline on all ATtRACT motifs (they are all downloaded in the CI as well). Notice that some of the PWMs do have dot in the file name.",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/32
+MDU6SXNzdWU2NzU1OTA2NTA=,Logomaker Error while plotting some sequence logos,CLOSED,2020-08-08T21:26:01Z,2020-08-10T06:48:51Z,2020-08-10T06:48:51Z,"**Describe the bug**
+I was trying to run our pipeline os a real-life example and the rule which plots sequence logos raised error while processing files: `PTBP1_143` and `PTBP1_165`.
+The error says: `logomaker.src.error_handling.LogomakerError: some columns in df sum to nearly zero.`
+
+**To Reproduce**
+Run the pipeline with the above mentioned PWM files (they are in ATtRACT databse)",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/33
+MDU6SXNzdWU2NzU1OTIzMTQ=,Aesthetic modifications to the heatmap,CLOSED,2020-08-08T21:40:45Z,2020-08-11T14:00:50Z,2020-08-11T14:00:50Z,"I run our tool on some real-life dataset and I obtained such a heatmap:
+
+<img width=""1038"" alt=""EIF4E2_proximal_pas_output"" src=""https://user-images.githubusercontent.com/19755308/89720136-5c680500-d9cf-11ea-8b2a-d4a56cbcc088.png"">
+
+I see two modifications which should be added:
+* maybe your script could have a boolean argument: whether to annotate the sequence on x-axis or not? Then on the *snakemake* level we could encode a flag in the `params` which would check the length of the input sequence - if it is too long then do not annotate? Alternatively, scale the plot's width such that the letters always fit...
+* motif logos overlap one another... maybe better height scaling? Maybe motif logos should be placed to the left of the motif name, not on top?",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/34
+MDU6SXNzdWU5Njg5NzU4OTY=,New name,CLOSED,2021-08-12T14:47:10Z,2021-08-13T17:04:43Z,2021-08-13T17:04:43Z,"For now we will refer to the tool as _BindingScanner_, repo: `binding-scanner`.
+Change the name thoughout the repository into something more catchy.",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/48
+MDU6SXNzdWU5Njg5NzkzNTc=,Move CI from Travis to GitHub Actions,CLOSED,2021-08-12T14:49:07Z,2021-08-14T12:37:29Z,2021-08-14T12:37:29Z,"**Is your feature request related to a problem? Please describe.**
+GitHub actions is the gold standard in CI mechanisms.
+
+**Describe the solution you'd like**
+Move from _Travis_ to _Actions_",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/49
+MDU6SXNzdWU5Njg5OTc0MDA=,Improve pipeline output,CLOSED,2021-08-12T14:59:17Z,2022-02-13T17:24:18Z,2022-02-13T17:24:18Z,"**Is your feature request related to a problem? Please describe.**
+Currently we do not show how does the pipeline result look like and how are they useful.
+
+**Describe the solution you'd like**
+* ~update _README.md_, show pictures, improve description~
+* convert output TSV to BED (?)",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/50
+MDU6SXNzdWU5NjkwMDYyODQ=,Replace create outdir rule with onstart directive,CLOSED,2021-08-12T15:04:17Z,2021-08-14T14:28:24Z,2021-08-14T14:28:24Z,It will be a cleaner design to move the the output directory generation from a separate rule to a `onstart` directive. Remember to update the rulegraph.,AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/51
+MDU6SXNzdWU5NjkxNTgwOTE=,Simplify the UI,CLOSED,2021-08-12T16:36:01Z,2022-02-13T19:34:03Z,2022-02-13T19:34:02Z,"**Is your feature request related to a problem? Please describe.**
+If the tool is to be used be wider community of scientists, not only bioinformaticians familiar with _snakemake_ we should simplify the entrypoint a little...
+
+**Describe the solution you'd like**
+How about we provide two options to run the tool. At first the user need to `git clone`, of course, but then:
+
+1. Run `install.sh`: automatic installation of the tool into the system directories, installation of the dependancies; automatic ATtRACT download and parsing into the same system dir; provide a bash wrapper with oprional parameters (if not specified _snakemake_ will be called with default values). Sth like: `bindingscanner --config XXX`.
+2. Expert mode: git clone and call the snakemake yourself, execute all the steps just as they are currently described in the _README.md_.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/52
+MDU6SXNzdWU5NjkxNjQ5MTI=,Project logo,OPEN,2021-08-12T16:40:23Z,2021-09-06T13:18:14Z,,"It would be nice to have a logo for this specific tool.
+",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/53
+MDU6SXNzdWU5NzA4OTc3MDc=,Refactor for ver 1.1.0,CLOSED,2021-08-14T12:03:00Z,2022-02-14T15:12:45Z,2022-02-14T15:12:45Z,"Refactor the whole repository before the next release.
+
+- [x] rename to bindz-rbp
+- [x] update rulegraph image
+- [x] CONTRIBUTING
+- [x] ~check CodeFactor sheild~ I am not an admin of this organisation therefore I cannot hook up CodeFactor
+- [x] what about local/cluster and conda/singularity nomenclature?
+- [x] add singularity local test in the CI
+- [x] ~clean ATTRACT parsing~
+- [x] test `cluster` integration tests execution (2x)
+- [x] PDF with heatmap visualisation: long sequqnces / lots of PWMs <?>
+- [x] documentation.md
+- [x] README",AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/55
+I_kwDOEIC3o84-tj2e,LogLik_ratio_fg_bg,CLOSED,2021-11-12T16:15:20Z,2022-02-13T20:04:36Z,2022-02-13T20:04:36Z,What we were previously calling as `binding_energy` is actually a loglikelihood of the ratio of probabilities that a given sequence comes from a fg vs. bg model. Adjust that to: `LogLik_ratio_fg_bg`.,AngryMaciek,https://github.com/zavolanlab/bindz-rbp/issues/60

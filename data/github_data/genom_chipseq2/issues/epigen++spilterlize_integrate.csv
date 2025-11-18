@@ -1,0 +1,196 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOJ1PAws5rcXhw,reComBat diagnostic visualizations,CLOSED,2023-07-13T09:24:44Z,2024-05-22T09:50:35Z,2024-05-22T09:50:35Z,"- [x] Check MRP note for input. 
+- [x] color density and boxplots by provided batch variable (would only be for one variable)
+- [x] Heatmap: 
+  - [x] remove variables with 0 variation
+  - [x] columns top 10 (or max) PCs with %variance explained annotated (fixed width)
+  - [x] rows metadata (dynamic height of plot)
+  - [x] annotated numerical/categorical metadata
+  - [x] separate plot but generated in diagnostic step _CFA.png as suffix
+  - [x] -log10 adjusted p-value
+  - [x] which correlation (spearman/pearson) and stat test?
+  - [x] ggplot heatmap and manual hclust of rows, but not columns(?)
+- [x] document new feature, it's purpose and plot; describe chose statistical tests (kruskal-wallis and kendall's tau) and why.
+
+Determined after each step
+Two heatmaps: one numeric, one discrete? Or can i manage one
+
+Step 1 load data & metadata
+Step 2 determine first ten PCs or min if less samples
+Step 3 split metadtaa into numeric & categorical
+Step 4 determine statistical association 
+Eg Pearson R? Spearman rho? Wallis kruskal/ANOVA?
+Step visualise (together?!) in a clustered heatmap. What statistic? P-value and correlation? Only p - value ie significance? -log10?
+Step 5 save plot and matrices 
+
+Visualize the estimated/modeled/removed effects of batch, unwanted, and desired sources of variation.
+
+- Statistical tests between all metadata variables and top ten PCs. yes
+- Requires multiple testing corrections? yes
+- Visualized as Heatmaps: one for categorical and one for numerical? no, one for al
+- Do it for all normalized data? yes",sreichl,https://github.com/epigen/spilterlize_integrate/issues/1
+I_kwDOJ1PAws5rcr6R,VOOM plot,CLOSED,2023-07-13T10:08:25Z,2024-05-17T14:14:24Z,2024-05-17T14:14:24Z,"Use VOOMs inherent plotting capabilities for a diagnostic plot `normVOOM_mean-variance-trend.png`
+https://rdrr.io/bioc/limma/man/voom.html",sreichl,https://github.com/epigen/spilterlize_integrate/issues/2
+I_kwDOJ1PAws5rdzcq,test-run with minimal configuration,CLOSED,2023-07-13T12:59:04Z,2024-05-19T14:03:39Z,2024-05-19T14:03:39Z,"perform a test run with minimal configurations/options of not using a feature with e.g., empty lists []
+
+- [x] ALL with only filtering (running)
+- [x] ALL step by step
+  - [x] norm
+  - [x] integrate
+- [x] add splits
+",sreichl,https://github.com/epigen/spilterlize_integrate/issues/3
+I_kwDOJ1PAws5rd0es,add example data and configuration,OPEN,2023-07-13T13:00:54Z,2023-07-27T11:36:08Z,,"either from tutorials e.g., limma or wait until other modules are ready for one test that goes from SRA download until enrichment analysis -> this will produce example data for most modules.
+",sreichl,https://github.com/epigen/spilterlize_integrate/issues/4
+I_kwDOJ1PAws5re5vx,include all potential assays that could be used as input in the docs,CLOSED,2023-07-13T15:23:25Z,2024-05-17T14:19:42Z,2024-05-17T14:19:42Z,"to increase findability and application.
+e.g., ChIP-seq, Methyl-Seq, miRNA-Seq, WGBS, microarray Cut&Tag , ",sreichl,https://github.com/epigen/spilterlize_integrate/issues/5
+I_kwDOJ1PAws5rxi9X,test on ATAC-seq data,CLOSED,2023-07-17T16:37:25Z,2024-05-17T13:00:13Z,2024-05-17T13:00:13Z,"- [x] test all features (especially recombat)
+- [x] Why not corrected with all features? Only with HVF? Error or something else? Would make sense to have all versions for different reasons. 
+  - -> is there, the job was just not finished before.
+- [x] why did it take 10h for ATAC-seq dataset?
+  - only of the ALL dataset and ended with OOM 
+",sreichl,https://github.com/epigen/spilterlize_integrate/issues/6
+I_kwDOJ1PAws5sSI-2,mean-var trend plot: add red line and/or indicate density of points,CLOSED,2023-07-22T09:15:06Z,2024-05-17T14:04:37Z,2024-05-17T14:04:37Z,"this should enable to better see/spot the overall trend to judge eg filtering in case of many features (e.g., ATAC-seq data)",sreichl,https://github.com/epigen/spilterlize_integrate/issues/7
+I_kwDOJ1PAws5-DEDT,reComBat environment fails because of reComBat dependency,CLOSED,2024-02-02T11:36:14Z,2024-05-16T14:19:28Z,2024-05-16T14:19:28Z,"There is a (known) issue with installing reComBat by pip, because it lists sklearn as one of its dependencies, which is unavailable since Dec 2023.
+An exisiting issue here: https://github.com/BorgwardtLab/reComBat/issues/4
+The underlying problem: https://github.com/scikit-learn/sklearn-pypi-package
+
+This prevents conda from creating the reComBat environment and therefore the whole pipeline doesn't run.",kvetab,https://github.com/epigen/spilterlize_integrate/issues/8
+I_kwDOJ1PAws6CsWpJ,Duplicate rows in input,CLOSED,2024-03-18T16:17:03Z,2024-05-16T14:23:44Z,2024-05-16T14:23:43Z,"Does not catch the error of getting input dataframe with duplicate gene/feature names till filter_features rule. 
+
+",dariarom94,https://github.com/epigen/spilterlize_integrate/issues/9
+I_kwDOJ1PAws6EI6Zn,check if log2 or natural log(ln) should be used in limma manual/vignettes,CLOSED,2024-03-31T11:53:51Z,2024-05-16T13:10:42Z,2024-05-16T13:10:42Z,adapt acordingly,sreichl,https://github.com/epigen/spilterlize_integrate/issues/10
+I_kwDOJ1PAws6OwHh3,QC correlation heatmap,CLOSED,2024-07-08T08:23:03Z,2024-07-10T13:24:51Z,2024-07-10T13:24:51Z,"- [x] load data after each processing step
+- [x] create hierarchically clustered correlation heatmap
+  - which correlation? person, spearman or kendall
+  - which package? pheatmap, ggplot2, ComplexHeatmap? should be fast and provide dendrogram
+- [x] annotate samples with both annotation columns from config, if provided
+- [x] make heatmap dimensions dynamic ie sample number + 3? for annotation and legends
+- [x] test on ATACseq data
+- [x] add back the column names
+- [x] consider/try: providing one not-clustered heatmap, columns and rows ordered alphabetically to better capture eg replicates
+- [x] add to docs and how to use ie replicates/conditions should cluster together but not batch
+- [x] check if final test run in Error free
+- [x] create a new minor release 1.2.0 with the new feature",sreichl,https://github.com/epigen/spilterlize_integrate/issues/11
+I_kwDOJ1PAws6T-fup,CFA analysis declares all variables as categorical in case of less than 25 samples,CLOSED,2024-08-23T08:40:46Z,2024-09-12T16:28:31Z,2024-09-12T16:28:31Z,"- [x] make ""categorical"" assignment of variables also dependent on sample numbers",sreichl,https://github.com/epigen/spilterlize_integrate/issues/12
+I_kwDOJ1PAws6UBIka,Drop categorical metadata with only one group before attempting to do Kruskal Wallis test,CLOSED,2024-08-23T14:54:41Z,2024-09-12T16:22:17Z,2024-09-12T16:22:17Z,"https://github.com/epigen/spilterlize_integrate/blob/964c4c01d956d42c519069c5431771feff96dd6d/workflow/scripts/plot_diagnostics.R#L165C1-L171C7
+
+Otherwise there's an error since you can't with only one group. Perhaps worth dropping earlier.",fwzhao,https://github.com/epigen/spilterlize_integrate/issues/13
+I_kwDOJ1PAws6V-uYc,explain filterByExpr,CLOSED,2024-09-10T12:02:58Z,2024-09-12T16:03:58Z,2024-09-12T16:03:58Z,"FZ: Min_counts is not really cpm. It's actual counts for a ""median library size"" sample. This is only obvious when you look at the code. The docs don't describe it so well.
+CPM cutoff is determined: cpm_cutoff = min.counts /medianLibSize *1e6.
+All this is slightly slightly confusing, but can be reverse engineered easily too .
+Min.counts.total has nothing to do with cpm... it's used just as raw counts. I.e. completely ignoring coverage normalization",sreichl,https://github.com/epigen/spilterlize_integrate/issues/14
+I_kwDOJ1PAws6XhBhM,rename this repository,OPEN,2024-09-23T09:09:23Z,2024-12-13T14:38:33Z,,"consider renaming to something more descriptive, easier to find, but boring
+e.g., ngs_processing
+
+- [x] brainstorm with AI provided the README
+- [ ] either rename to ngs_count_processing or leave it be
+GitHub Copilot proposed
+- ngs_processing
+- seq_data_tools
+- bio_seq_pipeline
+- split_filter_norm
+- seq_data_integrate
+- bio_data_tools
+- seq_data_kit
+- split_norm_integrate
+- seq_data_workflow
+- bio_seq_manager
+",sreichl,https://github.com/epigen/spilterlize_integrate/issues/15
+I_kwDOJ1PAws6d9I3_,How to run in parallel on multiple input data files?,CLOSED,2024-11-11T18:19:53Z,2024-11-12T13:24:04Z,2024-11-12T13:24:04Z,"Hi Stephan!
+
+I have multiple cell type levels (e.g., more and more finegrained). I would like to do the whole DEA recipe on each level separately, in parallel. For [dea_limma](https://github.com/epigen/dea_limma) I can just do this by setting the paths in the annotation file to match the wildcards for the different levels. For `spilterlize_integrate`, however, there is only a single `data` file as input. What's the best way to do this in parallel? 
+
+I thought about just using the module 4 times, for each of my cell type levels, potentially in a loop making the rules? 
+
+Thanks!
+
+Edit: This is how I do it for a single cell type level
+```snakemake
+ct_level = 'L2'
+config_wf['ct_annotated_spilterlize_integrate']['data'] = res_path_dea / 'pseudobulks' / f'{ct_level}__raw_counts.csv'
+config_wf['ct_annotated_spilterlize_integrate']['annotation'] = res_path_dea / 'pseudobulks' / f'{ct_level}__metadata.csv'
+config_wf['ct_annotated_spilterlize_integrate']['result_path'] = res_path_dea 
+
+module spilterlize_integrate:
+    snakefile:
+        PROJECT_ROOT / config['MrBiomics_path'] / 'spilterlize_integrate/workflow/Snakefile'
+    config:
+        config_wf['ct_annotated_spilterlize_integrate']
+
+use rule * from spilterlize_integrate as spilterlize_integrate_*
+```
+
+I also thought about putting the cell type levels into on big data file, but I don't like this since
+- then the same cells are repeated in the file &rarr; not conceptually clean
+- I cannot split it by cell_type_level and then something else on top (e.g., primary_vs_organoid), since as far as I understand the `spilterlize_integrate` workflow doesn't support combinatorial splitting (maybe that's something that would be useful actually?)",bednarsky,https://github.com/epigen/spilterlize_integrate/issues/16
+I_kwDOJ1PAws6eDTtB,Content and use of `feature_annotation` only became clear to me when looking into the code,CLOSED,2024-11-12T09:58:26Z,2024-11-12T13:19:09Z,2024-11-12T13:19:09Z,"Hi Stephan, 
+
+don't know if you care about these kind of issues, because one can solve them by looking into the code. But I think one shouldn't have to look into it to fill in the config files.
+
+For example, I wouldn't have known which columns the `feature_annotation` file needs to have. 
+
+One solution could also be that you say people have to look into the code (the code is very clear anyways) - because this is the ultimate documentation (pragmatic programmer). An approach like this would avoid duplication and might thus be nice. But then you have to clearly state somewhere that that's expected. ",bednarsky,https://github.com/epigen/spilterlize_integrate/issues/17
+I_kwDOJ1PAws6eFjX6,Slight documentation improvements (for me a first time user),OPEN,2024-11-12T13:51:40Z,2024-11-12T14:17:52Z,,"Here, I collect some things that I found confusing. I think it never hurts to deconfuse the user as much as possible (even though many things could be clear I guess, but why not make it easy)
+
+- `group` in `filter_parameters`. &rarr; Add comment: `group is a column in annotation`
+- `reCombat_parameters` `norm_methods`: Which methods can I use from above how? Default `[""CQN"", ""TMM""]` suggests that I use uppercase letters, but I have to guess. e.g., would this work? `[""TMM"", ""VOOM"", ""RLE"", ""none""]`? &rarr; provide all options in comment as list if possible? Or explain how they come about? &rarr; this one was also hard to resolve with looking into the code, e.g., for ""none"" in `edgeR_parameters: method:` I think I should use ""CPM"" in my case (`edgeR_parameters: quantification:`) instead of ""none"" 
+- Since you collect best practices here that also include knowledge, some words on whether it makes sense to use VOOM and then reCombat (or similar combinations) would be nice &rarr; it's not in the defaults and I don't understand why. 
+  - > if you are using limma-trend you start with normalized data, that's why I was not thinking of voom. voom I just added so the user gets a feeling how the data actually looks inside of a limma-voom approach.",bednarsky,https://github.com/epigen/spilterlize_integrate/issues/18
+I_kwDOJ1PAws6eKCHZ,How to provide annotation from other rule when using as module within larger workflow?,CLOSED,2024-11-12T21:54:56Z,2024-11-13T10:41:12Z,2024-11-13T10:19:03Z,"- In my use-case, the annotation file for this workflow is a metadata file from pseudobulk generation
+- I generate the pseudobulks and metadata with a snakemake workflow, i.e., they are outputs from a rule
+- Then I import this workflow as module
+- This workflow tries to load the annotation file to build its DAG. This fails, if the pseudobulk generation (and everything before) did not run yet since the annotation file is still missing
+- What is the best way to make the module loading wait for the generation of the annotation files? Not sure [checkpoints](https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#data-dependent-conditional-execution) are the way to go, since the annotation file is loaded in the Snakefile of the module, not in a rule of the module. 
+- PS: for other MrBiomics workflows the annotation file is more akin to configuration rather than metadata. Thus, there I use functions that are called in my workflow (before DAG generation) to make my whole workflow run from start to end. This does not work in this case
+- PPS: I know, I could just run it until before the module, then save it from there and from this time on it will always run. Just wondering if there is a better solution",bednarsky,https://github.com/epigen/spilterlize_integrate/issues/19
+I_kwDOJ1PAws6esrgQ,replace reComBat with limma::removeBatchEffect,OPEN,2024-11-15T16:40:42Z,2024-12-13T14:25:40Z,,"Consider replacing reComBat with limma::removeBatchEffect
+https://rdrr.io/bioc/limma/man/removeBatchEffect.html
+
+pro
+- limma works, is maintained and widely used/tested
+- we reuse the same package as for other steps (e.g., VOOM norm) and downstream analyses
+- already provides intuition how the downstream linear model, given the same design, ""sees"" the data
+-  Works also with only continous covariates: 
+   - https://support.bioconductor.org/p/9153034/#:~:text=removeBatchEffect%20does%20take%20continuous%20variables,variables%20in%20the%20design%20matrix.
+   - https://rdrr.io/bioc/limma/src/R/removeBatchEffect.R
+
+con
+
+- supports only two factors (batch1 and batch2)
+
+Considerations
+
+- required design matrix is tricky, unsure if I implement a formula or just ""tell me the columns you care about as list"" (and add them together into a formula internally).
+- could also lead to a change in filter by expression step to support formulas or multiple columns?
+
+**decision**: replace reComBat w/ limma:removeBatchEffect
+",sreichl,https://github.com/epigen/spilterlize_integrate/issues/20
+I_kwDOJ1PAws6fCJHT,plot_diagnostics: Too significant -log10(p-values) become `inf` and cause error in `hclust(dist())`,OPEN,2024-11-18T10:59:19Z,2024-11-18T14:58:24Z,,"- Cell type seems to be very much confounding the analysis in my case
+```R
+> p_values
+                        PC1\n(35.9%) PC2\n(19.1%)   PC3\n(4.6%)   PC4\n(3.5%)
+age                     2.245190e-03 7.340917e-01  6.734626e-01  9.367418e-01
+n_cells_pseudobulked    5.389489e-34 1.300771e-06  3.321595e-17  4.874364e-07
+cell_type               0.000000e+00 0.000000e+00 1.571575e-314 1.635357e-321
+```
+- Seems that R cannot handle how much so, and makes the p-values zeros
+- Solution suggestion: Mask all values that are smaller than `1e-100` with that value
+```diff
+# Combine p-values
+p_values <- rbind(p_values_numeric, p_values_categorical)
++ p_values[p_values < 1e-100] <- 1e-100
+
+# Adjust p-values for multiple testing
+p_values_adjusted <- p.adjust(as.vector(p_values), method = ""BH"")
+p_values_adjusted <- matrix(p_values_adjusted, nrow = nrow(p_values), ncol = ncol(p_values))
+rownames(p_values_adjusted) <- rownames(p_values)
+colnames(p_values_adjusted) <- colnames(p_values)
+
+# Transform p-values to -log10(p-values)
+log_p_values <- -log10(p_values_adjusted)
+```
+
+- Bonus: This also removes this high values from the color scale, and other, significant confounders don't seem so unimportant",bednarsky,https://github.com/epigen/spilterlize_integrate/issues/21
+I_kwDOJ1PAws6gnkY7,determine pairwise statistical association between all provided metadata,OPEN,2024-11-26T13:39:45Z,2024-11-26T13:39:50Z,,"- only done once per dataset/split, because annotation does not change
+- to understand the relationships between metadata/confounders
+- re-use same statistical tests as with CFA, only cat vs cat requires additional considerations",sreichl,https://github.com/epigen/spilterlize_integrate/issues/23

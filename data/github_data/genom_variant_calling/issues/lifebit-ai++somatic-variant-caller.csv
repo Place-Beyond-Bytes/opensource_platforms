@@ -1,0 +1,65 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NzQ0ODg3ODk=,Add these params to `gatk Mutect2` process (T-N mode),OPEN,2019-07-30T09:56:07Z,2019-08-01T19:31:20Z,,"- [x] `--germline-resource af-only-gnomad.vcf.gz `
+- [x] `--panel-of-normals pon.vcf.gz `
+- [ ] `  --f1r2-tar-gz f1r2.tar.gz`
+
+Check Mutect2 [best practices docs](https://gatkforums.broadinstitute.org/gatk/discussion/24057/how-to-call-somatic-mutations-using-gatk4-mutect2)
+Check Mutect2 [man docs](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php) ",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/2
+MDU6SXNzdWU0NzQ0OTM5OTk=,Get output `somatic.vcf.gz.stats ` file from `Mutect2 process` ran T-N mode process,CLOSED,2019-07-30T10:06:43Z,2019-07-31T00:28:39Z,2019-07-31T00:28:22Z,"- [Mutect2 Docs](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php)
+
+![image](https://user-images.githubusercontent.com/38183826/62120557-bb257980-b2b9-11e9-9dc2-f360451d5135.png)
+
+- [ Mutect2 Somatic Best Practices Docs](https://gatkforums.broadinstitute.org/gatk/discussion/24057/how-to-call-somatic-mutations-using-gatk4-mutect2)
+
+![image](https://user-images.githubusercontent.com/38183826/62120736-135c7b80-b2ba-11e9-8f40-b8a7e161635d.png)
+
+
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/3
+MDU6SXNzdWU0NzQ1MDI1MjQ=,"Add --ip option, interval padding for including some extra bp around ranges declared in intervals_list",CLOSED,2019-07-30T10:25:18Z,2019-07-31T10:26:31Z,2019-07-30T23:20:18Z,"`-ip / --interval-padding allows you to add padding (in bp) to the intervals you include.`
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/4
+MDU6SXNzdWU0NzQ2NTExNjg=,Consider adjusting very strict discovery parameters,OPEN,2019-07-30T15:23:31Z,2019-07-30T15:23:31Z,,"`--max_alt_alleles_in_normal_count 1000` 
+`--max_alt_allele_in_normal_fraction 0.10` 
+
+https://best-practices-for-processing-hts-data.readthedocs.io/en/latest/mutect2_pitfalls.html
+
+![image](https://user-images.githubusercontent.com/38183826/62142460-4ddc0d80-b2e6-11e9-9fe1-5afe479b3294.png)
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/5
+MDU6SXNzdWU0NzQ2ODIzMjE=,Hard filtering for germline ,OPEN,2019-07-30T16:25:06Z,2019-07-30T16:25:06Z,,https://software.broadinstitute.org/gatk/documentation/article?id=11069,cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/6
+MDU6SXNzdWU0NzYyMjQ2NTE=,Why use both COSMIC and PoN as resources?,OPEN,2019-08-02T15:01:55Z,2019-08-02T15:01:55Z,,"tl;dr from [GATK forum](https://gatkforums.broadinstitute.org/gatk/discussion/4694/mutect-hc-pon-mode)
+
+_""That's right, except the genotype is not used. Note that sites that get tentatively rejected because they are in the PON can get ""rescued"" if they are also in COSMIC.""_
+
+![image](https://user-images.githubusercontent.com/38183826/62379366-b6bdc280-b53e-11e9-86aa-618c44e36880.png)
+
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/7
+MDU6SXNzdWU0NzY1NTg2NzU=,WARN  ApplyBQSR - This tool has only been well tested on ILLUMINA-based sequencing data. For other data use at your own risk.,OPEN,2019-08-04T14:21:25Z,2019-08-04T14:21:25Z,,,cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/8
+MDU6SXNzdWU0NzY1NTk1NzU=,"most of the tools are unable to correctly process any contigs longer than 512 Mb, it's a known limitation.",OPEN,2019-08-04T14:31:18Z,2019-08-04T14:31:18Z,,"https://gatkforums.broadinstitute.org/gatk/discussion/8890/exception-when-processing-alignment-for-bam-index
+
+The limitation is mentioned on the above forum thread.
+
+![image](https://user-images.githubusercontent.com/38183826/62424793-be5ea200-b6cb-11e9-819d-0e5d603395cf.png)
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/9
+MDU6SXNzdWU0NzY1NTk5MjY=,H20241 MarkDuplicates WARNING:	AbstractOpticalDuplicateFinderCommandLineProgram	A field field parsed out of a read name was expected to contain an integer and did not. Read name: G00OW:02982:12275. Cause: String 'G00OW' did not start with a parsable number.,OPEN,2019-08-04T14:35:05Z,2024-11-20T05:34:36Z,,"H20241_Normal
+Caused by:
+
+Process `MarkDuplicates (H20241_Normal.merged_mitoless.bam)` terminated with an error exit status (247)
+
+I found in the log file the full command run by `gatk MarkDuplicates`.
+
+More likely this flag is to blame for the error:
+![image](https://user-images.githubusercontent.com/38183826/62425092-0fbc6080-b6cf-11e9-87e3-f9d8bf99e6b7.png)
+
+```
+--READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> \
+```",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/10
+MDU6SXNzdWU0NzY1NjE5OTQ=,H20241 htsjdk.samtools.SAMException: Exception when processing alignment for BAM index ZAV8V:10024:06213 41b aligned to chr9:140007208-140007248.,OPEN,2019-08-04T14:57:21Z,2019-08-04T14:58:52Z,,"H20241, in the artifacts inspection experiment job
+
+- [ ] Caused by: htsjdk.samtools.util.RuntimeIOException: Write error; BinaryCodec in writemode; streamed file (filename not available)
+- [ ] Caused by: java.io.IOException: No space left on device
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/11
+MDU6SXNzdWU0Nzc5MTU4OTU=,Split the samtools sort and samtools view into 2 processes. Offer --skip-sorting options,OPEN,2019-08-07T13:03:00Z,2019-08-07T13:03:00Z,,"It is inefficient to sort everytime, the user might provide sorted bam files. In case the bams are sorted but the user wants to test the pipeline with less chromosomes (subsampling) then the `samtools view` should be detached from the sorting which should happen at max once, if the user uses `resume` nay times",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/12
+MDU6SXNzdWU0Nzc5MjEwNDY=,Be(a)ware of the indexing system difference between interval file and BED files.,OPEN,2019-08-07T13:13:12Z,2019-08-07T13:13:12Z,,"https://software.broadinstitute.org/gatk/documentation/article?id=11009
+
+![image](https://user-images.githubusercontent.com/38183826/62625612-7afb7200-b91d-11e9-9078-aa6cb1586777.png)
+",cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/13
+MDU6SXNzdWU0OTQ3MTExMzI=,Add flag --coverage_file to Mutect2 to use later with MutSig,OPEN,2019-09-17T15:56:40Z,2019-09-17T15:56:40Z,,https://gatkforums.broadinstitute.org/gatk/discussion/4497/about-the-coverage-file#latest,cgpu,https://github.com/lifebit-ai/somatic-variant-caller/issues/14

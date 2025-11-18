@@ -1,0 +1,213 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NTU3MTUzMzQ=,Error while running seq2HLA,OPEN,2019-06-13T12:34:45Z,2021-05-25T02:12:25Z,,"I am running seq2HLA for the first time, the program runs fine up to this stage and throws the error.
+
+
+The digital haplotype is written into runName-ClassI-class.digitalhaplotype2
+2nd iteration done.
+-----------2 digit typing results-------------
+#Locus	Allele 1	Confidence	Allele 2	Confidence
+A	A*68	0	A*01	0.01747313
+B	B*51	0.0009102886	B*57	0.0002627386
+C	C*15	3.922862e-12	C*06	0.01667079
+Calculation of locus-specific expression ...
+
+runName-ClassI-class.bowtielog
+Traceback (most recent call last):
+  File ""/NextGenSeqData/project-data/chirag/unixTools/seq2HLA/seq2HLA.py"", line 769, in <module>
+    
+
+> main(runName,readFile1,readFile2,fastaClassI,fastaClassInonclass,fastaClassII,bowtiebuildClassI,bowtiebuildClassII,bowtiebuildClassInonclass,trim3,threads,class1_list,class1nonclass_list,class2_list,length_dict1,length_dict1nonclass,length_dict2)
+
+  File ""/NextGenSeqData/project-data/chirag/unixTools/seq2HLA/seq2HLA.py"", line 123, in main
+    
+
+> mainHLA(runName+""-ClassI-class"",readFile1,readFile2,bowtiebuildClassI,fastaClassI,mapopt,trim3,gzipped,class1_list,1,""classical"",length_dict1)
+
+  File ""/NextGenSeqData/project-data/chirag/unixTools/seq2HLA/seq2HLA.py"", line 195, in mainHLA
+    expression(locus_list,length_dict,map,runName,readFile1)
+  File ""/NextGenSeqData/project-data/chirag/unixTools/seq2HLA/seq2HLA.py"", line 623, in expression
+    totalreads=float(linecache.getline(logfile,1).split(':')[1])
+
+ValueError: could not convert string to float: Skipping pair D00620
+",ChiragNepal,https://github.com/TRON-Bioinformatics/seq2HLA/issues/1
+MDU6SXNzdWU1MDk1NjMxNDQ=,How to modify the software and make a reference to call HLA types from mouse species?,CLOSED,2019-10-20T08:25:28Z,2020-10-07T08:09:03Z,2020-10-07T08:09:03Z,"Hi,
+
+How to modify the software and make a reference to call HLA types from mouse species?
+
+Thanks!",pl618,https://github.com/TRON-Bioinformatics/seq2HLA/issues/2
+MDU6SXNzdWU1NjAwNDMzNzg=,FPKM instead of RPKM for paired-end data,OPEN,2020-02-04T23:34:25Z,2021-02-07T12:08:25Z,,"Hi,
+
+I've recently run seq2hla on paired-end data using the following command:
+
+python $seq2HLA -1 $INPUT1 -2 $INPUT2 -r ""$OUTDIR/$sample"" -p 20
+
+and the expression results produced in the output file were in RPKM.
+Is the calculation correct?
+
+Best
+",marcopretti,https://github.com/TRON-Bioinformatics/seq2HLA/issues/3
+MDU6SXNzdWU2NzUwNzYyMDQ=,ClassI-class-2nditeration_1.fq empty,CLOSED,2020-08-07T15:04:17Z,2020-10-05T08:30:49Z,2020-10-05T08:30:49Z,"Dear seq2HLA,
+
+I installed the requisites through conda, however, when I try to run this is always stops after the first iteration. Therefore, ClassI-class-2nditeration_1.fq is always empty. This is the same for ~20 cell lines. (RNAseq fq input). 
+
+An example bowtie log is:
+# reads processed: 8494272
+# reads with at least one reported alignment: 660 (0.01%)
+# reads that failed to align: 8493612 (99.99%)
+Reported 49859 paired-end alignments to 1 output stream(s)
+
+
+bowtie version 1.1.2
+
+please could you point me in the direction of a fix?
+
+REgards,
+
+Peter Thorpe
+",peterthorpe5,https://github.com/TRON-Bioinformatics/seq2HLA/issues/4
+MDU6SXNzdWU3MjIyMzY3ODY=,Can I use seq2HLA for cancer scRNA-seq data?,OPEN,2020-10-15T11:12:04Z,2021-02-06T06:20:46Z,,Can I use seq2HLA for cancer scRNA-seq data?,levinhein,https://github.com/TRON-Bioinformatics/seq2HLA/issues/5
+MDU6SXNzdWU4MTk2NzA3NjY=,allele-specific HLA expression ,OPEN,2021-03-02T06:11:38Z,2021-03-02T06:11:58Z,,"Hi how can we obtain allele-specific HLA expression information from the output of seq2HLA?
+Thanks!",cjieming2,https://github.com/TRON-Bioinformatics/seq2HLA/issues/6
+MDU6SXNzdWU4NzY3OTcxMDU=,Homozygous prediction for all samples,OPEN,2021-05-05T20:12:33Z,2021-05-05T20:12:33Z,,"Hi,
+I am trying to genotype my samples using Seq2HLA, but the results indicate all my samples are homozygous in all of the 3 MHC-I genes. Here is the output from one of the samples.
+
+Command:
+python $script/seq2HLA.py -2 BWA_reads_50M_AlleleSet10_1.fastq -1 BWA_reads_50M_AlleleSet10_2.fastq -r AlleleSet10_Seq2HLA
+
+HLAgenotype2digits file:
+#Locus  Allele 1        Confidence      Allele 2        Confidence
+A       A*16    0.3422678       hoz(""A*10"")     8.00000000023e-07
+B       B*02    0       hoz(""B*02"")     NA
+C       C*044   0.7426947       hoz(""C*011"")    0.0056835
+
+HLAgenotype4digits file:
+#Locus  Allele 1        Confidence      Allele 2        Confidence
+A       A*16:01 0.3422678       A*16:01 8.00000000023e-07
+B       B*02:3  0.0     B*02:3  NA
+C       C*044:01        0.7426947       C*044:01        0.0056835
+
+I am thinking maybe I didn't use it correctly. Do you notice anything wrong in my command?
+
+Thanks,
+Yuan
+",yuanfeng719,https://github.com/TRON-Bioinformatics/seq2HLA/issues/7
+MDU6SXNzdWU5MjIzOTg0NTk=,Typing of MICA/MICB,OPEN,2021-06-16T09:56:01Z,2021-06-16T09:56:01Z,,Is it possible for a user to add appropriate references for typing of MICA/MICB?,prmac,https://github.com/TRON-Bioinformatics/seq2HLA/issues/8
+I_kwDOBea-y85LQmcG,My fastq file of RNA-seq can not be used to estimate HLA classification,OPEN,2022-06-07T02:33:00Z,2022-06-07T02:33:00Z,,"when I use seq2HLA, some errors occurred as follow:
+First iteration starts....
+Mapping ......
+# reads processed: 102029138
+# reads with at least one reported alignment: 0 (0.00%)
+# reads that failed to align: 102029138 (100.00%)
+No alignments
+
+Calculation of first digital haplotype.....
+The digital haplotype is written into test-ClassI-nonclass.digitalhaplotype1
+1st iteration done.
+Now removing reads that mapped to the three top-scoring groups .......
+Nothing to remove
+
+Second iterations starts .....
+ Mapping ......
+Error: reads file does not look like a FASTQ file
+
+I have no idea why my fastq file of RNA-seq cannot be used. Any recommendations to solve my problems? ",lzz-123,https://github.com/TRON-Bioinformatics/seq2HLA/issues/9
+I_kwDOBea-y85R8uNS,Confidence score and p-value,OPEN,2022-09-15T17:42:39Z,2023-01-18T18:24:16Z,,"Hi,
+
+I am currently analyzing the seq2HLA outputs, and I have a question about the definition of the confidence scores. Are they equal to Pvalues or 1 - Pvalues? Is this value the higher the better?
+
+I really appreciate your help!!
+
+Yuan",yuanfeng719,https://github.com/TRON-Bioinformatics/seq2HLA/issues/10
+I_kwDOBea-y85YoGEH,Low number of paired-end alignments,OPEN,2022-12-09T15:01:33Z,2022-12-09T15:01:33Z,,"Hello,
+I am trying to apply seq2HLA to my RNA-seq data (paired-end). When I run it, I get the following result.
+# reads processed: 18902737
+# reads with at least one reported alignment: 40 (0.00%)
+# reads that failed to align: 18902697 (100.00%)
+Reported 3460 paired-end alignments to 1 output stream(s)
+For the rest of the samples something very similar happens. I have used bowtie2 with those samples to align and have not encountered any problems. Can you give me a solution?
+
+Thank you very much for your help.
+",vgarciavc,https://github.com/TRON-Bioinformatics/seq2HLA/issues/11
+I_kwDOBea-y85epLXj,Create a Release for version 2.3,OPEN,2023-02-16T15:08:52Z,2023-02-20T15:10:02Z,,"I'd like to update the bioconda recipe for seq2hla for version 2.3.   
+https://github.com/bioconda/bioconda-recipes/tree/master/recipes/seq2hla
+
+Bioconda recommends downloading from a release.
+https://bioconda.github.io/contributor/guidelines.html#stable-urls",jj-umn,https://github.com/TRON-Bioinformatics/seq2HLA/issues/12
+I_kwDOBea-y85nl5RT,Can I use the bowtie index file in the subdirectory 'reference',OPEN,2023-06-02T11:07:30Z,2023-06-02T11:07:30Z,,"Hi Sebastian,
+
+Thanks for creating the package!
+I'm a bit confused on the bowtie index files required, do I have to do the index file using bowtie by myself or I can directly use the 'reference' folder in the subdirectory under seq2HLA? 
+
+I look forward to your reply. 
+
+Best,
+Jing ",JingAnyaSun,https://github.com/TRON-Bioinformatics/seq2HLA/issues/13
+I_kwDOBea-y850pNSj,version 2.3 error,OPEN,2023-10-23T11:35:24Z,2024-01-19T05:33:38Z,,"Hello developer
+
+When I run seq2hla.py version 2.3,  I get this error:
+
+Traceback (most recent call last):
+  File ""/home/gbb/tools/seq2HLA-master/seq2HLA.py"", line 791, in <module>
+    main()
+  File ""/home/gbb/tools/seq2HLA-master/seq2HLA.py"", line 786, in main
+    pipe.run()
+  File ""/home/gbb/tools/seq2HLA-master/seq2HLA.py"", line 140, in run
+    self.call_HLA(
+  File ""/home/gbb/tools/seq2HLA-master/seq2HLA.py"", line 252, in call_HLA
+    self.expression(locus_list, length_dict, map, run_name)
+  File ""/home/gbb/tools/seq2HLA-master/seq2HLA.py"", line 694, in expression
+    totalreads = float(linecache.getline(logfile, 1).split(':')[1])
+IndexError: list index out of range",gengbaobao,https://github.com/TRON-Bioinformatics/seq2HLA/issues/15
+I_kwDOBea-y853BqO1,allele 1 is missing in the run2-ClassI-class.HLAgenotype4digits,OPEN,2023-11-16T13:59:36Z,2023-11-16T13:59:36Z,,"#Locus	Allele 1	Confidence	Allele 2	Confidence
+A	no	NA	A*24:02	0.165067
+B	no	NA	B*54:01	0.03863101
+C	no	NA	no	NA
+where did i RUN it wrong?
+python /home/ranzhi/seq2HLA-master-C12/seq2HLA-master/seq2HLA.py -1 /home/ranzhi/seq2HLA-master-C12/C12/C12CA-Req9_FKDL210264010-1a_1.fastq -2 /home/ranzhi/seq2HLA-master-C12/C12/C12CA-Req9_FKDL210264010-1a_2.fastq -r /home/ranzhi/seq2HLA-master-C12/run1 -p 10
+this is my code",Jill-Yien,https://github.com/TRON-Bioinformatics/seq2HLA/issues/16
+I_kwDOBea-y85-xcgU,v2.4 failed run,OPEN,2024-02-09T10:50:26Z,2024-02-09T10:50:37Z,,"Hi,
+running version 2.4 with python 3(.11).
+HLA calling gets stuck during/after the 2nd iteration of non-class determination with the output below.
+
+Thanks for any help :)
+
+>>>>>
+The digital haplotype is written into [filename]-ClassI-nonclass.digitalhaplotype3
+Took 0.5041732788085938 seconds
+Traceback (most recent call last):
+  File ""seq2HLA.py"", line 791, in <module>
+    main()
+  File ""seq2HLA.py"", line 786, in main
+    pipe.run()
+  File ""seq2HLA.py"", line 152, in run
+    self.call_HLA(
+  File ""seq2HLA.py"", line 304, in call_HLA
+    if fourDigit_solutions1[locus] > 1:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'int'
+",Kaddea,https://github.com/TRON-Bioinformatics/seq2HLA/issues/17
+I_kwDOBea-y86ZC1c6,error running seq2HLA on mRNAseq ,CLOSED,2024-10-05T04:48:00Z,2024-10-07T14:31:07Z,2024-10-07T14:28:48Z,"The error below seems to be arising from some software version incompatibility ? but it is not clear what. bowtie log is not empty, and bowtie version is 1.3.1
+
+The digital haplotype is written into run-ClassI-class.digitalhaplotype2
+Took 0.26239871978759766 seconds
+2nd iteration done.
+-----------2 digit typing results-------------
+#Locus  Allele 1        Confidence      Allele 2        Confidence
+A       no      NA      hoz(""A*01"")     NA
+B       no      NA      hoz(""B*07"")     NA
+C       no      NA      hoz(""C*01"")     NA
+Calculation of locus-specific expression ...
+run-ClassI-class.bowtielog
+Traceback (most recent call last):
+  File ""/mnt/data/software/seq2HLA/seq2HLA.py"", line 791, in <module>
+    main()
+  File ""/mnt/data/software/seq2HLA/seq2HLA.py"", line 786, in main
+    pipe.run()
+  File ""/mnt/data/software/seq2HLA/seq2HLA.py"", line 140, in run
+    self.call_HLA(
+  File ""/mnt/data/software/seq2HLA/seq2HLA.py"", line 252, in call_HLA
+    self.expression(locus_list, length_dict, map, run_name)
+  File ""/mnt/data/software/seq2HLA/seq2HLA.py"", line 694, in expression
+    totalreads = float(linecache.getline(logfile, 1).split(':')[1])
+IndexError: list index out of range
+bash: 002/hla_map/tempus/R_2.fastq: No such file or directory",katahdin0,https://github.com/TRON-Bioinformatics/seq2HLA/issues/18

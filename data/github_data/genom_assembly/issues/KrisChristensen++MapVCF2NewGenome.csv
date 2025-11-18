@@ -1,0 +1,66 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFeq_N85Npei-,Truncated File Issue After Generating Flanking Seqs Step,CLOSED,2022-07-12T23:25:22Z,2022-07-14T14:46:02Z,2022-07-14T14:46:02Z,"Any clue why this might be happening?  I'm running VCF_2_Fasta_v1.1.py with no reported errors.  But the mapping step keeps kicking out this ""truncated file"" error.  Like this:  
+
+[M::mem_process_seqs] Processed 49752 reads in 10.999 CPU sec, 10.926 real sec
+[M::process] read 49752 sequences (10000152 bp)...
+[M::mem_process_seqs] Processed 49752 reads in 11.168 CPU sec, 11.104 real sec
+[E::sam_parse1] query name too long
+[W::sam_read1_sam] Parse error at line 987047
+samtools sort: truncated file. Aborting",kellybarr,https://github.com/KrisChristensen/MapVCF2NewGenome/issues/1
+I_kwDOFeq_N854Mwgx,error while running the CheckMappingVCF.v1.0.py,CLOSED,2023-11-29T13:35:06Z,2023-11-29T14:54:57Z,2023-11-29T14:54:57Z,"Hi, I am having problems generating the old2new.positions_filtered.txt
+
+Everything ran correctly until step 5 (below), but then I got this error regarding the location of a key ""KeyError: 'CAE02294'"", but old2new.positions.txt contains the mentioned key. Any idea of what it can be?
+
+Is it possible to add some dummy data so that I can test the different steps?
+I have tried with other data sets without success either.
+
+I am attaching the files here too. 
+[Test.zip](https://github.com/KrisChristensen/MapVCF2NewGenome/files/13501024/Test.zip)
+
+Thanks for your help.
+
+
+python CheckMappingVCF.v1.0.py -map old2new.positions.txt -fasta1 flankingSeqs.fasta -fai1 flankingSeqs.fasta.fai -fasta2 newGenome.fasta -fai2 newGenome.fasta.fai -flanking 20 -output most > old2new.positions.filtered.txt
+
+
+Running CheckMappingVCF version: 1.0 with the following parameters:
+        -map: old2new.positions.txt
+        -fasta1: flankingSeqs.fasta
+        -fasta2: newGenome.fasta
+        -fai1: flankingSeqs.fasta.fai
+        -fai2: newGenome.fasta.fai
+        -flanking: 20
+        -output: most
+        -verbose: NA
+
+Opened index of fasta file (fai1): flankingSeqs.fasta.fai
+        Finished reading scaffold fasta fai file: Found 37 sequence(s)
+        Total Nucleotide(s): 7437
+
+Opened index of fasta file (fai2): newGenome.fasta.fai
+        Finished reading scaffold fasta fai file: Found 1115 sequence(s)
+        Total Nucleotide(s): 1863494
+
+Opened map file: old2new.positions.txt
+Traceback (most recent call last):
+  File ""/env/export/cns_n02_proj/proj21/q_seq_lab/Angelina/M2/SOIL/Genetic_Variability/VCF/MapVCF2NewGenome-main/Test/CheckMappingVCF.v1.0.py"", line 202, in <module>
+    open_map = OpenFile(args.map, ""map"", ""1"")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/env/export/cns_n02_proj/proj21/q_seq_lab/Angelina/M2/SOIL/Genetic_Variability/VCF/MapVCF2NewGenome-main/Test/CheckMappingVCF.v1.0.py"", line 38, in __init__
+    self.readLinesMap(self.file)
+  File ""/env/export/cns_n02_proj/proj21/q_seq_lab/Angelina/M2/SOIL/Genetic_Variability/VCF/MapVCF2NewGenome-main/Test/CheckMappingVCF.v1.0.py"", line 72, in readLinesMap
+    if ((int(self.start1) > 0 and int(Variables.sequences1[self.contig1]) >= int(self.end1)) and
+                                      ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'CAE02294'
+",angi-bvg,https://github.com/KrisChristensen/MapVCF2NewGenome/issues/2
+I_kwDOFeq_N854dSQi,Empty old2new.positions.txt file. ,OPEN,2023-12-01T14:03:12Z,2023-12-01T14:45:19Z,,"Hi, I get an empty file during certain runs. Do you have an explanation?
+
+I don't understand why the ""old2new.positions.txt"" file is empty (bad_run), when all the previous steps produce no errors.
+I know that the codes are working, because I get results on one of my data (good_run).
+
+I am attaching the files here.
+[good_run.zip](https://github.com/KrisChristensen/MapVCF2NewGenome/files/13527406/good_run.zip)
+[bad_run.zip](https://github.com/KrisChristensen/MapVCF2NewGenome/files/13527408/bad_run.zip)
+
+Thanks for your help.
+",angi-bvg,https://github.com/KrisChristensen/MapVCF2NewGenome/issues/3

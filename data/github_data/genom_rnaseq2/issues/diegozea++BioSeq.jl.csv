@@ -1,0 +1,262 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMTM3MjYxOQ==,Reorganization of BioSeq types,CLOSED,2013-02-25T18:34:19Z,2013-05-25T06:58:40Z,2013-05-25T06:58:30Z,"BioSeq needs some reshaping in order to be more idiomatic and avoid some errors:
+- [x] ASCIIChar must be eliminated
+- [x] Convert using uint8
+- [x] Better interface for Strings/Sequence objects
+- [x] Improve Matrices as Alignments
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/1
+MDU6SXNzdWUxMTU2MDQ0Nw==,2-bit biounit? And other memory-saving enhancements / features,CLOSED,2013-03-01T20:25:55Z,2013-04-12T03:37:59Z,2013-04-12T03:37:59Z,"Hi, I would love to start using BioSeq, but first, I need to be able to read entire genomes into a single BioSeq structure. What is the likelihood of adding either:
+1. a 2-bit nucleotide biounit for only the GATC cases
+
+or
+1. a file-based biounit vector (enabling keeping the genome sequence on disk rather than reading the entire thing into memory?
+
+Also, read/writeFASTA functions would be helpful.
+
+Thanks.
+",dreiss-isb,https://github.com/diegozea/BioSeq.jl/issues/3
+MDU6SXNzdWUxMTg0NzQwNQ==,isadenine and other return always and BitArray,CLOSED,2013-03-10T02:26:45Z,2013-04-12T03:34:53Z,2013-04-12T03:34:53Z,"For one base, maybe is better return a nucleotide type ? And using == 'A' ?
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/4
+MDU6SXNzdWUxMTg1NjQxMA==,rename nt and aa ?,CLOSED,2013-03-10T19:28:35Z,2013-03-25T03:18:37Z,2013-03-25T03:18:37Z,"For a large name, less frequent on user code, maybe
+`nt()`  to `nucleotide()`
+`aa()` to `aminoacid()`
+?
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/5
+MDU6SXNzdWUxMjM5NTczOQ==,Add Bit-Level Scheme for Nucleotides,CLOSED,2013-03-25T11:22:01Z,2013-04-12T03:33:29Z,2013-04-12T03:33:29Z,"Add a Bit-level scheme type (immutable wrapping a Uint8) for Nucleotides
+http://ape.mpl.ird.fr/misc/BitLevelCodingScheme.html
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/6
+MDU6SXNzdWUxMjM5NjAxMA==,0.1 and 0.2 support,CLOSED,2013-03-25T11:29:53Z,2013-04-12T03:32:17Z,2013-04-12T03:32:17Z,"At some moment is going to be necessary freeze for 0.1 and make a version with 0.2 compatibility and immutable types. Must to be immutable types the `DNA2Base` and the new Bit-Level scheme for nucleotides:
+
+https://github.com/diegozea/BioSeq.jl/issues/6
+https://github.com/diegozea/BioSeq.jl/issues/4
+
+Maybe can be freeze BioSeq for 0.1 after add  Bit-Level scheme and some **transcription utilities**, and some abstract type for **annotated sequences**
+
+Other option is make a branch and maintain both versions, but this can be more time consuming.
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/7
+MDU6SXNzdWUxMzIxMzQ1Mw==,"Not all files are downloaded on Pkg.add(""BioSeq"")",CLOSED,2013-04-15T18:32:36Z,2013-06-14T18:17:03Z,2013-06-14T18:17:03Z,"Only the following files are downloaded on Pkg.add(""BioSeq""):
+
+BioSeq.jl        alphabetsfunc.jl dna2.jl          stringlike.jl
+alphabets.jl     biounits.jl      functions.jl
+
+Do we need to wait for a new version to use translate.jl, etc? Can I use the current version by cloning and running Pkg.new()?
+",jprider63,https://github.com/diegozea/BioSeq.jl/issues/8
+MDU6SXNzdWUxNDY4NTU1Mg==,Unsafe conversion to dna2,CLOSED,2013-05-23T17:19:45Z,2013-05-25T06:20:21Z,2013-05-25T06:20:21Z,"Now we are doing it using `& 7` but this can gives clashes:
+
+```
+julia> 'I' & 7
+1
+julia> 'A' & 7
+1
+```
+
+```
+function convert{T<:Integer}(::Type{Nucleotide2bitSeq},s::Vector{T})
+  len = length(s)
+  seq = Nucleotide2bitSeq(len)
+  for i in 1:len
+    seq[i] = _convert_to_base2[s[i] & 7]
+  end
+  seq
+end
+
+function convert{T<:Integer}(::Type{Nucleotide2bitBase},s::T)
+  _convert_to_base2[s & 7]
+end
+```
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/9
+MDU6SXNzdWUxOTc5NDkzMQ==,ERROR: A is not a valid key for type AminoAcid,CLOSED,2013-09-20T04:34:09Z,2013-09-20T17:53:03Z,2013-09-20T17:52:41Z,"julia> using BioSeq
+ERROR: A is not a valid key for type AminoAcid
+ in error at error.jl:22
+ in setindex! at dict.jl:412
+ in Dict at dict.jl:293
+ in include at boot.jl:238
+ in include_from_node1 at loading.jl:96
+ in include at boot.jl:238
+ in include_from_node1 at loading.jl:96
+ in reload_path at loading.jl:121
+ in require at loading.jl:50
+at /Users/shandils/.julia/BioSeq/src/alphabets.jl:133
+at /Users/shandils/.julia/BioSeq/src/BioSeq.jl:79
+
+julia> const dna4alphabet = alphabet(nt""ACTG"", false)
+ERROR: @nt_str not defined
+
+julia> using BioSeq
+
+julia> const dna4alphabet = alphabet(nt""ACTG"", false)
+Case Insensitive Alphabet{Nucleotide} of 4 elements:
+
+ indice   : 256-element Uint8 Array
+ alphabet : 4-element Nucleotide Array
+
+ alphabet           indice[alphabet]
+ Nucleotide (Int64)     Uint8 (Int64)
+
+ A (65)             1 (1)
+ C (67)             2 (2)
+ T (84)             3 (3)
+ G (71)             4 (4)
+
+.....
+'using BioSeq' the second time, in the same julia session, gives no error. Consider fixed?
+",sshandilya,https://github.com/diegozea/BioSeq.jl/issues/10
+MDU6SXNzdWUyOTEyMTE4Ng==,Tests fail,CLOSED,2014-03-10T18:44:07Z,2014-03-11T16:10:22Z,2014-03-11T16:10:22Z,"http://iainnz.github.io/packages.julialang.org/
+
+```
+Tests exist, ran 'julia all.jl', failed!
+INFO: Installing BioSeq v0.2.1
+INFO: Package database updated
+ERROR: test failed: ismatch(@aar_str ""X"",@aa_str ""ACMH"") == true
+ in error at error.jl:21
+ in default_handler at test.jl:19
+ in do_test at test.jl:39
+ in include_from_node1 at loading.jl:120
+while loading /home/idunning/pkgtest/.julia/v0.3/BioSeq/test/all.jl, in expression starting on line 55
+INFO: Package database updated
+```
+",IainNZ,https://github.com/diegozea/BioSeq.jl/issues/11
+MDU6SXNzdWUzMTc3MjAxNw==,Tests fail,CLOSED,2014-04-17T23:41:11Z,2014-06-04T16:06:13Z,2014-06-04T16:06:13Z,"http://iainnz.github.io/packages.julialang.org/?pkg=BioSeq&ver=0.3
+",IainNZ,https://github.com/diegozea/BioSeq.jl/issues/12
+MDU6SXNzdWUzMzUwMTEwMw==,provide == as well as isequal for Julia 0.3,CLOSED,2014-05-14T15:07:41Z,2014-05-24T22:27:47Z,2014-05-24T22:27:47Z,"Currently, you are providing an `isequal` method for various types.   In Julia 0.3, you will _also_ need to provide `==`.  See JuliaLang/julia#6833.
+
+(In Julia 0.2, `==` called `isequal` by default, so providing `isequal` was enough.  In Julia 0.3, however, these two functions are swapped: `isequal` calls `==` by default.  So overriding `isequal` is not enough to make things like `!=` or `==` work.   In order to remain backward-compatible with Julia 0.2, you will need to provide _both_ methods.)
+",stevengj,https://github.com/diegozea/BioSeq.jl/issues/13
+MDU6SXNzdWUzMzUxMDI1MA==,[PackageEvaluator.jl] Your package BioSeq may have a testing issue.,OPEN,2014-05-14T16:42:50Z,2014-06-06T05:29:31Z,,"_This issue is being filed by a script, but if you reply, I will see it._
+
+[PackageEvaluator.jl](https://github.com/IainNZ/PackageEvaluator.jl) is a script that runs nightly. It attempts to load all Julia packages and run their test (if available) on both the stable version of Julia (0.2) and the nightly build of the unstable version (0.3).
+
+The results of this script are used to generate a [package listing](http://iainnz.github.io/packages.julialang.org/) enhanced with testing results.
+
+The status of this package, BioSeq, on...
+- Julia 0.2 is **'Tests fail, but package loads.'** [![PackageEvaluator.jl](http://iainnz.github.io/packages.julialang.org/badges/full_fail.svg)](http://iainnz.github.io/packages.julialang.org/?pkg=BioSeq&ver=0.2)
+- Julia 0.3 is **'Package doesn't load.'** [![PackageEvaluator.jl](http://iainnz.github.io/packages.julialang.org/badges/using_fail.svg)](http://iainnz.github.io/packages.julialang.org/?pkg=BioSeq&ver=0.3)
+
+_'No tests, but package loads.'_ can be due to their being no tests (you should write some if you can!) but can also be due to PackageEvaluator not being able to find your tests. Consider adding a [`test/runtests.jl`](https://github.com/JuliaLang/julia/pull/6191) file.
+
+_'Package doesn't load.'_ is the worst-case scenario. Sometimes this arises because your package doesn't have BinDeps support, or needs something that can't be installed with BinDeps. If this is the case for your package, please [file an issue](https://github.com/IainNZ/PackageEvaluator.jl) and an exception can be made so your package will not be tested.
+
+**This automatically filed issue is a one-off message. Starting soon, issues will only be filed when the testing status of your package changes in a negative direction (gets worse). If you'd like to opt-out of these status-change messages, reply to this message.**
+",IainNZ,https://github.com/diegozea/BioSeq.jl/issues/14
+MDU6SXNzdWUzNDI0NjUyNA==,Does this Error depend on Ubuntu version?,CLOSED,2014-05-24T23:45:49Z,2014-05-29T21:51:43Z,2014-05-29T21:51:31Z,"I have two computers with Julia 0.3.0-prerelease (using julianightlies)
+On Ubuntu 14.04 using BioSeq works perfect, but on Ubuntu 12.04.4 LTS gives me this Error:
+
+```
+julia> using BioSeq
+ERROR: no method trailing_zeros(Nucleotide)
+ in hash at hashing2.jl:42
+ in ht_keyindex at dict.jl:371
+ in unique at set.jl:102
+ in alphabet at /home/diego/.julia/v0.3/BioSeq/src/alphabetsfunc.jl:18
+ in include at boot.jl:244
+ in include_from_node1 at loading.jl:128
+ in include at boot.jl:244
+ in include_from_node1 at loading.jl:128
+ in reload_path at loading.jl:152
+ in _require at loading.jl:67
+ in require at loading.jl:51
+while loading /home/diego/.julia/v0.3/BioSeq/src/alphabets.jl, in expression starting on line 1
+while loading /home/diego/.julia/v0.3/BioSeq/src/BioSeq.jl, in expression starting on line 79
+```
+",diegozea,https://github.com/diegozea/BioSeq.jl/issues/16
+MDU6SXNzdWU0NDMwNTU2NQ==,[PkgEval] BioSeq may have a testing issue on Julia 0.4 (2014-09-29),OPEN,2014-09-29T15:18:53Z,2014-09-29T15:18:53Z,,"[PackageEvaluator.jl](https://github.com/IainNZ/PackageEvaluator.jl) is a script that runs nightly. It attempts to load all Julia packages and run their tests (if available) on both the stable version of Julia (0.3) and the nightly build of the unstable version (0.4). The results of this script are used to generate a [package listing](http://pkg.julialang.org/) enhanced with testing results.
+#### On Julia 0.4
+- On **2014-09-28** the testing status was `Tests pass.`
+- On **2014-09-29** the testing status changed to `Package doesn't load.`
+
+`Tests pass.` means that PackageEvaluator found the tests for your package, executed them, and they all passed.
+
+`Package doesn't load.` means that PackageEvaluator did not find tests for your package. Additionally, trying to load your package with `using` failed.
+
+This error on Julia 0.4 is possibly due to recently merged pull request https://github.com/JuliaLang/julia/pull/8420.
+_This issue was filed because your testing status became worse. No additional issues will be filed if your package remains in this state, and no issue will be filed if it improves. If you'd like to opt-out of these status-change messages, reply to this message saying you'd like to and @IainNZ will add an exception. If you'd like to discuss [PackageEvaluator.jl](https://github.com/IainNZ/PackageEvaluator.jl) please file an issue at the repository. For example, your package may be untestable on the test machine due to a dependency - an exception can be added._
+
+_Test log_:
+
+```
+>>> 'Pkg.add(""BioSeq"")' log
+INFO: Installing BioSeq v0.3.0
+INFO: Package database updated
+
+>>> 'using BioSeq' log
+ERROR: `itrunc` has no method matching itrunc(::Type{Uint8}, ::Nucleotide)
+ in lowercase! at /home/idunning/pkgtest/.julia/v0.4/BioSeq/src/stringlike.jl:5
+ in alphabet at /home/idunning/pkgtest/.julia/v0.4/BioSeq/src/alphabetsfunc.jl:18
+ in include at ./boot.jl:245
+ in include_from_node1 at ./loading.jl:128
+ in include at ./boot.jl:245
+ in include_from_node1 at ./loading.jl:128
+ in reload_path at loading.jl:152
+ in _require at loading.jl:67
+ in require at loading.jl:51
+ in include at ./boot.jl:245
+ in include_from_node1 at loading.jl:128
+ in process_options at ./client.jl:285
+ in _start at ./client.jl:354
+ in _start_3B_3625 at /home/idunning/julia04/usr/bin/../lib/julia/sys.so
+while loading /home/idunning/pkgtest/.julia/v0.4/BioSeq/src/alphabets.jl, in expression starting on line 1
+while loading /home/idunning/pkgtest/.julia/v0.4/BioSeq/src/BioSeq.jl, in expression starting on line 79
+while loading /home/idunning/pkgtest/.julia/v0.4/BioSeq/testusing.jl, in expression starting on line 2
+Julia Version 0.4.0-dev+842
+Commit e5d8c1a (2014-09-29 06:50 UTC)
+Platform Info:
+  System: Linux (x86_64-unknown-linux-gnu)
+  CPU: Intel(R) Xeon(R) CPU E5-2650 0 @ 2.00GHz
+  WORD_SIZE: 64
+  BLAS: libopenblas (USE64BITINT DYNAMIC_ARCH NO_AFFINITY Sandybridge)
+  LAPACK: libopenblas
+  LIBM: libopenlibm
+  LLVM: libLLVM-3.3
+
+
+>>> test log
+no tests to run
+>>> end of log
+```
+",IainNZ,https://github.com/diegozea/BioSeq.jl/issues/18
+MDU6SXNzdWU2MTI2MjkyMA==,[PkgEval] Your package doesn't have a test/runtests.jl file,CLOSED,2015-03-13T21:48:40Z,2015-09-25T16:49:02Z,2015-09-25T16:48:04Z,"[PackageEvaluator.jl](https://github.com/IainNZ/PackageEvaluator.jl) is a script that runs nightly.
+It attempts to load all Julia packages and run their tests (if available) on both the stable
+version of Julia (0.3) and the nightly build of the unstable version (0.4).
+The results of this script are used to generate a [package listing](http://pkg.julialang.org/)
+enhanced with testing results. This service also benefits package developers by notifying them if
+their package breaks for some reason (caused by e.g. changes in Julia, changes in dependencies,
+or broken binary dependencies.)
+
+Currently PackageEvaluator attempts to find your test scripts using a heuristic, preferring the
+standarized `test/runtests.jl` whenever present. Using `test/runtests.jl` allows people to test
+your package using simply `Pkg.test(""BioSeq"")`, with any testing-only dependencies being
+installed by looking at `test/REQUIRE`.
+
+Your package doesn't appear to have a `test/runtests.jl` file. PackageEvaluator is going to move
+away from auto-detecting tests and will instead only test packages with a `test/runtests.jl`
+file. This change will take place in about a month.
+
+_You can:_
+- **Add the file and tag a new version**. You may in fact have already added this file but not
+  tagged a new version. PackageEvaluator only tests your latest tagged verison, so you must tag
+  for the file to be detected.
+- **Chose to do nothing**. PackageEvaluator will stop attempting to test your package, and the testing
+  status will be reported as ""not possible"".
+
+If you'd like help or more information, please just reply to this issue.
+",IainNZ,https://github.com/diegozea/BioSeq.jl/issues/19
+MDU6SXNzdWUxMDE2NTE5ODQ=,Error on load,OPEN,2015-08-18T13:12:39Z,2015-08-18T19:09:49Z,,"``` julia
+julia> using BioSeq
+ERROR: LoadError: LoadError: syntax: function static parameter names not unique
+ in include at ./boot.jl:254
+ in include_from_node1 at ./loading.jl:264
+ in include at ./boot.jl:254
+ in include_from_node1 at ./loading.jl:264
+ in require at ./loading.jl:203
+while loading /Users/bdeonovic/.julia/v0.4/BioSeq/src/alphabetsfunc.jl, in expression starting on line 11
+while loading /Users/bdeonovic/.julia/v0.4/BioSeq/src/BioSeq.jl, in expression starting on line 78
+```
+",bdeonovic,https://github.com/diegozea/BioSeq.jl/issues/21
+MDU6SXNzdWUyNzY4NDU3MTY=,dna2 is probably not actually 2 bits per base,CLOSED,2017-11-26T18:35:04Z,2017-11-26T18:39:58Z,2017-11-26T18:39:58Z,"A bool in julia is 8 bits, as that's the finest resolution the OS gives you for memory addresses. So, by defining the base as 2 bools for the two bits, you're actually using 16 bits, which is far more than using a UInt8/Byte, into which the ASCII chars will fit.  Please correct me if I'm wrong.",schnaitterm,https://github.com/diegozea/BioSeq.jl/issues/23
+MDU6SXNzdWU0ODkyMTc5MjU=,Info about upcoming removal of packages in the General registry,CLOSED,2019-09-04T15:03:11Z,2019-10-09T08:31:31Z,2019-10-09T08:31:31Z,"As described in https://discourse.julialang.org/t/ann-plans-for-removing-packages-that-do-not-yet-support-1-0-from-the-general-registry/ we are planning on removing packages that do not support 1.0 from the General registry. This package has been detected to not support 1.0 and is thus slated to be removed. The removal of packages from the registry will happen approximately a month after this issue is open.
+
+To transition to the new Pkg system using `Project.toml`, see https://github.com/JuliaRegistries/Registrator.jl#transitioning-from-require-to-projecttoml.
+To then tag a new version of the package, see https://github.com/JuliaRegistries/Registrator.jl#via-the-github-app.
+
+If you believe this package has erroneously been detected as not supporting 1.0 or have any other questions, don't hesitate to discuss it here or in the thread linked at the top of this post.
+",KristofferC,https://github.com/diegozea/BioSeq.jl/issues/24

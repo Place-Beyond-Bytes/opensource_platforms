@@ -1,0 +1,51 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3ODUyNTM1ODQ=,Output files & filtering,OPEN,2021-01-13T16:30:07Z,2024-09-20T17:03:03Z,,"Hello,
+
+thanks for putting this tool together.
+
+Could you please elaborate on what exactly the output files are and how one would need to filter them?
+In contrast to the README I get two files, `*_all.bed` and `*_optimal.bed` (but not T1/T2).
+The command was simply `chipr -i rep1.narrowPeak rep2.narrowPeak -o out` for a normal transcription factor ChIP-seq.
+=> What is the ""optimal"" file here compared to ""all""?
+
+=> I am unsure how to obtain the final list of reproducible peaks (and from which file).
+Do I filter any of these files based on FDR ($9)? 
+Since both files contain entries with FDR > 0.05 (with --alpha left at default 0.05), what is the relationship between FDR and alpha (if there is any), and when would it make sense to change alpha? 
+Edit: After playing with it, it appears that alpha has no effect on the output, can you clarify?
+
+=> Also, the --fragment option, based on the preprint I guess it is recommended for TF ChIP-seq, is that correct?
+
+=> WHat is the difference between ""primary"" and ""secondary"" peaks in the output?
+
+Hope you can clarify, thank you for your time, and sorry for the wall of text. 
+",ATpoint,https://github.com/rhysnewell/ChIP-R/issues/1
+I_kwDOCN0IQs5MUQWR,signalValue,OPEN,2022-06-22T15:33:38Z,2022-06-22T15:33:38Z,,"Hello,
+thanks for this interesting tool.
+I have a question about the output data. I noticed that the signalValue is sum of the values from individual replicates, why are you not using mean? Because now this value is dependent on how many replicates you have, which does not make sense.
+",vojtace,https://github.com/rhysnewell/ChIP-R/issues/2
+I_kwDOCN0IQs58MS-u,How the optimal peaks are chosen?,OPEN,2024-01-16T10:37:53Z,2024-01-16T10:37:53Z,,"running `chipr` on my data set returned 361 peaks which were then filtered to only 42 ""optimal"" peaks.
+
+```
+ $head expt1-2-3_bowtie2_all.bed 
+chromosome      2714624 2714865 primary_peak_223        1000    .       14.160550       0.0000000425562058      0.0000360025501378
+chromosome      1285217 1285525 primary_peak_107        1000    .       13.369130       0.0000011627957752      0.0004918626129123
+chromosome      345522  345762  primary_peak_20 1000    .       10.964530       0.0000130289580002      0.0036741661560522
+chromosome      4069970 4070240 primary_peak_347        1000    .       10.339020       0.0000544316372019      0.0115122912681954
+pX       871     2718    primary_peak_357        1000    .       6.946890        0.0001101967412251      0.0155377405127344
+chromosome      3271118 3271329 primary_peak_262        1000    .       9.168750        0.0003944703809117      0.0417152427814112
+
+$head expt1-2-3_bowtie2_optimal.bed 
+chromosome      149828  150004  primary_peak_4  713     .       6.252030        0.0190814211111566      0.3565806113461553
+chromosome      345522  345762  primary_peak_20 1000    .       10.964530       0.0000130289580002      0.0036741661560522
+chromosome      472281  472521  primary_peak_21 1000    .       8.436970        0.0017831789550360      0.0942855872475306
+chromosome      943815  943965  primary_peak_49 374     .       14.850350       0.1256622895285242      0.9582093245621612
+chromosome      944293  944463  primary_peak_50 667     .       3.817930        0.0247321095225195      0.3736315117152060
+```
+
+Based on what filtering thresholds/calculation is this done? Somehow I can see peaks with much better p-/q-values in the `*all.bed` file then I find afterwards in the `*optimal.bed` file. 
+
+Is there a way to see the values calculated for the filtering by the binomial test?
+
+thanks
+
+Assa",yeroslaviz,https://github.com/rhysnewell/ChIP-R/issues/3

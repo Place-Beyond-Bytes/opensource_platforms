@@ -1,0 +1,75 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNTEyNTY1Nw==,Add documentation source code to repository,OPEN,2014-01-06T19:57:17Z,2014-01-06T19:57:17Z,,"Any changes to the API should contain the appropriate changes to the documentation as well. 
+",spaugh,https://github.com/amplab/smash/issues/2
+MDU6SXNzdWUzMTkzMjQ3NQ==,Preserve genotype information when outputting vcf files,CLOSED,2014-04-21T23:02:59Z,2014-08-21T21:26:11Z,2014-08-21T21:26:11Z,"Because SMaSH doesn't yet address phasing, genotype information is not always preserved when we read in and then output vcf files. Make sure we aren't discarding information as we do this.
+",jn80842,https://github.com/amplab/smash/issues/3
+MDU6SXNzdWUzMjE3NDg5Ng==,Factor out unnecessary asserts,OPEN,2014-04-24T18:45:54Z,2014-04-24T18:45:54Z,,"There are a lot of asserts in the codebase and many of them should probably be exceptions. 
+",jn80842,https://github.com/amplab/smash/issues/4
+MDU6SXNzdWUzMjU3MDMyMQ==,"Option to write out ""rescued"" version of second input vcf",CLOSED,2014-04-30T20:28:27Z,2014-06-09T05:14:48Z,2014-06-09T05:14:48Z,"Just as we can output a vcf containing all false positive/false negatives after evaluation, we should be able to output a version of the input vcf after rescue.
+",jn80842,https://github.com/amplab/smash/issues/5
+MDU6SXNzdWUzMzQ0NDk3Mw==,normalized variant can be placed at same position as existing variant,CLOSED,2014-05-13T22:23:32Z,2014-06-04T03:53:53Z,2014-06-04T03:53:53Z,"When a variant is normalized, it's possible to place in the same position as an existing variant. One of those variants would then be disregarded by the SMaSH evaluation script.
+## fileformat=VCFv4.1
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  default
+
+chr1    15437045        .       T       TTGTG   2602    PASS    CIGAR=1M4I;RU=TG;REFREP=9;IDREP=11      GT:GQ:GQX:DPI:AD        1/1:122:119:57:0,42
+chr1    15437051        .       G       GTG     1300    PASS    CIGAR=1M2I;RU=TG;REFREP=9;IDREP=10      GT:GQ:GQX:DPI:AD        0/1:1021:1021:46:21,25
+",jn80842,https://github.com/amplab/smash/issues/7
+MDU6SXNzdWUzMzg0MTg4OA==,SMaSH does not evaluate compound het variants correctly,OPEN,2014-05-19T22:02:45Z,2014-05-19T22:02:45Z,,"SMaSH doesn't evaluate compound heterozygous variants correctly (phased or unphased).
+
+true.vcf
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NA12878
+
+chr13   20332447        .       C       T       20      PASS    .       GT      0/1
+chr13   20332452        .       CA      C       20      PASS    .       GT      0/1
+
+pred.vcf
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NA12878
+
+chr13   20332447        .       CGTCTCA TGTCTCA,CGTCTC  20      PASS    .       GT      1/2
+
+Evaluates to two false negatives and one false positive.
+",jn80842,https://github.com/amplab/smash/issues/8
+MDU6SXNzdWUzMzkyNDU4MA==,"if initial base of one variant is deleted by another, SMaSH fails to rescue",OPEN,2014-05-20T20:11:54Z,2014-05-20T20:11:54Z,,"Insertion/deletions are represented in VCF format by an initial unchanged base followed by the bases to be added/removed. If that leading reference base is deleted by another variant, SMaSH won't evaluate that sequence correctly. The example shows two underlying sequences that should be the same, but don't evaluate as equivalent.
+
+true.vcf
+## fileformat=VCFv4.1
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NA12878
+
+chr13   86457911        .       C       G       20      PASS    .       GT      0/1
+chr13   86457912        .       TCCCC   T       20      PASS    .       GT      0/1
+chr13   86457916        .       C       CGAT    20      PASS    .       GT      0/1
+chr17   63587129        .       CCACA   C       20      PASS    .       GT      0/1
+chr17   63587133        .       A       ATG     20      PASS    .       GT      0/1
+
+pred.vcf
+## fileformat=VCFv4.1
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NA12878
+
+chr13   86457911        .       CTCCCC  GTGAT   20      PASS    .       GT      1|0
+chr17   63587130        .       CACA    TG      20      PASS    .       GT      1|0
+",jn80842,https://github.com/amplab/smash/issues/9
+MDU6SXNzdWUzNTAwNjk0Mw==,Variant with N ref/alt alleles causes normalization to throw an exception,CLOSED,2014-06-04T21:42:32Z,2014-07-12T00:28:00Z,2014-07-12T00:28:00Z,"Normalizing a VCF containing this variant will throw an exception:
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  default
+
+chr15   19999997        .       NN      N       .       .       .       GT:AD:DP        1/1:0,3:3
+",jn80842,https://github.com/amplab/smash/issues/10
+MDU6SXNzdWUzNjA0OTMyOQ==,annotated VCF output from bench.py is not sorted by position,CLOSED,2014-06-19T04:44:13Z,2014-07-11T00:37:55Z,2014-07-11T00:37:55Z,"Current output is by annotation type within each chromsome; should be sorted by position instead.
+",jn80842,https://github.com/amplab/smash/issues/12
+MDU6SXNzdWUzNjE4Nzk1NQ==,SMaSH crashes on VCFs with no genotyping information at all,CLOSED,2014-06-20T17:48:01Z,2014-07-10T21:45:36Z,2014-07-10T21:45:36Z,"If a VCF lacks the genotype field completely, SMaSH will crash.
+",jn80842,https://github.com/amplab/smash/issues/13
+MDU6SXNzdWUzNjkzMTQyNA==,support inversions with leading base,CLOSED,2014-07-01T21:03:49Z,2014-07-10T23:37:02Z,2014-07-10T23:37:02Z,"SMaSH classifies inversions only if ref and alt are reverse of each other (ATG, GTA). It should also classify a variant as an inversion if ref and alt have a leading base (AATGJ, AGTA).
+",jn80842,https://github.com/amplab/smash/issues/14
+MDU6SXNzdWUzNzMwODgyOA==,SMaSH uses too much memory,CLOSED,2014-07-07T20:49:45Z,2014-08-19T03:28:16Z,2014-08-19T03:28:16Z,"SMaSH uses a lot of memory when run on full-genome datasets; at least 8GB in one sample run. Ideally SMaSH should run on a user's laptop. Refactor to use less memory; one solution might be to process one chromosome at a time.
+",jn80842,https://github.com/amplab/smash/issues/15
+MDU6SXNzdWUzNzUwMjUxNA==,error rates should be in proportion to variant category,CLOSED,2014-07-09T19:57:51Z,2014-07-09T23:42:12Z,2014-07-09T23:42:12Z,"SMaSH calculates the number of errors expected in ground truth in SNP, indel and SV, but then uses those numbers in individual deletion/insertion/etc categories. The number of expected errors should be calculated based on the number of ground truth variants in the individual category in question.
+",jn80842,https://github.com/amplab/smash/issues/16
+MDU6SXNzdWUzNzUwNzQwNw==,output vcf file discards original INFO field,CLOSED,2014-07-09T20:55:10Z,2014-08-21T21:25:56Z,2014-08-21T21:25:56Z,"The annotated output vcf discards the original INFO field and only displays INFO entries created by SMaSH. We should retain the original information.
+",jn80842,https://github.com/amplab/smash/issues/17
+MDU6SXNzdWUzNzYwMTE2Mw==,compare bases case-insensitively,CLOSED,2014-07-10T20:22:31Z,2014-07-14T20:46:26Z,2014-07-14T20:46:26Z,"Currently SMaSH throws an error and quits if it encounters a variant whose ref or alt bases are lower case. We should simply upper-case them and continue comparison.
+",jn80842,https://github.com/amplab/smash/issues/18
+MDU6SXNzdWUzNzk0OTMwOA==,standardize output stats,CLOSED,2014-07-16T04:56:59Z,2014-08-21T21:46:25Z,2014-08-21T21:46:25Z,"Allele mismatch only appears for SNPs; add to indels.
+
+Add counts for NRD as well as percentages.
+",jn80842,https://github.com/amplab/smash/issues/19
+MDU6SXNzdWUzODM1MDg3MA==,output stats in JSON,CLOSED,2014-07-21T22:17:15Z,2014-08-18T22:34:31Z,2014-08-18T22:34:31Z,"Provide an option to output statistics in JSON format in addition to TSV and human-readable text.
+",jn80842,https://github.com/amplab/smash/issues/20

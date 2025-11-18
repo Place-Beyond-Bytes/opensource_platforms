@@ -1,0 +1,129 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+d030143dce934a02c7041484625bd39481dbacf1,matandro,KwW1NLHTCNkw,"1) Empty instead of -1000 for MR and target energy (Reviewer 1)
+2) Added partial citation info
+3) Added explanation for the use of the tree aligner base class",2019-12-24T10:42:27Z,N/A
+0a11c7e655271a4d0d1d94b0a2b042443b96b0b2,Matan Drory,matan.drory@gmail.com,Small bug now calling delete with the tree and not tree value,2019-11-22T14:01:54Z,matandro
+30df9b3845bf85c4cefe7fb61293ad00d6711a24,Matan Drory,matan.drory@gmail.com,Fully working version of the Jiang-Wang-Zhang algorithm for forest alignment,2019-11-22T13:36:33Z,matandro
+9dbfbf96f0a98318669ef855093baec765a23acf,Matan Drory,matan.drory@gmail.com,"Another iteration of the Jiang-Wang-Zhang algorithm for forest alignment
+
+Problem with this version:
+1) Test example 2: 5.1 is ignored",2019-11-21T16:52:58Z,matandro
+14bd1c9c6718b6f5fc87ec1c7c4398242e32f05f,matandro,KwW1NLHTCNkw,"NOT WORKING iteration of the Jiang-Wang-Zhang algorithm for forest alignment
+Older version of all combinations had wrong results
+
+Problem with this version:
+1) Test example 2: 1.3 is ignore
+2) all_combinations uses a recursion... need to see if it's possible to remove",2019-11-21T10:16:21Z,N/A
+9ddda5e535990d6b2853092ee49cbc460ab946d7,Matan Drory Retwitzer,matan.drory@gmail.com,Update README.md,2019-11-18T12:30:27Z,matandro
+d06cc0496f650c91e61fe8e3bb4afc3b203b1954,matandro,KwW1NLHTCNkw,"Adding pip installation string to README, increasing version and fix bug
+with score calculation in the result section",2019-11-13T13:05:45Z,N/A
+08c4e167467008f1a0aea2c1ed2db182630d6fde,matandro,KwW1NLHTCNkw,"Missing parameter in calculate_neutrality when called from main design
+loop",2019-11-12T15:24:24Z,N/A
+c4967777e7a2c60139130bb24fd90a08f81bb353,matandro,KwW1NLHTCNkw,"1) Fixed a bug splitting list (mistaken for a string)
+
+2) Fixed code block in README
+
+3) change version in setup",2019-11-10T17:51:15Z,N/A
+3eed5764d91a051b870139905e5d3595e065c015,matandro,KwW1NLHTCNkw,"1) Moved to the built in argument parser instead of my ugly custom one
+
+2) Changed IUPAC aligner to get an object with functions for scoring
+purposes instead of constant numbers.
+
+3) Added a sequence motif feature. Forces high penalty for deletion or
+insertions within a sequence motifs. Those are marked with lower case
+sequence constraints.
+
+4) Added a feature to remove penalty for insertion or removal of bulges
+and internal loops smaller then a given size. This isn't ideal since if
+we compare a stem to stem separated by a small buldge we still get a
+(Stem (bulge (Stem (...))) vs (Stem (...)) comparison. The stem in the
+second tree will be matched to one of the stems of the first tree
+leaving the penalty for the other intact. For this reason the feature
+will not be applied to the web-server.
+
+5) Added gui options for generating image of a result and exporting as
+tab separated values file.
+
+6) varna location file is now set by config file
+
+7) README is updated to new argument format and includes better
+instruction for running the GUI client
+
+8) Version was set to 2.0",2019-11-06T14:36:29Z,N/A
+81898e69bc3c2c1b9c38e914d5ff2789b0e03400,matandro,KwW1NLHTCNkw,Added script for matching index pulling,2019-03-23T23:01:54Z,N/A
+642792f0f2aeb280ee2c9ddc13c122d9a0699e9c,Matan Drory Retwitzer,matan.drory@gmail.com,Revert change,2019-03-23T22:27:01Z,matandro
+ead5838c0c348eb90cffcc95a402e74fcfd14686,matandro,KwW1NLHTCNkw,Increase version number for deployment of new index feature,2019-03-23T22:25:07Z,N/A
+4288beb75d29b33ce9288d576e6dfa5f005e514e,matandro,KwW1NLHTCNkw,Small bug with misuse of IUIPAC.common_dna_code. returns list not string,2019-03-23T17:27:43Z,N/A
+4276ed358d3e14099bf3f0849cc0265ac116fbd3,matandro,KwW1NLHTCNkw,"1) is valid sequence now has a wildcard mode
+2) some more typing annotations
+3) mutation now changes / adds / removes up to 5 bases.
+5/15 for 1, 4/15 for 2, 3/15 for 3, 2/15 for 4 and 1/15 for 5
+4) Now works same as RNAfbinv V1 for initiation (vienna)
+5) VARNA generator now supports secondary mark and format options
+6) Alignment data now doesn't have an extra unnecessary list around the tuple.
+7) Added a method to retrieve indexes from alignment (source indexes).
+current implementation (no mismatches, just removal) mismatch should stay empty",2019-03-23T15:09:10Z,N/A
+4d0e062771504aac82583bd7ee88c4470cdae73d,matandro,KwW1NLHTCNkw,Fixed small bug in GUI adding \n to starting sequence,2019-03-18T15:52:33Z,N/A
+e8ed23669d3b35749bdbb90c0806c5a73bfea1a1,matandro,KwW1NLHTCNkw,"1) Added shapiro structure to the ListMotif application
+2) Added debug messages in lineRNAfold and argument function
+3) Vienna now always gives initial sequence (based on target sequence AGCU only by using lowercase and random \ seed as uppercase)
+This allows it to keep lowercase as unchangable and uppercase as changable.
+This means inverse_seq_ready merges target and start sequences.
+4) Vienna Live RNAfold now uses another thread to read. This was added to avoid deadlock when pipe is full",2019-03-15T10:23:15Z,N/A
+165909883b989d78a85a639e0605d7c434bc70d9,matandro,KwW1NLHTCNkw,Added enforceConstraints flag,2019-01-16T20:50:57Z,N/A
+59abd16ad8b3a7e9e490a4b5360c712a633a0bd0,matandro,KwW1NLHTCNkw,"1) removed typing in tree_aligner to support pypy3
+2) added support for constraints in single mode
+3) removed print from RNAfbinvCL, it already does in the main code",2019-01-15T18:20:38Z,N/A
+969f16e666703b314cb9d40dd7d39d64408c510c,matandro,KwW1NLHTCNkw,"1) Added a way to pull motif list for manual use
+2) fixed multiple motif and format
+3) Added executable for command line interface
+4)",2018-12-24T15:26:54Z,N/A
+5ee09ec94db049c516251adde208ffd8c40b5ec2,matandro,matan.drory@gmail.com,fixed typing annotation,2018-07-20T14:47:48Z,matandro
+90da3ff0b5ca6e9d6380a55006a65696cf7f16c7,matandro,matan.drory@gmail.com,"Added typing in some files
+Fixed package separation bugs
+Updates readme
+Added config file for general version",2018-07-20T12:32:16Z,matandro
+6a0356ce789ce8a85e472c15301117d23ffa8d23,matandro,matan.drory@gmail.com,Re-organization. Separating GUI from package.,2018-07-19T12:29:41Z,matandro
+ab67774e6a2fd1326c97348f4858af83eeff8e65,matandro,KwW1NLHTCNkw,Minor fixes,2018-07-13T09:35:22Z,N/A
+409d76643473281968d5a6bf78523777fedd279c,matandro,KwW1NLHTCNkw,"Fixed tree alignment algorithm ignoring tree hierarchy
+The optimum for the dynamic programming function is:
+
+OPT(T1, T2) = minmax_func(A, B, C)
+A = cmp_func(T1.value, T2.value) + minmax_func(D(T1.children, T2.children))
+B = del_func(T1.value) + minmax_func(D(T1.children, T2))
+C = del_func(T2.value) + minmax_func(D(T1, T2.children))
+D = sum of costs for each child match combination with order.
+    Children not matched are counted as deleted",2018-07-08T18:23:49Z,N/A
+17fd96dae3499b1dcb534723a009bed35db81796,matandro,KwW1NLHTCNkw,"1) reorganization in preparation for package
+2) VARNA generator for RNA images
+3) slight changes in target scores
+4) initial version of GUI for RNAfbinv. (missing save to file and generate image for result)",2018-06-30T22:13:23Z,N/A
+bf22909ce31b9c50a368f3179618c075a65c90e2,matandro,KwW1NLHTCNkw,Connected to a version of RNAfold that closes once at the end,2018-06-04T16:04:31Z,N/A
+e4178c260d26b310acb6e8c0061ac68a990df8f1,matandro,KwW1NLHTCNkw,"Add mutation add / remove.
+Add min / max length for new mutations",2018-06-04T13:17:14Z,N/A
+47b5c17f8436b218677bcb577c434b6c911c22f3,matandro,KwW1NLHTCNkw,"Working version of RNAsfbinv.
+
+1) Added target energy and mutational robustness to score
+2) Added a result printing
+3) Now reading energy information from RNAfold
+4) fixed an issue with unexpected spaces in RNAfold output
+5) Added value alignment data for tree alignment, specifically in
+shapiro tree's we add the sequence alignment
+6) changed output from -o to -l and --verbose / --debug modes
+and misc bugs",2018-06-03T22:06:24Z,N/A
+a8b86ce5b95c396a84737d6247ac96b2d59b4255,matandro,KwW1NLHTCNkw,"Added git ignore, removed some unrelevant comments",2018-05-09T15:39:05Z,N/A
+195ab1c1481cea6ae82325b71d0f9d38b68afbb1,matandro,KwW1NLHTCNkw,"1) Tree aligner now supports searching for either minimum score or maximum score
+2) Shapiro tree aligner now attempts to minimize function (0 is perfect score) like in the original RNAfbinv
+3) Fixed bug in IUPAC sequence aligner where it would backtrack the wrong sequence",2018-05-08T23:12:55Z,N/A
+caf9eb5a3134ca030bafcf03d8713ad325cc579a,matandro,KwW1NLHTCNkw,Tree aligner is now iterative. HUGE performance increase,2018-05-08T21:06:21Z,N/A
+945cfe200c0d931c174a14ce108eedd7fff6ca38,matandro,KwW1NLHTCNkw,"Fixed tree alignment algorithm to support both negative and positive values
+This version values are more accurate in small difference
+
+Performance issue. need to move to iterative version and add memorization.",2018-05-07T13:02:03Z,N/A
+091f6b9ae0c5c33d722933ca13fd39cd9ff29a83,matandro,KwW1NLHTCNkw,"Initial code for the new python version of RNAfbinv
+Includes TODO for all future tasks
+
+This version will:
+ 1) use the new motif tree compare function
+ 2) better mutations that include motif information and allow new sizes
+ 3) new ways to insert options (reformed input file and extra options file)",2018-04-30T13:55:27Z,N/A

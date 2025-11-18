@@ -1,0 +1,117 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOJeTy3c5qSajc,ready for use?,OPEN,2023-06-30T22:11:28Z,2023-08-28T16:50:33Z,,"is this tool ready for use? We'd really like to give this model a try as we have lots of data where we have both Illumina and ONT data. It won't run from an existing functional clair3 environment, multiple command line options are not getting parsed properly due to the multiple layers of shell scripts. For example, 
+
+```
+(clair3) [jmp9484@biolnxlogin01-prd mp-trial]$ cat mp_out/run_clair3_mp.log 
+[INFO] BAM 1 FILE PATH: ./ont-aligns.bam
+[INFO] BAM 2 FILE PATH: ./illumina-aligns.bam
+[INFO] BAM 1 PLATFORM: ont
+[INFO] BAM 2 PLATFORM: ilmn
+[INFO] REFERENCE PATH: /path/to/ref.fasta
+[INFO] THREADS: 1
+[INFO] CLAIR3 PILE UP MODEL PATH FOR BAM 1: /path/to/models/clair3_models/r1041_e82_400bps_hac_v420
+[INFO] CLAIR3 PILE UP MODEL PATH FOR BAM 2: /path/to/models/clair3_models/ilmn
+[DEPRECATED]  CLAIR3 PILE UP PREFIX: pileup
+[INFO] CLAIR3-TRIO MODEL PATH: /path/to/models/clair3_mp_models/ont_ilmn
+[INFO] CLAIR3-TRIO MODEL PREFIX: variables
+[INFO] OUTPUT FOLDER: ./mp_out
+[INFO] BED FILE PATH: EMPTY
+[INFO] VCF FILE PATH: EMPTY
+[INFO] CONTIGS: EMPTY
+[INFO] BAM 1 NAME:   sample1_ont
+[INFO] BAM 2 NAME: sample1_ilmn
+[INFO] CHUNK SIZE: 5000000
+[INFO] SAMTOOLS PATH: /miniconda/path/envs/clair3/bin/samtools
+[INFO] PYTHON PATH: /miniconda/path/envs/clair3/bin/python3
+[INFO] PYPY PATH: pypy3
+[INFO] PARALLEL PATH: /miniconda/path/envs/clair3/bin/parallel
+[INFO] WHATSHAP PATH: /miniconda/path/envs/clair3/bin/whatshap
+[INFO] QUALITY THRESHOLD: 2
+[INFO] FULL ALIGN PROPORTION: 0.3
+[INFO] FULL ALIGN REFERENCE PROPORTION FOR BAM 1: 0.1
+[INFO] FULL ALIGN REFERENCE PROPORTION FOR BAM 2: 0.3
+[INFO] PHASING PROPORTION FOR BAM 1: 0.7
+[INFO] PHASING PROPORTION FOR BAM 2: 0.7
+[INFO] ENABLE FILEUP ONLY CALLING: False
+[INFO] ENABLE PILEUP CALLING AND PHASING: False
+[INFO] ENABLE FAST MODE CALLING: False
+[INFO] ENABLE CALLING SNP CANDIDATES ONLY: False
+[INFO] ENABLE PRINTING REFERENCE CALLS: False
+[INFO] ENABLE OUTPUT GVCF: False
+[INFO] ENABLE HAPLOID PRECISE MODE: False
+[INFO] ENABLE HAPLOID SENSITIVE MODE: False
+[INFO] ENABLE INCLUDE ALL CTGS CALLING: True
+[INFO] ENABLE NO PHASING FOR FULL ALIGNMENT: True
+[INFO] ENABLE REMOVING INTERMEDIATE FILES: False
+[INFO] ENABLE PHASING VCF OUTPUT: False
+[INFO] ENABLE LONG INDEL CALLING: False
+./mp_out
+[INFO] You are running ont + ilmn hybrid.
+[INFO] * Clir3-Trio pipeline start
+[INFO] * 0/7 Check environment variables
+[INFO] --include_all_ctgs enabled
+[WARNING] Please enable --no_phasing_for_fa if calling variant in non-diploid organisms
+[ERROR] whatshap not found, please check you are in clair3 virtual environment
+[ERROR] Current python execution path: /miniconda/path/envs/clair3/bin/python
+```
+Since most of the codebase seems to be in python, honestly I don't quite understand the multiple layers/levels of shell scripts... ",nextgenusfs,https://github.com/HKU-BAL/Clair3-MP/issues/2
+I_kwDOJeTy3c6BlbXF,Index error and Info error  ,CLOSED,2024-03-07T15:03:15Z,2024-03-14T08:52:36Z,2024-03-14T08:52:36Z,"Hello, i am trying to reproduce the results from the Clair3mp paper but when following the steps in the supplementary.docx and running the Clair3mp commando i get a weird info error and other error's that is affecting my results i think.  
+
+> [INFO] 1/7 Call variants using pileup model
+> [INFO] Delay 4 seconds before starting variant calling ...
+> [mpileup] 1 samples in 1 input files
+> Calling variants ...
+> Total processed positions in chr1 (chunk 1/50) : 0
+> Total time elapsed: 0.00 s
+> [INFO] No vcf output for file Clair3MPmap/tmp/pileup_output/SAMPLE_C/tmp/pileup_output/pileup_chr1_1.vcf, remove empty file
+> [INFO] Delay 0 seconds before starting variant calling ...
+> [mpileup] 1 samples in 1 input files
+> Calling variants ...
+
+This info error goes on for the all the chunks, and after the step i get this. 
+
+> [INFO] 2/7 Select heterozygous SNP variants for Whatshap phasing and haplotagging
+> [WARNING] Cannot find any 0/1 variant in pileup output using variant quality cut-off proportion: 0.30000000000000004, total heterozygous variants: 0
+> [WARNING] Set low variant quality score cut-off to 0.0
+
+For all the trio candidates 
+
+> [INFO] * 2/7 Select Trio Candidates
+> DEPTH 1000
+> Traceback (most recent call last):
+>   File ""/opt/bin/mp/../clair3.py"", line 107, in <module>
+>     main()
+>   File ""/opt/bin/mp/../clair3.py"", line 101, in main
+>     submodule.main()
+>   File ""/opt/bin/mp/SelectHetSnp_Dual.py"", line 361, in main
+>     FiterHeteSnp(args)
+>   File ""/opt/bin/mp/SelectHetSnp_Dual.py"", line 150, in FiterHeteSnp
+>     print('[ORI C] {} {} select ref calling (cutoff {}) to process: {}'.format(sample_name, contig_name, low_qual_ref_list[-1][1], len(low_qual_ref_list)))
+
+And for creating the tensors clair3mp is giving inf-1000 instead of a normal number
+
+> [INFO] * 3/7 Creating Tensors
+> [DEBUG] Running  and  respectively for Create Tensor
+> gzip: Clair3MPmap/tmp/trio_input/split_beds/SAMPLE_C_DUAL_1000_chr1_3.gz: No such file or directory
+> [E::hts_parse_region] Unexpected string ""inf-1000"" after region
+> [W::fai_get_val] Reference chr1:inf-1000 not found in FASTA file, returning empty sequence
+> [faidx] Failed to fetch sequence in chr1:inf-1000
+> [ERROR] Failed to load reference sequence from file (Clair3MPmap/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna).
+
+The Clair3mp commando fully runs till the end and makes me a folder with these outputs: 
+log  run_clair3_mp.log  SAMPLE_C.vcf  SAMPLE_C.vcf.gz.tbi  tmp
+
+In the tmp/pileup_output folder i have my sample c and p1 with a lot of founded variants, but when i open my SAMPLE_C.vcf it is empty. There are no files in the predict_tensors/split_beds/trio_input and trio_output folders. 
+
+I am following the supplementary document so i dont think anything is wrong with the parameters i give Clair3mp, and if the were wrong i dont think the function would run. 
+
+Do you maybe know what i am doing wrong, i would like some help? 
+
+kind regards, 
+
+Ewoud ",eaooms,https://github.com/HKU-BAL/Clair3-MP/issues/3
+I_kwDOJeTy3c6Gkkp6,Pacbio HG003 data can not get,OPEN,2024-04-23T01:23:18Z,2024-04-23T01:23:18Z,,"https://nist-midas.s3.amazonaws.com/pdrsrv/mds2-2336/input_fastqs/HG003_35x_PacBio_14kb-15kb.fastq.gz
+
+This link no longer works. Can you update the new data download address?",shiying-sxu,https://github.com/HKU-BAL/Clair3-MP/issues/4
+I_kwDOJeTy3c6eAVAl,ERROR: when running creating tensors,OPEN,2024-11-12T03:13:35Z,2024-11-12T03:13:35Z,,"<img width=""508"" alt=""c45fbc4eb23d68e9114468b848c1e48"" src=""https://github.com/user-attachments/assets/6bc5215d-1cde-4b17-b0b3-660ed672f134"">
+",huangxin0221,https://github.com/HKU-BAL/Clair3-MP/issues/5

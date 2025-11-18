@@ -1,0 +1,1975 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+6bf6fdf5e8659aeae839e21599b11c4212602e14,Giorgio Gonnella,ggonnell@yahoo.it,"return to HP by logging out from private annotations
+
+[#19 state:resolved]",2008-11-08T16:34:17Z,ggonnella
+0ac51daa329175ffa475c24690e019ddfc3f6ebf,Giorgio Gonnella,ggonnell@yahoo.it,"allow to delete an account
+
+functional tests provided
+[#17 state:resolved]",2008-11-08T15:15:42Z,ggonnella
+f40f3f26849fe34f72bc54cd212e8100b5762221,Giorgio Gonnella,ggonnell@yahoo.it,"corrected unlogged menu XHTML code
+
+[18 state:resolved]",2008-11-08T13:56:36Z,ggonnella
+2c6ab0696030ce83ce8dfb8f305f1f7fa53b2869,Giorgio Gonnella,ggonnell@yahoo.it,closed img tag,2008-11-08T13:45:14Z,ggonnella
+14368ab728d8718f3d8568d952fd76e91eceb224,Giorgio Gonnella,ggonnell@yahoo.it,"GTRuby configurator: now uses floats instead of decimals
+
+also fixed unit test:
+
+[#16 state:resolved]",2008-11-08T13:33:54Z,ggonnella
+75c9498f0b009e4d2fe0e96746adabb03f2d36c9,Gordon Gremme,gremme@zbh.uni-hamburg.de,fix typo in last commit,2008-11-08T12:53:33Z,gordon
+e8c620df168a17a33c7bd19189e0f5db729e1f4d,Gordon Gremme,gremme@zbh.uni-hamburg.de,add Giorgio to exception recipients; change exception email,2008-11-08T12:50:45Z,gordon
+21467e2cc5f7a739cd84e647a9dada34efa49469,Gordon Gremme,gremme@zbh.uni-hamburg.de,add email exception notification,2008-11-07T20:40:17Z,gordon
+9f0c0b2ad689f58766da9889ff32c784ab9b9dec,Gordon Gremme,gremme@zbh.uni-hamburg.de,wording improvement,2008-11-07T17:57:38Z,gordon
+24c881cb366b4f7fad6669be84317d7eff91d6f5,Gordon Gremme,gremme@zbh.uni-hamburg.de,make GenomeViewer as beta,2008-11-07T17:55:56Z,gordon
+1b4d8541887de5ddf99e619b2787a64cb5c6a5e0,Gordon Gremme,gremme@zbh.uni-hamburg.de,update main GenomeViewer page,2008-11-07T17:40:23Z,gordon
+fe7e052a3708710a1e4b4f94a0fe8b14f225e600,Gordon Gremme,gremme@zbh.uni-hamburg.de,"some email wording changes
+
+support@genomeviewer is now a valid email address",2008-11-07T17:08:09Z,gordon
+243bd0bf457eb829d40f72e8c5eafc26be7acb4f,Gordon Gremme,gremme@zbh.uni-hamburg.de,"use floats instead of decimals for the Style data
+
+decimals led to problems with MySQL and since we deal with floats on the Lua
+side, it makes sense to use floats on the DB side, too.
+This shouldn't be a problem, because we don't do arithmetics with this values.",2008-11-05T13:42:08Z,gordon
+8b1eb82a7d9d2bc1fded6802d2f18f530bcb4f4c,Gordon Gremme,gremme@zbh.uni-hamburg.de,make gt_server more verbose,2008-11-04T20:01:28Z,gordon
+7ac2f0ec13e0f6adc6261ebb0c8e45c5032a70da,Gordon Gremme,gremme@zbh.uni-hamburg.de,absolute path -> relative path,2008-11-04T19:40:03Z,gordon
+d8910d5e38b97536708f0234fe9de6fb51891e8e,Gordon Gremme,gremme@zbh.uni-hamburg.de,absolute path -> relative path,2008-11-04T19:30:33Z,gordon
+06a50cc5354b297ca9f8caaee38c5e9c1d8330f1,Gordon Gremme,gremme@zbh.uni-hamburg.de,"do not 'require' absolute path, use relative path instead
+
+In production, the dispatch.fcgi script is not called from the GenomeViewer home
+directory. This only works with relative paths.",2008-11-04T19:20:13Z,gordon
+7fc2049ae3a27fc3f6bf213ce61f621647d0d2c3,Giorgio Gonnella,ggonnell@yahoo.it,Corrected 3 unit tests,2008-11-03T15:31:03Z,ggonnella
+e19cd31e95bc4c0f062c6729c3e89e3a70cc237a,Giorgio Gonnella,ggonnell@yahoo.it,"Rails updated to last stable version (2.1.2)
+
+[#15 state:resolved]",2008-11-03T14:26:03Z,ggonnella
+28d269a5419659ec8c761a31446249061411e7d6,Gordon Gremme,gremme@zbh.uni-hamburg.de,"remove major performance bottleneck in image map generation
+
+The major problem was that C objects cannot be marshalled by DRb (obviously).
+Therefore, when image_info.each_hotspot was called each request would be
+handed over to the gt_server which returned the coordinates of a hotspot and a
+proxy for the corresponding feature. Each call on the feature (like
+feature.get_score) would produce another DRb call. All this DRb calls where
+quite time consuming.
+
+Solution: The ImageInfo class of gtruby was extended with a get_hotspots()
+methods which collects all the necessary information at once.
+With this method a single DRb call sends everything at once (it can be
+marshalled now).
+Because this method is somewhat special and is probably only useful in the
+context of GenomeViewer, I put it in the gt_server himself (Ruby's open
+classes made this possible).
+
+Some ideas for further performance improvements:
+- use a singe array/hash for a hotspot instead of an array with an embedded hash
+- reduce the amount of displayed information
+- inline some methods which build the image map
+- use arrays to build string before concatenating them:
+
+  s = []
+  s << ""multiple times""
+  s.join
+
+  instead of
+
+  s = """"
+  s << ""multiple times""
+  s
+
+But only profiling can tell if this ideas work and are worth the effort.
+
+[#2 state:resolved]",2008-11-02T23:04:52Z,gordon
+226c63d66b21c3d0f3c916bb838bc58dc5eb8078,Gordon Gremme,gremme@zbh.uni-hamburg.de,"GenomeViewer should work with the current version of GenomeTools now
+
+Use the unstable version of GenomeTools (>1.2.0) and make sure you rebuild your
+database!
+
+diagram.render -> diagram.sketch
+
+[#3 state:resolved]",2008-11-02T15:06:04Z,gordon
+2d276166b05b2f27ffaf4fe0fd87e4e898688ba6,Gordon Gremme,gremme@zbh.uni-hamburg.de,"GT::Canvas -> GT::CanvasCairoFile
+
+Canvas became an interface, use Cairo file implementation",2008-10-31T22:53:26Z,gordon
+2952b1e257733818b7c12e39b034c562d57372ce,Gordon Gremme,gremme@zbh.uni-hamburg.de,use new default.style from GenomeTools instead of view.lua,2008-10-31T20:41:04Z,gordon
+30ec8ce16b9f2e80cf50b5126b0027b2fbb28093,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean functional tests,2008-10-31T20:13:28Z,gordon
+2c3f42b34dc0b4af97ff28c855636a616576ae38,Gordon Gremme,gremme@zbh.uni-hamburg.de,"fix unit test
+
+use assert_in_delta instead of assert_equal",2008-10-31T19:54:40Z,gordon
+3ccff15e742767aab56d7138b22c4936bbb0678b,Gordon Gremme,gremme@zbh.uni-hamburg.de,"GT::FeatureIndex.new -> GT:FeatureIndexMemory.new
+
+FeatureIndex became an interface, use memory implementation",2008-10-31T19:05:44Z,gordon
+dc21feafb1052104c4dda6c1d3673f60487c847b,Gordon Gremme,gremme@zbh.uni-hamburg.de,GT::Config -> GT::Style,2008-10-31T19:01:30Z,gordon
+2d2e1aef63f464b6431ccfdeba02d37161ed7aa3,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean a lot of files,2008-10-31T16:27:45Z,gordon
+9ddf176afb7b469324a526625ceb3c27dd33317b,Gordon Gremme,gremme@zbh.uni-hamburg.de,"improve README file
+
+GenomeTools moved to a single library",2008-10-31T16:19:58Z,gordon
+3d5ed61e3156be890acc4fc054ab3e5386c14022,Gordon Gremme,gremme@zbh.uni-hamburg.de,remove trailing newlines,2008-10-31T16:13:47Z,gordon
+a77b4a8c548d91bea5448faeb7a42397fd03a99d,Giorgio Gonnella,ggonnell@yahoo.it,"help text in configuration page: color fixed [#7]
+
+[#7 state:resolved]",2008-10-20T16:57:10Z,ggonnella
+3ca219a0813e775e51b61f2e1c7c1fa1b2fa4c07,Giorgio Gonnella,ggonnell@yahoo.it,"Format update form customized [#1]
+
+[#1 state:solved]",2008-10-20T16:43:19Z,ggonnella
+df947c985ce31720adbb97ec1b96a55f41f81514,Giorgio Gonnella,ggonnell@yahoo.it,"RegisterController functional test [#10]
+
+[#10 state:resolved]",2008-10-20T16:11:52Z,ggonnella
+3f18261a570a7cd84fb6b29d98f9e8360fe9662b,Giorgio Gonnella,ggonnell@yahoo.it,A first integration test,2008-10-20T10:33:23Z,ggonnella
+919906459362f667b02cc6a6661f6e158a41bd5b,Giorgio Gonnella,ggonnell@yahoo.it,bug fixed in own_annnotations_controller,2008-10-20T09:46:45Z,ggonnella
+d78d045a19e532ec0978dd776c38410fce057ab8,Giorgio Gonnella,ggonnell@yahoo.it,PublicUsersController tested and made more secure,2008-10-20T09:26:23Z,ggonnella
+f723fa28cb9f3b91f233bc1c3136618df3a58af2,Giorgio Gonnella,ggonnell@yahoo.it,PublicAnnotationController tested and made more secure,2008-10-20T09:03:48Z,ggonnella
+805c6fb43443d3183aea3a2b6cf368b6f1d1c3d4,Giorgio Gonnella,ggonnell@yahoo.it,OwnAnnotationsController: upload tests still missing (added as flunk),2008-10-15T18:20:07Z,ggonnella
+3426158e55ae8181054068c23b8523f7416f094f,Giorgio Gonnella,ggonnell@yahoo.it,OwnAnnotationController secured (all functional tests pass now),2008-10-15T18:02:03Z,ggonnella
+6e6b09effc045646474390723b45822a9fa7cf23,Giorgio Gonnella,ggonnell@yahoo.it,Functional test for OwnAnnotationsController (5 failures),2008-10-15T17:57:02Z,ggonnella
+2ea16e45123871d1fee8829c7171ebe7c036c304,Giorgio Gonnella,ggonnell@yahoo.it,"Further security upgrade of FormatController
+
+functional test updated too",2008-10-15T17:39:35Z,ggonnella
+9ab5d9f9a90aabd33e8fc47f63ae505a9da3e348,Giorgio Gonnella,ggonnell@yahoo.it,comment corrected,2008-10-15T17:36:40Z,ggonnella
+9f81c60383c1e9d4d3d45b1a68d71b7f3b1dc1ac,Giorgio Gonnella,ggonnell@yahoo.it,Further security upgrade of FeatureTypesController,2008-10-14T15:59:03Z,ggonnella
+06562f5dc431d601e1b92eb7a820f69981b075e6,Giorgio Gonnella,ggonnell@yahoo.it,"annotations helpers: code cleaning and documentation
+
+- the common code was moved to an own module, included in both others
+- each helper method was at least minimally documented, as well as the
+  modules themselves",2008-10-14T15:30:07Z,ggonnella
+876b25bae882232643fd9948d36e5fa9e4eb2a1a,Giorgio Gonnella,ggonnell@yahoo.it,OwnAnnotationsController: documentation,2008-10-14T15:07:48Z,ggonnella
+97ebdb87ed3ded48d08a463a1b7b58b4df9bb4c6,Giorgio Gonnella,ggonnell@yahoo.it,"FormatController: secured, documented, tested",2008-10-14T12:53:14Z,ggonnella
+96b907d44a01fcc30c01f7711f750b4bb5744d93,Giorgio Gonnella,ggonnell@yahoo.it,"FeatureTypesController secured, tests provided
+
+now all functional tests (including new ones) pass
+
+minor change in application controller
+(get_current_user filter renamed to current_user and made protected
+ instead of private to make it compatible with the ActiveRecord
+ security layer of ActiveScaffold, which however I did not
+ need to use at the moment)",2008-10-14T10:35:59Z,ggonnella
+b750dd26a2606aca00a3c332e0dd07cccdde1656,Giorgio Gonnella,ggonnella@yahoo.it,"FeatureTypesController Test (1 test fails!)
+
+this makes clear that the active scaffold security layer must be applied
+in order to avoid not authorized access to other users' records.",2008-10-13T13:20:09Z,N/A
+8743ebdf93653c162aa10ccd881d69a4a1e262a2,Giorgio Gonnella,ggonnella@yahoo.it,"TestHelper: created method ""user_setup""
+
+ As the storage is not only DB-based, i.e. annotations are saved as files,
+ it is difficult to make use only of fixtures. This helper method uploads
+ an annotation for an user, so that you have:
+
+ - @_u => an user, with one annotation
+ - @_a => annotation (of @_u)
+ - @_sr => sequence region (of @_a)
+ - @_ft => feature type (of @_a)
+ - @_c => configuration (of @_u)
+ - @_f => format (of @_f)",2008-10-13T12:47:09Z,N/A
+804655736abf4daa42fa18b73544179c12da4ff0,Giorgio Gonnella,ggonnella@yahoo.it,FeatureTypesController: code cleaned and documented,2008-10-10T16:14:39Z,N/A
+a00c5d465dfe22cc7bb10fc5deb981e9da482a6b,Giorgio Gonnella,ggonnella@yahoo.it,Functional tests for ConfigurationController,2008-10-10T15:34:25Z,N/A
+57cdd7d3dcbc9763b11c6a66ac8c000e15cc1552,Giorgio Gonnella,ggonnella@yahoo.it,ConfigurationController documentation added,2008-10-10T15:32:04Z,N/A
+a4b9ee5bbe455ea9a8e03b27b63bbed2f1b34b10,Giorgio Gonnella,ggonnella@yahoo.it,ApplicationController methods tested in DefaultControllerTest,2008-10-10T15:00:40Z,N/A
+ef82832668c5ee6f6d8d05cf2f7cb037623bc9ab,Giorgio Gonnella,ggonnella@yahoo.it,ApplicationController documented (rdoc format),2008-10-10T14:45:29Z,N/A
+447f2fd203a314a718d23689a58017bd3eb11f8a,Giorgio Gonnella,ggonnella@yahoo.it,Functional tests for DefaultController,2008-10-10T14:29:18Z,N/A
+b73ef6b8e2d35c97bc9c7ce6310610112ea73375,Giorgio Gonnella,ggonnella@yahoo.it,DefaultController: documentation improved,2008-10-10T14:15:52Z,N/A
+5e2fd0efdd9f1a9a3a421245519f9e06aac65161,Gordon Gremme,gremme@zbh.uni-hamburg.de,fix mode,2008-09-03T09:59:47Z,gordon
+34fc40ad1a15d21cdd64e10b8cf326a5ab222e03,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean,2008-09-02T14:15:50Z,gordon
+46ee41ad608a69b244e489b9db0edd536cad8181,Gordon Gremme,gremme@zbh.uni-hamburg.de,do not check margins anymore,2008-09-02T14:15:02Z,gordon
+aa3a2100ff7d008890ed3d5a871aed4ed5181b1c,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: overview bar height reduced to 100 px,2008-08-26T21:16:45Z,N/A
+bee7a6a4346be61cdefc76691415b44ae830fc63,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: css adjustments (border around image),2008-08-26T21:08:44Z,N/A
+f0b0de30e01f6b3bba2dcb49c189aa7374a77d45,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: overview and current slice,2008-08-26T20:48:23Z,N/A
+1bbe997f5ff8702fbe509b05cb66a9147b872b8b,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: generate_img_and_map used also to generate overview,2008-08-26T15:42:13Z,N/A
+e51e2ae1bf70828338fd82e2e32f6d04de13bcc5,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: added dynamic setting for add_introns,2008-08-26T13:44:23Z,N/A
+134219fdc9ecaaad27bab5dfec78c10965ff6c82,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: width also saved in the session hash,2008-08-26T13:02:21Z,N/A
+8330ced10c601a67b19b6b510dceb47df398daad,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: button bar must be also re-rendered after ajax movement,2008-08-26T12:56:02Z,N/A
+37b100680309fdf5b5b2b6cebc8a367fac94fd3b,Giorgio Gonnella,ggonnella@yahoo.it,Viewer ft table: allow to disable all feature types by adding hidden fields,2008-08-26T12:48:26Z,N/A
+be4c8daccd9fcb7e23fcbdaff81b01910dae684a,Giorgio Gonnella,ggonnella@yahoo.it,Viewer ft table: initial disabling of fields according to previous settings,2008-08-26T10:35:03Z,N/A
+3913f8bd56b25ba918197474524615a9174a2214,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: save settings in the session hash,2008-08-26T10:28:17Z,N/A
+639d11e56cbc3018860d3742894401ce7169ec77,Giorgio Gonnella,ggonnella@yahoo.it,viewer settings bar: update image => apply settings,2008-08-26T10:14:14Z,N/A
+531decaf2781efbec475157b305b2349b71acfc4,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: Ft-Table: onclick javascript for the checkboxes (show/capt),2008-08-25T23:54:23Z,N/A
+1412799c20a00f51dea188c6801b7eb6a8c75098,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: image map reinserted,2008-08-25T23:33:36Z,N/A
+04d4ab7336837817cbf4451b991bb656389b585b,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: settings_form default visible,2008-08-25T23:18:43Z,N/A
+c4d50cf9869566cc6f22b16b9e46fe55c03dad94,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: ajax-movement reactivated,2008-08-25T23:18:11Z,N/A
+d845c8e08afc349b30dd15aa8c12a62d9250caf7,Giorgio Gonnella,ggonnella@yahoo.it,"Viewer: new UUID-based image fetching method in place
+
+- image map not yet used
+- ajax movement must be fixed",2008-08-25T22:57:55Z,N/A
+8f4eb2192050123171fd0e0985dc815c83421da5,Giorgio Gonnella,ggonnella@yahoo.it,GTServer (Output): some more log information,2008-08-25T22:56:01Z,N/A
+a87d5760182b92444c2b880b80dd1ad43bfc2dbc,Giorgio Gonnella,ggonnella@yahoo.it,Routes: image/:uuid,2008-08-25T22:00:29Z,N/A
+14e470693b919bebaa02efde2c9d8780d2c27984,Giorgio Gonnella,ggonnella@yahoo.it,"(MIGRATION): created table to log UUIDs
+
+When a page containing an image (Viewer#index) is loaded,
+an UUID is created. The image is generated on the GTServer
+using the necessary parameters and the UUID as identifier.
+The image is then loaded using as URL ""image/#{uuid}"".
+As the GTServer is restarted each time the memory is full,
+there is a concrete possibility that between the time the
+image is generated and requested, the server is restarted.
+If this happens then the #image method will use the log
+to reconstruct the parameters and repeat the generation
+request before the image is sent to the browser.",2008-08-25T21:59:07Z,N/A
+5ad4923a0098d9b75ab455e576e245023f66f2ff,Giorgio Gonnella,ggonnella@yahoo.it,GTServer (Server): comments,2008-08-25T19:47:28Z,N/A
+a06f5a08c2d22b7101d9282564faa13e4154b303,Giorgio Gonnella,ggonnella@yahoo.it,GT Server test script: adapted to new GTServer output methods syntax,2008-08-25T19:29:17Z,N/A
+84fc9c1fc3ab855929cc3aff648930f4fbb20128,Giorgio Gonnella,ggonnella@yahoo.it,GTServer (Output): unit tests adjusted to new syntax,2008-08-25T19:25:40Z,N/A
+0524e37924ac5408ca8effca4dae9aca4862898d,Giorgio Gonnella,ggonnella@yahoo.it,GTServer (Output): require benchmark and log msgs adjusted,2008-08-25T19:25:23Z,N/A
+a2d1feb091d354c72c92fb97a71c0648a18fb1d5,Giorgio Gonnella,ggonnella@yahoo.it,GTServer: a return value for img_and_map_generate,2008-08-25T19:20:09Z,N/A
+c3c02065def38a6f86f138492b1963e23c1c9cb9,Giorgio Gonnella,ggonnella@yahoo.it,GTServer: config override implemented,2008-08-25T18:54:19Z,N/A
+d4a1c79cc1ee51b04b3d1ea91f0df5554b61ca18,Giorgio Gonnella,ggonnella@yahoo.it,GTServer now saves generated img and map using an uuid,2008-08-25T18:52:32Z,N/A
+de3c593af123ff5158d116f4d941a9887f80938e,Giorgio Gonnella,ggonnella@yahoo.it,"added UUIDTools to generate unique identifiers
+
+ MIT-Licensed
+ from: http://rubyforge.org/projects/uuidtools
+ version 1.0.3",2008-08-25T18:37:57Z,N/A
+1eeae32ccfd17fc69060bbe5d4c3e2a3dd02b20a,Giorgio Gonnella,ggonnella@yahoo.it,"Viewer settings: now fields have correct start value
+
+in the form the only thing that remains to do is
+to code the javascript for interaction of checkboxes
+with text-fields etc (disabling/enabling)",2008-08-25T15:21:13Z,N/A
+d36e90774f32d8073f7186535a14186f356416dd,Giorgio Gonnella,ggonnella@yahoo.it,Viewer settings: save in DB if user logged in,2008-08-25T15:05:54Z,N/A
+1e0ba3ad51a3edaf42f1cd15607db23a08d2455a,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: read ft settings from params or database,2008-08-25T14:59:34Z,N/A
+c83ee3308f46804d4e95a452e836446c70d6898d,Giorgio Gonnella,ggonnella@yahoo.it,"viewer helper: correction to seq_id_selector
+
+otherwise the result is received twice, once as sequence_region
+and once as seq_region (from the URL)",2008-08-25T14:57:39Z,N/A
+3c6130aebc8f94aa4469799699f9fcb6ce23fae7,Giorgio Gonnella,ggonnella@yahoo.it,"Viewer settings: width text field now working;
+
+default value was set to 900 for users that are not logged in
+or to the own default settings for logged in users
+
+The width may be specified in the URL (i.e. ?width=900)
+but it's sent by the settings form as a
+POST parameter (i.e. not encoded in the URL).",2008-08-25T13:21:56Z,N/A
+1082a15546da03c0ed1c787e005af8c6e5b5defb,Giorgio Gonnella,ggonnella@yahoo.it,"viewer: seq_id selector and start/end fields connected
+
+this breaks for the moment the ajax replacer,
+which must be updated",2008-08-25T13:16:21Z,N/A
+c4df26f66cab673562820aef270b38390b936a01,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: command_bar => settings_bar,2008-08-25T11:54:28Z,N/A
+8ed6cadab3d68d0673a5bcfc0821f01585f20aec,Giorgio Gonnella,ggonnella@yahoo.it,Viewer: settings title with form visibility toggle link,2008-08-25T11:42:04Z,N/A
+809437cc0b40ba793a8bc7a918718847abf29135,Giorgio Gonnella,ggonnella@yahoo.it,viewer: command bar / feature types table fused (still not functional),2008-08-25T09:20:07Z,N/A
+ec1f738fc05a6f72a5534f90aff35cfb2579bf27,Giorgio Gonnella,ggonnella@yahoo.it,"Format: helptext visualized as ""description"" in controller",2008-08-25T09:17:48Z,N/A
+4a75ec21596ae56fbd9b0799ba0296281e135e6e,Giorgio Gonnella,ggonnella@yahoo.it,Format: helptext updated,2008-08-25T09:17:29Z,N/A
+6f881d72ea1c5656b41e0874b2fd95a39bcf7964,Giorgio Gonnella,ggonnella@yahoo.it,Width column added to format controller,2008-08-25T09:12:52Z,N/A
+e464d40348219909fdfb9311fc79e514d90754e8,Giorgio Gonnella,ggonnella@yahoo.it,"Format: deletegate width to configuration
+
+this allows to change witdh from the same form used to change formats",2008-08-25T09:12:23Z,N/A
+7d6988660e5e624999e72428c3f327941e2c18bc,Giorgio Gonnella,ggonnella@yahoo.it,gt server test script changed to underline a problem with margins,2008-08-25T08:08:14Z,N/A
+f2efbbd2fdb3cc5df4abd70d0fb9b7b089e5fe0b,Giorgio Gonnella,ggonnella@yahoo.it,viewer: added feature types table (not functional yet),2008-08-19T23:57:50Z,N/A
+df70413e424a614b5ce44f8a4277d9feb93b684d,Giorgio Gonnella,ggonnella@yahoo.it,annotation: fixed feature_type_in_annotations creation,2008-08-19T22:55:45Z,N/A
+d4ae2d065a00beefaf4b42864bd3c12f616c8647,Giorgio Gonnella,ggonnella@yahoo.it,(MIGRATION) prepared DB to save annotation specific max width-s,2008-08-19T22:46:53Z,N/A
+fd6124d408074d5c9ece2ade633af918feb666c4,Giorgio Gonnella,ggonnella@yahoo.it,(MIGRATION) max show width added to feature types,2008-08-19T21:37:02Z,N/A
+32477712619d96f2c0744491f7e71fa056483c45,Giorgio Gonnella,ggonnella@yahoo.it,ftype unit test: returned style allowed to be nil,2008-08-19T20:23:35Z,N/A
+390062b4f4f2885099153dc446b271118e4e5cc7,Giorgio Gonnella,ggonnella@yahoo.it,Kernel::Color(x) returns Color.undefined if x.nil?,2008-08-19T20:21:19Z,N/A
+e602514793ad36abd4247372eec0abfbe0197cf6,Giorgio Gonnella,ggonnella@yahoo.it,"assertion ""is a gt config"" updated to methods really used in g.viewer",2008-08-19T20:00:34Z,N/A
+a9ee3388bddab3c7b410eef7f967b6f371fc9fef,Giorgio Gonnella,ggonnella@yahoo.it,gt server output prepared to accept an extra parameter (config_override),2008-08-19T19:54:02Z,N/A
+b2bdb6bc595bd425d3aa63e7bcfb328d03c87f8f,Giorgio Gonnella,ggonnella@yahoo.it,"viewer: image div min-height set to 400px
+
+the image div is the draggable element, this way you can drag also
+under the picture if this is very short (height less then then given
+min-height)",2008-08-19T17:27:23Z,N/A
+d7666b0beb16eef517a6158965a078c33cea7b3e,Giorgio Gonnella,ggonnella@yahoo.it,"Viewer: seqids table replaced with a select box
+
+changing the value of the select box (onchange event)
+redirects to open the desired sequence",2008-08-19T17:14:08Z,N/A
+98cb8245722fa9a70138070df9c40fea6815366a,Giorgio Gonnella,ggonnella@yahoo.it,viewer: command bar wide as the whole viewport (width setting deleted),2008-08-19T16:40:48Z,N/A
+183f297c9306830191cb16993644dda39dd4bea0,Giorgio Gonnella,ggonnella@yahoo.it,css: #viewer text-align: center,2008-08-19T16:36:49Z,N/A
+1e816f41c4e9d735d0c90fa34742b618c0036d25,Giorgio Gonnella,ggonnella@yahoo.it,Configuration: added format controller,2008-08-19T13:46:22Z,N/A
+6d4082905d73e762ae8289273247042d661e5076,Giorgio Gonnella,ggonnella@yahoo.it,FTypes controller: now values can be safely uploaded,2008-08-19T13:22:42Z,N/A
+b3b54071bac6847fa66eb6e7a2de78985adc2bd4,Giorgio Gonnella,ggonnella@yahoo.it,GTRubyConfigurator: nil return values and unset applied,2008-08-19T13:22:16Z,N/A
+e2541fd009be8e5580470d7a56fc759f93a4a89d,Giorgio Gonnella,ggonnella@yahoo.it,FType Controller: color squares in list view,2008-08-19T11:14:04Z,N/A
+8e5f0186bfef7689275b3ee495d5f4d72d6a8c02,Giorgio Gonnella,ggonnella@yahoo.it,Ftypes controller: styles chosen from select box,2008-08-19T10:51:26Z,N/A
+2563bc5e21abf84f994b8b7d36c4da39d7bfe547,Giorgio Gonnella,ggonnella@yahoo.it,Style: added .undefined and #undefined? methods,2008-08-19T10:26:54Z,N/A
+5710abe9062ae3b81560a517c670fb0ea315fa40,Giorgio Gonnella,ggonnella@yahoo.it,Style: list of styles strings as hash,2008-08-19T10:25:16Z,N/A
+dd03c8ff30cdbf56de81cd59d6950de71c48b062,Giorgio Gonnella,ggonnella@yahoo.it,Ftypes active scaffold: sorting by style column implemented,2008-08-19T10:12:17Z,N/A
+65b04a23986917af41ce9dc4e3aab24ee850dce5,Giorgio Gonnella,ggonnella@yahoo.it,"configuration_attributes now returns a list with a defined order
+
+returning the list by flattening the hashes values was causing
+problems by feature types active scaffold list (after saving
+the record was returned sometimes with a different columns order)",2008-08-19T10:07:27Z,N/A
+307405dbccc6d3c851da2f41c1e37eea7d4beb8a,Giorgio Gonnella,ggonnella@yahoo.it,"Mapping of colors/style: allow creation sending by passing a string
+
+e.g.
+FeatureType.find(1).style = ""box""
+FeatureType.find(1).fill = ""#111111""",2008-08-19T09:48:21Z,N/A
+fb5a2db78562c91a5a6056967eceff4205a131fb,Giorgio Gonnella,ggonnella@yahoo.it,"Configuration: added test, fresh config equivalent to default
+
+This is an indirect evidence that the upload mechanism works correctly.
+It is checked by creating an image using the .gt method from a new
+instance of Configuration  and comparing with one created using
+the default config.",2008-08-19T09:11:28Z,N/A
+f3a6300424d8b5110bd1877d23715f13a8c38268,Giorgio Gonnella,ggonnella@yahoo.it,imported updated view.lua from genometools,2008-08-18T20:52:31Z,N/A
+2a975c5e1ad47f1af4c0db66e5bd366ad5e28eb0,Giorgio Gonnella,ggonnella@yahoo.it,"GTRubyConfigurator: improved
+
+unit tests are now provided, actually testing some Format
+and FeatureType objects, where the module is used, but focusing
+more on the functionality included by the module
+
+the unit tests of FeatureType and Format were updated too
+
+attribute instance methods:
+the normal get/set methods are now not overridden, that means they act
+only locally, in the instance and not in the gt server;
+a sync_<attr>=(value) method is provided for this purpose instead;
+a remote_<attr>=(value) method is used for setting only the remote value,
+i.e. in the gt server without setting the local instance value
+a <attr>_sync? boolean method says if they are synchronized;
+upload_<attr> and download_<attr> synchronize the value overwriting the
+remote version (upload) or local (download)
+
+section instance methods:
+upload, download, sync? have the same meaning as for the single attributes;
+upload and download accept exceptions (i.e. attributes that should not
+be synchronized) in the form download_except(*attributes);
+local, remote, default return an hash with values (from the instance, from
+the gt server config object, from the gt server default config object)
+not_sync returns information about not synchronized attributes
+
+class methods:
+default_new returns a new instance with default values
+
+nomenclature changes:
+""set_floats"" is more correctly called ""set_decimals"", which is their
+name in the database (they are casted by rails to BigDecimal)
+""set_style"" was changed to ""set_styles"", to distinguish the attribute
+(style) from the collective type name (styles)",2008-08-18T20:35:49Z,N/A
+a64ffdea6b20a6e0313d7eb8956aee561ec05c62,Giorgio Gonnella,ggonnella@yahoo.it,Annotation: updated FeatureType.default_new method call,2008-08-18T18:38:36Z,N/A
+e3a8fd32a380359392cc9b14da46817cb4eed5f0,Giorgio Gonnella,ggonnella@yahoo.it,Configuration: expanded unit tests,2008-08-18T18:37:05Z,N/A
+39c013ccec17829376a488c85b0537278af714a7,Giorgio Gonnella,ggonnella@yahoo.it,Configuration: corrected method that makes sure there is a format,2008-08-18T18:36:49Z,N/A
+ef51db0646911d40a49df9993d4e939cc0560281,Giorgio Gonnella,ggonnella@yahoo.it,"Configuration: added correct support for GT::Config caching
+
+when the object does not come from the cache, settings of all
+sections are uploaded
+
+gt method has now two facultative parameters, a section name and
+attribute name: the corresponding section does not upload the
+corresponding attribute; this is used by GTRubyConfiguration to
+avoid circular method calls",2008-08-17T11:37:31Z,N/A
+3adaefe84e2074123c9359e65f71a8115b47f42e,Giorgio Gonnella,ggonnella@yahoo.it,FeatureType/Format: now using .default_new defined in GTRubyConfigurator,2008-08-17T11:33:21Z,N/A
+cd1c3a53f530fee405a951c25da0a142387e6269,Giorgio Gonnella,ggonnella@yahoo.it,"GTRubyConfigurator: expanded ""default"" functionality
+
+- every attribute had already an #default_<attr> method to
+  get the value from configuration.default (which references
+  the default GT::Config object)
+
+- now the instance has also a #default method which returns
+  all returns in form of an hash :attribute => value
+
+- the .default_new class method is defined which returns an instance
+  with all values set to the default;
+
+  this may require (currently in FeatureType) attributes (ftypes: name)
+  to be passed in an hash as argument, as required by #section
+
+  FeatureType.default_new(:name => ""exon"")",2008-08-17T11:20:00Z,N/A
+9f0c5f9313e5ff6eeacf714d853d714494d35bc8,Giorgio Gonnella,ggonnella@yahoo.it,"GTRubyConfigurator: added ""upload"" functionality
+
+with ""upload"" is meant the action to set the corresponding
+gt config object to the values kept in an instance of the
+class including this module
+
+- each attribute has now an #upload_<attr> method
+- the whole instance gets and #upload method, which
+  uploads all configuration attributes
+- an additional method #upload_except(*attributes) allows
+  to easily upload all attributes except the given ones,
+  if it is necessary to avoid circular references",2008-08-17T11:10:54Z,N/A
+960e5a13d84c1afa30e04d713de13c28f7e93c53,Giorgio Gonnella,ggonnella@yahoo.it,improvement in the gtserver (output module) logging messages,2008-08-16T16:25:43Z,N/A
+4f20808d2077c5841d6db24c4c945181a7aaaf7b,Giorgio Gonnella,ggonnella@yahoo.it,sequence region model: gtserver calls updated,2008-08-16T15:31:35Z,N/A
+a6fc1b917a04451310a75005de8f669d207aa792,Giorgio Gonnella,ggonnella@yahoo.it,configuration model: gtserver calls updated,2008-08-16T14:28:04Z,N/A
+8f3b4432591f27eb92261ebcaad248cc6f6979e3,Giorgio Gonnella,ggonnella@yahoo.it,color class: gtserver calls updated,2008-08-16T14:27:49Z,N/A
+cc75c12e795cc8a2e27ef368f065673c47d6c151,Giorgio Gonnella,ggonnella@yahoo.it,annotation model: gtserver calls updated,2008-08-16T14:27:34Z,N/A
+50b66a9ea3b197e82eed9c7f73bdea74d71f6f28,Giorgio Gonnella,ggonnella@yahoo.it,gt_server_test script: GTServer calls updated,2008-08-16T14:27:20Z,N/A
+016b49c86a2b86e169e0ee99f3cf1f72f19c0a93,Giorgio Gonnella,ggonnella@yahoo.it,"GT Server: code divided and partially rewritten
+
+code divided in
+* script/gt_server => only the init script
+* script/gt_server.lib => directory with the other files
+  * server.rb => class GTServerClass, initialize and test_call methods
+  * parsing.rb => module Parsing, feature_index, feature_types, seqids...
+  * configuration.rb => module Configuration, config objects cache ...
+  * output.rb => module Output, image, image_map ...
+
+cache for feature index now (when appropriate) considers if the add_introns
+option was on or off
+
+each cache, i.e. feature_index (on/off), feature types, config objects,
+image and image map, has a separate mutex object, which is not called
+on the whole method but always ""atomic"" on the statement that uses
+the cache; the private ""lock"" method makes the mutex synchronize call
+easier
+
+the private ""log"" method allows to log on the STDOUT (default),
+to turn off the logging (initialize with .new(nil)) or to log to
+file (create the file object and pass it as argument to new()); it
+incorporates the need to flush the buffer",2008-08-16T13:54:16Z,N/A
+a91ac8ed268ba691fbdd505e1d0f8f6c32b9d2ef,Giorgio Gonnella,ggonnella@yahoo.it,(MIGRATION) link annotation to feature types,2008-08-13T21:06:47Z,N/A
+e73f79ce9553ad5427d276a772bb21a5f5ff9956,Giorgio Gonnella,ggonnella@yahoo.it,viewer controller updated to use @current_user and Configuration#width,2008-08-13T16:57:01Z,N/A
+4b2e8531e0bc86bdc2fb1b5ca929176599ebf04c,Giorgio Gonnella,ggonnella@yahoo.it,SequenceRegion corrected to work with new configuration method,2008-08-13T16:56:58Z,N/A
+9dce01c562aab0b46acd3e8834bad5380ea47980,Giorgio Gonnella,ggonnella@yahoo.it,menu: changed order of the buttons,2008-08-13T16:56:53Z,N/A
+ade1719f2c475c86d74c6b0f4a31a74a57e15c35,Giorgio Gonnella,ggonnella@yahoo.it,routing to ftypes controller,2008-08-13T16:56:49Z,N/A
+9fd23a61706ec9daf951d14187bddd42544da2f8,Giorgio Gonnella,ggonnella@yahoo.it,account controller linked from logged in menu,2008-08-13T16:56:37Z,N/A
+d75e02c432f1c27f1f66d52cbc40b739345bcf45,Giorgio Gonnella,ggonnella@yahoo.it,routing changed to reflect controller changes,2008-08-12T18:17:04Z,N/A
+6876fba8a8bb811e71e5fbe883e26cbdb112ba0a,Giorgio Gonnella,ggonnella@yahoo.it,code uniforming,2008-08-12T18:17:03Z,N/A
+3733cc1dc6b8ffb1141c7c9a6ca5eea24ed30e72,Giorgio Gonnella,ggonnella@yahoo.it,InSessionController eliminated,2008-08-12T18:17:02Z,N/A
+9db55990caab2d23cfe6b702c54d8715ec4be886,Giorgio Gonnella,ggonnella@yahoo.it,logout method moved from in session to default controller,2008-08-12T18:17:02Z,N/A
+c63fee2f0fe2d96dfcd7a0c49f12d717bee6d648,Giorgio Gonnella,ggonnella@yahoo.it,"active scaffold based FeatureTypesController created
+
+and inserted in the configuration/index page",2008-08-12T18:17:01Z,N/A
+d8d94c1a2f423d9d83b30470aa6a62a7333a58eb,Giorgio Gonnella,ggonnella@yahoo.it,"ConfigurationController created
+
+this will be the controller to drive the libgtview configuration",2008-08-12T18:17:01Z,N/A
+863b9cf34283c70beeea4ba7b890a25a274f9991,Giorgio Gonnella,ggonnella@yahoo.it,"Functional tests for the AccountController
+
+- run only this test:
+
+ruby -Itest test/functional/account_controller_test.rb
+
+- run all functional tests:
+
+rake test:functionals",2008-08-12T18:17:00Z,N/A
+dbc88f6edcdd684685def14f04a2ae02e5697d48,Giorgio Gonnella,ggonnella@yahoo.it,"reserved usernames list updated, moved to config/invalid_usernames.yml",2008-08-12T18:16:59Z,N/A
+b5d4acbdfeac8c7fb3361e1dae58b1d6f457b9cc,Giorgio Gonnella,ggonnella@yahoo.it,removed obsolete files,2008-08-12T18:16:59Z,N/A
+a77a2bebd94eb8c26efdc141b0ac703eb3292e49,Giorgio Gonnella,ggonnella@yahoo.it,"AccountController created
+
+InSessionController:
+* will be divided in
+  - AccountController, to administrate the account
+  - ConfigurationController, to configurate libgtview
+  - Logout method moved to DefaultController
+
+The previous email, password and personal data templates were
+sligthly changed and moved to views/account
+
+The actions code was rewritten.",2008-08-12T18:16:58Z,N/A
+dcc12526fa9b9d26d702c7aaabd86756739f3350,Giorgio Gonnella,ggonnella@yahoo.it,"application controller: added get_current_user and enforce_login
+
+@@current_user: will contain always the current User
+                or nil if not logged in
+
+enforce_login: centralized login checker filter, use it as a before_filter
+               (so that it comes after get_current_user)",2008-08-12T18:16:37Z,N/A
+06489a925f21385bbdbbda537be57febe61f1a12,Giorgio Gonnella,ggonnella@yahoo.it,Color: added conversion to/from 24 bit hex code,2008-08-11T18:19:46Z,N/A
+ec210dfdea578f817ca502c18268f4048e19f47c,Giorgio Gonnella,ggonnella@yahoo.it,"no default ftypes; simpler rake tasks db:load and db:load_with_foo
+
+the first is now only a synonym of db:schema:load
+the second loads the foo user and the runs db:schema:load",2008-08-11T18:15:13Z,N/A
+6a0b0234721ba984e53d3b4dba402913723d6460,Giorgio Gonnella,ggonnella@yahoo.it,default_new method applied by automatic creation of f.types and formats,2008-08-11T18:15:12Z,N/A
+2db5e3a5c7ab4d05225c6b009f9a7e0fc247c0c8,Giorgio Gonnella,ggonnella@yahoo.it,added default_new class method to FeatureType and Format,2008-08-11T18:15:12Z,N/A
+0e56d8aa918737e15fcdb6ded37d30feb7840d0d,Giorgio Gonnella,ggonnella@yahoo.it,applied GTRubyConfigurator to FeatureType class,2008-08-11T18:15:11Z,N/A
+a817b72e64bc9c29ea0c682486cb5849982ce1da,Giorgio Gonnella,ggonnella@yahoo.it,applied GTRubyConfigurator to Format class,2008-08-11T18:15:11Z,N/A
+1a4a458cd6b916b13a0dff1c50d72a7ab0e45076,Giorgio Gonnella,ggonnella@yahoo.it,deleted obsolete config_object_loaders module,2008-08-11T18:15:10Z,N/A
+0f97318f8767c3cf4accfc019deaac94f8394c2f,Giorgio Gonnella,ggonnella@yahoo.it,created interface module for gtruby configuration,2008-08-11T18:15:10Z,N/A
+508047b35c5a5facaaf719a3a9cc274b03ddbf08,Giorgio Gonnella,ggonnella@yahoo.it,"initializer for value objects classes (Color, Style)",2008-08-11T18:15:09Z,N/A
+066da61f79cfef9ff7db55516aaf2040c9934b8e,Giorgio Gonnella,ggonnella@yahoo.it,Style: added String.to_style method to convert strings to styles,2008-08-11T18:15:09Z,N/A
+ea439c65403b9dd1ffaf0c9f740c6a7e899396d2,Giorgio Gonnella,ggonnella@yahoo.it,Style: == returns nil if other has no key method,2008-08-11T18:15:08Z,N/A
+b9fe3dc604004d61cf62ccf183e3b510cfd9c394,Giorgio Gonnella,ggonnella@yahoo.it,new view.lua from genometools,2008-08-11T18:15:08Z,N/A
+113e16c3be98ee599d748331758df57262df149b,Giorgio Gonnella,ggonnella@yahoo.it,Color: allow to be undefined,2008-08-11T18:15:07Z,N/A
+b61a5ec2d1d87bd519906ad873c33aee0e88ff0e,Giorgio Gonnella,ggonnella@yahoo.it,Color: added conversion to color (Kernel::Color() method),2008-08-11T18:13:19Z,N/A
+0e2dd1e82b7abe2168a02ed0c0b8c5311fbe7e6b,Giorgio Gonnella,ggonnella@yahoo.it,Color: added conversion method to GT::Color (via GTServer),2008-08-11T18:06:13Z,N/A
+bcc097612309ba37039316bf9ff21acd840119b5,Giorgio Gonnella,ggonnella@yahoo.it,Color: redefined == to compare also with non colors,2008-08-11T18:04:59Z,N/A
+a335fe2022e42e4ee1fe29f4750f128189fa5c5d,Giorgio Gonnella,ggonnella@yahoo.it,duck typing test assertions for GT::Color and GT::Config objects,2008-08-11T12:50:25Z,N/A
+2a4430eed1fe2ad15b186e0887958540e0da5704,Giorgio Gonnella,ggonnella@yahoo.it,connected Configuration to GT Server,2008-08-11T12:50:04Z,N/A
+1ae2f0cdb60ec959e0920c588f70118c78c8a81a,Giorgio Gonnella,ggonnella@yahoo.it,FeatureType unit test adapted to new configuration,2008-08-10T21:34:42Z,N/A
+ec94bbf33d7ba293e78442a48c3184795f388e70,Giorgio Gonnella,ggonnella@yahoo.it,annotation unit test adapted to new config implementation,2008-08-10T21:34:42Z,N/A
+cb8489d9068643cbce6dca90eb916acf53bcdb48,Giorgio Gonnella,ggonnella@yahoo.it,"callbacks to create default Configuration and Format objects
+
+User instance
+|=> Configuration |=> 1 Format instance
+                  |=> 0/+ FeatureType instances",2008-08-10T21:34:42Z,N/A
+076be39ade6cd58577068bad5ffd3daa0634bff8,Giorgio Gonnella,ggonnella@yahoo.it,"(MIGRATE) Configuration separated from User
+
+advantages:
+-1- configuration concern separated
+-2- allow an user to have many configs is
+    at backend level as easy as to change
+    a has_one with a has_many
+-3- each configuration corresponds to a GT::Config object
+    in GTRuby",2008-08-10T21:34:27Z,N/A
+5ffec9a06545af416b2a4436dd4cd7ebf36dadf5,Giorgio Gonnella,ggonnella@yahoo.it,gt server unit test: tested both add_introns on and off,2008-08-10T21:24:53Z,N/A
+ef9f5f05ce2b0155f72b01247bc02ef54cc0048a,Giorgio Gonnella,ggonnella@yahoo.it,new config/view.lua from genometools,2008-08-10T21:24:53Z,N/A
+7a693ae7c35ff0bae1fd645b1652742f62a6a09a,Giorgio Gonnella,ggonnella@yahoo.it,(MIGRATE) formats and feature styles reflect new libgtview configuration,2008-08-10T21:24:48Z,N/A
+e365e69a8639731c5e789c9427eda0c21db14cdc,Giorgio Gonnella,ggonnella@yahoo.it,"(MIGRATE) Styles not coded as DB table anymore
+
+The table was unnecessary for only 4 costant strings;
+Style transformed in a class of value objects.",2008-08-10T20:51:25Z,N/A
+6c8d78e3367bc1447037b6c460c15015dc0014a7,Giorgio Gonnella,ggonnella@yahoo.it,created Color class,2008-08-08T18:25:20Z,N/A
+fe396ac3275bf8f11a05fd3d8257d9676ea4c5d7,Giorgio Gonnella,ggonnella@yahoo.it,(MIGRATE) removed obsolete configuration tables and models,2008-08-08T18:25:19Z,N/A
+0a6a2cbdf85338144ac7d6c371b6beb6ce8e0be9,Giorgio Gonnella,ggonnella@yahoo.it,drawing format configurations renamed into formats,2008-08-08T18:25:18Z,N/A
+c46afdeabe02f226b4a335420f5d40866b767db6,Giorgio Gonnella,ggonnella@yahoo.it,renamed feature classes into feature types,2008-08-08T18:25:01Z,N/A
+dae26fe110394599ac259b6859ace6e41db65a20,Gordon Gremme,gremme@zbh.uni-hamburg.de,change test data to reflect libgtview changes,2008-08-07T11:42:41Z,gordon
+f6d5e9ae7952d4a365574a7c2f23e5aa6c0beb62,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean,2008-08-07T11:41:52Z,gordon
+f5cffc44deadcdcfb6e2a89caba2914e8d5b3249,Gordon Gremme,gremme@zbh.uni-hamburg.de,make feature class caching work with :add_introns,2008-08-05T18:16:03Z,gordon
+f4a2ab7588cfddc0af06e5e5453aef4a66162e0c,Gordon Gremme,gremme@zbh.uni-hamburg.de,genome_feature.get_range returns now Ruby Ranges,2008-08-05T14:13:12Z,gordon
+c9e1a472572181c640c9267decd9de3bad749feb,Gordon Gremme,gremme@zbh.uni-hamburg.de,cache feature classes to avoid parsing gff3 file twice,2008-08-05T13:55:14Z,gordon
+890141db6f3c89dd12b3bcfe3bf3ac0c42eac236,Gordon Gremme,gremme@zbh.uni-hamburg.de,test get_feature_classes,2008-08-05T13:53:26Z,gordon
+4f32c5639fb5c3e5ca07425d2638d2ae803965c3,Gordon Gremme,gremme@zbh.uni-hamburg.de,update gt_server_test,2008-08-05T12:05:58Z,gordon
+0d489a169e95b39ba7aab128920269ab4015ea31,Giorgio Gonnella,ggonnella@yahoo.it,"fixed configuration unit tests
+
+corrected fixture name +
+flushed user config cache
+
+drawing formats:
+big test method divided in several tests
+
+""rake:test:units"" runs all unit tests
+
+it should return:
+45 tests, 86 assertions, 0 failures, 0 errors
+
+be sure GT server is on when running the tests",2008-08-04T15:04:40Z,N/A
+f49fdb9a8c064121b75b7285cd9d5114f6cbe274,Giorgio Gonnella,ggonnella@yahoo.it,"fixed user test fixtures
+
+they were not working anymore as no username
+was specified (which is now an obligatory field)",2008-08-04T15:04:40Z,N/A
+0e3e9220d250d7199afeafeef77542410c9adf9a,Giorgio Gonnella,ggonnella@yahoo.it,"config object loaders moved in a module
+
+to keep the user model code cleaner",2008-08-04T15:03:54Z,N/A
+40e4d253831b28c35cd7afa4c1b14933d2ccc910,Giorgio Gonnella,ggonnella@yahoo.it,"MIGRATION: added min_len_block to drawing format configuration
+
+please migrate your databases with rake db:migrate",2008-08-04T13:04:49Z,N/A
+82fefab87556046248b595837487f65bb79b4257,Giorgio Gonnella,ggonnella@yahoo.it,user config: bug fix,2008-08-04T12:42:04Z,N/A
+0b074d7130db9b9400b209d05c5f819e68777389,Giorgio Gonnella,ggonnella@yahoo.it,zoom on double click on a feature,2008-08-03T22:22:11Z,N/A
+d3692b14547585c734dfa5cc98512ab58f60e1b8,Giorgio Gonnella,ggonnella@yahoo.it,"GT::Ranges don't come over the DRb connection
+
+either GenomeNode#get_range (or a similar function) in GTruby
+is rewritten to return a ruby range instead of a GT::Range,
+or these sort of hack is necessary",2008-08-03T22:09:56Z,N/A
+51bd0634101ee63cfd07e16ca9a2fe7042a2a75b,Giorgio Gonnella,ggonnella@yahoo.it,image partial changed to include image map,2008-08-03T21:51:07Z,N/A
+093fa9901e1fc883e5e399cf4d001f032a4378d1,Giorgio Gonnella,ggonnella@yahoo.it,added styles for tooltips,2008-08-03T21:43:30Z,N/A
+89e36a801b1a22fde9f6c18a6a1cb26df17417d2,Giorgio Gonnella,ggonnella@yahoo.it,added some more reserved usernames,2008-08-03T21:43:29Z,N/A
+76e49fa3d20ef80a5291a01ebeea347f849916f0,Giorgio Gonnella,ggonnella@yahoo.it,compacted code,2008-08-03T21:43:29Z,N/A
+593a90ea43ac79d1457ab11e9d11eb9ba292aaed,Giorgio Gonnella,ggonnella@yahoo.it,"viewer: added helpers to visualize image information
+
+The map_tag(image_info) is the key method.
+Given a GT::ImageInfo Object (through DRb)
+returns area tags with nice formatted
+boxover.js tooltips.
+
+Remember to add usemap=""#imap"" to the img tag.
+
+Ajax zooming on feature not yet implemented
+but should come soon",2008-08-03T21:43:28Z,N/A
+f9ac250f7b69caa0ad5bfa7cfb9afdfb0496247f,Giorgio Gonnella,ggonnella@yahoo.it,"boxover.js installed
+
+it should be under GPL --> see comment I added at the head of the file
+
+the implementation is not very simple,
+but according to the author
+has a good browser compatibility range",2008-08-03T21:43:28Z,N/A
+777ee1fc3265f8c86eb35ebcb0463d6d874d53ce,Giorgio Gonnella,ggonnella@yahoo.it,"sequence region: added a method to get image map
+
+two separate methods are implemented, calling the GT Server
+through a common interface private method",2008-08-03T21:42:45Z,N/A
+68bbb80c0852250d0fa3979b4425fc14a403a4fd,Giorgio Gonnella,ggonnella@yahoo.it,"gt server: added function to fetch image map information
+
+the map is temporarily cached when the image is requested",2008-08-03T21:19:20Z,N/A
+054f051bc20253528793c37861fcf5727b8d34e7,Giorgio Gonnella,ggonnella@yahoo.it,"fixed error messages by uploading, that were too generic
+
+""save record"" => ""upload file"" ... etc ...",2008-08-03T11:31:35Z,N/A
+01ee871a14b85d080e37b218fb61c7bd6c5783e0,Giorgio Gonnella,ggonnella@yahoo.it,annotation model: added validation of uniqueness of name in user_id scope,2008-08-03T09:43:08Z,N/A
+deb8b4f0bbfe509da2ee7f57ba9727ef2f4ea7a8,Giorgio Gonnella,ggonnella@yahoo.it,bug fix in viewer,2008-08-03T09:18:35Z,N/A
+b70987b0bd285c35db19666ec1469daf0d83267b,Giorgio Gonnella,ggonnella@yahoo.it,eliminated a residual of an old implementation,2008-08-03T09:18:34Z,N/A
+f5bee4aa30b65da884b1a40b3bc3ad51f9622c00,Giorgio Gonnella,ggonnella@yahoo.it,"eliminated web page to create custom feature classes
+
+as they are created by uploading there is no need for that anymore",2008-08-03T09:18:33Z,N/A
+9a1cde2e2d08a164553d9c3e2ae65a090049c9f0,Giorgio Gonnella,ggonnella@yahoo.it,user specific feature classes implemented at configuration level,2008-08-03T09:17:41Z,N/A
+2f8bcffbc81cbf5c1e4171061134453431f09310,Giorgio Gonnella,ggonnella@yahoo.it,"deleted makefile, which is now useless",2008-08-02T21:33:44Z,N/A
+b94dd13dbd05b94f6b9c8c725e2fe604d7f98dd1,Giorgio Gonnella,ggonnella@yahoo.it,annotation unit tests were completely rewritten,2008-08-02T21:01:01Z,N/A
+0c66c7690270ea48efe54b7cbb9c0127fde9f2a0,Giorgio Gonnella,ggonnella@yahoo.it,annotation: create user specific f.classes by uploading,2008-08-02T21:00:30Z,N/A
+2dc45dfc14ece62b78814911f4a77da0a0f8a3c9,Giorgio Gonnella,ggonnella@yahoo.it,"user feature classes added at model level
+
+FeatureClass.global returns an array of all feature classes
+without an user id
+
+User#own_feature_classes is the association method of user
+
+User#feature_classes is the sum of the two above
+
+ín addition:
+- some unit tests added for FeatureClass model",2008-08-02T18:05:06Z,N/A
+ea3322bacb04423a43fb530edeba25dfc3ce0a0b,Giorgio Gonnella,ggonnella@yahoo.it,"MIGRATION: added user_id to feature classes
+
+nil => global, for all users available
+otherwise belongs to the user specified by the foreign key
+
+run rake db:migrate to update the db",2008-08-02T18:02:46Z,N/A
+295606146e8a0b922621f921fde3bb3ef0ea7d4e,Giorgio Gonnella,ggonnella@yahoo.it,added unit test of feature index caching,2008-08-02T17:07:12Z,N/A
+f6a9a0b949c9229653428bcc2c7abae8d5186470,Giorgio Gonnella,ggonnella@yahoo.it,added method to test if the feature indeces cache has an entry for a file,2008-08-02T17:01:39Z,N/A
+8cfa36d22e05242b06ea6261917a35d600a3cc28,Giorgio Gonnella,ggonnella@yahoo.it,no reason why get_feature_index_for_file is private,2008-08-02T17:00:46Z,N/A
+a47bc4c193bd27c61a117299181c262500f4b4bf,Giorgio Gonnella,ggonnella@yahoo.it,order of the methods in gt_server,2008-08-02T16:58:09Z,N/A
+b6de2df6a157f2ff244d9dd565a2425f77c8526d,Giorgio Gonnella,ggonnella@yahoo.it,code compacted,2008-08-02T16:53:12Z,N/A
+0aa79da118b8a111be8cb4f88228b70249df2958,Giorgio Gonnella,ggonnella@yahoo.it,added an output line,2008-08-02T16:51:41Z,N/A
+f81ae8d7ff8e27beaa568af3519ef2d0fd03ee8b,Giorgio Gonnella,ggonnella@yahoo.it,typo in a comment,2008-08-02T16:50:58Z,N/A
+e8d6ff9f548a149bb9888b009d47b6d2c7a60619,Giorgio Gonnella,ggonnella@yahoo.it,"gt_server: unit tests for almost all methods
+
+to run it:
+ ruby test/unit/gt_server_test.rb
+from the main application directory",2008-08-02T16:48:43Z,N/A
+8bc8dc03dee97154c0fd1b9247e1336ad6ead217,Giorgio Gonnella,ggonnella@yahoo.it,gt_server: interface for new gtruby method to get used types,2008-08-02T16:46:14Z,N/A
+fec1eb2df57b606624777c7f6bd2916abf740525,Giorgio Gonnella,ggonnella@yahoo.it,SequenceRegion.to_png: try only 3 times,2008-08-02T12:13:27Z,N/A
+384a79150e3fb8c2f9a95bfb1b214b2b0343bbda,Giorgio Gonnella,ggonnella@yahoo.it,"default data: yaml files were not in correct format
+
+please re-recreate the DB if you did it with the old
+default_data yaml files of commit 14f84930668e9f1f1cb2ed2711ccb420ba0e7bcc",2008-08-02T11:01:07Z,N/A
+a989bcb605895baa8befb16afaf5228cdc219a69,Giorgio Gonnella,ggonnella@yahoo.it,get rid of ruby warnings,2008-08-02T10:40:11Z,N/A
+45883c1ab1312aceda238897f839259e5462af55,Giorgio Gonnella,ggonnella@yahoo.it,"added failsafe against gt server crash
+
+SequenceRegion#to_png will now continue forever to try to get an image from
+the gt server.
+
+If the gt server is called in an infinite loop, restarting itself after a
+failure, the whole thing will be almost transparent (apart from the delay)
+for the user.
+
+script/loop script/gt_server
+
+implements it for example with a minimal bash script.",2008-08-02T09:46:14Z,N/A
+98f4241c9b298e95f939b893ebca85cadf0edc50,Giorgio Gonnella,ggonnella@yahoo.it,config/view.lua was an older copy from genometools: updated,2008-08-02T09:21:56Z,N/A
+736e479b4d98e3a2d2cdb486be7f97cb256b4af9,Giorgio Gonnella,ggonnella@yahoo.it,gt_server adapted to new gtruby syntax,2008-08-02T09:08:34Z,N/A
+b5cc5daf7df0f4a36a1d4506133100b851b19102,Giorgio Gonnella,ggonnella@yahoo.it,gt_server: config objects new instead of shallow copy,2008-08-02T08:55:45Z,N/A
+d1bed24af1d384e0dc952f26b67d6b0085b4dcfa,Gordon Gremme,gremme@zbh.uni-hamburg.de,gt_server_test shows problem with Config object caching,2008-08-01T15:43:21Z,gordon
+eaff67bf154842e9fa387c604fbff5691833a754,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean,2008-08-01T15:35:56Z,gordon
+14f84930668e9f1f1cb2ed2711ccb420ba0e7bcc,Giorgio Gonnella,ggonnella@yahoo.it,"new way to start a db from scratch
+
+- rake db:migrate is not a good way, as migrations are
+  not intendet for the creation of the DB from scratch
+  according to the RAILS API
+- the db/schema_info.rb file is the authorative source
+  for the creation of the DB
+- as we want to load also some default data, I saved
+  these under db/default_data in yaml format
+- rake db:schema:load is the default rails task to
+  create a DB from scratch
+- I created some other tasks to simplify the process
+  under lib/tasks/db:rake
+- rake db:default_data:load now loads into the newly
+  created database the default data from the yaml files
+- the example user creation was left separate as it may
+  not be required, e.g. in produciton environment
+- the task db:example_user:load create the example
+  user and uploads for him any gff3 files under test/gff3
+- the task db:load runs the schema loading and default data loading
+- the task db:load_with_foo makes the same plus creates user ""foo""
+- the user loading will work only if a gt_server is running
+- documentation in README updated
+- I deleted schema_extra.rb, that was my previous idea
+  how to implement this, but not very intuitive
+  and correct",2008-08-01T09:23:26Z,N/A
+1bd8cf9f9f1c6a936865dabfc212b23725e17fb9,Giorgio Gonnella,ggonnella@yahoo.it,bug fix in User model,2008-08-01T09:05:26Z,N/A
+7b4a780de7b2acff13b1cd706be3eb57f2b8504a,Giorgio Gonnella,ggonnella@yahoo.it,added icon for zoom in inactive (when result would be range < 10bp),2008-07-22T19:57:14Z,N/A
+103742988d018c5bb751fb42c28bce8502ea7310,Giorgio Gonnella,ggonnella@yahoo.it,added icon for zoom out inactive,2008-07-22T18:46:24Z,N/A
+daa08c14f3ffbfcfcabee9d4c9196fba5bc4bb5f,Giorgio Gonnella,ggonnella@yahoo.it,added icon for show_all inactive (because whole seq is on screen),2008-07-22T18:37:38Z,N/A
+a1bfd40ff7d94ffd96ff0c5b8c96168161db2775,Giorgio Gonnella,ggonnella@yahoo.it,added icons for inactive back and forward links,2008-07-22T18:30:38Z,N/A
+a79240d7228147c9dd15acdeefd3675992965f24,Giorgio Gonnella,ggonnella@yahoo.it,"eliminated ""zoom on extremities"" feature",2008-07-22T18:29:25Z,N/A
+81dfca25f49ab2196129b302ace570ccc668470a,Giorgio Gonnella,ggonnella@yahoo.it,"my annotations: description edit link moved to description column
+
+This was obtained by:
+- overriding the list actions template to not display the edit link
+- adding an helper method for the description column:
+  - in the public annotations is a simple_format(description)
+  - in the own annotations the simple_format(description) PLUS
+    the edit link that was removed from the list actions template
+  - the link has position :after instead of :replace, as I think
+    it is more intuitive
+  - The link label in the controller config block was removed as
+    it is useless now",2008-07-22T17:29:36Z,N/A
+13e12d431788f721554c5639a57b90004a335173,Giorgio Gonnella,ggonnella@yahoo.it,public user page linked from public users and annotations lists,2008-07-22T16:14:51Z,N/A
+15218e3277f19dc20ba98c8ef7d25f3086759b67,Giorgio Gonnella,ggonnella@yahoo.it,user public page connected to route /username,2008-07-22T16:10:40Z,N/A
+196c886b20922d23edd76ea1d5595ed65983d320,Giorgio Gonnella,ggonnella@yahoo.it,each user with public annotations has now an own public page,2008-07-22T16:07:28Z,N/A
+978689ed15f750d550eb6f848a80d6647df0b442,Giorgio Gonnella,ggonnella@yahoo.it,public users list: homepage is now a link,2008-07-22T15:46:27Z,N/A
+dc229f381e6b9911676246b0f92d7c7300c58d43,Giorgio Gonnella,ggonnella@yahoo.it,"public users list: improvement to ""show annotations""",2008-07-22T15:41:32Z,N/A
+2769da12d6dc24a14240fc564b12ceb7114c36fc,Giorgio Gonnella,ggonnella@yahoo.it,"seq_ids in annotation list now directly linked
+
+ in my annotations or public annotations, in the column
+ ""sequence regions"" of the table is now possible to
+ click on the name of a sequence region to open it
+ in the viewer",2008-07-22T15:08:56Z,N/A
+d9e158439e901f9672758de709caa578265f612e,Giorgio Gonnella,ggonnella@yahoo.it,Edit description => Description,2008-07-22T14:03:08Z,N/A
+c2b90209788be611c7d9d579cd570cd9e208cb70,Giorgio Gonnella,ggonnella@yahoo.it,shorter login text input fields,2008-07-22T12:35:19Z,N/A
+b763cb5a0ced964a43f226a7506490153cc32816,Giorgio Gonnella,ggonnella@yahoo.it,renamed sidemenu partials to menu,2008-07-22T12:32:44Z,N/A
+cbfd01ac83aa74b53597f76285d667a5d065477a,Giorgio Gonnella,ggonnella@yahoo.it,css change: navigation menu moved to top,2008-07-22T12:26:59Z,N/A
+1967c974407b1bcf33217a863ae562c8cc0999ea,Giorgio Gonnella,ggonnella@yahoo.it,"modified menu unlogged
+- login form moved after other options
+- shorter labels",2008-07-22T12:26:07Z,N/A
+d5234b35e22c20f35b925703231ff956cad1e512,Giorgio Gonnella,ggonnella@yahoo.it,added a link to root in the navigation menu,2008-07-22T12:25:02Z,N/A
+68130e8a99db573b2854d79f9ef3693161743ba5,Giorgio Gonnella,ggonnella@yahoo.it,fixed bug in viewer buttons,2008-07-22T11:26:31Z,N/A
+aa4289da75e6ff35fa39854c188d8706d7103405,Giorgio Gonnella,ggonnella@yahoo.it,changed links to viewer to reflect new routing,2008-07-22T10:08:59Z,N/A
+57a6e20541bf31bf272acb66c38189bc2a617beb,Giorgio Gonnella,ggonnella@yahoo.it,"fancy routing
+
+The viewer is now attached to:
+/username/annotation_name[/seq_id[/start_pos[/end_pos]]]
+
+Some minor restrictions apply to the username in order not
+to conflict with other routes.
+
+and in addition the same URL with /image prefixed:
+/image/username/annotation_name[/seq_id[/start_pos[/end_pos]]]
+
+gives directly the .png image (without viewer)",2008-07-22T10:02:36Z,N/A
+6986cf55012c415f0fad374ad1613e6a3ab7aafd,Giorgio Gonnella,ggonnella@yahoo.it,indentation,2008-07-21T20:56:03Z,N/A
+af34982e4826cc5d11f03b7d6bd48060c973146b,Giorgio Gonnella,ggonnella@yahoo.it,modified login mechanism to use username instead of email address,2008-07-21T20:49:00Z,N/A
+5dbb931164c044c63cdfa4125c8d33468b21921b,Giorgio Gonnella,ggonnella@yahoo.it,updated text of emails to the fact that an username exists,2008-07-21T20:45:51Z,N/A
+df197a88e473aa1a047efa4c9a46c6633fc29d45,Giorgio Gonnella,ggonnella@yahoo.it,registration page changed to include username,2008-07-21T20:39:36Z,N/A
+1e1d36b00d7fdf108d18e4eb915652586011cbc0,Giorgio Gonnella,ggonnella@yahoo.it,added validations for username,2008-07-21T20:27:20Z,N/A
+b42844123b876fcf18d60c96114eb0b966fb319a,Giorgio Gonnella,ggonnella@yahoo.it,removed obsolete todo_list,2008-07-21T19:59:39Z,N/A
+6dc0a2900bd387d2b050bde5d5d3654e4c313b46,Giorgio Gonnella,ggonnella@yahoo.it,"migration: add username to user
+
+remember to rake db:migrate",2008-07-21T19:57:34Z,N/A
+6919cd7f46b75ac54165047281b8bf8e88f1dd11,Giorgio Gonnella,ggonnella@yahoo.it,"removed useless rake task from repository
+
+(it was added to check the code before conversion to rails 2.0,
+ now is useless)",2008-07-21T18:55:52Z,N/A
+76542e584672af130dffda33a28ad03861448193,Giorgio Gonnella,ggonnella@yahoo.it,"storage changed from id_filename to id/filename
+
+a rake script to convert existing storage was also added
+to run it e.g. for the development environment:
+
+rake convert_storage RAILS_ENV='development'",2008-07-21T18:50:11Z,N/A
+ad04dfbd68a64fc8af956b8ccaac9939eb48baa4,Giorgio Gonnella,ggonnella@yahoo.it,rjs template slightly simplified,2008-07-21T16:57:47Z,N/A
+c3d626a286db50f633dba25031b5b66913242900,Giorgio Gonnella,ggonnella@yahoo.it,viewer: removed gray background,2008-07-21T16:48:03Z,N/A
+c1349f6796827a08106209f60a1240438b2bc49e,Giorgio Gonnella,ggonnella@yahoo.it,removed browser controller,2008-07-21T09:38:26Z,N/A
+d5fa364ee39818570477886cfd1184346d326274,Giorgio Gonnella,ggonnella@yahoo.it,viewer controller plugged in,2008-07-21T09:29:58Z,N/A
+55dfa1b00967fa0881549b93515df72102177ab9,Giorgio Gonnella,ggonnella@yahoo.it,adjustments to the stylesheet,2008-07-21T08:59:23Z,N/A
+a71bbdce3c30718bb261009c6ceffb8d794fff0b,Giorgio Gonnella,ggonnella@yahoo.it,controller code for viewer,2008-07-21T08:58:52Z,N/A
+9e79a30d2f47a1223b56ca6486d0c03f4cb55d9e,Giorgio Gonnella,ggonnella@yahoo.it,"viewer ajax rjs response template added
+
+ - visualization can still be optimized,
+   in that the first image can be replaced only when
+   the second is available",2008-07-21T08:58:29Z,N/A
+7c88ffb81635768afdc9f82fe19a55768698c755,Giorgio Gonnella,ggonnella@yahoo.it,"image partial added
+
+ - the image is make draggable through scriptacolous
+ - for the ajax call code see the viewer helper",2008-07-21T08:56:51Z,N/A
+db43fb206175726b54d4763176e9065ca4239f61,Giorgio Gonnella,ggonnella@yahoo.it,"seq_ids table added
+
+ code from the old browser with adjustments",2008-07-21T08:55:22Z,N/A
+3a26ec6432f15346eaa6d4d2da8fe3b3e98359c9,Giorgio Gonnella,ggonnella@yahoo.it,orientation bar for viewer added,2008-07-21T08:54:52Z,N/A
+a3ea5c6c0142744f577c44540092ab4a7ac2dfcc,Giorgio Gonnella,ggonnella@yahoo.it,"command bar for viewer added (buttons, start/end form)
+
+ button code was moved to helpers",2008-07-21T08:54:17Z,N/A
+0bf7f1da31246f5363d2dab99910cd86d7010ff1,Giorgio Gonnella,ggonnella@yahoo.it,"partial for meta information added
+
+ for the moment just the username if seen as public file",2008-07-21T08:53:34Z,N/A
+a855fbe0e7e48f5687646a14fa1431dd17509a7f,Giorgio Gonnella,ggonnella@yahoo.it,a partials based page for the viewer,2008-07-21T08:52:30Z,N/A
+3d7e5b5782cabd747b385205660bd7ef05c6ad78,Giorgio Gonnella,ggonnella@yahoo.it,"removed genomeviewer.js
+
+ my solution is prototype/scriptaculous based, does not need
+ any javascript library",2008-07-21T08:51:20Z,N/A
+6f0ff91f899fa996319a82c905882fc1562b1b24,Giorgio Gonnella,ggonnella@yahoo.it,helper functions prepared for viewer controller,2008-07-21T08:47:00Z,N/A
+1cd1d36015d675eb41dd4cf5e41a0ef01633eeb9,Giorgio Gonnella,ggonnella@yahoo.it,"generated viewer controller
+
+ - will replace the browser
+ - will be ajax based instead of iframe based",2008-07-15T18:56:42Z,N/A
+c727d7e82815f833afd3d9b87c0a9709b30d0bf5,Giorgio Gonnella,ggonnella@yahoo.it,"added styles for new ajax based ""viewer"" to stylesheet
+
+ mainly based on the browser.css",2008-07-15T18:54:49Z,N/A
+90df95c395643f5d8d928a9f2f32ad75573ca1ef,Giorgio Gonnella,ggonnella@yahoo.it,"genomeviewer.js loaded in layout
+
+ at the moment content copied from browser_helper.js",2008-07-15T18:53:48Z,N/A
+e55aa0cfa5404ac50b6725d228e58d07755e7e9b,Giorgio Gonnella,ggonnella@yahoo.it,Own annotations/files => My annotations/files,2008-07-14T21:21:19Z,N/A
+40fea71c6fa58a22536a4add105eb85708cd3c4d,Giorgio Gonnella,ggonnella@yahoo.it,corrected similar bug by create feature class,2008-07-14T21:04:03Z,N/A
+89ef5ea96fc67a77716f5f8f83fce029eec78971,Giorgio Gonnella,ggonnella@yahoo.it,bug fix: recover password page showing flash[:errors] twice,2008-07-14T20:59:53Z,N/A
+4e8887bbff408589afcc0c0e49c8cda466027a2b,Gordon Gremme,gremme@zbh.uni-hamburg.de,some wording improvements and a typo fix,2008-07-14T19:31:00Z,gordon
+7c0979c99005e52c9cee9175527985052b8a12cf,Giorgio Gonnella,ggonnella@yahoo.it,configuration page to change password was added,2008-07-14T18:34:58Z,N/A
+53e41b32d77f4fa8db1ffd8b40eb905d570c8e30,Giorgio Gonnella,ggonnella@yahoo.it,user model: added validation password < 40 chars,2008-07-14T18:30:10Z,N/A
+e06793e940affbf8ddf2b954d94a9aaa49e0c5bd,Giorgio Gonnella,ggonnella@yahoo.it,"added configuration page for personal information (hp, name, institute)",2008-07-14T17:52:54Z,N/A
+3d820b0e1e4af0ba5cbc9fed0c32ace0a4bc1d8a,Giorgio Gonnella,ggonnella@yahoo.it,email configuration page added,2008-07-14T17:43:51Z,N/A
+41b7c1f4d716d303d82cc48ed09d250ec328c7cd,Giorgio Gonnella,ggonnella@yahoo.it,added email to notify email change,2008-07-14T17:30:37Z,N/A
+23a2ea80b0cc27e4545d44aa8b683a51b38fb868,Giorgio Gonnella,ggonnella@yahoo.it,Email texts slightly changed,2008-07-14T17:20:21Z,N/A
+95948c9836780d1d7982415708d2d85dd410266b,Giorgio Gonnella,ggonnella@yahoo.it,"customized some active scaffold messages
+
+- override templates added/modified to change the footer
+  messages and the ""no entry"" messages",2008-07-14T15:16:40Z,N/A
+69743a2e1f36fb020b03b897c21f23af8535dc95,Giorgio Gonnella,ggonnella@yahoo.it,"active scaffold based controllers: overridden _messages instead of _list
+
+- the override avoids a double display of the content of flash[:info]",2008-07-14T15:04:41Z,N/A
+dd5b0779a7232a3c65ce3d01f05574b70ecd4719,Giorgio Gonnella,ggonnella@yahoo.it,"gt server now caching also config objects
+
+- @config_objects is an hash containing the cache
+- in user model a method to flush the cache was added
+- every time config is changed the flush method is called
+- view.lua is read only once, as the gt server starts
+  and is not accessed anymore in the rails app",2008-07-14T14:50:31Z,N/A
+e3b3a2d3367473f3b9d8d3613c48f1d9a1da378a,Giorgio Gonnella,ggonnella@yahoo.it,deleted double h1 in config_colors view,2008-07-14T14:29:43Z,N/A
+cd0cf1e4c806cb3c604e4ac18196295c8f655ee0,Giorgio Gonnella,ggonnella@yahoo.it,indent in gt_server fixed,2008-07-14T13:40:18Z,N/A
+ff91fcc5be3999aa6607f5a4b89f7065ed7107d9,Giorgio Gonnella,ggonnella@yahoo.it,"gt_server returning now array instead of GTRange
+
+* there were problems returning a GTRange object
+  (for some reason the .start method returned
+  nil instead of the real value)
+* returning an array [range.start, range.end]",2008-07-14T13:21:12Z,N/A
+e4618e8eebabd5503563cf6ca9d2e79ddc54b65b,Giorgio Gonnella,ggonnella@yahoo.it,public now displaying first all public annotations (with a link to public users),2008-07-14T07:24:01Z,N/A
+3dbc8f650c9ab4f1586042331bcab98814dd07c4,Giorgio Gonnella,ggonnella@yahoo.it,deleted old file manager and connected new one,2008-07-14T07:18:54Z,N/A
+7c89de8b67f9e9583be131a9a77c3bbac8b535ef,Giorgio Gonnella,ggonnella@yahoo.it,improved css of active_scaffold based controllers,2008-07-14T07:04:05Z,N/A
+85d373b60ec5a6a0934b08b01ed7a4306729a68b,Giorgio Gonnella,ggonnella@yahoo.it,"own annotations: new file manager
+
+* active scaffold based
+* create action used for uploading
+* update action used for changing description
+* helper method for an ajax based file accessibility change
+* customized message if no gff3 files are present",2008-07-14T07:03:18Z,N/A
+2357b20d650ba571f94cfab93fc51db3f0aaa2b4,Giorgio Gonnella,ggonnella@yahoo.it,added callbacks to annotation model to keep public_annotation_count consistent,2008-07-14T06:58:00Z,N/A
+bc507be1eac72ea9615e50711c5714fbe64f33e4,Giorgio Gonnella,ggonnella@yahoo.it,"generated new controller for own annotations
+
+ an active scaffold based controller that will replace the
+ current file manager and upload pages",2008-07-12T17:45:07Z,N/A
+46d702092d5e8c50c8127116b639ac4d5ffdb322,Giorgio Gonnella,ggonnella@yahoo.it,added (empty) functional tests for public_annotations and public_users,2008-07-12T15:35:47Z,N/A
+1fe9e87ba18c2245c5a85fbf8ed786b862b60dbc,Giorgio Gonnella,ggonnella@yahoo.it,added default (empty) helper for public_users controller,2008-07-12T15:33:26Z,N/A
+c35f294ac4ee3d700c746282b4f6f2b796e9628f,Giorgio Gonnella,ggonnella@yahoo.it,"login moved to default_controller
+
+- login was already moved to the sidemenu
+- login template is now unuseful and was deleted
+- action do_login moved to default_controller
+- login_url route now points to do_login in default controller",2008-07-12T15:12:10Z,N/A
+bda72907685980347aed96bc3bcca4b495cdc48f,Giorgio Gonnella,ggonnella@yahoo.it,"deleted dead code
+
+=> passwords will not be hashed
+   (otherwise can't be mailed back when forgotten)",2008-07-12T14:19:21Z,N/A
+8d69833fe6ebd6dfac9705c143d9f9b4decb97d1,Giorgio Gonnella,ggonnella@yahoo.it,rest of in_session controller adapted to layout change,2008-07-12T12:52:54Z,N/A
+be68d9a4a934d73b9a3abac34a4dc94439ea8314,Giorgio Gonnella,ggonnella@yahoo.it,styles configuration adapted to layout change,2008-07-12T12:52:53Z,N/A
+0f2da1d31746600ed1c6df55e9a67ec36cbac8ee,Giorgio Gonnella,ggonnella@yahoo.it,config formats adapted to layout change,2008-07-12T12:52:52Z,N/A
+0f2065df4b31d5e4b0f0767befe334ff4dd3d531,Giorgio Gonnella,ggonnella@yahoo.it,domination configuration page adapted to layout change,2008-07-12T12:52:51Z,N/A
+17bbe42e1038f16a1997bdcf3d662a39760d7730,Giorgio Gonnella,ggonnella@yahoo.it,colors configuration adapted to layout change,2008-07-12T12:52:50Z,N/A
+78a737a549bf15f17f99d76f6f73ba5b13de4a6e,Giorgio Gonnella,ggonnella@yahoo.it,collapse to parent configuration adapted to layout change,2008-07-12T12:52:49Z,N/A
+bb3522a061bb680b654b93744df9e129c8d9dfde,Giorgio Gonnella,ggonnella@yahoo.it,file manager adapted to layout change,2008-07-12T12:52:48Z,N/A
+5aea73321a579c621be8affa8cba64773e8ff2cd,Giorgio Gonnella,ggonnella@yahoo.it,register controller adapted to layout changes,2008-07-12T12:52:47Z,N/A
+4a9d74d81ca3cc157bc3de970b7eacffcec37517,Giorgio Gonnella,ggonnella@yahoo.it,"browser controller: code reformatting and adapting to layout changes
+
+- code indentation was reformatted to 2 spaces
+- h1 title moved to @title variable",2008-07-12T12:52:46Z,N/A
+2371d909e39553dfe09ce673d2f2fda70db7d072,Giorgio Gonnella,ggonnella@yahoo.it,"active scaffold based controllers adapted to layout changes
+
+- the h1 was deleted from _list_header template overrides as already
+  provided by the layout
+- the messages partial call in _list partial was commented out
+  as messages are already displayed in the layout
+  - at this purpose an override under app/views/active_scaffold_overrides
+    was added",2008-07-12T12:52:45Z,N/A
+e10aee7cb079aceaa79e7c529fc645ce13fade68,Giorgio Gonnella,ggonnella@yahoo.it,login controller adapted to new layout,2008-07-12T12:52:44Z,N/A
+c96fb95293bd44302caef554ce4c1efb061cb8c4,Giorgio Gonnella,ggonnella@yahoo.it,default controller adapted to new layout,2008-07-12T12:52:43Z,N/A
+8198d3d2343fef005714a9773d5c5b718c1b4b7d,Giorgio Gonnella,ggonnella@yahoo.it,"changes in the layout
+
+- @title is displayed now both in the <title> tag of the page header
+  and in a <h1> tag at the beginning of the page
+- this ensures that each page has a meaningful <title>
+- an helper method for the <title> tag was written,
+  which adds ""GenomeViewer"" if the string is not already
+  in @title, and in addition concatenates the content of @subtitle
+  if this is present
+- a common place for messages (flash[:info], green and
+  flash[:errors], red) was found, just after the initial h1",2008-07-12T12:52:03Z,N/A
+d9032ce28a5f7e65161bc82c55bb8aa36bda792c,Giorgio Gonnella,ggonnella@yahoo.it,"changed login and logout behaviour
+
+- login works now as follows:
+  - homepage / register / recover_password => redirect to file_manager (own files)
+  - public files / browse a public file => stay on the page
+
+- logout works now as follows:
+  - configuration / upload page / file manager => redirect to homepage
+  - public files / browse a public file (also own) => stay on the page
+  - browse a private file => redirect to hp + show a message",2008-07-12T11:11:26Z,N/A
+346eed0d03d2eab8ee12ee95026fa5c67a35102e,Giorgio Gonnella,ggonnella@yahoo.it,"changed behaviour on not authorized access
+
+* NOT AUTHORIZED replaced by a more user friendly message
+ and redirecting to the homepage",2008-07-12T10:58:17Z,N/A
+ebf777b42829540cb4d553cbdf694fa3234bd37b,Giorgio Gonnella,ggonnella@yahoo.it,"removed files under www from the repository
+
+they are not part of the application and
+at this point probably useless",2008-07-11T19:32:00Z,N/A
+fec646ccc4020f8c038bd7de0b66d30c9589bc46,Giorgio Gonnella,ggonnella@yahoo.it,removed empty directory bin from repository,2008-07-11T19:30:22Z,N/A
+efa13704ec6b7bbd6bfeb5dd4550e64c4f51f22d,Giorgio Gonnella,ggonnella@yahoo.it,"simplified left menu
+
+in a second effort of simplification:
+- @navbar system was abolished
+- a single sidemenu partial is always loaded and
+  is app/views/shared/_sidemenu.html.erb
+- it render a different partial depending
+  if the user is logged in or not
+- outdated developer_documentation was removed",2008-07-11T18:21:10Z,N/A
+c0064eb29f8800bea465bc2facf3048eaa7f2998,Giorgio Gonnella,ggonnella@yahoo.it,"simplified stylesheets system
+
+in a first effort of simplification:
+* @stylesheet variable system abolished
+* everything is loaded in a common stylesheet (genomeviewer.css)
+  which is simply loaded in the common layout
+  => faster and simplier
+* browser iframe has at the moment still an own stylesheet (browser.css)",2008-07-11T17:55:23Z,N/A
+52a650c470b6fb91cac0eac66f7448e295ce099f,Giorgio Gonnella,ggonnella@yahoo.it,"changed css class ""nice"" border to darkgray",2008-07-11T17:20:38Z,N/A
+68fa3173e1839eacdf058cf04443a193fb06d06d,Giorgio Gonnella,ggonnella@yahoo.it,"added css class ""nice"" to all text fields and text area inputs",2008-07-11T17:20:07Z,N/A
+3404c2eba477dd79c9262ebd018ab05028e574e3,Giorgio Gonnella,ggonnella@yahoo.it,signup notification email is now sent after successful registration,2008-07-11T15:10:30Z,N/A
+eb9e7a9d4c0adb2ddacc00b04846375c473baec0,Giorgio Gonnella,ggonnella@yahoo.it,created email for signup notification,2008-07-11T15:02:43Z,N/A
+8e15bcd74f378df9402927de26b5a301f1184b8a,Giorgio Gonnella,ggonnella@yahoo.it,"renamed PasswordRecovery to UserMailer
+
+ the same mailer can be used also for the signup notification",2008-07-11T14:57:24Z,N/A
+8173dddf4d8fce78468f55bc9316244322f198fa,Giorgio Gonnella,ggonnella@yahoo.it,"registration form expanded
+
+- added some explanations and additional fields (homepage, institution)
+- added a css class ""nice"" for the input tags",2008-07-11T14:45:58Z,N/A
+294dc04b1e5ffa4ecf8c1ce680d0368da01e523b,Giorgio Gonnella,ggonnella@yahoo.it,added link to the password recovery action from main page navbar,2008-07-11T14:27:45Z,N/A
+163434b2f99fdad3f7188506126910a9a71b1f75,Giorgio Gonnella,ggonnella@yahoo.it,added a named path for password recovery action,2008-07-11T14:27:10Z,N/A
+aa12fcad75a486a47656ed11f3a8bc2f02c510ff,Giorgio Gonnella,ggonnella@yahoo.it,adjustments/bux fixes to the templates,2008-07-11T13:07:45Z,N/A
+809b971668f95c9bb2ef85e3cb4329a61cf2c18c,Giorgio Gonnella,ggonnella@yahoo.it,password recovery actions implemented in register controller,2008-07-11T12:58:55Z,N/A
+8aca3e990a1d5fd375c1e621c9f52ce72b1574c6,Giorgio Gonnella,ggonnella@yahoo.it,html template for password recovery success added,2008-07-11T12:54:44Z,N/A
+d7c2ea6039711acb8c8a84aeeb20c982a18975e8,Giorgio Gonnella,ggonnella@yahoo.it,added an html file template for password recovery,2008-07-11T12:38:27Z,N/A
+0f987b94a2826979d8218997060a77a4c9a374f7,Giorgio Gonnella,ggonnella@yahoo.it,"added unit test for password recovery mailer
+
+to run the test
+
+(1) remember to create the database using rake db:test:prepare
+(2) ruby test/unit/password_recovery_test.rb",2008-07-11T12:35:14Z,N/A
+4c750f100d54ddbf07cc2e4d1126028e7cc7f2b2,Giorgio Gonnella,ggonnella@yahoo.it,template for the password recovery email added,2008-07-11T12:06:18Z,N/A
+0776f176829e4995059afc29e2aef4a04650e419,Giorgio Gonnella,ggonnella@yahoo.it,"added mailer method for password recovery
+
+ example usage in controllers:
+
+ PasswordRecovery.deliver_password_recovery_email_to(@user)",2008-07-11T12:04:29Z,N/A
+63a76e4798a54d00558d929c9c6a5d9cdee9dc64,Giorgio Gonnella,ggonnella@yahoo.it,"configuration of sendmail added
+
+sendmail is supposed to be working and its path
+is supposed to be /usr/sbin/sendmail",2008-07-11T12:01:28Z,N/A
+51187921b558f79476ba48aa17403b8a51874d02,Giorgio Gonnella,ggonnella@yahoo.it,new mailer PasswordRecovery,2008-07-11T10:50:00Z,N/A
+e8fc8ea908aa2b939fe1585a1f02f5155471fafe,Gordon Gremme,gremme@zbh.uni-hamburg.de,change file mode,2008-07-10T17:26:46Z,gordon
+949887186ec8949640535359083e1017d6f993a1,Gordon Gremme,gremme@zbh.uni-hamburg.de,update schema,2008-07-10T17:20:26Z,gordon
+b90e1d79d1c5e69eab76fc89da5592fed8cf14d0,Gordon Gremme,gremme@zbh.uni-hamburg.de,fix bug in migration script,2008-07-08T13:19:08Z,gordon
+44a78867d94141ab02dbe8b75204e9394dd8023a,Gordon Gremme,gremme@zbh.uni-hamburg.de,switch back gff3 upload path for development,2008-07-08T13:04:48Z,gordon
+d9fb9914983ee973289ceb65874b25d3f494f5f5,Gordon Gremme,gremme@zbh.uni-hamburg.de,disable logging again,2008-07-08T12:42:42Z,gordon
+59c582a28cfb8c2b8fd667e577e0eea41087f9fe,Giorgio Gonnella,ggonnella@yahoo.it,"added list_header override to public_annotations
+
+* added a similar header as in public_users
+* changed link in public_users to ""all annotations"" (more appropriate than ""all users"")
+* corrected a reference left in browser_controller to the old public templates",2008-07-08T10:27:31Z,N/A
+3f349d29ff69605d003029b8873d524b97eb5b74,Giorgio Gonnella,ggonnella@yahoo.it,"connected route /public to public_users controller
+
+* deleted old public controller and its templates
+* route connected to new controller",2008-07-08T10:18:58Z,N/A
+f0f46a0d30ee30bf13f35fb169b8411c746c28d6,Giorgio Gonnella,ggonnella@yahoo.it,"futher improvement of public users controller
+
+ * loaded an icon (all_users.png) for link to public annotations controller
+   (licensing informations added to public/images/icons/license)
+ * navbar added to both public users and public annotations
+ * list_header partial of active scaffold was overidden with a custom one
+   - a live search panel is costantly open instead of being opened by a link
+   - the link to public annotations controller is rendered (""all users"")
+   - the h4 is converted to an h1 header
+   - if a live search is too server intensive it can be easily converted to a
+     normal search (i.e. via button)",2008-07-08T10:15:35Z,N/A
+1c0417ac81c9965cb4a164afcbab515703a5d5e4,Giorgio Gonnella,ggonnella@yahoo.it,"public annotations controller
+
+ - fixed
+ - link ""open"" redirects to browser controller",2008-07-07T21:06:00Z,N/A
+bbed0f94d68cb9134e4825b95f1d1fca782e9786,Giorgio Gonnella,ggonnella@yahoo.it,public users controller: fixed link to public annotations,2008-07-07T21:04:50Z,N/A
+fdc12277816f6bc017daf72ed6fa533dd394d1e0,Giorgio Gonnella,ggonnella@yahoo.it,corrected trivial error,2008-07-07T20:26:26Z,N/A
+62b5631668172eccb53ce22dfe0c329da6667ac8,Giorgio Gonnella,ggonnella@yahoo.it,"Merge branch 'master' of ssh://genometools.org/var/www/pub/git/genomeviewer
+
+Conflicts:
+
+	app/controllers/in_session_controller.rb
+	config/environment.rb",2008-07-07T19:34:40Z,N/A
+746729561281df7c008fd955363a8a1b9480efe2,Giorgio Gonnella,ggonnella@yahoo.it,"added active scaffold based controllers for public repository
+
+* public users is a controller for the user list
+  it will replace the public controller
+  users are listed only when they have at least 1 public annotation
+
+* public annotations is the controller for the list of public annotations
+  annotations are listed only if the ""public"" flag is true
+
+true condition was defined as different from 'f' and 0 in order to
+comply with different definitions of the boolean column in different
+databases (e.g. mysql => 0 and sqlite => 'f')",2008-07-07T19:20:48Z,N/A
+cc59495af9ce66119dd58bbf8119472ed1ceac95,Giorgio Gonnella,ggonnella@yahoo.it,modified layout to include prototype and active_scaffold,2008-07-07T19:03:25Z,N/A
+47cd28457fa980a845ee27758f91da53a77958da,Giorgio Gonnella,ggonnella@yahoo.it,"added a column to ""users"" to cache the public annotations count
+
+The column ""public_annotations_count"" was added to cache the number of public
+annotations present in each record. This simplifies and speeds up the process
+of selecting those users which have a public annotation for listing in the
+public repository. On the other side it must be incremented/decremented each
+time the status of an annotation is changed (see modification of file_manager.rb).
+
+If this is the only application accessing the database, the column will
+contain meaningful data. If other applications write in the database, they
+must respect this cache column.",2008-07-07T18:20:23Z,N/A
+b9f20a97fb46eacf090f0753f53985de320ee646,Giorgio Gonnella,ggonnella@yahoo.it,"renamed directory app/controllers/config to app/controllers/config_modules
+
+The directory contains modules loaded by in_session_controller.
+The renaming avoids any interference with the namespace Config:: of
+the active scaffold plugin.",2008-07-07T18:04:01Z,N/A
+4586b75975256daf0d2a2e633dfd8e2035529b77,Giorgio Gonnella,ggonnella@yahoo.it,"installed active scaffold version 1.2RC1
+
+installed the release candidate 1 of active scaffold 1.2 using git
+here is a copy of the console session:
+
+> git clone git://github.com/activescaffold/active_scaffold.git vendor/plugins/active_scaffold
+> cd vendor/plugins/active_scaffold
+> git checkout 1.2RC1
+> rm -rf .git
+> cd ../../..
+> script/runner vendor/plugins/active_scaffold/install.rb
+
+Active Scaffold is a Rails plugin (under MIT license) that makes easy
+to create a good paginated AJAX-based CRUD interface which can be customized
+overriding the default parameters and views.
+
+Homepage: http://activescaffold.com/
+
+The idea is to use the interface for file management, both public files and own files.",2008-07-07T17:58:41Z,N/A
+8eb8f33bcb85bea2bda07c7e6e2bcc03a0df960a,Gordon Gremme,gremme@zbh.uni-hamburg.de,adjust GFF3_STORAGE_PATH,2008-07-07T17:28:06Z,gordon
+c64035862f3c5c8e2ad3a13eec2053eb04da78c2,Gordon Gremme,gremme@zbh.uni-hamburg.de,use correct path for config.load_file,2008-07-07T17:27:48Z,gordon
+9be55dacae617f1fcdfeed126e6928ac8403c420,Gordon Gremme,gremme@zbh.uni-hamburg.de,gt_server_test extended,2008-07-07T17:26:09Z,gordon
+a394206fbb00f430ac8beb26119ed7cfd64c0364,Giorgio Gonnella,ggonnella@yahoo.it,resolved problem in environment.rb,2008-07-07T17:16:41Z,N/A
+a9de3a68b82412ca4453d95b7f060d9feff471e5,Giorgio Gonnella,ggonnella@yahoo.it,"Moved login form to navbar
+
+The ""remember me"" checkbox is actually not yet active.
+Here there is an idea how to implement it:
+http://notahat.com/posts/19",2008-07-07T17:03:21Z,N/A
+d2032073904f05e7e312adec531b7dedecc2f209,Gordon Gremme,gremme@zbh.uni-hamburg.de,keep objects on gt_server alive!,2008-07-04T13:11:23Z,gordon
+a7b78cf70b730adf5229ba65c9204f81168508f4,Gordon Gremme,gremme@zbh.uni-hamburg.de,src_clean,2008-07-03T17:15:18Z,gordon
+6fda0d8efdc2ff1bd4cb79bccc4d12e38de3fb9e,Gordon Gremme,gremme@zbh.uni-hamburg.de,remove unnecessary require,2008-07-03T13:52:37Z,gordon
+d8a348aa698c4ce90995b8eca8e8cb7335b3342f,Gordon Gremme,gremme@zbh.uni-hamburg.de,add gt_server test script,2008-07-03T13:48:29Z,gordon
+46da38592f244406e00433d4e3771b1b466ade6f,Gordon Gremme,gremme@zbh.uni-hamburg.de,add *.swp,2008-07-03T13:48:19Z,gordon
+7647b1c9f03d9f280bf7af7b395b4131347fc6ad,Gordon Gremme,gremme@zbh.uni-hamburg.de,improve in_session view,2008-07-02T14:20:08Z,gordon
+3b3ab0ef70ffbec53064dfbf81efc7c41580eec1,Gordon Gremme,gremme@zbh.uni-hamburg.de,get rid of ruby warnings,2008-07-02T14:17:33Z,gordon
+1599c806d1837cf4cc135a8a60fb4f3c95e21f4a,Gordon Gremme,gremme@zbh.uni-hamburg.de,disable logfile rotation for now (causes trouble in production),2008-07-02T14:17:02Z,gordon
+419f8aeb3f89bb85f3427eb0d1f80bdde785c2f9,Gordon Gremme,gremme@zbh.uni-hamburg.de,change gff3 storage path for production,2008-07-02T14:16:27Z,gordon
+72d05142ea4393debca66ea730757e38ad1a8ecb,Gordon Gremme,gremme@zbh.uni-hamburg.de,get rid of trailining white spaces and flush stdout,2008-07-02T14:14:58Z,gordon
+8b447d4101efe74d3b3c08fe7ae1898c258d859f,Giorgio Gonnella,ggonnella@yahoo.it,"added log rotation and update of config files
+
+* configurated logger to rotate logs,
+  it keeps 10 files of 1 Mb each
+* moved gt_server loading to an initializer
+* updated configuration files to rails 2.1.0 defaults",2008-06-14T13:35:16Z,N/A
+2008ed8528908e693357ca44a24368fd5fc515d4,Giorgio Gonnella,ggonnella@yahoo.it,"moved link to source code repository from button to text
+
+* the homepage buttons are now only the essential ones for the user",2008-06-14T12:46:05Z,N/A
+d13d736063d13021bf5bd17c13c613ffc99e4a3e,Giorgio Gonnella,ggonnella@yahoo.it,corrected bug introduced during code refactoring,2008-06-14T12:21:20Z,N/A
+8739264661508cb77b766e73a3863b0ba18c3e99,Giorgio Gonnella,ggonnella@yahoo.it,GTSvr object renamed to GTServer,2008-06-14T12:16:49Z,N/A
+475249afe5072f29c27ac09e3baac47a5cced432,Giorgio Gonnella,ggonnella@yahoo.it,"code reformatting: user model
+
+- the code was reformatted under 80 chars/line
+- the code of config method was distributed to several
+  functions in order to increase readibility",2008-06-14T12:15:29Z,N/A
+9d772f044584685b05b0eca964e097e31953944e,Giorgio Gonnella,ggonnella@yahoo.it,"added default data to schema_extra.rb
+
+default
+* drawing styles
+* feature classes
+* graphical elements
+must also be loaded during rake db:schema:load",2008-06-14T12:13:26Z,N/A
+052f1386254339c5265f15e7864e9e10640a220b,Giorgio Gonnella,ggonnella@yahoo.it,deleted empty automatically generated fixture files,2008-06-14T12:10:54Z,N/A
+d2fe9ba862cf1618a1a5181c44eee2db4dbb9727,Giorgio Gonnella,ggonnella@yahoo.it,"moved gt server and session deamon to script directory
+
+the instructions in README were changed accordingly
+
+* to run the gt server type:
+
+    script/gt_server
+
+* to run the session deamon type:
+
+    script/session_deamon",2008-06-14T10:50:03Z,N/A
+9a28f5b5d27521811d7d7efdf93c7836b0c61ca6,Giorgio Gonnella,ggonnella@yahoo.it,"db/schema.rb added to the repository
+
+* schema.rb represent the current state of the database
+* according to rails apis schema.rb and *not* the migrations should
+  be used to recreate the entire db e.g. by installing the application
+  so by installing you should use rake:schema:load and not rake:migrate
+* the schema is automatically dumped after each migration
+  however, it does not dumps anything else than tables (e.g. views) and
+  misses some features of migrations (e.g. data loading)
+* to cope with this, a file schema_extra.rb containing the extra ""undumped""
+  code was created
+* just add
+    require 'db/schema_extra.rb'
+  before the last ""end"" in schema.rb
+* the latter step must be repeated if you use rake:migrate
+  or rake:rollback as schema.rb is deleted and recreated from scratch",2008-06-14T09:53:48Z,N/A
+99b45176c89f9e94ee3ce16c944bfc9b34fd775b,Giorgio Gonnella,ggonnella@yahoo.it,"String columns added to users + users unit test updated
+
+added columns: (both may be left null)
+* url => the user can save here a link to the own homepage
+* institution => the user can save here to which institution he belongs
+
+users unit tests:
+* yaml fixture users.yml refactored to create 258 users using erb
+* invalid users module moved to an own file under test/unit/modules/",2008-06-14T09:19:51Z,N/A
+c4351226fd62d725bfd8e39f11eb4d2de4c9a8de,Giorgio Gonnella,ggonnella@yahoo.it,"update to rails 2.1.0
+
+* gems were updated to 2.1.0 using 'gem update rails'
+* rails was thawed using           'rake rails:unfreeze'
+* version 2.1.0 was frozen using   'rake rails:freeze:gems'
+* files were updated using         'rake rails:update'",2008-06-14T06:00:51Z,N/A
+1dd8c9ca566e09ec1006d785a01e2fec6c863ce7,Gordon Gremme,gremme@zbh.uni-hamburg.de,remove unnecessary 'also',2008-03-26T15:01:31Z,gordon
+aeeb2765d70d6c2554b543d0a9383b382cd4b3be,Gordon Gremme,gremme@zbh.uni-hamburg.de,describe license correctly,2008-03-26T15:00:32Z,gordon
+f96189ba2e1c81c9a4c4785460413f4b3a816e22,Gordon Gremme,gremme@zbh.uni-hamburg.de,the menu is on the left,2008-03-26T14:58:59Z,gordon
+f7f422e0d49b0a1d2af0032a789a79fc5420177a,Gordon Gremme,gremme@zbh.uni-hamburg.de,cosmetics,2008-03-26T14:58:36Z,gordon
+30139f38cbef76f0762cd4330ccff98778253b07,Gordon Gremme,gremme@zbh.uni-hamburg.de,add hacks to make navbar and style sheet work in production,2008-03-26T14:57:44Z,gordon
+1a8e985246b04c35ea02699bf2b0c80dc0eb7d9c,Gordon Gremme,gremme@zbh.uni-hamburg.de,cosmetics,2008-03-26T14:52:10Z,gordon
+cee03c4e7253e8b27f8f051d256cb427b9056931,Gordon Gremme,gremme@zbh.uni-hamburg.de,update to rails 2.0.2,2008-03-25T22:05:11Z,gordon
+00ae18380f207bfed5fea6c2aabab85fb18fb56d,Marvin Mundry,mmundry@oscar.mun,Merge branch 'master' of ssh://genometools.org/var/www/pub/git/genomeviewer,2008-02-04T00:04:55Z,N/A
+85f0aa8c111d779c7d63b02fe8f190b30d6ca51c,Marvin Mundry,mmundry@oscar.mun,Modified the layout of the browser,2008-02-04T00:04:35Z,N/A
+78766b575d9569da513ae273a5d03f8821458861,Giorgio Gonnella,ggonnella@yahoo.it,"gtsrv: corrected bug in the :delete => true option
+
+ - used delete function now instead of pointing to nil
+   which was returning nil instead of a feature_index",2008-02-03T23:57:18Z,N/A
+7e61e9ec4a0db6be3e1de2711505b680a4fa452c,Giorgio Gonnella,ggonnella@yahoo.it,"password hashing turned off
+
+ - it must be debugged before it can be used
+
+ NOTE: remigrate your db from scratch if you want
+ to use the default foo@bar.com account, as it has
+ otherwise its password hashed",2008-02-03T23:34:30Z,N/A
+67f238d3aad250e25a2a58933f72c3c211118e4b,Giorgio Gonnella,ggonnella@yahoo.it,bug fix: the msg for successful registration is now displayed,2008-02-03T23:20:13Z,N/A
+efa4340ca17560c920a73bf4c87bd0c2a27df8e5,Marvin Mundry,mmundry@oscar.mun,Made seq_id_select button styling interpretable by gecko,2008-02-03T23:15:46Z,N/A
+0a485c4ef77d3c42f072a2dc394caa7c27b66405,Giorgio Gonnella,ggonnella@yahoo.it,"file manager: public/private transition now works
+
+ - made the controller again check if param[:public]
+   exist. I took it away in the commit
+   ""bug fix: file manager private/public toogle ...""
+   but it was a bad decision and was not working as
+   actually rails interprets the :public => false statement
+   (in the view url_for_action method call) not including
+   any param[:public] in the url coding
+
+ [so I fixed a thing and broken the other, now its all ok]",2008-02-03T22:46:15Z,N/A
+2490905ef62b66fe39e4dfc3bbd5a99874b0619d,Giorgio Gonnella,ggonnella@yahoo.it,fixed non xhtml/html conformity of seq_id_select table,2008-02-03T17:10:40Z,N/A
+0ec0877077564463a4c5d032a1daaad0fb5fdf6f,Giorgio Gonnella,ggonnella@yahoo.it,bug fix: file manager private/public toogle functions now good,2008-02-03T16:04:32Z,N/A
+5a1d30a4a3d9168411509994282f2ea084046a90,Giorgio Gonnella,ggonnella@yahoo.it,"""hallo, username"" changed to a nice welcome and added a h1 to the page",2008-02-03T15:32:01Z,N/A
+3bdc2342548b8d645a38db6ba9618867a997bd11,Giorgio Gonnella,ggonnella@yahoo.it,"login bug fix: password hashing was sometimes done in chain!
+
+ - everytime an user was saved the password hashing was
+   done, so the hashed password was hashed again by, e.g.
+   changing configuration
+
+ - now is done only when the password attribute is set",2008-02-03T15:30:06Z,N/A
+674170c0fedf6ffbe3a0fe5aa58aa0d22dd87e10,Marvin Mundry,mmundry@oscar.mun,Layouted the sequence region selector links,2008-02-02T13:09:13Z,N/A
+9e23056ea59ea720baf102c22a62aba8ec64fbae,Giorgio Gonnella,ggonnella@yahoo.it,"added verbosity to gtserver
+
+ - to make easier the debugging (e.g. of ranges problems)",2008-02-02T11:29:17Z,N/A
+fac2e6f2d198bfef0a5ef22c919d00682fd94cdb,Giorgio Gonnella,ggonnella@yahoo.it,"gtserver: renamed methods get_*_object to new_*_object
+
+ - get_color_object and get_config_object
+ - motivation: stress the fact that they return a new object
+ - updated all method calls",2008-02-02T11:16:02Z,N/A
+89b9a49229ed0a97bd021933b30c9e6ad4ce38cf,Giorgio Gonnella,ggonnella@yahoo.it,"standardization
+
+ - two methods of gtserver were still named in camelCase
+   (I forgot to refactor their names last time)",2008-02-02T11:09:58Z,N/A
+22ba60c9e4491675b4d6310439cdbe9700b4f33f,Giorgio Gonnella,ggonnella@yahoo.it,"added support for add_introns feature to gtserver
+
+ - the cache is not deleted after the parsing/validation process
+   as for these the add_introns configuration is not considered
+ - therefore added two named parameters to get_feature_index_for_file
+
+   :delete_cache => true
+   :add_introns => true/false",2008-02-02T11:06:06Z,N/A
+f407d1c83f30e4bd1c8e8015e28ae703d41a8da1,Giorgio Gonnella,ggonnella@yahoo.it,forgot to rename paramater name in javascript,2008-02-01T15:11:14Z,N/A
+1b9e8e7cfab07205787225d4dcc9506c1f1a4eb2,Giorgio Gonnella,ggonnella@yahoo.it,"params[:seq_id] indicates actually a sequence region id: renamed
+
+ - seq_id is used for the string identifying the seq region
+ - in the param we saved always the ""id"" of the seq region
+   that is sequence_region.id and not sequence_region.seq_id
+ - therefore the name params[:seq_id] was confusing
+ - renamed whenever found (also in link_to) to :seq_region",2008-02-01T03:26:12Z,N/A
+6505dfc57f02e02031142060f9a319168cb0bd23,Giorgio Gonnella,ggonnella@yahoo.it,[now all the method calls to methods in gtsvr were updated],2008-02-01T02:57:10Z,N/A
+dfde5469b9bc08339b8d348841f1b2802e703665,ggonnella,ggonnell@yahoo.it,"refactoring of non-standard variable and method names in gtserver
+
+ - the standard of ruby is variable_name and not variableName
+ - this is true for parameters, variables and methods
+ - the whole code I wrote (hope) follows this standard
+ - part of the code you wrote follows it
+ - I think it should be nice to have a unified standard
+   for the whole projekt and I don't see any possible reason
+   not to adopt the universal standard of ruby code
+ - therefore help me standardize the code
+ - I renamed the whole variables and method names in gtserver
+   and all their calls in other methods (used grep for it)",2008-02-01T02:49:41Z,ggonnella
+1b15e3824308baa98bce6c88dfd93bc74d68d203,Giorgio Gonnella,ggonnella@yahoo.it,"fixed bug in gt_server
+
+ parameter add_intron was added to method getFeatureIndexForFile
+ but not to the method calls",2008-01-31T16:49:08Z,N/A
+9408c016f17e5fd8c222ee3197e3d2970d87354e,Giorgio Gonnella,ggonnella@yahoo.it,"(files lost in last commit)
+
+ forgot to git add them, fixed",2008-01-30T21:06:44Z,N/A
+a968473e0357869a33275cbc41bbd6b9517904f9,Giorgio Gonnella,ggonnella@yahoo.it,"standardization of public controller/templates
+
+ - actionnames transformed in action_names
+ - calculations done in controller and passed
+   to template as class variable
+ - code formatted",2008-01-30T21:04:28Z,N/A
+c0bc7cd43073e6adba1c6be13587409e673f8dfa,Giorgio Gonnella,ggonnella@yahoo.it,register template code formatted under 80 chars/line,2008-01-30T20:38:09Z,N/A
+b18dd206d7ce56b856c969057d92df983741c853,Giorgio Gonnella,ggonnella@yahoo.it,"tried to add_introns
+
+ - but lines 118 and 119 in gtserver are commented
+   as the result is a seg fault and collapse of
+   the drb server",2008-01-30T01:52:31Z,N/A
+c85f82cd3962d74363505cbe5e7c969444f9951e,Giorgio Gonnella,ggonnella@yahoo.it,"domination configuration unit test adapted to new db structure
+
+ - and bug in user.rb domination configuration corrected
+   thanks to the unit test",2008-01-30T01:25:33Z,N/A
+4b451c1f57989926de983492e1de4b5c32d7d125,Giorgio Gonnella,ggonnella@yahoo.it,"added uploads directory creation to annotation unit test
+
+ - however some tests fails since the introduction of drb",2008-01-30T00:32:32Z,N/A
+3a94b1dbed22688c05b24b29596a19d9b3ce3096,Giorgio Gonnella,ggonnella@yahoo.it,"standardization
+
+ - unfortunately the rails/ruby standards has not been
+   followed in a part of the code!
+ - composedwords should be composed_words with underscore",2008-01-30T00:10:56Z,N/A
+f59c9539e45fbe0218d0f64420374a711ca26aad,Giorgio Gonnella,ggonnella@yahoo.it,(adjustments to last commit),2008-01-30T00:01:47Z,N/A
+3cb5780137c59940611ae72bace44d1366d1ad9b,Giorgio Gonnella,ggonnella@yahoo.it,"added some named routes
+
+ - and used the corresponding ""*_url"" methods whenever
+   possible",2008-01-29T23:57:49Z,N/A
+f11f60a19f4235281c27d8a107a3f51023a74bea,Giorgio Gonnella,ggonnella@yahoo.it,added a link to registration page in login fail msg,2008-01-29T23:28:40Z,N/A
+a109424e7299631f1a08ccc85a6fb8f32d53ffb4,Giorgio Gonnella,ggonnella@yahoo.it,"login: by failure stay on same page
+
+ - on login failure a msg is displayed and
+   the login page is reloaded
+ - simplified controller code
+ - deleted unreachable templates",2008-01-29T23:22:04Z,N/A
+b589d25b094961d98acce3033e1c53eea8db83b1,Giorgio Gonnella,ggonnella@yahoo.it,formatted code of login views,2008-01-29T23:13:03Z,N/A
+22f950decbe16ab25d84a6bc9970088fc59caff8,Giorgio Gonnella,ggonnella@yahoo.it,added comment line to layout file,2008-01-29T23:05:50Z,N/A
+d439a80b1053dcf6ff18395e80332c1403c5be7a,Giorgio Gonnella,ggonnella@yahoo.it,"reformatted code in the default templates
+
+ - 2 spaces indent, no more than 80 chars/line",2008-01-29T23:02:41Z,N/A
+d3681d89eb398ce6f673e85afeb675052dfae4ee,Giorgio Gonnella,ggonnella@yahoo.it,"changed titles color to darkblue
+
+ - I think it's much better
+ - I know in genometools.org is gray...
+ - revert it if you don't like it",2008-01-29T22:53:59Z,N/A
+a4e0ed50f9dd1b823d70aacd9ff014f83051c6df,Giorgio Gonnella,ggonnella@yahoo.it,"sequence ids list formatted
+
+ - the list is formatted in a table
+ - each seq_id has the css class .seq_id
+ - the max number of seq_ids per row is set
+   in the controller (in the action code)
+   using the class variable @seq_ids_per_line
+   [currently set to 10]",2008-01-29T22:52:50Z,N/A
+3b37db585bd62c39021a9e0280056a297b292b02,Giorgio Gonnella,ggonnella@yahoo.it,"fixed width related bug in public files
+
+ - now if a session[:user] can't be found (read:
+   you are not logged in), the width set by the
+   owner of the file is used
+ - another possibility would be to set it to 800
+   in this case",2008-01-29T22:26:31Z,N/A
+ffda183bcae50a6a9d07727dc676ef198f311cd6,Marvin Mundry,mmundry@oscar.mun,Updated the todo list,2008-01-29T15:09:13Z,N/A
+76f036e1b556b83c52a38f9dec8c79b5201ac7e4,Marvin Mundry,mmundry@oscar.mun,"Removed the dependency of the GenomeTools
+
+ * Genometools access is managed by the GTServer",2008-01-29T15:06:15Z,N/A
+79e65b48b37aaace5ba3579d3a0b5166d5d13cd0,Marvin Mundry,mmundry@oscar.mun,Added tooltips to the browser icons,2008-01-29T14:58:51Z,N/A
+4ac38d56a9d3260c53e7c69d0695776dc8acfab3,Marvin Mundry,mmundry@oscar.mun,"Made the browser headline mor informative
+
+ * Now the name of the file that is shown is displayed in the headline",2008-01-29T13:53:10Z,N/A
+84c2e56313a58d58eddc399e8dd27dad9243632c,Marvin Mundry,mmundry@oscar.mun,Added public browsung to in_session,2008-01-29T13:47:47Z,N/A
+d35abbe720ff47586886f5d9aa8589b9dcf8c9a0,Marvin Mundry,mmundry@oscar.mun,Resolved filename too long style bug,2008-01-29T13:33:31Z,N/A
+d4d958bdec0abc749d2d1a8d410de26ac29dde4e,Marvin Mundry,mmundry@oscar.mun,Added an overview bar to the browser,2008-01-28T20:19:43Z,N/A
+aefd178e5f4bf0e5dd51d8ff90bb7dde6766b1ea,Giorgio Gonnella,ggonnella@yahoo.it,(improvement of last commit),2008-01-28T18:47:16Z,N/A
+f5b5aea7940265e9525adbf43f46c6e719f691a4,Giorgio Gonnella,ggonnella@yahoo.it,added helptext to drawing format configuration page,2008-01-28T18:41:22Z,N/A
+2852eb673be26746f43cdf7905dbb290e6986d73,Giorgio Gonnella,ggonnella@yahoo.it,"allow the user to set the width of the image
+
+ - created a column in the drawing_formats table
+ - the column has a default value of 800
+ - created a method in User model to read it
+   - usage: User.find(1).width #=> e.g. 800
+ - the method has a default of 800 pixel if
+   no drawing_format_config exists for an user
+ - the interface Configuration/Drawing formats
+   allows to set the value
+ - added dynamic width to all places where it
+   was set to 800 (browser controller/templates)
+ - added witdh parameter to sequence_region.to_png
+ - added witdh parameter to equivalent drb server method",2008-01-28T18:30:46Z,N/A
+354c3c3898da998d6d695e8a33d0ee6f9fc736bf,Giorgio Gonnella,ggonnella@yahoo.it,"rewritten migrations 001 to 003 in rails 2 style
+
+ - no structural changes",2008-01-28T17:34:07Z,N/A
+5a6d39e37ece3b7cf2649d3c9e2c611fe8e61511,Giorgio Gonnella,ggonnella@yahoo.it,"added add_intron attribute to table annotations
+
+ - added a boolean field in the create_annotation migration",2008-01-28T17:27:18Z,N/A
+aa6aebdf6955fc74100febddb13557099233c20b,Giorgio Gonnella,ggonnella@yahoo.it,todo list updated,2008-01-28T17:17:38Z,N/A
+13f02f01c0664a588725c5d3bac842426f926cc4,Giorgio Gonnella,ggonnella@yahoo.it,not the show_grid feature is really fixed,2008-01-28T17:17:12Z,N/A
+5c9be1db4f70def7743f07a0744e7688352420a7,Giorgio Gonnella,ggonnella@yahoo.it,fixed annotation.rb not deleting after determining a gff3_data is invalid,2008-01-28T13:40:28Z,N/A
+c4aea72ed64e6952d83047ba40bc032faa3fd346,Giorgio Gonnella,ggonnella@yahoo.it,"tried to fix show_grid bug in drawing format configuration
+
+ - format/show_grid is a string in view.lua so set as string
+ - it doesn't work anyway",2008-01-28T13:33:19Z,N/A
+7149bcf32d29a1bdef9536f5ce2cc507cadaae28,Giorgio Gonnella,ggonnella@yahoo.it,"LGPL licensed icons for browser controller uploaded
+
+ - Substituted the icons for zooming and added new icons
+ - The icons are under LGPL license and were donwloaded
+   from wikipedia
+ - License information and original source are saved
+   in the file ""license""
+ - The original format is svg (vector graphic) however
+   32x32px icons were created as png",2008-01-28T13:08:41Z,N/A
+b72adddf532838723726963282c6162c1e86123d,Marvin Mundry,mmundry@oscar.mun,"Introduced caching in the GTServer
+
+ * The GTServer now keeps feature_indices in memory
+ * The GTServer has been documented",2008-01-27T22:41:17Z,N/A
+6f4a2c6ce475efa1939783e0b4b52baaf81ddf6f,Marvin Mundry,mmundry@oscar.mun,"Exported all GT functionallity on a drb server
+
+ * The procedure to start the servers is described in the README file
+ * genomeviewer now does no longer contain any GT bindings
+ * The GTSrv Drb server currently does no caching",2008-01-27T16:09:07Z,N/A
+c05ecae246b01628135c84a1a28ad7ad54430978,Giorgio Gonnella,ggonnella@yahoo.it,"now also the domination configuration is operative
+
+ - writing the whole code for the configuration pages
+   required a real big effort that is:
+
+    - 9 migrations
+
+    - 9 models (associations etc) including
+      class method ""defaults"" for each config model
+
+    - the config method for the user model
+
+    - 24 actions for the in_session_controller
+      (divided in 5 modules)
+
+    - 8 templates
+
+  !!! a total of ca. 750 lines of code !!!
+
+  THAT means:
+
+    - some code can be made much mode DRY
+    - optimizations / more elegant ways can be found in some cases
+    - hopefully there are not many bugs, but tests could be written",2008-01-26T01:36:19Z,N/A
+83bbecd0fd2b590afdd1f310c35a1cf9442675d2,Giorgio Gonnella,ggonnella@yahoo.it,"some adjustments to the last commit
+
+ - the webpage for dominations config must still be rendered operative",2008-01-25T22:52:59Z,N/A
+7fb517b1194b8ff80a23a9edf6185585a3738cf4,Giorgio Gonnella,ggonnella@yahoo.it,"changed db schema for dominations
+
+ - with the old schema (a simple m:n table) was impossible to distinguish
+   the case in which an user has an empty domination list for a feature
+   and the case in which he wants the default domination list
+ - now there is two tables
+   - domination_configuration belongs to an user and defines the ""dominator""
+   - in the new table dominated_features there is zero, one or many references
+     to the domination_configuration
+ - so now:
+   - if a user has a domination_configuration for a feature class that means
+     that he ovverrided the default of view.lua
+   - his domination_configuration for a feature class can be an empty list
+     (which was impossible before this change)
+   - if he has no domination_configuration for a feature class the one of
+     view.lua is used",2008-01-25T22:41:16Z,N/A
+b1756ac3c54380dfbf25825b77350196fecd1902,Giorgio Gonnella,ggonnella@yahoo.it,collapsing configuration is now operating,2008-01-25T21:09:37Z,N/A
+15edcc133e8fcba445493821911b2348b6198c0b,Giorgio Gonnella,ggonnella@yahoo.it,"the feature_class creation page has been made operative
+
+ a mechanismus to rename or delete feature_classes is still missing!",2008-01-25T20:28:16Z,N/A
+acefcda1fe3f0cc7256432009479cce731c2a135,Giorgio Gonnella,ggonnella@yahoo.it,added a page to create new feature classes,2008-01-25T20:15:47Z,N/A
+8165254c5010175443c4123723bea9898952c28b,Giorgio Gonnella,ggonnella@yahoo.it,"divided in_session_controller in modules
+
+ - the controller code was becoming way too long
+ - extracted the file manager and upload methods and put in
+   file_manager.rb in a FileManager module
+ - extracted the config methods and put in files under
+   the directory ""config""; rails puts them in the namespace
+   Config automatically, each file has then a module
+   named like  the file so that the module can be found",2008-01-25T20:14:14Z,N/A
+b2096090b75a4310a9afb47116d66fd758640cf6,Giorgio Gonnella,ggonnella@yahoo.it,same improvements for color config now also for style config,2008-01-25T20:01:05Z,N/A
+c21d10ec1ff06a4c2541dbc0479cf8a18c51b1e6,Giorgio Gonnella,ggonnella@yahoo.it,"now you can colors for features not in the original color list
+
+ - however support for creating new feature classes is not yet there
+   (coming soon...)",2008-01-25T19:48:09Z,N/A
+fa1a0fbfd354361827025a7955d4b6ed4807b52f,Giorgio Gonnella,ggonnella@yahoo.it,(correction in last commit),2008-01-25T19:26:19Z,N/A
+680002cbca7475b1415d41d6fe6875d52e5f843c,Giorgio Gonnella,ggonnella@yahoo.it,improved config colors page,2008-01-25T19:21:51Z,N/A
+21b9b685bcb25775cebc7158eb4f962b06601542,Giorgio Gonnella,ggonnella@yahoo.it,"also feature style configuration is now active
+
+ again: support for adding new features not implemented^",2008-01-25T02:07:35Z,N/A
+bfe96dfddf3d18a415dce7bbd54cafcb32178eec,Giorgio Gonnella,ggonnella@yahoo.it,"color configuration now operative
+
+ BUT not yet adding new feature classess",2008-01-25T01:41:13Z,N/A
+c4a5c22086a6cc569ffd335665483d8bcfb6c359,Giorgio Gonnella,ggonnella@yahoo.it,format drawing configuration now operating,2008-01-25T01:12:15Z,N/A
+eb567c388da3055f93ec5df770e03c363c7ea3ca,Giorgio Gonnella,ggonnella@yahoo.it,"fixed show_grid effect in User#config method
+
+ (the values were inverted)",2008-01-25T01:02:25Z,N/A
+a2c534b3b0552b49c2063b8802d03398dde418d0,Giorgio Gonnella,ggonnella@yahoo.it,"fix in drawing_format_configuration model
+
+forgot to remove ""id"" from the list of pixel_attribute_names",2008-01-25T00:51:52Z,N/A
+7dbc0a6dc7d9b95d9d1998f63bbdc188801ba5bf,Giorgio Gonnella,ggonnella@yahoo.it,added a first web form for domination config,2008-01-25T00:33:37Z,N/A
+b8e89d1609447f70f37ebae2d9b4f91c917c130b,Giorgio Gonnella,ggonnella@yahoo.it,(correction in the config collapse page),2008-01-25T00:16:53Z,N/A
+a5776fe55564ead36a775b29318294eee7ef8a23,Giorgio Gonnella,ggonnella@yahoo.it,"added a page for collapsing configuration
+
+ the target action of the button is not yet implemented",2008-01-25T00:14:02Z,N/A
+17c295d85f53f568984d950a77ab92565e56d62d,Giorgio Gonnella,ggonnella@yahoo.it,"added a page to config styles
+
+ note that the target action of the form is not yet
+ implemented",2008-01-25T00:06:43Z,N/A
+7e4260a17b7556b3848c76636f6493372b06ab6d,Giorgio Gonnella,ggonnella@yahoo.it,"added page to config drawing formats
+
+ note that the action do_config_formats
+ is not yet implemented",2008-01-24T23:51:20Z,N/A
+2db4b735fc724fde8e89b4ddefbab3ae226f23ed,Giorgio Gonnella,ggonnella@yahoo.it,"added a page to config colors
+
+ note that at the moment the action do_config_colors
+ is not yet implemented",2008-01-24T23:50:16Z,N/A
+98b3fa5124c555d451984333e704b408d5dd89e7,Giorgio Gonnella,ggonnella@yahoo.it,"renamed link ""config"" in the navbar in ""configuration""",2008-01-24T23:49:02Z,N/A
+240ea60fbecd4cdd725ecaaceffb2ae745d40c26,Giorgio Gonnella,ggonnella@yahoo.it,"implemented a default class method also for collapsing_configuration
+
+ it simply returns an array (the to_parent)",2008-01-24T23:41:39Z,N/A
+c952d29dfafd4b0f168c95890522181c41262aef,Giorgio Gonnella,ggonnella@yahoo.it,"added a config template in the in_session controller
+
+ - it is a link list to sub-config-pages
+ - each sub-config-page configurates a part of the config object
+ - sub-config-pages are called config_colors, config_styles and
+   so on (see the actions added to in_session in the last commit)",2008-01-24T23:39:08Z,N/A
+1328f40ba5665a650361b7274476a9c8d6b5ed15,Giorgio Gonnella,ggonnella@yahoo.it,"added config methods to in_session controller
+
+ each config method loads the default values
+ and the user specific values of its part of
+ of configuration into a class variable that
+ can be used by the templates
+
+ e.g. config_colors populates an hash @colors
+ with default values (from the lua file) and
+ user specific values that override the first
+ (or add to the defaults in the case of new
+ feature classes)",2008-01-24T23:36:00Z,N/A
+05067959da4c8e31eafbcb0f5a195b7fa9c3f7c9,Giorgio Gonnella,ggonnella@yahoo.it,"added a class method defaults also to domination_configuration
+
+ like for the last 2 commits: reads lua file, returns an hash",2008-01-24T22:03:57Z,N/A
+9a9f6d36b3effa8f528dab26b7584bcebd5030f5,Giorgio Gonnella,ggonnella@yahoo.it,"added a #defaults class method to FeatureStyleConfigurations
+
+  - reads the default values from view.lua using the ruby bindings
+  - returns the values as hash",2008-01-24T21:57:48Z,N/A
+758d172d2d3d12014ba5ea95cec02616b8f9315e,Giorgio Gonnella,ggonnella@yahoo.it,"added a method to read default colors from standard lua file
+
+ - this is useful for the config template",2008-01-24T21:48:17Z,N/A
+131166ce53f96b1d23bbfddfd1cec59ffada26e8,Giorgio Gonnella,ggonnella@yahoo.it,"added a convenience method to DrawingFormatConfiguration
+
+ pixel_attribute_names
+
+ --> gives the attribute_names only of those attributes
+     whose values are expressed in pixel (all but user_id
+     and show_grid - which is boolean)",2008-01-24T21:05:23Z,N/A
+e643aa2646c0650ca281fdd3f8ccfe73c856cd40,Giorgio Gonnella,ggonnella@yahoo.it,the user specific config object is now used for rendering,2008-01-24T00:55:27Z,N/A
+6b2ab5254eb5b32cc5ff065433610d30b5e34ebf,Giorgio Gonnella,ggonnella@yahoo.it,added unit test for drawing format configuration,2008-01-24T00:37:08Z,N/A
+791d19e595160a08bcf9372e7b00226a165ce18f,Giorgio Gonnella,ggonnella@yahoo.it,added unit test for domination configuration,2008-01-24T00:36:29Z,N/A
+6325b474a479c46b08c92fd36b05980ed5f9ec79,Giorgio Gonnella,ggonnella@yahoo.it,added unit test for color configuration,2008-01-24T00:35:49Z,N/A
+b1dbf0031539d728158a68354333035b97135cf5,Giorgio Gonnella,ggonnella@yahoo.it,added unit test for collapsing configuration,2008-01-24T00:35:12Z,N/A
+39b91fe611b215bf5ebd370d3d04f7ca8921787d,Giorgio Gonnella,ggonnella@yahoo.it,added unit test for feature style configuration,2008-01-24T00:34:32Z,N/A
+bdefd31811ed5f0d67ddc79d19d1d4ba965af4d8,Giorgio Gonnella,ggonnella@yahoo.it,"fix in feature_style_configuration (forgotten association)
+
+ (forgotten belongs_to :feature_class)",2008-01-24T00:33:39Z,N/A
+644af66dc33236abbb25f63f8916ad9139737a83,Giorgio Gonnella,ggonnella@yahoo.it,"added test fixtures for feature_classes, graphical_elements and styles",2008-01-24T00:32:10Z,N/A
+156722fd04c36cc0dfb81fe067bc3ac0f6c546da,Giorgio Gonnella,ggonnella@yahoo.it,"added content to the config method of User model
+
+ - now every kind of user specific configurations are loaded
+   in the config object before it is returned",2008-01-24T00:30:50Z,N/A
+8ac814ab547a6f27559b90cf8776d530a2a792ce,Giorgio Gonnella,ggonnella@yahoo.it,"fix in domination_configuration model
+
+ (:class => ... should have been :class_name => ...)",2008-01-23T22:30:19Z,N/A
+1a3a844d07a876bf26c415ac381770e9e5952cba,Giorgio Gonnella,ggonnella@yahoo.it,"added serialization of attribute to_parent of collapsing_configuration
+
+ - now it is possible to use the to_parent as an Array
+ - # e.g.
+   c = CollapsingConfiguration.new
+   c.to_parent = [""a"",""b"",""c""]
+   c.to_parent # => [""a"",""b"",""c""]
+   c.to_parent.class # => Array",2008-01-23T22:03:45Z,N/A
+0cf0d1240a57e88b79e210631b74812a110fce79,Giorgio Gonnella,ggonnella@yahoo.it,"added association code to config models
+
+ - the associations are the one prepared in the migrations",2008-01-23T20:40:40Z,N/A
+804e900fd23eb2eba0095793d9f3cc7161cf33b8,Giorgio Gonnella,ggonnella@yahoo.it,"added a #config method to user model
+
+ - the method returns a GT::Config object
+ - reads first the default values in config/view.lua
+ - for the moment does nothing else, however it is meant
+   to read the user specific configuration overrides
+   from the database",2008-01-23T20:17:22Z,N/A
+28ad20a22c6a6090946142a4da0abee9bed9c457,Giorgio Gonnella,ggonnella@yahoo.it,"copied view.lua (default config file) from genometools
+
+ - the original file is under gtdata/config in genometools
+ - the file has been put in the config directory",2008-01-23T20:02:31Z,N/A
+f883ea4e88d939677be107304cee04a98891b55f,Giorgio Gonnella,ggonnella@yahoo.it,forgot a column user_id in drawing_configuration (fixed),2008-01-23T19:28:14Z,N/A
+0ebbd399ca549da52d206730b75529197813d55f,Giorgio Gonnella,ggonnella@yahoo.it,"added a migration that creates an example user
+
+ - this is a nice feature for development
+ - the login is ""foo@bar.com"" password ""foo""
+ - it is created only in development environment
+ - all annotations under test/gff3 are automatically uploaded
+   to this user (as private)",2008-01-23T19:27:16Z,N/A
+829dbd3449a56fe9d5107423dca99cf8d742cd52,Giorgio Gonnella,ggonnella@yahoo.it,"associations of user model to collapsing and domination configuration
+
+ - has_many domination_configurations
+ - has_one collapsing_configuration",2008-01-23T19:02:47Z,N/A
+dc17a834d9dc1fed0a6994135e61490c7b0ab701,Giorgio Gonnella,ggonnella@yahoo.it,"domination and collapsing defined in the database
+
+ - domination:
+   * a classical m to n table for a relation between two feature_classes
+ - collapsing:
+   * a text field were the to_parent array can be serialized",2008-01-23T18:48:07Z,N/A
+038c4c724614679e4aed49d695961190fa38bdbd,Giorgio Gonnella,ggonnella@yahoo.it,"populated migration for drawing format configuration
+
+ added configuration fields on the base of genometools view.lua
+ file",2008-01-23T18:41:21Z,N/A
+232fd597226ee23c15d6ef286a9496d4d4abff31,Giorgio Gonnella,ggonnella@yahoo.it,eliminated hard-coded color/style configuration in user model,2008-01-23T18:16:40Z,N/A
+b107843b235aedb405cf5e320bfd9c9e25defccb,Giorgio Gonnella,ggonnella@yahoo.it,"corrected migration for graphical elements
+
+ (it was not working, now it's fixed)",2008-01-23T18:10:49Z,N/A
+ff4612cac1f55ed3fa2094c61c4e15392de6170e,Giorgio Gonnella,ggonnella@yahoo.it,"color table uses now polymorphic association
+
+ - this way both feature classes and graphical elements
+   can be given a color
+ - teh polymorphic interface is called ""element""",2008-01-23T18:05:07Z,N/A
+19b795496dfbf9526aa1866aa5c8f8bbcc5a2a37,Giorgio Gonnella,ggonnella@yahoo.it,"in feature style table ""feature_id"" column renamed in ""feature_class_id""",2008-01-23T18:03:33Z,N/A
+96979d36b15f711baf96fb6550f104f1307bf2b9,Giorgio Gonnella,ggonnella@yahoo.it,"added model graphical_element
+
+ - table containing the graphical element whose color
+   can be changed in the config object
+ - the migration already creates the records
+
+ - renumbered the migrations",2008-01-23T18:01:18Z,N/A
+deaa76021e042b3d0f1e1942087feaf3b964e8ce,Giorgio Gonnella,ggonnella@yahoo.it,"migration styles: added content
+
+ - the only field aside the id is :name
+ - added the currently supported styles directly
+   during the migration",2008-01-23T17:53:59Z,N/A
+2309984e8fe105d7abac1bfd491f31deefa6d8b3,Giorgio Gonnella,ggonnella@yahoo.it,"added content to the feature_class migration
+
+ - some common feature classes are now created during
+   the migration",2008-01-23T17:49:33Z,N/A
+56f83f5eb4515354ac464020d7917b47cd559860,Giorgio Gonnella,ggonnella@yahoo.it,"reordered migrations
+
+ - feature_class must come before color_configuration and feature_class and style before feature_style_configuration",2008-01-23T17:31:34Z,N/A
+2fa83c0db702b4e8b1a920ed0cff9aa7149d7d85,Giorgio Gonnella,ggonnella@yahoo.it,"added tables for feature_classes and styles
+
+ - transformed all strings column ""feature"" in foreign keys
+  to the new table, as well as the column ""style""",2008-01-23T17:22:00Z,N/A
+29ebfc45092ea0f823de8a23c0e19278b4baec07,Giorgio Gonnella,ggonnella@yahoo.it,"(minor bug fix and) added feature style default configuration
+
+ - same as for colors
+ - corrected a typing mistake that remained in the last commit",2008-01-23T11:37:58Z,N/A
+8388f4f58248a8106c72dfc315d861adf07c134d,Giorgio Gonnella,ggonnella@yahoo.it,"added a default color configuration for each user
+
+ - a callback creates ColorConfiguration objects for all
+   currently defined features with a default value^",2008-01-23T11:26:56Z,N/A
+7d9b58fc5fe6b5d8055ec04f6587ad2c770b183d,Giorgio Gonnella,ggonnella@yahoo.it,"associated user model with configuration models
+
+ -  has many used for colors and feature style (as there are different feature types)
+ -  has one used for domination/collaption and for drawing format",2008-01-23T11:16:01Z,N/A
+a08218d5a57adb803878cb6b234a808e0ee4c478,Giorgio Gonnella,ggonnella@yahoo.it,"Created a model for Domination/Collaption Configuration
+
+ - two text columns (collapse and dominate) are designed to
+   contained marshaled data of the collaption/domination arrays",2008-01-23T11:12:00Z,N/A
+5fff372c05f7ce3a32230802b63a52d5677e6f4d,Giorgio Gonnella,ggonnella@yahoo.it,"created a model for drawing format configuration
+
+ - belongs to an user
+ - specifies the preferences in pixel
+
+[ put the columns as decimal as in the lua example config there were some decimal]",2008-01-23T11:05:04Z,N/A
+08f83898baa26d2bb764dd0759469bfb65942eb9,Giorgio Gonnella,ggonnella@yahoo.it,"added a model for feature style configuration
+
+ - similar to the color table, allows for each user
+   to specify the feature style for any kind of
+   feature",2008-01-23T11:03:22Z,N/A
+840ae69bd922530846f970f42fcb60ed91c64771,Giorgio Gonnella,ggonnella@yahoo.it,"Added a model for configuration of colors
+
+ - is a generic table that does not specify the name of the feautures
+ - each record belongs_to an user and specify the color for one kind of feature",2008-01-23T11:00:21Z,N/A
+0579380b29d4b8c055b3431a91be559ed46e6f2c,Giorgio Gonnella,ggonnella@yahoo.it,delete cascade behaviour on annotation obtained in a simplier way,2008-01-23T10:54:58Z,N/A
+ec0ddbac54abbd13ee152c8ecdd622bdcf8819e5,Marvin Mundry,mmundry@oscar.mun,Tuned the browsers javascript,2008-01-21T22:44:04Z,N/A
+eca442c7c14f9fa69aafe2b01f9e67a5e9f5d145,Marvin Mundry,mmundry@oscar.mun,"Implemented security
+
+ * Users now should no longer be able to access other peoples private
+   files, even when manipulating the get request",2008-01-21T22:20:21Z,N/A
+85873e7bc598cbda40fdab90bb10e856dee99267,Marvin Mundry,mmundry@oscar.mun,"Added a ""zoom out to full sequence"" link in the browser",2008-01-21T21:56:55Z,N/A
+479f0be602a13906c1bb1ecc2b6ead326a85d2ee,Marvin Mundry,mmundry@oscar.mun,Made public browsing functional,2008-01-21T21:41:41Z,N/A
+70d1a3898e0af2900dec00dfc332fc12ea7e34a7,Marvin Mundry,mmundry@oscar.mun,Removed scroll bars that appear during drag and drop in the browser,2008-01-21T21:31:24Z,N/A
+c730783bb41ed81765d2e01e22439bd5fb6516e2,Marvin Mundry,mmundry@oscar.mun,Removed 2 lines of debug code,2008-01-21T13:55:10Z,N/A
+97e5bc58388b0aae707c45b07dd3e0b75d637d27,Marvin Mundry,mmundry@oscar.mun,"Implemented more sophisticated browsing controls
+
+ * The annotation image is no longer displayed as the documents background.
+   The image is now displayed as the background of a div.",2008-01-21T13:46:24Z,N/A
+3fe4f2dfa451f4a43d06a7c87e75b9a68747c074,Marvin Mundry,mmundry@oscar.mun,"Modified the browser
+
+Instead of displaying the text Select a sequence id above now directly the first
+sequenceid is shown in the browser",2008-01-21T09:49:48Z,N/A
+2c816fd2c7596c4d6232d803b8cafcf8064fd1a8,Marvin Mundry,mmundry@oscar.mun,"Corrected layouting
+
+ in the in session controller the menu css is now no longer loaded twice
+ in the browser controller now the in_session layout will be used",2008-01-21T09:36:27Z,N/A
+e62f1b9d00b1169863ec8e189080547c45633809,Giorgio Gonnella,ggonnella@yahoo.it,"modified sequence_region model to use png_stream
+
+ * the png data is not anymore saved in a temp file
+   but sent directly to the browser
+
+ * an optional width parameter is added to .to_png
+   with a default of 800 pixel",2008-01-16T12:04:50Z,N/A
+f7aef39074baffdd78d847eef63111b33244878c,Giorgio Gonnella,ggonnella@yahoo.it,added a new little gff3 with two seq regions under test/gff3,2008-01-16T11:47:11Z,N/A
+cc26229cb9c041d21a02dd66a363b0908ec348a4,Giorgio Gonnella,ggonnella@yahoo.it,added sqllite3 structure dump files to db/.gitignore,2008-01-16T09:57:19Z,N/A
+34bd9b93104fbaed1c89ab404dd4c8b61a7dad37,Giorgio Gonnella,ggonnella@yahoo.it,added a new little gff3 in the test/gff3 directory,2008-01-14T20:02:13Z,N/A
+5298d08bef515056439f27cf9e7d20378a6d152b,Giorgio Gonnella,ggonnella@yahoo.it,"bug fix: private is private, public is public",2008-01-14T20:01:31Z,N/A
+3181b48397df14952ce32185452a5f2756e2cf82,Giorgio Gonnella,ggonnella@yahoo.it,"simplified and debugged annotation model
+
+ - bug fix: sequence regions objects are now created only
+   if they do not exists
+
+ - new feature: gf33_data_storage and storage management rewritten
+   so that the storage location is actually changed only by saving
+   the object
+
+ - simplification: delete cascade behaviour on seq regions obtained
+   through the :dependent => :destroy option
+
+ - simplification: the storage file is no longer in subdirectories:
+   public and private files are stored in the same location and
+   the username is simply put as prefix to the filename
+
+note: one of the unit tests (test_rename) fails but I can't find
+the reason now (after many tests in the console) - renaming
+actually functions well when I try it in the rails console",2008-01-14T19:56:34Z,N/A
+1be56c448047bda1fa701019b52636360974fd9e,Giorgio Gonnella,ggonnella@yahoo.it,some variable names changed to more intuitive,2008-01-14T17:09:07Z,N/A
+cd76c2d5a863fc8ad2e8ec0e8b2f405790e512e2,Giorgio Gonnella,ggonnella@yahoo.it,removed layout bug in browser controller,2008-01-14T16:51:34Z,N/A
+4198e16352fede899a7d16061d975581e2b63c8e,Giorgio Gonnella,ggonnella@yahoo.it,"compacted code in browser controller
+
+ - nothing substantial changed, only code about
+   20 lines shorter through some compacting
+
+ - names of two variables changed to ruby convention",2008-01-14T14:07:39Z,N/A
+03a22205dc36d7763f8a1199ade77bd7ab2a83a8,Marvin Mundry,mmundry@oscar.mun,Modified the indention of the source from the previous commit,2008-01-14T12:14:47Z,N/A
+693e452b92ab3b105d83a845c75e4ea14692acfe,Marvin Mundry,mmundry@oscar.mun,"Added a file Manager
+
+ * The file manager allows browsing uploaded files
+   and modifying their attributes",2008-01-14T12:01:50Z,N/A
+4b80fdab43a84780a3c64be42cd0e1478c6e8c5e,Marvin Mundry,mmundry@oscar.mun,Completed previous commit,2008-01-13T19:37:18Z,N/A
+2898241191ff44f083d71a520c92b6f5da0657ee,Marvin Mundry,mmundry@oscar.mun,Switched database adapter to sqlite3,2008-01-13T19:30:04Z,N/A
+955959ead5b6ad65bb4eeea40666306283783364,Marvin Mundry,mmundry@oscar.mun,Added the possibility to browse public files,2008-01-13T18:55:35Z,N/A
+ee989c768e966c3f466038414a9ca733a0edc43f,Marvin Mundry,mmundry@oscar.mun,Done some minor gui design modifications,2008-01-13T16:17:51Z,N/A
+f651694a4fe35ad5c68d6a47bf98b4866f8481db,Marvin Mundry,mmundry@oscar.mun,"Introduced the browser controller
+ * The browser controller allows sequence region selection and sequence region browsing
+ TODO:
+  implement public browsing
+  implement security (i.e. do not allow everyone browsing everyone else's files)
+  modify layouting (in order to include js)",2008-01-13T15:58:18Z,N/A
+6d86206777d1712285bc0347ae6276aae41f8e6d,Giorgio Gonnella,ggonnella@yahoo.it,"Added validation code to annotation.rb
+
+ an error msg (on_base) is added to the error object of Annotation
+ if the validation fails
+
+ example implementation in app/controllers/in_session_controller.rb
+ and app/views/in_session/upload.html.erb
+
+ [now the uploader shows if the upload was successful or not and,
+ if not, displays the reason]",2008-01-12T18:16:33Z,N/A
+1e670c994b9cd87de07c0705f06e059306e526f9,Giorgio Gonnella,ggonnella@yahoo.it,"fixed problem: the empty directory tmp/images must exist
+
+ added an empty .gitignore file to tmp/images so that the directory is included",2008-01-12T17:45:21Z,N/A
+2a8c12dfa4be74ecf246a9519bad04c50f0531de,Giorgio Gonnella,ggonnella@yahoo.it,"correction to last commit
+
+(1) The file app/controllers/application.rb was not in the right version
+(2) The commit msg should have been:
+
+generation of png images fixed: a stream is sent directly to the browser
+
+ - 1 - the SequenceRegion#to_png method now returns the png data
+       and not a filename anymore. Please note that until the genometools
+       will require to save the data in a file, this method will have
+       to save the data in a tmp file (which is then delete) and then
+       read the data again (that will be sent directly to the browser
+       from the controller, see point 2). This, however, impacts the performance.
+
+ - 2 - an action png_image was added to (for the moment) application.rb
+       [Marvin, please move it later to your browser controller] and
+       calls SequenceRegion#to_png with the right parameters (from the
+       params hash), sending the png data directly to the browser
+
+ - 3 - an example of application is app/views/in_session/view.html.erb
+
+       image_tag(url_for(:action=>:png_image,
+                         :annotation=>params[:annotation],
+                         :sequence_region=>params[:sequence_region],
+                         :seq_begin=>params[:seq_begin],
+                         :seq_end=>params[:seq_end]))
+
+       [the view was rewritten to use the new methods, although it will be
+       replaced, as an example usage; now it correctly moves right and left
+       and zooms, however it shows always the first sequence_region (see _navbar)",2008-01-12T17:13:47Z,N/A
+6a3609ede2419ed6cf323ef70df8acaeb4758051,Giorgio Gonnella,ggonnella@yahoo.it,"generation of png images fixed: a stream is sent directly to the browser
+
+ - 1 - the SequenceRegion#to_png method now returns the png data
+       and not a filename anymore. Please note that until the genometools
+       will require to save the data in a file, this method will have
+       to save the data in a tmp file (which is then deleted) and then
+       read the data again (that will be sent directly to the browser
+       from the controller, see point 2). This, however, impacts the performance.
+
+ - 2 - an action png_image was added to (for the moment) application.rb
+       [Marvin, please move it later to your browser controller] and
+       calls SequenceRegion#to_png with the right parameters (from the
+       params hash), sending the png data directly to the browser
+
+ - 3 - an example of application is app/views/in_session/view.html.erb
+       which was changed accordingly (but will be replaced by the browser
+       controller of marvin)
+
+ - 3 - an example of application is view.html.erb of in_session controller
+
+       image_tag(url_for(:action=>:png_image,
+                         :annotation=>params[:annotation],
+                         :sequence_region=>params[:sequence_region],
+                         :seq_begin=>params[:seq_begin],
+                         :seq_end=>params[:seq_end]))
+
+       [the view was rewritten to use the new methods, although it will be
+       replaced, as an example usage; now it correctly moves right and left
+       and zooms, however it shows always the first sequence_region (see _navbar)]",2008-01-12T16:44:56Z,N/A
+6ae3d4ab81b1a263c9b87aaf25790e8c2cf0d620,Giorgio Gonnella,ggonnella@yahoo.it,"annotation model: gff_data saved to tmp file if name and user not yet set
+
+ * before this commit the method gff3_data=() would raise an exception
+   if no filename could be calculated because the attributes user and
+   name were not set yet; this way no Annotation.create() could have
+   been used as the the order of the elements of the hash was not always
+   the right one (that means: gff3_data after name and user)
+
+ * now if no filename can be calculated the data is saved under tmp/gff_data
+   in a file with a random name; when the other attributes are set (name
+   and user) the file is moved to the right location
+
+ * in addition now changes of user for an Annotation object are handled correctly",2008-01-11T03:17:21Z,N/A
+0bc989dd6c1b988f6690eb39993e71efe7ad0cc8,Giorgio Gonnella,ggonnella@yahoo.it,"gff3_data_storage method of annotation model made public
+
+ * the method returns the filename where the gff3_data is stored
+ * this method is necessary for the SequenceRegion model to use the gtruby bindings
+
+ (a possible way to avoid this could be to move all code using gtruby bindings
+  to the annotation model and refer to it from the sequenceregion model?)",2008-01-11T01:03:23Z,N/A
+e0bfdf11bdc561fedfef7605a71bfa75f48d2ae2,Giorgio Gonnella,ggonnella@yahoo.it,"added some unit tests for annotation model
+
+ * some sample annotations have been created directly in the
+   unit test file (test/unit/annotation_test.rb) as fixtures
+   have problems with the filesystem storage of gff3 data
+
+ * some unit tests for the storage mechanism were added",2008-01-11T00:58:12Z,N/A
+6cd9ac0b6ab94cb7ffe36bd53cc28dbb29b69bbe,Giorgio Gonnella,ggonnella@yahoo.it,"specified a different path for the uploads in different environments
+
+ * the global variable $GFF3_STORAGE_PATH sets the path where the gff3
+   files are saved by the Annotation model
+
+ * the value of this variable is set in the config files for the
+   different environments under config/environments
+
+ * uploads in the test environment will now load under test/uploads
+   and not interfere with the ""real"" uploads under uploads
+
+ * uploads in the development and production environment will for the
+   moment be both under uploads
+
+ * added the directory test/uploads to .gitignore",2008-01-11T00:12:59Z,N/A
+b1d42262e812fb571aa2ffa198087c8d988734f8,Giorgio Gonnella,ggonnella@yahoo.it,"added some test gff3 data under test/gff3
+
+ * these files are needed to create some unit tests
+   for the annotation model
+
+ Note: these files are actually test files copied from the genometools
+ (should they stay here or should we refer to the genometools copies?)",2008-01-10T23:40:21Z,N/A
+166f51dc5e06cd51c4b44925407b1135393caf70,Giorgio Gonnella,ggonnella@yahoo.it,"fixed bugs in in_session_controller
+
+ - a "".read"" was missing, so that by upload not the content of the file was saved
+   but a object id
+
+ - "".create"" for the annotation model cannot be currently used as the order of the
+  parameters in the hash is not predetermined and gff3_data=() can be potentially
+  called before an user and filename are assigned; therefore substituted with "".new""",2008-01-09T22:26:48Z,N/A
+15ab283b01a489c5e7740e8caaf1e49440d574cc,Giorgio Gonnella,ggonnella@yahoo.it,"annotation models raises exceptions if data is saved before a filename can be set
+
+ - to determine the path/filename you need an user and a filename being already set
+ - if this is not the case and gff3_data=() is used this raises an exception
+
+note: this does not allow to use annotation as an usual model (for example .create() method
+is dangerous because the gff3_data=() can be called before other methods)
+
+two way to fix this are: redefine create() or save the data in a temporary location if
+no filename can be yet calculated and move it to the right location after .user=() and .name=()
+methods are called",2008-01-09T22:23:55Z,N/A
+b20453ec661ae464424db9985a3cfbfa50c5a611,Giorgio Gonnella,ggonnella@yahoo.it,"Added general project rules under doc/project_rules
+
+ - The content is copy-pasted from the email of Gordon Gremme",2008-01-09T16:50:55Z,N/A
+e85587a09e9282013b3e09a794e63033d46c2936,Giorgio Gonnella,ggonnella@yahoo.it,"annotations are now parsed through gtruby bindings to find sequence regions
+
+ in Annotation model
+
+ - added method get_sequence_regions_params that uses the gt bindings
+ - the method is called by the create_sequence_regions (after_save callback)",2007-12-29T18:17:07Z,N/A
+d7acd55709a13169a9fc31c8da12b7c17fedb44f,Giorgio Gonnella,ggonnella@yahoo.it,"filesystem storage of gff3 data totally encapsulated in Annotation model
+
+ uploads/users directory renamed in uploads/private
+ (uploads/public exists already)
+
+ User model:
+
+   - deleted all code to create / delete the uploads directory
+
+ Annotation model:
+
+   - now calculates automatically a filename and keeps it uptodate
+   - creates and deletes uploads directories when needed
+   - $GFF3_STORAGE_PATH in environment.rb defines the basis path
+   - see also documentation of the class
+
+notes: this way changing the filesystem storage to a memory- or
+db-storage of the annotation will not require any change in the
+code outside the Annotation class and db-table!",2007-12-29T17:01:17Z,N/A
+e1c308f484135df6dc675e218d0de8398f645dc0,Giorgio Gonnella,ggonnella@yahoo.it,"[completion of last commit]: a ""{"" too much was removed",2007-12-29T11:49:38Z,N/A
+39561ef687937320d475e180c632b30391a9b1c1,Giorgio Gonnella,ggonnella@yahoo.it,"Added a higher/better abstraction level to the storage of gff3 data
+
+in the Annotation model:
+
+ - added a method gff3_data=() to save the actual data (currently in a file). In this way the storage of gff3 data in filesystem, database, memory or whatever else in an internal matter of the annotation model and  who uses the class (e.g. controller) does not need to know about it.
+
+   -- So now you can do: Annotation.create(
+				:gff3_data=>""#gff3 data in a variable or file"",
+				:gff3_data_storage =>""#currently the filename where to save it""
+				...
+
+ - reverted the splitting of the column datasource (of last commit) into path and filename, as in Ruby is actually very easy to derive a filename or path with methods of the class File, so two separated fields are not necessary; the idea of ""datasource"" was to have an abstract column whose meaning can change according to the chosen storage method of gff3 data.
+
+   -- So now datasource is back, but is called ""gff3_data_storage"".",2007-12-29T11:22:27Z,N/A
+d62efca86083934d774ae68051ed3713356cbc66,Giorgio Gonnella,ggonnella@yahoo.it,"created infrastructure for destroying annotations and users
+
+ * User
+
+   - deletion of an user cascades on his annotations
+
+ * Annotation
+
+   - deletion of an annotation cascades on its sequence regions
+   - higher level of astraction introduced regarding the storage
+
+      - introduced virtual attributes name, gff3_data_location (which
+        replaces the real column datasource) and gff3_data
+      - datasource column divided in filename and path in the
+        current implementation",2007-12-26T15:31:26Z,N/A
+b209c27e7ace3ea706c6dda87ea5e7d718bf996b,Giorgio Gonnella,ggonnella@yahoo.it,added link to source code repository in main page navbar,2007-12-26T01:58:08Z,N/A
+a59b811fc8302150a3b825fd1af916271ae4fe69,Giorgio Gonnella,ggonnella@yahoo.it,"changed extension of all view files to html.erb
+
+ - html.erb reflects the rails 2.0 standard
+ - also changed application helper to look for _navbar.html.erb",2007-12-26T01:48:34Z,N/A
+e589a765048eca217be309c16ed98797599a5141,Giorgio Gonnella,ggonnella@yahoo.it,added a project todo list under /doc,2007-12-21T15:35:07Z,N/A
+3e43bc3f30dc37c843985dd61d32cb96078eb1e8,Giorgio Gonnella,ggonnella@yahoo.it,"created first unit tests for model User
+
+ - moved uploads dir generation in model code for self-contained user creation process
+ - created fixtures and invalid parameters for users
+ - created simple unit tests for user (validation tests)
+
+ - minor unrelated change: fixed environments/development.rb for rails 2
+   (ref to breakpointer elimintated)
+  [as the files in config/environments were defaults, it would be good
+   to copy there the defaults configs for rails 2.0]",2007-12-20T23:13:32Z,N/A
+6254e51fe4f2026f55527d4f641a034be45371be,Giorgio Gonnella,ggonnella@yahoo.it,"frozen gems of rails 2.0.1 using rake:freeze:gems
+
+ - to unfreeze (e.g. to update) use rake:unfreeze",2007-12-19T11:29:41Z,N/A
+1401b598d265f85605b47b5a580043e262e75742,Giorgio Gonnella,ggonnella@yahoo.it,"preparation for upgrading to rails 2.0
+
+* added a rake task to check for deprecation in the code
+* changed all deprecated code in the views
+* the code should be now ready for upgrade to rails 2",2007-12-19T10:56:56Z,N/A
+c55ff2ebf398c143c06e7964666e5731be4ad29d,Giorgio Gonnella,ggonnella@yahoo.it,"a first version creating an image dinamically (still just a test version)
+
+* the m1.png visualized in the previous versions is now replaced by an image generated using
+the genometools ruby bindings (gt_ruby)
+
+* the generation of the image is done in the method SequenceRegion#to_png
+
+* the image is saved in a temporary location - which is currently under /public, which is
+a security issue
+
+* the method SequenceRegion#to_png generates the image and returns the location of the file
+
+* the view app/views/in_session/view.rhtml uses the .to_png method to show the generated image
+
+* no validation was done at the moment
+
+* the image is currently saved always under the same filename (this is still just a test version)",2007-12-18T01:15:05Z,N/A
+493953df19db6163cfc34131e043d0dc6317998d,Giorgio Gonnella,ggonnella@yahoo.it,minor bug fix: login now possible with emails longer than 16 chars,2007-12-17T21:56:44Z,N/A
+b90146071df108f0ce639312ae62bb34ae44a21c,Giorgio Gonnella,ggonnella@luzern.zbh.uni-hamburg.de,"renamed models: annotation_data -> annotation; annotation -> sequence_region
+
+* minor: converted developer doc to plain text format
+* deleted sql directory under db (obsolete)",2007-12-16T19:05:20Z,N/A
+034fa6ed752279a1e43b281f4355c4c60a21d1cb,Giorgio Gonnella,ggonnella@yahoo.it,The password is now stored as hash in the database,2007-11-21T11:35:38Z,N/A
+7582fcfdb375a5fd92d073cbbfa97f677538b4b6,Giorgio Gonnella,ggonnella@yahoo.it,Replaced login by email address,2007-11-21T11:13:10Z,N/A
+8b619f134a58a299514b9058dfeececdbcc37015,Giorgio Gonnella,ggonnella@yahoo.it,"Modified db schema, added an interface to the genometools
+
+ modified db schema:
+ * added a table for annotation_data
+ * added a table for annotations
+ * added an irregular plural annotation_data => annotation_data
+
+ added an interface to the genometools:
+ * if user uploads a file an AnnotationData object is instanciated
+ * by saving the instance this event-chain is followed:
+   * validation of the file content (needs to be wrapped to gt)
+   * save row in database table annotation_data with the following info:
+     * datasource (filename under current implementation)
+     * user the file belongs_to
+     * free text description of the file content
+     * the public bool is left to the default false value
+   * creation of an Annotation object for each sequence in the file",2007-11-21T10:40:38Z,N/A
+dc636d768707b701c830ab56eed90fe6767f02c1,Giorgio Gonnella,ggonnella@yahoo.it,"Improved the registration form and added validation of registration data
+
+ - registration controller simplified; there is still only one action with a template (""register"")
+ - if register is successful it redirects to the login page
+ - if register fails, it redirects again to the register page, giving explanations
+ - the template uses form_errors.css to highlight errors (div added automatically by rails)
+ - validation performed in the User model, upon call of the save method",2007-11-19T22:24:35Z,N/A
+982b9c8f89147fd4b238ec4abf3c6db49fdd3eda,Marvin Mundry,mmundry@oscar.mun,"Added a developer documentation, a layouting system and a session data eraser deamon
+
+ * A new layouting system has been introduced to easily create pages using a derivate of the
+   genometools sylesheet (it is documented in /doc/developer_documentation.rtf)
+   Hereby @sidebar has been renamed to @navbar
+ * An eraser deamon script has been written that deletes session data older than 24 hours.",2007-11-18T14:22:10Z,N/A
+8a26f448e097f0c96c6cc2a2c94b376b0a0e649b,Giorgio Gonnella,ggonnella@yahoo.it,"updated register controller views further to use standard layout
+
+added a common @page_title and @sidemenu through a private initialize method
+in the controller",2007-11-17T21:10:41Z,N/A
+cff16007e46401889a324362721fd28ab31f9d98,Giorgio Gonnella,ggonnella@yahoo.it,updated login controller to use the standard layout,2007-11-17T20:50:29Z,N/A
+f5bda7013ae19d50f64178049f360b8f4015f171,Giorgio Gonnella,ggonnella@yahoo.it,updated register controller to use the standard layout,2007-11-17T20:46:49Z,N/A
+a1f04fc39d38f413525f84d57f5822dadb651ac0,Giorgio Gonnella,ggonnella@yahoo.it,"Added a meaningful index page for the default controller.
+
+(note that it's still a preliminary version, that also deep-links some
+pages on www.genometools.org)",2007-11-17T20:42:51Z,N/A
+2d1e8ed8e96a7849ed52cdd770461544b4ee4416,Giorgio Gonnella,ggonnella@yahoo.it,"Deleted folder ""/database"" that was containing the mysql database data
+
+  The database data should not be included in the repository.
+  The user that installs genomeviewer should be instructed to create a own database
+  using his favourite DBMS program, use rake db:migrate to create the appropriate
+  tables and edit the config/database.yml with the own paramaters.",2007-11-17T20:23:56Z,N/A
+ca40129a128477b75adb6ef7a032382b5d19a9b9,Giorgio Gonnella,ggonnella@yahoo.it,"Added a sidemenu system / Updated default/index to use standard layout and moved links in sidemenu
+
+ In the standard layout there is now: <div id='menu'><%=@sidemenu%></div>.
+ This means that:
+  - case 1: no @sidemenu variable is set: no sidemenu will be displayed (only an empty column on the side)
+  - case 2: @sidemenu set: its contents are displayed
+
+ to set the content of @sidemenu, one can use for example:
+  @sidemenu = render_to_string :partial => ""sidemenu""
+ as done for the default controller, so that the content can be specified in a partial template",2007-11-17T18:08:45Z,N/A
+2f48017b953e0ddadc037d38a1d6a5e44813480a,Giorgio Gonnella,ggonnella@yahoo.it,"Added a base layout to be used by controllers when no other specific layout is indicated
+(added as default layout in application.rb)",2007-11-17T17:54:38Z,N/A
+36cd0d2e0f42d8e356870d31a5002e3f280674fc,Giorgio Gonnella,ggonnella@yahoo.it,Standardized param / variables name according to rails/ruby conventions,2007-11-17T17:32:43Z,N/A
+b2498e253b584727f4d43878f27b857476af3645,Giorgio Gonnella,ggonnella@yahoo.it,"Action names changed to use rails/ruby standards (all downcase, with underscores)",2007-11-17T16:59:34Z,N/A
+fd69ed468906ae64c0b977ead5a67233b7481312,Marvin Mundry,mmundry@oscar.mun,Made GenomeViewer using a derivate of the GenomeTools stylesheet,2007-11-16T18:43:13Z,N/A
+d913a30e7a638bbba3607ac04ca35bdbbe8ae505,Marvin Mundry,mmundry@oscar.mun,Addes missing files to the repository,2007-11-15T16:14:26Z,N/A
+e4d7ac0c7590c954f4a2ab970d81d9ff010a28fd,Marvin Mundry,mmundry@oscar.mun,"Added a user account creation system
+
+In order to get rid of referencial integrity problems the 1:user<->config:1
+relation has been flattened.
+Currently the users initial password is: m1
+
+ to do:
+ * send ua passwords via email
+ * do more sophisticated cheking of the registration data",2007-11-10T12:56:30Z,N/A
+03927a1cd4083eb62bac396dcc984dfd2de6e7db,Marvin Mundry,mmundry@oscar.mun,Added migrations code to the repository.,2007-11-09T16:29:51Z,N/A
+891c29bfac408f298f74bb3024e9cbff9f814f63,Marvin Mundry,mmundry@oscar.mun,Made a modification to indulge in the concept of convention over configuration,2007-11-08T16:57:38Z,N/A
+2e405b1b5926064d6aac79039764044a37b3ef0a,Marvin Mundry,mmundry@oscar.mun,"Made the default route to controller 'default' functional
+
+As long as an index.html file is contained in the public folder the default route is ignored.",2007-11-04T22:56:03Z,N/A
+8b08e4d4f93c043c02798994b6f6db2f07f778d9,Marvin Mundry,mmundry@oscar.mun,"Initial commit of a webservice for testing purposes
+
+To get the webservice running carry out the following steps:
+ * type the content of ./db/tables.sql in a mysql client
+ * do a make libgtview=yes prefix=/path/to/repository/bin/ install
+ * for every user in the DB create a folder in ./uploads/users
+
+The current version provides:
+ * session management (users can log in/out creation of new accounts is not possible)
+ * file uploading (no file validation is currently done)
+ * annotation viewing (service will fail proccessing simultanious requests from multiple users)
+
+To do:
+ * quite a lot",2007-11-03T12:14:11Z,N/A
+4d9ed6cab368289f8f78c71113cd7e0ea2eebf0e,Marvin Mundry,mmundry@oscar.mun,Repository test,2007-11-03T11:14:07Z,N/A
+a64eaa6934adb7cff1107d8417a7fe05696b54e4,Marvin Mundry,mmundry@oscar.mun,"Initial commit
+
+This is a preproduction version",2007-11-02T22:19:21Z,N/A
+14839dcacb9211dd29913dc9a5c733c18d78880b,Gordon Gremme,gremme@zbh.uni-hamburg.de,".gitignore file added, development.log removed",2007-10-23T16:47:46Z,gordon
+8fc7a2a795781f8bba54361e23709efc45a78f9c,Gordon Gremme,gremme@zbh.uni-hamburg.de,rails scaffold added,2007-10-23T16:01:46Z,gordon
+2e91deb45fef16017dc3077f37528e795f561cd1,Gordon Gremme,gremme@zbh.uni-hamburg.de,initial commit (placeholder website),2007-10-23T15:02:58Z,gordon

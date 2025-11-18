@@ -1,0 +1,50 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0Nzc4ODExMjA=,Currently v 1.21.0 requires http-server installed in path,CLOSED,2019-08-07T11:51:49Z,2019-09-11T08:57:59Z,2019-09-11T08:57:59Z,"Trying to run the compiled binary results in the message below. I know why though. It is because I am trying to spawn http-server from the CLI because I do not know how to launch it from inside my app (and have it survive the main app exiting).
+
+
+```
+Error: spawn http-server ENOENT
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:249:19)
+    at onErrorNT (internal/child_process.js:442:16)
+    at processTicksAndRejections (internal/process/task_queues.js:84:9)
+    at process.runNextTicks [as _tickCallback] (internal/process/task_queues.js:59:3)
+    at Function.Module.runMain (pkg/prelude/bootstrap.js:1317:13)
+    at internal/main/run_main_module.js:17:11
+Emitted 'error' event at:
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:255:12)
+    at onErrorNT (internal/child_process.js:442:16)
+    [... lines matching original stack trace ...]
+    at internal/main/run_main_module.js:17:11
+```
+
+I think to solve this in future I will instead self-sawn AminoSee itself to run in background. For now this can be solved with:
+
+`npm install -g http-server
+`",tomachinz,https://github.com/tomachinz/AminoSee/issues/69
+MDU6SXNzdWU1MzQ0ODg2MjI=,Error: spawn /snapshot/aminosee_src/node_modules/open/xdg-open ENOENT,OPEN,2019-12-08T04:00:24Z,2019-12-08T04:00:24Z,,"OS: Linux yakland 4.15.0-70-generic #79-Ubuntu SMP Tue Nov 12 10:36:11 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+
+
+after doing ` chmod u+x aminosee ` I can run under linux but get:
+
+
+
+```
+0. megabase
+1. 50KB_TestPattern
+events.js:174in 35 seconds ] 
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: spawn /snapshot/aminosee_src/node_modules/open/xdg-open ENOENT
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:240:19)
+    at onErrorNT (internal/child_process.js:415:16)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (pkg/prelude/bootstrap.js:1317:13)
+    at startup (internal/bootstrap/node.js:320:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:659:3)
+Emitted 'error' event at:
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:246:12)
+    at onErrorNT (internal/child_process.js:415:16)
+    [... lines matching original stack trace ...]
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:659:3)
+```",tomachinz,https://github.com/tomachinz/AminoSee/issues/124

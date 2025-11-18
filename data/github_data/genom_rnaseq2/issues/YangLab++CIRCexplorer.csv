@@ -1,0 +1,197 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MzQ3ODc1Mw==,problems happened in CIRCexplorer,CLOSED,2014-09-22T13:00:45Z,2014-09-25T10:56:01Z,2014-09-25T10:56:01Z,"Hi, 
+When I run the CIRCexplorer at last step using standard parameters, sth wrong happened, how could it happen?
+thanks!
+
+---
+
+Start to convert fustion reads...
+Converted 30234 fusion reads!
+Start to annotate fusion junctions...
+Traceback (most recent call last):
+  File ""/home/program/bin/CIRCexplorer.py"", line 371, in <module>
+    annotate_fusion(ref_f, temp1, temp2)
+  File ""/home/program/bin/CIRCexplorer.py"", line 53, in annotate_fusion
+    gene, isoform = parse_ref1(ref_f)
+  File ""/home/program/bin/CIRCexplorer.py"", line 166, in parse_ref1
+    ends = list(map(int, line.split()[10].split(',')[:-1]))
+IndexError: list index out of range
+
+---
+
+I've solved it! This issue happened probabilistically and it was the error coming from server, not from the script.
+Hope this answer could help anyone else.
+",deuterisan,https://github.com/YangLab/CIRCexplorer/issues/1
+MDU6SXNzdWU1NDk2NDc1NA==,issue about not hashable,CLOSED,2015-01-21T01:16:39Z,2016-07-22T15:43:12Z,2015-01-21T01:38:16Z,"Hello, 
+Thanks for the effor to make the tools avaiable to bioinformatics community. I am currently replicating the analysis mention in your paper to learn this tool .  However, I am having the following error message that I have no clue about how to interpret : 
+
+Start CIRCexplorer 1.0.6
+Start to convert fustion reads...
+Converted 138505 fusion reads!
+Start to annotate fusion junctions...
+Traceback (most recent call last):
+  File ""CIRCexplorer-1.0.6/CIRCexplorer.py"", line 459, in <module>
+    annotate_fusion(ref_f, temp1, temp2)
+  File ""CIRCexplorer-1.0.6/CIRCexplorer.py"", line 64, in annotate_fusion
+    genes, gene_info = parse_ref1(ref_f)  # gene annotations
+  File ""CIRCexplorer-1.0.6/CIRCexplorer.py"", line 203, in parse_ref1
+    genes[chrom] = Interval(genes[chrom])
+  File ""/usr/local/lib/python2.7/dist-packages/interval.py"", line 279, in **init**
+    raise TypeError(""lower_bound is not hashable."")
+TypeError: lower_bound is not hashable.
+
+The corresponding command is : 
+1.tophat2 -a 6 --microexon-search -m 2 -p 10 -G /home/k/Downloads/Homo_sapiens/UCSC/hg19/Annotation/Archives/archive-2013-03-06-11-23-03/Genes/genes.gtf  
+/home/k/Downloads/Homo_sapiens/UCSC/hg19/Sequence/Bowtie2Index/genome  
+/home/k/Downloads/ncbi/public/sra/SRR901967.fastq
+
+2.bamToFastq -i tophat_out/unmapped.bam -fq tophat_out/unmapped.fastq
+
+3./home/k/Downloads/tophat-2.0.9.Linux_x86_64/tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1  --no-coverage-search /home/k/Downloads/Homo_sapiens/UCSC/hg19/Sequence/BowtieIndex/genome  tophat_out/unmapped.fastq
+
+4.CIRCexplorer.py -f tophat_fusion/accepted_hits.bam -g /home/k/Downloads/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa  -r  /home/k/Downloads/Homo_sapiens/UCSC/hg19/Annotation/Archives/archive-2013-03-06-11-23-03/Genes/refFlat.txt
+",cshukai,https://github.com/YangLab/CIRCexplorer/issues/4
+MDU6SXNzdWU1NjA5MzAzNw==,Paired End Date,CLOSED,2015-01-30T22:26:59Z,2016-09-13T21:05:10Z,2016-09-13T21:05:10Z,"Hi,
+Thanks for providing such a great tool!
+Just wondering did CIRCexplorer support paired end data? TopHat can align paired-end reads, but when I convert unmapped reads to PE fastq after sorted and indexed the bam file, there were very few reads converted successfully. But if I merged two paired end fastq (R and L) to give a single fastq file, CIRCexplorer worked good.
+One more thing, can CIRCexplorer do secondary analysis of Chimeric.out.sam (output fusion detection data from RNA-STAR)? I tried to convert  Chimeric.out.sam to Chimeric.out.bam, and input the bam file to CIRCexplorer, but I got nothing. I compared the output files from TopHat-Fusion and rna-star, they are very similar to each other, and it is kind of strange that CIRCexplorer got nothing from Chimeric.out.bam.
+Thanks again for the effor to make the tools avaiable to bioinformatics community.
+",fcgportal,https://github.com/YangLab/CIRCexplorer/issues/5
+MDU6SXNzdWU3NzA5NjIyNg==,KeyError CIRCexplorer.py,CLOSED,2015-05-16T18:18:00Z,2015-05-22T05:49:59Z,2015-05-22T05:49:59Z,"Hi, 
+thanks for sharing your useful tool. I'm currently attempting to repeat your example analysis, however I am having the following error message: 
+Traceback (most recent call last):
+  File ""/usr/local/bin/CIRCexplorer.py"", line 495, in <module>
+    fix_fusion(ref_f, genome_fa, temp2, output, options['--no-fix'])
+  File ""/usr/local/bin/CIRCexplorer.py"", line 128, in fix_fusion
+    fusions, fusion_names, fixed_flag = fix_bed(input_f, ref, fa, no_fix)
+  File ""/usr/local/bin/CIRCexplorer.py"", line 324, in fix_bed
+    iso_starts, iso_ends = ref['\t'.join([gene, iso, chrom, strand])]
+KeyError: 'Usp9x\tNM_009481\tchrX\t+'
+
+Could you please help to fix the problem?
+ I really appreciate any help you can provide.
+
+I appreciate any help you can provide
+",emanuele982,https://github.com/YangLab/CIRCexplorer/issues/6
+MDU6SXNzdWU4OTA2OTA3NA==,Issue running CIRCexplorer,CLOSED,2015-06-17T16:50:43Z,2015-09-22T09:08:36Z,2015-06-18T21:28:46Z,"I am trying to use CIRCexplorer with STAR mapper and the error ""IndexError: list index out of range"" keeps occurring. I can't figure out how to remedy this problem, any help would be appreciated. Here is my command line: 
+  python CIRCexplorer.py -j 0002-surg-funsion-junction.txt --genome=human.hg19.genome --ref=UCSC_Refseq_sno_miRNA_lncipedia_3_0_hg19_11-10-2014.gtf 
+
+Start CIRCexplorer 1.1.1
+Start to annotate fusion junctions...
+Traceback (most recent call last):
+  File ""CIRCexplorer.py"", line 494, in <module>
+    annotate_fusion(ref_f, temp1, temp2)
+  File ""CIRCexplorer.py"", line 67, in annotate_fusion
+    genes, gene_info = parse_ref1(ref_f)  # gene annotations
+  File ""CIRCexplorer.py"", line 201, in parse_ref1
+    start = starts[0]
+IndexError: list index out of range
+",madmblac,https://github.com/YangLab/CIRCexplorer/issues/7
+MDU6SXNzdWU4OTY1NDQ4Nw==,Drop after Start to Annotate  fusion juncions..,CLOSED,2015-06-19T20:34:43Z,2015-06-21T09:14:16Z,2015-06-21T09:14:16Z,"Hello,
+Im doing some tests with data set.
+Followed the command lines suggested with tophat.
+Fetched ref.txt with fetch_ucsc.py
+And got:
+
+Start CIRCexplorer 1.1.1
+Start to convert fustion reads...
+Converted 102717 fusion reads!
+Start to annotate fusion junctions...
+Traceback (most recent call last):
+  File ""CIRCexplorer.py"", line 494, in <module>
+    annotate_fusion(ref_f, temp1, temp2)
+  File ""CIRCexplorer.py"", line 67, in annotate_fusion
+    genes, gene_info = parse_ref1(ref_f)  # gene annotations
+  File ""CIRCexplorer.py"", line 206, in parse_ref1
+    genes[chrom] = Interval(genes[chrom])
+  File ""build/bdist.linux-x86_64/egg/interval.py"", line 279, in **init**
+TypeError: lower_bound is not hashable.
+
+Is there anything Im doing wrong?
+
+Thanks in advance!
+",andreirozanski,https://github.com/YangLab/CIRCexplorer/issues/8
+MDU6SXNzdWUxMDYwOTQyMTc=,Lariat search,CLOSED,2015-09-11T21:07:31Z,2015-09-15T10:35:59Z,2015-09-15T10:35:59Z,"Hi, 
+I found CIRCexplore a very useful tool for detecting circRNA from RNA-seq. I am interested in detecting circRNA which completely falls in intron (=lariat sequence). I mapped the paired-end reads with tophat and executed this program in the same way as mentioned on github page, but I did not find circRNA associated with lariats, rather from exons. Can you suggest me if some how the tool can enforced to pic circ RNA only from introns.
+
+Thanks.
+",akesarwani,https://github.com/YangLab/CIRCexplorer/issues/9
+MDU6SXNzdWUxMTA3MDI0MDk=,Bam file error,CLOSED,2015-10-09T17:23:56Z,2015-10-10T02:20:16Z,2015-10-10T02:20:16Z,"I have run the tophat commands and generated bams using tohat2 fusion search on the unmapped fastq.
+However, running them with the CIRCexplorer now gives the error - ""Please make sure sample is BAM!""
+
+Does the bam file obtained from tophat2 fusion need to be processed in any other way before passing it to the CIRCexplorer
+
+Thanks
+",averm22,https://github.com/YangLab/CIRCexplorer/issues/10
+MDU6SXNzdWUxMjcwODI5NzQ=,Use setuptools instead of distutils in setup.py,CLOSED,2016-01-17T09:04:24Z,2016-01-20T13:14:22Z,2016-01-20T13:14:22Z,"See http://stackoverflow.com/questions/25337706/setuptools-vs-distutils-why-is-distutils-still-a-thing
+",kepbod,https://github.com/YangLab/CIRCexplorer/issues/11
+MDU6SXNzdWUxNTI2OTMzMzU=,Unique mapping with TopHat-Fusion,CLOSED,2016-05-03T03:34:55Z,2016-05-26T08:22:55Z,2016-05-26T08:22:55Z,"unique mapping with TopHat-Fusion, tophat2 -o tophat_fusion -p 15 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search hg19_bowtie1_index tophat/unmapped.fastq, can i  use bowtie2 to mapping with TopHat-Fusion?
+",smm19900210,https://github.com/YangLab/CIRCexplorer/issues/13
+MDU6SXNzdWUyMTk3OTA1MjY=,ValueError: need more than 2 values to unpack,CLOSED,2017-04-06T05:30:03Z,2017-04-10T17:35:06Z,2017-04-07T19:28:08Z,"Start CIRCexplorer 1.1.10
+Start to convert fustion reads...
+Converted 0 fusion reads!
+Start to annotate fusion junctions...
+Traceback (most recent call last):
+  File ""/usr/local/bin/CIRCexplorer.py"", line 9, in <module>
+    load_entry_point('CIRCexplorer==1.1.10', 'console_scripts', 'CIRCexplorer.py')()
+  File ""build/bdist.linux-x86_64/egg/circ/CIRCexplorer.py"", line 508, in main
+    
+  File ""build/bdist.linux-x86_64/egg/circ/CIRCexplorer.py"", line 68, in annotate_fusion
+    
+  File ""build/bdist.linux-x86_64/egg/circ/CIRCexplorer.py"", line 209, in parse_ref1
+    
+ValueError: need more than 2 values to unpack
+
+
+
+could someone pls tell me why i am getting 0 fusion reads converted and value error",snehamurthy21,https://github.com/YangLab/CIRCexplorer/issues/15
+MDU6SXNzdWUyNjM1NDQ5NzA=,unsuccessful installation,CLOSED,2017-10-06T19:13:43Z,2017-10-09T13:58:25Z,2017-10-09T07:26:06Z,"Hi there,
+
+ When I use `pip install CIRCexplorer`, I can install sucessfully. But when I call `CIRCexplorer.py`, i got the following message:
+
+```
+Traceback (most recent call last):
+  File ""/home5/jhuang/software/anaconda3/bin/CIRCexplorer.py"", line 7, in <module>
+    from circ.CIRCexplorer import main
+  File ""/home5/jhuang/software/anaconda3/lib/python3.6/site-packages/circ/CIRCexplorer.py"", line 31, in <module>
+    from genomic_interval import Interval
+ModuleNotFoundError: No module named 'genomic_interval'
+jhuang@pauper:~/projects/Misc/drought-stress/CIRCexplorer$ CIRCexplorer.py
+Traceback (most recent call last):
+  File ""/home5/jhuang/software/anaconda3/bin/CIRCexplorer.py"", line 7, in <module>
+    from circ.CIRCexplorer import main
+  File ""/home5/jhuang/software/anaconda3/lib/python3.6/site-packages/circ/CIRCexplorer.py"", line 31, in <module>
+    from genomic_interval import Interval
+ModuleNotFoundError: No module named 'genomic_interval'
+```
+
+When I try to install through conda, I got the following warning that did not success:
+```
+Fetching package metadata .............
+Solving package specifications: .
+
+UnsatisfiableError: The following specifications were found to be in conflict:
+  - circexplorer -> python 3.4* -> xz 5.0.5
+  - python 3.6*
+Use ""conda info <package>"" to see the dependencies for each package.
+``` 
+
+I also tried install from source, but no luck.
+
+Any idea how I can fix?
+
+Thanks in advance!
+
+",timedreamer,https://github.com/YangLab/CIRCexplorer/issues/17
+MDU6SXNzdWUzNjE1Mzk4NDc=,problems in running multiple mapping with tophat,CLOSED,2018-09-19T01:13:04Z,2019-01-03T18:02:29Z,2019-01-03T18:02:29Z,"according to the instruction, I do multiple mapping with tophat using the format
+tophat2 -a 6 --microexon-search -m 2 -p 10 -G knownGene.gtf -o tophat hg19_bowtie2_index RNA_seq.fastq
+the program went wrong, and show error information:
+error retrieving prep-reads info
+
+what does that mean? how can I solve it? please help!",AliceYu0911,https://github.com/YangLab/CIRCexplorer/issues/18
+MDU6SXNzdWU4ODE1NDMyMTU=,error when hisat2 mapping sort bam file,OPEN,2021-05-09T00:53:36Z,2021-05-09T00:58:56Z,,,hust-yyan,https://github.com/YangLab/CIRCexplorer/issues/19
+I_kwDOAXF23M52Pvz6,circexplorer exon content,OPEN,2023-11-08T15:16:45Z,2023-11-08T15:16:45Z,,"Hello, 
+
+I was wondering how circexplorer pick an isoform and then deduces which exons are included inside the circRNA? Knowing it only get information about the BSJ
+
+Thank you!",npont,https://github.com/YangLab/CIRCexplorer/issues/20

@@ -1,0 +1,52 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MzU0MzQ3MTk=,Submit to F1000 Bioconductor channel,CLOSED,2019-12-10T01:26:13Z,2019-12-21T09:17:24Z,2019-12-21T09:17:23Z,"Tasks remaining:
+
+## coding
+
+- [x] clean up example from lines 585 - 624, this could be done in a simpler way without the need for `summarise_at` or creating a list of functions
+- [ ] answer the remaining questions:
+    - [ ] We specified a fixed-size window for computing overlaps.  How could we have looked at 
+       various settings of this distance parameter?  A: repeat the anchor_center code section for
+       various widths using the map + bind_ranges strategy. 
+   - [ ]  How would you adapt the code to also consider variations on the thresholds applied to 
+      the DE genes (FDR 1%, testing against a null region of |LFC| < 1), and to the FDR cutoff (1%)
+      for the DA peaks? A: here you could create a grouping variable using the same strategy as the  example using `summarise_at`
+   - [x] Due to the one-to-many mappings of DE genes to peaks, we don't know if we have the same number of DE genes participating or less, as we increase the threshold on the peak LFC. A: group by gene_id before counting. It also occurs to me that we could be using `reduce_ranges()` instead of summarise to avoid grouping by everything. 
+ - [x] set a seed for the resampling
+
+
+## writing and formatting 
+
+- [x] mention how tximeta can be used without an internet connection
+- [x] switch over to f1000 template using BiocWorkflowTools
+- [ ] incorporate feedback from Michael Lawrence
+- [x] incorporate feedback from Di
+
+
+
+
+Does the workflow package need to be on Bioconductor before its submitted to f1000?
+@mikelove is there anything else?",sa-lee,https://github.com/sa-lee/fluentGenomics/issues/1
+MDU6SXNzdWU1NDAwMjU2MTM=,rewrite abstract,CLOSED,2019-12-19T01:51:48Z,2019-12-20T00:37:33Z,2019-12-20T00:37:33Z,I think we can provide maybe the bigger ideas of what the workflow looks like - what are the core principles behind the analysis etc. ,sa-lee,https://github.com/sa-lee/fluentGenomics/issues/2
+MDU6SXNzdWU1NDAwMjU3MTA=,add a diagram showing the big picture of the steps in the workflow,CLOSED,2019-12-19T01:52:15Z,2020-01-15T03:40:44Z,2020-01-15T03:40:44Z,,sa-lee,https://github.com/sa-lee/fluentGenomics/issues/3
+MDU6SXNzdWU1NDAwNjYxOTI=,add diagram illustrating idea behind overlap joins and reduce,OPEN,2019-12-19T04:19:31Z,2019-12-19T04:19:31Z,,,sa-lee,https://github.com/sa-lee/fluentGenomics/issues/4
+MDU6SXNzdWU1NDA2ODY2OTg=,better variable naming,CLOSED,2019-12-20T01:34:54Z,2019-12-23T05:00:03Z,2019-12-23T05:00:03Z,"From Mike 
+
+>  I think you've shown how to compute lots of things that people want to compute, but maybe we can do better at naming variables. An example: ""any_peaks"" is made from ""overlap_genes"" and consists of genes. I know we don't want names to be too long, but maybe we can come up with a variable naming convention for the enrichment section. To create ""enrichments"" involves a lot of steps and intermediate objects. Again, the final plot is exactly what we want, but maybe if we had a convention for naming the intermediates it may help.
+
+I agree, maybe something like when doing summarise or reduce_ranges:
+
+If it’s still a granges object use suffix gr, otherwise use df. 
+
+If it’s been grouped and then summarized we name it as  group_name + last result. So any_peaks would be gene_peak_lfc_gr, and overlap tab would be origin_peak_lfc_df and so on. Now that I think of the variable any should really be changed to peak_count. Does that clear things up? Naming things is hard!",sa-lee,https://github.com/sa-lee/fluentGenomics/issues/5
+MDU6SXNzdWU1NDA2ODY5MzI=,add diagram showing GRanges and SE abstraction,OPEN,2019-12-20T01:35:27Z,2019-12-20T01:35:27Z,,,sa-lee,https://github.com/sa-lee/fluentGenomics/issues/6
+MDU6SXNzdWU1NDEzMDU1NDE=,extension: window sizes,OPEN,2019-12-21T09:20:34Z,2019-12-21T09:20:34Z,," We specified a fixed-size window for computing overlaps. How could we have looked at
+various settings of this distance parameter? 
+
+A: repeat the anchor_center code section for various widths using the map + bind_ranges strategy.
+",sa-lee,https://github.com/sa-lee/fluentGenomics/issues/7
+MDU6SXNzdWU1NDEzMDU1ODA=,extension: FDR thresholds,OPEN,2019-12-21T09:21:08Z,2019-12-21T09:21:08Z,,"How would you adapt the code to also consider variations on the thresholds applied to
+the DE genes (FDR 1%, testing against a null region of |LFC| < 1), and to the FDR cutoff (1%)
+for the DA peaks? 
+
+A: here you could create a grouping variable using the same strategy as the example using summarise_at",sa-lee,https://github.com/sa-lee/fluentGenomics/issues/8

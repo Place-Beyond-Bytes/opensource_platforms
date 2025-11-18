@@ -1,0 +1,46 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHQH0lM5KI7Uh,Running inference with individual seqs,CLOSED,2022-05-21T03:31:45Z,2022-09-08T16:56:23Z,2022-09-08T16:56:23Z,"Hi, I just read your preprint and I think the ideas presented are really neat.  I'm able to run the demo but am having trouble running inference on a single input (ie run on one sequence to see the embedding).
+
+Here's how I've been running it so far
+
+```
+from AsMac_model import AsMac
+import torch
+torch.set_printoptions(profile=""full"")
+import numpy as np
+np.set_printoptions(precision=10)
+
+# define model
+embed_dim = 300 # number of kernel sequences
+kernel_size = 20 # kernel length
+
+# initialize EINN object
+net = AsMac(4, embed_dim, kernel_size)
+
+# load model weights
+net_state_dict = torch.load('model/final.pt')
+net.load_state_dict(net_state_dict)
+x = net.test_embed(b""seq left out for this example"")
+```
+running this script gives the following Error (truncated to show relevant parts of error)
+
+```
+File ""_softnw.pyx"", line 87, in _softnw.embed_value_fast
+    def embed_value_fast(double[:, :] seq, double[:, :] weight, double gap):
+  File ""stringsource"", line 658, in View.MemoryView.memoryview_cwrapper
+  File ""stringsource"", line 349, in View.MemoryView.memoryview.__cinit__
+BufferError: Object is not writable.
+```
+A brief search online leads me to believe that cython is involved here (passing bytes object specifically), but perhaps this is caused by improper usage of the model.  Let me know if I'm using the model correctly, or if there is some other possible cause for these errors.
+
+Thanks,
+Murad
+",mchowdh200,https://github.com/puar-playground/AsMac/issues/1
+I_kwDOHQH0lM5TEKcO,train fragmented sequences,CLOSED,2022-10-02T00:40:24Z,2023-01-31T22:00:33Z,2023-01-31T22:00:33Z,"Hello Team,
+
+This is a very interesting idea. I tried the training code and it ran successfully. My question is: can the model also work for fragmented sequences, e.g. a genome of an organism (due to technical issues, it is not a linear but up to a hundred or so fragments), or we need to manually put them together to have a single piece (knowing they are not continuous). Normally, marker genes will be only several kb or less but a genome can be 10^6 bps, will be more training take much longer?
+
+
+Thanks,
+
+Jianshu",jianshu93,https://github.com/puar-playground/AsMac/issues/2

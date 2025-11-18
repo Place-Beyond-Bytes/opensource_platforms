@@ -1,0 +1,323 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNDM3ODQ1NzI=,"Problem in rol. Undefined for s=64, probably does work when s>64.",CLOSED,2017-07-18T17:00:06Z,2017-07-25T07:21:05Z,2017-07-24T14:33:42Z,"Looking at the implementation of rol in nthash.hpp, line 168, and getFhval at line 178.
+
+getFhval will give rol values for s (shift value) in the range 0..k-1. When s>64, rol will try to compute v << t, where t is a negative value. It's not clear what value that will produce, and it might be undefined in the C standard. Moreover, the v>>s half of the result is (probably) zero.
+
+Also, when s=0, v<<(64-2) becomes v<<64 in a 64 bit word. Surprisingly, this result is described as undefined in the C standard. And in some compilers (e.g. clang), I've observed that the result can be non-zero (zero is clearly the expectation in rol).
+
+So it appears that the hash function is broken if k>64. I'm unable to test this, though, since I wasn't able to build the code today (my compiler doesn't support one of the linker options in the Makefile).  If I'm right about that being broken, I wonder if this is responsible for the poorer results of ntCard when k>64.
+
+One solution would be for rol to use v >> (s&0x3F) and v << ((64-s)&0x3F).  A similar correction is needed in ror().
+
+",rsharris,https://github.com/bcgsc/ntHash/issues/1
+MDU6SXNzdWUyNDM4MTM4OTI=,Calls to omp timing functions when _OPENMP is not defined,CLOSED,2017-07-18T18:45:41Z,2017-08-01T22:46:59Z,2017-08-01T22:46:59Z,"In nttest,cpp, in the function nthashBF(), omp_get_wtime() is called even if _OPENMP is not defined.
+
+If not having OpenMP is a supported configuration, it seems like these four calls should be redirected to some other function (get_time?) if _OPENMP is not defined.",rsharris,https://github.com/bcgsc/ntHash/issues/2
+MDU6SXNzdWUyNTEzNzk3NTc=,@param h number of hashes,CLOSED,2017-08-18T23:16:40Z,2017-08-18T23:35:40Z,2017-08-18T23:35:40Z,"Can you please explain the purpose of this parameter for the hash_iterator? I was expecting this to permute the hash functions, but this doesn't seem to be the case as the number of hashes doesn't change the output hash values. ",davisem,https://github.com/bcgsc/ntHash/issues/3
+MDU6SXNzdWUyNTQxMTQxMDU=,Multispaced seeds ,CLOSED,2017-08-30T19:46:23Z,2022-08-30T23:56:25Z,2022-08-30T23:56:25Z,"@mohamadi 
+
+I have an old modified version of rollinghash.h that has a function for multiple spaced seeds written for hitseq 2016.
+
+The main part of the modification looks like this:
+```{C++}
+// mask out specific bases given the masking value positions
+// the string iterator is the unmasked k-mer (random access without copying)
+// returns cannonical value
+inline uint64_t maskValues(uint64_t fkVal, uint64_t rkVal, const unsigned k,
+		const std::vector<unsigned> &values,
+		const std::string::const_iterator &kmerItr) {
+	for (std::vector<unsigned>::const_iterator itr = values.begin();
+			itr != values.end(); ++itr) {
+		fkVal ^= rol(msTab[(unsigned char) *(kmerItr + *itr)], k - 1 - *itr);
+		rkVal ^= rol(msTab[(unsigned char) *(kmerItr + *itr) + cpOff], *itr);
+	}
+	return (rkVal < fkVal) ? rkVal : fkVal;
+}
+```
+
+And a rolling hash iterator that can then take in spaced seed patterns (in the constructor it takes a set of spaced seed patterns). I was planning on updating nthash with this since I'm also using that right now in the current code.
+
+Due to time constraints, I'll be rolling the both versions (nthash for k-mers, rollinghash for multiple spaced seeds) out in the next version of BBT but was wondering if you could update nthash to include a multiple spaced seeds iterator.
+
+You could start with this crude method that simply masks out bases but I guess ideally you would use some of the scheme that was presented in this paper: http://drops.dagstuhl.de/opus/volltexte/2017/7650/.
+
+When you are done, I could update the [BBT](https://github.com/bcgsc/biobloom/) and the [btl_bloomfilter](https://github.com/bcgsc/btl_bloomfilter/) repo to support multiple spaced seeds.
+
+What do you think?",JustinChu,https://github.com/bcgsc/ntHash/issues/5
+MDU6SXNzdWUyOTY4NDI2ODM=,Make ntHash iterator bidirectional,CLOSED,2018-02-13T18:38:07Z,2019-06-06T21:24:47Z,2019-06-06T21:24:47Z,Similar to the spec here: http://www.cplusplus.com/reference/iterator/BidirectionalIterator/,JustinChu,https://github.com/bcgsc/ntHash/issues/6
+MDU6SXNzdWUzNTkyNTY2ODg=,ntHash is not matching the article description?,CLOSED,2018-09-11T23:10:36Z,2018-09-12T18:18:55Z,2018-09-12T00:34:55Z,"Hi!
+
+Last week I started implementing a [Rust version](https://github.com/luizirber/nthash) of `ntHash`, and I can't make it match the output of ntHash (in this repo). I ended up following [this answer](https://bioinformatics.stackexchange.com/questions/19/are-there-any-rolling-hash-functions-that-can-hash-a-dna-sequence-and-its-revers/293#293) from @karel-brinda on bfx stack overflow to implement a Python version too, and still couldn't match the output.
+
+Then I checked the supplementary materials, and based on the `NT64` function defined there implemented [`NTF64`, `NTR64` and `NTC64`](https://github.com/luizirber/nthash_bug/blob/c3e5991e35cd75fcc8209941d7a6c1c1c7534848/nthash_simple.hpp)... and couldn't match the output. Either I'm missing something obvious, or there is a bug in the optimized version in this repo...
+
+I prepared a [repo with a Jupyter notebook](https://github.com/luizirber/nthash_bug) analysing some test cases, and you can [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/luizirber/nthash_bug/master?filepath=analysis.ipynb) to have an interactive version to follow. I also added an example of using `autocheck` and `catch` to write an oracle test for an optimized and an unoptimized version of `ntHash`, I can open a PR to add it to this repo and set up Travis to run it.",luizirber,https://github.com/bcgsc/ntHash/issues/7
+MDU6SXNzdWUzNzEzMDAwMTI=,Create a native Python interface for ntHash,CLOSED,2018-10-17T23:06:11Z,2022-12-31T10:29:22Z,2022-08-30T23:57:28Z,See https://docs.python.org/3/extending/extending.html,sjackman,https://github.com/bcgsc/ntHash/issues/8
+MDU6SXNzdWU1MjEwMTU0Mzk=,Non-existing function used in README,CLOSED,2019-11-11T15:06:38Z,2019-11-13T14:06:48Z,2019-11-13T14:06:48Z,"You are referencing a non-existing function (NT64) in the README.
+```cpp    
+string kmer = seq.substr(0, k);
+uint64_t hVal=0;
+hVal = NT64(kmer.c_str(), k); // initial hash value
+...
+for (size_t i = 0; i < seq.length() - k; i++) 
+{
+      hVal = NT64(hVal, seq[i], seq[i+k], k); // consecutive hash values
+      ...
+}
+```
+
+I only find canonical or multi-hash functions in the current source code. Which function is meant to be used, if you don't want to hash canonical or multi-hash? Just the multi-hash function with m=1? 
+If this function really isn't present, could you please remove it from the README, to prevent further confusion?
+
+",Lyannic,https://github.com/bcgsc/ntHash/issues/10
+I_kwDOAiCYss47lWUZ,Unarchive the repository to let community easily contribute to ntHash,CLOSED,2021-09-17T19:11:49Z,2021-09-20T19:29:03Z,2021-09-20T19:29:03Z,"Hi @vlad0x00, lets unarchive ntHash repo to avoid confusion. People in the community will be contributing to this repo.",mohamadi,https://github.com/bcgsc/ntHash/issues/19
+I_kwDOAiCYss5CRmom,It seems that the list of parameters of the NTF64 function in the sample code does not match the source code,CLOSED,2022-01-23T16:01:19Z,2022-07-01T14:32:23Z,2022-07-01T14:32:23Z,"It seems that the list of parameters of the NTF64 function in the sample code does not match the source code
+
+`hVal = NTF64(hVal, seq[i], seq[i+k], k); // consecutive hash values`
+
+`inline uint64_t NTF64(const uint64_t fhVal, const unsigned k, const unsigned char charOut, const unsigned char charIn)`",yanlifeng,https://github.com/bcgsc/ntHash/issues/38
+I_kwDOAiCYss5NqvRG,Inconsistent canonical hash values between forward and revcomp sequences of the same k-mer when k % 4 == 0 (not in v2.1.0 but) in v2.2.0,CLOSED,2022-07-13T07:53:43Z,2022-09-03T10:03:43Z,2022-09-03T10:03:43Z,"First of all, thank you for developing the great software!
+
+I think I found a bug (and also its fix) in the latest version (v2.2.0) of ntHash. Specifically, the canonical hash value computed by the function `NTC64(const char * kmerSeq, const unsigned k)` can be different between the forward sequence and the reverse complement sequence of the same k-mer when k % 4 == 0.
+
+The minimal code for reproducing the bug, which prints the forward/revcomp/canonical hash values for (A)_k and (T)_k, is as follows:
+
+```
+#include <string>
+#include ""nthash.hpp""
+using namespace std;
+
+void nthash(string kmer, int k) {
+    uint64_t hVal, fhVal=0, rhVal=0;
+    hVal = NTC64(kmer.c_str(), k, fhVal, rhVal);
+    printf(""%s: fhVal=%llu, rhVal=%llu, hval=%llu\n"", kmer.c_str(), fhVal, rhVal, hVal);
+}
+
+int main(int argc, char *argv[]) {
+    int k = atoi(argv[1]);
+    nthash(string(k, 'A'), k);
+    nthash(string(k, 'T'), k);
+}
+```
+
+After compiling the code above, you can see the problem in a shell by:
+
+```
+$ ./a.out 1
+A: fhVal=4362857412768957556, rhVal=2978368046464386134, hval=2978368046464386134
+T: fhVal=2978368046464386134, rhVal=4362857412768957556, hval=2978368046464386134
+
+$ ./a.out 2
+AA: fhVal=5015898201438948509, rhVal=8935100007508790523, hval=5015898201438948509
+TT: fhVal=8935100007508790523, rhVal=5015898201438948509, hval=5015898201438948509
+
+$ ./a.out 3
+AAA: fhVal=13237172352163388750, rhVal=16044915679164358049, hval=13237172352163388750
+TTT: fhVal=16044915679164358049, rhVal=13237172352163388750, hval=13237172352163388750
+
+$ ./a.out 4
+AAAA: fhVal=10088133878355468230, rhVal=10664720106027613972, hval=10088133878355468230
+TTTT: fhVal=5294909351029397815, rhVal=6047278271377325800, hval=5294909351029397815
+```
+
+where `hval` is inconsistent between (A)_k and (T)_k only when k=4 (which is because `fhVal` of (A)_k and `rhVal` of (T)_k are supposed to be the same but actually not, and vice versa).
+
+This happens for large k values as well:
+
+```
+$ ./a.out 30
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: fhVal=7041943336510964649, rhVal=16957560051676611659, hval=7041943336510964649
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: fhVal=16957560051676611659, rhVal=7041943336510964649, hval=7041943336510964649
+
+$ ./a.out 31
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: fhVal=18446744068065231655, rhVal=18446744065269976257, hval=18446744065269976257
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: fhVal=18446744065269976257, rhVal=18446744068065231655, hval=18446744065269976257
+
+$ ./a.out 32
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: fhVal=1477743835528954406, rhVal=15468376030029209044, hval=1477743835528954406
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: fhVal=2311764568324791045, rhVal=14083886662562284090, hval=2311764568324791045
+
+$ ./a.out 33
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: fhVal=13430845866873192448, rhVal=9511644074189258751, hval=9511644074189258751
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: fhVal=9511644074189258751, rhVal=13430845866873192448, hval=9511644074189258751
+```
+
+where the case of k=32 is problematic.
+
+I believe the behavior above is due to the conditional processing based on `remainder` in `NTF64`:
+
+```
+inline uint64_t NTF64(const char * kmerSeq, const unsigned k) {
+
+...
+
+    unsigned remainder = k % 4;
+    hVal = rolx(hVal, remainder);
+    hVal = swapxbits033(hVal, remainder);
+    if (remainder == 3) {
+        uint8_t trimerLoc = 16 * convertTab[(unsigned char)kmerSeq[k - 3]] + 4 * convertTab[(unsigned char)kmerSeq[k - 2]] +  convertTab[(unsigned char)kmerSeq[k - 1]];
+        hVal ^= trimerTab[trimerLoc];
+    } else if (remainder == 2) {
+        uint8_t dimerLoc = 4 * convertTab[(unsigned char)kmerSeq[k - 2]] +  convertTab[(unsigned char)kmerSeq[k - 1]];
+        hVal ^= dimerTab[dimerLoc];
+    }  else if (remainder == 1) {
+        hVal ^= seedTab[(unsigned char)kmerSeq[k - 1]];
+    }
+    return hVal;
+}
+```
+
+and I don't think we should update `hVal` when k % 4 == 0. After that fix, the values of `hVal` of (A)_k and (T)_k become identical for every case above. This part of the code was added in v2.2.0, and this bug does not appear in v2.1.0.
+
+I will soon make a pull request  (which is a very tiny change, though). I'm happy if you can check if the fix is correct.",yoshihikosuzuki,https://github.com/bcgsc/ntHash/issues/39
+I_kwDOAiCYss5QxWtJ,Unstable hash values for k>64,CLOSED,2022-08-30T03:29:58Z,2023-07-09T01:23:38Z,2023-07-09T01:23:38Z,"Hi, thanks for inventing this great algorithm! And glad to see ntHash2 is also published.
+
+I've used ntHash in several projects of mine, specifically, using a  [Golang implementation](https://github.com/will-rowe/nthash/) (by @will-rowe) of ntHash v1.0.4. It's really fast!
+
+I just find that the hash values are unstable for k > 64. I guess it's related to the algorithm itself, cause it happens to be 64, not another number. I am not familiar with C/C++, so I can't check the original implementation. Here are steps with tools using the Golang implementation to reproduce the issue. 
+
+```
+$ echo -ne "">s\nACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" | seqkit stats
+file  format  type  num_seqs  sum_len  min_len  avg_len  max_len
+-     FASTA   DNA          1       65       65       65       65
+
+# compute canonical ntHash with https://github.com/shenwei356/unikmer
+$ echo -ne "">s\nACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" \
+    | unikmer count -H -K -k 65 -l | unikmer view
+14872199115326727818  ****
+
+# now we add one base in the start position.
+$ echo -ne "">s\naACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" \
+    | unikmer count -H -K -k 65 -l | unikmer view
+5042997269030491403
+13219011773654478434  ****
+
+$ echo -ne "">s\ncACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" \
+    | unikmer count -H -K -k 65 -l | unikmer view
+5252439041897790003
+1248486797404628174  ****
+
+$ echo -ne "">s\ngACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" \
+    | unikmer count -H -K -k 65 -l | unikmer view
+6432712771380638299
+10232415768797241538  ****
+
+$ echo -ne "">s\ntACGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n"" \
+    | unikmer count -H -K -k 65 -l | unikmer view
+5774425108696765737
+11299031900349869606  ****
+```
+
+While for k=64, it's stable (`7718595180140858881`):
+
+```
+$ echo -ne "">s\nCGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n""  \
+    | unikmer count -H -K -k 64 -l | unikmer view
+7718595180140858881
+
+$ echo -ne "">s\naCGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n""  \
+    | unikmer count -H -K -k 64 -l | unikmer view
+8752650216170443135
+7718595180140858881
+
+$ echo -ne "">s\ncCGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n""  \
+    | unikmer count -H -K -k 64 -l | unikmer view
+9222164657016850147
+7718595180140858881
+
+$ echo -ne "">s\ntCGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n""  \
+    | unikmer count -H -K -k 64 -l | unikmer view
+8329673441993552238
+7718595180140858881
+
+echo -ne "">s\ntCGAAGAATACACAACTATGTACCGGGGGGCTTTGGGGAGAAAAAGGAAAAAATAAAATCTTTAA\n""   \
+    | unikmer count -H -K -k 64 -l | unikmer view
+8329673441993552238
+7718595180140858881
+```",shenwei356,https://github.com/bcgsc/ntHash/issues/41
+I_kwDOAiCYss5V8LHA,missing cloning instructions and dependencies,CLOSED,2022-11-09T10:30:31Z,2023-04-03T18:14:03Z,2023-04-03T18:14:03Z,"Hello.
+
+I tried to compile the repo but it must be cloned with `--recursive` option in order to get all its dependencies but this fails as well. I managed to get the dependencies `argparsing` and `btllib` independently and during compilation, `python3-venv` was missing.
+
+",rica01,https://github.com/bcgsc/ntHash/issues/43
+I_kwDOAiCYss5ia1eS,"NtHash object and ntf64(seq, k) produce different forward hash values when k is a multiple of 4",CLOSED,2023-04-03T01:58:37Z,2023-07-10T19:35:21Z,2023-07-10T19:35:21Z,"Hello,
+While testing some code for a library I am writing using ntHash, I noticed that the initial/first call of roll() using the NtHash object, and the ntf64(seq, k) (line 100 in nthash_lowlevel.hpp) return different hash values but ntr64(seq, k) (line 112 in nthash_lowlevel.hpp) does not produce a different hash value between the object and the function call, and this only occurs when k is multiple of 4.
+
+I believe the initial call of roll() on the NtHash object calls the function ntmc64(seq + pos, k, hash_num, forward_hash, reverse_hash, posN, hashes_array.get()) (line 397 in lowlevel.hpp) so essentially I am saying that the forward hash value produced by ntmc64() and ntf64() are different but only when k is a multiple of 4, and the reverse hash values produced by ntmc64 and ntr64 are the same. 
+As the code used in the NtHash library is quite complicated, I'm not 100% sure if this is intentional or not.
+
+The Code I used to test this is in this repository. output.txt is where all the testing results are and ntHash_testing.cpp is the code I used to test.
+https://github.com/VeryAmazed/ntHash_Testing",VeryAmazed,https://github.com/bcgsc/ntHash/issues/44
+I_kwDOAiCYss5j4JHX,Example does not work,CLOSED,2023-04-19T21:21:43Z,2023-07-21T01:25:38Z,2023-07-10T19:35:22Z,"Hi,
+
+this example does not work:
+```
+nthash::NtHash nth(""TGACTGATCGAGTCGTACTAG"", 1, 5);  // 1 hash per 5-mer
+while (nth.roll()) {
+    // use nth.hashes() for canonical hashes
+    //     nth.get_forward_hash() for forward strand hashes
+    //     nth.get_reverse_hash() for reverse strand hashes
+}
+```
+more precisely this is not working:
+```
+ nthash::NtHash nth(""TGACTGATCGAGTCGTACTAG"", 1, 5);  // 1 hash per 5-mer
+    while (nth.roll()) {
+        std::cout << nth.hashes()[0] << '\n';
+        // use nth.hashes() for canonical hashes
+        //     nth.get_forward_hash() for forward strand hashes
+        //     nth.get_reverse_hash() for reverse strand hashes
+    }
+```
+I get just one hash.
+I'm not using cmake build, I just get all the sources needed and use
+```
+g++ *.cpp btllib/status.cpp
+```
+When I change to set the length it works:
+```
+nthash::NtHash nth(""TGACTGATCGAGTCGTACTAG"", 21, 1, 5);  // 1 hash per 5-mer
+```
+Also this works:
+```
+ std::string s = std::string(""TGACTGATCGAGTCGTACTAG"");
+ nthash::NtHash nth(s, 1, 5);  // 1 hash per 5-mer
+```
+but no this:
+```
+nthash::NtHash nth(std::string(""TGACTGATCGAGTCGTACTAG""), 1, 5);  // 1 hash per 5-mer
+``` 
+(the equivalent of the same as in the original example).
+
+It took me a while to understand this.
+Ctor captures const std::string& ref. 
+C++ guarantees that the temporal value (explicit like in the last code fragment, or implicit like in the original example) will live until the function end. The problem is the delegated ctor (const char*) does not copy the string content and we have a dangling pointer at the end.
+Proposed solution:
+maybe use memcpy like in the case of `BlindNtHash` ?
+Although maybe there are reasons to not do this.
+Anyway would be great to fix the example.
+
+BTW. I had some issues cloning submodules, I have changed .gitmodules to
+```
+[submodule ""vendor/argparse""]
+	path = vendor/argparse
+	url = https://github.com/p-ranav/argparse/
+[submodule ""vendor/btllib""]
+	path = vendor/btllib
+	url = https://github.com/bcgsc/btllib/
+```
+I'm not sure if it does make any difference.
+
+BTW2.
+Let's say I have a bit packet sequence, i.e. two bits per symbol in a form of uint64_t array.
+Is there a way to use ntHash without unpacking it to std::string/cstring?
+It's not crucial and may potentially be even worse vs efficient unpacking, but just out of curiosity.",marekkokot,https://github.com/bcgsc/ntHash/issues/45
+I_kwDOAiCYss5z4kor,Exposing Functions in kmer.cpp,OPEN,2023-10-16T02:11:31Z,2023-10-16T21:52:47Z,,"A project I'm working on depends on some of the old functions that were in low_level.hpp which now have equivalents in kmer.cpp such as base_forward_hash, next_forward_hash, base_reverse_hash, next_reverse_hash, etc. I was wondering if you could expose these helper functions defined and implemented at the top of kmer.cpp so they could be called directly from the nthash namespace. 
+Thank you.",VeryAmazed,https://github.com/bcgsc/ntHash/issues/48
+I_kwDOAiCYss534Grd,`update-docs.sh` not found or executable,OPEN,2023-11-26T20:38:24Z,2023-11-26T20:38:24Z,,"Including this repo as a subproject in Meson.
+
+If I have doxygen installed, I will get the error
+
+`subprojects/ntHash/meson.build:53:4: ERROR: Program '/project_root_directory/update-docs.sh' not found or not executable`
+
+I can get around this by creating an empty executable `update-docs.sh` file.",ishmeals,https://github.com/bcgsc/ntHash/issues/49

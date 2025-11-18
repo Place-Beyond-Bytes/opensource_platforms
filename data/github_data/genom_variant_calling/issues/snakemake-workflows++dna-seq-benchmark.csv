@@ -1,0 +1,23 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGdxitc6LFlF6,Change VAF information in config from list to dict,OPEN,2024-06-04T13:08:59Z,2024-06-04T13:08:59Z,,"In config.yaml the VAF information is currently a list:
+```
+vaf-field: # needs to be checked with bcftools view -h
+      - FORMAT
+      - AF
+```
+
+A dict with name:xxx and type:xxx would be better.",BiancaStoecker,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/76
+I_kwDOGdxitc6LtHSV,Report FP / FN negative variants in single table,CLOSED,2024-06-10T12:59:56Z,2024-12-13T09:34:17Z,2024-12-13T09:34:17Z,"To improve variant calling workflows, having a look at FP or FN called variants can be helpful. At the moment, these variants are reported in tables that are stratified. Having a step to unifiy these tables per callset would be nice.",famosab,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/77
+I_kwDOGdxitc6TPZli,P-value sorting happens only per chromosome not globally,OPEN,2024-08-16T13:32:49Z,2024-08-16T13:32:49Z,,"During collection of fp and fn the p value sorting only happens per chromosome and not globally:
+
+https://github.com/snakemake-workflows/dna-seq-benchmark/blob/f04e754ce492d84fa3254ddc6577f627522f9e38/workflow/scripts/collect-fp-fn.py#L146",BiancaStoecker,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/97
+I_kwDOGdxitc6VJFjG,`grch37: false` can only be set once while `grch37: true` can be set per callset,OPEN,2024-09-03T08:00:08Z,2024-11-21T09:58:35Z,,"The flag `grch37` is used to define the reference genome used during variant calling in the config. 
+
+Expected behavior: Define the reference genome per callset and consequently use the correct `rename-contigs` contigs file (grch37_ucsc2ensembl or grch38_ucsc2ensembl).
+
+Current behavior: For specific callsets `grch37: true` can be defined but setting `grch37: false` per callset does not work. The file for rename contigs has to be set manually.",famosab,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/99
+I_kwDOGdxitc6V1eHs,Somatic Benchmark: Calculate VAF for callers that do not report VAF,OPEN,2024-09-09T12:24:29Z,2024-09-09T12:24:29Z,,"The Variant Allele Frequency can be calculated. Some callers do not report the VAF. Implement the calculation to enable stratification for those results.
+
+https://github.com/Illumina/strelka/issues/128",famosab,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/100
+I_kwDOGdxitc6bRezX,Allow the user to specific their own truth VCF file,OPEN,2024-10-22T10:41:00Z,2024-10-22T10:41:00Z,,The benchmark workflow can then also be used to compare the results of multiple pipelines with each other.,famosab,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/103
+I_kwDOGdxitc6fqwRZ,Can only run either WGS or WES/FFPE callsets,CLOSED,2024-11-21T09:44:38Z,2024-12-13T09:34:17Z,2024-12-13T09:34:17Z,lc and hc callsets lead to error in rule `stratify_results` originating from `get_collect_fp_fn_callsets`,famosab,https://github.com/snakemake-workflows/dna-seq-benchmark/issues/106

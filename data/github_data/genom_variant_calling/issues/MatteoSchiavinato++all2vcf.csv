@@ -1,0 +1,285 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFxjaSc4_CPgA,IndexError: list index out of range,CLOSED,2021-11-18T16:27:26Z,2023-03-29T08:25:23Z,2023-03-29T08:25:23Z,"Good morning!
+I got my .snps from mummer with '-T' and trying to get a vcf file with this tool.
+Here's my traceback:
+
+Traceback (most recent call last):
+  File ""~/all2vcf/src/mummer"", line 362, in <module>
+    Vcf_lines = [ convert_snps_to_vcf(line) for line in Lines ]
+  File ""~/all2vcf/src/mummer"", line 362, in <listcomp>
+    Vcf_lines = [ convert_snps_to_vcf(line) for line in Lines ]
+  File ""~/all2vcf/src/mummer"", line 65, in convert_snps_to_vcf
+    scaffold = lst[10]
+IndexError: list index out of range
+
+Here's my command:
+""~/all2vcf/all2vcf"" mummer --snps test.snps --reference ./Mumtest_rotunda.fasta
+
+And, since I'm a noob here, maybe I did some mistakes while cloning this tool...
+This is what I revised for using all2vcf.
+
+#!/usr/bin/python3.6 
+interpreter=""python3.6""
+
+
+Hope I didn't bother you too much.
+And can't wait to get my VCF file with your tool! 
+Thanks for your great effort.",Moony00,https://github.com/MatteoSchiavinato/all2vcf/issues/1
+I_kwDOFxjaSc5F9Gps,Distribution of Indels,CLOSED,2022-03-18T14:20:07Z,2022-03-21T11:59:21Z,2022-03-21T11:59:20Z,"I generated a VCF using all2vcf and it worked fine.
+Now with the generated VCF file, I used the command
+
+`bcftools stats mummer_all2vcf.vcf | grep ""^IDD"" > mummer_all2vcf.stats_idd` 
+ 
+to get an overview of the distribution of SV sizes. Do you have an idea why I only see Deletions and SNPs in the VCF but not a single variant greater than 1 bp?
+",meiselex,https://github.com/MatteoSchiavinato/all2vcf/issues/2
+I_kwDOFxjaSc5MzI9L,index out of range when using all2vcf stats,OPEN,2022-06-29T10:03:30Z,2022-06-29T10:11:45Z,,"Hi,
+
+Im getting the following output when trying to run all2vcf stats on my vcf files.
+```
+[Wed Jun 29 10:59:38 2022] ### Working on pairs/indels/vcfs/Scaffold_8.Scaffold_17.vcf ### 
+
+[Wed Jun 29 10:59:38 2022] Found 883 candidate indels that where the annotation did not comply the VCF standard
+[Wed Jun 29 10:59:38 2022] The annotation was fixed for these 883 indels
+[Wed Jun 29 10:59:38 2022] Extracting information on the retained variants ... Traceback (most recent call last):
+  File ""/home/mike/software/all2vcf/src/stats"", line 197, in <module>
+    stats[""INFO""] = stats[""INFO""].str.split("";"").apply(lambda x:convert_to_dictionary(x))
+  File ""/home/mike/miniconda3/envs/appraisal/envs/appraisal/lib/python3.9/site-packages/pandas/core/series.py"", line 4357, in apply
+    return SeriesApply(self, func, convert_dtype, args, kwargs).apply()
+  File ""/home/mike/miniconda3/envs/appraisal/envs/appraisal/lib/python3.9/site-packages/pandas/core/apply.py"", line 1043, in apply
+    return self.apply_standard()
+  File ""/home/mike/miniconda3/envs/appraisal/envs/appraisal/lib/python3.9/site-packages/pandas/core/apply.py"", line 1098, in apply_standard
+    mapped = lib.map_infer(
+  File ""pandas/_libs/lib.pyx"", line 2859, in pandas._libs.lib.map_infer
+  File ""/home/mike/software/all2vcf/src/stats"", line 197, in <lambda>
+    stats[""INFO""] = stats[""INFO""].str.split("";"").apply(lambda x:convert_to_dictionary(x))
+  File ""/home/mike/software/all2vcf/src/stats"", line 71, in convert_to_dictionary
+    dict = { x[0]:x[1] for x in dict }
+  File ""/home/mike/software/all2vcf/src/stats"", line 71, in <dictcomp>
+    dict = { x[0]:x[1] for x in dict }
+IndexError: list index out of range
+```
+
+The vcfs are called from a converted mummer `show-snps` output, of a nucmer alignment between two assembly contigs.
+
+Any help would be hugely appreciated. Thank you.",mrmrwinter,https://github.com/MatteoSchiavinato/all2vcf/issues/3
+I_kwDOFxjaSc5YRfa5,off-by-one error in indel vcf representation of mummer output,CLOSED,2022-12-07T05:14:41Z,2022-12-07T20:27:51Z,2022-12-07T09:05:31Z,"My labmate had written a [simple script](https://gitlab.com/LPCDRP/utils/-/blob/master/mummer-extras/src/mummer-snps2vcf) to do the mummer snps to vcf conversion many years ago. I had early this year switched to using your tool since it produced a better vcf header, but we ended up really suffering from the indel representation bug #2.
+
+I see, however, that it isn't totally fixed. First, the mummer documentation describes the format in case of indels:
+
+> The descriptions for each header tag follows. [P1] position of the SNP in the reference sequence. For indels, this position refers to the 1-based position of the first character before the indel, e.g. for an indel at the very beginning of a sequence this would report 0. For indels on the reverse strand, this position refers to the forward-strand position of the first character before indel on the reverse-strand, e.g. for an indel at the very end of a reverse complemented sequence this would report 1.
+
+https://mummer.sourceforge.net/manual/#snps
+
+Consider this test case:
+
+```
+$ cat seq1.fasta
+>EMBOSS_001
+gacgaatattgaggagatagactttaccaaaccccaccgggtagcagggctccgtgccaa
+attgatccccgtggagccacgaagtctctacggtggaacg
+```
+
+Copy it, plant an insertion of a T after the 4th base, and call it seq2.fasta:
+```
+$ cat seq2.fasta
+>EMBOSS_001_ins
+gacgtaatattgaggagatagactttaccaaaccccaccgggtagcagggctccgtgccaa
+attgatccccgtggagccacgaagtctctacggtggaacg
+```
+
+Run `dnadiff` and examine the snps file:
+```
+$ dnadiff seq1.fasta seq2.fasta 
+Building alignments
+1: PREPARING DATA
+2,3: RUNNING mummer AND CREATING CLUSTERS
+# reading input file ""out.ntref"" of length 101
+# construct suffix tree for sequence of length 101
+# (maximum reference length is 2305843009213693948)
+# (maximum query length is 18446744073709551615)
+# CONSTRUCTIONTIME /path/to/mummer-3.23/mummer out.ntref 0.00
+# reading input file ""/tmp/tmp.RtxIrqEzJr/seq2.fasta"" of length 101
+# matching query-file ""/tmp/tmp.RtxIrqEzJr/seq2.fasta""
+# against subject-file ""out.ntref""
+# COMPLETETIME /path/to/mummer-3.23/mummer out.ntref 0.00
+# SPACE /path/to/mummer-3.23/mummer out.ntref 0.00
+4: FINISHING DATA
+Filtering alignments
+Extracting alignment coordinates
+Analyzing SNPs
+Extracting alignment breakpoints
+Generating report file
+```
+
+```
+$ cat out.snps 
+4       .       T       5       4       4       100     101     1       1       EMBOSS_001      EMBOSS_001_ins
+``` 
+
+Since we planted this indel after the 4th base, we know for a fact that the VCF representation for POS/REF/ALT should be
+```
+4    G    GT
+```
+
+Now `all2vcf` latest master (a couple commits after 0.7.4):
+```
+$ all2vcf/all2vcf mummer --snps out.snps --reference seq1.fasta
+EMBOSS_001      3       .       c       cT      .       .       INDEL   EMBOSS_001:4
+```
+
+So the position of the insertion is wrong and represents a different variant altogether.
+",0xaf1f,https://github.com/MatteoSchiavinato/all2vcf/issues/4
+I_kwDOFxjaSc51kJ8F,Bcftools cannot parse the file,OPEN,2023-11-01T13:45:21Z,2023-11-02T08:23:45Z,,"Hi,
+
+I would like to use bcf merge to merge vcf files of different multiple alignments done with mummer.
+
+I used:
+./all2vcf mummer --snps \$HOME/nucmer.delta.snps --input-header --output-header --reference \$HOME/Reference.fa --type SNP > nucmer.vcf 
+Which worked and gave me an output which looks a lot like a vcf file with a header.
+
+However when I wanted to merge the different vcf files with bcf merge, it gave me a merged file without sample names, so more like a concatenated vcf file. When I explored this problem I found out that bcf cannot parse the vcf file from all2vcf. 
+I tried to rename my samples by using:
+bcftools reheader -s name.txt -o renamed.vcf nucmer.vcf
+I get:
+Could not parse the header: ##fileformat=VCFv4.2        
+##fileDate=20231032   
+##source=all2vcf 
+##reference=/home/reference.fa
+##contig=<ID=OV839361.1,length=55805604>
+##contig=<ID=OV839362.1,length=55413727>
+##contig=<ID=OV839363.1,length=49239837>
+##contig=<ID=OV839364.1,length=48363854>
+##contig=<ID=OV839365.1,length=47463143>
+##contig=<ID=OV839366.1,length=45224516>
+##contig=<ID=OV839367.1,length=44895232>
+##contig=<ID=OV839368.1,length=44730017>
+##contig=<ID=OV839369.1,length=44706199>
+##contig=<ID=OV839370.1,length=41278614>
+##contig=<ID=OV839372.1,length=37569235>
+##contig=<ID=OV839373.1,length=37312042>
+##contig=<ID=OV839374.1,length=35025567>
+##contig=<ID=OV839375.1,length=34431249>
+##contig=<ID=OV839376.1,length=31970334>
+##contig=<ID=OV839377.1,length=31417546>
+##contig=<ID=OV839378.1,length=31036983>
+##contig=<ID=OV839379.1,length=29659553>
+##contig=<ID=OV839380.1,length=28745018>
+##contig=<ID=OV839381.1,length=28026665>
+##contig=<ID=OV839382.1,length=27960081>
+##contig=<ID=OV839383.1,length=27196166>
+##contig=<ID=OV839384.1,length=25482632>
+##contig=<ID=OV839385.1,length=25380689>
+##contig=<ID=OV839386.1,length=23930680>
+##contig=<ID=OV839387.1,length=23474178>
+##contig=<ID=OV839388.1,length=22464520>
+##contig=<ID=OV839389.1,length=21930428>
+##contig=<ID=OV839390.1,length=21757624>
+##contig=<ID=OV839391.1,length=21432086>
+##contig=<ID=OV839392.1,length=21271502>
+##contig=<ID=OV839393.1,length=21169547>
+##contig=<ID=OV839394.1,length=21076603>
+##contig=<ID=OV839395.1,length=17587634>
+##contig=<ID=OV839396.1,length=10404007>
+##contig=<ID=OV839397.1,length=2110544>
+##contig=<ID=OV839398.1,length=653593>
+##contig=<ID=OV839399.1,length=428882>
+##contig=<ID=OV839371.1,length=39876367>
+##contig=<ID=OV839360.1,length=89764762>
+##contig=<ID=CAKNBG020000003.1,length=64071>
+##contig=<ID=CAKNBG020000018.1,length=28795>
+##contig=<ID=CAKNBG020000019.1,length=92770>
+##contig=<ID=CAKNBG020000023.1,length=1041124>
+##contig=<ID=CAKNBG020000024.1,length=157292>
+##contig=<ID=CAKNBG020000036.1,length=23176>
+##contig=<ID=CAKNBG020000039.1,length=1013046>
+##contig=<ID=CAKNBG020000040.1,length=14263>
+##contig=<ID=CAKNBG020000043.1,length=465658>
+##contig=<ID=CAKNBG020000044.1,length=10128>
+##contig=<ID=CAKNBG020000047.1,length=13807>
+##contig=<ID=CAKNBG020000050.1,length=2853227>
+##contig=<ID=CAKNBG020000052.1,length=469109>
+##contig=<ID=CAKNBG020000057.1,length=20548>
+##contig=<ID=CAKNBG020000060.1,length=41297>
+##contig=<ID=CAKNBG020000061.1,length=14944>
+##contig=<ID=CAKNBG020000073.1,length=1394665>
+##contig=<ID=CAKNBG020000104.1,length=37406>
+##contig=<ID=CAKNBG020000106.1,length=16695>
+##contig=<ID=CAKNBG020000108.1,length=4000>
+##contig=<ID=CAKNBG020000114.1,length=32569>
+##contig=<ID=CAKNBG020000115.1,length=46938>
+##contig=<ID=CAKNBG020000118.1,length=2423077>
+##contig=<ID=CAKNBG020000121.1,length=26883>
+##contig=<ID=CAKNBG020000123.1,length=29723>
+##contig=<ID=CAKNBG020000128.1,length=15313>
+##contig=<ID=CAKNBG020000134.1,length=35994>
+##contig=<ID=CAKNBG020000142.1,length=13949>
+##contig=<ID=CAKNBG020000158.1,length=14988>
+##contig=<ID=CAKNBG020000178.1,length=1970000>
+##contig=<ID=CAKNBG020000182.1,length=1575066>
+##contig=<ID=CAKNBG020000186.1,length=11961>
+##contig=<ID=CAKNBG020000187.1,length=14688>
+##contig=<ID=CAKNBG020000189.1,length=62177>
+##contig=<ID=CAKNBG020000197.1,length=40692>
+##contig=<ID=CAKNBG020000198.1,length=15699>
+##contig=<ID=CAKNBG020000211.1,length=39402>
+##contig=<ID=CAKNBG020000214.1,length=2000>
+##contig=<ID=CAKNBG020000220.1,length=21604>
+##contig=<ID=CAKNBG020000222.1,length=24917>
+##contig=<ID=CAKNBG020000224.1,length=38294>
+##contig=<ID=CAKNBG020000225.1,length=19615>
+##contig=<ID=CAKNBG020000235.1,length=13800>
+##contig=<ID=CAKNBG020000243.1,length=15776>
+##contig=<ID=CAKNBG020000249.1,length=18016>
+##contig=<ID=CAKNBG020000261.1,length=462000>
+##contig=<ID=CAKNBG020000263.1,length=23392>
+##contig=<ID=CAKNBG020000265.1,length=41232>
+##contig=<ID=CAKNBG020000268.1,length=1143023>
+##contig=<ID=CAKNBG020000274.1,length=954877>
+##contig=<ID=CAKNBG020000281.1,length=15590>
+##contig=<ID=CAKNBG020000285.1,length=35147>
+##contig=<ID=CAKNBG020000294.1,length=293755>
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
+
+Is there anything wrong with the outputted file format?
+
+Kind regards",Meer9234,https://github.com/MatteoSchiavinato/all2vcf/issues/5
+I_kwDOFxjaSc58p8cp,all2vcf mummer index out of range,OPEN,2024-01-19T20:34:52Z,2024-01-19T22:53:51Z,,"all2vcf mummer instructions indicate:
+
+> Note: show-snps must be run with tab-delimited output: `show-snps -T`
+
+However, I still encountered list index out of range, where all2vcf attempts to access empty columns in the `show-snvs -T` output.
+I had to include the option `-l` (output sequence lengths) as well to align the snow-snps output with the expected columns of all2vcf.
+
+Running 
+`show-snps -C -r -l -T`
+
+allowed
+```
+all2vcf mummer \
+    --snps output.snvs \
+    --reference refrence.fasta \
+    --input-header \
+    --output-header > ouotput.snvs.vcf
+```
+to run successfully.
+
+An update to the all2vcf mummer instructions would probably fix this.
+
+Thanks :)
+
+
+Original error message:
+
+```
+Error:
+Traceback (most recent call last):
+  File ""/home/user/software/all2vcf/src/mummer"", line 370, in <module>
+    Vcf_lines = [ convert_snps_to_vcf(line) for line in Lines ]
+  File ""/home/user/software/all2vcf/src/mummer"", line 370, in <listcomp>
+    Vcf_lines = [ convert_snps_to_vcf(line) for line in Lines ]
+  File ""/home/user/software/all2vcf/src/mummer"", line 63, in convert_snps_to_vcf
+    scaffold = lst[10]
+IndexError: list index out of range
+```
+
+",johnstonmj,https://github.com/MatteoSchiavinato/all2vcf/issues/6

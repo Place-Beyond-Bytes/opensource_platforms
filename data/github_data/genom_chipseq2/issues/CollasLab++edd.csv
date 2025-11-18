@@ -1,0 +1,621 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0OTY3Njk3Mw==,Installation issue with pysam,CLOSED,2014-11-21T09:43:18Z,2015-06-24T12:10:07Z,2015-06-24T12:10:07Z,"Hello,
+
+I'm trying to install EDD software. I installed all the requirements. But during the installation process I have an error :
+###### 
+
+Traceback (most recent call last):
+         File ""<string>"", line 17, in <module>
+         File ""/tmp/pip_build_root/edd/setup.py"", line 22, in <module>
+           but the installed version was %s. Please upgrade pysam.''' % pysam.__version)
+       AttributeError: 'module' object has no attribute '__version'
+       Complete output from command python setup.py egg_info:
+       Traceback (most recent call last):
+
+```
+File ""<string>"", line 17, in <module>
+
+File ""/tmp/pip_build_root/edd/setup.py"", line 22, in <module>
+
+but the installed version was %s. Please upgrade pysam.''' % pysam.__version)
+```
+
+AttributeError: 'module' object has no attribute '__version'
+###### 
+
+Here is the list of the packages I have : 
+###### 
+
+$ pip freeze
+Cython==0.21.1
+Django==1.7.1
+Logbook==0.8.0
+MACE==1.1
+MACS==2.0.9
+Mako==0.9.1
+Markdown==2.4
+MarkupSafe==0.18
+PAM==0.4.2
+Pillow==2.3.0
+Twisted-Core==13.2.0
+Twisted-Names==13.2.0
+Twisted-Web==13.2.0
+apt-xapian-index==0.45
+apturl==0.4.1ubuntu4
+argparse==1.2.1
+bitsets==0.7.8
+chardet==2.0.1
+colorama==0.2.5
+command-not-found==0.3
+configglue==1.1.2
+debtagshw==0.1
+decorator==3.4.0
+defer==1.0.6
+dirspec==13.10
+django-tables2==0.15.0
+dnspython==1.11.1
+docutils==0.11
+duplicity==0.6.23
+feedparser==5.1.3
+genomes==1.1.0
+html5lib==0.999
+httplib2==0.8
+lockfile==0.8
+lxml==3.3.3
+matplotlib==1.3.1
+miro==4.0.4
+mutagen==1.22
+numpy==1.9.1
+oauthlib==0.6.1
+oneconf==0.3.7
+panda==0.1.5
+pandas==0.15.1
+paramiko==1.10.1
+patsy==0.3.0
+pexpect==3.1
+piston-mini-client==0.7.5
+protobuf==2.5.0
+pyOpenSSL==0.13
+pycrypto==2.6.1
+pycups==1.9.66
+pycurl==7.19.3
+pygobject==3.12.0
+pyinotify==0.9.4
+pyparsing==2.0.1
+pysam==0.8.0
+pyserial==2.6
+pysmbc==1.0.14.1
+pysqlite==2.6.3
+python-apt==0.9.3.5
+python-dateutil==1.5
+python-debian==0.1.21-nmu2ubuntu2
+python-libtorrent==0.16.13
+pytz==2012c
+pyxdg==0.25
+reportlab==3.0
+requests==2.2.1
+roman==2.0.0
+rpy==1.0.3
+scipy==0.14.0
+sessioninstaller==0.0.0
+setuptools-git==1.0b1
+six==1.5.2
+statsmodels==0.6.0
+system-service==0.1.6
+textile==2.1.5
+track==1.3.0-dev
+uTidylib==0.2
+urllib3==1.7.1
+vboxapi==1.0
+wsgiref==0.1.2
+zope.interface==4.0.5
+###### 
+
+I'm working on Linux Mint 17, but I have exactly the same issue on Debian Wheezy (7.7)
+
+Thanks in advance
+",aubinthomas,https://github.com/CollasLab/edd/issues/1
+MDU6SXNzdWU4ODY3NjE1NA==,Unable to install EDD,CLOSED,2015-06-16T09:41:56Z,2015-07-27T21:58:31Z,2015-07-27T21:58:31Z,"Dear Developers,
+I'm having an error when trying to install EDD through pip, could you please help me to solve it?
+Seems that is trying to look for pysam (0.8.0) and finds version 0.7.5, but when I do `$ pip freeze`
+
+```
+[...]
+pysam==0.8.3
+[...]
+```
+
+Below I paste the install log. Also I noticed some issues with **eddlib/read_bam.c**
+
+``` bash
+$ pip install edd
+```
+
+```
+Downloading/unpacking edd
+  Downloading edd-1.1.13.tar.gz
+  Running setup.py egg_info for package edd
+
+###########
+WARNING
+###########
+EDD requires pysam version 0.8.0 or greater, but the detected version was 0.7.5.The installation might not work.
+
+
+Requirement already satisfied (use --upgrade to upgrade): Logbook in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): pybedtools in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): statsmodels in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): patsy in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): pandas in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): python-dateutil in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): scipy in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): numpy in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from edd)
+Requirement already satisfied (use --upgrade to upgrade): pytz>=2011k in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from pandas->edd)
+Requirement already satisfied (use --upgrade to upgrade): six>=1.5 in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages (from python-dateutil->edd)
+
+Installing collected packages: edd
+Running setup.py install for edd
+
+###########
+WARNING
+###########
+EDD requires pysam version 0.8.0 or greater, but the detected version was 0.7.5.The installation might not work.
+
+cythoning eddlib/read_bam.pyx to eddlib/read_bam.c
+building 'eddlib.read_bam' extension
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -D_FILE_OFFSET_BITS=64 -D_USE_KNETFILE= -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam/include/samtools -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam/include/tabix -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include -I/software/mb/el6.3/python/pythons/CPython-2.7.9/include/python2.7 -c eddlib/read_bam.c -o build/temp.linux-x86_64-2.7/eddlib/read_bam.o
+En el fichero incluído de /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804,
+de /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17,
+de /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+de eddlib/read_bam.c:250:
+/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: aviso: #warning ""Using deprecated NumPy API, disable it by "" ""#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION""
+
+
+eddlib/read_bam.c:256:25: error: htslib_util.h: File or dir not exist
+eddlib/read_bam.c:261:26: error: pysam_stream.h: File or dir not exist
+eddlib/read_bam.c:265:26: error: samfile_util.h: File or dir not exist
+eddlib/read_bam.c:855: error: expected specifier-qualifier-list before ‘kseq_t’
+eddlib/read_bam.c:871: error: expected specifier-qualifier-list before ‘kseq_t’
+eddlib/read_bam.c:1209: error: expected specifier-qualifier-list before ‘kseq_t’
+error: command 'gcc' failed with exit status 1
+
+
+Complete output from command /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/bin/python -c ""import setuptools;__file__='/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/build/edd/setup.py';exec(compile(open(__file__).read().replace('\r\n', '\n'), __file__, 'exec'))"" install --record /tmp/pip-9R4UxR-record/install-record.txt --single-version-externally-managed --install-headers /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/include/site/python2.7:
+
+###########
+WARNING
+###########
+EDD requires pysam version 0.8.0 or greater, but the detected version was 0.7.5.The installation might not work.
+running install
+
+running build
+running build_py
+creating build
+creating build/lib.linux-x86_64-2.7
+creating build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/estimate.py -> build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/logit.py -> build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/load_params.py -> build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/experiment.py -> build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/__init__.py -> build/lib.linux-x86_64-2.7/eddlib
+copying eddlib/util.py -> build/lib.linux-x86_64-2.7/eddlib
+creating build/lib.linux-x86_64-2.7/eddlib/algorithm
+copying eddlib/algorithm/unalignable_regions.py -> build/lib.linux-x86_64-2.7/eddlib/algorithm
+copying eddlib/algorithm/monte_carlo.py -> build/lib.linux-x86_64-2.7/eddlib/algorithm
+copying eddlib/algorithm/max_segments.py -> build/lib.linux-x86_64-2.7/eddlib/algorithm
+copying eddlib/algorithm/__init__.py -> build/lib.linux-x86_64-2.7/eddlib/algorithm
+copying eddlib/default_parameters.conf -> build/lib.linux-x86_64-2.7/eddlib
+running build_ext
+cythoning eddlib/read_bam.pyx to eddlib/read_bam.c
+building 'eddlib.read_bam' extension
+creating build/temp.linux-x86_64-2.7
+creating build/temp.linux-x86_64-2.7/eddlib
+
+gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -D_FILE_OFFSET_BITS=64 -D_USE_KNETFILE= -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam/include/samtools -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/RSeQC-2.6.1-py2.7-linux-x86_64.egg/pysam/include/tabix -I/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include -I/software/mb/el6.3/python/pythons/CPython-2.7.9/include/python2.7 -c eddlib/read_bam.c -o build/temp.linux-x86_64-2.7/eddlib/read_bam.o
+
+In the included file of /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/ndarraytypes.h:1804,
+de /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/ndarrayobject.h:17,
+de /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h:4,
+de eddlib/read_bam.c:250:
+
+/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/numpy/core/include/numpy/npy_1_7_deprecated_api.h:15:2: aviso: #warning ""Using deprecated NumPy API, disable it by "" ""#defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION""
+
+
+eddlib/read_bam.c:256:25: error: htslib_util.h: File or dir not exist
+eddlib/read_bam.c:261:26: error: pysam_stream.h: File or dir not exist
+eddlib/read_bam.c:265:26: error: samfile_util.h: File or dir not exist
+eddlib/read_bam.c:855: error: expected specifier-qualifier-list before ‘kseq_t’
+eddlib/read_bam.c:871: error: expected specifier-qualifier-list before ‘kseq_t’
+eddlib/read_bam.c:1209: error: expected specifier-qualifier-list before ‘kseq_t’
+error: command 'gcc' failed with exit status 1
+
+
+Cleaning up...
+Command /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/bin/python -c ""import setuptools;__file__='/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/build/edd/setup.py';exec(compile(open(__file__).read().replace('\r\n', '\n'), __file__, 'exec'))"" install --record /tmp/pip-9R4UxR-record/install-record.txt --single-version-externally-managed --install-headers /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/include/site/python2.7 failed with error code 1 in /nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/build/edd
+
+Traceback (most recent call last):
+  File ""/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/bin/pip"", line 9, in <module>
+    load_entry_point('pip==1.4.1', 'console_scripts', 'pip')()
+  File ""/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/pip/__init__.py"", line 148, in main
+    return command.main(args[1:], options)
+  File ""/nfs/software/mb/el6.3/python/envs/.virtualenvs/cpython279/lib/python2.7/site-packages/pip/basecommand.py"", line 169, in main
+    text = '\n'.join(complete_log)
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 23: ordinal not in range(128)
+```
+
+I'm trying to install it in a server with SL6.5:
+
+```
+LSB Version:    :base-4.0-amd64:base-4.0-noarch:core-4.0-amd64:core-4.0-noarch:graphics-4.0-amd64:graphics-4.0-noarch:printing-4.0-amd64:printing-4.0-noarch
+Distributor ID: Scientific
+Description:    Scientific Linux release 6.5 (Carbon)
+Release:    6.5
+Codename:   Carbon
+```
+
+Thanks for your help,
+",N/A,https://github.com/CollasLab/edd/issues/2
+MDU6SXNzdWU5Mzc0NTI3NA==,error probably during reading of input bam ,CLOSED,2015-07-08T09:28:13Z,2015-07-31T12:41:43Z,2015-07-31T12:41:43Z,"With some input-bam files edd is running fine, but with some input-bam files (all similar bwa mappings) I get this error. Any idea? I don't know if the input bam is really the error or if it is the signal bam, but it seems like this...
+...
+[2015-07-08 09:11:17.311074] NOTICE: edd: output dir: test_neu2
+[2015-07-08 09:11:17.311432] NOTICE: edd: number of monte carlo trials: 10000
+[2015-07-08 09:11:17.311785] NOTICE: edd: number of processes: 16
+[2015-07-08 09:11:17.312134] NOTICE: edd: fdr lim: 0.050
+[2015-07-08 09:11:17.312480] NOTICE: edd: gap penalty: 2.00
+[2015-07-08 09:11:17.312815] NOTICE: edd: bin_size: 1000 KB
+[2015-07-08 09:11:17.313142] NOTICE: edd: unalignable regions file  : uar.bed
+[2015-07-08 09:11:17.342770] NOTICE: edd: Writing log ratios: True
+[2015-07-08 09:11:17.343178] NOTICE: edd: EDD configuration file parameters:
+[2015-07-08 09:11:17.343536] NOTICE: edd:   ci_method:agresti_coull
+[2015-07-08 09:11:17.343892] NOTICE: edd:   fraq_ibins:0.99
+[2015-07-08 09:11:17.344249] NOTICE: edd:   log_ratio_bin_size:10000
+[2015-07-08 09:11:17.344595] NOTICE: edd:   ci_lim:0.25
+[2015-07-08 09:11:17.435599] NOTICE: eddlib.experiment: loading bam files
+Traceback (most recent call last):
+  File ""/package/edd-1.1.13/bin/edd"", line 146, in <module>
+    main(args, config)
+  File ""/package/edd-1.1.13/bin/edd"", line 60, in main
+    loader.load_single_experiment(args.ip_bam, args.input_bam)
+  File ""/package/edd-1.1.13/lib/python2.7/site-packages/eddlib/experiment.py"", line 165, in load_single_experiment
+    self.exp = self.load_bam(ip_name, ctrl_name)
+  File ""/package/edd-1.1.13/lib/python2.7/site-packages/eddlib/experiment.py"", line 135, in load_bam
+    use_multiprocessing=True)
+  File ""/package/edd-1.1.13/lib/python2.7/site-packages/eddlib/experiment.py"", line 48, in load_experiment
+    ipd, inputd = fmap(f, [ip_bam_path, input_bam_path])
+  File ""/package/edd-1.1.13/lib/python2.7/site-packages/eddlib/experiment.py"", line 44, in <lambda>
+    fmap = lambda g, xs: pool.map_async(g, xs).get(99999999)
+  File ""/usr/lib64/python2.7/multiprocessing/pool.py"", line 554, in get
+    raise self._value
+AssertionError
+
+The input bam files are big, but the working ones are in the same size range. Flagstats on the not working one:
+170700080 + 0 in total (QC-passed reads + QC-failed reads)
+20352591 + 0 duplicates
+167494222 + 0 mapped (98.12%:-nan%)
+170700080 + 0 paired in sequencing
+85350040 + 0 read1
+85350040 + 0 read2
+159439464 + 0 properly paired (93.40%:-nan%)
+165837944 + 0 with itself and mate mapped
+1656278 + 0 singletons (0.97%:-nan%)
+5338790 + 0 with mate mapped to a different chr
+3845489 + 0 with mate mapped to a different chr (mapQ>=5)
+",steffenheyne,https://github.com/CollasLab/edd/issues/3
+MDU6SXNzdWUxMDQ2ODcyMzA=,question about reporting more domains,CLOSED,2015-09-03T13:03:26Z,2015-10-27T10:20:46Z,2015-10-27T10:20:46Z,"Hi,
+I'm trying to call domains for broad histone marks like H3k27me3 and H3K9me3. It's working fine, but sometime the domains are a bit coarse and I'm currently playing around with the parameters to get a finer resolution/more of the peaks/domains. Currently I'm using bin_size=1kb gap_penalty=9 fdr=0.1 ci_lim=0.5. At least by eye all called domains make sense, but I also would like to see less significantly enriched domains get called. I tried lowering the fdr to even 0.15 or 0.2, but there is hardly any new peak region. I verified this is a genome browser (IGV). 
+
+the log for eg. a H3K9me3 ChIP says: 
+
+NOTICE: eddlib.algorithm.max_segments: 2619 intervals (potential peaks) remaining.
+[2015-09-03 12:33:09.295351] NOTICE: edd: Running 10000 monte carlo trials
+[2015-09-03 12:55:28.401540] NOTICE: eddlib.algorithm.max_segments: got 1769 peaks with qvalue below 0.15. From 2619 possible
+
+How can I best increase the number of 2619 peaks?
+How can I get most of them reported? Probably by FDR?
+
+There are also these ""trivial intervals"", what does this mean?
+NOTICE: eddlib.algorithm.max_segments: Removed trivial intervals with score less than 5.0565.
+
+Thanks!
+",steffenheyne,https://github.com/CollasLab/edd/issues/4
+MDU6SXNzdWUxMDU4NzUzMTI=,"question about ""bin-size""",CLOSED,2015-09-10T18:57:29Z,2015-10-27T10:20:36Z,2015-10-27T10:20:36Z,"hello
+
+I tried to use edd for my data. I got error information as following:
+
+File ""/home/jhmi/xinli/.local/lib/python2.7/site-packages/eddlib/estimate.py"", line 30, in bin_size
+    assert bin_size < 100, ""Could not find a suitable bin size.""
+AssertionError: Could not find a suitable bin size.
+
+Then I tried to specify bin-size by myself, I tried 5kb and got error like this:
+""AssertionError: The selected bin size results in less informative bins that what specified by theparameter required_fraction_of_informative_bins. Please try a bigger bin size or let EDD auto-estimate a bin size for you.""
+
+And tried 50kb and got same issue. What should I do? Thanks.
+
+Xin
+",lixin4306ren,https://github.com/CollasLab/edd/issues/5
+MDU6SXNzdWUyMDc0NzIxMDE=,AssertionError,CLOSED,2017-02-14T10:13:56Z,2017-02-15T09:10:26Z,2017-02-15T08:55:37Z,"Hi --
+
+I am doing a statistical simulation to see which chip-seq domain detectors are good for differential chip-seq. EDD is one of the software packages I want to test (assuming getting it to work does not take too long).
+
+I am trying to run `EDD` with the following parameters:
+
+```
+~/anaconda3/envs/py27/bin/edd  --bin-size 1 --fdr 0.05 -g 5 -p 5 hg19.chromsizes unalignable test.bam control.bam results
+```
+
+The error I get is the following:
+
+```
+Traceback (most recent call last):
+  File ""/local/home/endrebak/anaconda3/envs/py27/bin/edd"", line 146, in <module>
+    main(args, config)
+  File ""/local/home/endrebak/anaconda3/envs/py27/bin/edd"", line 60, in main
+    loader.load_single_experiment(args.ip_bam, args.input_bam)
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/site-packages/eddlib/experiment.py"", line 165, in load_single_experiment
+    self.exp = self.load_bam(ip_name, ctrl_name)
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/site-packages/eddlib/experiment.py"", line 135, in load_bam
+    use_multiprocessing=True)
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/site-packages/eddlib/experiment.py"", line 48, in load_experiment
+    ipd, inputd = fmap(f, [ip_bam_path, input_bam_path])
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/site-packages/eddlib/experiment.py"", line 44, in <lambda>
+    fmap = lambda g, xs: pool.map_async(g, xs).get(99999999)
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/multiprocessing/pool.py"", line 567, in get
+    raise self._value
+AssertionError
+```
+
+`unalignable` is an empty file, `hg19.chromsizes` is a tab-delimited file with chroms/chromsizes and the two bam files are small test files (the error also happens if I try to use real data).
+
+Do you have any idea what might be wrong?
+
+Endre
+",endrebak,https://github.com/CollasLab/edd/issues/6
+MDU6SXNzdWUyMjc4MzgwMDY=,FDR specification,CLOSED,2017-05-10T23:26:58Z,2017-05-10T23:49:55Z,2017-05-10T23:49:55Z,"We tested two similar runs with different FDR specification, and it turns out the ""--fdr"" parameter ranges from 0-100 instead of 0-1.
+
+**[log.txt file from run1]:**
+NOTICE: eddlib.algorithm.max_segments: got 72 peaks with qvalue below 1.00. From 215 possible.
+**[log.txt file from run2]:**
+NOTICE: eddlib.algorithm.max_segments: got 215 peaks with qvalue below 100.00. From 215 possible.
+
+Maybe it's because we were using python package ""statsmodels"" version 0.6.1 instead of the most most recent version. We haven't tried that yet. 
+",yeminlan,https://github.com/CollasLab/edd/issues/7
+MDU6SXNzdWUyNTE2NDk1ODA=,Add edd to bioconda?,CLOSED,2017-08-21T12:49:10Z,2021-07-25T16:33:10Z,2017-10-19T07:05:19Z,"This would greatly simplify the installation. I made a few stabs at it, but was unable to get it to work:
+
+https://travis-ci.org/bioconda/bioconda-recipes/builds/266776185",endrebak,https://github.com/CollasLab/edd/issues/8
+MDU6SXNzdWUyNTgzNDkyNDE=,Problem running edd without a defined gap,CLOSED,2017-09-18T00:56:33Z,2017-09-19T19:54:04Z,2017-09-19T19:54:04Z,"Hello,
+
+Edd runs to completion when I specify a gap penalty score, but hangs up with the following error when I don't specify a gap penalty:
+
+Traceback (most recent call last):
+  File ""/usr/local/bin/edd"", line 146, in <module>
+    main(args, config)
+  File ""/usr/local/bin/edd"", line 69, in main
+    df = loader.get_df(args.unalignable_regions.name)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/experiment.py"", line 201, in get_df
+    mc_trials=100, pval_lim=0.05)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/estimate.py"", line 89, in instantiate
+    util.save_bin_score_file(binscore_df, bedgraph_path)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/util.py"", line 10, in save_bin_score_file
+    df['chrom start end score'.split()].sort(['chrom', 'start']).to_csv(
+  File ""/usr/local/lib/python2.7/dist-packages/pandas/core/generic.py"", line 3081, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'sort'
+
+All dependencies were up-to-date and installed prior to installing Edd. Any ideas on what to do?
+
+Thanks for your time!
+",runningvato,https://github.com/CollasLab/edd/issues/9
+MDU6SXNzdWUyNjY3NTU2NDg=,Add quick start example,CLOSED,2017-10-19T08:11:26Z,2018-09-05T11:19:11Z,2018-09-04T07:00:25Z,"Would be nice if you could add some small files edd works on to this repo so people can download and try the program easily. 
+
+This will also help them understand exactly what the files are supposed to look like.",endrebak,https://github.com/CollasLab/edd/issues/10
+MDU6SXNzdWUyNjk0OTY5MjM=,AttributeError: 'module' object has no attribute 'FastxRecord',OPEN,2017-10-30T06:48:39Z,2019-07-27T15:34:29Z,,"```bash
+~/anaconda3/envs/py27/bin/edd --bin-size 1000 --fdr 0.05 -g 5 -p 5 hg18.chromsizes unalignable test.bam control.bam results
+Traceback (most recent call last):
+  File ""/local/home/endrebak/anaconda3/envs/py27/bin/edd"", line 133, in <module>
+    import eddlib.experiment
+  File ""/local/home/endrebak/anaconda3/envs/py27/lib/python2.7/site-packages/eddlib/experiment.py"", line 17, in <module>
+    import read_bam
+  File ""libcfaidx.pxd"", line 51, in init eddlib.read_bam
+AttributeError: 'module' object has no attribute 'FastxRecord'
+```",endrebak,https://github.com/CollasLab/edd/issues/11
+MDU6SXNzdWUyODc0NjA3Nzk=,Error in reading bam file,OPEN,2018-01-10T14:52:50Z,2021-07-25T16:26:11Z,,"Hello
+I'm trying to run EDD for the first time and I got the following error which I assume is related to reading the bam file
+Traceback (most recent call last):
+  File ""/opt/miniconda2/bin/edd"", line 133, in <module>
+    import eddlib.experiment
+  File ""/opt/miniconda2/lib/python2.7/site-packages/eddlib/experiment.py"", line 17, in <module>
+    import read_bam
+  File ""libcfaidx.pxd"", line 51, in init eddlib.read_bam (eddlib/read_bam.c:8007)
+AttributeError: 'module' object has no attribute 'PersistentFastqProxy'
+
+Any idea what is wrong?
+Thanks
+Mali
+",salmonm,https://github.com/CollasLab/edd/issues/12
+MDU6SXNzdWU0MTY2MjA0ODk=,Could not find a suitable bin size for Macaque genome,OPEN,2019-03-04T04:03:49Z,2019-03-04T04:03:49Z,,"Hello,
+
+I have been using EDD to call large chromatin domains in both mouse and human data, but have run into a problem with samples from the Rhesus Macaque (rheMac8 assembly). In addition to trying to run my analysis using the default settings, I have also tried specifying a gap penalty score, and have also tried lowering the required_fraction_of_informative_bins to 0.98. All of these attempts resulted in: Traceback (most recent call last):
+
+  File ""/usr/local/bin/edd"", line 146, in <module>
+    main(args, config)
+  File ""/usr/local/bin/edd"", line 60, in main
+    loader.load_single_experiment(args.ip_bam, args.input_bam)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/experiment.py"", line 166, in load_single_experiment
+    self.df = self.__adjust_bin_size_and_get_df(self.exp)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/experiment.py"", line 149, in __adjust_bin_size_and_get_df
+    nib_lim=self.nib_lim)
+  File ""/usr/local/lib/python2.7/dist-packages/eddlib/estimate.py"", line 30, in bin_size
+    assert bin_size < 100, ""Could not find a suitable bin size.""
+
+One difference that I notice between the rheMac8 assembly and the mouse and human is that the number of entries in the unalignable regions file is much higher in the rheMac8 (63767 vs 687 in mouse and 819 in human). However, the fraction of genome covered by these reads is approximately the same as in either of the other species. 
+
+Do you have any suggestions as to how I might get EDD to calculate to best bin sizes for these data sets? 
+
+Thanks!
+",runningvato,https://github.com/CollasLab/edd/issues/13
+MDU6SXNzdWU1Mjg2NTQyNTY=,readme minor typo,OPEN,2019-11-26T11:11:28Z,2019-11-26T11:11:28Z,,"ERROR: Invalid requirement: 'pysam=0.11'
+Hint: = is not a valid operator. Did you mean == ?",zorg-it,https://github.com/CollasLab/edd/issues/14
+MDU6SXNzdWU1NjIxMzA4ODI=,statsmodels 0.11.0 about AttributeError: 'module' object has no attribute '__version__',OPEN,2020-02-09T06:32:19Z,2020-02-09T06:35:20Z,,"ubuntu 18.04.4LTS
+1. EDD can be install but there was an AttributeError: 'module' object has no attribute '__version__'  while the software was running.
+   ""  NP_LT_114 = LooseVersion(np.__version__) < LooseVersion('1.14')
+      'module' object has no attribute '__version__'   "" 
+2. This error was caused by the version of  statsmodels 0.11.0.
+3. When changing version  statsmodels 0.11.0 to 0.9.0, this error disappears and EDD can work normally.
+
+",dailimeng,https://github.com/CollasLab/edd/issues/15
+MDU6SXNzdWU3ODEzNDI0NjM=,ImportError: path/to/lib/python2.7/site-packages/eddlib/read_bam.so: undefined symbol: bgzf_read,OPEN,2021-01-07T14:12:39Z,2022-12-28T06:11:44Z,,"Use _pip install edd_ to get edd.
+When run edd I met an error:
+import read_bam
+ImportError: path/to/lib/python2.7/site-packages/eddlib/read_bam.so: undefined symbol: bgzf_read",Zhangtzh-genome,https://github.com/CollasLab/edd/issues/16
+MDU6SXNzdWU4Mjk4OTk1NDg=,AttributeError: 'module' object has no attribute '__version__',OPEN,2021-03-12T08:58:08Z,2022-03-07T10:48:13Z,,"Hello, edd is an useful tool, and i really need it. Thank you for your contribution and sharing.
+
+When i run edd, the following error was made. How can i solve this problem? As a beginner,  i hope to get a detailed solution.
+ Looking forward to  your reply. Thank you.
+
+edd --write-log-ratios --write-bin-scores \
+chrNameLength.txt hg19.blacklist.merge.bed \
+H3K9me2_ab.rmdup.bam input.rmdup.bam H3K9me2_ab
+
+Traceback (most recent call last):
+  File ""/data/User/limingsen/.conda/envs/EDD/bin/edd"", line 133, in <module>
+    import eddlib.experiment
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/eddlib/experiment.py"", line 18, in <module>
+    import logit
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/eddlib/logit.py"", line 3, in <module>
+    from statsmodels.stats.proportion import proportion_confint
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/stats/__init__.py"", line 1, in <module>
+    from statsmodels.tools._testing import PytestTester
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/tools/__init__.py"", line 1, in <module>
+    from .tools import add_constant, categorical
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/tools/tools.py"", line 8, in <module>
+    from statsmodels.compat.python import lzip, lmap
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/compat/__init__.py"", line 1, in <module>
+    from statsmodels.tools._testing import PytestTester
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/tools/_testing.py"", line 11, in <module>
+    from statsmodels.compat.pandas import assert_equal
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/compat/pandas.py"", line 4, in <module>
+    import numpy as np
+  File ""/data/User/limingsen/.conda/envs/EDD/lib/python2.7/site-packages/statsmodels/compat/numpy.py"", line 46, in <module>
+    NP_LT_114 = LooseVersion(np.__version__) < LooseVersion('1.14')
+AttributeError: 'module' object has no attribute '__version__'
+",Mingsenli,https://github.com/CollasLab/edd/issues/17
+MDU6SXNzdWU5NzIxNTQzMTI=,Is it possible to change log_ratio_bin_size,OPEN,2021-08-16T22:46:57Z,2022-08-17T16:31:46Z,,"Hello,
+I need to calculate log ratios in 10 bp sliding windows but EDD calculates them in 10 kbp.
+I see no option to change this bin size in settings but is there actually another way to make it happen?
+Thanks",FatihSarigol,https://github.com/CollasLab/edd/issues/18
+I_kwDOALWRI85BasCF,"I had a problem that I couldn’t solve, and neither Google nor biostar found a solution. If it is convenient, please help me.",OPEN,2022-01-10T06:49:25Z,2022-01-10T06:49:25Z,,"Traceback (most recent call last):
+  File ""/home/shuli/miniconda3/envs/chip/bin/edd"", line 133, in <module>
+    import eddlib.experiment
+  File ""/home/shuli/miniconda3/envs/chip/lib/python2.7/site-packages/eddlib/experiment.py"", line 17, in <module>
+    import read_bam
+  File ""__init__.pxd"", line 872, in init eddlib.read_bam
+ValueError: numpy.ufunc has the wrong size, try recompiling. Expected 192, got 216",zhangshuli-stu,https://github.com/CollasLab/edd/issues/19
+I_kwDOALWRI85OlCWE,"Error  Traceback (most recent call last): line 133, in <module>     import eddlib.experiment",OPEN,2022-07-26T14:31:21Z,2022-08-18T10:31:32Z,,"I would greatly appreciate any help on this error. I had re-installed statsmodel 0.9.0 thinking this might be the issue, but didnt seem to change anything. Any help would be greatly appreciated.
+
+edd -g 5 --write-bin-score hg19.chromsizes hg19_unalignable_regions.bed BL2_CT_R1_rd.bam BL2_CTR2_rd.bam chipseq
+
+Traceback (most recent call last):
+  File ""/data/home/hfx541/.local/bin/edd"", line 133, in <module>
+    import eddlib.experiment
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/eddlib/experiment.py"", line 19, in <module>
+    import estimate
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/eddlib/estimate.py"", line 1, in <module>
+    from algorithm.max_segments import GenomeBins, IntervalTest
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/eddlib/algorithm/max_segments.py"", line 7, in <module>
+    import unalignable_regions
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/eddlib/algorithm/unalignable_regions.py"", line 5, in <module>
+    import pybedtools
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/pybedtools/__init__.py"", line 16, in <module>
+    from . import contrib
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/pybedtools/contrib/__init__.py"", line 4, in <module>
+    from . import long_range_interaction
+  File ""/data/home/hfx541/.local/lib/python2.7/site-packages/pybedtools/contrib/long_range_interaction.py"", line 357
+    print(""%d (%.1f%%)\r"" % (c, c / float(n) * 100), end="""")
+                                                        ^",hfx541,https://github.com/CollasLab/edd/issues/20
+I_kwDOALWRI85h58O1,Unable to install,OPEN,2023-03-27T18:12:02Z,2023-03-27T18:12:02Z,,No version tested would complete the entire installation without failing some portion of the preqs or the main install itself.,Stein-ja,https://github.com/CollasLab/edd/issues/22
+I_kwDOALWRI85s2DBe,EED can not be install or run without multiple errors and conflicts,OPEN,2023-07-28T09:48:12Z,2023-07-28T09:48:25Z,,"Hi,
+
+Since EED requires python 2.7 and it's getting quite old, it's essentially impossible to install it and run it with so limited information as provided here on the github page. There are multiple conflicts between the software packages and even if one can find a safe combination, EED throw errors about reading bam files as already mentioned by a number of users. 
+
+It would really help, if you could update this page and provide a complete list of all python packages required for EED to work with the exact (!) versions of all packages. Please test whether they actually works in a conda (or simular) environment and provide this information to the community if you want EED to be used.
+
+Thank you.",akukalev,https://github.com/CollasLab/edd/issues/23
+I_kwDOALWRI85wiaQ6,What are the values in the output peak file?,OPEN,2023-09-08T17:28:54Z,2023-09-08T17:28:54Z,,"I wasn't able to find any information in the docs regarding the forth column of the output peak file. What do these values represent?
+
+```
+chr1	4180000	5480000	39.8829345703
+chr1	33640000	34640000	12.1921386719
+chr1	48700000	50320000	44.6162109375
+chr1	56720000	58380000	29.6923828125
+chr1	70540000	83860000	118.475097656
+chr1	101320000	103540000	32.4545898438
+chr1	103780000	108120000	157.773727417
+chr1	117980000	118980000	21.6364746094
+```",rikrdo89,https://github.com/CollasLab/edd/issues/24
+I_kwDOALWRI86AicF2,Right installation order here!,OPEN,2024-02-27T12:51:37Z,2024-11-23T15:53:46Z,,"As many users seem to face similar problems with installing EDD with correct dependencies, I want to share the order and versions that I used to make it run on a Ubuntu machine.
+```
+conda create -n edd
+conda activate edd
+conda install python=2.7
+conda install pip
+pip install Cython==0.29.32 numpy==1.16.6
+pip install scipy==1.2.3
+pip install statsmodels==0.10.2
+pip install pybedtools==0.8.2
+pip install pysam==0.11.2.2
+pip install edd
+conda install bioconda::bedtools==2.31.1
+
+edd -v
+> edd 1.1.19
+```
+
+Props to https://github.com/rabdill !
+
+```
+(edd) user@machine:~$ conda list
+# packages in environment at /home/user/miniconda3/envs/edd:
+#
+# Name                    Version                   Build  Channel
+_libgcc_mutex             0.1                 conda_forge    conda-forge
+_openmp_mutex             4.5                       2_gnu    conda-forge
+bzip2                     1.0.8                hd590300_5    conda-forge
+ca-certificates           2024.2.2             hbcca054_0    conda-forge
+certifi                   2019.11.28       py27h8c360ce_1    conda-forge
+cython                    0.29.32                  pypi_0    pypi
+edd                       1.1.19                   pypi_0    pypi
+ld_impl_linux-64          2.40                 h41732ed_0    conda-forge
+libexpat                  2.5.0                hcb278e6_1    conda-forge
+libffi                    3.4.2                h7f98852_5    conda-forge
+libgcc-ng                 13.2.0               h807b86a_5    conda-forge
+libgomp                   13.2.0               h807b86a_5    conda-forge
+libnsl                    2.0.1                hd590300_0    conda-forge
+libsqlite                 3.45.1               h2797004_0    conda-forge
+libuuid                   2.38.1               h0b41bf4_0    conda-forge
+libxcrypt                 4.4.36               hd590300_1    conda-forge
+libzlib                   1.2.13               hd590300_5    conda-forge
+logbook                   1.5.3                    pypi_0    pypi
+ncurses                   6.4                  h59595ed_2    conda-forge
+numpy                     1.16.6                   pypi_0    pypi
+openssl                   3.2.1                hd590300_0    conda-forge
+pandas                    0.24.2                   pypi_0    pypi
+patsy                     0.5.6                    pypi_0    pypi
+pip                       20.1.1             pyh9f0ad1d_0    conda-forge
+pybedtools                0.8.2                    pypi_0    pypi
+pysam                     0.11.2.2                 pypi_0    pypi
+python                    2.7.18               h42bf7aa_3  
+python-dateutil           2.8.2                    pypi_0    pypi
+python_abi                2.7                    1_cp27mu    conda-forge
+pytz                      2024.1                   pypi_0    pypi
+readline                  8.2                  h8228510_1    conda-forge
+scipy                     1.2.3                    pypi_0    pypi
+setuptools                44.0.0                   py27_0    conda-forge
+six                       1.16.0                   pypi_0    pypi
+sqlite                    3.45.1               h2c6b66d_0    conda-forge
+statsmodels               0.10.2                   pypi_0    pypi
+tk                        8.6.13          noxft_h4845f30_101    conda-forge
+tzdata                    2024a                h0c530f3_0    conda-forge
+wheel                     0.37.1             pyhd8ed1ab_0    conda-forge
+xz                        5.2.6                h166bdaf_0    conda-forge
+zlib                      1.2.13               hd590300_5    conda-forge
+```",StrohD,https://github.com/CollasLab/edd/issues/25

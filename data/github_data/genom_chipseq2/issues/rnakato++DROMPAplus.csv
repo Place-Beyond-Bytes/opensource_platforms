@@ -1,0 +1,187 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2Njc3NjYzOTI=,error opening genome table,CLOSED,2020-07-29T11:21:25Z,2021-02-04T14:17:54Z,2021-02-04T14:17:54Z,"Hi,
+
+I am trying to use the program, but somehow it is always reporting the error message:
+
+Error: Could nome open genometable.hg19.txt.
+
+I have tried with other samples and get the same error. Could you help me with this issue? 
+I am using it with singularity.
+Best
+André",dabitz,https://github.com/rnakato/DROMPAplus/issues/1
+MDU6SXNzdWU2ODQ4OTU5MzQ=,command not found: drompa+,CLOSED,2020-08-24T19:03:24Z,2021-02-04T14:18:10Z,2021-02-04T14:18:10Z,"I think I successfully installed DROMPAplust using docer. But I still got command not found when I tried to use it.
+
+> DROMPA+ v1.8.1
+>     ================
+>     For the detailed information on the options for each command, use the -h flag along with the command.
+> 
+>     Usage: drompa+ <Command> [options]
+> 
+>     Command:
+>         PC_SHARP    Visualization: for sharp mark parameter set
+>         PC_BROAD    Visualization: for broad mark parameter set
+>         PC_ENRICH   Visualization: ChIP/Input enrichment    
+>         GV          Visualization: global-view enrichment   
+>         PROFILE     Visualize averaged read density in specified regions
+>         MULTICI     Generate matrix of averaged read density in specified BED sites
+>         GENWIG      Generate wig data of enrichment or p-value distribution",dcheng1,https://github.com/rnakato/DROMPAplus/issues/2
+MDU6SXNzdWU2OTI0NDU0OTI=,Error: genome table file does not exit,CLOSED,2020-09-03T22:25:15Z,2021-02-04T14:18:25Z,2021-02-04T14:18:25Z,"> docker run -it --rm rnakato/ssp_drompa drompa+ PC_BROAD -i m2-22l-n.bw,input.bw,H3K27me3 -o drompa1 -g refFlat.txt --gt /Users/Downloads/genometable.mm10.txt --lpp 2 --showitag 2 --chr 1
+
+The path of genomefile is correct, but still I got the following error:
+
+> Error: genometable file does not exist.
+> failed to resize tty, using default size",dcheng1,https://github.com/rnakato/DROMPAplus/issues/3
+MDU6SXNzdWU3OTU5Nzg0NzI=,no gene found in gtf,CLOSED,2021-01-28T12:53:21Z,2021-05-01T14:02:37Z,2021-05-01T14:02:37Z,"Dear developers, 
+thank you for an interesting and complete tool. We are testing this tool with many of our Chip libraries, but have been having issues obtaining the final results from our data.
+We have 3M paired end reads from different libraries and their control inputs and we are submitting the drompaplus pipeline in this fashion:
+```
+parse2wig+ --pair -p 8 -i Input.bam -o input48 --gt /scratch/jmontenegro/nvectensis/data/refs/nemVec2.genometable.txt -n GR --nrpm 3000000 --ncmp 3000000
+parse2wig+ --pair -p 8 -i mef2.bam -o Mef2 --gt /scratch/jmontenegro/nvectensis/data/refs/nemVec2.genometable.txt -n GR --nrpm 3000000 --ncmp 3000000
+```
+The bigwig files are produced correctly and then I use those to try to generate plots. However, I get many error which I guess depend on the GTF annotation file I am using.
+Does drompa+ requires 'tss' features annotated to generate a TSS PROFILE graphs? After running the tool:
+drompa+ PROFILE -i Mef.bw -o aroundTSS -g tcs.gtf --gftype 1 --norm 1
+and the tsv files look empty:
+```
+> cat aroundTSS.PROFILE.averaged.ChIPread.Mef2.100.bw.tsv
+	-2500	-2400	-2300	-2200	-2100	-2000	-1900	-1800	-1700	-1600	-1500	-1400	-1300	-1200	-1100	-1000	-900	-800	-700	-600	-500	-400	-300	-200	-100	0	100	200	300	400	500	600	700	800	900	1000	1100	1200	1300	1400	1500	1600	1700	1800	1900	2000	2100	2200	2300	2400	2500
+```
+Would this be because there are no explicit TSS features in the GTF file? Also, when I try to run PC_ENRICH I get a warning that no 'genes' can be found in the genome. Nevertheless, there are gene features in the gtf file so I am not sure why it cannot find genes in any chromosome:
+```
+chr1	Stringtie	gene	33188	37834	1000	+	.	gene_id ""NV2.1"";
+chr1	StringTie	transcript	33188	37834	1000	+	.	gene_id ""NV2.1""; transcript_id ""NV2.1.1""; 
+chr1	StringTie	exon	33188	33328	1000	+	.	gene_id ""NV2.1""; transcript_id ""NV2.1.1""; exon_number ""1""; 
+chr1	StringTie	exon	37696	37834	1000	+	.	gene_id ""NV2.1""; transcript_id ""NV2.1.1""; exon_number ""2""; 
+chr1	Stringtie	gene	42107	54902	1000	-	.	gene_id ""NV2.2"";
+chr1	StringTie	transcript	42107	54902	1000	-	.	gene_id ""NV2.2""; transcript_id ""NV2.2.1""; 
+chr1	StringTie	exon	42107	42587	1000	-	.	gene_id ""NV2.2""; transcript_id ""NV2.2.1""; exon_number ""1""; 
+chr1	StringTie	exon	44060	44192	1000	-	.	gene_id ""NV2.2""; transcript_id ""NV2.2.1""; exon_number ""2""; 
+chr1	StringTie	exon	45320	45456	1000	-	.	gene_id ""NV2.2""; transcript_id ""NV2.2.1""; exon_number ""3""; 
+```
+What are the required features that can be understood by drompa+ in a gtf file?
+Thank you!",jdmontenegro,https://github.com/rnakato/DROMPAplus/issues/4
+MDU6SXNzdWU4NzEyNzgzNDc=,Error: could nome open genometable.txt,CLOSED,2021-04-29T17:41:55Z,2021-06-11T02:24:05Z,2021-06-11T02:24:05Z,"I made a genome table using the makegenometable.pl from your DROMPA3 page as I couldn't find it here. It appears to have given me the right type of file, tab delimited with chromosome name and length, and it is similar to the genome table data you have provided for other organisms. But, when I try to run parse2wig+ I get the error 'could nome open genometable.txt'. I can't figure out what is wrong with my genome table, do you have any ideas for troubleshooting? Thank you.",fffletcher,https://github.com/rnakato/DROMPAplus/issues/5
+I_kwDOEENqN85BMtBF,Why reads in peaks and FRiP are zero?,CLOSED,2022-01-04T23:59:47Z,2023-01-05T07:44:19Z,2023-01-05T07:44:19Z,"Hi,
+I am sure that reads in peaks and FRiP should be normal for my data.
+But they are always 0 by DROMPAplus.
+Is it a bug?
+Thanks in advance.
+
+",CTLife,https://github.com/rnakato/DROMPAplus/issues/7
+I_kwDOEENqN85JPmEy,terminate called after throwing an instance of 'std::out_of_range'   what():  map::at Aborted (core dumped),CLOSED,2022-05-08T08:19:37Z,2023-07-08T00:50:39Z,2023-07-08T00:50:39Z,"Dear rnakato,
+
+Thank you for the amazing program. I am trying to apply the alignment files generated with the bowtie2 program. The reference used here is Oryzasataiva (MSU-TIGR v7). 
+I used the below command to generate genometable.txt  for the Osativa reference genome.
+
+makegenometable.pl ../MSU/v7/all.con > MSUv7.genometable.txt
+
+## Successfully generated custom genometable.txt for Oryzasativa genome using makegenometable.pl program in the scripts folder.
+
+Then I went on to perform the next step. This resulted out an error. 
+$ parse2wig+ -i IP_B5_R1_sorted_unique.bam -o IP_B5_SU --gt MSUv7.genometable.txt -p 5
+## output 
+======================================
+parse2wig+ version 1.14.0
+
+Input file: IP_B5_R1_sorted_unique.bam
+Output prefix: parse2wigdir+/IP_B5_SU
+Output format: BIGWIG
+Binsize: 100 bp
+Genome-table file: MSUv7.genometable.txt
+Single-end mode: fragment length will be estimated by strand-shift profile
+PCR bias filtering: ON
+	10000000 reads used for library complexity
+
+Total read normalization: NONE
+Number of threads: 5
+======================================
+Parsing IP_B5_R1_sorted_unique.bam...
+Input format: BAM
+mapped reads: 10478968	+ reads: 5234313	- reads: 5244655
+duplicated reads: 0
+Failed quality reads: 0
+unmapped reads: 0
+Checking redundant reads: redundancy threshold 1
+done.
+Making Jaccard index profile...Chr1..Chr3..Chr6..Chr9..Chr12..Chr10..Chr7..ChrUn..ChrSy..Chr4..Chr11..Chr2..Chr8..Chr5..terminate called after throwing an instance of 'std::out_of_range'
+  what():  map::at
+Aborted (core dumped)
+
+Please help me understand the above error. Let me know if there are any errors in my approach 
+
+FYI. The above approach worked with DROMPA (2018 program). 
+
+Sincerely 
+",varamhcu,https://github.com/rnakato/DROMPAplus/issues/8
+I_kwDOEENqN85NX_wQ,Error during pdf creation,CLOSED,2022-07-07T21:44:46Z,2022-07-28T01:43:28Z,2022-07-28T01:43:28Z,"Hi rnakato,
+
+I am having some issue during pdf creation. Somehow the pdf creation is not functioning due to output error? So far syntax look ok, but what do i need to specify?
+
+I have following error:
+
+[nepsygirl@localhost Dokumente]$ drompa+ PC_SHARP \ -i $dir/GSM3752858_0-7A-H3K27ac.100.bw ,GSM3752858_0-7A-H3K27ac\ -i $dir/GSM3752867_AD-2A-H3K27ac.100.bw,GSM3752867_AD-2A-H3K27ac\ -i $dir/GSM3752845_Y-15T-H3K27ac.100.bw, GSM3752845_Y-15T-H3K27ac\ -o drompa1 -g refFlat.txt --gt genometable.hg19.txt \ --lpp 2 --showitag 2 \ --chr 1
+Error: specify --output option.
+
+Thank you ",nepsygirl,https://github.com/rnakato/DROMPAplus/issues/9
+I_kwDOEENqN85PQXaY,conda package,CLOSED,2022-08-05T09:29:50Z,2022-08-08T10:49:44Z,2022-08-08T10:49:43Z,"Hello,
+
+I am trying to install DROMPAplus on a fairly restricted HPC system (no Singularity, Centos 7, etc.). I attempted to build your package using conda env with the required libraries/gcc/cmake etc. installed, but the build still fails at the cmake stage:
+
+```
+CMake Error at 
+/path/to/.conda/envs/drompa_plus/share/cmake-3.22/Modules/CMakeDetermineCCompiler.cmake:226
+(configure_file):     No such file or directory
+Call Stack (most recent call first):
+CMakeLists.txt:7 (project)  
+```
+
+Debugging some slightly non-conventional setup may be more tricky than trying to create a proper conda package.
+Do you plan to package DROMPAplus using conda?
+
+Many thanks for your help
+
+Darek Kedra
+
+**edit**: formatting ",darked89,https://github.com/rnakato/DROMPAplus/issues/10
+I_kwDOEENqN85aLQUK,Gene Dense text file for ensemble gtf file,CLOSED,2022-12-28T15:22:26Z,2023-07-05T04:06:59Z,2023-07-05T04:06:59Z,"Hello,
+
+Thanks for wonderfull tool for chip data I am trying to create gene density text file for GTF file from the ensembl could you please help me to get the output when I am trying getting zero in all the genomic regions and mm10(GRCm38.102) mouse genome gene density data I needed
+
+
+Thank you",luckysardar,https://github.com/rnakato/DROMPAplus/issues/11
+I_kwDOEENqN85guqsU,Normalization methods to use and compare different library size samples ,CLOSED,2023-03-14T06:56:54Z,2024-06-30T02:27:48Z,2024-06-30T02:27:48Z,"Thank you for the very handy tool I am wanted normalize Chip seq data H3K4me3 mark data for the comaprision between samples. Two sample i am trying to compare has library size very two much please suggest me which will be the best normalization method for this kind of samples size 
+
+
+Thank you",luckysardar,https://github.com/rnakato/DROMPAplus/issues/12
+I_kwDOEENqN86NTpWM,Questions about `drompa_peakcall` with *S. cerevisae* ChIP-seq data,CLOSED,2024-06-24T17:21:57Z,2024-06-27T10:37:57Z,2024-06-27T10:37:57Z,"
+Hi @rnakato,
+
+I am currently learning to use the programs included in the `ssp_drompa` Docker image and have a couple of questions about `drompa_peakcall`:
+
+1. Should the value assigned to `-width4lmd <int>` be reduced when running `drompa_peakcall` (either `PC_SHARP` or `PC_BROAD`) with *S. cerevisiae* ChIP-seq data? If so, what value do you recommend? The default of `100000` bp seems large given the relatively small sizes of *S. cerevisiae* chromosomes.
+2. Is the file to be supplied to `-mp <mappability file>` the same as the mappability table used by SSP—i.e., a tab-separated text file describing the chromosome name and its corresponding number of mappable bases like below?
+```txt
+I	201288
+II	784032
+III	301330
+IV	1450957
+V	550132
+VI	253319
+VII	1041944
+VIII	518975
+IX	411814
+X	704084
+XI	663698
+XII	985648
+XIII	888385
+XIV	752709
+XV	1050341
+XVI	907968
+Mito	85229
+
+```
+
+Thank you for any help you can provide.
+
+Best regards,  
+Kris",kalavattam,https://github.com/rnakato/DROMPAplus/issues/13

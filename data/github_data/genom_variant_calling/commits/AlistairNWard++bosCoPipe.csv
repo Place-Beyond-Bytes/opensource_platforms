@@ -1,0 +1,315 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+2e39849656cf429456951551c877dfa464bc1435,Alistair,AlistairNWard@gmail.com,"version 2.069 - April 2012
+
+1. Modified the target regions to use the reference sequences
+present in the BAM file.  If a list of BAM files is provided,
+the reference sequences are taken from the first file in the
+list.  It is currently the users reponsibility to ensure that
+the BAM files all have the same reference sequences.",2012-04-17T13:47:35Z,AlistairNWard
+77cf0b0433497c6197f98bd3e00b661191e0865a,AlistairNWard,AlistairNWard@gmail.com,"version 2.068 - December 2011
+
+1. Ensured that the duplicate marked BAM file is deleted after renaming.",2011-12-05T23:27:13Z,AlistairNWard
+ec9baf296f994588f0804a780c031cfdbd2d53f3,AlistairNWard,AlistairNWard@gmail.com,"version 2.067
+
+1. Minor fix to duplicate marking command line.",2011-12-05T12:50:24Z,AlistairNWard
+90fbf12819e8d940b0a87e38dc2343377340c6a6,AlistairNWard,AlistairNWard@gmail.com,"version 2.066 - December 2011
+
+1. Allow the original base qualities to be retained in GATK base
+quality recalibration by setting the -keep-orig-quals flag.",2011-12-02T00:58:09Z,AlistairNWard
+39053d9313fdeea00ec878a9de83cd669a369b79,AlistairNWard,AlistairNWard@gmail.com,"version 2.065 - November 2011
+
+1. Added TMP_DIR to the Picard duplicate marking command line.  This
+avoids spilling data onto the node if working on local disk.",2011-11-29T21:52:13Z,AlistairNWard
+a63a6c1d4bf11fc4d92ea480b95d9a64f7013c53,AlistairNWard,AlistairNWard@gmail.com,"version 2.064 - November 2011
+
+1. Fixed typo in BCMMarkDupes command line.",2011-11-03T13:29:09Z,AlistairNWard
+feb3dc06c616db7fca0bffda43dd995abde3d5a6,AlistairNWard,AlistairNWard@gmail.com,"version 2.063 - October 2011
+
+1. Ensured that the neural net files are copied to the node with the
+reference if necessary.",2011-10-28T16:59:38Z,AlistairNWard
+f6866add2bd27202004bd2a0128c1ff9107b2008,AlistairNWard,AlistairNWard@gmail.com,"version 2.062 - October 2011
+
+1. Bug fix for the BCMMarkDupes for 454 reads.",2011-10-27T17:55:20Z,AlistairNWard
+2461e7eacc6dc652a2eff8ac5a72cbd22d195e85,AlistairNWard,AlistairNWard@gmail.com,"version 2.061 - October 2011
+
+1. Added temp directory to the CountCovariates step in the GATK
+base quality recalibration.",2011-10-26T19:14:37Z,AlistairNWard
+cd8b74dee1a74b4fb840852393699ef7497ece0a,AlistairNWard,AlistairNWard@gmail.com,"version 2.060 - September 2011
+
+1. Added the neural net file requirement to Mosaik2.",2011-09-26T19:09:12Z,AlistairNWard
+76f50e7d5e8b5757ca76a82eb2aa7f035af34591,AlistairNWard,AlistairNWard@gmail.com,"version 2.059 - September 2011
+
+1. Added -no-complex option.  This will force freebayes to not call
+complex variants.",2011-09-26T16:45:35Z,AlistairNWard
+f2bca501f34338be8d5f9608577ab35ab356c362,AlistairNWard,AlistairNWard@gmail.com,"version 2.058 - September 2011
+
+1. Added the -scratch <dir> option to the command line.  The default
+location on the nodes is /scratch/<user>, but specifying this
+command will change the directory to /<dir>/<user>.
+
+2. Added the -fastq-list <list> option to the command line.  Instead
+of searching for and checking that fastq files exist, the list of
+fastq files in the specified list will be used.  The scripts will use
+the path specified, so it is the users responsibility to ensure that
+these files exist.",2011-09-26T15:37:45Z,AlistairNWard
+b62677b26dc8a1943438b0528c3156a1ce3932c5,AlistairNWard,AlistairNWard@gmail.com,"version 2.057 - August 2011
+
+1. Added the command -snp-delimiter.  When SNP calling, target regions
+of the form <chr>:<start>-<end> are created and are used in the command
+line for some of the software tools.  The region also appears in the
+filename.  Some systems do not like having "":"" in the filename, so
+using this command allows the user to specify a different character.
+The software tools will still be given the expected region format.",2011-08-11T18:16:09Z,AlistairNWard
+8a32b4f04f3114299cbef1a6a42e165f7ca69f19,AlistairNWard,AlistairNWard@gmail.com,"version 2.056 - July 2011
+
+1. Bug fix to base quality recalibration for SOLiD BAM files.  The
+additional SOLiD command line arguments were present in the count
+covariates step, but not in the table recalibration.  This has been
+fixed.",2011-07-22T16:42:43Z,AlistairNWard
+1b5f4ba7a18f8b89c4a5c79a9714ebf3cd6632c4,AlistairNWard,AlistairNWard@gmail.com,"version 2.055 - July 2011
+
+1. Bug fix to base quality recalibration when the local option has
+been defined.",2011-07-22T14:14:55Z,AlistairNWard
+af0d4e37d1a7f2522db96009757f8fdef331d316,AlistairNWard,AlistairNWard@gmail.com,"version 2.054 - July 2011
+
+1. BQ recalibration with the GATK was not being used for SOLiD reads
+since there were problems getting Mosaik BAMs through the pipeline.
+The problem has been addressed in Mosaik and so this step has been
+reinstated.",2011-07-21T22:12:31Z,AlistairNWard
+19518fc26c87b42092d68f44ee6fda2e75687a1c,AlistairNWard,AlistairNWard@gmail.com,"version 2.053 - July 2011
+
+1. Added ogap and bamleftalign to the list of tools whose location
+can be specified using -software.",2011-07-19T12:24:54Z,AlistairNWard
+5354e26ef159205311f7eba3b9244d1f38cb1c14,AlistairNWard,AlistairNWard@gmail.com,"version 2.052 - July 2011
+
+1. freeBayes, ogap and bamleftalign were hard coded into the scripts,
+so their paths couldn't be altered.  This has been rectified.
+
+2. When filtering on proper-pairs, mapping quality zero reads are also
+filtered out.  All mapping quality zero paired end reads would already
+be filtered out as having a non-zero mapping quality is a pre-requisite
+for being a proper pair, however mapping quality zero single end reads
+still required filtering out.  This is now implemented in the proper
+pair json script.",2011-07-18T19:02:03Z,AlistairNWard
+9466f7e35bf8f61ff7a69b9d88582cc3b84cb66d,AlistairNWard,AlistairNWard@gmail.com,"version 2.051 - July 2011
+
+1. Minor changes to SNP calling with freebayes to be compatible
+with freebayes version 0.8.5.",2011-07-08T13:23:44Z,AlistairNWard
+f2d595026f6b143189020e21a7aa83d82033f976,AlistairNWard,AlistairNWard@gmail.com,"version 2.050 - July 2011
+
+1. Bug fix to BCM duplicate marking.",2011-07-07T03:45:05Z,AlistairNWard
+da2f4ede6a875bcf79b6146309ede3d4410697aa,AlistairNWard,AlistairNWard@gmail.com,"version 2.049 - July 2011
+
+1. Updated base quality recalibration to use a dbSNP vcf file rather
+than the rod file originally required.",2011-07-04T14:17:31Z,AlistairNWard
+1e790dadd5fc8ab4b4ee9f9e1fd413e82bd937ae,AlistairNWard,AlistairNWard@gmail.com,"version 2.048 - June 2011
+
+1. When searching for unique merged bam files, the sample name and
+technology appearing in multiple files causes a problems, as the
+pipeline is unclear as to which existing bam file is the correct
+file to carry forward.  In checking the names, the full path was
+included, so if the technology/sample name appeared in a directory
+name, an error was thrown and the pipeline terminated.  This has
+been modified to only include the file name itself.",2011-06-29T14:45:43Z,AlistairNWard
+ca76e68b0afce6557d5c777ece58c5c7c124e171,AlistairNWard,AlistairNWard@gmail.com,"version 2.047 - June 2011
+
+1. When searching for existing bam files, the additional bam files
+from Mosaik2 are excluded.  Only the main bam file is searched for
+and used in subsequent steps.",2011-06-29T14:27:16Z,AlistairNWard
+7af896d6dad5f04ed8eb1b84adad1fac691670d5,AlistairNWard,AlistairNWard@gmail.com,"version 2.046 - June 2011
+
+1. Minor modification to format of status output.",2011-06-27T12:39:02Z,AlistairNWard
+e008fb6278dcc69afd71ebdd569a475e7519a2bd,AlistairNWard,AlistairNWard@gmail.com,"version 2.045 - June 2011
+
+1. Included the -status option to view the status of the created
+scripts.",2011-06-27T11:37:58Z,AlistairNWard
+7a07c21e7ed155e43fc72aea0a5a20313ce2d7a3,AlistairNWard,AlistairNWard@gmail.com,"version 2.044 - June 2011
+
+1. Included an option to turn off proper pair marking.",2011-06-25T21:03:37Z,AlistairNWard
+363bbb52b7f46636a8a2b5353555941dfe2655b8,AlistairNWard,AlistairNWard@gmail.com,Merge branch 'master' of github.com:AlistairNWard/bosCoPipe,2011-06-25T19:02:21Z,AlistairNWard
+ac5da42e0b126be7227221ab6255035f4a0b321a,AlistairNWard,AlistairNWard@gmail.com,"version 2.043 - June 2011
+
+1. Modified the GATK java command line to reflect the available
+memory.",2011-06-25T19:00:13Z,AlistairNWard
+37159fd051561e42179acda7104218ae2d7a4fcc,AlistairNWard,AlistairNWard@gmail.com,"version 2.042 - June 2011
+
+1. Added a module to calculate the md5 checksum of the final merged
+bam file.",2011-06-25T18:59:24Z,AlistairNWard
+ec8074334704609dfc7a1e77db14e55d5c75f600,AlistairNWard,AlistairNWard@gmail.com,"version 0.43 - June 2011
+
+1. Added a module to calculate the md5 checksum of the final merged
+bam file.",2011-06-23T12:05:38Z,AlistairNWard
+25a227bb3e0a83a342edc592c0bdecf9b600d51f,AlistairNWard,AlistairNWard@gmail.com,"version 2.041 - June 2011
+
+1. Bug fix to base quality recalibration.  A command for the table
+recalibration step was in the count covariates step causing errors.",2011-06-21T18:44:08Z,AlistairNWard
+1d811fef35fe6da7f3496efd416e36706d29aff3,AlistairNWard,AlistairNWard@gmail.com,"version 2.040 - June 2011
+
+1. Bug fix to modules.",2011-06-21T18:13:03Z,AlistairNWard
+965cb2b9434ce6f1fa862aa93782a96d16409a22,AlistairNWard,AlistairNWard@gmail.com,"version 2.039 - June 2011
+
+1. Bug fix.  Definition of bamtools modules modified.  The different
+tasks using bamtools all pointed to the same definitions, leading to
+an incorrect directory being used for some tasks.  This had the effect
+of using an incorrect directory in the merge scripts.",2011-06-21T13:49:14Z,AlistairNWard
+f3cd9ad55a481ce6f4f8800faeec8b33e708fe26,AlistairNWard,AlistairNWard@gmail.com,"version 2.038 - June 2011
+
+1. Removed output of original quality scores from the base quality
+recalibration step.",2011-06-20T14:52:08Z,AlistairNWard
+14634b8b8fb2874b070de928bd563107973a55db,AlistairNWard,AlistairNWard@gmail.com,"version 2.037 - June 2011
+
+1. By default, removed base quality recalibration for SOLiD
+reads.  The option to force recalibration regardless of technology
+exists with -bq-recal.",2011-06-15T14:30:43Z,AlistairNWard
+d5daabf9bbd309fe3431d0e3e0eb656c1e8e1c48,AlistairNWard,AlistairNWard@gmail.com,"version 2.036 - June 2011
+
+1. Included a check that the output directory for any task exists
+and creates the directory if not.",2011-06-09T01:45:54Z,AlistairNWard
+db431e91ed58e3cafb6753f2646819a6bf1004f9,AlistairNWard,AlistairNWard@gmail.com,"version 2.035 - June 2011
+
+1. Bug fix to setting the region size for SNP calling.",2011-06-07T17:24:08Z,AlistairNWard
+6ba781d3abadf4cf55d39aa2bc4cc95b22595b96,AlistairNWard,AlistairNWard@gmail.com,"version 2.034 - June 2011
+
+1. Included --use-best-n-alleles 0 as standard in the freeBayes command
+line.  For some exome calls, it was observed that a 'correct' variant
+allele was being superseded by another allele that happened to have a
+larger sum of base qualities as a result of the high-depth/large
+sample size.",2011-06-07T16:18:39Z,AlistairNWard
+f0611255a6a6f6557abd224a967ccee0975be75f,AlistairNWard,AlistairNWard@gmail.com,"version 2.033 - June 2011
+
+1. Minor bug fix to -software.",2011-06-06T16:05:44Z,AlistairNWard
+d3a74f9e2ca9e068f2f232226ccb208095a72496,AlistairNWard,AlistairNWard@gmail.com,"version 2.032 - June 2011
+
+1. Included help option to -software.",2011-06-06T15:34:30Z,AlistairNWard
+d9d942259d35b5caedaa2cc481c1fce5a7865cd5,AlistairNWard,AlistairNWard@gmail.com,"version 2.031 - June 2011
+
+1. Created a new module for moving Mosaik2 bam files and
+statistics file back to the local directory.
+
+2. Duplicate marking had been erroneously omitted from the
+SOLiD alignment pipeline.  Use of Picard for performing
+duplicate marking is now included for SOLiD reads.",2011-06-04T12:42:24Z,AlistairNWard
+41f17601c6bde351a319ef316bceb0e48b2e8e1d,AlistairNWard,AlistairNWard@gmail.com,"version 2.030 - June 2011
+
+1. Removed -modules option.  This was unnecessary.
+
+2. Fixed filename for Mosaik2 statistics file.",2011-06-03T20:36:40Z,AlistairNWard
+e49ec9617ab355a06775963e6da0c9d75b166ef8,AlistairNWard,AlistairNWard@gmail.com,"version 2.029 - June 2011
+
+1. Added the -n option to bamtools sort.  This reduces the number
+of created temp files, improving the efficiency of the sort and
+negating problems with being unable to open too many files
+simultaneously.",2011-06-02T20:10:18Z,AlistairNWard
+757d976af5f0c3102d991bf97c7a569bd8dbe1ca,AlistairNWard,AlistairNWard@gmail.com,"version 2.028 - June 2011
+
+1. Bug fix to copying stats file.",2011-06-02T18:47:19Z,AlistairNWard
+8a72f1d928b9f37b9cb4513ee5ca98d4e84728ff,AlistairNWard,AlistairNWard@gmail.com,"version 2.027 - June 2011
+
+1. Copy the stats file from Mosaik2 back to the local disk.",2011-06-02T18:43:19Z,AlistairNWard
+f5a0489766c6ff565f0f6d5ce9279f1f19eced13,AlistairNWard,AlistairNWard@gmail.com,"version 2.026 - June 2011
+
+1. Bug fix to Mosaik2 aligner.",2011-06-02T13:38:20Z,AlistairNWard
+bfe828e8900b592cc58bb35454531fca031fd63e,AlistairNWard,AlistairNWard@gmail.com,"version 2.025 - June 2011
+
+1. -ls was being added for single end reads in Mosaik2.  If this is
+a true single end library, the value will be undefined causing the
+Mosaik aligner to crash.",2011-06-02T13:29:26Z,AlistairNWard
+6bf5e9b2455e12246d2d29599ccd3e6c0d01ac8b,AlistairNWard,AlistairNWard@gmail.com,"version 0.24 - June 2011
+
+1. Add -modules option for Scorpio.  This adds the pathscale and
+git modules to the scripts.",2011-06-02T11:27:54Z,AlistairNWard
+a51cc30d26c621edb05b9e58167c13bfa93b7b0a,AlistairNWard,AlistairNWard@gmail.com,"version 2.023 - June 2011
+
+1. Bug fix to -memory.",2011-06-02T02:14:26Z,AlistairNWard
+25a0a1575b87cc2cab50a7f694c85f87bb0fada0,AlistairNWard,AlistairNWard@gmail.com,"version 2.022 - June 2011
+
+1. Allowed a memory requirement for the node (-memory).",2011-06-02T02:12:29Z,AlistairNWard
+b56197ef6236332d5a0953614a36e475e5e9b082,AlistairNWard,AlistairNWard@gmail.com,"version 2.021 - June 2011
+
+1. Bug fix with MosaikBuild for single end reads.  -mfl was being
+included with no argument.",2011-06-02T00:21:38Z,AlistairNWard
+0bc7b4a02699192f7f553c8d6518d50598daa294,AlistairNWard,AlistairNWard@gmail.com,"version 2.020 - June 2011
+
+1. Included -local option.  This will set the $NODE_DIR to the
+local disk, so that all I/O occurs on the local disk.",2011-06-01T23:13:00Z,AlistairNWard
+f14f945d91d1c31279ce07ad8406d2ef7335472e,AlistairNWard,AlistairNWard@gmail.com,"version 2.019 - June 2011
+
+1. Bug fix.  If base quality recalibration isn't used the filenames
+were incorrectly generated.  The filenames were originally constructed
+by replacing recal with, for example, unaligned.  In the absence of
+base quality recalibration, this fails.",2011-06-01T21:52:51Z,AlistairNWard
+bc6e82539649891ab033a3b464b530e3cb99c287,AlistairNWard,AlistairNWard@gmail.com,"version 2.018 - June 2011
+
+1. Bug fix in Mosaik2 sort.",2011-06-01T21:06:17Z,AlistairNWard
+500fc69fac4c3c2c0f470531d4a31f7ffad71f93,AlistairNWard,AlistairNWard@gmail.com,"version 2.017 - June 2011
+
+1. Bug fix with determining whether or not to delete input files.",2011-06-01T20:09:12Z,AlistairNWard
+068a871078e1addd25907fc418c43ee685dc33e3,AlistairNWard,AlistairNWard@gmail.com,"version 2.016 - May 2011
+
+1. GATK base quality recalibration can be turned off if requested
+with the -no-bq-recal flag.",2011-06-01T19:44:14Z,AlistairNWard
+621bee485ba68a12f98a856edc5d38db80a58fc9,AlistairNWard,AlistairNWard@gmail.com,"version 2.015 - June 2011
+
+1. Allowed the user to specify the number of threads for an alignment
+job (this will modify the -p option in Mosaik as well as the number of
+processors requested in the script).",2011-06-01T16:11:03Z,AlistairNWard
+5ac4d7c33a0c1b03a6026f26e801fce16208c56f,AlistairNWard,AlistairNWard@gmail.com,"version 2.014 - June 2011
+
+1. Allowed the user to specify a wall time for the job.",2011-06-01T15:42:54Z,AlistairNWard
+23b36243c8a265ccffb853e1a7ec3781ee2a8af3,AlistairNWard,AlistairNWard@gmail.com,"version 2.013 - June 2011
+
+1. Allowed the user to specify the node to use, -node.
+
+2. Allowed the user to request a particular queue, -queue.",2011-06-01T15:31:54Z,AlistairNWard
+b691060ba85ae8439c60f5359beaef71187dc73a,AlistairNWard,AlistairNWard@gmail.com,"version 2.012 - June 2011
+
+1. Update BCM duplicate marker when read from -software.  The Picard
+version is extracted from the path and the command is set accordingly.",2011-06-01T13:36:33Z,AlistairNWard
+663290cb78eb855b67c61c1fceb89dfb848bd7c4,AlistairNWard,AlistairNWard@gmail.com,"version 2.011 - June 2011
+
+1. Added base quality recalibration and duplicate marking to the list
+of tools that can be entered using the -software option.",2011-06-01T13:16:34Z,AlistairNWard
+cfb626daf137263d3d58afd0e3f38e701b82834a,AlistairNWard,AlistairNWard@gmail.com,"version 2.010 - June 2011
+
+1. Added Mosaik components to the -software list.",2011-06-01T13:04:24Z,AlistairNWard
+d2ef6222d9aced21ed10d1b89707aa7a6581b445,AlistairNWard,AlistairNWard@gmail.com,"version 2.009 - May 2011
+
+1. Ensured that the existence of all required software components
+is checked.",2011-05-30T11:55:18Z,AlistairNWard
+37e6deaab82a063d275ce6fec5fcafd1a36e859d,AlistairNWard,AlistairNWard@gmail.com,"version 2.008 - May 2011
+
+1. Modification to handling input rod files for GATK.",2011-05-30T00:28:58Z,AlistairNWard
+7d0d4218f905ac323099ccf4e4e19aa26c165f93,AlistairNWard,AlistairNWard@gmail.com,"version 2.007 - May 2011
+
+1. Further modification to handling reference from -software.",2011-05-29T23:52:28Z,AlistairNWard
+b89c437769c87401a124bdd3edecce835049f7a9,AlistairNWard,AlistairNWard@gmail.com,"version 2.006 - May 2011
+
+1. Fixed bug with reference in -software option.",2011-05-29T23:39:58Z,AlistairNWard
+5db068a0412bebdb6ed5e53a8c167704acfa923e,AlistairNWard,AlistairNWard@gmail.com,"version 2.005 - May 2011
+
+1. Allowed dbSNP and reference to be added by way of the input
+software file (-software).",2011-05-29T23:31:09Z,AlistairNWard
+2ef6faf5d182ad07ec49548727f99bbdd781213d,AlistairNWard,AlistairNWard@gmail.com,"version 2.004 - May 2011
+
+1. Included the -software option.  This allows the paths to all
+tools to be defined in a separate text file.  This file is read
+in and ensures that the paths hard-coded do not need to be
+modified if running on a different system.",2011-05-29T22:03:39Z,AlistairNWard
+27e488717e2d7aa5ea7e83ec1026373fd74587d8,AlistairNWard,AlistairNWard@gmail.com,"version 2.003 - May 2011
+
+1. Implemented the FindBin module to determine where all of the code
+for the pipeline is kept.  This ensures that if the pipeline is
+downloaded to a different location, the location of all of the
+perl files is known.",2011-05-29T14:38:04Z,AlistairNWard
+0b2ae147b5923c1dd727730607d153ea2257d71c,AlistairNWard,AlistairNWard@gmail.com,"version 2.002 - May 2011
+
+1. Modified handling of copying files back to the local disk in the
+event of a tool failure.",2011-05-29T13:53:43Z,AlistairNWard
+2302dd7c234af2131cd09b2da5d1ff19068cfd10,AlistairNWard,AlistairNWard@gmail.com,"version 2.001 - May 2011
+
+1. Included variant calling with freeBayes.",2011-05-26T23:16:21Z,AlistairNWard
+b89a7315d19647b22e69ef7af651503bbd92de68,AlistairNWard,AlistairNWard@gmail.com,"version 2.000 - May 2011
+
+1. A cleaned version of the pipeline.  Not all tools have been ported
+over to this cleaned version as yet, but Mosaik v2 compatibility has
+been included.",2011-05-23T17:14:02Z,AlistairNWard

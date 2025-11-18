@@ -1,0 +1,120 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyODYzNDc0Mg==,Version Number Conflict,CLOSED,2014-03-03T16:33:10Z,2015-02-19T18:47:16Z,2015-02-19T18:47:16Z,"The version number of mosaics on Bioconductor is 1.10.1.  Yet, the version number on github is 1.6.2.  Presumably the version on github is newer than the one on Bioconductor.  Is this correct?
+",syounkin,https://github.com/dongjunchung/mosaics/issues/1
+MDU6SXNzdWU0Njg1NDI4OQ==,Sometime uses float notation for large integers,CLOSED,2014-10-26T20:51:23Z,2015-02-19T18:46:51Z,2015-02-19T18:46:51Z,"I'm working on the ENCODE broad peak caller comparison and noticed that some of the output broad peak files output coordinates in exponential notation: 
+e.g. in  MOSAICSHMM-wFL/MOSAiCSHMM-wFL-H3K27ME3-GM12878-Rep2_domains.relaxed.broadPeak I see:
+
+chrX      69972048        7e+07   .       0.66427876684357    .52      5.00595640444774        -1      17374
+
+I'm not sure if this file has gone through pre-processing so my apologies if this is not a mosaics error. 
+",nboley,https://github.com/dongjunchung/mosaics/issues/3
+MDU6SXNzdWUyODM5NDAzMDA=,"question on gcContent and mappability set to zero, mosaics::.processBin_MGC",OPEN,2017-12-21T16:46:37Z,2017-12-21T16:47:28Z,,"If I might ask, are there certain types of files that will only give GC content and mappability information? Is this a bam only feature? I can't get access to the sourcecode for processBin_MGC to tell.",jamesdalg,https://github.com/dongjunchung/mosaics/issues/9
+MDU6SXNzdWUzODY3MzI4MjA=,GRanges error in constructBins,OPEN,2018-12-03T09:42:19Z,2018-12-03T09:42:19Z,,"Hello,
+I get this error in constructBins. This is after running fastqFilter (dada2) and qAlign (QuasR), as well as renaming the aligned files (.bam, .bam.bai and .bam.txt) to match the samples name. Can you point me to where this error may be coming from?
+Thank you.
+
+### Error:
+
+>**Use the provided BAM index file.
+Chromosome information is extracted from the BAM file.
+Info: reading the aligned read file and processing it into bin-level files...
+Error in validObject(.Object) : 
+  invalid class ""GRanges"" object: 'x@strand' is not parallel to 'x'**
+
+>**traceback()
+10: stop(msg, "": "", errors, domain = NA)
+9: validObject(.Object)
+8: initialize(value, ...)
+7: initialize(value, ...)
+6: new(Class, seqnames = seqnames, ranges = ranges, strand = strand, 
+       elementMetadata = mcols, seqinfo = seqinfo)
+5: new_GRanges(""GRanges"", seqnames = seqnames, ranges = ranges, 
+       strand = strand, mcols = mcols, seqlengths = seqlengths, 
+       seqinfo = seqinfo)
+4: GRanges(seqnames = snms, ranges = IRanges(start = starts, end = ends), 
+       strand = ""*"")
+3: withCallingHandlers(expr, warning = function(w) invokeRestart(""muffleWarning""))
+2: suppressWarnings(greads <- GRanges(seqnames = snms, ranges = IRanges(start = starts, 
+       end = ends), strand = ""*""))
+1: constructBins(infile = paste0(""./Aligned_"", Experiment_name, 
+       ""/"", experimental_design[i, ncol(experimental_design)], "".bam""), 
+       fileFormat = ""bam"", outfileLoc = paste0(""./Binned_"", Experiment_name, 
+           ""/""), byChr = F, useChrfile = F, chrfile = NULL, excludeChr = NULL, 
+       PET = T, binSize = bin_size, capping = 0)**
+
+____
+### Session Info:
+
+>R version 3.5.1 (2018-07-02)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 18.04.1 LTS
+
+>Matrix products: default
+BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+
+>locale:
+LC_CTYPE=en_US.UTF-8
+LC_NUMERIC=C
+LC_TIME=en_US.UTF-8
+LC_COLLATE=en_US.UTF-8
+LC_MONETARY=en_US.UTF-8
+LC_MESSAGES=en_US.UTF-8
+LC_PAPER=en_US.UTF-8
+LC_NAME=C
+LC_ADDRESS=C
+LC_TELEPHONE=C
+LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C
+
+
+>attached base packages:
+grid
+stats4
+parallel
+tcltk
+stats
+graphics
+grDevices utils
+datasets
+methods
+base
+
+
+>other attached packages:
+RMariaDB_1.0.6
+dada2_1.10.0
+ReactomePA_1.26.0
+clusterProfiler_3.10.0
+ChIPseeker_1.18.0
+mosaics_2.20.0
+Rcpp_1.0.0
+XML_3.98-1.16
+Gviz_1.26.3
+Hmisc_4.1-1
+ggplot2_3.1.0
+Formula_1.2-3
+survival_2.43-3
+lattice_0.20-38
+BSgenome_1.50.0
+rtracklayer_1.42.1
+QuasR_1.22.1
+Rbowtie_1.22.0
+RSQLite_2.1.1
+ShortRead_1.40.0
+GenomicAlignments_1.18.0
+SummarizedExperiment_1.12.0
+DelayedArray_0.8.0
+matrixStats_0.54.0
+Rsamtools_1.34.0
+Biostrings_2.50.1
+XVector_0.22.0
+TxDb.Hsapiens.UCSC.hg19.knownGene_3.2.2
+GenomicFeatures_1.34.1
+AnnotationDbi_1.44.0
+Biobase_2.42.0
+GenomicRanges_1.34.0
+GenomeInfoDb_1.18.1
+IRanges_2.16.0
+S4Vectors_0.20.1
+BiocGenerics_0.28.0
+BiocParallel_1.16.2",kalimero0411,https://github.com/dongjunchung/mosaics/issues/10

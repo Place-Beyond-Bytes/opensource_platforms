@@ -1,0 +1,343 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHLT0Yc5Pd4LY,Multiprocessing for preprocessing is not working,CLOSED,2022-08-09T13:06:38Z,2023-12-12T14:56:27Z,2023-12-12T14:56:26Z,"I tried to run 9 jobs concurrently, and it doesn't work. 
+```
+python run_preprocess.py -i samples.csv -o decoden -bs 200 -n 9
+```
+There's an error about one of the intermediate files not being found.",ntanmayee,https://github.com/ntanmayee/decoden/issues/1
+I_kwDOHLT0Yc5P5pcp,Misconfiguration in `run_decoden.py` ,CLOSED,2022-08-16T15:15:36Z,2022-10-14T16:06:32Z,2022-10-14T16:06:32Z,"When `control` samples are at the end of the configuration file, wrong samples are picked up as control samples.
+
+Example - 
+```json
+{
+    ""h3k27me3_1/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k27me3"",
+    ""h3k27me3_2/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k27me3"",
+    ""h3k27me3_3/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k27me3"",
+    ""h3k27me3_4/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k27me3"",
+    ""h3k4me3_1/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k4me3"",
+    ""h3k4me3_2/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k4me3"",
+    ""h3k4me3_3/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k4me3"",
+    ""h3k4me3_4/mTest.bed_filterdup_pileup.bdg_tiled.bed"": ""h3k4me3"",
+    ""h3k27me3_1/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k27me3_2/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k27me3_3/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k27me3_4/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k4me3_1/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k4me3_2/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k4me3_3/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control"",
+    ""h3k4me3_4/mTest_input.bed_filterdup_pileup.bdg_tiled.bed"": ""control""
+}
+```
+Here, the first 8 samples of H3K4me3 and H3K27me3 are chosen as samples. 
+
+Quick workaround - edit the JSON file manually. But this needs to be fixed later.",ntanmayee,https://github.com/ntanmayee/decoden/issues/2
+I_kwDOHLT0Yc5jE2Qa,Usage for run_decoden with no arguments,CLOSED,2023-04-11T10:39:22Z,2023-04-12T14:05:30Z,2023-04-12T14:05:30Z,"When running `run_decoden.py` with no arguments, one would expect a  'usage' comment. Instead, there is an error with some mysterious hard-wired directory:
+
+```
+> python run_decoden.py
+
+██████╗ ███████╗ ██████╗ ██████╗ ██████╗ ███████╗███╗   ██╗
+██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝████╗  ██║
+██║  ██║█████╗  ██║     ██║   ██║██║  ██║█████╗  ██╔██╗ ██║
+██║  ██║██╔══╝  ██║     ██║   ██║██║  ██║██╔══╝  ██║╚██╗██║
+██████╔╝███████╗╚██████╗╚██████╔╝██████╔╝███████╗██║ ╚████║
+╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝
+-----------------------------------------------------------
+Narendra, T., Visonà, G., de Jesus Cardona, C., & Schweikert,
+G. (2022). Multi-histone ChIP-Seq Analysis with DecoDen. bioRxiv.
+-----------------------------------------------------------
+
+Traceback (most recent call last):
+  File ""/cluster/gjb_lab/mgierlinski/projects/decoden_test/run_decoden.py"", line 129, in <module>
+    main(args)
+  File ""/cluster/gjb_lab/mgierlinski/projects/decoden_test/run_decoden.py"", line 24, in main
+    with open(args.files_reference, ""r"") as f:
+FileNotFoundError: [Errno 2] No such file or directory: '../DecoDen_GV/data/shallow_e114_200bp_bedGraph_files/sample_files.json'
+```",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/3
+I_kwDOHLT0Yc5jE_mC,pd.read_csv warnings,CLOSED,2023-04-11T11:05:24Z,2023-04-28T13:12:21Z,2023-04-28T13:12:21Z,"When running `run_decoden` I receive mixed types warnings:
+
+```
+/cluster/gjb_lab/mgierlinski/projects/decoden_test/decoden/utils.py:55: DtypeWarning: Columns (0) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(os.path.join(data_folder, fname), sep=""\t"", names=[""seqnames"", ""start"", ""end"", colname])
+```
+
+Must be easy to fix.",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/4
+I_kwDOHLT0Yc5jL0n2,"Does not work with chromosome names 1, 2, 3, ...",CLOSED,2023-04-12T07:57:06Z,2024-03-07T14:08:37Z,2024-03-07T14:08:37Z,"When chromosomes are named `1`, `2`, `3`... (not `chr1`, `chr2`, `chr3`, ...) the `run_decoden` script crashes with error:
+
+```
+pyarrow.lib.ArrowInvalid: (""Could not convert '9' with type str: tried to convert to int64"", 'Conversion failed for column seqnames with type object')
+```
+
+I confirmed this by changing my chromosome names into `chr1`, `chr2`, `chr3`, ..., upon which the script completed with no errors.",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/5
+I_kwDOHLT0Yc5jL3XR,Default argument values contain hardcoded paths,CLOSED,2023-04-12T08:02:42Z,2023-04-12T14:05:30Z,2023-04-12T14:05:30Z,"When running `run_decoden` without `--blacklist_file` specified, the script crashes with error:
+
+```
+FileNotFoundError: [Errno 2] No such file or directory: '../DecoDen_GV/data/annotations/hg19-blacklist.v2.bed'
+```
+
+This happens after a few minutes of calculations, indicating that the input arguments are not checked at the start of the code.",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/6
+I_kwDOHLT0Yc5jL415,Missing --conditions argument leads to an obscure error,CLOSED,2023-04-12T08:05:54Z,2023-04-12T14:05:31Z,2023-04-12T14:05:31Z,"When `--conditions` argument is not specified in `run_decoden`, the script crashes with an obscure error:
+
+```
+KeyError: 'IPS_BMP4'
+```",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/7
+I_kwDOHLT0Yc5jNiVZ,Missing HSR_results.ftr file,CLOSED,2023-04-12T12:42:52Z,2023-04-12T14:28:18Z,2023-04-12T14:28:18Z,"I ran the following commands:
+
+```
+python run_preprocess.py -i ips_bmp4_samples.csv -o newtest -bs 50 -n 5
+python run_decoden.py --data_folder newtest --output_folder newtest --files_reference newtest/experiment_conditions.json --blacklist_file hg38-blacklist.chr.v2.bed --conditions ""IPS_BMP4_input"" ""IPS_BMP4""
+```
+
+The `ips_bmp4_samples.csv` is as follows:
+
+```
+filepath,exp_name,is_control
+bamchr/IPS_BMP4_input_1.bam,IPS_BMP4_input,1
+bamchr/IPS_BMP4_input_2.bam,IPS_BMP4_input,1
+bamchr/IPS_BMP4_1.bam,IPS_BMP4,0
+bamchr/IPS_BMP4_2.bam,IPS_BMP4,0
+bamchr/IPS_BMP4_3.bam,IPS_BMP4,0
+```
+
+The scripts run with no errors, until completion. However, the main results file, `HSR_results.ftr` is missing. Here are all the files created by the scripts:
+
+```
+newtest/
+├── config.json
+├── data
+│   ├── IPS_BMP4_1_filterdup_pileup_tiled.bed
+│   ├── IPS_BMP4_2_filterdup_pileup_tiled.bed
+│   ├── IPS_BMP4_3_filterdup_pileup_tiled.bed
+│   ├── IPS_BMP4_input_1_filterdup_pileup_tiled.bed
+│   └── IPS_BMP4_input_2_filterdup_pileup_tiled.bed
+├── experiment_conditions.json
+└── NMF
+    ├── mixing_matrix.csv
+    ├── mixing_matrix.pdf
+    ├── signal_matrix.ftr
+    └── signal_matrix_sample.pdf
+```
+
+There is only a `signal_matrix.ftr` file, containing values `IPS_BMP4` and `IPS_BMP4_input` binned in 50-bp bins. But I cannot find NMR and HSR results.
+
+The JSON file `experiment_conditions.json` looks fine:
+
+```
+{
+ ""data/IPS_BMP4_input_1_filterdup_pileup_tiled.bed"": ""IPS_BMP4_input"",
+ ""data/IPS_BMP4_input_2_filterdup_pileup_tiled.bed"": ""IPS_BMP4_input"",
+ ""data/IPS_BMP4_1_filterdup_pileup_tiled.bed"": ""IPS_BMP4"",
+ ""data/IPS_BMP4_2_filterdup_pileup_tiled.bed"": ""IPS_BMP4"",
+ ""data/IPS_BMP4_3_filterdup_pileup_tiled.bed"": ""IPS_BMP4""
+}
+```
+The BED files also look correct, at least at the first glance. And yet, no result file is present.",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/8
+I_kwDOHLT0Yc5jSs6N,sklearn warnings,OPEN,2023-04-13T07:06:19Z,2023-04-28T13:13:47Z,,"When running `run_decoden` I receive a lot of warnings
+
+```
+/cluster/gjb_lab/mgierlinski/software/miniconda3/envs/decoden/lib/python3.10/site-packages/sklearn/decomposition/_nmf.py:874: RuntimeWarning: invalid value encountered in scalar divide
+  if (previous_error - error) / error_at_init < tol:
+/cluster/gjb_lab/mgierlinski/software/miniconda3/envs/decoden/lib/python3.10/site-packages/sklearn/decomposition/_nmf.py:1665: ConvergenceWarning: Maximum number of iterations 500 reached. Increase it to improve convergence.
+```
+
+They come from `sklearn` library, so it might be difficult to trace them down, but it is something in the data passed to `sklearn` that causes the warning. I asked Chat-GPT for help with this warning and here is what it suggested:
+
+> This warning indicates that an invalid value (e.g., NaN or infinity) was encountered during a scalar division operation in the Non-negative Matrix Factorization (NMF) module of the scikit-learn library. The specific line mentioned in the warning checks for the convergence of the NMF algorithm by comparing the relative change in the error with a user-specified tolerance level (tol).
+> 
+> There might be several reasons for encountering such invalid values during the computation:
+> 
+> Input data issues: The input data could have missing values (NaNs), very large values, or other problematic features that could cause the algorithm to produce invalid results during computations. Make sure to preprocess your data by removing or imputing missing values, scaling or normalizing the data, and removing outliers if necessary.
+> 
+> Initialization issues: NMF relies on the initialization of matrices for its iterative optimization process. If the initialization is poor or leads to numerical instability, the algorithm might not converge properly. By default, scikit-learn uses 'nndsvd' initialization, which is generally a good choice. However, you can try different initialization strategies by setting the 'init' parameter when creating the NMF instance, for example, 'random' or 'nndsvda'.
+> 
+> Parameter choices: The choice of hyperparameters for the NMF algorithm, such as the number of components, regularization terms, and maximum number of iterations, can also impact convergence. Experiment with different hyperparameter settings to see if the issue persists.
+> 
+> Numerical precision issues: Sometimes, the computations might result in very small or very large intermediate values, which can cause numerical instability and produce invalid values. This is more common when working with high-dimensional data or when the algorithm is close to convergence. You can try increasing the 'tol' parameter to allow for a more relaxed convergence criterion, which might help prevent such issues.
+> 
+> If the warning persists after addressing these potential causes, consider using other dimensionality reduction techniques, such as PCA or TruncatedSVD, which might be more stable for your specific dataset.",MarekGierlinski,https://github.com/ntanmayee/decoden/issues/9
+I_kwDOHLT0Yc5k45-V,`poetry` needs to be installed before running DecoDen,CLOSED,2023-05-02T15:30:18Z,2024-03-08T12:37:05Z,2024-03-08T12:37:05Z,"README should be updated to mention that poetry should be installed before running
+```
+poetry install
+```",ntanmayee,https://github.com/ntanmayee/decoden/issues/10
+I_kwDOHLT0Yc5k5LtX,Installation problems,CLOSED,2023-05-02T16:17:57Z,2024-05-08T15:25:17Z,2024-05-08T15:25:17Z,"While running `poetry install` I get 
+```
+Installing dependencies from lock file
+Warning: poetry.lock is not consistent with pyproject.toml. You may be getting improper dependencies. Run `poetry lock [--no-update]` to fix it.
+
+Because decoden depends on pyarrow (^11.0.0) which doesn't match any versions, version solving failed.
+```
+
+When I run `poetry lock [--no-update]`, I get 
+```
+No arguments expected for ""lock"" command, got ""[--no-update]""
+```
+
+I suspect that some dependencies can be downgraded. ",ntanmayee,https://github.com/ntanmayee/decoden/issues/11
+I_kwDOHLT0Yc6BU-Km,`deeptools` `countReadsPerBin` output is not sorted,CLOSED,2024-03-05T17:17:46Z,2024-03-07T14:04:25Z,2024-03-07T14:04:25Z,"The new preprocessing pipeline uses `deeptools` `countReadsPerBin` class. This uses multiprocessing and is much faster than before. 
+
+However, the output from this is not sorted. This means that two runs of `crpb.run()` can give different results making the rest of the DecoDen pipeline wrong. ",ntanmayee,https://github.com/ntanmayee/decoden/issues/14
+I_kwDOHLT0Yc6DXQ2u,Data Correlation Heatmap,OPEN,2024-03-23T14:57:38Z,2024-03-23T14:57:38Z,,"It would be nice to have the correlation clustermap as a standard figure, when the option to save figures is `True`. ",ntanmayee,https://github.com/ntanmayee/decoden/issues/15
+I_kwDOHLT0Yc6HCL2p,`config.json` is empty,CLOSED,2024-04-26T10:31:39Z,2024-05-27T15:10:06Z,2024-05-27T15:10:05Z,"Right now, `config.json` is empty. Do we want to include DecoDen details or skip writing it entirely?",ntanmayee,https://github.com/ntanmayee/decoden/issues/20
+I_kwDOHLT0Yc6IEv2i,Installation fails without some tweaks...,OPEN,2024-05-07T10:53:41Z,2024-05-27T15:07:49Z,,"Hello,
+
+I've successfully installed decoden, but following the instructions directly did not work and needed a couple of modifications.
+
+1) Our cluster environment is very minimalist, so C compilers are not available by default. The necessary build tools can be installed with `conda install c-compiler`. I also needed to install git, so maybe simply stating in the installation instructions that git and a modern C compiler are required should be enough to address this - many systems will have these available by default.
+
+2) pysam requires htslib/samtools and zlib in order to compile successfully, so a `conda install samtools zlib` is also required
+
+3) MACS2 fails to install with python 3.12. MACS2.2.9.1 has been released which says it handle some cython updates, but this still fails in the same way. I've had to downgrade to python 3.11 to get the installation to complete which is not ideal if you are stuck needing a particular python version. I don't know that the MACS developers will care about MACS2 being still installable since MACS3 is now out.
+
+James",jamesabbott,https://github.com/ntanmayee/decoden/issues/23
+I_kwDOHLT0Yc6IP7-4,Edits to README,OPEN,2024-05-08T15:29:01Z,2024-05-08T15:46:23Z,,"- update decoden commands and descriptions
+- update paper title
+- mention pre-requisite of C compiler and git - #23 
+- add requirements of `samtools` and `zlib` - #23 ",ntanmayee,https://github.com/ntanmayee/decoden/issues/24
+I_kwDOHLT0Yc6IP_Zy,Upgrade from MACS2 to MACS3,OPEN,2024-05-08T15:35:24Z,2024-05-08T15:35:25Z,,"As mentioned in #23 , there are installation issues with using MACS2. It's probably best to move to MACS3. 
+
+The DecoDen pipeline uses MACS2 to calculate fragment length. At first glance, it looks like the `predictd` command is supported in MACS3, so hopefully everything works seamlessly. ",ntanmayee,https://github.com/ntanmayee/decoden/issues/25
+I_kwDOHLT0Yc6IQBpB,Write processed read in feather format,OPEN,2024-05-08T15:40:28Z,2024-06-06T13:14:40Z,,"Right now, processed data is written in `.npy` format. Should we transition to feather `.ftr` format? Already the HSR and NMF results are being written in feather. Also, feather has more cross-platform support than numpy format. ",ntanmayee,https://github.com/ntanmayee/decoden/issues/26
+I_kwDOHLT0Yc6LXgMH,Function `get_fragment_length` extracts the tag size instead of the fragment length,OPEN,2024-06-06T12:56:17Z,2024-06-06T13:14:53Z,,"Line 40 of the file decoden/preprocessing/pipeline.py uses the selector 
+`if 'tag size is' in s`
+
+which extracts the wrong number from the macs2 output
+
+The best solution would likely involve replacing macs2 for the calculation of fragment size",gvisona,https://github.com/ntanmayee/decoden/issues/28
+I_kwDOHLT0Yc6T2S1F,decoden detect fails while parsing experiment_conditions.json,OPEN,2024-08-22T10:55:11Z,2024-08-27T09:38:39Z,,"`decoden detect` is falling over while trying to read the experiment_conditions.json file. It looks like the json format has changed and has more values than expected:
+
+```
+Detecting peaks
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /cluster/gjb_lab/jabbott/miniconda3/envs/decoden/DecoDen/decoden/main.py:220 │
+│ in detect                                                                    │
+│                                                                              │
+│   217 │   """"""                                                                │
+│   218 │   typer.echo(""Detecting peaks"")                                      │
+│   219 │                                                                      │
+│ ❱ 220 │   _decoden_pipeline([""detect""],                                      │
+│   221 │   │   │   │   │     files_reference=files_reference,                 │
+│   222 │   │   │   │   │     out_dir=out_dir,                                 │
+│   223 │   │   │   │   │     control_label=control_label,                     │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │   control_label = 'control'                                              │ │
+│ │ files_reference = PosixPath('/tmp/1914583.1.all.q/decoden/experiment_co… │ │
+│ │       min_width = 150                                                    │ │
+│ │         out_dir = PosixPath('/tmp/1914583.1.all.q/decoden')              │ │
+│ │  peak_threshold = 0.01                                                   │ │
+│ │      pval_alpha = 0.05                                                   │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /cluster/gjb_lab/jabbott/miniconda3/envs/decoden/DecoDen/decoden/decoden_pip │
+│ eline.py:85 in _decoden_pipeline                                             │
+│                                                                              │
+│   82 │   if ""detect"" in pipeline_steps:                                      │
+│   83 │   │   assert control_label is not None, ""Please specify the label use │
+│   84 │   │   assert files_reference is not None, ""Please specify the file th │
+│ ❱ 85 │   │   run_peak_calling(files_reference, out_dir, control_label, pval_ │
+│   86 │   │   │   │   │   │   │   peak_threshold=peak_threshold,              │
+│   87 │   │   │   │   │   │   │   min_width=min_width)                        │
+│   88                                                                         │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │               alpha_H = None                                             │ │
+│ │               alpha_W = None                                             │ │
+│ │              bin_size = None                                             │ │
+│ │        blacklist_file = None                                             │ │
+│ │            chunk_size = None                                             │ │
+│ │ control_cov_threshold = None                                             │ │
+│ │         control_label = 'control'                                        │ │
+│ │       files_reference = PosixPath('/tmp/1914583.1.all.q/decoden/experim… │ │
+│ │           genome_size = None                                             │ │
+│ │             input_csv = None                                             │ │
+│ │             min_width = 150                                              │ │
+│ │          n_train_bins = None                                             │ │
+│ │              num_jobs = None                                             │ │
+│ │               out_dir = PosixPath('/tmp/1914583.1.all.q/decoden')        │ │
+│ │        peak_threshold = 0.01                                             │ │
+│ │        pipeline_steps = ['detect']                                       │ │
+│ │              plotting = None                                             │ │
+│ │            pval_alpha = 0.05                                             │ │
+│ │                  seed = None                                             │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /cluster/gjb_lab/jabbott/miniconda3/envs/decoden/DecoDen/decoden/detection/p │
+│ eak_detection.py:166 in run_peak_calling                                     │
+│                                                                              │
+│   163 │   label_mapping = {}                                                 │
+│   164 │                                                                      │
+│   165 │   for v in files_mapping.values():                                   │
+│ ❱ 166 │   │   condition, replicate, label = v                                │
+│   167 │   │   if condition==control_label:                                   │
+│   168 │   │   │   continue                                                   │
+│   169 │   │   if condition not in label_mapping:                             │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │     bedgraph_dir = '/tmp/1914583.1.all.q/decoden/output_bedgraph_files'  │ │
+│ │    control_label = 'control'                                             │ │
+│ │                f = <_io.TextIOWrapper                                    │ │
+│ │                    name='/tmp/1914583.1.all.q/decoden/experiment_condit… │ │
+│ │                    mode='r' encoding='UTF-8'>                            │ │
+│ │    files_mapping = {                                                     │ │
+│ │                    │                                                     │ │
+│ │                    '/tmp/1914468.1.all.q/decoden/data/control_reads.npy… │ │
+│ │                    {                                                     │ │
+│ │                    │   │   'condition': 'control',                       │ │
+│ │                    │   │   'sample_names': [                             │ │
+│ │                    │   │   │   'ENCSR098OLN_control_1_rep1',             │ │
+│ │                    │   │   │   'ENCSR098OLN_control_2_rep2',             │ │
+│ │                    │   │   │   'ENCSR098OLN_control_3_rep3'              │ │
+│ │                    │   │   ],                                            │ │
+│ │                    │   │   'filenames': [                                │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX7509254.bam',    │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX7509253.bam',    │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX7509252.bam'     │ │
+│ │                    │   │   ],                                            │ │
+│ │                    │   │   'bin_size': 200,                              │ │
+│ │                    │   │   'fragment_length': 76.0                       │ │
+│ │                    │   },                                                │ │
+│ │                    │                                                     │ │
+│ │                    '/tmp/1914468.1.all.q/decoden/data/H3K4me3_reads.npy… │ │
+│ │                    {                                                     │ │
+│ │                    │   │   'condition': 'H3K4me3',                       │ │
+│ │                    │   │   'sample_names': [                             │ │
+│ │                    │   │   │   'ENCSR098OLN_replicate_1_rep1',           │ │
+│ │                    │   │   │   'ENCSR098OLN_replicate_2_rep2',           │ │
+│ │                    │   │   │   'ENCSR098OLN_replicate_3_rep3'            │ │
+│ │                    │   │   ],                                            │ │
+│ │                    │   │   'filenames': [                                │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX10187572.bam',   │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX10187571.bam',   │ │
+│ │                    │   │   │   '/tmp/1914468.1.all.q/SRX10187570.bam'    │ │
+│ │                    │   │   ],                                            │ │
+│ │                    │   │   'bin_size': 200,                              │ │
+│ │                    │   │   'fragment_length': 76                         │ │
+│ │                    │   }                                                 │ │
+│ │                    }                                                     │ │
+│ │  files_reference = PosixPath('/tmp/1914583.1.all.q/decoden/experiment_c… │ │
+│ │    label_mapping = {}                                                    │ │
+│ │        min_width = 150                                                   │ │
+│ │          out_dir = PosixPath('/tmp/1914583.1.all.q/decoden')             │ │
+│ │   peak_threshold = 0.01                                                  │ │
+│ │ peaks_output_dir = '/tmp/1914583.1.all.q/decoden/called_peaks'           │ │
+│ │       pval_alpha = 0.05                                                  │ │
+│ │                v = {                                                     │ │
+│ │                    │   'condition': 'control',                           │ │
+│ │                    │   'sample_names': [                                 │ │
+│ │                    │   │   'ENCSR098OLN_control_1_rep1',                 │ │
+│ │                    │   │   'ENCSR098OLN_control_2_rep2',                 │ │
+│ │                    │   │   'ENCSR098OLN_control_3_rep3'                  │ │
+│ │                    │   ],                                                │ │
+│ │                    │   'filenames': [                                    │ │
+│ │                    │   │   '/tmp/1914468.1.all.q/SRX7509254.bam',        │ │
+│ │                    │   │   '/tmp/1914468.1.all.q/SRX7509253.bam',        │ │
+│ │                    │   │   '/tmp/1914468.1.all.q/SRX7509252.bam'         │ │
+│ │                    │   ],                                                │ │
+│ │                    │   'bin_size': 200,                                  │ │
+│ │                    │   'fragment_length': 76.0                           │ │
+│ │                    }                                                     │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ValueError: too many values to unpack (expected 3)
+```
+
+",jamesabbott,https://github.com/ntanmayee/decoden/issues/33

@@ -1,0 +1,1059 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1OTkzMzg3NQ==,Spaces in fully qualified path to executable cause t_coffee to fail,CLOSED,2015-03-05T10:37:56Z,2015-04-01T11:52:05Z,2015-04-01T11:51:25Z,"If t_coffee is installed in a directory where the path contains a space and the fully qualified path is passed on the command line as such:
+
+`/Applications/Genetic\ Software/t_coffee -infile TCoffeeInput15_Mar_04_15_23_30_1 -outfile TCoffeeOutput15_Mar_04_15_23_30_2 -newtree TCoffeeInput15_Mar_04_15_23_30_1.dnd -output fasta_aln -type PROTEIN -dp_mode myers_miller_pair_wise`
+
+t_coffee fails internally to handle the space in argv[0] with the following error:
+
+`--ERROR:  : Software/t_coffee does not exist [FATAL]`
+`*************************************************************************************************`
+`*                        FULL TRACE BACK PID: 68544`  
+`68544 -- ERROR:  : Software/t_coffee does not exist [FATAL]`
+",nivekkagicom,https://github.com/cbcrg/tcoffee/issues/2
+MDU6SXNzdWU2NTY2NjU0Mw==,"T-Coffee misinterpret an input file starting with a ""A""",OPEN,2015-04-01T11:54:47Z,2015-04-01T11:58:34Z,,"To replicate the issue: 
+
+```
+$ t_coffee -infile ASA.fasta -in Mproba_pair -score 1
+
+ERROR: SSA.fasta not recognised [FATAL:T-COFFEE]
+INPUT FILES
+    Input File (M) proba_pair 
+    Input File (S) SA.fasta ERROR: SA.fasta Does Not Exist [FATAL:T-COFFEE]
+```
+
+Release:  T-COFFEE Version_11.00.8cbe486 (2014-08-12 22:05:29 - Revision 8cbe486 - Build 477)
+",pditommaso,https://github.com/cbcrg/tcoffee/issues/3
+MDU6SXNzdWU2NzAzNDAyNA==,tag v11,CLOSED,2015-04-08T02:34:45Z,2023-06-08T09:47:30Z,2023-06-08T09:47:30Z,"Your download page http://www.tcoffee.org/Projects/tcoffee/ says there's a new release; could you tag it here for the benefit of package managers?  Thanks!
+",dunn,https://github.com/cbcrg/tcoffee/issues/4
+MDU6SXNzdWU5MTQyNDM1Nw==,Possible mistakes in if/then syntax,CLOSED,2015-06-27T06:32:10Z,2020-05-09T19:18:22Z,2020-05-09T19:18:22Z,"Building tcoffee-11.00.8cbe486 on OS X 10.8 with Xcode5.1 (clang compiler) and gcc5 (via fink) for other compilers gives me a bunch of -Wempty-body warnings. They are for code such as:
+
+```
+dp_lib/evaluate.c:1946:13: warning: if statement has empty body [-Wempty-body]
+      if (w);free_int (w, -1);
+            ^
+dp_lib/evaluate.c:1946:13: note: put the semicolon on a separate line to silence this warning
+```
+
+It's seeing the first semicolon as the end of the whole if/then, not the end of the ""if"" clause (that feels like a bash syntax?), which would mean free_int is not in the ""then"" block. A total of 8 such warnings scattered. Let me know if this is indeed a correct detection of a mistake and I'll pull out the rest from by build logs.
+",dmacks,https://github.com/cbcrg/tcoffee/issues/5
+MDU6SXNzdWUxODI2Mzc1MjY=,Error building tcoffee with clang,CLOSED,2016-10-12T21:22:09Z,2023-06-08T09:42:40Z,2023-06-08T09:42:40Z,"When I try to build tcoffee with clang I get:
+`dp_lib/evaluate_dirichlet.c:543:8: error: 'lgamma_r' is missing exception specification 'throw()'`
+
+The same error log can be found here:
+http://clang.debian.net/logs/2016-08-30/t-coffee_11.00.8cbe486-4_unstable_clang.log
+",slacka,https://github.com/cbcrg/tcoffee/issues/7
+MDU6SXNzdWUyMDQyNDMxNzM=,The limit of input sequence number,CLOSED,2017-01-31T09:30:40Z,2023-06-08T09:43:07Z,2023-06-08T09:43:07Z,"Is it possible to relax the limit of sequence number in T-Coffee?
+The request is related with the following question:
+
+I want to evaluate multiple sequences alignments with TCS, but theses alignments have more than 1000 sequences and I can not do it. 
+- by Mariana Fonseca Rossi",jmchangTW,https://github.com/cbcrg/tcoffee/issues/8
+MDU6SXNzdWUyMTc1MDM1Njc=,Varies result while input FASTA vs STDIN FASTA,OPEN,2017-03-28T09:44:31Z,2017-03-28T09:44:31Z,,"Hi 
+
+We are running T-Coffee heavily for our ([GeneSeqToFamily](https://github.com/TGAC/earlham-galaxytools/tree/master/workflows/GeneSeqToFamily)) workflow and we found possibly a bug in T-Coffee. When we put same input (protein) FASTA file in different way 
+
+1. by using normal input file and  (`./t_coffee 'temp' -method clustalw_msa -output fasta_aln > direct.fasta`)
+2. by standard input (stdin), (`cat temp | ./t_coffee '-infile=stdin' -method clustalw_msa -output fasta_aln > indirect.fasta`)
+
+resulting alignment varies. 
+
+I am attaching input and output files for your reference.
+
+
+[Archive.zip](https://github.com/cbcrg/tcoffee/files/875182/Archive.zip)",anilthanki,https://github.com/cbcrg/tcoffee/issues/9
+MDU6SXNzdWUzNjMwMjcxNzM=,Please keep tags in sync with your releases,CLOSED,2018-09-24T06:34:01Z,2023-06-08T09:46:23Z,2023-06-08T09:46:22Z,"Hi,
+it would be nice if you would keep the release tags in sync with the releases you are providing on your homepage.
+Thanks, Andreas.",tillea,https://github.com/cbcrg/tcoffee/issues/12
+MDU6SXNzdWU0MDM1NDgyMzM=,Error when combining three alignments,CLOSED,2019-01-27T13:00:51Z,2020-04-16T10:07:42Z,2020-04-16T10:07:42Z,"Hi,
+
+I was looking into the bug [#917143](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=917143) inside Debian and tried to reproduce it with the source that you provide from your [home page](http://www.tcoffee.org/Packages/Stable/Latest/). The failing command is:
+
+```
+./t_coffee -aln=../example/sproteases_small.muscle,../example/sproteases_small.tc_aln,../example/sproteases_small.b62_aln -outfile=combined-aln.aln
+```
+Here is the stderr of the command: [tcoffee.stderr.log](https://github.com/cbcrg/tcoffee/files/2800028/tcoffee.stderr.log)
+
+It seems that there is a bug, but I find it difficult to start tracking it down based on the error message. Interestingly, that with two (not three) input alignments it doesn't fail.
+
+EDITED: `t_coffee.ErrorReport` file doesn't get generated for some reason. ",liubovch,https://github.com/cbcrg/tcoffee/issues/13
+MDU6SXNzdWU1MTI0ODMxNzc=,Filename too long using ALN_DUMP,OPEN,2019-10-25T12:15:57Z,2019-10-25T12:15:57Z,,"When using ALN_DUMP, it can fail due to the format of the file
+
+```
+  !All Jobs collected
+  cp: failed to access 'alndump..XXXXX.seq_bucket': File name too long
+  
+  pid 30226 -- WARNING Lock System not solved correctly.
+```",edgano,https://github.com/cbcrg/tcoffee/issues/18
+MDU6SXNzdWU1MTc4MTAxOTA=,-output flag not supported when using -reg,OPEN,2019-11-05T14:33:19Z,2019-11-05T14:33:19Z,,"The ```-output``` flag is not supported (to get the aln file in other format, like msa_aln) when using -reg mode.
+
+
+Error stdout: ```43 -- ERROR: -output is not supported when using -dpa [FATAL:T-COFFEE]```",edgano,https://github.com/cbcrg/tcoffee/issues/19
+MDU6SXNzdWU2MDk2NDg4MzU=,--ERROR: MAX_N_PID exceded -- Recompile changing the value of MAX_N_PID,CLOSED,2020-04-30T07:02:47Z,2020-05-09T19:15:39Z,2020-05-09T19:14:37Z,"t_coffee -version
+PROGRAM: T-COFFEE Version_13.41.0.28bdc39 (2019-11-30 10:21:53 - Revision 5d5a1c1 - Build 465)
+
+--ERROR: MAX_N_PID exceded -- Recompile changing the value of MAX_N_PID (current: 260000 Requested: 280441)",WellJoea,https://github.com/cbcrg/tcoffee/issues/23
+MDU6SXNzdWU2NDA5MTUzMjQ=,MAX_N_PID should be 4194304 on 64bit machines,OPEN,2020-06-18T05:19:52Z,2022-12-17T12:05:14Z,,"While using t-coffee on Debian, it has been noticed that on 64bit machines process IDs (PIDs) exceed the default `MAX_N_PID` setting (currently 260000) and starts acting weird (please see [the original Debian bug report](https://bugs.debian.org/962974)). I would suggest either increasing the default value of `MAX_N_PID` to 4194304, or doing so only when compiled 64bit machines.",merkys,https://github.com/cbcrg/tcoffee/issues/27
+MDU6SXNzdWU2NDk3MzcwMDA=,use env var TMPDIR if defined,OPEN,2020-07-02T08:22:50Z,2020-07-02T08:22:50Z,,"Hello, 
+
+I noticed that tcoffe use `/var/tmp` by default if `TMP_4_TCOFFEE` nor `UNIQUE_DIR_4_TCOFFEE` are defined  
+
+```
+tmp_4_tcoffee=(char*)vcalloc (1000, sizeof (char));
+      char *v=getenv(""TMP_4_TCOFFEE"");
+      if (getenv (""UNIQUE_DIR_4_TCOFFEE""))
+          {
+                  printf(""UNIQUE_DIR_4_TCOFFEE\n"");
+                  sprintf (tmp_4_tcoffee, ""%s/"", getenv(""UNIQUE_DIR_4_TCOFFEE""));
+          }
+      if (v && strm (v, ""TMP""))sprintf (tmp_4_tcoffee, ""%s/"", getenv(""TMP""));
+      else if (v && strm (v, ""LOCAL""))sprintf (tmp_4_tcoffee, ""%s/"", getcwd(NULL,0));
+      else if (v && strm (v, "".""))sprintf (tmp_4_tcoffee, ""%s/"", getcwd(NULL,0));
+      else if (v)sprintf (tmp_4_tcoffee, ""%s"", v);
+      else if (isdir(""/var/tmp""))sprintf (tmp_4_tcoffee, ""/var/tmp/"");
+      else if (isdir(get_dir_4_tcoffee ()))sprintf (tmp_4_tcoffee, ""%s"", get_dir_4_tcoffee());
+      else sprintf (tmp_4_tcoffee, ""%s/"", getcwd(NULL,0));
+
+      //now that rough location is decided, create the subdir structure
+``` 
+
+you may want to check environement TMPDIR before setting default value for `tmp_4_tcoffee` 
+using `/var/tmp/ may cause problems on some cluster compute nodes
+
+regards
+
+Eric",EricDeveaud,https://github.com/cbcrg/tcoffee/issues/28
+MDU6SXNzdWU2NDk4NDQyNDM=,lib/util_lib/util.c should use PERL_HEADER value ,OPEN,2020-07-02T11:07:37Z,2020-07-02T11:07:37Z,,"Hello, 
+
+I noticed that `lib/util_lib/util.c` uses plain system call for perl in `perl_strstr`
+
+see:
+
+`printf_system_direct(""perl -e '$s=\""%s\"";$x=($s=~/%s/);$x=($x==1)?1:0;print $x;'>%s"", string2, pattern,tmp);`
+
+it may be more coherent to use the same perl than the one defined in PERL_HEADER
+
+regards
+
+Eric
+
+",EricDeveaud,https://github.com/cbcrg/tcoffee/issues/29
+MDU6SXNzdWU2NTA0MDkxODA=,t_coffee -clean :: inconsistency,OPEN,2020-07-03T07:42:45Z,2020-07-03T07:45:36Z,,"Hello, 
+
+while looking at t_coffee -help I noticed an inconstency -clean is declared twice with some inconsintency
+see:
+
+```
+t_coffee -help -clean
+
+PARAMETER   : -clean
+USAGE       : Will delete cached data and exit: all, cache, lock, tmp. It is possible to specify a list: cache_lock_tmp
+MAX_N_VALUES: 1
+DEFAULT     : no OR all (when flag set)
+RANGE       : [any]...[]
+TYPE        : S
+
+PARAMETER   : -clean
+USAGE       : Deprecated
+MAX_N_VALUES: 1
+DEFAULT     : no OR shadow (when flag set)
+RANGE       : [any]...[]
+TYPE        : S
+```
+
+I did not check the code to track down the problem
+
+regards
+
+Eric",EricDeveaud,https://github.com/cbcrg/tcoffee/issues/30
+MDU6SXNzdWU2NTA1MDgxNjk=,printf_system :: should have debug enabled as other printf_system* functions,OPEN,2020-07-03T10:34:37Z,2020-07-03T10:34:37Z,,"Hello, 
+
+trying to track down a problem I noticed that `printf_system` does not embeds debug information while `printf_system_direct_check`, `printf_system_direct`, `safe_system` does
+
+it may be usefull to have debug info for printf_system
+
+regards
+
+Eric",EricDeveaud,https://github.com/cbcrg/tcoffee/issues/31
+MDU6SXNzdWU2NzE3ODYyOTk=,How to use PSI-Coffee on my own computer?,OPEN,2020-08-03T04:33:02Z,2020-09-14T14:35:52Z,,"I want to test the performance of PSI-coffee on my own computer. However, it said ""couldn't find BLAST templates"". Thanks.",kuangmeng,https://github.com/cbcrg/tcoffee/issues/32
+MDU6SXNzdWU2NzgyNTI5MjM=,Unable to use t_coffee on large datasets,CLOSED,2020-08-13T08:26:35Z,2020-08-13T10:50:40Z,2020-08-13T10:50:40Z,"I manage to use t_coffee on a fasta with 3 sequences but then I tried with a set of 80 then 200 and both times nothing happens. 
+I tried : 
+t_coffee myseqs.faa
+and it gets stuck at : ""--- Process Method/Library/Aln Mproba_pair""
+
+t_coffee -quicktree -reg -seq myseqs.faa 
+gets stuck at ""!Compute Guide Tree --- ""
+
+",lalalagartija,https://github.com/cbcrg/tcoffee/issues/33
+MDU6SXNzdWU2ODk5ODUwNDU=,Errors with mcoffee,OPEN,2020-09-01T09:30:30Z,2020-09-01T09:41:22Z,,"Hi!
+
+I have two problems that prevent me using mcoffee:
+1. TERMINATION STATUS: FAILURE [PROGRAM: T-COFFEE pid 57636 ppid 56003. This error appears when I run the command
+`$ t_coffee raw_sequences.fa -mode mcoffee`
+How can I solve this to use mcoffee?
+
+2. I usually install software in a concrete folder that is in PATH, but, if I try to have alignment programs in this software folder (downloaded from pages that appear at t_coffee introduction) t_coffee does not recognize it. How can I redirect t_coffee to the paths that are stored in .bash_profile (I'm in mac).",moibernabeu,https://github.com/cbcrg/tcoffee/issues/34
+MDU6SXNzdWU3MDA2OTA3NDc=,TCS scoring results not consistent between local and web TCS - gaps management - T-coffee 13.41.139.ca96b3d,OPEN,2020-09-14T01:11:41Z,2020-09-14T08:38:37Z,,"Hello,
+I am currently using t-coffee to perform multiple sequence alignment of proteins to study evolution of transmembrane protein. 
+I started using the web-hosted t-coffee system, however as I plan to analyse a large number of sequence (1000) I am now using a locally-installed t-coffee (T-COFFEE Version_13.41.139.ca96b3d (2020-07-23 15:47:56 - Revision 7788a2c - Build 604).
+I am currently aligning ~140 proteins for a test and I am unsuccessful at using TCS on this PSI/TM-coffeee alignment. 
+
+When I use the TCS web server on this set of protein ( T-COFFEE Version_11.00.d625267 (2016-01-11 15:25:41 - Revision d625267 - Build 507) I get a proper scoring of each residue however when I use the local version (see above) the scoring doesn't seem to work because I almost only get 0 for the residues (same alignment fed to the system).
+I am using the following command (which seems to be the same of the one used on the web-hosted t-coffee):
+t_coffee -infile result.fasta_aln -in Mproba_pair -score 1 -output score_ascii aln tcs_replicate_100 score_html tcs_column_filter3 tcs_column_filter2 tcs_column_filter1
+
+I ran a test on three transmembrane proteins, I aligned them using t-coffee and then scored the alignment using the webhosted TCS and my local TCS. I obtained the same results on the two systems, however the alignment of these three proteins contain less gaps that my 140 proteins alignment. I suspect that there is something different with the management of the gaps in the scoring system between the two different version of the software.
+
+Could you help me figure out what is happening ? 
+Thanks for your time. If you need more information please let me know !
+Alban",AlbanMariette,https://github.com/cbcrg/tcoffee/issues/35
+MDU6SXNzdWU3MTgwODEwMzQ=,PSICoffee - WARNING: [ncbiblast_lwp.pl] failed to produce xml output,CLOSED,2020-10-09T11:46:05Z,2024-03-22T11:45:17Z,2024-03-22T11:45:17Z,"Hello,
+I am currently using t-coffee to perform multiple sequence alignment of proteins to study evolution of transmembrane protein. Since recently I cannot use t-coffee anymore because of an issue with BLAST and it does not seem to be due to t-coffee because I face this issue either with the 13.41.0 or the last beta version 13.44.4.6104691.
+
+I get the following output:
+WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email myemail -D uniref50 -p blastp --outfile outfile --align 5 --stype protein seqfile>/dev/null 2>file.95815.2458162175.32833] failed to produce xml output -- will ne tried again [1]
+
+And this message keep appearing with the numbers incrementing, suggesting that the BLAST does not work correctly. I did some test and it is not sequence dependent. Apparently my email is accepted because I don't get the error ""BLAST_FAILURE::Invalid_or_rejected_email""
+
+Do you have any idea where this warning could come from, and why it fails to produce xml output ?
+
+Thank you for your help,
+if you would need more information please let me know.
+
+Alban",AlbanMariette,https://github.com/cbcrg/tcoffee/issues/36
+MDU6SXNzdWU3NjAwMTAzNzI=,Linux installers installs plugins with incorrect permissions,OPEN,2020-12-09T05:30:27Z,2020-12-09T05:30:27Z,,"In my plugin folder ~/.t_coffee/plugins/linux/, I have:
+
+-rwxrw-rw- 1 martin martin 4921774 Nov 30  2019 clustalo
+
+This is OK for my local installation, where the stuff in my home folder and when I own it. But this way, it does not work on a cluster computer, where the stuff is owned by root. In that case the permissions should be:
+
+-rwxr-xr-x 1 root root 4921774 Nov 30  2019 clustalo
+
+There are few other files among the plugins, that have the same problem with permissions. Sure the permissions can be fixed manually, but the installer should install everything with the correct permissions.",MartinGuehmann,https://github.com/cbcrg/tcoffee/issues/38
+MDU6SXNzdWU3OTkxNTA3MzE=,Running Expresso on local computer (BLAST_FAILURE),CLOSED,2021-02-02T10:30:42Z,2021-04-20T10:22:58Z,2021-02-06T19:20:17Z,"Dear tcoffee developers :-) 
+
+I would like to align ~1000 with t-coffee and since the webserver is limited to 150 sequences, I wanted to try on my local computer (MAC OSX11-intel). 
+I installed the beta version since I had issues with the stable one, and actually, I think the issue is similar.
+So I tested first on 10 sequences and this is the output:
+```
+✗  t_coffee test.fasta -mode=expresso -email=XXX.XXX@uib.no
+
+PROGRAM: T-COFFEE Version_13.45.33.7d7e789 (Version_13.45.33.7d7e789)
+-full_log      	S	[0]
+-genepred_score	S	[0] 	nsd
+-run_name      	S	[0]
+-mem_mode      	S	[0] 	mem
+-extend        	D	[1] 	1
+-extend_mode   	S	[0] 	very_fast_triplet
+-max_n_pair    	D	[0] 	10
+-seq_name_for_quadruplet	S	[0] 	all
+-compact       	S	[0] 	default
+-clean         	S	[0] 	no
+-do_self       	FL	[0] 	0
+-do_normalise  	D	[0] 	1000
+-template_file 	S	[1] 	EXPRESSO
+-setenv        	S	[0] 	0
+-export        	S	[0] 	0
+-template_mode 	S	[0]
+-flip          	D	[0] 	0
+-remove_template_file	D	[0] 	0
+-profile_template_file	S	[1] 	EXPRESSO
+-in            	S	[0]
+-seq           	S	[1] 	test.fasta
+-aln           	S	[0]
+-method_limits 	S	[0]
+-method        	S	[1] 	sap_pair
+-lib           	S	[0]
+-profile       	S	[0]
+-profile1      	S	[0]
+-profile2      	S	[0]
+-pdb           	S	[0]
+-relax_lib     	D	[0] 	1
+-filter_lib    	D	[0] 	0
+-shrink_lib    	D	[0] 	0
+-out_lib       	W_F	[0] 	no
+-out_lib_mode  	S	[0] 	primary
+-lib_only      	D	[0] 	0
+-outseqweight  	W_F	[0] 	no
+-seq_source    	S	[0] 	ANY
+-cosmetic_penalty	D	[0] 	0
+-gapopen       	D	[0] 	0
+-gapext        	D	[0] 	0
+-fgapopen      	D	[0] 	0
+-fgapext       	D	[0] 	0
+-nomatch       	D	[0] 	0
+-newtree       	W_F	[0] 	default
+-tree          	W_F	[0] 	NO
+-usetree       	R_F	[0]
+-tree_mode     	S	[0] 	nj
+-distance_matrix_mode	S	[0] 	ktup
+-distance_matrix_sim_mode	S	[0] 	idmat_sim1
+-quicktree     	FL	[0] 	0
+-outfile       	W_F	[0] 	default
+-maximise      	FL	[1] 	1
+-output        	S	[0] 	aln	html
+-len           	D	[0] 	0
+-infile        	R_F	[0]
+-matrix        	S	[0] 	default
+-tg_mode       	D	[0] 	1
+-profile_mode  	S	[0] 	cw_profile_profile
+-profile_comparison	S	[0] 	profile
+-dp_mode       	S	[0] 	linked_pair_wise
+-ktuple        	D	[0] 	1
+-ndiag         	D	[0] 	0
+-diag_threshold	D	[0] 	0
+-diag_mode     	D	[0] 	0
+-sim_matrix    	S	[0] 	vasiliky
+-transform     	S	[0]
+-extend_seq    	FL	[0] 	0
+-outorder      	S	[0] 	input
+-inorder       	S	[0] 	aligned
+-seqnos        	S	[0] 	off
+-case          	S	[0] 	keep
+-cpu           	D	[0] 	0
+-ulimit        	D	[0] 	-1
+-maxnseq       	D	[0] 	-1
+-maxlen        	D	[0] 	-1
+-sample_dp     	D	[0] 	0
+-weight        	S	[0] 	default
+-seq_weight    	S	[0] 	no
+-align         	FL	[1] 	1
+-mocca         	FL	[0] 	0
+-domain        	FL	[0] 	0
+-start         	D	[0] 	0
+-len           	D	[0] 	0
+-scale         	D	[0] 	0
+-mocca_interactive	FL	[0] 	0
+-method_evaluate_mode	S	[0] 	default
+-color_mode    	S	[0] 	new
+-aln_line_length	D	[0] 	0
+-evaluate_mode 	S	[0] 	triplet
+-get_type      	FL	[0] 	0
+-clean_aln     	D	[0] 	0
+-clean_threshold	D	[1] 	1
+-clean_iteration	D	[1] 	1
+-clean_evaluate_mode	S	[0] 	t_coffee_fast
+-extend_matrix 	FL	[0] 	0
+-prot_min_sim  	D	[0] 	0
+-prot_max_sim  	D	[100] 	100
+-psiJ          	D	[0] 	3
+-psitrim_mode  	S	[0] 	regtrim
+-psitrim_tree  	S	[0] 	codnd
+-psitrim       	D	[100] 	100
+-prot_min_cov  	D	[90] 	90
+-pdb_type      	S	[0] 	d
+-pdb_min_sim   	D	[35] 	35
+-pdb_max_sim   	D	[100] 	100
+-pdb_min_cov   	D	[50] 	50
+-pdb_blast_server	W_F	[0] 	EBI
+-blast         	W_F	[0]
+-blast_server  	W_F	[0] 	EBI
+-pdb_db        	W_F	[0] 	pdb
+-protein_db    	W_F	[0] 	uniref50
+-method_log    	W_F	[0] 	no
+-struc_to_use  	S	[0]
+-cache         	W_F	[0] 	use
+-print_cache   	FL	[0] 	0
+-align_pdb_param_file	W_F	[0] 	no
+-align_pdb_hasch_mode	W_F	[0] 	hasch_ca_trace_bubble
+-external_aligner	S	[0] 	NO
+-msa_mode      	S	[0] 	tree
+-et_mode       	S	[0] 	et
+-master        	S	[0] 	no
+-blast_nseq    	D	[0] 	0
+-lalign_n_top  	D	[0] 	10
+-iterate       	D	[0] 	0
+-trim          	D	[0] 	0
+-split         	D	[0] 	0
+-trimfile      	S	[0] 	default
+-split         	D	[0] 	0
+-split_nseq_thres	D	[0] 	0
+-split_score_thres	D	[0] 	0
+-check_pdb_status	D	[0] 	0
+-clean_seq_name	D	[0] 	0
+-seq_to_keep   	S	[0]
+-dpa_master_aln	S	[0]
+-dpa_maxnseq   	D	[0] 	0
+-dpa_min_score1	D	[0]
+-dpa_min_score2	D	[0]
+-dpa_keep_tmpfile	FL	[0] 	0
+-dpa_debug     	D	[0] 	0
+-multi_core    	S	[0] 	templates_jobs_relax_msa_evaluate
+-n_core        	D	[0] 	1
+-thread        	D	[0] 	1
+-max_n_proc    	D	[0] 	1
+-lib_list      	S	[0]
+-prune_lib_mode	S	[0] 	5
+-tip           	S	[0] 	none
+-rna_lib       	S	[0]
+-no_warning    	D	[0] 	0
+-run_local_script	D	[0] 	0
+-proxy         	S	[0] 	unset
+-email         	S	[1] 	XXX.XXX@uib.no
+-clean_overaln 	D	[0] 	0
+-overaln_param 	S	[0]
+-overaln_mode  	S	[0]
+-overaln_model 	S	[0]
+-overaln_threshold	D	[0] 	0
+-overaln_target	D	[0] 	0
+-overaln_P1    	D	[0] 	0
+-overaln_P2    	D	[0] 	0
+-overaln_P3    	D	[0] 	0
+-overaln_P4    	D	[0] 	0
+-exon_boundaries	S	[0]
+-display       	D	[0] 	100
+
+INPUT FILES
+	Input File (S) test.fasta  Format fasta_seq
+	Input File (M) sap_pair
+
+Identify Master Sequences [no]:
+
+Master Sequences Identified
+Looking For Sequence Templates:
+
+	Template Type: [EXPRESSO] Mode Or File: [EXPRESSO] [Start
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [1]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [2]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [3]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [4]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output
+80366 -- WARNING: Blast for 1btkA00 failed (Run: 1 out of 2. Use NCBI)
+
+
+*************************************************************************************************
+*                        FULL TRACE BACK PID: 80361
+80366 -- ERROR: BLAST_FAILURE::NCBI does not Support psiblast mode (-j3)
+80366 -- COM: tc_generic_method.pl
+80366 -- STACK: 80361 -> 80366
+*************************************************************************************************
+
+
+*************************************************************************************************
+*                        MESSAGES RECAPITULATION
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [1]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [2]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [3]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output -- will ne tried again [4]
+80366 -- WARNING: [ncbiblast_lwp.pl] [t_coffee -other_pg ncbiblast_lwp.pl --email XXX.XXX@uib.no --database pdb --program blastp --outfile outfile --alignments 5 --stype protein seqfile>/dev/null 2>file.3070.32811428769.80366] failed to produce xml output
+80366 -- WARNING: Blast for 1btkA00 failed (Run: 1 out of 2. Use NCBI)
+*************************************************************************************************
+
+# TERMINATION STATUS: FAILURE [PROGRAM: T-COFFEE pid 80361 ppid 80346
+#CL: /var/tmp/tco/tcokytpn68r80346/9752780346th1ii1.pl -other_pg tc_generic_method.pl -mode=pdb_template -database=pdb -method=blastp -cache=/Users/thibault/.t_coffee/cache/ -minid=35 -maxid=100 -mincov=50 -server=EBI -type=_P_ -pdb_type=d -infile=/var/tmp/tco/tcokytpn68r80346/9752780346th1ii134 -outfile=test_pdb1.template_list -tmpdir=/var/tmp/tco/tcokytpn68r80346/
+
+
+*************************************************************************************************
+*                        FULL TRACE BACK PID: 80346
+80361 -- ERROR: UNSPECIFIED UNSPECIFIED
+80361 -- COM: /var/tmp/tco/tcokytpn68r80346/9752780346th1ii1.pl -other_pg tc_generic_method.pl -mode=pdb_template -database=pdb -method=blastp -cache=/Users/thibault/.t_coffee/cache/ -minid=35 -maxid=100 -mincov=50 -server=EBI -type=_P_ -pdb_type=d -infile=/var/tmp/tco/tcokytpn68r80346/9752780346th1ii134 -outfile=test_pdb1.template_list -tmpdir=/var/tmp/tco/tcokytpn68r80346/
+80361 -- STACK: 80346 -> 80361
+*************************************************************************************************
+
+# TERMINATION STATUS: FAILURE [PROGRAM: T-COFFEE pid 80346 ppid 73380
+#CL: t_coffee test.fasta -mode expresso -email XXX.XXX@uib.no
+```
+Do you know how can I fix this :-) ?
+
+Best regards,
+Thibault.
+
+",tubiana,https://github.com/cbcrg/tcoffee/issues/39
+MDU6SXNzdWU4MjY3OTQwMTY=,error BLAST Templates,OPEN,2021-03-09T23:28:02Z,2021-03-10T10:37:09Z,,"Hi, 
+I'm trying to use the PSI-coffee, but I got the error:
+
+Impossible to find BLAST Templates
+Check that your blast server is properly installed
+
+Blast is installed. I have no idea what I should do to solve...
+Thanks.",adriludwig,https://github.com/cbcrg/tcoffee/issues/40
+MDU6SXNzdWU4NTIwOTQzOTU=,"Expresso failed, X-ray and NMR structure templates?",OPEN,2021-04-07T07:18:14Z,2021-04-08T09:27:47Z,,"Hi! 
+
+Im having trouble with T-Coffee Expresso through the webserver. I used the sequences extracted from PDB (from CATH database). I had some errors, I think because no structural templates where found ( http://tcoffee.crg.cat/apps/tcoffee/result?rid=46a0b0ec ) so I have uploaded a list of templates to be used for each sequences. It still failed ( http://tcoffee.crg.cat/apps/tcoffee/result?rid=6f4f9311 ), but I think the issue is that only X-ray PDBs are used. I don't see an option to change to both X-ray and NMR templates, but I found in the protocol that it should be possible with the argument `-pdb_type dn`.
+
+Is it possible to use both NMR and Xray structure template in the webserver ? Can it be another reason why my alignment failed?
+
+Kind Regards, Kamilla
+",KamillaOJ,https://github.com/cbcrg/tcoffee/issues/41
+MDU6SXNzdWU5MDk4NzYzNzY=,TCS provides different outputs depending on the number of CPUs,OPEN,2021-06-02T20:54:55Z,2021-06-02T21:43:06Z,,"When I execute TCS I get different outputs depending on the number of CPUs being used. The difference between using 1 and 2 CPUs is quite large.
+
+The results are consistent between runs using the same number of CPUs.
+
+```
+# t_coffee -infile out_enriched.fasta -evaluate -output score_ascii -n_core 1
+
+T-COFFEE, Version_12.00.7fb08c2 (2018-12-11 09:27:12 - Revision 7fb08c2 - Build 211)
+Cedric Notredame
+CPU TIME:1 sec.
+SCORE=60
+*
+ BAD AVG GOOD
+*
+All3007_000170_4_148_consensus      :  65
+New_nucc_id_121273|21753_1_4_148    :  62
+New_nucc_id_121789|22317_4_4_148    :  63
+New_nucc_id_123461|24160_3_4_148    :  60
+New_nucc_id_124155|24913_1_4_148    :  57
+New_nucc_id_124546|25335_4_4_148    :  57
+New_nucc_id_127104|28122_3_4_148    :  61
+New_nucc_id_127252|28282_3_4_148    :  58
+```
+
+```
+# t_coffee -infile out_enriched.fasta -evaluate -output score_ascii -n_core 2
+
+T-COFFEE, Version_12.00.7fb08c2 (2018-12-11 09:27:12 - Revision 7fb08c2 - Build 211)
+Cedric Notredame
+CPU TIME:0 sec.
+SCORE=601
+*
+ BAD AVG GOOD
+*
+All3007_000170_4_148_consensus      :  55
+New_nucc_id_121273|21753_1_4_148    :  54
+New_nucc_id_121789|22317_4_4_148    :  52
+New_nucc_id_123461|24160_3_4_148    :  48
+New_nucc_id_124155|24913_1_4_148    :  40
+New_nucc_id_124546|25335_4_4_148    :  45
+New_nucc_id_127104|28122_3_4_148    :  49
+New_nucc_id_127252|28282_3_4_148    :  45
+```
+
+```
+# t_coffee -infile out_enriched.fasta -evaluate -output score_ascii -n_core 8
+
+T-COFFEE, Version_12.00.7fb08c2 (2018-12-11 09:27:12 - Revision 7fb08c2 - Build 211)
+Cedric Notredame
+CPU TIME:0 sec.
+SCORE=601
+*
+ BAD AVG GOOD
+*
+All3007_000170_4_148_consensus      :  66
+New_nucc_id_121273|21753_1_4_148    :  63
+New_nucc_id_121789|22317_4_4_148    :  64
+New_nucc_id_123461|24160_3_4_148    :  61
+New_nucc_id_124155|24913_1_4_148    :  57
+New_nucc_id_124546|25335_4_4_148    :  56
+New_nucc_id_127104|28122_3_4_148    :  61
+New_nucc_id_127252|28282_3_4_148    :  59
+```
+",apcamargo,https://github.com/cbcrg/tcoffee/issues/44
+MDU6SXNzdWU5NTIzMTQ5MTM=,Why creating file in a non temp directory,OPEN,2021-07-25T16:59:12Z,2021-07-25T16:59:12Z,,"The below line creates a file in a non temporary directory.
+
+`sprintf (file, ""tmp_file4os_name%d%d"", rand(),getpid());`
+
+This is should be under a temp directory",N/A,https://github.com/cbcrg/tcoffee/issues/45
+MDU6SXNzdWU5OTI1NDA1MjE=,How to set MAX N PID,OPEN,2021-09-09T19:06:24Z,2022-12-16T18:09:31Z,,"The max pid is incorrectly set. In previous issues there is a suggestion that max pid can be set as an environment variable, but there is no documentation of what this variable should be anywhere nor what version of t_coffee supports this behavior. When t_coffee complains about the max pid it says to set the variable and recompile, but again there is no indication of how to achieve this. How can we properly set the max pid?",davidfstein,https://github.com/cbcrg/tcoffee/issues/47
+I_kwDOANWOC84_YpVI,Stuck at 100% -  tcoffee regressive mode,OPEN,2021-11-25T10:45:52Z,2021-11-25T11:04:47Z,,"First of all, thank you very much for your work and dedication, I really enjoy using the t_coffee suite.
+
+I am running a multiple alignment of a fasta containing ~7500 sequences with these lengths:
+
+```
+file     format  type     num_seqs    sum_len  min_len  avg_len  max_len
+1_1.faa  FASTA   Protein     7,582  7,901,142      300  1,042.1   13,093
+```
+These are the commands that I'm using:
+
+```
+t_coffee -other_pg seq_reformat -in 1_1.faa -output code_name > 1_1.code_name
+t_coffee -other_pg seq_reformat -code 1_1.code_name -in 1_1.faa > 1_1.coded.fasta
+t_coffee -reg -seq 1_1.coded.fasta -nseq 750 -tree mbed -method maffteinsi_msa -outfile 1_1.coded.aln -outtree 1_1.coded.mbed -thread 20
+t_coffee -other_pg seq_reformat -decode 1_1.code_name -in 1_1.coded.aln > 1_1.aln
+```
+At a certain point, the output remains in this state
+
+![imagen](https://user-images.githubusercontent.com/33562350/143425588-235ad75c-d71a-47de-ae04-11468c99af5e.png)
+
+In addition, t_coffee remains in process state S (interruptable sleep) consuming ~60GB of RAM. After several days of checking the process, it does not seem to move from there. I have tried restarting the alignment several times but it keeps stopping at the same point. 
+
+Do I have to leave it until it finishes? 
+
+Is it possible to estimate how long it may take? I have aligned other files with slightly smaller sizes a little below and I have not had this kind of problem. Could it be due to the large size difference (from 300aa to >13 000aa) ?
+",pentamorfico,https://github.com/cbcrg/tcoffee/issues/48
+I_kwDOANWOC85AFJEb,fmcoffee use 1 core,CLOSED,2021-12-09T03:04:29Z,2021-12-09T21:42:41Z,2021-12-09T21:42:40Z,"Dears,
+I am trying to run t_coffe with -mode fmcoffee, but it is not using additional cores. Also I tried
+`t_coffee -in in.fasta -mode fmcoffee -thread 4 -n_core 4 -cpu 4 -multi_core 4 -max_n_proc 4 -outfile out.fasta`.
+None of this flags works for fmcoffee step (kalign, muscle).
+
+is there other flag to use multithread in fmcoffee mode?.
+
+thanks in advance,
+Sandro
+",Sanrrone,https://github.com/cbcrg/tcoffee/issues/49
+I_kwDOANWOC85AiFxB,"please do not edit ~/.bashrc, etc on install",OPEN,2021-12-16T21:59:41Z,2021-12-16T21:59:41Z,,"just wasted a couple of hours because I had previously installed T-COFFEE and it had edited a bunch of startup files behind my back to add export PERL5LIB=
+
+Can you please not do this??  There are other ways to set paths for a given program without modifying the behavior
+other, unrelated programs.",diekhans,https://github.com/cbcrg/tcoffee/issues/50
+I_kwDOANWOC85B9-p9,Website tcoffee.org is unavailable (Gateway Timeout),CLOSED,2022-01-18T11:04:10Z,2022-01-18T11:49:12Z,2022-01-18T11:49:12Z,I cannot browse tcoffee.org or www.tcoffee.org - I just get Gateway Timeout. ,balling-dev,https://github.com/cbcrg/tcoffee/issues/51
+I_kwDOANWOC85FGrK2,Pin new releases for conda,CLOSED,2022-03-04T08:26:07Z,2023-07-07T16:12:12Z,2023-06-07T20:34:14Z,"Hi,
+
+Would you be able to pin new releases in github, so these can be picked up by the bioconda bot?
+Thanks
+Matthias",matthdsm,https://github.com/cbcrg/tcoffee/issues/54
+I_kwDOANWOC85O6rsz,Stable download link doesn't work,CLOSED,2022-08-01T08:08:08Z,2023-05-23T08:38:53Z,2023-05-23T08:38:53Z,"Hi.
+The stable link to download T-Coffee doesn't work: [https://tcoffee.org/Packages/Stable/Latest]
+Could you please fix it? Much appreciated.
+",pegetive,https://github.com/cbcrg/tcoffee/issues/55
+I_kwDOANWOC85VTtjg,t_coffee segmentation fault in biopython test cases,OPEN,2022-11-01T10:48:07Z,2022-11-22T22:46:46Z,,"Greetings,
+
+In the context of the debian project, we noticed that t_coffee version 13.45.0.4846264 is causing a test failure in biopython 1.79.  It turns out that the following command:
+```
+$ t_coffee \
+        -output clustalw_aln \
+        -infile Fasta/fa01 \
+        -outfile Fasta/tc_out.aln \
+        -type protein \
+        -outorder input \
+        -gapopen -2 \
+        -gapext -5
+```
+is causing a segmentation fault when run with the following ./Fasta/fa01 input file:
+```fasta
+>AK1H_ECOLI/1-378
+CPDSINAALICRGEKMSIAIMAGVLEARGH-N--VTVIDPVEKLLAVG-HYLESTVDIAE
+STRRIAASRIP------A-DHMVLMAGFTAGN-EKGELVVLGRNGSDYSAAVLAACLRAD
+CCEIWTDVNGVYTCDP-------------RQVPDARLLKSMSYQEAMELSY--FGAKVLH
+PRTITPIAQFQIPCLIKNTGNPQAPGTL-IG--ASRDEDELP----VKGISNLN------
+NMAMFSVSGP-GMKGMVGMAARVFAAMS-------RARISVVLITQSSSEYSISFCVPQS
+DCVRAERAMLEEFY-----LELKEGLLEPLAVAERLAIISV-VGDGLRTLRGISAKF---
+---FAALARANINIVAIA
+>AKH_HAEIN/1-382
+-----------------VEDAVKATIDCRGEKLSIAMMKAWFEARGY-S--VHIVDPVKQ
+LLAKG-GYLESSVEIEESTKRVDAANIA--K-DKVVLMAGF---TAGNEKGELVLLGRNG
+SDYSAAC-----------------LAACLGASVCEIWTDVDGVYTCDP--RLVPDARLLP
+TLSYREAMELSYFGAKVIHPRTIGPLLPQNIPCVIKNTGNPSAPGSI-ID--GNVKSESL
+Q----VKGITNLDNLAMFNVSGPGMQGM---VGMASRVFSAMSGAGISVILITQSSSEYS
+---ISFCVPVKSAEVAKTVLETEFA-----NELNEHQLEPIEVIKDLSIISV-VGDGMKQ
+AKGIAARF------FSALAQAN
+```
+
+Here is a backtrace of the affected portion; the intercepted sequence pointer S is NULL, which is probably the root of the segmentation fault:
+```
+#0  0x0000555555675e73 in seq2unique_name_seq (S=0x0) at util_lib/aln_convertion_util.c:2091
+#1  0x000055555574d656 in read_seq_in_n_list (fname=0x55555598cad0, n=1, type=0x55555593dfb0 """", SeqMode=0x555555d45fb0 ""ANY"") at util_lib/util_constraints_list.c:2533
+#2  0x0000555555659491 in batch_main (argc=15, argv=0x555555944230) at t_coffee_lib/t_coffee.c:4720
+#3  0x000055555564f9a0 in main (argc=15, argv=0x7fffffffe128) at t_coffee_lib/t_coffee.c:179
+```
+
+You can lookup [Debian Bug#1022570](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1022570) for some further details, but I tried to gather the most relevant information here.
+
+Have a nice day,  :)
+Étienne.",emollier,https://github.com/cbcrg/tcoffee/issues/56
+I_kwDOANWOC85mW01o,T-Coffee installer tarball changed,CLOSED,2023-05-19T13:32:01Z,2023-07-02T09:21:18Z,2023-07-02T09:21:17Z,"i downloaded the following tarball at different times, getting hugely different sources
+https://s3.eu-central-1.amazonaws.com/tcoffee-packages/Archives/T-COFFEE_installer_Version_13.45.61.3c310a9_linux_x64.tar.gz
+
+is there a place where i can download the original tarball (from 2022-12-09)?
+
+please don't update tarballs in-place, change the version instead (that's what versions are for)? this is essential for reproducible science.
+
+2022-12-09:
+```
+sha256sum T-COFFEE_installer_Version_13.45.61.3c310a9_linux_x64.tar.gz
+8bc60336f5c203d4a20cc8c9e0ba10c5f4275a11ccfd15a0dd26a03510314513  T-COFFEE_installer_Version_13.45.61.3c310a9_linux_x64.tar.gz
+```
+2023-05-19
+```
+sha256sum new_download/T-COFFEE_installer_Version_13.45.61.3c310a9_linux_x64.tar.gz                              
+194b89107ac31467f8a0221bd621c652d6a485a1886a65ef5d567699876429d4  new_download/T-COFFEE_installer_Version_13.45.61.3c310a9_linux_x64.tar.gz
+```",smoors,https://github.com/cbcrg/tcoffee/issues/57
+I_kwDOANWOC86DCeJR,Build fails with strict-aliasing violations.,CLOSED,2024-03-20T20:07:11Z,2024-03-22T11:40:36Z,2024-03-22T11:40:36Z,"I tried to compile with LTO: `-flto=4 -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing`
+
+The -Werror=* flags are important to detect cases where the compiler can try to optimize based on assuming UB cannot happen, and miscompile code that has UB in it. strict-aliasing issues are always bad but LTO can make them even worse.
+
+I got this error:
+```
+x86_64-pc-linux-gnu-g++ -march=native -fstack-protector-all -O2 -pipe -fdiagnostics-color=always -frecord-gcc-switches -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -fstack-clash-protection -flto=4 -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing  -Wformat -Werror=format-security -Wno-write-strings -Wno-unused-result  -I. -MD -MF dp_lib/evaluate_dirichlet.deps -c -o dp_lib/evaluate_dirichlet.o dp_lib/evaluate_dirichlet.c
+In file included from ./io_lib_header.h:33,
+                 from dp_lib/evaluate_dirichlet.c:33:
+./io_lib/tree_util.h:30:1: warning: ‘typedef’ was ignored in this declaration
+   30 | typedef struct ALNcol
+      | ^~~~~~~
+dp_lib/evaluate_dirichlet.c: In function ‘double sin_pi(double)’:
+dp_lib/evaluate_dirichlet.c:499:14: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  499 |         ix=(*(long long *)&x)>>32;
+      |              ^~~~~~~~~~~~~~~
+dp_lib/evaluate_dirichlet.c:519:29: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  519 |                         n=(*(long long *)&x);
+      |                             ^~~~~~~~~~~~~~~
+dp_lib/evaluate_dirichlet.c: In function ‘double lgamma_r(double, int*)’:
+dp_lib/evaluate_dirichlet.c:548:14: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  548 |         hx=(*(long long *)&x)>>32;
+      |              ^~~~~~~~~~~~~~~
+dp_lib/evaluate_dirichlet.c:549:14: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+  549 |         lx=(*(long long *)&x);
+      |              ^~~~~~~~~~~~~~~
+cc1plus: some warnings being treated as errors
+make: *** [makefile:9: dp_lib/evaluate_dirichlet.o] Error 1
+```
+
+Downstream report: https://bugs.gentoo.org/862327 -- note that I updated to 13.46.0 and still got the same issue.
+Full build log: [build.log](https://github.com/cbcrg/tcoffee/files/14672068/build.log)
+",eli-schwartz,https://github.com/cbcrg/tcoffee/issues/60
+I_kwDOANWOC86F5I-8,Error in the installation of m-coffee,OPEN,2024-04-16T15:32:05Z,2024-06-07T10:57:38Z,,"Hello, I installed using the command 
+
+clara@Tornado:~/Desktop/T-COFFEE_distribution_Version_13.45.65.6aa3132e$ ./install mcoffee
+
+and I also used the command 
+
+clara@Tornado:~/Desktop/T-COFFEE_distribution_Version_13.45.65.6aa3132e$ **./install all
+
+but famsa and m-coffee are not getting installed. 
+
+--2024-04-14 17:17:03--  https://www.tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Resolving www.tcoffee.org (www.tcoffee.org)... 3.160.107.34, 3.160.107.120, 3.160.107.13, ...
+Connecting to www.tcoffee.org (www.tcoffee.org)|3.160.107.34|:443... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: http://tcoffee.org/Packages/Binaries/plugins/linux/famsa [following]
+--2024-04-14 17:17:03--  http://tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Resolving tcoffee.org (tcoffee.org)... 65.8.214.79, 65.8.214.23, 65.8.214.75, ...
+Connecting to tcoffee.org (tcoffee.org)|65.8.214.79|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://tcoffee.org/Packages/Binaries/plugins/linux/famsa [following]
+--2024-04-14 17:17:04--  https://tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Connecting to tcoffee.org (tcoffee.org)|65.8.214.79|:443... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2024-04-14 17:17:06 ERROR 404: Not Found.
+
+!!!!!!! famsa           : Download of famsa binary failed
+!!!!!!! famsa           : Check Address: http://www.tcoffee.org/Packages/Binaries/plugins/linux/famsa
+
+------- Downloading/Installing famsa
+--2024-04-14 17:17:06--  https://github.com/refresh-bio/FAMSA.git
+Resolving github.com (github.com)... 140.82.112.4
+Connecting to github.com (github.com)|140.82.112.4|:443... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://github.com/refresh-bio/FAMSA [following]
+--2024-04-14 17:17:06--  https://github.com/refresh-bio/FAMSA
+Reusing existing connection to github.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘/home/clara/Desktop/T-COFFEE_distribution_Version_13.45.65.6aa3132e/bin/cache/tmp/wget.tmp’
+
+/home/clara/Desktop/T-COFFEE_distrib     [    <=>                                                                ] 344,27K   425KB/s    in 0,8s
+
+2024-04-14 17:17:08 (425 KB/s) - ‘/home/clara/Desktop/T-COFFEE_distribution_Version_13.45.65.6aa3132e/bin/cache/tmp/wget.tmp’ saved [352535]
+
+
+------- unzipping/untaring FAMSA.git
+Error:  does not exist
+------- Compiling/Installing famsa
+--2024-04-14 17:17:08--  https://www.tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Resolving www.tcoffee.org (www.tcoffee.org)... 3.160.107.13, 3.160.107.120, 3.160.107.125, ...
+Connecting to www.tcoffee.org (www.tcoffee.org)|3.160.107.13|:443... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: http://tcoffee.org/Packages/Binaries/plugins/linux/famsa [following]
+--2024-04-14 17:17:08--  http://tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Resolving tcoffee.org (tcoffee.org)... 65.8.214.79, 65.8.214.69, 65.8.214.23, ...
+Connecting to tcoffee.org (tcoffee.org)|65.8.214.79|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://tcoffee.org/Packages/Binaries/plugins/linux/famsa [following]
+--2024-04-14 17:17:09--  https://tcoffee.org/Packages/Binaries/plugins/linux/famsa
+Connecting to tcoffee.org (tcoffee.org)|65.8.214.79|:443... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2024-04-14 17:17:10 ERROR 404: Not Found.
+
+!!!!!!! famsa           : Download of famsa binary failed
+!!!!!!! famsa           : Check Address: http://www.tcoffee.org/Packages/Binaries/plugins/linux/famsa
+!!!!!!!! famsa compilation and  binary installation failed
+
+-------   Executable Installed in: /home/clara/.t_coffee/plugins/linux
+*------        clustalw        : updated [from binary]
+*------        probcons        : updated [from binary]
+*------        muscle          : updated [from binary]
+*------        famsa           : failed installation
+*------        mafft           : updated [from binary]
+*------        dialign-tx      : updated [from binary]
+*------        prank           : updated [from binary]
+*------        poa             : updated [from binary]
+*------        clustalo        : updated [from binary]
+*------        t_coffee        : installed [from binary]
+*------        kalign          : updated [from binary]
+*------        pcma            : updated [from binary]
+*------        dialign-t       : updated [from binary]
+*------        clustalw2       : updated [from binary]
+*------        proda           : updated [from binary]
+*------        probconsRNA     : updated [from binary]
+*------ SUMMARY mode Installation:
+*!!!!!!       famsa           : Missing
+*!!!!!!       MODE mcoffee       UNSUCCESSFULLY installed
+
+
+
+Can you help me? Thank you.",claceline,https://github.com/cbcrg/tcoffee/issues/64
+I_kwDOANWOC86HQO_q,REGRESSIVE vs default: different behaviour when printing to STDOUT,OPEN,2024-04-29T14:18:56Z,2024-06-07T10:58:54Z,,"Hi Cedric & Jose,
+
+while debugging the multiplesequencealign pipeline, I came across an inconsistency in the way tcoffee gives its output when told to print to stdout.
+In particular, a file called 'STDOUT' is created when the regressive mode is used and STDOUT is given as the output, if the regressive mode is not used the output is printed to stdout (see also below) – I think the output gets handled quite differently in general, as the output format is also different by default.
+
+I think it makes sense to handle the output consistently  for these cases – also supporting '-' to specify printing output to stdout might make sense.
+Best,
+Leon
+
+```
+$ t_coffee -seq example.fa -outfile STDOUT
+<snip>
+# output in clustal-like format sent to stdout, debugging info in stderr
+$ file STDOUT
+STDOUT: cannot open `STDOUT' (No such file or directory)
+
+$ t_coffee -seq example.fa -reg -outfile STDOUT
+<snip>
+# debugging info gets sent to stdout and stderr, 'STDOUT' is created as a file
+$ file STDOUT
+STDOUT: ASCII text
+```",lrauschning,https://github.com/cbcrg/tcoffee/issues/65
+I_kwDOANWOC86P2eLj,t_coffee Needed by T-COFFEE Could not be found,CLOSED,2024-07-17T11:54:47Z,2024-07-23T12:37:48Z,2024-07-21T11:06:20Z,"```
+$ t_coffee -version
+PROGRAM: T-COFFEE Version_13.46.0.919e8c6b (2023-07-07 22:06:42 - Revision 29996c5 - Build 980)
+```
+
+I cannot make t_coffee run psicoffee. See a minimal example below. Also, not sure if it uses blast+ or legacy blast - which one should I use to create a local database?
+
+```
+$ cat test.fas 
+>1
+MAYWLQAASLLVLLALSPGADAAAAQHLCGSHLVDALYLVCGEKGFFYNPKRDLLYCFWFLSPKSAKENEEYPFKDQMEMMVKRGIVEQCCHKPCNIFDLQNYCN
+>2
+MALWMRLLPLLALLALWEPNPAQAFVNQHLCGSHLVEALYLVCGERGFFYTPKSRRGVEDPQVTQLELGGGPGAGDLQTLALEVAQQKRGIVDQCCTSICSLYQLENYCN
+>3
+MALWIRSLPLLALLALSGPGTSQAAANQHLCGSHLVEALYLVCGERGFFYSPKARRDVERPLVSSPLHGEVGELPFQQEEFEKVKRGIVEQCCHNTCSLYQLENYCN
+$ t_coffee test.fas -mode=psicoffee
+
+#*****************************************************************
+--ERROR: #  [FATAL:T-COFFEE]
+
+# The Program /opt/t_coffee/bin/t_coffee Needed by T-COFFEE Could not be found
+# If /opt/t_coffee/bin/t_coffee is installed on your system:
+#	     -Make sure /opt/t_coffee/bin/t_coffee is in your $path:
+# If /opt/t_coffee/bin/t_coffee is NOT installed obtain a copy from:
+#	(null)
+#
+#
+# and install it manualy
+******************************************************************
+
+
+*************************************************************************************************
+*                        FULL TRACE BACK PID: 1602385                                    
+1602385 -- ERROR: #  [FATAL:T-COFFEE]
+1602385 -- COM: /opt/t_coffee/bin/t_coffee test.fas -mode psicoffee 
+1602385 -- STACK: 1602384 -> 1602385
+*************************************************************************************************
+
+# TERMINATION STATUS: FAILURE [PROGRAM: T-COFFEE pid 1602385 ppid 1602384
+#CL: /opt/t_coffee/bin/t_coffee test.fas -mode psicoffee 
+$ t_coffee test.fas -method=psicoffee_msa
+
+PROGRAM: T-COFFEE Version_13.46.0.919e8c6b (2023-07-07 22:06:42 - Revision 29996c5 - Build 980)
+-full_log      	S	[0] 
+-genepred_score	S	[0] 	nsd
+-run_name      	S	[0] 
+-mem_mode      	S	[0] 	mem
+-extend        	D	[1] 	1 
+-extend_mode   	S	[0] 	very_fast_triplet
+-max_n_pair    	D	[0] 	10 
+-seq_name_for_quadruplet	S	[0] 	all
+-compact       	S	[0] 	default
+-clean         	S	[0] 	no
+-do_self       	FL	[0] 	0
+-do_normalise  	D	[0] 	1000 
+-template_file 	S	[0] 
+-template_dir_E_	S	[0] 	./
+-setenv        	S	[0] 	0
+-export        	S	[0] 	0
+-template_mode 	S	[0] 
+-flip          	D	[0] 	0 
+-remove_template_file	D	[0] 	0 
+-profile_template_file	S	[0] 
+-in            	S	[0] 
+-seq           	S	[1] 	test.fas
+-aln           	S	[0] 
+-method_limits 	S	[0] 
+-method        	S	[1] 	psicoffee_msa
+-lib           	S	[0] 
+-profile       	S	[0] 
+-profile1      	S	[0] 
+-profile2      	S	[0] 
+-pdb           	S	[0] 
+-relax_lib     	D	[0] 	1 
+-filter_lib    	D	[0] 	0 
+-shrink_lib    	D	[0] 	0 
+-out_lib       	W_F	[0] 	no
+-out_lib_mode  	S	[0] 	primary
+-lib_only      	D	[0] 	0 
+-outseqweight  	W_F	[0] 	no
+-seq_source    	S	[0] 	ANY
+-cosmetic_penalty	D	[0] 	0 
+-gapopen       	D	[0] 	0 
+-gapext        	D	[0] 	0 
+-fgapopen      	D	[0] 	0 
+-fgapext       	D	[0] 	0 
+-nomatch       	D	[0] 	0 
+-newtree       	W_F	[0] 	default
+-tree          	W_F	[0] 	NO
+-usetree       	R_F	[0] 
+-tree_mode     	S	[0] 	nj
+-distance_matrix_mode	S	[0] 	ktup
+-distance_matrix_sim_mode	S	[0] 	idmat_sim1
+-quicktree     	FL	[0] 	0
+-outfile       	W_F	[0] 	default
+-maximise      	FL	[1] 	1
+-output        	S	[0] 	aln	html
+-len           	D	[0] 	0 
+-infile        	R_F	[0] 
+-matrix        	S	[0] 	default
+-fs_matrix     	S	[0] 	idmat
+-fs_gop        	D	[0] 	1 
+-fs_gep        	D	[0] 	1 
+-tg_mode       	D	[0] 	1 
+-profile_mode  	S	[0] 	cw_profile_profile
+-profile_comparison	S	[0] 	profile
+-dp_mode       	S	[0] 	linked_pair_wise
+-ktuple        	D	[0] 	1 
+-ndiag         	D	[0] 	0 
+-diag_threshold	D	[0] 	0 
+-diag_mode     	D	[0] 	0 
+-sim_matrix    	S	[0] 	vasiliky
+-transform     	S	[0] 
+-extend_seq    	FL	[0] 	0
+-outorder      	S	[0] 	input
+-inorder       	S	[0] 	aligned
+-seqnos        	S	[0] 	off
+-case          	S	[0] 	keep
+-cpu           	D	[0] 	0 
+-ulimit        	D	[0] 	-1 
+-maxnseq       	D	[0] 	-1 
+-maxlen        	D	[0] 	-1 
+-sample_dp     	D	[0] 	0 
+-weight        	S	[0] 	default
+-seq_weight    	S	[0] 	no
+-align         	FL	[1] 	1
+-mocca         	FL	[0] 	0
+-domain        	FL	[0] 	0
+-start         	D	[0] 	0 
+-len           	D	[0] 	0 
+-scale         	D	[0] 	0 
+-mocca_interactive	FL	[0] 	0
+-method_evaluate_mode	S	[0] 	default
+-color_mode    	S	[0] 	new
+-aln_line_length	D	[0] 	0 
+-evaluate_mode 	S	[0] 	triplet
+-get_type      	FL	[0] 	0
+-clean_aln     	D	[0] 	0 
+-clean_threshold	D	[1] 	1 
+-clean_iteration	D	[1] 	1 
+-clean_evaluate_mode	S	[0] 	t_coffee_fast
+-extend_matrix 	FL	[0] 	0
+-prot_min_sim  	D	[0] 	0 
+-prot_max_sim  	D	[100] 	100 
+-psiJ          	D	[0] 	3 
+-psitrim_mode  	S	[0] 	regtrim
+-psitrim_tree  	S	[0] 	codnd
+-psitrim       	D	[100] 	100 
+-prot_min_cov  	D	[90] 	90 
+-pdb_type      	S	[0] 	d
+-pdb_min_sim   	D	[35] 	35 
+-pdb_max_sim   	D	[100] 	100 
+-pdb_min_cov   	D	[50] 	50 
+-pdb_blast_server	W_F	[0] 	EBI
+-blast         	W_F	[0] 
+-blast_server  	W_F	[0] 	EBI
+-pdb_db        	W_F	[0] 	pdb
+-protein_db    	W_F	[0] 	uniref50
+-method_log    	W_F	[0] 	no
+-struc_to_use  	S	[0] 
+-cache         	W_F	[0] 	use
+-print_cache   	FL	[0] 	0
+-align_pdb_param_file	W_F	[0] 	no
+-align_pdb_hasch_mode	W_F	[0] 	hasch_ca_trace_bubble
+-external_aligner	S	[0] 	NO
+-msa_mode      	S	[0] 	tree
+-et_mode       	S	[0] 	et
+-master        	S	[0] 	no
+-blast_nseq    	D	[0] 	0 
+-lalign_n_top  	D	[0] 	10 
+-iterate       	D	[0] 	0 
+-trim          	D	[0] 	0 
+-split         	D	[0] 	0 
+-trimfile      	S	[0] 	default
+-split         	D	[0] 	0 
+-split_nseq_thres	D	[0] 	0 
+-split_score_thres	D	[0] 	0 
+-check_pdb_status	D	[0] 	0 
+-clean_seq_name	D	[0] 	0 
+-seq_to_keep   	S	[0] 
+-dpa_master_aln	S	[0] 
+-dpa_maxnseq   	D	[0] 	0 
+-dpa_min_score1	D	[0] 
+-dpa_min_score2	D	[0] 
+-dpa_keep_tmpfile	FL	[0] 	0
+-dpa_debug     	D	[0] 	0 
+-multi_core    	S	[0] 	templates_jobs_relax_msa_evaluate
+-n_core        	D	[0] 	1 
+-thread        	D	[0] 	1 
+-max_n_proc    	D	[0] 	1 
+-lib_list      	S	[0] 
+-prune_lib_mode	S	[0] 	5
+-tip           	S	[0] 	none
+-rna_lib       	S	[0] 
+-no_warning    	D	[0] 	0 
+-run_local_script	D	[0] 	0 
+-proxy         	S	[0] 	unset
+-email         	S	[0] 
+-clean_overaln 	D	[0] 	0 
+-overaln_param 	S	[0] 
+-overaln_mode  	S	[0] 
+-overaln_model 	S	[0] 
+-overaln_threshold	D	[0] 	0 
+-overaln_target	D	[0] 	0 
+-overaln_P1    	D	[0] 	0 
+-overaln_P2    	D	[0] 	0 
+-overaln_P3    	D	[0] 	0 
+-overaln_P4    	D	[0] 	0 
+-exon_boundaries	S	[0] 
+-display       	D	[0] 	100 
+
+INPUT FILES
+	Input File (S) test.fas  Format fasta_seq
+	Input File (M) psicoffee_msa 
+
+Identify Master Sequences [no]:
+
+Master Sequences Identified
+INPUT SEQUENCES: 3 SEQUENCES  [PROTEIN]
+  Input File test.fas Seq 1 Length  105 type PROTEIN Struct Unchecked
+  Input File test.fas Seq 2 Length  110 type PROTEIN Struct Unchecked
+  Input File test.fas Seq 3 Length  107 type PROTEIN Struct Unchecked
+
+	Multi Core Mode (read): 1 processor(s):
+
+	--- Process Method/Library/Aln Stest.fas
+	xxx Retrieved Stest.fas
+	--- Process Method/Library/Aln Mpsicoffee_msa
+pid 1602719 -- COMMAND FAILED: dynamic.pl  -seq /var/tmp/tco/tco7ybgty2j1602712//73061602718t9uia272  -outfile /var/tmp/tco/tco7ybgty2j1602712//73061602718t9uia271        -method psicoffee_msa   >>/dev/null 2>&1
+
+	xxx Retrieved Mpsicoffee_msa
+
+	All Methods Retrieved
+
+****************** ERROR *****************************************
+
+You have not provided any method or enough Sequences[FATAL]
+If you have used the '-in' Flag, ADD the methods you wish to use:
+	-in <your sequences> Mlalign_id_pair Mfast_pair
+
+And make sure you provide at least TWO sequences
+/opt/t_coffee/bin/t_coffee -seq test.fas -method psicoffee_msa 
+*****************************************************************
+
+
+*************************************************************************************************
+*                        MESSAGES RECAPITULATION                                    
+1602719 -- WARNING: COMMAND FAILED: dynamic.pl  -seq /var/tmp/tco/tco7ybgty2j1602712//73061602718t9uia272  -outfile /var/tmp/tco/tco7ybgty2j1602712//73061602718t9uia271        -method psicoffee_msa   >>/dev/null 2>&1
+*************************************************************************************************
+
+```",alephreish,https://github.com/cbcrg/tcoffee/issues/66
+I_kwDOANWOC86Vpwm2,"""code"" and ""decode"" function modifies branch lengths and bootstrap values",OPEN,2024-09-06T16:01:24Z,2024-09-06T17:05:10Z,,"Hi,
+
+I am using the code/decode function to turn tip labels from accessions to species names. When I do this however, all branch lengths get reduced to 5 decimal places and all branch support values become 1 or 0 (if they were 1.00 before they remain 1, if they were less then 1.00, they get turned into 0). Is there a way to resolve this issue?
+
+Many thanks",kr3118,https://github.com/cbcrg/tcoffee/issues/67

@@ -1,0 +1,84 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5MzY3Mzg2NDY=,命令行直接输入ilus会报错：AttributeError: 'Namespace' object has no attribute 'sysconf',CLOSED,2021-07-05T06:28:42Z,2021-07-11T02:17:40Z,2021-07-11T02:17:40Z,"如题：
+pip安装完ilus后，命令行直接输入ilus会报错：
+```shell
+Traceback (most recent call last):
+  File ""/home/zhiyq/.conda/envs/ilus/bin/ilus"", line 8, in <module>
+    sys.exit(main())
+  File ""/home/zhiyq/.conda/envs/ilus/lib/python3.7/site-packages/ilus/main.py"", line 100, in main
+    with open(kwargs.sysconf) as C:
+AttributeError: 'Namespace' object has no attribute 'sysconf'
+```
+我在windows下和Linux下都试过，会报同样的错。
+Linux下Python 3.7.10；
+windows下Python 3.8.8。
+
+二者都使用的是conda环境中的python。
+
+请问是什么原因？
+",Sagityq,https://github.com/ShujiaHuang/ilus/issues/1
+MDU6SXNzdWU5NTc0ODQ0NTU=,ilus:跑测试数据，没有报错，但同样没有运行程序，没有目标文件生成,OPEN,2021-08-01T12:53:56Z,2021-08-11T06:59:16Z,,"树嘉大大您好：
+我是中山大学的在读博士liyt，关注您的公众号一段时间，作为生信小白，最近见您发表了ilus工具，立刻想研究学习，已按照您的yaml模板和fastq.list模板改写了本地模板（因上传的原因将文件后缀改为.txt），见附件，并在windows10的WSL下的conda环境下试运行，输出“** WGS done, 0 seconds elapsed **”，但没有运行程序，我不知道原因为何，想向您请假。第一次在github提iusse，还请多多指教，谢谢。
+![命令行](https://user-images.githubusercontent.com/54201517/127771490-5f70fde7-72c4-451f-9d61-530e0d4fa9de.JPG)
+[Input.txt](https://github.com/ShujiaHuang/ilus/files/6912697/Input.txt)
+[ilus_HGDP_210801.txt](https://github.com/ShujiaHuang/ilus/files/6912691/ilus_HGDP_210801.txt)
+
+Email: 61595554@qq.com
+",Li-Yaoting,https://github.com/ShujiaHuang/ilus/issues/2
+I_kwDODyPwn848eAsW,请问黄博士：RG头中tPU是什么参数,OPEN,2021-10-03T19:21:50Z,2022-08-05T02:07:47Z,,这个在黄博的教程中并没有，输入文件一定要带么,xiaosheng8361,https://github.com/ShujiaHuang/ilus/issues/3
+I_kwDODyPwn85t-x-4, AttributeError: 'str' object has no attribute 'resolve'.,OPEN,2023-08-10T13:17:41Z,2023-08-10T13:17:41Z,,"Hi Shujia,
+
+Thanks for your effort in this project.
+
+I got the following error when I wanted to generate the bash scripts for VQSR part.
+```
+$ilus VQSR     -n DZHK_WGS     -C ilus_sys.yaml     -L vcf.list     -O genotype     --as_pipe_shell_order
+
+Traceback (most recent call last):
+  File ""../miniconda3/bin/ilus"", line 8, in <module>
+    sys.exit(main())
+  File ""../miniconda3/lib/python3.8/site-packages/ilus/main.py"", line 183, in main
+    run_command(args)
+  File ""../miniconda3/lib/python3.8/site-packages/ilus/main.py"", line 174, in run_command
+    runner[args.command](args, aione)
+  File ""../miniconda3/lib/python3.8/site-packages/ilus/pipeline/_wgs.py"", line 250, in variantrecalibrator
+    _f(kwargs, aione, shell_fname, shell_log_folder, gatk_variantrecalibrator)
+  File ""../miniconda3/lib/python3.8/site-packages/ilus/pipeline/_wgs.py"", line 157, in _f
+    kwargs.outdir = safe_makedir(kwargs.outdir.resolve())  # return abspath
+AttributeError: 'str' object has no attribute 'resolve'
+```
+
+I have tried to replace 157 row in `../ilus/pipeline/_wgs.py` :`kwargs.outdir = safe_makedir(kwargs.outdir.resolve())  ` by `kwargs.outdir = safe_makedir(Path(kwargs.outdir).resolve())  `, but it didn't work.
+
+Do you have any suggestion?
+
+Best,
+Chuhua",yangchuhua,https://github.com/ShujiaHuang/ilus/issues/4
+I_kwDODyPwn85yPdyp,进行全外测序流程,OPEN,2023-09-28T03:57:04Z,2023-09-28T03:57:56Z,,"老师，您好，非常感谢您开发的软件，这个软件使我的运行更简便了，我使用了该软件运行了WGS流程，结果是正常的 我得到了相应的脚本，但是当我尝试使用该软件进行WES分析时 ，一直出现一个报错：[Error] Interval parameters in configuration file may be different from that input gvcf file list when calls 与我的WGS配置文件相比，我的WES配置文件只修改了这一部分：
+
+  interval: [""./ilus_wes.bed""]
+  
+  variant_calling_interval: [""./ilus_wes.bed""]
+我将原来的染色体变为了我的bed文件
+
+我的bed文件格式为：
+chr1 1000101 1000284
+请问这种报错是什么原因导致的？ 我该如何解决他？
+",zshu-alt,https://github.com/ShujiaHuang/ilus/issues/5
+I_kwDODyPwn86PrJQG,在step4，5时，总会有些任务没有跑成功,OPEN,2024-07-16T07:44:39Z,2024-07-16T07:44:39Z,,"你好，我使用ilus时遇到以下问题。
+在跑step4或step5的时候，会出现一些子任务失败。具体如下：
+![image](https://github.com/user-attachments/assets/e266e080-bb4c-4660-99cb-0fd273989362)
+
+然后我试了一下，单独跑该子任务，结果如下：
+![image](https://github.com/user-attachments/assets/3d534416-d61a-4bac-bc3d-f87f0acf6729)
+
+然后我看该脚本的内容，可能是由通配符“*”所引起的，而事实上，我在文件名前后加入“”后，脚本能成功运行。
+但我并没有能力一个个将其更改，因此寻求帮助。谢谢！
+
+",ZCJ0422,https://github.com/ShujiaHuang/ilus/issues/6
+I_kwDODyPwn86bSlfz,tests/ilus_sys.WGS.yaml is not found,OPEN,2024-10-22T12:39:22Z,2024-10-23T07:35:10Z,,"Hello,I could not found your configuration file template.
+Where I can find it?
+",mazh357,https://github.com/ShujiaHuang/ilus/issues/7
+I_kwDODyPwn86b7ReD,进行WGS时仅生成目录、shell及日志，没有output，单独使用各目录下shell能正常运行,OPEN,2024-10-26T17:03:17Z,2024-10-26T17:03:17Z,,"黄博士你好，进行WGS时仅生成目录、shell及日志，没有output，单独使用各目录下shell能正常运行，是什么原因导致？该如何解决？
+",mazh357,https://github.com/ShujiaHuang/ilus/issues/8
+I_kwDODyPwn86b84U3,请教关于VQSR的一些问题,OPEN,2024-10-27T08:48:00Z,2024-10-27T08:48:00Z,,老师您好，我想请教一下，假如我的X染色体是根据PAR区域设置了倍性，那么在后续的VQSR时可以将X染色体和常染色体放在一起建模吗？我想，X染色体和常染色体在VQSR的建模参数中应该只有DP会受到一些影响（一半的样本为男性导致的，即使忽略了PAR区域的倍性把男性作为二倍体也是如此），不知道老师在Nature的论文中是如何操作的呢,cocpu,https://github.com/ShujiaHuang/ilus/issues/9

@@ -1,0 +1,762 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHiqxEs5MRPI7,use this repo,CLOSED,2022-06-22T05:53:23Z,2023-02-14T14:20:29Z,2023-02-14T14:20:29Z,"@mvheetve, you can use this repo to host any nf related work for structural variants",matthdsm,https://github.com/nf-cmgg/structural/issues/1
+I_kwDOHiqxEs5TaJs2,Fix `MAKE_BINCOV_MATRIX`,CLOSED,2022-10-06T11:01:51Z,2023-03-14T14:07:32Z,2023-03-14T14:07:32Z,"Modules: [bincov-matrix](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/modules/local/bincov-matrix)
+Subworkflows: [make-bincov-matrix.nf](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/subworkflows/local/common-workflows/make-bincov-matrix.nf)
+GATK-SV: [MakeBinCovMatrix](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/MakeBincovMatrix.wdl)
+
+Current problem is that one sample is used to create a common bin size and bin location file and the other samples don't match the location file from this one sample, causing the workflow to fail. ",nvnieuwk,https://github.com/nf-cmgg/structural/issues/7
+I_kwDOHiqxEs5TaMNs,Reheader the Whamg VCFs,CLOSED,2022-10-06T11:07:43Z,2023-04-26T12:01:17Z,2023-04-26T12:01:17Z,"Modules: Create a new module that does the reheadering (The `Whamg` module is an `nf-core` so it shouldn't be changed) => can possibly also be done using `bcftools/reheader` from `nf-core`, but not sure
+Subworkflows: [RUN_WHAMG](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/blob/dev/subworkflows/local/gather-sample-evidence/run-whamg.nf)
+GATK-SV: [Whamg.wdl](https://github.com/broadinstitute/gatk-sv/blob/90e3e9a221bdfe7ab2cfedeffb704bc6f0e99aa9/wdl/Whamg.wdl#L209)
+
+The VCFs called using Whamg need to be reheadered",nvnieuwk,https://github.com/nf-cmgg/structural/issues/8
+I_kwDOHiqxEs5TaR1e,Finish Scramble,OPEN,2022-10-06T11:20:23Z,2023-11-07T14:43:09Z,,"Modules: [Scramble](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/modules/nf-core/scramble)
+Subworkflows: [RUN_SCRAMBLE](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/subworkflows/local/gather-sample-evidence/run-scramble.nf)
+GATK-SV: [Scramble.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/Scramble.wdl)
+
+This workflow needs to be properly added and fixed => Main issue here is the lack of a proper dataset (but should be fixed with Mathias' data)",nvnieuwk,https://github.com/nf-cmgg/structural/issues/9
+I_kwDOHiqxEs5Tah3B,Fix EVIDENCE_QC,CLOSED,2022-10-06T11:56:36Z,2023-03-14T14:08:01Z,2023-03-14T14:08:01Z,"Modules: lots and lots of modules
+Subworkflows: [EVIDENCE_QC](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/subworkflows/local/evidence-QC)
+GATK-SV: [EvidenceQC.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/EvidenceQC.wdl)
+
+This subworkflow still needs a lot of work! Most of the problems originate from the broken `MAKE_BINCOV_MATRIX` subworkflow at the moment, so that one should be fixed before starting this one. (see [issue](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/issues/7))",nvnieuwk,https://github.com/nf-cmgg/structural/issues/10
+I_kwDOHiqxEs5TajSt,Finish GATHER_BATCH_EVIDENCE,CLOSED,2022-10-06T11:59:43Z,2023-03-14T14:09:42Z,2023-03-14T14:09:42Z,"Subworkflows: [GATHER_BATCH_EVIDENCE](https://github.com/CenterForMedicalGeneticsGhent/nf-cmgg-structural/tree/dev/subworkflows/local/gather-batch-evidence)
+GATK-SV: [GatherBatchEvidence.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/GatherBatchEvidence.wdl)",nvnieuwk,https://github.com/nf-cmgg/structural/issues/11
+I_kwDOHiqxEs5Tajxu,Add CNV support,CLOSED,2022-10-06T12:00:53Z,2023-11-07T14:43:01Z,2023-11-07T14:43:00Z,Not high on the priority list right now. We should first focus on adding general SV calling,nvnieuwk,https://github.com/nf-cmgg/structural/issues/12
+I_kwDOHiqxEs5TakQf,Add ClusterBatch subworkflow,CLOSED,2022-10-06T12:02:06Z,2023-03-14T14:09:28Z,2023-03-14T14:09:28Z,"GATK-SV: [ClusterBatch](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/ClusterBatch.wdl)
+
+",nvnieuwk,https://github.com/nf-cmgg/structural/issues/13
+I_kwDOHiqxEs5Tak_J,Add GenerateBatchMetrics subworkflow,CLOSED,2022-10-06T12:03:42Z,2023-03-14T14:09:18Z,2023-03-14T14:09:18Z,GATK-SV: [GenerateBatchMetrics.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/GenerateBatchMetrics.wdl),nvnieuwk,https://github.com/nf-cmgg/structural/issues/14
+I_kwDOHiqxEs5Tale7,Add FilterBatch subworkflow,CLOSED,2022-10-06T12:04:50Z,2023-03-14T14:09:09Z,2023-03-14T14:09:09Z,GATK-SV: [FilterBatch.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/FilterBatch.wdl),nvnieuwk,https://github.com/nf-cmgg/structural/issues/15
+I_kwDOHiqxEs5Tam67,Add MergeBatchSites subworkflow,CLOSED,2022-10-06T12:08:12Z,2023-03-14T14:09:00Z,2023-03-14T14:08:59Z,GATK-SV: [MergeBatchSites.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/MergeBatchSites.wdl),nvnieuwk,https://github.com/nf-cmgg/structural/issues/16
+I_kwDOHiqxEs5TanmZ,Add GenotypeBatch subworkflow,CLOSED,2022-10-06T12:09:54Z,2023-03-14T14:08:52Z,2023-03-14T14:08:52Z,GATK-SV: [GenotypeBatch.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/GenotypeBatch.wdl),nvnieuwk,https://github.com/nf-cmgg/structural/issues/17
+I_kwDOHiqxEs5TaoUM,Add MakeCohortVCF subworkflow,CLOSED,2022-10-06T12:11:35Z,2023-03-14T14:08:12Z,2023-03-14T14:08:12Z,GATK-SV: [MakeCohortVCF.wdl](https://github.com/broadinstitute/gatk-sv/blob/master/wdl/MakeCohortVcf.wdl),nvnieuwk,https://github.com/nf-cmgg/structural/issues/18
+I_kwDOHiqxEs5gxag2,Investigate the use of Viola-SV,CLOSED,2023-03-14T14:11:00Z,2023-04-05T13:15:27Z,2023-04-05T13:15:27Z,"### Description of feature
+
+https://github.com/dermasugita/Viola-SV
+
+This Python API supports VCFs created with Delly, Lumpy (see if Smoove VCFs also work), Manta and Gridss. It can standardize and merge these VCFs and convert them to either breakpoint or breakend notation ",nvnieuwk,https://github.com/nf-cmgg/structural/issues/27
+I_kwDOHiqxEs5irof3,Fully add annotation,CLOSED,2023-04-05T13:17:06Z,2023-04-26T11:53:52Z,2023-04-26T11:53:52Z,"### Description of feature
+
+Run AnnotSV and Ensembl VEP in parallel. Use the Ensembl VEP VCF as input to VCFanno and use the AnnotSV TSV file as an annotation source",nvnieuwk,https://github.com/nf-cmgg/structural/issues/34
+I_kwDOHiqxEs5kbU4w,Add MEI support,OPEN,2023-04-26T11:59:17Z,2023-11-07T14:42:16Z,,"### Description of feature
+
+This should be added after CNV analysis has been fully implemented",nvnieuwk,https://github.com/nf-cmgg/structural/issues/36
+I_kwDOHiqxEs5kbWGN,Fully document the pipeline,CLOSED,2023-04-26T12:02:22Z,2024-03-29T11:23:51Z,2024-03-29T11:23:51Z,"### Description of feature
+
+The pipeline should be fully documented when it's ready for its first release",nvnieuwk,https://github.com/nf-cmgg/structural/issues/37
+I_kwDOHiqxEs5kgv_n,Fix `manta` errors,CLOSED,2023-04-27T07:49:37Z,2023-09-29T09:38:48Z,2023-09-29T09:38:38Z,"### Description of the bug
+
+When running manta on an HPC, the following error occurs:
+```
+
+[2023-04-26T17:36:31.661233Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Initiating pyFlow run
+[2023-04-26T17:36:31.661876Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] pyFlowClientWorkflowClass: MantaWorkflow
+[2023-04-26T17:36:31.661892Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] pyFlowVersion: 1.1.20
+[2023-04-26T17:36:31.661903Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] pythonVersion: 2.7.15.final.0
+[2023-04-26T17:36:31.661914Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] WorkingDir: '/vscmnt/gent_kyukon_scratch/_kyukon_scratch_gent/vo/000/gvo00082/vsc44804/work-structural/53/73332a2c679df04e2df65e4f53d647'
+[2023-04-26T17:36:31.661925Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] ProcessCmdLine: 'manta/runWorkflow.py -m local -j 12'
+[2023-04-26T17:36:31.661935Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] mode: local
+[2023-04-26T17:36:31.661945Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] nCores: 12
+[2023-04-26T17:36:31.661954Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] memMb: 94883
+[2023-04-26T17:36:31.661964Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] dataDir: /vscmnt/gent_kyukon_scratch/_kyukon_scratch_gent/vo/000/gvo00082/vsc44804/work-structural/53/73332a2c679df04e2df65e4f53d647/manta/workspace/pyflow.data
+[2023-04-26T17:36:31.661975Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] isDryRun: False
+[2023-04-26T17:36:31.661985Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] isContinue: False
+[2023-04-26T17:36:31.661995Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] isForceContinue: True
+[2023-04-26T17:36:31.662005Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [RunParameters] mailTo: ''
+[2023-04-26T17:36:31.662530Z] [node3214.victini.os] [2649321_1] [TaskRunner:masterWorkflow] Starting task specification for master workflow
+[2023-04-26T17:36:31.662721Z] [node3214.victini.os] [2649321_1] [MantaWorkflow] Initiating Manta workflow version: 1.6.0
+[2023-04-26T17:36:31.663546Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getAlignmentStats_makeTmpDir' to master workflow
+[2023-04-26T17:36:31.664448Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getAlignmentStats_makeTmpDir' from master workflow
+[2023-04-26T17:36:31.664919Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getAlignmentStats_generateStats_000' to master workflow
+[2023-04-26T17:36:31.665661Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getAlignmentStats_mergeStats' to master workflow
+[2023-04-26T17:36:31.666299Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getAlignmentStats_removeTmpDir' to master workflow
+[2023-04-26T17:36:31.667368Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'summarizeStats' to master workflow
+[2023-04-26T17:36:31.668151Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_makeTmpDir' to master workflow
+[2023-04-26T17:36:31.668619Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_sample000_makeTmpDir' to master workflow
+[2023-04-26T17:36:31.669868Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_makeTmpDir' from master workflow
+[2023-04-26T17:36:31.671954Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_sample000_estimateChromDepth_022_chrX' to master workflow
+[2023-04-26T17:36:31.675020Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_sample000_catChromDepth' to master workflow
+[2023-04-26T17:36:31.675512Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_mergeChromDepth' to master workflow
+[2023-04-26T17:36:31.675864Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'getChromDepth_removeTmpDir' to master workflow
+[2023-04-26T17:36:31.677351Z] [node3214.victini.os] [2649321_1] [TaskRunner:getAlignmentStats_makeTmpDir] Task initiated on local node
+[2023-04-26T17:36:31.679054Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'makeGraphTmpDir' to master workflow
+[2023-04-26T17:36:31.680753Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_makeTmpDir] Task initiated on local node
+[2023-04-26T17:36:31.684658Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'makeLocusGraph_chromId_022_chrX-253744-255091_0000_to_chromId_022_chrX-276323-303356_0000' to master workflow
+[2023-04-26T17:36:31.688432Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'makeLocusGraph_chromId_022_chrX-276323-303356_0000_to_chromId_022_chrX-333934-386955_0000' to master workflow
+[2023-04-26T17:36:31.690414Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_0000' to master workflow
+[2023-04-26T17:36:31.692362Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] Adding command task 'makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_0000' to master workflow
+[2023-04-26T17:36:31.858902Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getAlignmentStats_makeTmpDir' launched from master workflow
+[2023-04-26T17:36:31.859196Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_makeTmpDir' launched from master workflow
+[2023-04-26T17:36:31.860726Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_sample000_makeTmpDir' from master workflow
+[2023-04-26T17:36:31.861748Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getAlignmentStats_generateStats_000' from master workflow
+[2023-04-26T17:36:31.870277Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_sample000_makeTmpDir] Task initiated on local node
+[2023-04-26T17:36:31.873655Z] [node3214.victini.os] [2649321_1] [TaskRunner:getAlignmentStats_generateStats_000] Task initiated on local node
+[2023-04-26T17:36:32.027083Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_sample000_makeTmpDir' launched from master workflow
+[2023-04-26T17:36:32.028787Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_sample000_estimateChromDepth_022_chrX' from master workflow
+[2023-04-26T17:36:32.040267Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_sample000_estimateChromDepth_022_chrX] Task initiated on local node
+[2023-04-26T17:36:37.996402Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getAlignmentStats_generateStats_000' launched from master workflow
+[2023-04-26T17:36:37.998083Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getAlignmentStats_mergeStats' from master workflow
+[2023-04-26T17:36:38.006407Z] [node3214.victini.os] [2649321_1] [TaskRunner:getAlignmentStats_mergeStats] Task initiated on local node
+[2023-04-26T17:36:38.212908Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getAlignmentStats_mergeStats' launched from master workflow
+[2023-04-26T17:36:38.214380Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'summarizeStats' from master workflow
+[2023-04-26T17:36:38.215292Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getAlignmentStats_removeTmpDir' from master workflow
+[2023-04-26T17:36:38.227261Z] [node3214.victini.os] [2649321_1] [TaskRunner:summarizeStats] Task initiated on local node
+[2023-04-26T17:36:38.228651Z] [node3214.victini.os] [2649321_1] [TaskRunner:getAlignmentStats_removeTmpDir] Task initiated on local node
+[2023-04-26T17:36:38.380700Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getAlignmentStats_removeTmpDir' launched from master workflow
+[2023-04-26T17:36:38.397495Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'summarizeStats' launched from master workflow
+[2023-04-26T17:36:42.069870Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_sample000_estimateChromDepth_022_chrX' launched from master workflow
+[2023-04-26T17:36:42.070787Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_sample000_catChromDepth' from master workflow
+[2023-04-26T17:36:42.082634Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_sample000_catChromDepth] Task initiated on local node
+[2023-04-26T17:36:42.336180Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_sample000_catChromDepth' launched from master workflow
+[2023-04-26T17:36:42.337454Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_mergeChromDepth' from master workflow
+[2023-04-26T17:36:42.349626Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_mergeChromDepth] Task initiated on local node
+[2023-04-26T17:36:42.603686Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_mergeChromDepth' launched from master workflow
+[2023-04-26T17:36:42.604793Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'getChromDepth_removeTmpDir' from master workflow
+[2023-04-26T17:36:42.605613Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'makeGraphTmpDir' from master workflow
+[2023-04-26T17:36:42.618055Z] [node3214.victini.os] [2649321_1] [TaskRunner:getChromDepth_removeTmpDir] Task initiated on local node
+[2023-04-26T17:36:42.624799Z] [node3214.victini.os] [2649321_1] [TaskRunner:makeGraphTmpDir] Task initiated on local node
+[2023-04-26T17:36:42.772107Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'makeGraphTmpDir' launched from master workflow
+[2023-04-26T17:36:42.773262Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'makeLocusGraph_chromId_022_chrX-253744-255091_0000_to_chromId_022_chrX-276323-303356_0000' from master workflow
+[2023-04-26T17:36:42.774037Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_0000' from master workflow
+[2023-04-26T17:36:42.774802Z] [node3214.victini.os] [2649321_1] [TaskManager] Launching command task: 'makeLocusGraph_chromId_022_chrX-276323-303356_0000_to_chromId_022_chrX-333934-386955_0000' from master workflow
+[2023-04-26T17:36:42.787991Z] [node3214.victini.os] [2649321_1] [TaskRunner:makeLocusGraph_chromId_022_chrX-276323-303356_0000_to_chromId_022_chrX-333934-386955_0000] Task initiated on local node
+[2023-04-26T17:36:42.788838Z] [node3214.victini.os] [2649321_1] [TaskRunner:makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_0000] Task initiated on local node
+[2023-04-26T17:36:42.791145Z] [node3214.victini.os] [2649321_1] [TaskRunner:makeLocusGraph_chromId_022_chrX-253744-255091_0000_to_chromId_022_chrX-276323-303356_0000] Task initiated on local node
+[2023-04-26T17:36:42.792098Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'getChromDepth_removeTmpDir' launched from master workflow
+[2023-04-26T17:36:43.207232Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_0000' launched from master workflow
+[2023-04-26T17:36:43.322213Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'makeLocusGraph_chromId_022_chrX-276323-303356_0000_to_chromId_022_chrX-333934-386955_0000' launched from master workflow
+[2023-04-26T17:36:43.386734Z] [node3214.victini.os] [2649321_1] [TaskManager] Completed command task: 'makeLocusGraph_chromId_022_chrX-253744-255091_0000_to_chromId_022_chrX-276323-303356_0000' launched from master workflow
+[2023-04-26T17:36:48.387914Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR] Failed to complete master workflow, error code: 1
+[2023-04-26T17:36:48.388127Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR] errorMessage:
+[2023-04-26T17:36:48.388150Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR] Unhandled Exception in TaskRunner-Thread-masterWorkflow
+[2023-04-26T17:36:48.388166Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR] Traceback (most recent call last):
+[2023-04-26T17:36:48.388181Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 1069, in run
+[2023-04-26T17:36:48.388203Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     (retval, retmsg) = self._run()
+[2023-04-26T17:36:48.388217Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 1121, in _run
+[2023-04-26T17:36:48.388231Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     self.workflow.workflow()
+[2023-04-26T17:36:48.388245Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/mantaWorkflow.py"", line 853, in workflow
+[2023-04-26T17:36:48.388260Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     graphTasks = runLocusGraph(self,dependencies=graphTaskDependencies)
+[2023-04-26T17:36:48.388276Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/mantaWorkflow.py"", line 286, in runLocusGraph
+[2023-04-26T17:36:48.388293Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     graphTasks.add(self.addTask(graphTask,graphCmd,dependencies=dirTask,memMb=self.params.estimateMemMb))
+[2023-04-26T17:36:48.388309Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 3707, in addTask
+[2023-04-26T17:36:48.388323Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     self._addTaskCore(self._getNamespace(), label, payload, dependencies)
+[2023-04-26T17:36:48.388337Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 4087, in _addTaskCore
+[2023-04-26T17:36:48.388351Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     self._tdag.addTask(namespace, label, payload, dependencies)
+[2023-04-26T17:36:48.388367Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 537, in wrapped
+[2023-04-26T17:36:48.388381Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     return f(self, *args, **kw)
+[2023-04-26T17:36:48.388394Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]   File ""/usr/local/share/manta-1.6.0-1/lib/python/pyflow/pyflow.py"", line 2546, in addTask
+[2023-04-26T17:36:48.388409Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR]     raise Exception(""Task: '%s' is already in TaskDAG"" % (fullLabel))
+[2023-04-26T17:36:48.388424Z] [node3214.victini.os] [2649321_1] [WorkflowRunner] [ERROR] Exception: Task: 'makeLocusGraph_chromId_022_chrX-333934-386955_0000_to_chromId_022_chrX-333934-386955_00
+```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nvnieuwk,https://github.com/nf-cmgg/structural/issues/38
+I_kwDOHiqxEs5k9mfR,re-add gridss support,OPEN,2023-05-03T11:12:53Z,2023-11-07T14:42:36Z,,"### Description of feature
+
+consensus sequence can maybe created using this: https://samtools.github.io/bcftools/bcftools.html#consensus",nvnieuwk,https://github.com/nf-cmgg/structural/issues/39
+I_kwDOHiqxEs5lWvQU,Add expansionhunter for detection of repeats,CLOSED,2023-05-08T15:18:31Z,2023-09-29T09:37:07Z,2023-09-29T09:37:07Z,"### Description of feature
+
+Add Expansionhunter for detection of repeats",nvnieuwk,https://github.com/nf-cmgg/structural/issues/41
+I_kwDOHiqxEs5mwFRR,make testprofile document,CLOSED,2023-05-24T12:33:07Z,2023-11-07T14:43:39Z,2023-11-07T14:43:39Z,,nvnieuwk,https://github.com/nf-cmgg/structural/issues/43
+I_kwDOHiqxEs5mwFTE,tune SVcaller parameters,OPEN,2023-05-24T12:33:11Z,2023-11-07T14:43:52Z,,,nvnieuwk,https://github.com/nf-cmgg/structural/issues/44
+I_kwDOHiqxEs5oe3GO,New caller: svaba,OPEN,2023-06-12T14:40:52Z,2023-11-07T14:44:05Z,,"### Description of feature
+
+https://github.com/walaj/svaba",nvnieuwk,https://github.com/nf-cmgg/structural/issues/48
+I_kwDOHiqxEs5yYJ2g,Add VCF to BEDPE conversion,OPEN,2023-09-29T09:36:53Z,2024-02-22T16:17:53Z,,"### Description of feature
+
+https://github.com/ctsa/svtools",nvnieuwk,https://github.com/nf-cmgg/structural/issues/49
+I_kwDOHiqxEs5ypkyc,Add validation,OPEN,2023-10-03T07:33:35Z,2023-11-07T14:44:21Z,,"### Description of feature
+
+Add a way to perform validation in the pipeline instead of having to manually validate the output",nvnieuwk,https://github.com/nf-cmgg/structural/issues/51
+I_kwDOHiqxEs505Ozj,Investigate stranger for repeat expansion annotation,OPEN,2023-10-25T11:24:33Z,2023-11-07T14:44:28Z,,"### Description of feature
+
+https://github.com/Clinical-Genomics/stranger",nvnieuwk,https://github.com/nf-cmgg/structural/issues/53
+I_kwDOHiqxEs506I8n,Add comprehensive filter steps,CLOSED,2023-10-25T13:13:36Z,2023-11-07T14:42:02Z,2023-11-07T14:42:02Z,"### Description of feature
+
+After Jasmine some filter steps should still be added. 
+1. A possibility to filter commonly occurring variants given through an input VCF
+2. A way to hard filter based on fields (like you can do with bcftools filter)",nvnieuwk,https://github.com/nf-cmgg/structural/issues/54
+I_kwDOHiqxEs52G9G9,Add BED => VCF support for CNVs,CLOSED,2023-11-07T14:45:21Z,2023-11-28T11:11:17Z,2023-11-28T11:11:17Z,"### Description of feature
+
+Add some way to convert the CNV BED files to VCF format",nvnieuwk,https://github.com/nf-cmgg/structural/issues/56
+I_kwDOHiqxEs52G933,Add family support,CLOSED,2023-11-07T14:46:26Z,2023-11-29T07:50:04Z,2023-11-29T07:50:04Z,"### Description of feature
+
+Add some way to merge single-sample VCFs into multi-sample VCFs (possible with `bcftools merge`)",nvnieuwk,https://github.com/nf-cmgg/structural/issues/57
+I_kwDOHiqxEs53UnZ6,Standardize variants for callers of the same type,CLOSED,2023-11-20T10:42:56Z,2024-03-12T13:52:34Z,2024-03-12T13:52:34Z,"### Description of feature
+
+Not all callers report all variants in the same way. This needs some standardization. 
+
+Some links for inspiration:
+ - SV: https://support.illumina.com/content/dam/illumina-support/help/Illumina_DRAGEN_Bio_IT_Platform_v3_7_1000000141465/Content/SW/Informatics/Dragen/OutputFilesMantaVCFInterpretation_fDG.htm
+ - CNV: https://support.illumina.com/content/dam/illumina-support/help/Illumina_DRAGEN_Bio_IT_Platform_v3_7_1000000141465/Content/SW/Informatics/Dragen/CNVVCFFile_fDG_dtSW.htm => This can be done with `bedgovcf`
+ - Repeat expansions: https://support.illumina.com/content/dam/illumina-support/help/Illumina_DRAGEN_Bio_IT_Platform_v3_7_1000000141465/Content/SW/RepeatGenotyping_fDG_dtSW.htm",nvnieuwk,https://github.com/nf-cmgg/structural/issues/59
+I_kwDOHiqxEs53VvwZ,Add VCF to JSON conversion,OPEN,2023-11-20T13:16:31Z,2023-11-28T11:12:03Z,,"### Description of feature
+
+Add VCF to JSON conversion with certain filter to use for the visualization of the SVs",nvnieuwk,https://github.com/nf-cmgg/structural/issues/60
+I_kwDOHiqxEs54KeQU,Update tests,CLOSED,2023-11-29T07:51:20Z,2024-03-12T13:52:09Z,2024-03-12T13:52:09Z,"### Description of feature
+
+Change the tests to a more unit test/modular approach where each part is tested for all possible inputs and outputs. Only run the whole pipeline in stub form to test the connection between all parts",nvnieuwk,https://github.com/nf-cmgg/structural/issues/62
+I_kwDOHiqxEs54Ki7E,Better header handling,CLOSED,2023-11-29T08:05:05Z,2024-03-12T13:51:58Z,2024-03-12T13:51:58Z,"### Description of feature
+
+The current way just dumps all possible header fields inside of the VCF header, but that's not the most efficient and correct way of handling this problem. I need to find some dynamic way to add the correct headers (especially for custom headers added with VCFANNO)",nvnieuwk,https://github.com/nf-cmgg/structural/issues/63
+I_kwDOHiqxEs54UcSD,Investigate VDS format for the creation of a false positive variants list,OPEN,2023-11-30T13:02:17Z,2023-11-30T13:02:23Z,,"### Description of feature
+
+https://hail.is/docs/0.2/vds/index.html",nvnieuwk,https://github.com/nf-cmgg/structural/issues/65
+I_kwDOHiqxEs54VevF,include gnomADv4 SV annotation,OPEN,2023-11-30T15:19:31Z,2023-11-30T15:20:31Z,,"### gnomAD v4 SV fields for annotation
+
+I went over the gnomAD v4 SV header and selected a few fields that seem relevant for the annotation step. Here is an overview, we can discuss during the meeting next week.
+
+1. All info fields can be selected for the whole dataset, or for subsets (from gnomADv3), using these prefixes:
+- `controls_and_biobanks_` only samples collected specifically as controls for disease studies, or samples belonging to biobanks (e.g. BioMe, Genizon) or general population studies (e.g., 1000 Genomes, HGDP, PAGE)
+- `non_neuro_` only samples that were not collected as part of a neurologic or psychiatric case/control study, or samples collected as part of a neurologic or psychiatric case/control study but designated as controls
+
+2. All info fields can be selected for the whole dataset, or for populations (from gnomADv3), using these prefixes:
+- `afr_` African/African American
+- `ami_` Amish
+- `amr_` Latino/Admixed American
+- `asj_` Ashkenazi Jewish
+- `eas_` East Asian
+- `fin_` Finnish
+- `nfe_` Non-Finnish European
+- `mid_` Middle Eastern
+- `sas_` South Asian
+- `oth_` Other (population not assigned)
+
+for 1 and 2: I don't expect us to differentiate at this point, but I'm putting it out there for any future implementations. 
+
+3. For annotation :
+
+- use for vcfanno determination of identity
+`CHROM POS REF ALT `
+`##ALT=<ID=CNV,Description=""Copy Number Polymorphism"">` Seems like CNVs will have to determined on positions?!
+
+```
+##INFO=<ID=END,Number=1,Type=Integer,Description=""End position of the structural variant"">
+##INFO=<ID=CHR2,Number=1,Type=String,Description=""Chromosome for END coordinate"">	 
+##INFO=<ID=POS2,Number=1,Type=Integer,Description=""Start position of the structural variant on CHR2"">
+##INFO=<ID=END2,Number=1,Type=Integer,Description=""End position of the structural variant on CHR2"">
+```
+
+- `ID` rename to `gnomad4ID ` the ID of the variant according to gnomADv4
+
+- `FILTER`
+`##FILTER=<ID=PASS,Description=""All filters passed"">` maybe only annotate with SVs after filtering?, could add an annotation field saying it is present in gnomad4 but doesn't pass filtering? I made a table for the different type of `FILTER` value
+```
+1199117 PASS
+ 278316 UNRESOLVED
+ 186815 LOWQUAL_WHAM_SR_DEL;OUTLIER_SAMPLE_ENRICHED
+ 131479 LOWQUAL_WHAM_SR_DEL
+ 109905 OUTLIER_SAMPLE_ENRICHED
+  82853 HIGH_NCR
+  79159 HIGH_NCR;UNRESOLVED
+  70291 HIGH_NCR;LOWQUAL_WHAM_SR_DEL
+   7280 IGH_MHC_OVERLAP;UNRESOLVED
+   5424 IGH_MHC_OVERLAP
+   1624 HIGH_NCR;IGH_MHC_OVERLAP;UNRESOLVED
+    882 IGH_MHC_OVERLAP;LOWQUAL_WHAM_SR_DEL
+    514 HIGH_NCR;IGH_MHC_OVERLAP
+    493 HIGH_NCR;IGH_MHC_OVERLAP;LOWQUAL_WHAM_SR_DEL
+    254 FAIL_MANUAL_REVIEW
+     57 REFERENCE_ARTIFACT
+     23 FAIL_MANUAL_REVIEW;HIGH_NCR
+```
+
+- INFO
+`##INFO=<ID=AC,Number=A,Type=Integer,Description=""Allele count in genotypes"">` rename to `gnomad4AC`
+`##INFO=<ID=AF,Number=A,Type=Float,Description=""Allele frequency (biallelic sites only)."">` rename to `gnomad4AF`
+`##INFO=<ID=MALE_AF,Number=A,Type=Float,Description=""MALE allele frequency (biallelic sites only)."">` rename to `gnomad4AF_MALE`
+`##INFO=<ID=FEMALE_AF,Number=A,Type=Float,Description=""FEMALE allele frequency (biallelic sites only)."">` rename to `gnomad4AF_FEMALE`
+`##INFO=<ID=FREQ_HET,Number=1,Type=Float,Description=""Heterozygous genotype frequency (biallelic sites only)."">` rename to `gnomad4HETF`
+`##INFO=<ID=FREQ_HOMALT,Number=1,Type=Float,Description=""Homozygous alternate genotype frequency (biallelic sites only)."">` rename to `gnomad4HOMF`
+`##INFO=<ID=CN_NONREF_FREQ,Number=1,Type=Float,Description=""Frequency of samples with non-reference copy states (multiallelic CNVs only)."">` rename to `gnomad4CNF`
+`##INFO=<ID=CPX_INTERVALS,Number=.,Type=String,Description=""Genomic intervals constituting complex variant."">` rename to `gnomad4INT`
+`##INFO=<ID=CPX_TYPE,Number=1,Type=String,Description=""Class of complex variant."">` rename to `gnomad4TYPE` (the type of variant it is according to gnomADv4), use the same types as here
+```
+##CPX_TYPE_INS_iDEL=""Insertion with deletion at insertion site.""
+##CPX_TYPE_INVdel=""Complex inversion with 3' flanking deletion.""
+##CPX_TYPE_INVdup=""Complex inversion with 3' flanking duplication.""
+##CPX_TYPE_dDUP=""Dispersed duplication.""
+##CPX_TYPE_dDUP_iDEL=""Dispersed duplication with deletion at insertion site.""
+##CPX_TYPE_delINV=""Complex inversion with 5' flanking deletion.""
+##CPX_TYPE_delINVdel=""Complex inversion with 5' and 3' flanking deletions.""			
+##CPX_TYPE_delINVdup=""Complex inversion with 5' flanking deletion and 3' flanking duplication.""
+##CPX_TYPE_dupINV=""Complex inversion with 5' flanking duplication.""
+##CPX_TYPE_dupINVdel=""Complex inversion with 5' flanking duplication and 3' flanking deletion.""
+##CPX_TYPE_dupINVdup=""Complex inversion with 5' and 3' flanking duplications.""
+##CPX_TYPE_piDUP_FR=""Palindromic inverted tandem duplication, forward-reverse orientation.""
+##CPX_TYPE_piDUP_RF=""Palindromic inverted tandem duplication, reverse-forward orientation.""	
+```
+
+The following seem interesting to me, but should maybe be evaluated first for relevance and performance:
+```
+##INFO=<ID=PREDICTED_BREAKEND_EXONIC,Number=.,Type=String,Description=""Gene(s) for which the SV breakend is predicted to fall in an exon."">
+##INFO=<ID=PREDICTED_COPY_GAIN,Number=.,Type=String,Description=""Gene(s) on which the SV is predicted to have a copy-gain effect."">
+##INFO=<ID=PREDICTED_DUP_PARTIAL,Number=.,Type=String,Description=""Gene(s) which are partially overlapped by an SV's duplication, but the transcription start site is not duplicated."">
+##INFO=<ID=PREDICTED_INTERGENIC,Number=0,Type=Flag,Description=""SV does not overlap any protein-coding genes."">
+##INFO=<ID=PREDICTED_INTRAGENIC_EXON_DUP,Number=.,Type=String,Description=""Gene(s) on which the SV is predicted to result in intragenic exonic duplication without breaking any coding sequences."">
+##INFO=<ID=PREDICTED_INTRONIC,Number=.,Type=String,Description=""Gene(s) where the SV was found to lie entirely within an intron."">
+##INFO=<ID=PREDICTED_INV_SPAN,Number=.,Type=String,Description=""Gene(s) which are entirely spanned by an SV's inversion."">
+##INFO=<ID=PREDICTED_LOF,Number=.,Type=String,Description=""Gene(s) on which the SV is predicted to have a loss-of-function effect."">
+##INFO=<ID=PREDICTED_MSV_EXON_OVERLAP,Number=.,Type=String,Description=""Gene(s) on which the multiallelic SV would be predicted to have a LOF, INTRAGENIC_EXON_DUP, COPY_GAIN, DUP_PARTIAL, TSS_DUP, or PARTIAL_EXON_DUP annotation if the SV were biallelic."">
+##INFO=<ID=PREDICTED_NEAREST_TSS,Number=.,Type=String,Description=""Nearest transcription start site to an intergenic variant."">
+##INFO=<ID=PREDICTED_PARTIAL_EXON_DUP,Number=.,Type=String,Description=""Gene(s) where the duplication SV has one breakpoint in the coding sequence."">
+##INFO=<ID=PREDICTED_PROMOTER,Number=.,Type=String,Description=""Gene(s) for which the SV is predicted to overlap the promoter region."">
+##INFO=<ID=PREDICTED_TSS_DUP,Number=.,Type=String,Description=""Gene(s) for which the SV is predicted to duplicate the transcription start site."">
+##INFO=<ID=PREDICTED_UTR,Number=.,Type=String,Description=""Gene(s) for which the SV is predicted to disrupt a UTR."">
+##INFO=<ID=SOURCE,Number=1,Type=String,Description=""Source of inserted sequence."">
+##INFO=<ID=STRANDS,Number=1,Type=String,Description=""Breakpoint strandedness [++,+-,-+,--]"">
+```
+
+To be continued... 
+",mvheetve,https://github.com/nf-cmgg/structural/issues/66
+I_kwDOHiqxEs54cqZX,Handling duplicate rows in samplesheet with warnings,CLOSED,2023-12-01T12:22:34Z,2023-12-01T12:36:43Z,2023-12-01T12:36:43Z,"### Warnings for duplicate sample sheet rows
+
+When the samplesheet contains duplicate rows, it now says:
+
+```
+Samplesheet errors:
+	The samplesheet contains duplicate rows for entry 5 and entry 17 ([sample:sample1, cram:s3://cmgg-results/WGS/cram/.../sample1/sample1.cram, crai:s3://cmgg-results/WGS/cram/.../sample1/sample1cram.crai])
+```
+
+Maybe it would be better if you issue a warning and proceed with the pipeline, ignoring any duplicated instances. 
+
+Just a thought
+Mattias",mvheetve,https://github.com/nf-cmgg/structural/issues/67
+I_kwDOHiqxEs57aVU-,AnnotSV issue ,CLOSED,2024-01-08T13:49:04Z,2024-02-22T16:17:24Z,2024-02-22T16:17:24Z,"### Description of the bug
+
+Encountered an issue during annotation related to AnnotSV. From what I understand it is a known bug for 64bit machines and is caused by Tcl and the allocated memory block limit. The workarounds proposed [here](https://stackoverflow.com/questions/27419249/max-size-for-a-tcl-value-2147483647-bytes-exceeded) require version changes of certain dependancies. If this is at an operating system level, maybe we need to drag the HPC crew into this.
+
+All data, including jobscript, input, nextflow.log, stderror and stdout can be found at `$VSC_DATA_VO/research/ICT/VAL/VAL_batch1`.
+Work directory is `$VSC_SCRATCH_VO/gvo00082/vsc43079/VAL_batch1/structural`, let me know if you need access. 
+
+Regards
+M
+
+### Command used and terminal output
+
+```console
+Input:
+
+nextflow \
+	-log ${OUTDIR}/.nextflow.log \
+	run CenterForMedicalGeneticsGhent/nf-cmgg-structural \
+	-r proper-testing \
+	-work-dir ${WORKDIR} \
+	--input ${samplesheet} \
+	--outdir ${OUTDIR} \
+	-profile vsc_ugent,$SLURM_CLUSTERS \
+	--genomes_base ${genomes_base} \
+	-resume \
+	-latest \
+	-c /kyukon/data/gent/vo/000/gvo00082/research/ICT/VAL/vep_cache.config \
+	--callers manta,delly,smoove,qdnaseq,wisecondorx,expansionhunter \
+	--output_callers \
+	--igenomes_ignore true \
+	--annotate \
+	--vep_version 110.0 \
+	--vep_cache_version 110 \
+	--annotsv_annotations ""${genomes_base}/Hsapiens/GRCh38.p14/variation/AnnotSV/AnnotSV-3.3.4.tar.gz"" \
+	--vcfanno_resources ""/kyukon/data/gent/vo/000/gvo00082/WGS/custom_files/[!dbVar]*""
+
+
+Output: 
+
+
+WARN: Killing running tasks (5)
+Join mismatch for the following entries: 
+- key=[id:D2125260, sample:D2125260, family:D2125260, sex:female, family_count:1, variant_type:sv] values= 
+- key=[id:D2200653, sample:D2200653, family:D2200653, sex:female, family_count:1, variant_type:sv] values=
+
+
+Join mismatch for the following entries: 
+- key=[id:D2018788, sample:D2018788, family:D2018788, sex:male, family_count:1, variant_type:sv] values= 
+- key=[id:D2117741, sample:D2117741, family:D2117741, sex:male, family_count:1, variant_type:sv] values=
+
+
+
+executor >  slurm (22)
+[b0/2776d4] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 1 of 1, cached: 1 ✔
+[1a/e88d7f] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 1 of 1, cached: 1 ✔
+[a0/7da88f] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 2 of 2, cached: 2 ✔
+[09/845236] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 2 of 2, cached: 2 ✔
+[50/84ba0a] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[f5/b00c08] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 1 of 1, cached: 1 ✔
+[b3/7ecd9d] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 1 of 1, cached: 1 ✔
+[2b/baa2ea] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached: 12
+[78/5057a2] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached: 12
+[b7/7c8cb0] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[06/301dc7] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[cb/a7abbd] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[a1/70aaff] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[56/b3429c] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached:...
+[be/8b46d4] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached: 11
+[17/206ee6] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached: 11
+[ff/bef45a] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 12 of 12, cached: 11
+[1a/cee952] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[f3/870a88] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 8 of 8, cached: 8 ✔
+[4d/e7e8bd] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 6 of 6, cached: 6 ✔
+[26/8f6e89] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[c3/46954f] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[f9/a09f10] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[fc/016b86] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[dc/98318e] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[cd/ee0417] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[2c/15e1e1] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[94/ae531c] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[3c/9c7b8f] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[ff/0bc745] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[f6/48b8b2] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[1b/28e2b4] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 26 of 26, cached:...
+[87/8e941f] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 33 of 33, cached:...
+[29/e3a9dc] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 23 of 23, cached: 23
+[75/5924cd] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 25 of 25, cached: 24
+[f0/68a580] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 25 of 25, cached: 24
+[6f/2faf20] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 23 of 23, cached: 23
+[cd/f82150] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 23 of 23, cached: 23
+[93/4d3850] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[7a/d90382] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[64/8caadb] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[f7/81d6e7] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... [100%] 14 of 14, cached:...
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+[-        ] process > CMGG_CMGGSTRUCTURAL:CMGGSTR... -
+ERROR ~ Error executing process > 'CMGG_CMGGSTRUCTURAL:CMGGSTRUCTURAL:VCF_ANNOTATE_VEP_ANNOTSV_VCFANNO:ANNOTSV_ANNOTSV (D2117741)'
+
+Caused by:
+  Process `CMGG_CMGGSTRUCTURAL:CMGGSTRUCTURAL:VCF_ANNOTATE_VEP_ANNOTSV_VCFANNO:ANNOTSV_ANNOTSV (D2117741)` terminated with an error exit status (134)
+
+Command executed:
+
+  AnnotSV \
+      -annotationsDir annotsv_annotations \
+       \
+       \
+       \
+       \
+      -outputFile D2117741.annot.tsv \
+      -SVinputFile D2117741.filter.vcf \
+      -vcf 1 -SVminSize 20
+  
+  mv *_AnnotSV/* .
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""CMGG_CMGGSTRUCTURAL:CMGGSTRUCTURAL:VCF_ANNOTATE_VEP_ANNOTSV_VCFANNO:ANNOTSV_ANNOTSV"":
+      annotsv: $(echo $(AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //'))
+  END_VERSIONS
+
+Command exit status:
+  134
+
+Command output:
+  AnnotSV 3.3.6
+  
+  Copyright (C) 2017-2023 GEOFFROY Veronique
+  
+  Please feel free to contact me for any suggestions or bug reports
+  email: veronique.geoffroy@inserm.fr
+  
+  Tcl/Tk version: 8.6
+  
+  Application name used:
+  /usr/local
+  
+  
+  ...downloading the configuration data (December 01 2023 - 14:55)
+  	...configuration data by default
+  	...configuration data from /usr/local/etc/AnnotSV/configfile
+  	...configuration data given in arguments
+  	...checking all these configuration data
+  
+  ...VCF to BED (December 01 2023 - 14:55)
+  	...WARNING: 197997 sample IDs with missing alleles in the GT field (./. or .|.) have been reported in the ""Samples_ID"" output field
+
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  max size for a Tcl value (2147483647 bytes) exceeded
+  .command.sh: line 10:    43 Aborted                 (core dumped) AnnotSV -annotationsDir annotsv_annotations -outputFile D2117741.annot.tsv -SVinputFile D2117741.filter.vcf -vcf 1 -SVminSize 20
+
+Work dir:
+  /kyukon/scratch/gent/vo/000/gvo00082/vsc43079/VAL_batch1/structural/work/cf/1b73bfe151eb7e49faf0911b9f9e71
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+ -- Check '/kyukon/data/gent/vo/000/gvo00082/research/ICT/VAL/VAL_batch1/structural/.nextflow.log' file for details
+[b8/887295] NOTE: Process `CMGG_CMGGSTRUCTURAL:CMGGSTRUCTURAL:VCF_ANNOTATE_VEP_ANNOTSV_VCFANNO:ANNOTSV_ANNOTSV (D2018788)` terminated with an error exit status (143) -- Execution is retried (3)
+```
+```
+
+
+### Relevant files
+
+See `$VSC_DATA_VO/research/ICT/VAL/VAL_batch1`
+
+### System information
+
+See jobscript",mvheetve,https://github.com/nf-cmgg/structural/issues/68
+I_kwDOHiqxEs59NFNm,Fully support conda for all modules,OPEN,2024-01-25T15:01:30Z,2024-02-22T16:18:10Z,,"### Description of the bug
+
+Conda isn't supported for all modules for now (especially qdnaseq is missing a conda declaration for now). This should be fixed to increase the usability of the pipeline
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nvnieuwk,https://github.com/nf-cmgg/structural/issues/70
+I_kwDOHiqxEs6Ag3o2,Vcfanno annotate gene panel overlaps,OPEN,2024-02-27T09:30:05Z,2024-02-27T09:30:05Z,,"### Description of feature
+
+see title",nvnieuwk,https://github.com/nf-cmgg/structural/issues/71
+I_kwDOHiqxEs6EWwHM,MSG: ERROR: Cache directory vep/homo_sapiens not found,CLOSED,2024-04-02T13:38:32Z,2024-04-03T13:09:17Z,2024-04-03T13:09:17Z,"### Description of the bug
+
+For some reason it can't find the vep cache. I had something similar a while back and then used a custom config to fix this. I'm testing it helps now as well, if so we better fix this before the release. 
+Keep you posted.
+
+### Command used and terminal output
+
+```console
+## command
+nextflow \
+	-log ${OUTDIR}/.nextflow.log \
+	run nf-cmgg/structural \
+	-r dev \
+	-work-dir ${WORKDIR} \
+	--input ${samplesheet} \
+	--outdir ${OUTDIR} \
+	-profile vsc_ugent,$SLURM_CLUSTERS \
+	--genomes_base ${genomes_base} \
+	-resume \
+	-latest \
+	-c /kyukon/data/gent/vo/000/gvo00082/research/ICT/VAL/vcfanno_custom.config \
+	--callers manta,delly,smoove,qdnaseq,wisecondorx,expansionhunter \
+	--output_callers \
+	--igenomes_ignore true \
+	--annotate \
+	--vep_version 110.0 \
+	--vep_cache_version 110 \
+	--annotsv_annotations ""${genomes_base}/Hsapiens/GRCh38.p14/variation/AnnotSV/AnnotSV-3.3.4.tar.gz"" 
+
+## terminal
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  Smartmatch is experimental at /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/AnnotationSource/File.pm line 472.
+  
+  -------------------- EXCEPTION --------------------
+  MSG: ERROR: Cache directory vep/homo_sapiens not found
+  
+  STACK Bio::EnsEMBL::VEP::CacheDir::dir /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:305
+  STACK Bio::EnsEMBL::VEP::CacheDir::init /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:219
+  STACK Bio::EnsEMBL::VEP::CacheDir::new /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/CacheDir.pm:111
+  STACK Bio::EnsEMBL::VEP::AnnotationSourceAdaptor::get_all_from_cache /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/AnnotationSourceAdaptor.pm:116
+  STACK Bio::EnsEMBL::VEP::AnnotationSourceAdaptor::get_all /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/AnnotationSourceAdaptor.pm:92
+  STACK Bio::EnsEMBL::VEP::BaseRunner::get_all_AnnotationSources /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/BaseRunner.pm:170
+  STACK Bio::EnsEMBL::VEP::Runner::init /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/Runner.pm:128
+  STACK Bio::EnsEMBL::VEP::Runner::run /usr/local/share/ensembl-vep-110.0-0/modules/Bio/EnsEMBL/VEP/Runner.pm:200
+  STACK toplevel /usr/local/bin/vep:46
+  Date (localtime)    = Sun Mar 31 03:31:07 2024
+  Ensembl API version = 110
+  ---------------------------------------------------
+```
+
+
+### Relevant files
+
+[nextflow_vepError.log](https://github.com/nf-cmgg/structural/files/14837338/nextflow_vepError.log)
+
+
+### System information
+
+HPC Doduo cluster",mvheetve,https://github.com/nf-cmgg/structural/issues/78
+I_kwDOHiqxEs6Efrk-,Only save the last dev docs,CLOSED,2024-04-03T13:10:23Z,2024-04-03T13:47:38Z,2024-04-03T13:47:38Z,"### Description of feature
+
+Only the last `dev` documentation should be built as `dev` version. This documentation should also never be set as the `latest`",nvnieuwk,https://github.com/nf-cmgg/structural/issues/81
+I_kwDOHiqxEs6FFeHQ,Add HPO terms to the samplesheet,CLOSED,2024-04-09T07:38:07Z,2024-06-05T14:43:29Z,2024-06-05T14:43:29Z,"### Description of feature
+
+It can be useful to add HPO terms to the samplesheet for each sample. This can be used by AnnotSV to get more useful information.",nvnieuwk,https://github.com/nf-cmgg/structural/issues/82
+I_kwDOHiqxEs6FG38i,Copy samplesheet in output directory,OPEN,2024-04-09T10:58:35Z,2024-04-09T10:58:35Z,,"### Description of feature
+
+See title",nvnieuwk,https://github.com/nf-cmgg/structural/issues/83
+I_kwDOHiqxEs6FIB2W,--callers all param,CLOSED,2024-04-09T13:42:42Z,2024-04-29T11:25:59Z,2024-04-29T11:25:59Z,"### Description of feature
+
+It would be lovely if `--callers` had the `all` option, instead of having to make a comma separated list of all callers. ",mvheetve,https://github.com/nf-cmgg/structural/issues/84
+I_kwDOHiqxEs6GJHjR,smoove.vcf.gz indexin,CLOSED,2024-04-18T12:12:31Z,2024-05-02T09:04:49Z,2024-05-02T09:04:49Z,"### Description of the bug
+
+When using `--output_callers`, the directory containing 
+
+```
+- smoove.vcf.gz
+- svync.smoove.vcf.gz.tbi 
+```
+
+`smoove.vcf.gz` should be indexed when created and  `svync.smoove.vcf.gz.tbi` can go.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",mvheetve,https://github.com/nf-cmgg/structural/issues/86
+I_kwDOHiqxEs6HBS54,Some bugs found the output of the pipeline,OPEN,2024-04-26T08:36:50Z,2024-04-30T08:22:16Z,,"### Description of the bug
+
+1. wisecondorx reports SVLEN wrong I guess:
+```
+chr21	13900001	wisecondorx_344	N	<DEL>	.	PASS	CNV_RATIO=-0.0368;ZSCORE=-8.95856;SVTYPE=CNV;END=24100000;SVLEN=1;CALLERS=wisecondorx	GT:CN	.:0
+chr21	24100001	wisecondorx_345	N	<DUP>	.	PASS	CNV_RATIO=0.1254;ZSCORE=23.8602;SVTYPE=CNV;END=25700000;SVLEN=1;CALLERS=wisecondorx	GT:CN	.:0
+```
+2. not sure if this is a bug or not but in qdnaseq tool thereis only result for chr18,chrX and chrY
+3. SVLEN is missing in DELLY
+
+Issues reported by @kubranarci, thank you!
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nvnieuwk,https://github.com/nf-cmgg/structural/issues/88
+I_kwDOHiqxEs6HOq_f,Make the workflow pluggable,CLOSED,2024-04-29T11:25:28Z,2024-05-29T09:51:35Z,2024-05-29T09:51:35Z,"### Description of feature
+
+Remove all mentions of `params` in the workflows and add them all as inputs to the workflows/subworkflows
+Emit all sensible outputs from the main workflow too",nvnieuwk,https://github.com/nf-cmgg/structural/issues/90
+I_kwDOHiqxEs6KdHIJ,Automatically check if the VEP cache contains a merged cache,OPEN,2024-05-29T09:52:26Z,2024-05-29T09:52:30Z,,"### Description of feature
+
+This should avoid issues when using VEP merged caches",nvnieuwk,https://github.com/nf-cmgg/structural/issues/92
+I_kwDOHiqxEs6Q-gMP,sex unknown (ratio in gray area),OPEN,2024-07-26T13:56:13Z,2024-07-26T13:56:14Z,,"### Description of the bug
+
+I came across this:
+
+```
+Jul-26 15:36:49.789 [TaskFinalizer-15] ERROR nextflow.processor.TaskProcessor - Error executing process > 'NFCMGG_STRUCTURAL:STRUCTURAL:BAM_REPEAT_ESTIMATION_EXPANSIONHUNTER:EXPANSIONHUNTER (D2004042)'
+
+Caused by:
+  Process `NFCMGG_STRUCTURAL:STRUCTURAL:BAM_REPEAT_ESTIMATION_EXPANSIONHUNTER:EXPANSIONHUNTER (D2004042)` terminated with an error exit status (2)
+
+Command executed:
+
+  ExpansionHunter \
+      --sex unknown (ratio in gray area) \
+      --reads D2004042.cram \
+      --output-prefix D2004042 \
+      --reference GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna \
+      --variant-catalog variant_catalog.json
+  
+  bgzip --threads 12  D2004042.vcf
+  bgzip --threads 12  D2004042.json
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""NFCMGG_STRUCTURAL:STRUCTURAL:BAM_REPEAT_ESTIMATION_EXPANSIONHUNTER:EXPANSIONHUNTER"":
+      expansionhunter: $( echo $(ExpansionHunter --version 2>&1) | head -1 | sed 's/^.*ExpansionHunter v//')
+      bgzip: $(echo $(bgzip -h 2>&1) | sed 's/^.*Version: //;s/Usage:.*//')
+  END_VERSIONS
+
+Command exit status:
+  2
+
+Command output:
+  (empty)
+
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  .command.sh: line 3: syntax error near unexpected token `('
+
+Work dir:
+  /kyukon/scratch/gent/vo/000/gvo00082/vsc43079/structural_WGS/NVQ_997/structural/work/72/01840b3cd2f3bfe1508aa72626f3d6
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+```
+
+This is WGS data with very low coverage. Guess is that the `sex` could not be inferred because of low coverage. 
+
+Maybe an idea to include a check for the ability of `sex` inference. If the check is not passed, you could halt the pipeline and ask to specify in the samplesheet, but maybe a more elegant way is to issue a warning and then run both `male` and `female` calculations can be done, leaving the user the chance to assess the data and delete whatever doesn't fit. I see value in both approaches, what do you think?
+
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",mvheetve,https://github.com/nf-cmgg/structural/issues/95
+I_kwDOHiqxEs6RK2qK,smoove makes empty file,OPEN,2024-07-29T14:09:55Z,2024-07-30T13:43:54Z,,"### Description of the bug
+
+Hi,
+
+I had the following error, which stems from an empty `smoove.vcf.gz` input file. I'm not entirely sure but I believe the reason why this file is empty is because smoove was unable to call any SVs. This is again a sample on a very low coverage WGS experiment. I suggest maybe adding a check to see if `smoove.vcf.gz` for each sample is not empty and if empty to just make an `smoove.vcf.gz` file containing a proper header at least.
+
+Regards
+M
+
+```
+#!/bin/bash -euo pipefail
+bcftools \
+    sort \
+    --output D2321763.smoove.vcf.gz \
+    --temp-dir . \
+    --output-type z \
+    D2321763-smoove.vcf.gz
+
+
+cat <<-END_VERSIONS > versions.yml
+""NFCMGG_STRUCTURAL:STRUCTURAL:BAM_SV_CALLING:BAM_VARIANT_CALLING_SMOOVE:BCFTOOLS_SORT"":
+    bcftools: $(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*$//')
+END_VERSIONS
+(base) [vsc43079@gligar07 33c20c782deafa01be0e33539c3474]$ cat .command.lo
+cat: .command.lo: No such file or directory
+(base) [vsc43079@gligar07 33c20c782deafa01be0e33539c3474]$ cat .command.log
+INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+Writing to .5qqIE3
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+Could not read VCF/BCF headers from D2321763-smoove.vcf.gz
+Cleaning
+```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",mvheetve,https://github.com/nf-cmgg/structural/issues/96

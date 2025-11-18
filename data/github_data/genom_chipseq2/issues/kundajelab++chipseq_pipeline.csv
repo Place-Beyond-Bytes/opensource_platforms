@@ -1,0 +1,1093 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNDYzNDc0MzU=,software installation,CLOSED,2016-04-06T15:20:52Z,2016-04-11T17:08:05Z,2016-04-11T02:33:07Z,"[bioconda](https://bioconda.github.io/) might help make the software installation much faster and reproducible. For example if you write a `requirements.txt` that looks something like:
+
+```
+bwa ==0.7.3
+samtools ==0.1.19
+bedtools ==2.19
+ucsc-wigtobigwig
+ucsc-bedgraphtobigwig
+ucsc-bigwiginfo
+ucsc-bedclip
+matplotlib
+numpy
+scipy
+# ...and everything else you need
+```
+
+Then everything can be installed with:
+
+``` bash
+conda install \
+--prefix $SOFTWARE_HOME/software_bds \
+--file requirements.txt \
+--channel bioconda
+```
+
+A couple details: 
+- it looks like in `install_dependencies.sh` you manually separate Python environments, which can also be handled by conda. You would need a second requirements file and would need to choose a different directory
+- there are a couple of tools not yet on bioconda, but that's an easy fix. Exception to that might be MCR due to licensing
+- `--prefix $HOME/software_bds` in the conda command creates the environment there, minimizing changes to the pipeline
+
+Just a suggestion. I used to have installation scripts like this but then found conda. Then bioconda came along and helped more. Made things much easier for other people to get things running and much less brittle.
+",daler,https://github.com/kundajelab/chipseq_pipeline/issues/1
+MDU6SXNzdWUxNDkwNjQ2MjA=,Crashing on bam_to_bed_atac step,CLOSED,2016-04-18T07:13:26Z,2016-04-18T21:21:54Z,2016-04-18T21:21:54Z,"@leepc12:
+
+(This issue is for bds_atac, but I'm filing it here because the crash is caused by a module in TF_chipseq_pipeline)
+
+The bds_atac pipeline is reproducibly crashing on nandi and mitra at the bam_to_bed step, possibly due to bad path input syntax for `samtools view`. This happens for multiple different samples, both when run as replicates and when run individually.
+
+The source code line where the pipeline crashes with samtools complaining `failed to open file` for a file that exists and is readable is here: https://github.com/kundajelab/TF_chipseq_pipeline/blob/master/modules/postalign_bam.bds#L444
+
+An example log file (from running bds_atac on mitra) is here: https://gist.github.com/chrisprobert/08a63955967426df1b4aace8d40c6eed, and the associated bds.conf file is here: https://gist.github.com/chrisprobert/f7658b4c92f153e37199ac7f86c718a7
+
+From the [log file (relevant line here)](https://gist.github.com/chrisprobert/08a63955967426df1b4aace8d40c6eed#file-gistfile1-txt-L96), it looks like the input to samtools view is:
+`nonMitoChromosomes=$(samtools view -H ""{1=/srv/persistent/cprobert/projects/jcharalel_atac_022616_ATAC_SKBR3_SKRT-28854828/analysis/SKRT-3-ATAC-022616_S1/SKRT-3-ATAC-022616_S1_R1.trim.PE2SE.nodup.bam}"" | grep chr | cut -f2 | sed 's/SN://g' | grep -v chrM)`
+
+To me, the input path there for samtools view looks suspicious: browsing other parts of the BDS log the path syntax is a regular path like `samtools view -H /srv/.../....bam`, not wrapped in brackets like `""{1=/srv/.../....bam}""` is in the `samtools view` command above.
+
+For example, here's a samtools view command from elsewhere in the log that executes ok without samtools crashing (note that the input file path is just provided as a path, not with the `""{1=...}""` syntax):
+`samtools view -F 1804 -f 2 -q 30 -u /srv/persistent/cprobert/projects/jcharalel_atac_022616_ATAC_SKBR3_SKRT-28854828/analysis/SKRT-3-ATAC-022616_S1/SKRT-3-ATAC-022616_S1_R1.trim.PE2SE.bam | samtools sort -n - /srv/persistent/cprobert/projects/jcharalel_atac_022616_ATAC_SKBR3_SKRT-28854828/analysis/SKRT-3-ATAC-022616_S1/SKRT-3-ATAC-022616_S1_R1.trim.PE2SE.dupmark`
+
+Any thoughts what could be causing this? Perhaps `filt_bam` is not being set correctly by whatever calls `_bam_to_bed_atac`?
+",chrisprobert,https://github.com/kundajelab/chipseq_pipeline/issues/2
+MDU6SXNzdWUxNzA2NTkxNTk=,software installation,CLOSED,2016-08-11T14:27:26Z,2016-12-13T23:20:47Z,2016-12-13T23:20:47Z,"I have encountered the following problem.
+
+```
+Error: ERROR: placeholder '/root/miniconda3/envs/_build_placehold_placehold_placehold_placehold_placehold_p' too short in: glib-2.43.0-2
+```
+
+And then I followed your instruction: ""If you see the following error, then update your Anaconda with `conda update conda` and downgrade it to 4.0.5 `conda install conda==4.0.5`."" But it didn't work.
+I found that the problem came from
+
+```
+conda create -n aquas_chipseq --file requirements.txt -y -c defaults -c bioconda -c r
+```
+
+in your `install_dependencies.sh`.
+Then I read [https://github.com/conda/conda-build/pull/877](https://github.com/conda/conda-build/pull/877) and [https://groups.google.com/a/continuum.io/forum/#!topic/anaconda/fgDBJ2YwETI](https://groups.google.com/a/continuum.io/forum/#!topic/anaconda/fgDBJ2YwETI).
+My anaconda path is
+
+```
+/share_bio/nas5/amsszhangsh_group/wangcan/software/python/anaconda3
+```
+
+It seemed that when I run
+
+```
+conda create -n aquas_chipseq --file requirements.txt -y -c defaults -c bioconda -c r
+```
+
+the  prefix was
+
+```
+/share_bio/nas5/amsszhangsh_group/wangcan/software/python/anaconda3/envs/aquas_chipseq
+```
+
+which consisted of 86 characters. Then I tried to limit it to 80 characters. So I trimmed the trailing 6 characters in `aquas_chipseq` and run
+
+```
+conda create -n aquas_c --file requirements.txt -y -c defaults -c bioconda -c r
+```
+
+And I succeeded. 
+I found that **conda 4.0.5 and 4.1.11 are no different on this problem**. So the version of conda is not the point.
+To solve this problem without modifying your script, I re-installed the anaconda in a directory with a shorter absolute path
+
+```
+/share_bio/nas5/amsszhangsh_group/wangcan/anaconda3
+```
+
+Then there were no problem when I run `install_dependencies.sh`.
+If one does not want to re-install anaconda, I think to use `conda create -p your_short_path` can also work. For example, use
+
+```
+conda create -p /share_bio/nas5/amsszhangsh_group/wangcan/aquas_chipseq
+```
+
+to replace
+
+```
+conda create -n aquas_chipseq
+```
+
+in
+
+```
+conda create -n aquas_chipseq --file requirements.txt -y -c defaults -c bioconda -c r
+```
+",wcstcyx,https://github.com/kundajelab/chipseq_pipeline/issues/8
+MDU6SXNzdWUxODIyNjk1MzQ=,"Fatal error: /data/fmao/soft/chipseq_pipeline/modules/graphviz.bds, line 126, pos 18. Trying to access element number 1 from list 'etc' (list size: 1).",CLOSED,2016-10-11T13:52:01Z,2018-03-23T19:49:43Z,2018-03-23T19:49:43Z,"Final parameter values: [0.86 1.24 0.53 0.01]
+Number of reported peaks - 24706/24706 (100.0%)
+
+Number of peaks passing IDR cutoff of 0.05 - 7/24706 (0.0%)
+
+Task has finished (119 seconds).
+62944 (process ID) old priority 0, new priority 0
+Task has finished (0 seconds).
+
+== Done do_idr()
+63010 (process ID) old priority 0, new priority 0
+63265 (process ID) old priority 0, new priority 0
+Fatal error: /data/fmao/soft/chipseq_pipeline/modules/graphviz.bds, line 126, pos 18. Trying to access element number 1 from list 'etc' (list size: 1).
+chipseq.bds, line 67 :  main()
+chipseq.bds, line 70 :  void main() { // chipseq pipeline starts here
+chipseq.bds, line 92 :          report()
+chipseq.bds, line 1204 :        void report() {
+chipseq.bds, line 1211 :                html += html_graph()            // graphviz workflow diagram
+graphviz.bds, line 83 : string html_graph() { // graph diagram
+graphviz.bds, line 90 :         dot := _make_dot(""$rpt_aux_dir/$prefix""+""workflow.dot"")
+graphviz.bds, line 108 :        string _make_dot( string file ) {
+graphviz.bds, line 120 :                for ( int k=0; k<_tmp_in.size(); k++ ) {
+graphviz.bds, line 126 :                        box_name := etc[1]
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+",maofengbiao,https://github.com/kundajelab/chipseq_pipeline/issues/9
+MDU6SXNzdWUyMTE5MjQ1OTA=,Building custom genome data,CLOSED,2017-03-05T02:31:26Z,2018-03-23T19:49:55Z,2018-03-23T19:49:55Z,"Are there any instructions on how to build custom genome data for a species that is not available for the pipeline? What are the usual resources to find relevant data, like the black list, ATAC specific annotation data?",wuwill,https://github.com/kundajelab/chipseq_pipeline/issues/11
+MDU6SXNzdWUyMTQxNDg3OTM=,phantompeakqual Error in names(cc) < names(otl) :attempt to set an attribute on NULL ,OPEN,2017-03-14T17:30:05Z,2017-03-14T17:30:05Z,,"hi,
+I run phantompeakqual on my duplicates removed bam files and got an error shown in the title.
+later, I re-run the same command but on bam files before `samtools rmdup -s`, it worked fine.
+
+seems that samtools rmdup did something phantompeakqual did not like.
+
+Thanks,
+Tommy",crazyhottommy,https://github.com/kundajelab/chipseq_pipeline/issues/12
+MDU6SXNzdWUyMjQ3MzIxNTM=,Installing Genomes: TwoBitToFa not found,CLOSED,2017-04-27T09:55:49Z,2018-03-23T19:50:33Z,2018-03-23T19:50:33Z,"Hi!
+
+I installed the pipeline then tried to install a genome but came across this
+
+`install_genome_data.sh: line 171: twoBitToFa: command not found`
+
+I tried to install twobittofa using conda but ran into some issues. Is there any workaround?",AHCChan,https://github.com/kundajelab/chipseq_pipeline/issues/13
+MDU6SXNzdWUyMzI4ODIwMzg=,"Fatal error: TF_chipseq_pipeline/modules/align_bwa.bds, line 87, pos 3. Task/s failed.",CLOSED,2017-06-01T13:38:04Z,2017-06-19T13:51:31Z,2017-06-19T13:51:31Z,"Fatal error: TF_chipseq_pipeline/modules/align_bwa.bds, line 87, pos 3. Task/s failed.
+chipseq.bds, line 76 :	main()
+chipseq.bds, line 79 :	void main() { // chipseq pipeline starts here
+chipseq.bds, line 87 :		align() // align and postalign
+chipseq.bds, line 318 :	void align() {
+chipseq.bds, line 355 :		for ( int ctl=0; ctl <= 1; ctl++) { // iterate through inputs (ctl==0 : exp. replicate, ctl==1 : control)
+chipseq.bds, line 358 :			for ( int rep=1; rep <= get_num_rep( ctl ); rep++) {
+chipseq.bds, line 364 :				if ( no_par ) align( ctl, rep, nth_rep{group} ) // parallel jobs for align() for each replicate and each control
+chipseq.bds, line 374 :	void align( int ctl, int rep, int nth_rep ) {
+chipseq.bds, line 376 :		if ( is_se( ctl, rep ) ) 	align_SE( ctl, rep, nth_rep )
+chipseq.bds, line 377 :		else 				align_PE( ctl, rep, nth_rep )
+chipseq.bds, line 550 :	void align_PE( int ctl, int rep, int nth_rep ) {
+chipseq.bds, line 563 :		if ( is_input_fastq( ctl, rep ) ) {
+chipseq.bds, line 582 :			if ( aligner == ""bwa"" ) {
+chipseq.bds, line 583 :				( bam_, flagstat_qc_ ) = bwa_PE( pooled_fastq_pair1, pooled_fastq_pair2, aln_o_dir, qc_o_dir, group, nth_rep )
+align_bwa.bds, line 66 :	string[] bwa_PE( string fastq1, string fastq2, string o_dir, string log_o_dir, string group, int nth_bwa ) {
+align_bwa.bds, line 76 :		if ( out <- in ) { // compare file timestamps of in and out (to check if job is already done or not)
+align_bwa.bds, line 87 :			wait
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+00:00:51.033	Writing report file 'chipseq.bds.20170529_194354_069.report.html'
+00:00:51.155	Program 'chipseq.bds.20170529_194354_069' finished, exit value: 1, tasks executed: 1, tasks failed: 1, tasks failed names: bwa_sam_PE rep1.
+00:00:51.156	Finished. Exit code: 1
+00:00:51.156	ExecutionerLocal 'Local[41]': Killed
+",rdali,https://github.com/kundajelab/chipseq_pipeline/issues/14
+MDU6SXNzdWUyNDY0MDA2MDc=,MACS2 KeyError,CLOSED,2017-07-28T16:43:08Z,2018-05-29T16:31:53Z,2018-05-29T16:31:53Z,"Hello,
+sorry to bother you, but is it possible in some way to update MACS2?
+I get a KeyError with MACS2 if there is a conting which doesn't contain any peaks.
+It is possible to get around this problem with the following fix:
+def get_data_from_chrom (self, str chrom):
+    if not self.peaks.has_key(chrom):
+        self.peaks[chrom]=[]
+    return self.peaks[chrom]
+
+In PeakIO.pyx file.
+
+This issue is fixed in MACS 2.1.1, but if I change the requirements.txt file, MACS2 doesn't work anymore.",da-bar,https://github.com/kundajelab/chipseq_pipeline/issues/15
+MDU6SXNzdWUyNDcwNjMzNzQ=,"How to modify bds if my SGE cluster using vf=memory,p=n_cpu?",CLOSED,2017-08-01T13:10:16Z,2017-08-02T03:36:57Z,2017-08-02T03:36:57Z,"Hi
+
+I succeed in submitting my jobs using this pipeline. However, I found the resource claimed in bds.config does not work so the pipeline would run even if my cluster is full of jobs.  My SGE cluster used `vf=memory,p=n_cpu` instead of `h_vmem` and `slots`. We used to submit jobs like:
+
+```
+qsub -cwd -l vf=10g,p=8 -V run.sh
+```
+
+In my `bds.config`, I used:
+
+```
+sge.pe = make
+sge.mem = vf
+sge.timeout = h_rt
+sge.timeout2 = s_rt
+clusterRunAdditionalArgs = -V
+```
+
+The question is how could I modify my config file to adding something like `vf=10g,p=8` in `qsub` command? Thank you.",huboqiang,https://github.com/kundajelab/chipseq_pipeline/issues/16
+MDU6SXNzdWUyNDc1MDA3Mzc=,Issue with bds,CLOSED,2017-08-02T19:44:49Z,2017-08-03T00:07:29Z,2017-08-03T00:07:29Z,"Hi, I installed the piepline as suggested in README here without any error, but I get the below error when I just type bds or try to run the pipeline. Do you know how can I fix this? I have installed bds as recommended in the GitHub readme. I am not sure if it's a bds issue or something with our cluster. Thanks in advance for your help.
+
+Exception in thread ""main"" java.lang.UnsupportedClassVersionError: org/bds/Bds : Unsupported major.minor version 52.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:800)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:449)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:71)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:361)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:482)
+",urjaswita,https://github.com/kundajelab/chipseq_pipeline/issues/17
+MDU6SXNzdWUyNDc5MTU4ODI=,NA,CLOSED,2017-08-04T06:37:37Z,2017-08-04T08:33:57Z,2017-08-04T07:22:19Z,,biomystery,https://github.com/kundajelab/chipseq_pipeline/issues/18
+MDU6SXNzdWUyNTU3Njk1Mjc=,more than 2 replicates can not be used for chips_pipeline,CLOSED,2017-09-06T23:16:33Z,2018-05-29T16:32:46Z,2018-05-29T16:32:46Z,"Hi, I am trying to run chipseq_pipeline using more than 2 replicates using the command as below.  But it seems that the program can not take more than 2 replicates.  I also attached part of the log file to show the files the program took.  Is there any parameter I should set to using more replicates?  Thanks.
+
+$ bds /home/ysun/TF_chipseq_pipeline/chipseq.bds -trimmed_fastq TRUE -species hg38 -nth 12 -out_dir CTCF -se -fastq1 CTCF_islet6-1.fastq.gz -fastq2 CTCF_islet6-2.fastq.gz -ctl_fastq1 ctrl_islet2.fastq.gz -ctl_fastq2 ctrl_islet3.fastq.gz -ctl_fastq3 ctrl_islet4.fastq.gz -ctl_fastq4 ctrl_islet5.fastq.gz -ctl_fastq5 ctrl_islet6.fastq.gz
+
+========================================================================
+== git info
+......
+
+== checking chipseq parameters ...
+
+
+== checking input files ...
+
+Rep1 fastq (SE) :
+	/home/ysun/published/GEO/GSE23784_Stitzel_CellMetab/CTCF_islet6-1.fastq.gz
+Rep2 fastq (SE) :
+	/home/ysun/published/GEO/GSE23784_Stitzel_CellMetab/CTCF_islet6-2.fastq.gz
+Control Rep1 fastq (SE) :
+	/home/ysun/published/GEO/GSE23784_Stitzel_CellMetab/ctrl_islet2.fastq.gz
+Control Rep2 fastq (SE) :
+	/home/ysun/published/GEO/GSE23784_Stitzel_CellMetab/ctrl_islet3.fastq.gz
+Distributing 12 to ... 
+{rep2=1, rep1=4, ctl1=6, ctl2=1}
+
+",yingsun-ucsd,https://github.com/kundajelab/chipseq_pipeline/issues/19
+MDU6SXNzdWUyNTkyMTc1MzI=,"Fatal error: /TF_chipseq_pipeline/chipseq.bds, line 1529, pos 2. Task/s failed.",CLOSED,2017-09-20T16:02:26Z,2017-09-20T17:19:47Z,2017-09-20T16:36:18Z,"I am running chipseq_pipeline on our data and the following two commands have been used.  The first one has no problems but the second one  cannot go through with the error message I attached below too.  Please help/advise.  Thanks a lot.
+
+COMMANDS:
+===============
+bds /home/TF_chipseq_pipeline/chipseq.bds -species hg38 -nth 4 -out_dir FOXA2GAII -se -fastq1 SRR074923.fastq.gz -fastq2 SRR074926.fastq.gz -ctl_fastq1 SRR074928.fastq.gz (GOOD)
+
+bds /home/TF_chipseq_pipeline/chipseq.bds -species hg38 -nth 4 -out_dir FOXA2GAI -se -fastq1:1 SRR074921.fastq.gz -fastq1:2 SRR074922.fastq.gz -fastq2:1 SRR074924.fastq.gz -fastq2:2 SRR074925.fastq.gz -ctl_fastq1 SRR074927.fastq.gz -ctl_fastq2 SRR074929.fastq.gz (ERROR)
+===============
+
+ERROR:
+===============
+== git info
+Latest git commit		: eb3e2369b0397856d616369acdd06f114bf75ff3 (Thu Aug 3 20:12:41 2017)
+	Reading parameters from section (default) in file(/home/ysun/TF_chipseq_pipeline/default.env)...
+
+
+== configuration file info
+Hostname			: ****************
+Configuration file		: 
+Environment file		: /home/ysun/TF_chipseq_pipeline/default.env
+
+
+== parallelization info
+No parallel jobs		: false
+Maximum # threads 		: 4
+
+
+== cluster/system info
+Walltime (general)		: 5h50m
+Max. memory (general)		: 7G
+Force to use a system		: local
+Process priority (niceness)	: 0
+Retiral for failed tasks	: 0
+Submit tasks to a cluster queue	: 
+Unlimited cluster mem./walltime	: false
+
+
+== shell environment info
+Conda env. 			: aquas_chipseq
+Conda env. for python3		: aquas_chipseq_py3
+Conda bin. directory		: 
+
+Shell cmd. for init.		: if [[ -f $(which conda) && $(conda env list | grep aquas_chipseq | wc -l) != ""0"" ]]; then source activate aquas_chipseq; sleep 5; fi;  export PATH=/home/ysun/TF_chipseq_pipeline/.:/home/ysun/TF_chipseq_pipeline/modules:/home/ysun/TF_chi
+pseq_pipeline/utils:${PATH}:/bin:/usr/bin:/usr/local/bin:${HOME}/.bds; set -o pipefail; STARTTIME=$(date +%s)
+
+Shell cmd. for init.(py3)	: if [[ -f $(which conda) && $(conda env list | grep aquas_chipseq_py3 | wc -l) != ""0"" ]]; then source activate aquas_chipseq_py3; sleep 5; fi;  export PATH=/home/ysun/TF_chipseq_pipeline/.:/home/ysun/TF_chipseq_pipeline/modules:/home/ysu
+n/TF_chipseq_pipeline/utils:${PATH}:/bin:/usr/bin:/usr/local/bin:${HOME}/.bds; set -o pipefail; STARTTIME=$(date +%s)
+
+Shell cmd. for fin.		: TASKTIME=$[$(date +%s)-${STARTTIME}]; echo ""Task has finished (${TASKTIME} seconds).""; sleep 0
+
+Cluster task min. len.		: 60
+
+Cluster task delay			: 0
+
+
+== output directory/title info
+Output dir.			: /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI
+Title (prefix)			: FOXA2GAI
+	Reading parameters from section (default) in file(/home/ysun/TF_chipseq_pipeline/default.env)...
+	Reading parameters from section (hg38) in file(/home/ysun/bds_pipeline_genome_data/aquas_chipseq_species.conf)...
+
+
+== species settings
+Species				: hg38
+Species file			: /home/ysun/bds_pipeline_genome_data/aquas_chipseq_species.conf
+
+Species name (WashU browser)	: hg38
+Ref. genome seq. fasta		: /home/ysun/bds_pipeline_genome_data/hg38/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta
+Chr. sizes file			: /home/ysun/bds_pipeline_genome_data/hg38/hg38.chrom.sizes
+Black list bed			: /home/ysun/bds_pipeline_genome_data/hg38/hg38.blacklist.bed.gz
+Ref. genome seq. dir.		: 
+
+
+== ENCODE accession settings
+ENCODE experiment accession	: 
+ENCODE award RFA			: 
+ENCODE assay category		: 
+ENCODE assay title		: 
+ENCODE award				: 
+ENCODE lab				: 
+ENCODE assembly genome		: 
+ENCODE alias prefix		: KLAB_PIPELINE
+
+
+== report settings
+URL root for output directory	: 
+Genome coord. for browser tracks	: 
+
+
+== align bwa settings
+Param. for bwa			: -q 5 -l 32 -k 2
+BWA index			: /home/ysun/bds_pipeline_genome_data/hg38/bwa_index/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta
+Walltime (bwa)			: 47h
+Max. memory (bwa)		: 12G
+
+
+== align multimapping settings
+# alignments reported for multimapping	: 0
+
+
+== postalign bam settings
+MAPQ reads rm thresh.		: 30
+Rm. tag reads with str.		: 
+No dupe removal in filtering raw bam	: false
+Walltime (bam filter)		: 23h
+Max. memory (bam filter)	: 12G
+Dup marker				: picard
+Use sambamba markdup (instead of picard)	: false
+
+
+== postalign bed/tagalign settings
+Max. memory for UNIX shuf			: 12G
+
+
+== postalign cross-corr. analysis settings
+Max. memory for UNIX shuf			: 12G
+User-defined cross-corr. peak strandshift	: -1
+Extra parameters for cross-corr. analysis	: 
+
+
+== callpeak spp settings
+Threshold for # peak		: 300000
+Walltime (spp)			: 47h
+Max. memory (spp)		: 12G
+Stack size for run_spp.R		:
+Use-defined cross-corr. peak strandshift; if -1, use frag. len.	:-1
+Extra parameters for run_spp.R	:
+
+
+== callpeak gem settings
+Threshold for # peak in GEM		: 300000
+Min. length of k-mers in GEM		: 6
+Max. length of k-mers in GEM		: 13
+Q-value threshold for GEM		: 0.0
+Read distribution txt for GEM		: /home/ysun/TF_chipseq_pipeline/etc/Read_Distribution_default.txt
+Extra parameters for GEM	:
+Walltime (GEM)			: 47h
+Max. memory (GEM)		: 15G
+
+
+== callpeak PeakSeq settings
+Target FDR for PeakSeq			:0.05
+Number of simulations for PeakSeq	:10
+Enrichment mapped frag. len. for PeakSeq	:-1
+Minimum interpeak distance for PeakSeq	:-1
+Mappability map file for PeakSeq	:
+Maximum Q-value for PeakSeq		:0.1
+Background model for PeakSeq		:Simulated
+Extra parameters for PeakSeq		:
+Walltime (PeakSeq)			: 47h
+Max. memory (PeakSeq)		: 12G
+
+
+== callpeak macs2 settings
+Genome size (hs,mm)			: hs
+Walltime (macs2)			: 23h
+Max. memory (macs2)			: 15G
+P-value cutoff (macs2 callpeak)		: 0.01
+--keep-dup (macs2 callpeak)			: all
+--extsize (macs2 callpeak); if -1 then use frag. len.	: -1
+--shift (macs2 callpeak)			: 0
+Extra parameters for macs2 callpeak		: 
+
+
+== callpeak naiver overlap settings
+Bedtools intersect -nonamecheck	: false
+
+
+== IDR settings
+Append IDR threshold to IDR out_dir	: false
+
+
+== chipseq pipeline settings
+# replicates 				: 2
+Type of ChIP-Seq pipeline		: TF
+Final stage for ChIP-Seq		: 
+Signal tracks for pooled rep. only	: false
+Aligner to map raw reads			: bwa
+# reads to subsample for cross-corr. analysis		: 15000000
+# reads to subsample exp. replicates (0: no subsampling): 0
+# reads to subsample controls (0: no subsampling)	: 0
+Generate anonymized filt. bam		: false
+Peak caller for IDR analysis		: spp
+Control rep. depth ratio		: 1.2
+Scoring column for IDR			: signal.value
+IDR threshold				: 0.05
+Force to use pooled ctl			: false
+Peak calling for true reps only		: false
+No peak calling for self pseudo reps	: false
+Disable cross-correlation analysis	: false
+Disable g. peak filt. thru. n. peak	: false
+Disable genome browser tracks	: false
+
+
+== checking chipseq parameters ...
+
+
+== checking input files ...
+
+Rep1 fastq (SE) :
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074921.fastq.gz
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074922.fastq.gz
+Rep2 fastq (SE) :
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074924.fastq.gz
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074925.fastq.gz
+Control Rep1 fastq (SE) :
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074927.fastq.gz
+Control Rep2 fastq (SE) :
+	/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/SRR074929.fastq.gz
+Distributing 4 to ... 
+{rep2=1, rep1=1, ctl1=1, ctl2=1}
+
+== Done align()
+
+== Done pool_tags()
+
+Fewer reads in control 1 than experiment replicate 1. Using pooled controls for replicate 1.
+
+Fewer reads in control 2 than experiment replicate 2. Using pooled controls for replicate 2.
+Distributing 4 to ... 
+[1, 1, 1, 1]
+
+== Done call_peaks()
+
+== Done naive_overlap()
+Task failed:
+	Program & line     : '/home/ysun/TF_chipseq_pipeline/modules/callpeak_idr.bds', line 74
+	Task Name          : 'idr2 rep2-pr'
+	Task ID            : 'chipseq.bds.20170920_084412_704/task.callpeak_idr.idr2_rep2_pr.line_74.id_38'
+	Task PID           : '30964'
+	Task hint          : 'idr --samples /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/pseudo_reps/rep2/pr1/SRR074924_SRR074925.nodup.pr1.tagAlign_x_SRR074927.nodup_SRR074929.nodup.tagAlign.regionPeak.gz /home/ysun/published/GEO/GSE25836_Soccio
+_MolEndocr/FOXA2GAI/peak/spp/pseudo_reps/rep2/pr2/SRR074924_'
+	Task resources     : 'cpus: -1	mem: -1.0 B	wall-timeout: 8640000'
+	State              : 'ERROR'
+	Dependency state   : 'ERROR'
+	Retries available  : '1'
+	Input files        : '[/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/pseudo_reps/rep2/pr1/SRR074924_SRR074925.nodup.pr1.tagAlign_x_SRR074927.nodup_SRR074929.nodup.tagAlign.regionPeak.gz, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/F
+OXA2GAI/peak/spp/pseudo_reps/rep2/pr2/SRR074924_SRR074925.nodup.pr2.tagAlign_x_SRR074927.nodup_SRR074929.nodup.tagAlign.regionPeak.gz, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/rep2/SRR074924_SRR074925.nodup.tagAlign_x_SRR074927.nodup_SRR07492
+9.nodup.tagAlign.regionPeak.gz]'
+	Output files       : '[/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.narrowPeak.gz, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-
+pr.unthresholded-peaks.txt.png, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.log.txt, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.unthres
+holded-peaks.txt.gz, /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.12-col.bed.gz]'
+	Script file        : '/home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/chipseq.bds.20170920_084412_704/task.callpeak_idr.idr2_rep2_pr.line_74.id_38.sh'
+	Exit status        : '1'
+	Program            : 
+		
+		# SYS command. line 76
+		
+		 if [[ -f $(which conda) && $(conda env list | grep aquas_chipseq_py3 | wc -l) != ""0"" ]]; then source activate aquas_chipseq_py3; sleep 5; fi;  export PATH=/home/ysun/TF_chipseq_pipeline/.:/home/ysun/TF_chipseq_pipeline/modules:/home/ysun/TF_chipseq_pipe
+line/utils:${PATH}:/bin:/usr/bin:/usr/local/bin:${HOME}/.bds; set -o pipefail; STARTTIME=$(date +%s)
+		
+		# SYS command. line 78
+		
+		 idr --samples /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/pseudo_reps/rep2/pr1/SRR074924_SRR074925.nodup.pr1.tagAlign_x_SRR074927.nodup_SRR074929.nodup.tagAlign.regionPeak.gz /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FO
+XA2GAI/peak/spp/pseudo_reps/rep2/pr2/SRR074924_SRR074925.nodup.pr2.tagAlign_x_SRR074927.nodup_SRR074929.nodup.tagAlign.regionPeak.gz --peak-list /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/rep2/SRR074924_SRR074925.nodup.tagAlign_x_SRR074927.nodu
+p_SRR074929.nodup.tagAlign.regionPeak.gz --input-file-type narrowPeak \
+					--output-file /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.unthresholded-peaks.txt --rank signal.value --soft-idr-threshold 0.05 \
+					--plot --use-best-multisummit-IDR --log-output-file /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.log.txt
+		
+		# SYS command. line 82
+		
+		 idr_thresh_transformed=$(awk -v p=0.05 'BEGIN{print -log(p)/log(10)}')
+		
+		# SYS command. line 85
+		
+		 awk 'BEGIN{OFS=""\t""} $12>='""${idr_thresh_transformed}""' {if ($2<0) $2=0; print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,""0""}' /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.unthresholded-peaks.tx
+t \
+					| sort | uniq | sort -k7n,7n | gzip -nc > /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.13-col.bed.gz
+		
+		# SYS command. line 88
+		
+		 zcat /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.13-col.bed.gz | awk 'BEGIN{OFS=""\t""} {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}' | gzip -nc > /home/ysun/published/GEO/GSE25836_Soccio_Mo
+lEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.narrowPeak.gz
+		
+		# SYS command. line 89
+		
+		 zcat /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.13-col.bed.gz | awk 'BEGIN{OFS=""\t""} {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' | gzip -nc > /home/ysun/published/GEO/GSE25836_S
+occio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.12-col.bed.gz
+		
+		# SYS command. line 91
+		
+		 bedtools intersect -v -a <(zcat -f /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.13-col.bed.gz) -b <(zcat -f /home/ysun/bds_pipeline_genome_data/hg38/hg38.blacklist.bed.gz) | grep -P '
+chr[\dXY]+[ \t]' | awk 'BEGIN{OFS=""\t""} {if ($5>1000) $5=1000; print $0}' | gzip -nc > /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.13-col.bed.gz
+		
+		# SYS command. line 92
+		
+		 zcat /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.13-col.bed.gz | awk 'BEGIN{OFS=""\t""} {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}' | gzip -nc > /home/ysun/published/GEO/GSE25836_Socc
+io_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.narrowPeak.gz
+		
+		# SYS command. line 93
+		
+		 zcat /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.13-col.bed.gz | awk 'BEGIN{OFS=""\t""} {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' | gzip -nc > /home/ysun/published/GEO/GSE25
+836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.filt.12-col.bed.gz
+		
+		# SYS command. line 95
+		
+		 gzip -f /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.unthresholded-peaks.txt
+		
+		# SYS command. line 96
+		
+		 rm -f /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.13-col.bed.gz /home/ysun/published/GEO/GSE25836_Soccio_MolEndocr/FOXA2GAI/peak/spp/idr/pseudo_reps/rep2/FOXA2GAI_rep2-pr.IDR0.05.fil
+t.13-col.bed.gz
+		
+		# SYS command. line 98
+		
+		 TASKTIME=$[$(date +%s)-${STARTTIME}]; echo ""Task has finished (${TASKTIME} seconds).""; sleep 0
+
+Fatal error: /home/ysun/TF_chipseq_pipeline/chipseq.bds, line 1529, pos 2. Task/s failed.
+chipseq.bds, line 79 :	main()
+chipseq.bds, line 82 :	void main() { // chipseq pipeline starts here
+chipseq.bds, line 102 :		do_idr() // IDR
+chipseq.bds, line 1465 :	void do_idr() {
+chipseq.bds, line 1529 :		wait
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+===============
+",yingsun-ucsd,https://github.com/kundajelab/chipseq_pipeline/issues/20
+MDU6SXNzdWUyNjMyNjc4MDA=,Suggestion on how to analysis the ChIP-seq data,OPEN,2017-10-05T21:11:23Z,2017-10-05T21:11:23Z,,"Hi,  I have ChIP-seq data for one patient and one normal person as well as input for both of them (they run at different batch and each batch has a input).  I am wondering what is the best way to do the analysis?  I have some thinkings but think could get better idea from here.
+
+1) compare patient and normal person respectively to the batch input to see if there is any different in between?
+
+2) compare patient to combine controls (input and normal person together) to see if there are any differences?
+
+Thanks.",yingsun-ucsd,https://github.com/kundajelab/chipseq_pipeline/issues/21
+MDU6SXNzdWUyNzcxMjU0MDU=,SPP error in one replicate,CLOSED,2017-11-27T18:44:34Z,2018-05-29T16:35:18Z,2018-05-29T16:35:18Z,"Hi,
+when I run your pipeline with 2 treatment and 2 control conditions, I get the following error after supposably several attempts to run SPP on a rep2 (see below).
+
+Do you have an idea why? Thanks for helping out.
+
+| 9116 | running (RUNNING) | spp rep2  |              | if [ $(which run_spp_nodups.R 2> /dev/null | wc -l || echo) == ""1"" ]; then RUN_SPP=$(which run_spp_nodups.R);; else RUN_SPP=$(which run_spp.R);; fi; Rscript  ${RUN_SPP} -c=data/align/rep2/n-flag-n2.nodup.tagAlign.gz -p=1 -i=/ | 
+
+03:48:51.697	Writing report file 'chipseq.bds.20171126_120808_625.report.html'
+There were 23 warnings (use warnings() to see them)
+data/krishnakumar2016/chipseq.bds.20171126_120808_625/task.callpeak_spp.spp_rep2.line_68.id_18.sh: line 38: error_in_spp_output_peak_does_not_exist: command not found
+Task failed:
+	Program & line     : 'TF_chipseq_pipeline/modules/callpeak_spp.bds', line 68
+	Task Name          : 'spp rep2'
+	Task ID            : 'chipseq.bds.20171126_120808_625/task.callpeak_spp.spp_rep2.line_68.id_18'
+	Task PID           : '9116'
+	Task hint          : 'if [ $(which run_spp_nodups.R 2> /dev/null | wc -l || echo) == ""1"" ]; then RUN_SPP=$(which run_spp_nodups.R);; else RUN_SPP=$(which run_spp.R);; fi; Rscript  ${RUN_SPP} -c=data/align/rep2/n-flag-n2.nodup.tagAlign.gz -p=1 -i=/'
+	Task resources     : 'cpus: -1	mem: -1.0 B	wall-timeout: 8640000'
+	State              : 'ERROR'
+	Dependency state   : 'ERROR'
+	Retries available  : '1'
+	Input files        : '[data/align/rep2/n-flag-n2.nodup.tagAlign.gz, data/align/ctl2/n-ctr-n2.nodup.tagAlign.gz]'
+	Output files       : '[data/peak/spp/rep2/n-flag-n2.nodup.tagAlign_x_n-ctr-n2.nodup.tagAlign.regionPeak.gz, data/peak/spp/rep2/n-flag-n2.nodup.tagAlign_x_n-ctr-n2.nodup.tagAlign.ccscore, data/peak/spp/rep2/n-flag-n2.nodup.tagAlign_x_n-ctr-n2.nodup.tagAlign.pdf]'
+	Script file        : 'data/chipseq.bds.20171126_120808_625/task.callpeak_spp.spp_rep2.line_68.id_18.sh'
+	Exit status        : '1'
+	Program            : 
+		
+",dgoekbuget,https://github.com/kundajelab/chipseq_pipeline/issues/22
+MDU6SXNzdWUyODAwOTExMTc=,permission denied / file not found,CLOSED,2017-12-07T11:14:15Z,2018-03-23T19:51:49Z,2018-03-23T19:51:49Z,"Hey,
+
+I installed everything according to your instructions without noticing any errors, but I cannot get chipseq.py to work. If I use fastq or bam as input, I get an error of the following form
+
+fork/exec /media/nico/data/home2/projects/macrophages/chip_ana2/8-ENCODE-pipeline/chipseq.bds.20171207_115700_844/task.postalign_bam.dedup_bam_1_rep1.line_155.id_10.sh: permission denied
+
+If I use peaks as input, the error has the following form: 
+Error (/home/nico/TF_chipseq_pipeline/modules/input_peak.bds, line 31, pos 33): 		File not found!
+The files pass the initial check, though.
+
+I don't know what to do next.
+
+Here is the stderr output when running with a fastq and with a peak input. 
+
+
+[log-17_12_07-11:56:57.txt](https://github.com/kundajelab/chipseq_pipeline/files/1538790/log-17_12_07-11.56.57.txt)
+
+[log-17_12_07-11:54:38.txt](https://github.com/kundajelab/chipseq_pipeline/files/1538791/log-17_12_07-11.54.38.txt)
+
+
+",michdass,https://github.com/kundajelab/chipseq_pipeline/issues/23
+MDU6SXNzdWUyODkzMDMxNDY=,Undefined symbol: PyUnicodeUCS2_AsASCIIString,CLOSED,2018-01-17T15:19:59Z,2018-05-29T16:33:27Z,2018-05-29T16:33:27Z,"Hi there !
+
+I followed all the very clear instructions you provide to install the pipeline and everything went fine. 
+I am giving my very first try on some toy datasets and while mapping / filtering / cross-correlation steps are running without any issue, I get the following error at the step right after, which forces the pipeline to exit : 
+
+```
+= Done align()
+00:00:37.633	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_33' to finish. RunState: FINISHED
+00:00:37.634	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_32' to finish. RunState: FINISHED
+00:00:41.753	Waiting for all 'parrallel' to finish.
+00:00:41.754	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_31' to finish. RunState: FINISHED
+00:00:41.754	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_30' to finish. RunState: FINISHED
+00:00:41.755	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_33' to finish. RunState: FINISHED
+00:00:41.755	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_32' to finish. RunState: FINISHED
+00:00:42.504	Executioner factory: Creating new executioner type 'LOCAL'
+00:00:42.668	ExecutionerLocal 'Local[34]': Queuing task: chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10
+00:00:42.669	Waiting for all tasks to finish.
+00:00:42.669	Wait: Waiting for task to finish: chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10, state: SCHEDULED
+00:00:42.669	ExecutionerLocal 'Local[34]': Started running
+00:00:42.670	ExecutionerLocal 'Local[34]': Task selected 'chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10' on host 'localhost'
+Traceback (most recent call last):
+  File ""/pasteur/homes/piroux/miniconda3/envs/aquas_chipseq/bin/plotFingerprint"", line 4, in <module>
+    from deeptools.plotFingerprint import main
+  File ""/pasteur/homes/piroux/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/plotFingerprint.py"", line 4, in <module>
+    import numpy as np
+  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/__init__.py"", line 180, in <module>
+    from . import add_newdocs
+  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/add_newdocs.py"", line 13, in <module>
+    from numpy.lib import add_newdoc
+  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/lib/__init__.py"", line 8, in <module>
+    from .type_check import *
+  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/lib/type_check.py"", line 11, in <module>
+    import numpy.core.numeric as _nx
+  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/core/__init__.py"", line 14, in <module>
+    from . import multiarray
+ImportError: /mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/core/multiarray.so: undefined symbol: PyUnicodeUCS2_AsASCIIString
+Task failed:
+	Program & line     : '/pasteur/homes/piroux/TF_chipseq_pipeline/modules/postalign_bam.bds', line 812
+	Task Name          : 'jsd'
+	Task ID            : 'chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10'
+	Task PID           : '30942'
+	Task hint          : 'plotFingerprint -b /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep1/D0K4Me1_Rep1.nodup.bam /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep2/D0K4Me1_Rep2.nodup.bam /pasteur/projet'
+	Task resources     : 'cpus: 4	mem: -1.0 B	wall-timeout: 8640000'
+	State              : 'ERROR'
+	Dependency state   : 'ERROR'
+	Retries available  : '1'
+	Input files        : '[/pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep1/D0K4Me1_Rep1.nodup.bam, /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep2/D0K4Me1_Rep2.nodup.bam, /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/ctl1/D0Input_Rep1.nodup.bam]'
+	Output files       : '[/pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./qc/._jsd.png, /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./qc/._jsd.qc]'
+	Script file        : '/pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10.sh'
+	Exit status        : '1'
+	Program            :
+
+		# SYS command. line 813
+
+		 if [[ -f $(which conda) && $(conda env list | grep aquas_chipseq | wc -l) != ""0"" ]]; then source activate aquas_chipseq; sleep 5; fi;  export PATH=/pasteur/homes/piroux/TF_chipseq_pipeline/.:/pasteur/homes/piroux/TF_chipseq_pipeline/modules:/pasteur/homes/piroux/TF_chipseq_pipeline/utils:${PATH}:/bin:/usr/bin:/usr/local/bin:${HOME}/.bds; set -o pipefail; STARTTIME=$(date +%s)
+
+		# SYS command. line 814
+
+		 plotFingerprint -b /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep1/D0K4Me1_Rep1.nodup.bam /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/rep2/D0K4Me1_Rep2.nodup.bam /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/ctl1/D0Input_Rep1.nodup.bam --JSDsample /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./align/ctl1/D0Input_Rep1.nodup.bam \
+					--labels rep1 rep2 ctl1 \
+					--outQualityMetrics /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./qc/._jsd.qc \
+					--minMappingQuality 30 \
+					-T ""Fingerprints of different samples"" \
+					--blackListFileName /pasteur/homes/piroux/TF_chipseq_pipeline/genome_data/hg19/wgEncodeDacMapabilityConsensusExcludable.bed.gz \
+					--numberOfProcessors 4 \
+					--plotFile /pasteur/projets/policy01/Bischof-NGS/work/PROJET_SENESCENCE/ChIP-seq_HISTONE/RAS_OIS/TST_AQUA_2/./qc/._jsd.png
+
+		# SYS command. line 823
+
+		 TASKTIME=$[$(date +%s)-${STARTTIME}]; echo ""Task has finished (${TASKTIME} seconds).""; sleep 0
+	StdErr (100000000 lines)  :
+		Traceback (most recent call last):
+		  File ""/pasteur/homes/piroux/miniconda3/envs/aquas_chipseq/bin/plotFingerprint"", line 4, in <module>
+		    from deeptools.plotFingerprint import main
+		  File ""/pasteur/homes/piroux/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/plotFingerprint.py"", line 4, in <module>
+		    import numpy as np
+		  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/__init__.py"", line 180, in <module>
+		    from . import add_newdocs
+		  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/add_newdocs.py"", line 13, in <module>
+		    from numpy.lib import add_newdoc
+		  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/lib/__init__.py"", line 8, in <module>
+		    from .type_check import *
+		  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/lib/type_check.py"", line 11, in <module>
+		    import numpy.core.numeric as _nx
+		  File ""/mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/core/__init__.py"", line 14, in <module>
+		    from . import multiarray
+		ImportError: /mount/gensoft2/adm/lib/python2.7/site-packages/numpy-1.10.1-py2.7-linux-x86_64.egg/numpy/core/multiarray.so: undefined symbol: PyUnicodeUCS2_AsASCIIString
+
+00:01:00.967	Wait: Task 'chipseq.bds.20180117_161156_433/task.postalign_bam.jsd.line_812.id_10' finished.
+00:01:00.968	Waiting for all 'parrallel' to finish.
+00:01:00.968	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_31' to finish. RunState: FINISHED
+00:01:00.968	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_30' to finish. RunState: FINISHED
+00:01:00.968	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_33' to finish. RunState: FINISHED
+00:01:00.968	Waiting for parallel 'chipseq.bds.20180117_161156_433_parallel_32' to finish. RunState: FINISHED
+Fatal error: /pasteur/homes/piroux/TF_chipseq_pipeline/chipseq.bds, line 410, pos 3. Task/s failed.
+chipseq.bds, line 90 :	main()
+chipseq.bds, line 93 :	void main() { // chipseq pipeline starts here
+chipseq.bds, line 100 :		jsd() // plot fingerprint and compute synthetic JS distance
+chipseq.bds, line 384 :	void jsd() { // plot fingerprint
+chipseq.bds, line 385 :		if ( filt_bam.hasKey(""ctl1"") && filt_bam.hasKey(""rep1"") ) {
+chipseq.bds, line 410 :			wait
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+00:01:01.076	Writing report file 'chipseq.bds.20180117_161156_433.report.html'
+00:01:01.176	Program 'chipseq.bds.20180117_161156_433' finished, exit value: 1, tasks executed: 1, tasks failed: 1, tasks failed names: jsd.
+00:01:01.176	Finished. Exit code: 1
+00:01:01.177	ExecutionerLocal 'Local[34]': Killed
+00:01:01.192	ExecutionerLocal 'Local[34]': Finished running
+```
+
+I assume it is somehow related to numpy library, but wasn't able to find any useful thread on the internet. Plus, I must confess my understanding in handling Python libraries is limited ...
+
+Thx a lot for this awesome tool and for your previous help.
+
+Pef",PFRoux,https://github.com/kundajelab/chipseq_pipeline/issues/24
+MDU6SXNzdWUyOTUxMzE5MTU=,.fq extension not removed from prefix in bwa alignement step,CLOSED,2018-02-07T13:11:00Z,2018-02-07T18:33:31Z,2018-02-07T18:33:31Z,"bwa_aln(), bwa_sam() and bwa_sam_PE() do not remove the ""fq"" extension of the fastq file while generating the prefix for the output files. 
+This causes the ouput bam file to be saved with the ""fq"" extension, which in turn causes failure in the postalign_bam.bds step with the following error:
+
+`
+[E::hts_open] fail to open file '/path/to/out/samplename.PE2SE.bam'
+samtools: failed to open ""/path/to/out/samplename.PE2SE.bam"" for reading: No such file or directory
+sambamba-sort: not enough data in stream
+`",tleonardi,https://github.com/kundajelab/chipseq_pipeline/issues/25
+MDU6SXNzdWUyOTUyMTYwOTE=,chipseq pipeline set up ,CLOSED,2018-02-07T17:01:50Z,2018-02-07T17:02:26Z,2018-02-07T17:02:26Z,"1. If Error occured in jsd step as showed below. 
+----------------
+Fatal error: /home/liangma1/TF_chipseq_pipeline/chipseq.bds, line 410, pos 3. Task/s failed.
+chipseq.bds, line 90 :	main()
+chipseq.bds, line 93 :	void main() { // chipseq pipeline starts here
+chipseq.bds, line 100 :		jsd() // plot fingerprint and compute synthetic JS distance
+chipseq.bds, line 384 :	void jsd() { // plot fingerprint
+chipseq.bds, line 385 :		if ( filt_bam.hasKey(""ctl1"") && filt_bam.hasKey(""rep1"") ) {
+----------------
+There are two options to solve this:
+1) you can try with -species hg38
+2) try to disable JSD plot (-no_jsd). 
+
+2. If use -bam file and -fastq file at the same time, don't use the same replicate number.
+
+bds_scr h3k27ac_noncellcycle_dmso \
+~/TF_chipseq_pipeline/chipseq.bds \
+-se \
+-species hg19 \
+-dup_marker sambamba \
+-nth 4 \
+-type histone  \
+-mem_macs2 30G \
+-fastq1 R1.2.fastq.gz  \
+-fastq2 R1.3.fastq.gz  \
+-fastq3 R1.fastq.gz  \
+-bam4 ac_0.bam \
+-ctl_fastq1 o2.gz \
+-ctl_fastq2 o3.gz \
+-ctl_bam3 o1.bam \
+
+
+3. -trim_bp is for paired end dataset only and it's for cross-correlation analysis only. There is no way to trim fastqs in the pipeline. You need to trim it yourself.
+-fastq1 ... -bam1 ... means that you are specifying two files for replicate 1, which is not allowed in the pipeline.
+ChIP-Seq pipeline does not trim adapters.
+
+4. When your job is done successfully, you will see '== Done report()' at the end of the log file.
+",LiangMa2017,https://github.com/kundajelab/chipseq_pipeline/issues/27
+MDU6SXNzdWUyOTY1MzcxNTM=,JSON key error in example config,CLOSED,2018-02-12T21:51:34Z,2018-03-23T19:51:27Z,2018-03-23T19:51:27Z,"In the example JSON config (""example_conf_full.json""), two of the parameters don't match the chipseq.py file - npeaks_spp (should be cap_num_peak_spp) and use_system (should be system). This throws an error (line 583 of chipseq.py)",kdemuren,https://github.com/kundajelab/chipseq_pipeline/issues/28
+MDU6SXNzdWUzMDUyNTY5Mzg=,phantompeakqualtools missing from install_dependencies,CLOSED,2018-03-14T17:28:08Z,2018-05-29T16:34:30Z,2018-05-29T16:34:30Z,"When installing dependencies, it reports an error on line 63 for cloning phantompeakqualtools.
+When attempting to run the pipeline, it errors at xcor with an stderr message of no run_spp.R in directories.",jloupe,https://github.com/kundajelab/chipseq_pipeline/issues/29
+MDU6SXNzdWUzMDgzNTA1MTc=,aquas_chipseq pipline idr error,CLOSED,2018-03-25T13:38:50Z,2018-05-29T16:33:52Z,2018-05-29T16:33:52Z,"Hello 
+
+could you kindly help me to fix an error i keep getting when running aquas_chipseq pipeline , the error jam getting is as below:
+
+00:16:53.803	Wait: Waiting for task to finish: chipseq.bds.20180325_124007_960/task.callpeak_idr.idr2_rep1_pr.line_80.id_36, state: ERROR
+Task failed:
+	Program & line     : '/home/adroubsa/TF_chipseq_pipeline/modules/callpeak_idr.bds', line 80
+	Task Name          : 'idr2 rep1-pr'
+	Task ID            : 'chipseq.bds.20180325_124007_960/task.callpeak_idr.idr2_rep1_pr.line_80.id_36'
+	Task PID           : '41355'
+	Task hint          : 'idr --samples /scratch/dragon/intel/adroubsa/HDAC2_Chip_Seq_DMD/HDAC_T6_DMD/DMD_T6_HDAC2_sam_files/HDAC2_DMD_T6_Chip_Seq_analysis/peak/macs2/pseudo_reps/rep1/pr1/D9813_T6_HDAC2_merged_Rep1.nodup.pr1.tagAlign_x_D9813_T6_HDAC2_Input1.nodup.tagAlign.pval0.01.500K.narrowPeak.gz /scratch/dragon/intel/adr'
+	Task resources     : 'cpus: -1	mem: -1.0 B	wall-timeout: 8640000'
+	State              : 'ERROR'
+	Dependency state   : 'ERROR'
+	Retries available  : '1'
+
+
+your kind help is much appreciated ",adroubsa,https://github.com/kundajelab/chipseq_pipeline/issues/30
+MDU6SXNzdWUzMTIwMDUwNjk=,aquas_chipseq pipline SPP error,CLOSED,2018-04-06T14:49:20Z,2018-05-29T16:35:39Z,2018-05-29T16:35:39Z,"Hello
+
+could you kindly help me to fix an error I keep getting when running aquas_chipseq pipeline , the error jam getting is as below：
+04:55:10.240    Wait: Task 'chipseq.bds.20180405_152211_048/task.callpeak_spp.spp_rep1_pr1.line_70.id_33' finished.
+04:55:10.240    Wait: Waiting for task to finish: chipseq.bds.20180405_152211_048/task.callpeak_spp.spp_rep1.line_70.id_31, state: FINISHED
+04:55:10.240    Wait: Task 'chipseq.bds.20180405_152211_048/task.callpeak_spp.spp_rep1.line_70.id_31' finished.
+04:55:10.240    Waiting for all 'parrallel' to finish.
+04:55:10.240    Waiting for parallel 'chipseq.bds.20180405_152211_048_parallel_22' to finish. RunState: FINISHED
+04:55:10.240    Waiting for parallel 'chipseq.bds.20180405_152211_048_parallel_23' to finish. RunState: FINISHED
+Fatal error: /data/Workspace/Haichao/tool/chipseq_pipeline-master/chipseq.bds, line 1354, pos 2. Task/s failed.
+chipseq.bds, line 91 :  main()
+chipseq.bds, line 94 :  void main() { // chipseq pipeline starts here
+chipseq.bds, line 103 :         if ( !pe_xcor_only ) {
+chipseq.bds, line 105 :                 call_peaks() // call peaks in parallel (MACS2,SPP)
+chipseq.bds, line 929 : void call_peaks() {
+chipseq.bds, line 1354 :                wait
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+04:55:10.298    Writing report file 'chipseq.bds.20180405_152211_048.report.html'
+04:55:10.316    Program 'chipseq.bds.20180405_152211_048' finished, exit value: 1, tasks executed: 31, tasks failed: 1, tasks failed names: spp rep1-pr1.
+04:55:10.317    Finished. Exit code: 1
+04:55:10.321    ExecutionerLocal 'Local[24]': Killed
+bds -c /data/Workspace/Haichao/tool/chipseq_pipeline-master/bds.config -v  /data/Workspace/Haichao/tool/chipseq_pipeline-master/chipseq.bds -out_dir ./SCI_final_notrim5_out -pe_no_trim_fastq -pe -type TF -species mm10 -fastq1_1:1 /data/NGS.Labdata/HiSeq_RUN/2018_03_13/trim/mouse-primary-SCI-ChIPseq-STAT3-Day7-rep1.paired.read1.fastq -fastq1_2:1 /data/NGS.Labdata/HiSeq_RUN/2018_03_13/trim/mouse-primary-SCI-ChIPseq-STAT3-Day7-rep1.paired.read2.fastq -ctl_fastq1_1:1 /data/NGS.Labdata/HiSeq_RUN/2018_03_13/trim/stat3-input.paired.read1.fastq -ctl_fastq1_2:1 /data/NGS.Labdata/HiSeq_RUN/2018_03_13/trim/stat3-input.paired.read2.fastq
+
+Thank you!
+",fengyun198503,https://github.com/kundajelab/chipseq_pipeline/issues/31
+MDU6SXNzdWUzMTMwNzI3NTY=,Trimmed data-sets,OPEN,2018-04-10T20:13:54Z,2018-04-26T23:39:40Z,,"Hello,
+
+Is it correct to run the pipeline after trimming adaptors in paired-end data-sets? I get different read lengths.
+
+Raquel",pixelRaquel,https://github.com/kundajelab/chipseq_pipeline/issues/32
+MDU6SXNzdWUzMTkyOTA1NTY=,Read length,CLOSED,2018-05-01T18:56:14Z,2018-05-01T18:59:48Z,2018-05-01T18:59:48Z,"We have been using the Aquas pipeline successfully with 75bp SE reads. However, our sequencing core is adding NovaSeq machines that will at minimum give 100bp reads. Is there an advantage/disadvantage to the extra read length? Will we need to change anything in the pipeline to adjust for this difference?
+
+Thank you in advance!",jloupe,https://github.com/kundajelab/chipseq_pipeline/issues/33
+MDU6SXNzdWUzMTk0MTA1NzM=,shuf: end of file,CLOSED,2018-05-02T05:02:03Z,2018-05-23T20:31:18Z,2018-05-09T21:42:45Z,"Hi, I am running the pipeline for the first time for a histone chipseq data paired-end with two replicates and two control replicates. I am getting this error:
+shuf: /data/path/prefix.trim_50bp.tagAlign.gz: end of file
+Program & line     : '/software/path/TF_chipseq_pipeline/modules/postalign_bed.bds', line 42
+
+When I checked the latest version of that bds file on github I found an inserted line.
+
+""no_random_source := false help Disable --random-source for UNIX shuf. Hot fix for end of file error.""
+
+Do I need to get the latest changes and rerun the pipeline from beginning ?
+On a related note, how do I keep the pipeline up to date? Using 
+'git pull' ? 
+I did 'git pull origin master', which was probably a mistake, as I am getting this message now.
+
+""error: Your local changes to the following files would be overwritten by merge:
+	default.env
+Please, commit your changes or stash them before you can merge.
+Aborting""
+Sorry about the naive questions, and thanks in advance.
+",sbstatgen,https://github.com/kundajelab/chipseq_pipeline/issues/34
+MDU6SXNzdWUzMjA0NDY0Mzc=,"""-q [SLURM_ACCOUNT_NAME]"" interpreted as file",CLOSED,2018-05-04T22:17:31Z,2018-05-29T16:34:05Z,2018-05-29T16:34:05Z,"Hey Jin,
+
+I can't figure out how to correctly specify the --account for SLURM job submission on SCG.
+
+Your example: ""python chipseq.py -system slurm -q_for_slurm_account -q [SLURM_ACCOUNT_NAME]""
+
+I used:
+python /srv/gsfs0/projects/snyder/chappell/TF_chipseq_pipeline/chipseq.py -type histone --screen GFP.H3K4me1 -system slurm -q_for_slurm_account -q mpsnyder -pe -species hg19 -nth 12 -fastq1_1 GFP.H3K4me1.repA.trim.R1.fq.gz -fastq1_2 GFP.H3K4me1.repA.trim.R2.fq.gz -fastq2_1 GFP.H3K4me1.repB.trim.R1.fq.gz -fastq2_2 GFP.H3K4me1.repB.trim.R2.fq.gz -ctl_fastq1_1 GFP.Input.repAB.trim.R1.fq.gz -ctl_fastq1_2 GFP.Input.repAB.trim.R2.fq.gz -out_dir GFP.H3K4me1 -mem_dedup 15G
+
+Get the following error in .log output:
+""sbatch: error: Unable to open file mpsnyder""",jchap14,https://github.com/kundajelab/chipseq_pipeline/issues/35
+MDU6SXNzdWUzMjA1MDUyNDQ=,ERROR:root:--extsize must >= 1!,CLOSED,2018-05-05T12:24:36Z,2018-05-15T22:22:19Z,2018-05-15T22:22:19Z,,zzy1002081237,https://github.com/kundajelab/chipseq_pipeline/issues/36
+MDU6SXNzdWUzMjMzODY1MjM=,"Fatal error: chipseq.bds, line 1354, pos 2. Task/s failed.",CLOSED,2018-05-15T21:16:34Z,2018-05-15T23:30:02Z,2018-05-15T23:30:02Z,"Hi @leepc12 ,
+
+Hope you're doing well.
+
+I'm running into the below error in call_peaks():
+
+```
+Fatal error: /path/to/chipseq_pipeline/chipseq.bds, line 1354, pos 2. Task/s failed.
+chipseq.bds, line 91 :	main()
+chipseq.bds, line 94 :	void main() { // chipseq pipeline starts here
+chipseq.bds, line 103 :		if ( !pe_xcor_only ) {
+chipseq.bds, line 105 :			call_peaks() // call peaks in parallel (MACS2,SPP)
+chipseq.bds, line 929 :	void call_peaks() {
+chipseq.bds, line 1354 :		wait
+```
+
+Here are the commands I used:
+
+```
+srun -p part1 --mem=1G --pty /bin/bash 
+```
+
+```
+python /path/to/chipseq.py -type histone -final_stage idr -q part1 -system slurm -title job_1 -screen job_1 -species hg19 -nth 8 -no_jsd -mem_macs2 20G -fastq1 /path/to/sample_1.fastq -fastq2 /path/to/sample_2.fastq -ctl_fastq1 /path/to/ctl_1.fastq -ctl_fastq2 /path/to/ctl_2.fastq -out_dir /path/to/peaks
+```
+
+Full job log attached here: 
+[job_1.txt](https://github.com/kundajelab/chipseq_pipeline/files/2006718/job_1.txt)
+
+I would really appreciate any help with debugging this issue.
+
+-Easwaran",easwaranramamurthy,https://github.com/kundajelab/chipseq_pipeline/issues/37
+MDU6SXNzdWUzMjQyNzE0MTg=,[fread] Unexpected end of file (bwa_sai2sam_pe_core),CLOSED,2018-05-18T05:04:29Z,2018-06-04T18:52:12Z,2018-06-01T07:37:19Z,"I am getting the following error for a paired end chipseq data.
+.
+.
+.
+[bwa_read_seq] 2.6% bases are trimmed.
+                [bwa_read_seq] 1.8% bases are trimmed.
+                [bwa_sai2sam_pe_core] convert to sequence coordinate...
+                [fread] Unexpected end of file
+
+00:18:26.669    Wait: Task 'chipseq.bds.20180516_143724_219_parallel_30/task.align_bwa.bwa_sam_PE_ctl1.line_181.id_10' finished.
+Fatal error: /path/TF_chipseq_pipeline/modules/align_bwa.bds, line 87, pos 3. Task/s failed.
+
+I checked that the fastq files (i.e. for both replicate and control replicate, i checked the pairing of reads, between read1 and read2, it looks ok).
+
+Interestingly this error is coming at the end of aligning a control replicate. The same control replicate I have used as control for a different replicate. There the whole pipeline ran till completion.  How do I fix this? Thanks in advance...
+
+",sbstatgen,https://github.com/kundajelab/chipseq_pipeline/issues/38
+MDU6SXNzdWUzMjQ1MTMxNjM=,dead loop,CLOSED,2018-05-18T18:41:49Z,2018-05-20T21:42:23Z,2018-05-20T21:42:23Z,"Hi Jin,
+I've updated the pipeline on SCG, and ran the pipeline again using the same sample files. It took 8h to run successfully last time. However, it's almost 2 days, the pipeline is still do the alignment, no error pop up though. I attached the two logs, could you let me know what is wrong? Thanks.
+
+[h3k27ac_noncellcycle_dmso.BDS20180129.log](https://github.com/kundajelab/chipseq_pipeline/files/2018217/h3k27ac_noncellcycle_dmso.BDS20180129.log)
+[h3k27ac_noncellcycle_dmso20180516.BDS.log](https://github.com/kundajelab/chipseq_pipeline/files/2018218/h3k27ac_noncellcycle_dmso20180516.BDS.log)
+",LiangMa2017,https://github.com/kundajelab/chipseq_pipeline/issues/39
+MDU6SXNzdWUzMjQ3NDY1NjA=,job submission command,OPEN,2018-05-20T22:04:25Z,2018-06-04T19:05:58Z,,"Hi Jin,
+I have 2 tested files ran successfully, the command I used is as below. N2 results look weird as shown in washU browser. I guess my command is not right. What do you think? And I'm not sure the controls are needed, we don't have controls. 
+
+### N1: single-end with replicates and controls
+bds_scr h3k27ac_noncellcycle_dmso20180519 ~/TF_chipseq_pipeline/chipseq.bds  -q chettys -se -species hg19 -dup_marker sambamba -nth 4 -type histone -mem_bwa 30G -mem_dedup 30G -mem_macs2 30G -out_dir out20180519 -fastq1 Sample_Hues6_P35_DMSO_H3K27ac_R1_2_TGTCGGAT.R1.2.fastq.gz  -fastq2 Sample_Hues6_P35_DMSO_H3K27ac_R1_2_TGTCGGAT.R1.3.fastq.gz  -fastq3 Sample_Hues6_P35_DMSO_H3K27ac_R1_2_TGTCGGAT.R1.fastq.gz  -fastq4 Sample_Hues6_P37_DMSO_H3K27ac_GACCGTTG.R1.fastq.gz -ctl_fastq1 /labs/chettys/liangma1/test/chipseq/wce/wce_for_dmso2.gz -ctl_fastq2 /labs/chettys/liangma1/test/chipseq/wce/wce_for_dmso3.gz 
+
+### N2: paired-end without replicates and controls
+bds_scr SRR3554631 ~/TF_chipseq_pipeline/chipseq.bds -q chettys -pe -species hg19 -dup_marker sambamba -nth 4 -type histone -mem_bwa 30G -mem_dedup 30G -mem_macs2 30G -out_dir out -fastq1_1 SRR3554631_1.fastq.gz  -fastq1_2 SRR3554631_2.fastq.gz
+
+# bigwig files 
+N1: out20180519/signal/macs2/pooled_rep/*
+N2: out/signal/macs2/rep1/*
+![image](https://user-images.githubusercontent.com/25232866/40284057-bc81bf42-5c3d-11e8-9238-8e45b7a0daef.png)
+",LiangMa2017,https://github.com/kundajelab/chipseq_pipeline/issues/40
+MDU6SXNzdWUzMjU3MzU3MTk=,[Error] two same tag align file in (z)cat and shuf in pipe,CLOSED,2018-05-23T14:36:15Z,2018-05-29T16:48:04Z,2018-05-29T16:48:04Z,"zcat sampleXXX.tagAlign.gz | grep -v ""chrM"" |  shuf -n 15000000 --random-source=sampleXXX.tagAlign.gz | gzip -nc > sampleXXX.no_chrM.15M.tagAlign.gz
+
+shuf: ‘sampleXXX.tagAlign.gz’: end of file
+",cjhong,https://github.com/kundajelab/chipseq_pipeline/issues/41
+MDU6SXNzdWUzMjg5MjUzMjA=,Missing `-c` for `macs2 peakcall` ? ,CLOSED,2018-06-04T06:35:26Z,2018-06-04T16:29:14Z,2018-06-04T16:29:13Z,"Seems that `-c` is missing between `$tag` and `$ctl`
+https://github.com/kundajelab/chipseq_pipeline/blob/master/modules/callpeak_macs2_chipseq.bds#L188
+
+```bash
+sys macs2 callpeak -t $tag $ctl -f BED -n $prefix.tmp \
+	-g $gensz -p $pval_thresh_macs2 --broad --nomodel --shift $shift_macs2 $extsize_param \
+	--keep-dup $keep_dup_macs2 $extra_param_macs2
+```
+
+Encode pipeline description has the `-c`: https://docs.google.com/document/d/1lG_Rd7fnYgRpSIqrIfuVlAz2dW1VaSQThzk836Db99c/edit#
+
+```bash
+macs2 callpeak -t ${REP1_TA_FILE}.tagAlign.gz -c ${CONTROL_TA_PREFIX}.tagAlign.gz -f BED -n ${PEAK_OUTPUT_DIR}/${CHIP_TA_PREFIX} -g ${GENOMESIZE} -p 1e-2 --nomodel --shift 0 --extsize ${FRAGLEN} --keep-dup all -B --SPMR
+```",Avsecz,https://github.com/kundajelab/chipseq_pipeline/issues/42
+MDU6SXNzdWUzMzQ5MjUxNjQ=,pipeline deprecated?,CLOSED,2018-06-22T15:38:14Z,2018-06-25T15:39:09Z,2018-06-25T15:39:09Z,"Hello,
+
+Thanks for making this software available. 
+
+I have been using the current version of chipseq_pipeline for the past few months and would like to continue using it. However, last week I noticed that the readme.md has the message 'This pipeline has been deprecated'. 
+I took a quick look at the new version of the pipeline, it seems that the steps are largely the same though the installation is different. Does this sound correct?
+
+Thanks!",ceesu,https://github.com/kundajelab/chipseq_pipeline/issues/43
+MDU6SXNzdWUzNDI4MjQwMTA=,Can't download hg19 genome data ,OPEN,2018-07-19T17:37:58Z,2018-07-20T19:58:35Z,,"Hello, 
+
+There is an issue downloading hg19 genome data. Stuck at ""HTTP request sent, awaiting response...""
+hg38 can be downloaded. 
+
+Can you please solve? Thanks!
+",tfchipchip,https://github.com/kundajelab/chipseq_pipeline/issues/44
+MDU6SXNzdWUzNjY1NjU1MTU=,Some reps get ERROR:root:--extsize must >= 1!,CLOSED,2018-10-03T23:18:02Z,2018-10-04T02:19:07Z,2018-10-04T02:17:34Z,"We have run several ChIP-seq datasets through the Aquas pipeline, and occasionally we will get ERROR:root:--extsize must >= 1!
+It will cause any rep with this error to fail.
+What causes this error and what can be done to correct it?
+
+I have found that if the pipeline shows this error, we can change the macs2 --extsize parameter to 200, and restart the job. The pipeline will pick up from macs2 and apparently complete the job without error. The resulting output seems to be correct when looking at the number of peaks called, passing IDR, and visualizing bigwigs with IGV. However, the cross-correlation plot is clearly effected and the estimated fragment length is negative. Is this the correct or best way to address this issue?
+
+I have attached the output log from such a run, along with the summary html and an example image of bigwig visualization between reps. Rep1 ran normally, Rep2 had the error.
+Thanks.
+
+",jloupe,https://github.com/kundajelab/chipseq_pipeline/issues/45
+MDU6SXNzdWUzNjk2ODMzMzQ=,Documentation for macs2?,CLOSED,2018-10-12T19:33:31Z,2018-10-12T19:39:19Z,2018-10-12T19:39:18Z,"This pipeline allows for use of macs2 in peak calling, but in the googledoc, I can't find what parameters are used. What parameters are given to macs2 for peak calling? Thanks!",concatenize,https://github.com/kundajelab/chipseq_pipeline/issues/46
+MDU6SXNzdWUzNzQ0MTQ1OTk=,Citing the AQUAS Pipeline,CLOSED,2018-10-26T14:40:44Z,2018-10-26T15:28:42Z,2018-10-26T15:28:42Z,"Hello,
+
+I used the AQUAS TF Chip-seq peak calling pipeline for a work that I will be submitting very soon and I can't find which DOI to officially cite in the paper? Which DOI  is the best to associate with the pipeline?
+
+-Michael",mkleyman,https://github.com/kundajelab/chipseq_pipeline/issues/47
+MDU6SXNzdWU1MTIzMzgyNDg=,ERROR:root:--extsize must >= 1! and chipseq.bds can not get all replicates go through,CLOSED,2019-10-25T06:55:28Z,2019-12-11T00:53:21Z,2019-10-25T19:09:01Z,"I am running chipseq with 9 replicates and 11 controls as
+_____________________________________
+bds chipseq.bds -final_stage peak -no_pseudo_rep -peak_caller macs2 -species hg19 -nth 12 -out_dir test_hg19 -title B10 -fastq1 SRR8701918.fastq.gz -fastq2 SRR8701919.fastq.gz -fastq3 SRR8701920.fastq.gz -fastq4 SRR8701921.fastq.gz -fastq5 SRR8701922.fastq.gz -fastq6 SRR8701923.fastq.gz -fastq7 SRR8701925.fastq.gz -fastq8 SRR8701926.fastq.gz -fastq9 SRR8701924.fastq.gz -ctl_fastq1 SRR8702298.fastq.gz -ctl_fastq2 SRR8702299.fastq.gz -ctl_fastq3 SRR8702300.fastq.gz -ctl_fastq4 SRR8702301.fastq.gz -ctl_fastq5 SRR8702302.fastq.gz -ctl_fastq6 SRR8702303.fastq.gz -ctl_fastq7 SRR8702304.fastq.gz -ctl_fastq8 SRR8702305.fastq.gz -ctl_fastq9 SRR8702306.fastq.gz -ctl_fastq10 SRR8702307.fastq.gz -ctl_fastq11 SRR8702308.fastq.gz
+_____________________________________
+
+1) The alignment seemed fine. But in the ""align"" folder, I can only see 2 controls as ""ctl1  ctl2  pooled_ctl  pooled_pseudo_reps  pooled_rep  pseudo_reps  rep1  rep2  rep3  rep4  rep5  rep6  rep7  rep8  rep9"". Were other controls pooled together? Or 2 controls are the most control chipseq.bds can take?
+
+2) macs2 peak call seemed failed and I got a lot of error message ""ERROR:root:--extsize must >= 1!""
+
+Any suggestion will be appreciated. Thanks.",yingsun-ucsd,https://github.com/kundajelab/chipseq_pipeline/issues/48
+MDU6SXNzdWU1MTI3MjEzMTc=,mm10,CLOSED,2019-10-25T21:07:28Z,2019-10-25T21:10:56Z,2019-10-25T21:10:56Z,I tried installing the mm10 genome today and encountered issues retrieving data from http://mitra.stanford.edu/kundaje/genome_data/mm10/. I looked and it appears as though there is no more data here. Have the data for generating genome files been removed?,jloupe,https://github.com/kundajelab/chipseq_pipeline/issues/49
+MDU6SXNzdWU2NzA5NDI3ODQ=,"JSD error: ""RuntimeError: module compiled against API version 0xc but this version of numpy is 0xa""",OPEN,2020-08-01T15:02:45Z,2020-08-03T16:06:54Z,,"Got an error at the JSD step. I used nth=1 (I tried with more but they somehow did not work either, or said ""not enough resources""), and on a server with 1 core, 80gb memory.
+I think the pipeline install_dependencies.sh installed numpy 1.18.5.
+
+Error pasted below:
+
+
+```
+03:18:53.464	ExecutionerLocal 'Local[28]': Task selected 'chipseq.bds.20200801_100653_737/task.postalign_bam.jsd.line_812.id_32' on host 'localhost'
+RuntimeError: module compiled against API version 0xc but this version of numpy is 0xa
+Traceback (most recent call last):
+  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/bin/plotFingerprint"", line 4, in <module>
+    from deeptools.plotFingerprint import main
+  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/plotFingerprint.py"", line 15, in <module>
+    import deeptools.countReadsPerBin as countR
+  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/countReadsPerBin.py"", line 13, in <module>
+    import pyBigWig
+ImportError: numpy.core.multiarray failed to import
+Task failed:
+	Program & line     : '/home/unix/levgenio/software/TF_chipseq_pipeline/modules/postalign_bam.bds', line 812
+	Task Name          : 'jsd'
+	Task ID            : 'chipseq.bds.20200801_100653_737/task.postalign_bam.jsd.line_812.id_32'
+	Task PID           : '22031'
+	Task hint          : 'plotFingerprint -b /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep1/10222853_Microglia_H3K27ac1_161020Tsa_D16-11125_hg19_bestmap.nodup.bam /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep2/10222853_Microglia_H3K27ac2_161020Tsa_D16-11126_hg19_bestmap'
+	Task resources     : 'cpus: 1	mem: -1.0 B	wall-timeout: 8640000'
+	State              : 'ERROR'
+	Dependency state   : 'ERROR'
+	Retries available  : '1'
+	Input files        : '[/home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep1/10222853_Microglia_H3K27ac1_161020Tsa_D16-11125_hg19_bestmap.nodup.bam, /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep2/10222853_Microglia_H3K27ac2_161020Tsa_D16-11126_hg19_bestmap.nodup.bam, /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/ctl1/10222853_Microglia_Input1_161020Tsa_D16-11119_hg19_bestmap.nodup.bam]'
+	Output files       : '[/home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/qc/10222853_Microglia_out_jsd.png, /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/qc/10222853_Microglia_out_jsd.qc]'
+	Script file        : '/broad/compbio/levgenio/code/AQUAS_pipeline/chipseq.bds.20200801_100653_737/task.postalign_bam.jsd.line_812.id_32.sh'
+	Exit status        : '1'
+	Program            :
+
+		# SYS command. line 813
+
+		 if [[ -f $(which conda) && $(conda env list | grep aquas_chipseq | wc -l) != ""0"" ]]; then source activate aquas_chipseq; sleep 5; fi;  export PATH=/home/unix/levgenio/software/TF_chipseq_pipeline/.:/home/unix/levgenio/software/TF_chipseq_pipeline/modules:/home/unix/levgenio/software/TF_chipseq_pipeline/utils:${PATH}:/bin:/usr/bin:/usr/local/bin:${HOME}/.bds; set -o pipefail; STARTTIME=$(date +%s)
+
+		# SYS command. line 814
+
+		 plotFingerprint -b /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep1/10222853_Microglia_H3K27ac1_161020Tsa_D16-11125_hg19_bestmap.nodup.bam /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/rep2/10222853_Microglia_H3K27ac2_161020Tsa_D16-11126_hg19_bestmap.nodup.bam /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/ctl1/10222853_Microglia_Input1_161020Tsa_D16-11119_hg19_bestmap.nodup.bam --JSDsample /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/align/ctl1/10222853_Microglia_Input1_161020Tsa_D16-11119_hg19_bestmap.nodup.bam \
+					--labels rep1 rep2 ctl1 \
+					--outQualityMetrics /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/qc/10222853_Microglia_out_jsd.qc \
+					--minMappingQuality 30 \
+					-T ""Fingerprints of different samples"" \
+					--blackListFileName /home/unix/levgenio/data/hg19/wgEncodeDacMapabilityConsensusExcludable.bed.gz \
+					--numberOfProcessors 1 \
+					--plotFile /home/unix/levgenio/data/AQUAS/AQUAS_out/10222853_Microglia_out/qc/10222853_Microglia_out_jsd.png
+
+		# SYS command. line 823
+
+		 TASKTIME=$[$(date +%s)-${STARTTIME}]; echo ""Task has finished (${TASKTIME} seconds).""; sleep 0
+	StdErr (100000000 lines)  :
+		RuntimeError: module compiled against API version 0xc but this version of numpy is 0xa
+		Traceback (most recent call last):
+		  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/bin/plotFingerprint"", line 4, in <module>
+		    from deeptools.plotFingerprint import main
+		  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/plotFingerprint.py"", line 15, in <module>
+		    import deeptools.countReadsPerBin as countR
+		  File ""/home/unix/levgenio/software/miniconda3/envs/aquas_chipseq/lib/python2.7/site-packages/deeptools/countReadsPerBin.py"", line 13, in <module>
+		    import pyBigWig
+		ImportError: numpy.core.multiarray failed to import
+
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.jsd.line_812.id_32' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_2_rep1.line_205.id_12, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_2_rep1.line_205.id_12' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_xcor.xcor_rep1.line_102.id_16, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_xcor.xcor_rep1.line_102.id_16' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.markdup_bam_picard_ctl1.line_409.id_25, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.markdup_bam_picard_ctl1.line_409.id_25' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_2_ctl2.line_205.id_30, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_2_ctl2.line_205.id_30' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_1_ctl2.line_155.id_28, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.dedup_bam_1_ctl2.line_155.id_28' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.bam_to_tag_rep1.line_595.id_14, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.bam_to_tag_rep1.line_595.id_14' finished.
+03:19:03.543	Wait: Waiting for task to finish: chipseq.bds.20200801_100653_737/task.postalign_bam.bam_to_tag_rep1.line_595.id_13, state: FINISHED
+03:19:03.543	Wait: Task 'chipseq.bds.20200801_100653_737/task.postalign_bam.bam_to_tag_rep1.line_595.id_13' finished.
+Fatal error: /home/unix/levgenio/software/TF_chipseq_pipeline/chipseq.bds, line 414, pos 3. Task/s failed.
+
+Creating checkpoint file: Config or command line option disabled checkpoint file creation, nothing done.
+03:19:03.705	Writing report file 'chipseq.bds.20200801_100653_737.report.html'
+03:19:03.739	Program 'chipseq.bds.20200801_100653_737' finished, exit value: 1, tasks executed: 23, tasks failed: 1, tasks failed names: jsd.
+03:19:03.739	Finished. Exit code: 1
+03:19:03.739	ExecutionerLocal 'Local[28]': Killed
+```",liliaevgeniou,https://github.com/kundajelab/chipseq_pipeline/issues/50

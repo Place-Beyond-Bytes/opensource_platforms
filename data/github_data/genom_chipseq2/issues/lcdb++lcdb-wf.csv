@@ -1,0 +1,1314 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxOTM4OTE5MTM=,annotation tables,CLOSED,2016-12-06T21:36:28Z,2017-09-20T21:25:07Z,2017-09-20T21:25:07Z,Should have rules that dump AnnotationDb bioconductor packages (or possibly MyGene or biomart) into TSVs for each assembly so we have a lookup table of Ensembl/Flybase/HGNC/MGI/Entrez etc,daler,https://github.com/lcdb/lcdb-wf/issues/4
+MDU6SXNzdWUxOTQ0MTA2Mjk=,Kallisto index build fails,CLOSED,2016-12-08T18:34:57Z,2018-02-11T23:40:25Z,2018-02-11T23:40:25Z,Could you remind me why kallisto fails. If I remember it right it was something to do with conda. Just a place holder to remember to fix.,jfear,https://github.com/lcdb/lcdb-wf/issues/5
+MDU6SXNzdWUyMDA2MzU3OTI=,Small references for development,CLOSED,2017-01-13T13:56:04Z,2018-02-11T23:41:27Z,2018-02-11T23:41:27Z,"It may be nice to pull out a test chromosome and build all of the indexes and stuff on these truncated files for development and testing new workflow. Obviously low priority and probably will never happen, but just had the thought.
+
+Fly (2L)
+human (18)
+mouse (??)",jfear,https://github.com/lcdb/lcdb-wf/issues/8
+MDU6SXNzdWUyMDA2NDYxNzg=,ideas for scripts,CLOSED,2017-01-13T14:43:06Z,2022-11-12T14:43:51Z,2022-11-12T14:43:51Z,"https://github.com/SciLifeLab/NGI-RNAseq/tree/master/bin
+
+e.g., extract model params from dupRadar, pre-made clustered heatmap with edgeR. MultiQC now has a template for the NGI's RNA-seq report that includes the edgeR heatmap (see https://github.com/ewels/MultiQC_NGI for the module). The featureCounts in biotype is a nice touch.",daler,https://github.com/lcdb/lcdb-wf/issues/9
+MDU6SXNzdWUyMDc5NDI2OTY=,IGV genome file,CLOSED,2017-02-15T22:03:13Z,2022-11-12T14:44:52Z,2022-11-12T14:44:52Z,@daler do you ever use IGV? I am wondering if it is worth building an IGV *.genome file in the references workflow. It is just a text file with FASTQ and GTF info zipped up together.,jfear,https://github.com/lcdb/lcdb-wf/issues/12
+MDU6SXNzdWUyMjUyMDIyMTI=,dupradar fails with hist,CLOSED,2017-04-28T21:53:38Z,2022-11-12T14:45:10Z,2022-11-12T14:45:10Z,"I have come across some samples that fail with dupradar with the following:
+
+```
+Error in hist.default(dm$mhRate, breaks = 50, main = basename(bam), xlab = ""Multimapping rate per gene"", :
+character(0)
+Calls: hist -> hist.default
+In addition: Warning messages:
+1: In min(x) : no non-missing arguments to min; returning Inf
+2: In max(x) : no non-missing arguments to max; returning -Inf
+Execution halted
+```
+
+I am thinking the easiest solution is to wrap each plotting function with a `try` statement and then just output an empty image. However, that could potentially mask other problem. 
+
+I need to figure out what the core of the problem is before doing anything.",jfear,https://github.com/lcdb/lcdb-wf/issues/28
+MDU6SXNzdWUyMjg0MDUxNDM=,libjpeg problem with rnaseq workflow.,CLOSED,2017-05-12T20:52:19Z,2018-02-11T23:43:37Z,2018-02-11T23:43:37Z,"Getting the following
+
+```bash
+Loading required package: AnnotationDbi
+
+Quitting from lines 13-39 (rnaseq.Rmd)
+Error in `$<-.data.frame`(`*tmp*`, ""featurecounts.path"", value = list()) :
+  replacement has 0 rows, data has 8
+Calls: <Anonymous> ... withVisible -> eval -> eval -> $<- -> $<-.data.frame
+In addition: Warning message:
+In grDevices::png(tempfile()) :
+  unable to load shared object '/spin1/users/fearjm/Projects/larval_gonad/lcdb-wf/.snakemake/conda/a82bc358/lib64/R/modules//R_X11.so':
+  libjpeg.so.8: cannot open shared object file: No such file or directory
+
+Execution halted
+```
+
+Playing with conda to try to find the right requirements.",jfear,https://github.com/lcdb/lcdb-wf/issues/34
+MDU6SXNzdWUyMzU3MDU3MjY=,barplot tracks,OPEN,2017-06-13T22:00:15Z,2018-02-11T23:42:50Z,,"UCSC just released this track type: http://genome.ucsc.edu/goldenPath/help/barChart.html
+
+It would be really nice to build support into trackhub for this, and build these tracks in the rnaseq workflow with expression zscores across replicates, colored by treatment. I feel like that would be a much better visualization than trying to mentally convert variable signal coverage into a count and comparing those.",daler,https://github.com/lcdb/lcdb-wf/issues/37
+MDU6SXNzdWUyNTI3MzM4NDQ=,"Do we expect missing symbols, when building Ensembl to Symbol map?",CLOSED,2017-08-24T21:17:04Z,2022-11-12T14:47:41Z,2022-11-12T14:47:40Z,"We have found that there are a number of ""NA"" in the `dmel_r6-*_SYMBOL.csv`. For examples `FBgn0000003`, even though it clearly has a gene name on FlyBase `7SLRNA:CR32864`.
+
+- [ ] Does annotation hub include CRs?
+- [ ] Is there a way to force CRs to be included
+- [ ] Should we use FB's files for mapping FBgn to gene?",jfear,https://github.com/lcdb/lcdb-wf/issues/46
+MDU6SXNzdWUyNTM4MDgwMDc=,trackhubs,CLOSED,2017-08-29T21:19:13Z,2018-02-11T23:38:37Z,2018-02-11T23:38:37Z,"Placeholder issue reminding myself that we really need trackhubs for rnaseq, chipseq, and 4c.",daler,https://github.com/lcdb/lcdb-wf/issues/47
+MDU6SXNzdWUyNTM4MDgyNjI=,add ChIPQC to chipseq workflow,CLOSED,2017-08-29T21:20:09Z,2022-11-12T14:48:03Z,2022-11-12T14:48:03Z,"Still working out Jake's ChIPQC wrappers within the context of a snakefile, but once this is working we need to add it to the workflow.
+
+Update:
+
+- [ ] get an environment working that will run [ReplexChIPQC](https://github.com/jmvieira97/ReplexChIPQC).
+- [ ] start two wrappers `wrappers/wrappers/replexchipqc/samplewise` and `wrappers/wrappers/replexchipqc/stitch` 
+- [ ] add a rule to run [""sample-wise""](https://github.com/jmvieira97/ReplexChIPQC#sample-wise) mode. Rule runs once per sample; input files are input and IP BAMs for each sample; output is an `.Rds` file for that sample
+- [ ] either use the sampletable (`config/chipseq-sampletable.tsv`) to generate what Jake calls the ""stitch sheet"", a file that attaches metadata to each of the Rds files, or use the sampletable directly
+- [ ] run [""stitch"" mode](https://github.com/jmvieira97/ReplexChIPQC#stitch-mode). Input is all Rds files across all samples, plus the metadata file; output is an HTML file
+- [ ] add tests for new wrappers
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/48
+MDU6SXNzdWUyNTM4MDkwNTI=,colocalization workflow,CLOSED,2017-08-29T21:23:07Z,2018-02-11T23:37:30Z,2018-02-11T23:37:30Z,"We should add the colocalization workflow I use for a lot of projects, it would be nice to give it a home. It would also be nice to have helper functions to feed called peaks from chipseq experiments directly into the colocalization along with other configured regions.",daler,https://github.com/lcdb/lcdb-wf/issues/49
+MDU6SXNzdWUyNTc4MjgxOTY=,annotation dbi downloads db to home directory,CLOSED,2017-09-14T19:21:32Z,2017-09-20T21:24:32Z,2017-09-20T21:24:32Z,"Need to look into a config option (provided by the bioconductor package?) to point to where annotationdbi should save its sqlite3 db. By default it's going into the home directory, which can cause quota issues.",daler,https://github.com/lcdb/lcdb-wf/issues/53
+MDU6SXNzdWUyNTg1MjM1NDA=,be explicit about licenses,OPEN,2017-09-18T15:33:49Z,2018-02-11T23:42:20Z,,"SILVA is not free for commercial use, so we'll have to specify that somewhere.
+
+While we're at it, we should move the wrappers/LICENSE to the top level so it's clear it applies to the entire repo.",daler,https://github.com/lcdb/lcdb-wf/issues/55
+MDU6SXNzdWUyNTg5MjgzOTU=,Update gffutils db and add introns.,OPEN,2017-09-19T19:01:43Z,2018-02-11T23:42:10Z,,Current version of db give the sqlite3 warning and asks about running `db.analyze()`. Also would be nice to go ahead and run `db.update(db.create_introns())`.,jfear,https://github.com/lcdb/lcdb-wf/issues/56
+MDU6SXNzdWUyNjI1MTI4NTQ=,add deepTools fingerprint,CLOSED,2017-10-03T17:21:37Z,2017-10-05T18:12:02Z,2017-10-04T21:29:35Z,plotFingerprint (http://deeptools.readthedocs.io/en/latest/content/feature/plotFingerprint_QC_metrics.html) would be a useful QC metric to include.,daler,https://github.com/lcdb/lcdb-wf/issues/60
+MDU6SXNzdWUyNjU0MDU2NTU=,something up with the dicty ref,CLOSED,2017-10-13T20:10:33Z,2022-11-12T14:48:19Z,2022-11-12T14:48:19Z,"There's a reported whitespace issue with the current dicty references, this is a placeholder to fix that at some point . . .",daler,https://github.com/lcdb/lcdb-wf/issues/62
+MDU6SXNzdWUyODEwOTk2NjI=,add useful bits from DEGreport,OPEN,2017-12-11T17:19:22Z,2018-02-11T23:41:43Z,,"In our RNA-seq workflow there's some duplicated effort with https://github.com/lpantano/DEGreport that we should probably pull out in favor of using this package. There's also some nice extra functionality in the package that would be nice to include either by default or stubbed out for easy incorporation in custom workflows.
+",daler,https://github.com/lcdb/lcdb-wf/issues/74
+MDU6SXNzdWUzMTQxNDg5MTg=,lay the groundwork for circleci wrapper caching,CLOSED,2018-04-13T15:18:58Z,2020-04-20T21:11:56Z,2020-04-20T21:11:56Z,"We're currently using CircleCI's [caching mechanism] to re-use the environment defined in `requirements.txt`. The cache's key is the hash of `requirements.txt` (configured in [this line](https://github.com/lcdb/lcdb-wf/blob/master/.circleci/config.yml#L29)) so any time that file is changed, the environment will be re-built. Otherwise, the configured directory (configured [here](https://github.com/lcdb/lcdb-wf/blob/master/.circleci/config.yml#L31)) is copied from the cache to the container.
+
+This has been working well and we have been saving a lot of time on the tests. But a lot of time is still spent creating the environments for each wrapper. It would be nice to cache this as well. This is a bit trickier.
+
+- Each workflow needs to maintain its own cache. For example, the chipseq workflow's cached path should be `workflows/chipseq/.snakemake/conda` (may need `project` prepended to that path depending on where circleci actually puts things)
+- The cache's key should be the hash of the (filename-sorted), concatenated environment.yaml files across all wrappers actually used in a workflow's Snakefile. @palmercd this is what we need a script for; it will be run in the top level of the repo.
+- The caching job effectively does `cd workflows/chipseq; snakemake --create-envs-only` to create the `.snakemake/conda` dir to be cached.
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/116
+MDU6SXNzdWUzMjI5Mzg5OTM=,modularize references,CLOSED,2018-05-14T18:56:00Z,2018-05-15T15:35:05Z,2018-05-15T15:35:05Z,"Currently, it's annoying to have to dig through the `references:` section of the config, especially if you only want one or a handful of genomes.
+
+I propose an ""include"" mechanism, where individual genomes' references config info are stored and maintained in separate files, and then included into the main config.
+
+So you would maintain a file like this:
+
+```yaml
+# include/reference_configs/Drosophila_melanogaster.yaml
+fly:
+  default:
+    fasta: https://url.gz
+    indexes:
+      - bowtie2
+...
+```
+and another one: 
+```yaml
+# include/reference_configs/Homo_sapiens.yaml
+human:
+  gencode-v25:
+    fasta: https://url.gz
+    indexes:
+      - bowtie2
+...
+```
+
+And then include them both like this:
+
+```yaml
+# workflows/chipseq/config/config.yaml
+include_references:
+    - '../../include/reference_configs/Drosophila_melanogaster.yaml'
+    - '../../include/reference_configs/Homo_sapiens.yaml'
+```
+
+This would be *in addition to* the existing mechanism. So the result of these operations would be to update the `references:` dict with the included files. This would raise an error if an existing key was already found in the main config file.
+
+The major advantage of this is easier maintenance of each species' references data and easier toggling (i.e., commenting out single lines) of what genomes you want included.
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/122
+MDU6SXNzdWUzMjc0OTE3MTI=,Sections to add to help_docs.Rmd,OPEN,2018-05-29T21:19:52Z,2018-05-29T21:19:52Z,,"These sections still need writing in [`workflows/rnaseq/help_docs.Rmd`](https://github.com/lcdb/lcdb-wf/blob/master/workflows/rnaseq/downstream/help_docs.Rmd):
+
+- interaction terms (what are they and how to interpret them)
+- GO terms (why to be careful interpreting them; how to read the plots)
+- patterns plots (what are they, how to interpret)
+- replicates (within-replicate variation vs between-condition variation; removing outliers)",daler,https://github.com/lcdb/lcdb-wf/issues/126
+MDU6SXNzdWUzMzkwNTM2MDM=,rnaseq.Rmd ENSEMBLTRANS handling,OPEN,2018-07-06T19:52:00Z,2018-07-24T13:45:25Z,,"When running the simplify-patterns version of rnaseq.Rmd on _Mus musculus_, getting an error in
+
+`mapIds(orgdb, keys=rownames(transcript.tpm), column=keytype, keytype='ENSEMBLTRANS')`
+
+The issue is that the rownames of transcript.tpm are full ENSEMBL annotation blocks delimited by ""|"", not just ENSEMBL transcript IDs; and the ENSEMBL transcript IDs that are there in the first entry have the "".#"" suffix.
+
+Two possible fixes:
+1) rip out the ENSEMBL transcript IDs from the rownames. The benefit of this one is that you don't really need to run it conditionally, it should just work even if the contents are just ENSEMBL transcript IDs and nothing else. Though if it doesn't match the formatting and it's still not ENSEMBL transcript IDs, the error might get cryptic.
+
+`transcript.geneids <- mapIds(orgdb, keys=unlist(lapply(strsplit(rownames(transcript.tpm), ""[|]|[.]""), function(i) {i[[1]]})), column=keytype, keytype='ENSEMBLTRANS')`
+
+
+2) rip out the ENSEMBL gene IDs from the rownames (element 2 by ""|"" delimiter) and skip the mapIDs call entirely. This one would require a check that the ENSG codes are actually present in the rownames somewhere.
+
+`if (length(grep(""ENSG"", rownames(transcript.tpm))) == nrow(transcript.tpm)) {
+transcript.geneids <- unlist(lapply(strsplit(rownames(transcript.tpm), ""[|]|[.]""), function(i) {i[[3]]}))
+}`
+otherwise fall back to some other handling method
+
+",palmercd,https://github.com/lcdb/lcdb-wf/issues/128
+MDU6SXNzdWUzNDUzNTkyNzI=,colocalization indexing issue in pandas>=0.23,OPEN,2018-07-27T20:38:13Z,2018-07-27T21:08:50Z,,"pandas>=0.23 appears to break the syntax of workflows/colocalization/scripts/colocalization_heatmap.py line 103 (pandas.core.indexes.base.InvalidIndexError). Apparent undesirable fix is to just downgrade to pandas=0.22.0
+
+Presumably someone more familiar with this could just rewrite the indexing syntax for 0.23 compatibility, but just wanted to log this here in case someone runs into it and doesn't have time.",palmercd,https://github.com/lcdb/lcdb-wf/issues/130
+MDU6SXNzdWUzNTQ4NTU3NDM=,cannot build environment due to requirements conflict,CLOSED,2018-08-28T18:44:25Z,2018-08-28T19:26:44Z,2018-08-28T19:24:34Z,"Trying to build top-level conda environment as usual (create -n whatever --file requirements.txt) i now get
+
+Fetching package metadata ...........
+Solving package specifications: .
+
+UnsatisfiableError: The following specifications were found to be in conflict:
+  - deeptools >=3.0.1
+  - numpy >1.15
+  - python >=3.6
+
+removing the numpy restriction circumvents it, but i don't know why it was pinned to begin with, so it's probably not actually a solution.",palmercd,https://github.com/lcdb/lcdb-wf/issues/134
+MDU6SXNzdWUzNzgwMjMxOTI=,rnaseq pipeline w/SRA: ambiguous rules,CLOSED,2018-11-06T20:37:49Z,2018-11-16T19:55:27Z,2018-11-16T19:55:27Z,"Trying to run RNA-seq pipeline with built-in SRA (single end) download support, snakemake dies with ambiguous rule exception for the rules fastq_dump and cutadapt. Workaround --allow-ambiguity allows the run to complete successfully, but obviously that's hackjob nonsense. Sorry I don't have actual fix suggestions, I defer to y'all snakemake masters.",palmercd,https://github.com/lcdb/lcdb-wf/issues/139
+MDU6SXNzdWUzODA0MzM2Njc=,downloading references (during rnaseq) gitpython unavailable,CLOSED,2018-11-13T21:33:27Z,2018-11-16T20:59:11Z,2018-11-16T20:59:11Z,"download_and_process fails for reference fasta and gtf downloads during a fresh rnaseq pipeline run, complaining about gitpython being unavailable. Manual installation of gitpython with conda resolves the problem.",palmercd,https://github.com/lcdb/lcdb-wf/issues/143
+MDU6SXNzdWUzODEzMjI3OTc=,revert gtf postprocess for Drosophila flybase conversion_refflat,CLOSED,2018-11-15T20:16:54Z,2019-07-21T23:23:05Z,2019-07-21T23:23:05Z,"The current reference_configs/Drosophila_melanogaster configuration file does not work with flybase _Drosophila_ reference data, which is to say, master is not in a functional state. The generic postprocessing function common/convert_gtf_chroms is missing functionality from the previous dm6/gtf_postprocess:
+
+`""""""| awk -F ""\\t"" '{{OFS=""\\t""; if ( ! ($7 != ""-"" && $9 ~ /FBgn0002781/)) print $0}}' """"""`
+
+The FBgn0002781 match and filter is still necessary in at least <= r6-24. The pipeline crashes at conversion_refflat with an error from gtfToGenePred regarding - strand content from FBgn0002781.
+",palmercd,https://github.com/lcdb/lcdb-wf/issues/144
+MDU6SXNzdWUzODQ5OTIyMDA=,-T comment in WRAPPER_SLURM breaks script,CLOSED,2018-11-27T21:24:23Z,2018-12-10T17:45:21Z,2018-12-10T17:45:21Z,"Leaving the comment line
+
+`     # -T \`
+
+in include/WRAPPER_SLURM causes the snakemake command to be incomplete and leads to various issues depending on the configuration. Most recently the RNA-seq workflow attempted to run but didn't know to use conda environments and attempted to run sequentially, and then eventually crashed ~40% of the way through, on I believe rseqc.
+
+Removing the line entirely resolves the issue.",palmercd,https://github.com/lcdb/lcdb-wf/issues/145
+MDU6SXNzdWU0MDg4MjQzNDk=,"use --vanilla or R_PROFILE_USER=""""",CLOSED,2019-02-11T15:05:14Z,2019-05-06T23:26:08Z,2019-05-06T23:26:08Z,"Users may have custom `.Rprofile` files, which will get loaded even within an environment. Sometimes the `.Rprofile` can use other libraries that are not in the environment, causing errors.
+
+The solution is that whenever R is called, we should be using `--vanilla` to avoid `.Rprofile` loading. In some cases this can't be directly done for example when Picard internally calls R. One solution is to add this to the top of each snakefile:
+
+```python
+shell.prefix(""export R_PROFILE_USER=;"")
+```",daler,https://github.com/lcdb/lcdb-wf/issues/152
+MDU6SXNzdWU0Mzk3NzI3MTk=,Paired end support broken,CLOSED,2019-05-02T20:26:26Z,2019-05-08T16:18:04Z,2019-05-08T16:18:04Z,"Paired end support fails at first step (symlink_targets) by symlinking R1 and R2 both to the R1 input file. All downstream rules continue without errors, as apparently hisat2 allows embedded mates to map successfully. bowtie2 (in fastq_screen) doesn't seem to, but since fastq_screen is only operating on R1, this doesn't come up. This would also be flagged by insert size distribution but that is not presented in multiqc.
+
+Confirmed only for rnaseq.",palmercd,https://github.com/lcdb/lcdb-wf/issues/162
+MDU6SXNzdWU0Mzk3NzU3NTE=,rnaseq workflow failure for fixed patterns,CLOSED,2019-05-02T20:32:37Z,2019-05-06T21:46:26Z,2019-05-06T21:46:25Z,"Rules depending on invariant patterns from config/rnaseq_patterns.yaml do not evaluate correctly. It seems to possibly return null? This is detectable immediately as workflow will not launch due to indexing error when trying to evaluate
+
+workflows/rnaseq/Snakefile line 624, log: c.targets['multiqc'][0] + '.log'
+
+With that fixed (replace with actual string path and filename), the workflow can run but all rules with outputs of fixed patterns (rnaseq_rmarkdown, multiqc, libsizes_table, rrna_percentages_table) silently fail to run. No data/rnaseq_aggregation directory is created, and differential expression is not run.
+
+Appears to be a software version issue of some kind, as this has suddenly appeared in new and old instances of the workflow with newly constructed environments.",palmercd,https://github.com/lcdb/lcdb-wf/issues/163
+MDU6SXNzdWU0NDQxMjQ4NTU=,ChIP-seq pipeline requires all algorithms in config.yaml,CLOSED,2019-05-14T21:05:03Z,2019-07-22T17:40:04Z,2019-07-22T17:40:04Z,"Due presumably to the recent fix for patterns population, the ChIP-seq pipeline now silently requires all supported algorithms (macs2, spp, sicer) to have at least one peak calling block in workflows/chipseq/config/config.yaml. Without this condition satisfied, the pipeline crashes with the error
+WildcardError in line 73 of /spin1/users/Lei/chipseq/chipseq-requires-callers/lcdb-wf/workflows/chipseq/Snakefile.test:
+Wildcards in input files cannot be determined from output files:
+'sicer_run'
+
+(or spp_run, etc)
+
+Steps to reproduce:
+1) install pipeline
+2) generate an environment and activate it
+3) in workflows/chipseq/config/config.yaml, delete all blocks from any one algorithm (sicer is easiest as there's only one example block)
+4) in workflows/chipseq run bash ./run_test.sh
+
+",palmercd,https://github.com/lcdb/lcdb-wf/issues/166
+MDU6SXNzdWU0NzA1MTkyNzg=,clarify chipseq config,OPEN,2019-07-19T20:08:37Z,2019-07-22T01:09:39Z,,"If the config.yaml `ip:` and `control:` fields do not match the `label` column in sampletable.tsv, the error message is confusing.
+
+The docs should clarify this, and should also clarify that peak-calling labels are completely independent from the sampletable's label column.",daler,https://github.com/lcdb/lcdb-wf/issues/169
+MDU6SXNzdWU0NzA4Mzg3MTI=,Run FastQC on R2 and add to MultiQC config,CLOSED,2019-07-21T23:39:38Z,2019-11-15T20:34:38Z,2019-11-15T20:34:38Z,"Currently we run FastQC on R1 for raw, trimmed, and aligned. For raw and trimmed, we should also run on R2.
+
+This will require updating the MultiQC configuration to support another two FastQC sections.",daler,https://github.com/lcdb/lcdb-wf/issues/171
+MDU6SXNzdWU0NzA4NDEwNjQ=,"Store last working environment, and env improvements",OPEN,2019-07-22T00:05:22Z,2019-08-02T21:32:31Z,,"conda and bioconda move fast. Despite our best efforts, a previously-working requirements file sometimes fails. We need a better strategy for building and storing env specs.
+
+Currently, the CircleCI system uses a cache that is only updated when `requirements.txt` changes. This has the huge advantage of speeding up tests dramatically. However, if this does not change, we use the same env that could be months old.
+
+I would like to change to the following system:
+
+- a cron job on circle-ci builds a new environment each week, based on an under-specified requirements.txt file (that is, one that does not pin versions)
+- upon successful building, the cron job pushes the results of `conda env export`...somewhere. I'm thinking a different repo, to keep things clean here.
+- when running tests on this repo, we use that last-successfully-built env export. That should speed things up. If the tests pass, then that last-successfully-built env export is copied to this repo for the ""production"" version.
+- instead of `conda env export` or `conda list --export`, we might want to consider `conda list --explicit` which reports the actual URLs and completely bypasses the conda solver.
+
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/172
+MDU6SXNzdWU0NzA4NDEyMzM=,encourage env paths rather than names,CLOSED,2019-07-22T00:07:15Z,2019-08-22T01:44:40Z,2019-08-22T01:44:40Z,"In the docs, should change to suggesting `conda create -p ./env` rather than `conda create -n lcdb-wf`, as the former has been working well across many projects in shared space. Should include some description of why this is a good idea especially on shared systems.",daler,https://github.com/lcdb/lcdb-wf/issues/173
+MDU6SXNzdWU0NzA4NDE1OTI=,pin wrapper envs,OPEN,2019-07-22T00:10:53Z,2019-07-22T01:09:02Z,,"Similar to #172, we should be more explicit in pinning wrapper environments to speed up the conda solver. However, these are more tightly integrated into the snakemake workflow, and so will take some thought as to how best to implement.",daler,https://github.com/lcdb/lcdb-wf/issues/174
+MDU6SXNzdWU0NzA4NDIwNzQ=,remove support for mixed SE and PE samples,CLOSED,2019-07-22T00:15:35Z,2019-11-15T20:33:54Z,2019-11-15T20:33:53Z,"Currently, we support combined SE and PE samples in the same sampletable. This was helpful in a handful of experiments in the past, and is something that not many other workflow systems support, but the infrastructure overhead is starting to become problematic.
+
+We should allow only SE or only PE in a single workflow. For mixed situations, the solution would be to copy the workflow and use the different layout there, for example, setting up a SE workflow in `workflows/rnaseq` and a PE one in `workflows/rnaseq-pe`.
+
+Once the SE/PE mixed functionality is removed, we can move toward supporting PE for the ChIP-seq workflow, which will better support CUT&RUN and ATAC-seq workflows.",daler,https://github.com/lcdb/lcdb-wf/issues/175
+MDU6SXNzdWU0NzA4NDIzNTg=,use plotly and heatmaply in rnaseq.Rmd,CLOSED,2019-07-22T00:17:41Z,2019-07-31T20:04:53Z,2019-07-31T20:04:53Z,"1. remove the variable genes heatmap. I can't remember a circumstance where it was useful.
+2. use heatmaply for the clustered heatmap
+3. use plotly for the PCAs
+",daler,https://github.com/lcdb/lcdb-wf/issues/176
+MDU6SXNzdWU0NzA4NDUwMDM=,rnaseq.Rmd should use mappings generated from GTF rather than AnnotationHub,OPEN,2019-07-22T00:35:29Z,2020-05-21T18:56:44Z,,"[this rule](https://github.com/lcdb/lcdb-wf/blob/master/workflows/references/Snakefile#L287) in the references workflow creates mappings (Ensembl -> symbol, etc) from the GTF file. This should be the authoritative source, especially if we use, say, a custom GTF with additional constructs in it.
+
+As such, this should be used instead of AnnotationHub for converting gene symbols etc.
+
+However, it will take some thought as to how to provide these mappings TSVs to the rnaseq.Rmd so they can be used effectively.
+
+We will still need the AnnotationHub for functional enrichment analysis, though.",daler,https://github.com/lcdb/lcdb-wf/issues/177
+MDU6SXNzdWU0NzA4NDczNzE=,all indexes and conversions should be created by default,OPEN,2019-07-22T00:53:37Z,2019-08-22T12:32:34Z,,"Currently, we need to manually specify in the config.yaml (or references config) that we want bowtie2 or hisat or star or whatever indexes, and that we want the different conversions for refflat, gffutils db, etc.
+
+One option is to add these all to the included reference configs; another option is to hard-code them into the references workflow so that there is always a rule available for them (even though a particular workflow may not need all of them, in which case they will not be built).
+
+A nice side effect is that when running the references workflow, it will create all the files needed so they will always be on hand.",daler,https://github.com/lcdb/lcdb-wf/issues/178
+MDU6SXNzdWU0NzA4NDc4Njk=,rnaseq trackhub bigwig nomenclature,CLOSED,2019-07-22T00:57:24Z,2019-07-31T20:04:26Z,2019-07-31T20:04:26Z,"The trackhubs (and bigWig rules) for RNA-seq have the poor nomenclature of ""sense"" and ""antisense"". These should be changed.
+
+The way it works now is that bigWigs are created for reads mapping to either strand in the BAM file, but this is independent of whether the assay reports the same or opposite strand reads for a transcript's origin strand. So there is the additional bigwig symlink rule that makes it easy to swap these without having to wait regenerate the bigwigs (which can take a while).
+
+The names of the bigwigs should be chosen carefully to reflect these differences in BAM vs transcript strand.
+",daler,https://github.com/lcdb/lcdb-wf/issues/179
+MDU6SXNzdWU0NzA4NDg2NTY=,evaluate the necessity of cutadapt,OPEN,2019-07-22T01:03:05Z,2019-07-22T01:08:44Z,,"As noted in https://github.com/lcdb/lcdb-wf/pull/168#issuecomment-513513552, if we use bwa-mem and star exclusively we may not need adapter trimming. Does that also mean we don't need quality trimming? We should evaluate these using existing data sets.",daler,https://github.com/lcdb/lcdb-wf/issues/180
+MDU6SXNzdWU0NzA4NDg5NDA=,evaluate individual vs pooled featureCounts runs,CLOSED,2019-07-22T01:05:18Z,2019-07-31T20:04:00Z,2019-07-31T20:04:00Z,"Currently we keep the featureCounts runs separate (one run per BAM) which allows us to check individual samples. If featureCounts is run once with all BAMs, does multiqc still pull out the per-sample metrics? If so, it would make it a little more straightforward to load counts into R.",daler,https://github.com/lcdb/lcdb-wf/issues/181
+MDU6SXNzdWU0NzA4NTE2Mjg=,fix docs building,CLOSED,2019-07-22T01:23:23Z,2019-08-05T20:05:44Z,2019-08-05T20:05:44Z,"Not sure why, but the last run of the docs-building on master branch says there's nothing to commit, but there should be the v1.4.1 changes to be published.",daler,https://github.com/lcdb/lcdb-wf/issues/182
+MDU6SXNzdWU0NzA4NTI5MDA=,add support for labeled MA plot,CLOSED,2019-07-22T01:31:29Z,2019-07-31T20:03:32Z,2019-07-31T20:03:32Z,Add code from https://gitlab.com/nichd-0/core/labeled-ma-plot to support labeling of arbitrary genes in MA plots within rnaseq.Rmd.,daler,https://github.com/lcdb/lcdb-wf/issues/183
+MDU6SXNzdWU0NzA4NTMwNzY=,add support for spike-in genomes,CLOSED,2019-07-22T01:32:36Z,2021-08-22T19:48:34Z,2021-08-22T19:48:34Z,"for example, to support CUT&RUN or ERCC spike-ins for RNA-seq.",daler,https://github.com/lcdb/lcdb-wf/issues/184
+MDU6SXNzdWU0NzA4NTM3MDI=,use snakemake reports,OPEN,2019-07-22T01:36:12Z,2019-11-15T20:33:10Z,,"We should really be using the snakemake reporting tools, https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html",daler,https://github.com/lcdb/lcdb-wf/issues/185
+MDU6SXNzdWU0NzA4NTQyMjY=,modernize the use of snakemake,OPEN,2019-07-22T01:39:17Z,2019-11-15T20:33:10Z,,"- [ ] use a slurm profile to configure lscratch
+- [ ] no longer need to set shell to bash
+- [ ] no longer need to use `set -euo pipefail`
+- [ ] consider grouping rules together
+- [ ] use [config validation](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html#validation)",daler,https://github.com/lcdb/lcdb-wf/issues/186
+MDU6SXNzdWU0NzA4NTQ2NjE=,support the use of lscratch as shadow directories,OPEN,2019-07-22T01:42:09Z,2024-01-11T13:06:58Z,,"on biowulf, we can use fast node-local storage (`lscratch`) but this location is specific to the SLURM_JOB_ID env var which isn't set until the job is submitted.
+
+Snakemake has the shadow directory idea, which copies or symlinks files over to a temp dir and copies back the outputs when done. It would save a lot on I/O costs if we could get shadow dirs working with lscratch on biowulf.",daler,https://github.com/lcdb/lcdb-wf/issues/187
+MDU6SXNzdWU0NzA4NTUwODg=,"rseqc ""infer_experiment""",CLOSED,2019-07-22T01:44:53Z,2019-08-04T01:51:02Z,2019-08-04T01:51:02Z,"We currently run featureCounts in three strandedness modes, which is really helpful for QC. However we might be able to get away with just using [RSeQC's infer_experiment.py](http://rseqc.sourceforge.net/#infer-experiment-py) tool.
+
+What are the advantages/disadvantages to each?",daler,https://github.com/lcdb/lcdb-wf/issues/188
+MDU6SXNzdWU0NzExOTQzNDA=,add test for #189,CLOSED,2019-07-22T17:00:45Z,2019-07-31T20:02:57Z,2019-07-31T20:02:57Z,"#189 fixes #166, but a regression test should be added. The most straightforward would be to add another whole workflow with a modified config, but this would increase the testing time even more. I think we should consider holding off until better understanding the gitlab runner infrastructure to take advantage of highly-parallel jobs on our own infrastructure.",daler,https://github.com/lcdb/lcdb-wf/issues/190
+MDU6SXNzdWU0NzQwOTA2MTY=,Change featureCounts to pooled BAMS,CLOSED,2019-07-29T14:40:27Z,2019-08-04T01:50:21Z,2019-08-04T01:50:21Z,This is fix for issue #181 ,njohnso6,https://github.com/lcdb/lcdb-wf/issues/191
+MDU6SXNzdWU0NzU4NDQyMTU=,spombe name has extra colon.,CLOSED,2019-08-01T19:12:31Z,2019-08-03T17:10:05Z,2019-08-03T17:10:05Z,"The spombe tag name has an extra colon here:
+
+https://github.com/lcdb/lcdb-wf/blob/879811b59451d8fd87ee04c5b647e73edcb2b425/include/reference_configs/Schizosaccharomyces_pombe.yaml#L3
+
+There is an extra colon `ucsc_41::`.
+
+",jfear,https://github.com/lcdb/lcdb-wf/issues/196
+MDU6SXNzdWU0NzY0NzIwMjc=,remove s0/s1/s2 featureCounts variations,CLOSED,2019-08-03T17:22:36Z,2019-08-22T01:43:12Z,2019-08-22T01:43:11Z,"As discussed in #188, rseqc infer_experiment does just fine and is picked up by multiqc.
+
+The different featureCounts variations that ran in different orientations should now be removed, simplifying the workflow.
+
+Off the top of my head the places that will need to be changed are:
+
+- [ ] workflows/rnaseq/config/rnaseq_patterns.yaml
+- [ ] workflows/rnaseq/Snakefile
+- [ ] workflows/rnaseq/config/multiqc_config.yaml
+- [ ] lib/patterns_targets.py
+- [ ] all mentions of it in documentation
+
+but there may be other locations as well.
+
+**edit** this needs to wait until #195 is merged into `v1.5rc` branch",daler,https://github.com/lcdb/lcdb-wf/issues/200
+MDU6SXNzdWU0NzY0NzI5MTg=,effects of using salmon in rnaseq.Rmd ,OPEN,2019-08-03T17:33:00Z,2020-04-29T15:03:48Z,,"We have support for salmon in rnaseq.rmd, but in practice we haven't been using it.
+
+I think there are good arguments for using it, and [this section of the DESeq vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#transcript-abundance-files-and-tximport-input) has some references to the literature describing the advantages.
+
+In practice, what are the differences we see in salmon vs featureCounts quantification?",daler,https://github.com/lcdb/lcdb-wf/issues/201
+MDU6SXNzdWU0OTY2OTI2MTU=,improvements to STAR rule,CLOSED,2019-09-21T19:36:20Z,2021-06-18T01:49:28Z,2021-06-18T01:49:28Z,"1. Use `--outSAMtype BAM SortedByCoordinate`
+2. Use 2-pass mapping. STAR docs recommend doing the first pass on each sample and then providing all identified junctions to each samples' second pass. Not sure if this is worth the complexity of continuing to support multiple aligners.
+",daler,https://github.com/lcdb/lcdb-wf/issues/214
+MDU6SXNzdWU0OTY2OTMzMTA=,use temp() more; consider configuring its usage,OPEN,2019-09-21T19:43:03Z,2019-11-15T20:33:11Z,,"Currently we take the conservative approach and keep probably more than we need to. It will be useful to revisit what files are retained, and possibly allow a mechanism to control how strict to be on space. For example,
+
+```python
+def tempify(x):
+    if config['strict']:
+        return temp(x)
+    return x
+```
+```snakemake
+rule a:
+    output: tempify('path/to/output.bam')
+```",daler,https://github.com/lcdb/lcdb-wf/issues/215
+MDU6SXNzdWU0OTY2OTM0NDg=,kraken for screening,CLOSED,2019-09-21T19:44:42Z,2019-11-17T02:41:52Z,2019-11-17T02:41:52Z,"Instead of fastq-screen, it may be better to use kraken. We'll need to work out the best way of handling the database (it may need a separate rule in the `references` workflow and likely a configuration mechanism).",daler,https://github.com/lcdb/lcdb-wf/issues/216
+MDU6SXNzdWU0OTY2OTQwMTc=,more elegant technical replicate handling,OPEN,2019-09-21T19:49:51Z,2020-04-20T21:13:42Z,,"At first, we were processing data from a sequencing facility that provided already-concatenated fastq files. Now we are getting experiments with fastqs spread across multiple lanes.
+
+The current way of handling this is to keep each separate techrep in its own line in the sampletable, and then combine the techreps in R (for rnaseq) or after alignment (chipseq).
+
+We should provide a mechanism for doing this up front, by catting together the fastqs in the first place. That is, techreps would still be separate lines in the sampletable, but they would be catted right after symlinking and the combined fastqs would then go to the trimming stage.
+
+Infrastructure for doing this sort of thing is already in the chipseq workflow and chipseq sampletable; the goal would be to make it more general for chipseq or rnaseq.
+
+The big question is whether or not we want to know about the separate technical replicates at the QC level, and I'm still on the fence about this.",daler,https://github.com/lcdb/lcdb-wf/issues/217
+MDU6SXNzdWU0OTY2OTQzMjg=,rseqc read distribution plots,CLOSED,2019-09-21T19:52:27Z,2020-04-20T21:09:34Z,2020-04-20T21:09:34Z,"MultiQC has a nicer display of rseqc read distribution plots that show distance from TSS, in contrast to the otherwise-mostly-similar CollectRnaSeqMetrics. We should consider which of these to run (or maybe run them both?)",daler,https://github.com/lcdb/lcdb-wf/issues/218
+MDU6SXNzdWU0OTk2MzkyNDM=,fixes to rnaseq.Rmd,CLOSED,2019-09-27T20:37:29Z,2019-09-30T14:08:48Z,2019-09-30T14:08:48Z,"- expose top.plots intgroup
+- expose ability to choose label column in labeled plotMA 
+- fix combined featureCounts loading in helpers.Rmd
+- featureCounts path column in colData no longer needed
+- set rownames in colData after loading
+- stringsAsFactors=FALSE when loading colData
+- give example of using collapseReplicates
+",daler,https://github.com/lcdb/lcdb-wf/issues/221
+MDU6SXNzdWU1MDI5NzAxMTk=,improving the use of size factors,CLOSED,2019-10-05T14:28:49Z,2020-04-20T21:09:12Z,2020-04-20T21:09:12Z,"In rnaseq.Rmd, the size factors table is not that helpful as-is, especially for larger experiments.
+
+This table hasn't been that useful in the past for outlier detection, especially since we're already looking at the multiqc report for library sizes.
+
+What if we included additional information? Like maybe a plot of DESeq2-calculated size factors vs aligned reads? Or size factors vs total read count?
+
+In either case, it should be a plotly scatter plot so we can hover to identify samples.",daler,https://github.com/lcdb/lcdb-wf/issues/222
+MDU6SXNzdWU1MDI5ODg2MDQ=,.gitignore improvements,CLOSED,2019-10-05T17:04:30Z,2020-04-20T21:08:52Z,2020-04-20T21:08:52Z,"After a run there are additional files that are created that shouldn't be committed -- AnnotationHub, snakefile logs, various rnaseq/downstream files.",daler,https://github.com/lcdb/lcdb-wf/issues/223
+MDU6SXNzdWU1MDI5OTAzMTQ=,top.plots rewrite,CLOSED,2019-10-05T17:16:59Z,2022-11-25T01:13:24Z,2022-11-25T01:13:24Z,"The top.plots in helpers.Rmd isn't very convenient to use or customize. Better would be to have a function that returns a tidy dataframe that includes all metadata from `colData(dds)` that can be used for arbitrary ggplot plotting.
+
+I'm thinking a signature like this, where sel.genes can optionally be a list of genes to consider (otherwise you get the whole thing):
+
+```r
+counts.df <- function(dds, sel.genes=NULL)
+```
+
+that returns a dataframe with columns like:
+
+```
+gene  normalized_count  samplename  rank replicate  group <other columns from colData(dds)>
+```
+
+(where rank is log2foldchange)
+
+that we can plot with 
+
+```r
+ggplot(df %>% filter(rank <= 3) +
+  aes(y=count, x=group, color=group) +
+  geom_point() +
+  facet_grid(.~rank)
+```
+It's nice to have the convenient gene names as titles like we have now -- not quite sure yet how best to implement that. Maybe the function should create an additional ""nice label"" column?",daler,https://github.com/lcdb/lcdb-wf/issues/224
+MDU6SXNzdWU1MDI5OTA3MjA=,multiqc heatmaps not working for later-stage fastqc,CLOSED,2019-10-05T17:20:17Z,2020-04-20T21:08:37Z,2020-04-20T21:08:37Z,"The nucleotide distribution heatmaps in FastQC multiqc sections work fine, but only for the first fastqc run (on raw reads). Other fastqc plots work fine for trimmed and aligned, it's just the heatmap that doesn't.
+
+I haven't worked out if this is an issue/limitation in multiqc itself or if it's related to the config/multiqc_config.yaml we're using.",daler,https://github.com/lcdb/lcdb-wf/issues/225
+MDU6SXNzdWU1MDI5OTEwNDk=,remove bamstat,CLOSED,2019-10-05T17:23:14Z,2020-04-20T21:08:13Z,2020-04-20T21:08:13Z,"The bamstat plots in multiqc have not been helpful in the past, and at this point they seem more like clutter. They also appear not to be interactive anymore. I think the rule can be removed and therefore it will not show up in multiqc.",daler,https://github.com/lcdb/lcdb-wf/issues/226
+MDU6SXNzdWU1MDI5OTMxOTA=,dds subsetter,CLOSED,2019-10-05T17:40:40Z,2020-04-20T21:07:50Z,2020-04-20T21:07:50Z,"We should have a more convenient way of subsetting dds objects that additionally does `droplevels` on any factor columns in colData(dds). The use-case for this is when removing outliers when building the res.list object.
+
+I'm not sure if a DESeq(dds) needs to be run again to re-estimate variances on the subsetted object . . . but such a subsetting function should take care of that if needed.",daler,https://github.com/lcdb/lcdb-wf/issues/227
+MDU6SXNzdWU1MDMwMTQxOTU=,run fastqc on R1 and R2 (and include in multiqc),OPEN,2019-10-05T20:46:30Z,2019-11-15T20:33:11Z,,"Currently we're only running fastqc on R1, and there are experiments where it's helpful to have R2 as well. The trick will be in getting this to show up in multiqc in a reasonable way. Since we're currently doing raw, trimmed, and aligned, this could be too cluttered doing it all for R2 as well.",daler,https://github.com/lcdb/lcdb-wf/issues/228
+MDU6SXNzdWU1MTMwNTAwNjk=,test issue,CLOSED,2019-10-28T01:02:25Z,2019-11-02T20:32:10Z,2019-11-02T20:32:10Z,testing integration with gitlab,daler,https://github.com/lcdb/lcdb-wf/issues/231
+MDU6SXNzdWU1MTY3MjcxMTc=,rnaseq.Rmd should have more 'dependson' in chunks,CLOSED,2019-11-02T21:28:45Z,2020-04-20T21:07:38Z,2020-04-20T21:07:37Z,"RMarkdown code chunks can use `dependson=""chunkname""` or `dependson=c('chunk1', 'chunk2')` to build a DAG of dependencies between chunks.
+
+Often we'll delete the cache and re-run when things change/don't change as expected.
+
+We should do a review of the chunk dependencies and add them where needed to minimize the need to delete the cache.",daler,https://github.com/lcdb/lcdb-wf/issues/232
+MDU6SXNzdWU1MTY3Mjc2MDE=,parallelize clusterprofiler,OPEN,2019-11-02T21:30:36Z,2020-04-29T15:04:48Z,,"clusterProfiler runs quite slowly, and we have internal  code running with bpapply to parallelize. That should be incorporated into the current rnaseq.Rmd.",daler,https://github.com/lcdb/lcdb-wf/issues/233
+MDU6SXNzdWU1NTMxOTk5MTA=,Clarify error message for 'get_techreps' function,CLOSED,2020-01-21T23:07:42Z,2021-06-18T01:43:12Z,2021-06-18T01:43:12Z,"When setting up a chipseq experiment, I was a little thrown off by the error message in the get_techreps function in common.py (called by the 'merge_techreps' rule in the Snakefile). The issue was that I had a typo in the config file in a few of the 'ip' fields that caused them to not match with the corresponding value in the label column in the sampletable. The error message said 
+
+""No technical replicates found for label 'example'. This looks to be a chIP-seq experiment; check the peak-calling section of the config. ""
+
+The experiment I was setting up didn't have any technical replicates, so this wording confused me because I thought it was saying that the workflow requires technical replicates to run properly, and that it was throwing the error because I didn't have any. It might be clearer to say something like
+
+""No technical replicates found in sampletable for label 'example' from the config file. This looks to be a chIP-seq experiment; check the peak-calling section of the config to ensure that the 'ip' and 'control' entries match their corresponding 'label' entries in the sampletable. ""
+",hertafeldsr,https://github.com/lcdb/lcdb-wf/issues/243
+MDU6SXNzdWU1NTMyMDc3ODI=,"Note in documentation the need to change 'patterns_targets.py' if not using all three algorithms (macs2, sicer, and spp) in chipseq config",CLOSED,2020-01-21T23:24:43Z,2021-06-18T01:48:16Z,2021-06-18T01:48:16Z,"The file 'patterns_targets.py' expects an entry for each algorithm in the peak_calling section of the config file, as it creates a list (""PEAK_CALLERS = ['macs2', 'spp', 'sicer']"") and loops through them to set up the peak calling runs. One solution would be to clarify in the config file the need to edit that list in 'patterns_targets.py' if the user is not using all three algorithms. Another solution would be to edit 'patterns_targets.py' to do some extra parsing of the config file to only loop through algorithms that are listed there.",hertafeldsr,https://github.com/lcdb/lcdb-wf/issues/244
+MDU6SXNzdWU1ODg4MzIzMjc=,create transcriptome fasta from GTF + genome fasta,CLOSED,2020-03-27T01:53:16Z,2021-06-18T01:44:15Z,2021-06-18T01:44:14Z,"In some cases we've observed the transcriptome fasta to not completely match the GTF file from the same source. It will therefore be good to have the references workflow build a transcriptome fasta from the GTF + fasta file to make sure they match.
+
+The rule for this should be pretty straightforward (`gffread` from cufflinks should do it, or something else nowadays may be better). The challenge is in deciding how to set this up in the config file.
+
+Current behavior is to have a separate block for the transcriptome, only have a fasta block, and specify a salmon index.
+
+For future behavior, where should a salmon index be configured? Probably not just in the GTF (i.e. a ""conversion"" in the language of the config file) and probably not just in the genome fasta (an ""index"").
+
+Possible options:
+
+- Add an additional key in the config at the tag level so that it includes both gtf and fasta?
+- Just include it as an index under the fasta, even though it's not directly created from the genome fasta?
+",daler,https://github.com/lcdb/lcdb-wf/issues/249
+MDU6SXNzdWU2MDM1NDE1MTM=,generalize sizefactors plots,OPEN,2020-04-20T21:18:00Z,2020-04-20T21:18:00Z,,"The new sizeFactor plots in rnaseq.Rmd (e.g., [here](https://github.com/lcdb/lcdb-wf/blob/master/workflows/rnaseq/downstream/rnaseq.Rmd#L284)) currently use a hard-coded `group` factor.
+
+I'd like to have this turned into a function in `helpers.Rmd`, returning a ggplot object, and written in a generic way so we can modify colors/groups.",daler,https://github.com/lcdb/lcdb-wf/issues/251
+MDU6SXNzdWU2MDM1NDQ5MDY=,streamline collapsing techrep and ensembl version removal,CLOSED,2020-04-20T21:23:45Z,2020-05-04T21:04:59Z,2020-05-04T21:04:59Z,"It's currently pretty messy to remove outliers, especially in cases where the technical replicates need to be merged and ensembl versions need to be stripped. That is, these three things happen:
+
+```r
+dds <- DESeqDataSetFromCombinedFeatureCounts(
+  '../data/rnaseq_aggregation/featurecounts.txt',
+  sampletable=colData,
+  design=~group)
+
+dds <- collapseReplicates(dds, dds$biorep)
+
+if (strip.dotted.version){
+  rownames(dds) <- sapply(strsplit(rownames(dds), '.', fixed=TRUE),
+                                  function (x) x[1])
+}                                            
+```
+
+When creating different dds objects, the above three steps need to happen each time and it's easy to get mixed up with the variable names. I think one way to streamline this would be to have DESeqDataSetFromCombinedFeatureCounts do the collapsing (if needed) and version strip (if needed) within that function.
+",daler,https://github.com/lcdb/lcdb-wf/issues/252
+MDU6SXNzdWU2MDM1NDYzNDU=,update included reference configs to reflect latest assemblies,OPEN,2020-04-20T21:26:32Z,2020-04-20T21:26:32Z,,"e.g., GENCODE human is up to v33.
+
+While it'll be relatively trivial to update the respective URLs, it will be harder to see if the fundamental structure of reference files changed. For example, there might be existing postprocess functions that no longer are needed, or maybe some functions that are now needed.",daler,https://github.com/lcdb/lcdb-wf/issues/253
+MDU6SXNzdWU2MDM1NDY5MTA=,quote=FALSE for results output,CLOSED,2020-04-20T21:27:35Z,2021-06-18T00:58:02Z,2021-06-18T00:58:02Z,"Relatively minor, but just to track it: when outputting DESeq results to TSV, don't use quotes. This doesn't play nice with e.g. visidata.",daler,https://github.com/lcdb/lcdb-wf/issues/254
+MDU6SXNzdWU2MDM1NDg0MzM=,helper function for removing batch effects,OPEN,2020-04-20T21:30:36Z,2020-04-20T21:30:44Z,,"the `limma::removeBatchEffects()` function essentially does the linear modeling to regress out the factors. It currently supports 2 levels of factors.
+
+The [source code for the function](https://rdrr.io/bioc/limma/src/R/removeBatchEffect.R) is pretty straightforward. I'd like to have a function that takes arbitrary numbers of factors and cats them together into the model matrix.
+
+This will be useful for plotting PCAs after removing batch effects, to better show the relationships between samples as they are being tested by DESeq2 when using a model with a batch effect.",daler,https://github.com/lcdb/lcdb-wf/issues/255
+MDU6SXNzdWU2MDM1NTEwNDg=,heatmap for ranking raw foldchange (in no-replicate studies),OPEN,2020-04-20T21:35:41Z,2020-04-29T02:45:44Z,,"We've recently had some studies in rare diseases where there simply aren't the samples available (and we don't want to wish rare diseases on someone for the sake of statistical power . . . ). In these cases, we've been plotting heatmaps of normalized counts, subsetted by the most-different genes.
+
+It would be nice to have a helper function that handles this.
+
+Currently we're using something like this:
+
+```r
+n <- 50
+m <- assay(rld)
+mn <- rowMeans(m[,c('s1', 's2', 's3')])
+x <- m['s0']
+fc <- x / mn 
+o <- order(fc)
+top<- o[1:n]
+bot <- rev(o)[1:n]
+
+symbols <- mapIds(
+  orgdb, keys=rownames(m), column='SYMBOL',
+   keytype='ENSEMBL', multiVal='first')
+missing <- is.na(symbols)
+symbols[missing] <- names(symbols)[missing]
+rownames(m) <- symbols
+
+heatmaply(m[c(top, bot),],
+          scale='row')
+```",daler,https://github.com/lcdb/lcdb-wf/issues/256
+MDU6SXNzdWU2MDM1NTE3MzA=,improve DESeq2 output files,OPEN,2020-04-20T21:37:03Z,2020-06-01T16:53:02Z,,"Often people ask to join all the results tables together, and tack on the normalized counts. A helper function would be really useful for this.
+
+- [ ] TSV and Excel output for each contrast
+- [ ] TSV and Excel output that aggregates log2FoldChange and padj for all contrasts into one table (possibly as columns named after contrasts, or separate worksheets)
+- [ ] export TSV and Excel of normalized counts, VST normalized, and TPM (from salmon)
+- [ ] All Excel output should have filtering and sorting enabled, maybe an option to have everything all in one sheet, with all information for a gene in a single row. For adding a filter to columns, see [~~`openxlsx::addFilter`~~](https://rdrr.io/cran/openxlsx/man/addFilter.html) `readxl`, `writexl`
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/257
+MDU6SXNzdWU2MDQwMTYwMDI=,Develop a process to maintain updated reference versions in references workflow,OPEN,2020-04-21T13:52:06Z,2020-04-29T02:45:08Z,,"Many of the reference genomes listed in the master config are quite far behind the current versions.
+
+Depending on the goals of the project, it may be worth adding a mechanism to keep them up to date.
+
+One possible approach would be to create multiple versioned configs, perhaps versioned by month/season? (""config-2020-03.yml"" or ""config-spring2020.yml""). This way, users could easily choose between the version that they care to use.
+
+Another possible approach would be to split up the single reference config into separate sources, and then you could have 'gencode-v33.yml', etc.
+
+As far as keeping them up-to-date, it might be sufficient to simply create a few issues with deadlines tied to expected release dates of the main reference sources, and use those (along with perhaps a simple script with some `wget` commands, and/or a [cookiecutter](https://github.com/cookiecutter/cookiecutter) template to generate the new config files themselves.",khughitt,https://github.com/lcdb/lcdb-wf/issues/258
+MDU6SXNzdWU2MDg3MzIzNjQ=,split off functional enrichment part of rnaseq.Rmd,CLOSED,2020-04-29T02:20:06Z,2021-08-22T19:45:32Z,2021-08-22T19:45:32Z,"I feel like a lot of our time in working on the Rmd for RNA-seq is waiting for clusterProfiler to run or to plot, even when we are working on unrelated things like e.g. PCA. I'd like to discuss possible ways of splitting off the functional enrichment analysis into another Rmd.
+
+I think really we just need to decide on an ""interface"" between two Rmds. Couple of options here:
+
+- `res.list` object (saved as an RDS). The advantage of this is that it comes along with the label that can be used for sub-headings when making the plots, and the names in the list which are useful for saving filenames. Disadvantage is that it forces the use of a custom data structure, which will not be convenient for collaborators wanting to run/tweak the functional enrichment analysis on their own.
+
+- TSVs. Advantage is that this is the lowest common denominator, and we can make very generic functions to wrap various clusterProfiler routines. Disadvantage is that we need to track the labeling separately. It's possible we could do this with filenames and a metadata TSV (linking filenames to long-form labels) but that feels hacky.",daler,https://github.com/lcdb/lcdb-wf/issues/259
+MDU6SXNzdWU2MDg3MzMwNDI=,add diffbind Rmd,OPEN,2020-04-29T02:22:14Z,2020-08-21T18:01:02Z,,"For the ChIP-seq workflow, we should have a diffBind Rmd to use as a template. In order to test this properly, we'll need to see if our existing test data can support this, if we can fake it somehow (e.g., re-use the same samples as replicates just to have a proof-of-principle), or if we need new example data.",daler,https://github.com/lcdb/lcdb-wf/issues/260
+MDU6SXNzdWU2MDg3MzM3ODE=,evaluate and/or document ATAC-seq,OPEN,2020-04-29T02:24:31Z,2020-04-29T02:24:31Z,,"ATAC-seq analysis is essentially a modified ChIP-seq (with input-less peak calling) but we should evaluate the best-practices workflows out there (e.g., ENCODE) and modify ours accordingly.
+
+Depending on how much we need to add, we can then consider modifying the ChIP-seq workflow or spin off a separate ATAC-seq workflow directory.",daler,https://github.com/lcdb/lcdb-wf/issues/261
+MDU6SXNzdWU2MDg3MzQ0NjA=,GSEA rather than overrepresentation?,CLOSED,2020-04-29T02:26:38Z,2022-11-25T13:35:48Z,2022-11-25T13:35:48Z,"When splitting off the functional enrichment analysis (see #259), we should consider including options to use GSEA or overrepresentation, and writing the rest of the code to be suitably agnostic to the method.",daler,https://github.com/lcdb/lcdb-wf/issues/262
+MDU6SXNzdWU2MDg3MzkxMTY=,how to handle conda environments,CLOSED,2020-04-29T02:43:15Z,2021-06-18T00:52:15Z,2021-06-18T00:52:14Z,"The current single large environment typically takes 15+ mins to create each time. Most of this is the conda solver. After lots of messing around to figure out what packages might be causing the solver to work so hard, I realized that splitting the environment in to R and non-R environments allows them to be built quite quickly (something like 3 mins each).
+
+In practice, while we do have the rnaseq.Rmd rule at the end of the snakefile, we do a lot of manual work since that's typically the most interesting and most custom part of the experiment. Generally that's the only rule that needs R; the rest of the snakefile can use the non-R environment.
+
+How to run this in practice?
+
+1. We could use the `conda:` directive for the downstream RNA-seq rule, but this creates an env in the `.snakemake` dir named after the hash of the requirements file. This makes it a pain to source when it's time to work on the Rmd interactively. Maybe we could have a helper script to figure out what the env name is and source it. It might be something like:
+
+```bash
+env=$(md5sum ../../r-env.yaml)
+conda activate ../.snakemake/$env
+```
+
+Still clunky. Another reason I don't like that is that it's harder to interactively add packages to the env -- you'd need to edit the r-env.yaml and re-run snakemake to have it do the env creation. That's awkward.
+
+2. We could require there to be a specifically-named environment that needs to exist ahead of time, and the downstream rule `conda activate`s that env before running. I'm not sure I like requiring a specific name like that, it doesn't seem very elegant. Plus not everyone might be able to use in-place environments like we do.
+
+3. We could remove the rnaseq.Rmd rule from the snakefile altogether. In practice, the newer versions of rnsaeq.Rmd use the featurecounts and sampletable hashes as chunk options, so caches will be invalidated when those files change. That is, it's doing the same kind of thing as snakemake anyway (output file dependency tracking) just using a different mechanism.
+
+**Note:** Currently #265 is using option 3: running the rnaseq.Rmd test after the Snakefile finished.",daler,https://github.com/lcdb/lcdb-wf/issues/263
+MDU6SXNzdWU2MDkxMzE5NjA=,include cut&run workflow,OPEN,2020-04-29T15:06:20Z,2020-04-29T15:06:20Z,,,daler,https://github.com/lcdb/lcdb-wf/issues/264
+MDU6SXNzdWU2MTAzMDI5OTU=,plot improvements,OPEN,2020-04-30T18:43:10Z,2020-06-23T13:50:52Z,,"- these apply to size factors and top plots
+   - `theme_bw()` 
+   - rotate x-axis labels
+- have `top.plots` return ggplot objects so that the top gene plots can be tabbed instead of a grid layout",mitraak,https://github.com/lcdb/lcdb-wf/issues/266
+MDU6SXNzdWU2MTAzMDYyNzE=,make FDR and fold-change cutoffs uniform,OPEN,2020-04-30T18:48:45Z,2020-05-05T15:24:45Z,,"- make parameter names referring to FDR and FC cutoffs uniform in the plots chunk. This touches the functions:
+    - `summarize.res.list`
+    - `my.summary`
+    - `plotMA.label`
+
+(also see #269)
+
+Furthermore, we should cache the lfc and alpha settings in a chunk and then depend on that chunk in any downstream chunks that require them.",mitraak,https://github.com/lcdb/lcdb-wf/issues/267
+MDU6SXNzdWU2MTAzMDc5MTU=,Add more contrast examples,CLOSED,2020-04-30T18:51:37Z,2021-06-18T00:54:05Z,2021-06-18T00:54:04Z,"Have different examples of ways to specify contrasts in the results chunk
+- character vector, e.g. `contrast = c('group', 'treatment', 'control')`
+- numeric vector, e.g. `contrast = c(1, 0, -1, 0)`
+
+Maybe other examples of different ways can also be added, e.g. using a `resultsNames` value",mitraak,https://github.com/lcdb/lcdb-wf/issues/268
+MDU6SXNzdWU2MTAzNDM3NTY=,add FDR and FC threshold to degPatterns chunk,OPEN,2020-04-30T19:51:59Z,2020-06-23T13:52:37Z,,- add `alpha` and `lfc.thresh` options to `get.sig` call here: https://github.com/lcdb/lcdb-wf/blob/a9d9443a1e314a3ebb8627240878e33ce55c8ebb/workflows/rnaseq/downstream/rnaseq.Rmd#L633,mitraak,https://github.com/lcdb/lcdb-wf/issues/269
+MDU6SXNzdWU2MTIxNDIxMDc=,use salmon rather than featurecounts,OPEN,2020-05-04T20:19:39Z,2020-05-06T18:41:13Z,,"The DESeq2 vignette [recommends using salmon](http://bioconductor.org/packages/3.9/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#transcript-abundance-files-and-tximport-input) counts as input to DESeq2. We're already generating these as part of the workflow, so we should use them.",daler,https://github.com/lcdb/lcdb-wf/issues/271
+MDU6SXNzdWU2MTIxNDQ1ODU=,Run (or provide a snippet to run) SVA,OPEN,2020-05-04T20:23:58Z,2020-05-05T14:03:49Z,,"It will be a good idea to run [sva](http://bioconductor.org/packages/release/bioc/html/sva.html), and this is recommended in the DESeq2 vignette at the end of the [shrinkage estimators section](http://bioconductor.org/packages/3.9/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#alternative-shrinkage-estimators)",daler,https://github.com/lcdb/lcdb-wf/issues/272
+MDU6SXNzdWU2MTIxNDY2MTM=,"use the apeglm shrinkage estimator, and work out model details",OPEN,2020-05-04T20:27:24Z,2020-06-11T21:07:00Z,,"According to the [extended shrinkage estimator section](http://bioconductor.org/packages/3.9/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#moreshrink) in the DESeq2 vignette, apeglm has better performance especially with lower-count genes where the default ""normal"" mode shrinks to aggressively.
+
+However, as they describe there, this prevents us from using the `contrast=c('factorame', 'treat', 'control')` syntax for generating results. It's still possible to generate results, it just takes some rearrangement of the model to get it to work.",daler,https://github.com/lcdb/lcdb-wf/issues/273
+MDU6SXNzdWU2MTIxNTM2ODc=,improve degPatterns output,OPEN,2020-05-04T20:39:42Z,2020-05-05T15:26:05Z,,"Currently the degPattern output only has gene ID, and could use a symbol column. So it could stand to be improved. However, since one gene can be found in at most one cluster, it could be nice to attach the  degPattern cluster IDs to the exported TSVs. So we'd automatically get the symbol then, and would have a nice side affect of not having to create separate files for each cluster as we do now.
+
+When writing this, we need to consider the possibility of running degPatterns multiple times -- in that case, it should add multiple columns to the output.",daler,https://github.com/lcdb/lcdb-wf/issues/274
+MDU6SXNzdWU2MTIxNjYzOTE=,proposal for streamlining creation of dds objects,CLOSED,2020-05-04T21:02:37Z,2021-08-22T19:51:37Z,2021-08-22T19:51:37Z,"We typically make a handful of dds objects to look at different aspects of the experiment. This ends up creating a fair amount of code duplication, with the corresponding introduction of possible errors.
+
+For example, it's currently pretty messy to remove outliers, especially in cases where the technical replicates need to be merged and ensembl versions need to be stripped. That is, these three things happen:
+
+```r
+#1.
+dds <- DESeqDataSetFromCombinedFeatureCounts(
+  '../data/rnaseq_aggregation/featurecounts.txt',
+  sampletable=colData,
+  design=~group)
+
+#2.
+dds <- collapseReplicates(dds, dds$biorep)
+
+#3.
+if (strip.dotted.version){
+  rownames(dds) <- sapply(strsplit(rownames(dds), '.', fixed=TRUE),
+                                  function (x) x[1])
+}
+```                                        
+
+When creating different dds objects, the above three steps need to happen each time and it's easy to get mixed up with the variable names. I think one way to streamline this would be to have DESeqDataSetFromCombinedFeatureCounts do the collapsing (if needed) and version strip (if needed) within that function.
+
+
+The result of this example code is a list of dds objects where they all pull from the same salmon input files and use the same technical replicate collapsing and the same Ensembl version removal.
+
+```r
+lst <- list(
+  main=list(colData, ~group),
+  no.rep.2=list(colData %>% filter(replicate!=2), ~group),
+  interaction=list(colData %>% filter(replicate!=2), ~genotype + time + genotype:time)
+)
+
+dds.list <- make.dds.list(
+   lst, salmon.files=salmon.files, combine.by='biorep', remove.version=TRUE)
+```
+
+In this way, `make.dds.list` only needs to know the salmon files, collapse info, and version removal info once. The only things that change are the colData and model.
+
+So . . . just have to write `make.dds.list` to make that happen!
+
+An additional side effect is that the res.list object will no longer store copies of each dds object, we can just refer by list name to the new dds.list object.
+
+Note: this will use the salmon importing through tximport, which has arguments for at least removing ensembl versions, so that can be passed through to the tximport function.",daler,https://github.com/lcdb/lcdb-wf/issues/275
+MDU6SXNzdWU2MTIxNjgyMzM=,rnaseq.Rmd changes to target v1.6,OPEN,2020-05-04T21:06:04Z,2022-11-25T01:12:19Z,,"This issue collects various other issue related to the rnaseq.Rmd updates, organizing them by broad section in rnaseq.Rmd.
+
+
+## Ingest files from the upstream workflow
+- [ ] use transcript-to-gene mappings (and possibly gene_id to symbol mappings) generated from GTF (#177) (@njohnso6)
+
+
+## Create initial dds object, vst, and QC
+- [ ] use salmon rather than featurecounts (#271) (@hertafeldsr)
+- [ ] helper function for removing batch effects (#255) (@hertafeldsr)
+- [ ] helper function for ranking raw log2foldchange between arbitrary samples (#256) (@hertafeldsr)
+- [ ] generalize size factor plots (#251) (@hertafeldsr)
+- [ ] include code for running sva (#272) (@hertafeldsr)
+
+
+## Create dds objects used for DE
+- [x] streamline the process of collapsing techreps and removing Ensembl versions (#275) (@njohnso6)
+
+
+
+## Build the results
+- [x] add more contrast examples to the comments, like character and numeric vector formats (#268) (@mitraak)
+- [ ] explicitly use `apeglm` for lfcShrink, and figure out how to adjust models appropriately (#273) (@mitraak)
+
+
+## Summarize and plot the results
+
+- [x] move away from bitr (#277) (@esnaultc) 
+- [ ] unify how FDR and LFC are configured and passed around (#267) (@esnaultc)
+- [ ] improve the ""top.plots"" plotting functionality (#224) (@esnaultc)
+- [ ] plotting improvements (#266) (@esnaultc)
+- [ ] reorganize upset plots (#306) (@mitraak)
+
+## Export results
+- [ ] improve and expand the exported output (#257, may take some coordination with #274) (@daler)
+
+
+## Gene patterns
+- [x] split off into new Rmd (#259) (@daler)
+- [ ] ensure degPatterns chunk uses the same alpha and lfc.thresh criteria as elsewhere (#269)(@esnaultc)
+- [ ] attach cluster IDs to the differential expression output (#274) (@esnaultc and @mitraak )
+
+## Functional enrichment analysis
+- [x] split off into new Rmd (#259) (@daler)
+- [ ] parallelize clusterProfiler (#233) (@mitraak)
+- [ ] provide option to toggle GSEA or overrepresentation (#262) (@mitraak)
+
+## Minor
+
+- [ ] Minor tweaks (#295) (@daler)",daler,https://github.com/lcdb/lcdb-wf/issues/276
+MDU6SXNzdWU2MTIxNzA4MDk=,move away from bitr,CLOSED,2020-05-04T21:11:00Z,2022-11-24T14:15:43Z,2022-11-24T14:15:43Z,"I've recently been running into issues with `clusterProfiler::bitr`, which is just a loose wrapper around `AnnotationDbi::select` that has less options. If we end up with a good solution for using gene ID -> symbol mappings from the GTF files (see #177), then we can just use that. Otherwise, we can use `select` directly and avoid `bitr`.",daler,https://github.com/lcdb/lcdb-wf/issues/277
+MDU6SXNzdWU2MTU5Mjc1NTY=,AnnotationHub issues on biowulf,CLOSED,2020-05-11T14:25:51Z,2020-05-23T20:33:46Z,2020-05-23T20:33:46Z,"The first time we run the `rnaseq.Rmd` on biowulf, the annotationHub download step fails with the error:
+
+```
+Cannot determine internet connection.
+ If you experience connection issues consider using 'localHub=TRUE'
+Quitting from lines 76-106 (rnaseq.Rmd)
+Error in bfcadd(bfc, rname = paste0(tolower(.class), "".sqlite3""), fpath = remote_db,   :
+   is.character(proxy) is not TRUE
+```
+
+I believe we had fixed this issue in the past, so it's not clear why it's popping up again.
+
+Also, I don't get this error, when I run this on my local workstation.",mitraak,https://github.com/lcdb/lcdb-wf/issues/282
+MDU6SXNzdWU2MTYxNTQ2MTA=,provide access to config files from within R,OPEN,2020-05-11T20:15:19Z,2020-05-11T20:15:19Z,,"This could help for things like:
+
+- #177, where we should be programatically accessing the mappings file
+- filling in the right patterns for the salmon output files
+- #260, to figure out which peak-calling has been performed
+- getting the right sampletable if one was provided as an override
+
+However I don't think I want to reimplement [`lib.common.references_dict()`](https://github.com/lcdb/lcdb-wf/blob/master/lib/common.py#L322) or the classes in [`lib.patterns_targets`](https://github.com/lcdb/lcdb-wf/blob/master/lib/patterns_targets.py).
+
+Maybe we can have a rule that outputs the final prepared targets dictionary and the final references_dict to file? They can be plain YAML and then all we need to do is provide R those paths.
+
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/284
+MDU6SXNzdWU2MjQ5MDE3MjA=,Update plotMA.label in helpers,OPEN,2020-05-26T13:53:28Z,2020-05-26T13:53:47Z,,"- add support for DESeqResults object
+    - tryCatch with `metadata()` to detect thresholds
+    - if thresholds explicitly specified these will win
+    - in case there is a mismatch between specified thresholds and `metadata()` values, output warning
+- update code to use dplyr. See plotMA.label gitlab project ",mitraak,https://github.com/lcdb/lcdb-wf/issues/292
+MDU6SXNzdWU2Mjg4NTAxNDU=,support easy creation of GEO/SRA submissions,CLOSED,2020-06-02T02:24:35Z,2021-01-02T14:36:22Z,2021-01-02T14:36:21Z,"The sample table has most of the information; the easiest way to address this would be to:
+
+1. make a new GEO submission directory
+2. symlink fastqs into that directory, named after sample names
+3. calculate md5sums on those fastqs
+
+From here, we can decide how much to match output to the GEO or SRA metadata spreadsheets.",daler,https://github.com/lcdb/lcdb-wf/issues/293
+MDU6SXNzdWU2MzA0MjYyMTI=,minor rnaseq.Rmd tweaks,CLOSED,2020-06-04T00:49:37Z,2022-11-25T01:06:55Z,2022-11-25T01:06:55Z,"Some comments and suggestions for improvements after using the recent v1.6rc version:
+
+- Set the title of the page to something besides `rnaseq.utf8`
+- ""RNA-seq results"" section should be ""Sample similarity and QC""
+- In the differential expression analysis section, the first tabs (summary of results) are helpful to make sure we're looking at the right contrast but as the first tab they are too redundant with the larger summary table. I think MA plots should be the first tab
+- Consider having an ""exported results"" tab, rather than a totally different section that separately lists the TSVs. And possibly a final Excel with sheets for each contrast (as we have been discussing)
+- the prose text could use an editing pass by a non-expert to help make it easier to follow
+",daler,https://github.com/lcdb/lcdb-wf/issues/295
+MDU6SXNzdWU2MzE4MDAwMTU=,update zebrafish reference config,OPEN,2020-06-05T17:53:57Z,2023-02-03T22:13:34Z,,"We are currently using the UCSC assembly for zebrafish by default, which includes alt contigs.
+
+We should be using the Ensembl primary assembly (and keep using the Ensembl GTF),",daler,https://github.com/lcdb/lcdb-wf/issues/296
+MDU6SXNzdWU2MzQ0NjAzODE=,Check RNAseq sampletable for non-unique fastqs,CLOSED,2020-06-08T09:47:34Z,2020-08-19T17:48:14Z,2020-08-19T17:48:14Z,Include a step in the RNAseq Snakefile that verifies every sample points to unique fastqs.,esnaultc,https://github.com/lcdb/lcdb-wf/issues/297
+MDU6SXNzdWU2NDU4MjMwMjU=,clean up upset plots chunk,CLOSED,2020-06-25T20:13:18Z,2022-11-12T14:43:13Z,2022-11-12T14:43:13Z,"- split off in-chunk function `plot.upset` to helpers
+- clean up chunk",mitraak,https://github.com/lcdb/lcdb-wf/issues/306
+MDU6SXNzdWU2NjM4NjA2OTg=,investigate RNA-seq QC tool(s) for size factor inspection,CLOSED,2020-07-22T15:41:30Z,2021-06-18T01:41:27Z,2021-06-18T01:41:27Z,,daler,https://github.com/lcdb/lcdb-wf/issues/308
+MDU6SXNzdWU2ODEyMzk0MzI=,Issues with complex dataset,OPEN,2020-08-18T18:17:51Z,2023-02-03T22:13:14Z,,"While testing on a large complex datasets, several issues arose when running `rnaseq.Rmd` that were not picked up with smaller test data:
+
+- gene-pattern.Rmd not working when technical replicates are collapsed (samplenames in colData do not match the samples after collapse)
+
+- add_cluster_id fails in gene-pattern.Rmd when non unique gene names (like in human)
+
+- preflight check could check for unique samplename (right now gives cryptic error about series not having lower() attribute)
+
+- degPatterns in gene-pattern.Rmd uses diana, where dissimilarity matrix cannot contain NA; need to remove genes that have same value across all samples",esnaultc,https://github.com/lcdb/lcdb-wf/issues/310
+MDU6SXNzdWU2OTEwMjU3MDQ=,add diffbind in chipseq,CLOSED,2020-09-02T13:32:45Z,2021-06-18T00:54:59Z,2021-06-18T00:54:58Z,Add the differential binding downstream analysis to ChIPseq workflow.,esnaultc,https://github.com/lcdb/lcdb-wf/issues/312
+MDU6SXNzdWU3MTU1MTY0MDc=,Update PhiX reference,CLOSED,2020-10-06T09:47:38Z,2021-01-01T22:24:21Z,2021-01-01T22:24:21Z,"The URL for PhiX pointing to the Illumina FTP is no longer working. It needs to be updated to ftp://ftp.ncbi.nlm.nih.gov/genomes/Viruses/enterobacteria_phage_phix174_sensu_lato_uid14015/NC_001422.fna in the [PhiX.yaml]( https://github.com/lcdb/lcdb-wf/blob/v1.6rc/include/reference_configs/PhiX.yaml#L5).
+
+Postprocesses need to be adjusted accordingly.",esnaultc,https://github.com/lcdb/lcdb-wf/issues/318
+MDU6SXNzdWU3ODM1MjM3OTc=,fastq-dump arguments,OPEN,2021-01-11T16:37:20Z,2021-01-11T16:37:20Z,,Consider changing the argument for fastq-dump to handle corner cases where R1 and R2 have differing numbers of reads (`--split-3`),daler,https://github.com/lcdb/lcdb-wf/issues/328
+MDU6SXNzdWU4MzA1MDQ4MzQ=,Make rnaseq contrast chunks independent,CLOSED,2021-03-12T21:39:05Z,2022-01-16T20:44:59Z,2022-01-16T20:44:59Z,,njohnso6,https://github.com/lcdb/lcdb-wf/issues/332
+MDU6SXNzdWU4NTQ3NTU0MjU=,Add –conda-frontend flag in wrappers,CLOSED,2021-04-09T18:21:18Z,2022-11-24T14:12:40Z,2022-11-24T14:12:40Z,"Snakemake v6.1 now uses mamba as the default conda frontend, which can be overwritten by specifying to use conda via the `–-conda-frontend` flag.
+",esnaultc,https://github.com/lcdb/lcdb-wf/issues/336
+MDU6SXNzdWU5NzY0NTk5ODg=,add samtools idxstats,CLOSED,2021-08-22T20:09:15Z,2022-01-09T13:55:57Z,2022-01-09T13:55:57Z,"It would be helpful to include `samtools idxstats` to help with evaluating reads on chromosome.
+
+May require patching multiqc config as in https://multiqc.info/docs/#idxstats, and that might get a little crazy with assemblies like zebrafish that have lots and lots of contigs in the assembly.",daler,https://github.com/lcdb/lcdb-wf/issues/341
+MDU6SXNzdWU5NzY0NjA0MTg=,rm libsize table and rule,OPEN,2021-08-22T20:11:17Z,2022-11-24T14:05:32Z,,"The existing library size table, which was originally designed to be incorporated into MultiQC, is redundant with the general stats table provided by MultiQC. So the corresponding rules in the Snakefiles can be removed.",daler,https://github.com/lcdb/lcdb-wf/issues/342
+MDU6SXNzdWU5NzY0NjA5MjE=,preflight reporting,OPEN,2021-08-22T20:14:04Z,2021-08-22T20:14:04Z,,"There should be a preflight rule or command that:
+
+- creates visualization of the DAG of jobs
+- shows relevant config params (stranded, PE, aligner, etc)
+- shows locations of reference files along with their reference blocks and a timestamp of when the references were created",daler,https://github.com/lcdb/lcdb-wf/issues/343
+MDU6SXNzdWU5Nzc2Mzc3NDQ=,convert circleci tests to more easily run locally,OPEN,2021-08-24T02:21:13Z,2022-11-24T14:03:54Z,,"Currently the [circleci tests](https://github.com/lcdb/lcdb-wf/blob/master/.circleci/config.yml) have lots of configuration and commands that only live in that config file. This makes it hard to test everything locally, especially when trying to test [large datasets](https://github.com/lcdb/lcdb-wf/pull/316).
+
+I'd like to have some easier way of setting up and running these tests such that they can be run from the command line on a local machine -- for example a `lcdb-wf-test` script that can be run like `lcdb-wf-test rnaseq-misc` to run the [rnaseq-misc step](https://github.com/lcdb/lcdb-wf/blob/master/.circleci/config.yml#L202).
+
+I don't think we need to recapitulate the dependencies of the circleci config file. Just need to make it easier somehow to run those tests.
+
+Once something is working, we can replace the circleci config with those shorter commands so that the actual tests are only maintained in a single place.",daler,https://github.com/lcdb/lcdb-wf/issues/344
+MDU6SXNzdWU5ODgxMTEzODY=,macs2 rule should handle PE better,OPEN,2021-09-03T21:31:02Z,2021-09-03T21:31:02Z,,"Currently, in order for macs2 to run in PE mode [this line](https://github.com/lcdb/lcdb-wf/blob/master/wrappers/wrappers/macs2/callpeak/wrapper.py#L25) in the wrapper needs to be changed to `BEDPE`. This is awkward!
+
+Some options:
+
+- expose a `paired-end:` parameter in the chipseq config section; this would be passed to the peak caller wrapper and handled by the wrapper. It should raise an error if the peak-caller does not support PE reads.
+- auto-detect from the BAM whether or not it's PE. I suppose this can be done by inspecting BAM flags, but I feel like specifying a parameter would be more explicit.",daler,https://github.com/lcdb/lcdb-wf/issues/345
+MDU6SXNzdWU5OTUzNjUzMzA=,chipseq workflow without control,CLOSED,2021-09-13T21:38:25Z,2023-07-28T03:23:27Z,2023-07-28T03:23:27Z,"The comments for the peak_calling section in the chipseq config.yaml suggest peak calling requires treatment/IP and control files. Can the chipseq workflow be run using the MACS peak calling algorithm with only an IP file (e.g. macs -t), such as the example below?
+
+peak_calling:
+    - label: gaf-embryo-sicer
+      algorithm: macs2
+      ip:
+        - gaf-embryo-1
+      control:
+        - null",rhodesch,https://github.com/lcdb/lcdb-wf/issues/346
+I_kwDOBG4Ass48aeIW,"Catch ""Valid Key Exception"" in Functional Enrichment",OPEN,2021-10-01T17:03:56Z,2021-10-01T17:03:56Z,,"On rare occasions, nonempty lists of genes will be supplied to functional enrichment where none of the genes are protein-encoding. When this happens, functional enrichment will fail completely and exit with an error. 
+
+The fix will be to implement a try-catch block in the functional-enrichment Rmd where the inputs are checked and replaced by some value if the error is caught. 
+
+Later, check for the value and if it's there print out a statement explaining the error was caught in the knitted html. ",fridells51,https://github.com/lcdb/lcdb-wf/issues/349
+I_kwDOBG4Ass49I1pY,need index for markduplicates,CLOSED,2021-10-13T21:51:10Z,2023-04-10T02:42:05Z,2023-04-10T02:42:05Z,We are aiming to have the markdups bam be the only one remaining; currently it does not have `.bai` created as part of the standard workflow.,daler,https://github.com/lcdb/lcdb-wf/issues/351
+I_kwDOBG4Ass49I4Ig,proposal to reorganize output directories,OPEN,2021-10-13T22:07:49Z,2021-10-13T22:07:49Z,,"### Overview
+
+Currently, for each sample we have an output directory that looks like the following (at least for RNA-seq):
+
+<details>
+
+<summary>Full tree of sample1 directory</summary>
+
+```
+.
+├── dupradar
+│   ├── sample1_curve.txt
+│   ├── sample1_dataframe.tsv
+│   ├── sample1_dataframe.tsv.log
+│   ├── sample1_density_scatter.png
+│   ├── sample1_expression_barplot.png
+│   ├── sample1_expression_boxplot.png
+│   ├── sample1_expression_histogram.png
+│   ├── sample1_model.txt
+│   └── sample1_multimapping_histogram.png
+├── fastqc
+│   ├── sample1.cutadapt.bam_fastqc.html
+│   ├── sample1.cutadapt.bam_fastqc.zip
+│   ├── sample1_R1.cutadapt.fastq.gz_fastqc.html
+│   ├── sample1_R1.cutadapt.fastq.gz_fastqc.zip
+│   ├── sample1_R1.fastq.gz_fastqc.html
+│   └── sample1_R1.fastq.gz_fastqc.zip
+├── rRNA
+│   ├── sample1.cutadapt.rrna.bam.libsize
+│   └── sample1.cutadapt.rrna.bam.log
+├── rseqc
+│   ├── sample1_read_distribution.txt
+│   └── sample1_read_distribution.txt.log
+├── sample1.collectrnaseqmetrics.metrics
+├── sample1.collectrnaseqmetrics.metrics.log
+├── sample1.collectrnaseqmetrics.pdf
+├── sample1.cutadapt.bam.bai
+├── sample1.cutadapt.bam.libsize
+├── sample1.cutadapt.bam.log
+├── sample1.cutadapt.bam.neg.bigwig
+├── sample1.cutadapt.bam.neg.bigwig.log
+├── sample1.cutadapt.bam.pos.bigwig
+├── sample1.cutadapt.bam.pos.bigwig.log
+├── sample1.cutadapt.markdups.bam
+├── sample1.cutadapt.markdups.bam.log
+├── sample1.cutadapt.markdups.bam.metrics
+├── sample1.cutadapt.screen.txt
+├── sample1.cutadapt.screen.txt.log
+├── sample1.kallisto
+│   ├── abundance.h5
+│   ├── abundance.h5.log
+│   ├── abundance.tsv
+│   ├── abundance.tsv.log
+│   └── run_info.json
+├── sample1_preseq_c_curve.txt
+├── sample1_R1.cutadapt.fastq.gz
+├── sample1_R1.cutadapt.fastq.gz.libsize
+├── sample1_R1.cutadapt.fastq.gz.log
+├── sample1_R1.fastq.gz -> ../../example_data/rnaseq_sample1PE_1.fq.gz
+├── sample1_R1.fastq.gz.libsize
+├── sample1.salmon
+│   ├── aux_info
+│   │   ├── ambig_info.tsv
+│   │   ├── exp3_seq.gz
+│   │   ├── exp5_seq.gz
+│   │   ├── expected_bias.gz
+│   │   ├── exp_gc.gz
+│   │   ├── fld.gz
+│   │   ├── meta_info.json
+│   │   ├── obs3_seq.gz
+│   │   ├── obs5_seq.gz
+│   │   ├── observed_bias_3p.gz
+│   │   ├── observed_bias.gz
+│   │   └── obs_gc.gz
+│   ├── cmd_info.json
+│   ├── lib_format_counts.json
+│   ├── libParams
+│   │   └── flenDist.txt
+│   ├── logs
+│   │   └── salmon_quant.log
+│   ├── quant.sf
+│   └── quant.sf.log
+└── sample1.strandedness.log
+
+```
+</details>
+
+
+
+<details>
+
+<summary>Level-1 tree of sample1 directory</summary>
+
+```.
+├── dupradar/
+├── fastqc/
+├── rRNA/
+├── rseqc/
+├── sample1.kallisto/
+├── sample1.salmon/
+├── sample1.collectrnaseqmetrics.metrics
+├── sample1.collectrnaseqmetrics.metrics.log
+├── sample1.collectrnaseqmetrics.pdf
+├── sample1.cutadapt.bam.bai
+├── sample1.cutadapt.bam.libsize
+├── sample1.cutadapt.bam.log
+├── sample1.cutadapt.bam.neg.bigwig
+├── sample1.cutadapt.bam.neg.bigwig.log
+├── sample1.cutadapt.bam.pos.bigwig
+├── sample1.cutadapt.bam.pos.bigwig.log
+├── sample1.cutadapt.markdups.bam
+├── sample1.cutadapt.markdups.bam.log
+├── sample1.cutadapt.markdups.bam.metrics
+├── sample1.cutadapt.screen.txt
+├── sample1.cutadapt.screen.txt.log
+├── sample1_preseq_c_curve.txt
+├── sample1_R1.cutadapt.fastq.gz
+├── sample1_R1.cutadapt.fastq.gz.libsize
+├── sample1_R1.cutadapt.fastq.gz.log
+├── sample1_R1.fastq.gz -> ../../example_data/rnaseq_sample1PE_1.fq.gz
+├── sample1_R1.fastq.gz.libsize
+└── sample1.strandedness.log
+```
+
+</details>
+
+It gets a bit noisy in there. Here are some ideas to help keep this tidy.
+
+
+### Store all QC in a `qc/` subdirectory
+
+We have separate directories for dupradar, fastqc, rseqc, and rRNA as well as files for preseq, collectrnaseqmetrics, and fastq_screen. These can all go in a subdirectory, `qc`. Same with the `*.libsize` files.
+
+
+### Store all log files in a `logs/` subdirectory
+
+The logs are in the top level simply because of convenience: it's easy to append a `.log` to the output file to get a log file, whether you're in the Snakefile or inspecting logs on the filesystem. But this definitely clutters the directory. I would propose to **store logs in a `logs` directory in the sample directory**.
+
+This might be easily implemented as a function in the Snakefile:
+
+```python
+rule task:
+    input: ""data/rnaseq_samples/{sample}/{sample}.cutadapt.bam""
+    output: ""data/rnaseq_samples/{sample}/{sample}.cutadapt.markdups.bam""
+    log: log_for(""data/rnaseq_samples/{sample}/{sample}.cutadapt.markdups.bam"")
+```
+
+or, using the [patterns/targets](https://lcdb.github.io/lcdb-wf/patterns-targets.html#patterns-and-targets) mechanism:
+
+```python
+rule task:
+    input: c.patterns['bam']
+    output: c.patterns['markdups']
+    log: log_for(c.patterns['markdups'])
+```
+
+The `log_for()` would need to figure out the sample directory (here, `data/rnaseq_samples/{sample}`) and insert a `logs/` directory right after it. After rearranging QC output as described above, that means we would want:
+
+```
+output: data/rnaseq_samples/{sample}/{sample}.bam
+log:      data/rnaseq_samples/{sample}/logs/{sample}.bam
+
+output: data/rnaseq_samples/{sample}/qc/{sample}_cutadapt.fastq.gz_fastqc.zip
+log:      data/rnaseq_samples/{sample}/logs/qc/{sample}_cutadapt.fastq.gz_fastqc.zip
+```  
+
+After the above is addressed (as well as https://github.com/lcdb/lcdb-wf/issues/351), then I think we would have something like this:
+
+
+<details>
+<summary>Goal</summary>
+
+```
+.
+├── qc/
+├── logs/
+├── sample1.kallisto/
+├── sample1.salmon/
+├── sample1.cutadapt.bam.neg.bigwig
+├── sample1.cutadapt.bam.pos.bigwig
+├── sample1.cutadapt.markdups.bam
+├── sample1.cutadapt.markdups.bam.bai
+├── sample1_R1.cutadapt.fastq.gz
+└── sample1_R1.fastq.gz -> ../../example_data/rnaseq_sample1PE_1.fq.gz
+```
+
+</details>
+
+### Optional: separate `quantification/` subdirectory?
+
+We could further organize this by moving the kallisto and salmon output to a `quantification` subdirectory. If we decide to switch back to per-sample featureCounts runs (rather than all-in-one as we have now) then the per-sample featureCounts files could live in that directory as well. So that would look like this:
+
+<details>
+
+```
+.
+├── qc/
+├── logs/
+├── quantification/
+├── sample1.cutadapt.bam.neg.bigwig
+├── sample1.cutadapt.bam.pos.bigwig
+├── sample1.cutadapt.markdups.bam
+├── sample1.cutadapt.markdups.bam.bai
+├── sample1_R1.cutadapt.fastq.gz
+└── sample1_R1.fastq.gz -> ../../example_data/rnaseq_sample1PE_1.fq.gz
+```
+
+</details>
+
+### Optional: separate directories for bam, bigwig, fastq?
+
+If we're doing this much reorganization, we should consider doing everything....including putting fastqs and bams and bigwigs in their own subdirectories as well.
+
+In that case, each sample directory then looks like this:
+
+```
+.
+├── bam/
+├── bigwig/
+├── fastq/
+├── log/
+├── qc/
+└── quantification/
+```
+
+## Follow-ups
+
+This would be a pretty dramatic change in organization, but I think it would be for the better. The problem is that we have a huge sunk cost, with hundreds of projects using the existing directory structure. So I would like to also have a tool that converts old paths to new paths and vice versa to enable, for example, identifying the raw fastqc runs across all samples ever run regardless of the version and directory structure.
+",daler,https://github.com/lcdb/lcdb-wf/issues/352
+I_kwDOBG4Ass5Bdlk-,Document reference configs,OPEN,2022-01-10T19:14:33Z,2022-01-10T19:14:33Z,,"The aim is to have a summary table of all common model organisms (those currently listed in the reference configs) and important features of each reference. For example, we'd like to document whether gene names are dotted and should be stripped (ex: yeast contains dotted gene names but stripping gene names can introduce errors), whether rRNA is documented in the genome, whether rRNA is documented in the gtf, etc. This table can then be easily referenced when users configure their projects, without having to delve into the reference organism themselves.
+
+As I go through our current reference configs repository, I can address Issue #253 and update our reference configs to most recent assemblies. Similarly, I can update the zebrafish reference config to the Ensembl primary assembly (Issue #296).",kcampbell824,https://github.com/lcdb/lcdb-wf/issues/355
+I_kwDOBG4Ass5B4b0E,AnnotationHub cache leaving a lockfile,CLOSED,2022-01-17T03:05:03Z,2022-01-24T14:56:10Z,2022-01-24T14:56:10Z,"In AnnotationHub 3.2.0, there is a lockfile left in the cache directory. This file is rw only for the creating user, not for the group, even with `umask 007` set. As a result, if another user runs the same code using the same cache, they will get an error because the lockfile can't be read. In the context of rnaseq.Rmd, this will cause the knitting to fail.
+
+This may be a bug in AnnotationHub or its dependency BiocFileCache since it wasn't happening in AnnotationHub 2.22.0. As a short-term fix, we can try removing the lock file before returning the annotation hub object.",daler,https://github.com/lcdb/lcdb-wf/issues/357
+I_kwDOBG4Ass5B-wpB,Update .gitignore to reflect v1.9rc changes,CLOSED,2022-01-18T14:24:57Z,2022-11-12T14:37:52Z,2022-11-12T14:37:52Z,"v1.9rc comes with some significant additions that we may or may not want to include in the .gitignore. Some examples of additions to the .gitignore are:
+- workflows/rnaseq/downstream/functional-enrichment.html
+- workflows/rnaseq/downstream/functional-enrichment_cache/
+- workflows/rnaseq/downstream/functional-enrichment_files/
+- workflows/rnaseq/downstream/Rplots.pdf
+- *.Rds
+- *.Rd (covers new additions to lib/lcdbwf/)",kcampbell824,https://github.com/lcdb/lcdb-wf/issues/358
+I_kwDOBG4Ass5B-yqE,Refactor contrast sorting for output datatable in v1.9rc,CLOSED,2022-01-18T14:32:13Z,2022-01-21T16:28:20Z,2022-01-21T16:27:58Z,"v1.9rc current behavior sorts contrasts alphabetically by contrast name when summarizing DE results in the datatable presented in the rnaseq.html. Aim is to allow more flexibility in how contrast results are presented, for example in order of contrast creation. To do so, we will change the pattern for contrast names from `contr_` to `contr_NN_`, where NN is a numeric ordering of the contrasts. This name pattern will then sort the contrasts in order based on the NN index. Finally, we'll strip the `contr_NN` prefix from contrast names before adding to presented datatable.",kcampbell824,https://github.com/lcdb/lcdb-wf/issues/359
+I_kwDOBG4Ass5J2sSJ,ranseq.Rmd: Libraries loaded after function is referenced if parallel option is set in the config (v1.9),CLOSED,2022-05-17T19:34:47Z,2024-05-12T02:34:35Z,2024-05-12T02:34:35Z,"If `parallel: TRUE` is set in the config, this code will be run in rnaseq.Rmd:
+
+```
+parallel <- config$parallel$parallel
+if (config$parallel$parallel){
+     register(MulticoreParam(config$parallel$cores))
+}
+```
+
+The problem is that `register` comes from a library that is loaded downstream of this code block. Moving the library loading chunk up before this code runs will fix this
+",fridells51,https://github.com/lcdb/lcdb-wf/issues/365
+I_kwDOBG4Ass5S0kRY,Require layout column for an SRA sampletable,CLOSED,2022-09-28T14:55:41Z,2023-04-10T02:42:04Z,2023-04-10T02:42:04Z,"Current behavior: If layout column is not specified, assumes SE and downloads from SRA using fastq-dump without --split-files.
+Issue: Lcdb-wf currently assumes that an SRA sampletable that doesn't have a ""layout"" or ""LibraryLayout"" column specified indicates a SE experiment. If the experiment was paired-end, SRA will only download an R1 file per sample & somehow concatenates the original paired end files into this single R1 file. 
+
+Fix: add a check (maybe in common.py) that checks if the sampletable is an SRA sampletable (checks for Run column & that all rows in this column start with ""SRR"") and if so, requires that either ""layout"" or ""LibraryLayout"" also exists in the sampletable. If not, throw an error. If so, should proceed through lcdb-wf as usual since fill_r1_r2 will now detect SE vs PE for SRA experiments, which triggers whether to use ""--split-files"" in the fastq-dump call",kcampbell824,https://github.com/lcdb/lcdb-wf/issues/367
+I_kwDOBG4Ass5V-eT2,Missing Reference Configs Does Not Raise an Error,CLOSED,2022-11-09T17:01:00Z,2023-04-10T02:42:03Z,2023-04-10T02:42:03Z,"When including a reference config, if that reference config does not exist, there is no error.",lillypi,https://github.com/lcdb/lcdb-wf/issues/368
+I_kwDOBG4Ass5dYYBS,Check featurecounts & sampletable sample names in dds construction when subset_counts is not provided,CLOSED,2023-02-01T19:19:29Z,2024-10-19T22:39:38Z,2024-10-19T22:39:37Z,"In the case where there are samples in the featurecounts columns that are *not* in the sampletable & the user doesn't provide `subset_counts = TRUE`, the error message is thrown `!subset_counts: invalid argument type`. This error message doesn't provide clear info on why this is failing because subset_counts is an optional param. In the same scenario (sampletable sample names are a subset of featurecounts) and user sets `subset_counts = FALSE`, a better error message is provided `The following samples are in the counts data but not in the sampletable. If this is intended, consider using subset_counts=TRUE`. Within `make_dds()`, we should check sampletable names against featurecounts names explicitly when subset_counts is not supplied & output a clearer error message.",kcampbell824,https://github.com/lcdb/lcdb-wf/issues/369
+I_kwDOBG4Ass5qzER_,Adding Epic2 as a new peakcaller in chipseq,CLOSED,2023-07-06T15:21:28Z,2023-07-29T01:56:00Z,2023-07-29T01:55:59Z,"Epic2 has been introduced as a peakcaller for broad peaks. I'm adding a new rule to run epic2 in the `chipseq` workflow.
+
+
+References:
+- paper: https://pubmed.ncbi.nlm.nih.gov/30923821/
+- github: https://github.com/biocore-ntnu/epic2
+
+The working branch is `epic2` and will be merged into `v1.10.3rc` once it's completed.",Mira0507,https://github.com/lcdb/lcdb-wf/issues/377
+I_kwDOBG4Ass5rXxQM,Deploy script error,CLOSED,2023-07-12T17:01:03Z,2024-10-19T22:37:46Z,2024-10-19T22:37:45Z,"When run with python deploy.py --clone --dest project --flavor rnaseq
+
+fatal: not a git repository (or any parent up to mount point /gpfs)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+Traceback (most recent call last):
+  File ""/gpfs/gsfs8/users/CARD_AA/users/johnsonnicl/test/deploy.py"", line 392, in <module>
+    include = write_include_file(source)
+  File ""/gpfs/gsfs8/users/CARD_AA/users/johnsonnicl/test/deploy.py"", line 144, in write_include_file
+    sp.check_output(
+  File ""/usr/local/Anaconda/envs/py3.10/lib/python3.10/subprocess.py"", line 421, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File ""/usr/local/Anaconda/envs/py3.10/lib/python3.10/subprocess.py"", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'ls-tree', '-r', 'HEAD', '--name-only']' returned non-zero exit status 128.
+
+Edit: turns out it is important to run the deploy script from within a repo that is already a git repo. If you do it works fine. But that isn't clear in the documentation.",njohnso6,https://github.com/lcdb/lcdb-wf/issues/378
+I_kwDOBG4Ass5rxNwA,consider using black/greylists for peak-calling,OPEN,2023-07-17T15:44:44Z,2023-07-17T15:44:44Z,,"
+- For organisms that have a blacklist, a config mechanism should be provided to specify it (by URL or file:// URI) to use it when calling peaks directly with the peak caller (like macs2), or to be provided as a step after peak-calling for those peak callers that don't support it (spp).
+- For organisms that don't have a blacklist, provide an alternative mechanism for configuring which samples should be provided to the [GreyListChIP](https://bioconductor.org/packages/release/bioc/vignettes/GreyListChIP/inst/doc/GreyList-demo.pdf) package to generate a greylist to be used as above
+- These lists should be optional
+
+The GreyListChIP package describes the algorithm, which seems straightforward. It may or may not make sense to reimplement into a snakemake rule using other tools already installed in the environment. Specifically, it does this:
+
+> 1. generating a tiling of the genome,
+> 2. counting reads from a BAM file for the tiling,
+> 3. sampling from the counts and fitting the samples to the negative binomial distribution to calculate the read count threshold,
+> 4. filtering the tiling to identify regions of high signal, then
+> 5. exporting the resulting set to a bed file.
+
+",daler,https://github.com/lcdb/lcdb-wf/issues/381
+I_kwDOBG4Ass5udYik,PDF plots in gene-patterns.Rmd,OPEN,2023-08-16T12:59:55Z,2023-08-16T12:59:55Z,,"Large PDF-saved gene-pattern plots are improperly zoomed in and facet label edges are cropped. This is evident when using dev.copy and dev.off [here]( https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L237-L238) for saving plots, more so with larger ones due to more gene pattern clusters.  
+
+Expected Behavior:
+- PDF plots should fully display facet labels without undue zooming or cropping, preserving 
+   appearance and layout irrespective of plot size.
+ 
+Proposed Solution:
+- Replace dev.copy and dev.off lines with ggplot2::ggsave ",menoldmt,https://github.com/lcdb/lcdb-wf/issues/386
+I_kwDOBG4Ass5udm6Q,"In gene-patterns.Rmd, ensure factors for certain colData used in gene patterns",OPEN,2023-08-16T13:31:28Z,2023-08-16T13:31:28Z,,"Problem:  
+
+Gene patterns gene cluster plots can get NA x-axis labels even though the x-axis is set to a valid column name [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L92-L94C16). This is because degPatterns expects factors when plotting time on the x-axis.
+
+Proposed solution:    
+
+Use the colData column chosen in the configuration code above to set as factors in colData. Need to test for integer and float values e.g., ""age"" on the x-axis to see of those values would need to be set as factors as well or if they can get left as if for plotting.   ",menoldmt,https://github.com/lcdb/lcdb-wf/issues/387
+I_kwDOBG4Ass5udqJG,Typographical errors in Gene-Patterns Explanatory Text,OPEN,2023-08-16T13:38:54Z,2023-08-16T13:38:54Z,,"“s/Cluster IDs/gene IDs/“ [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L66).  
+
+and “s/Gene pattern/Gene patterns/“! [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L116). 
+
+Add, “for each contrast, genes belonging to each cluster are represented in the TSVs,” [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L274-L275)
+
+",menoldmt,https://github.com/lcdb/lcdb-wf/issues/388
+I_kwDOBG4Ass5ud0V4,Add Functional Enrichment TSV Links to functional-enrichment.Rmd,OPEN,2023-08-16T13:58:58Z,2023-08-16T13:58:58Z,,"Problem:  
+
+It would be convenient to have links to TSV files directly below functional enrichment plots. These files include dimensions, like GeneRatio, not otherwise shown in the plots.
+ 
+Proposed Solution:  
+
+To ease data access, write enrichResults data to a file and add markdown links to the enrichResults TSV files below respective dotplot, emapplot, and cnetplots.
+For this, introduce a function, print_table_link() [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L98). This function will take the contrast 'name', the log fold change 'direction' and the 'ontology' from ""enrich_list"", save the file in the 'enrichResults/tables/' directory and generate relevant links as such:
+
+```
+   print_table_link <- function(name, direction, ont){
+   # Make links to enrichResults table .tsv and all plots .pdf, and .png
+   file_name_tsv <- paste0(name, '-', direction, '-', ont, '.tsv')
+   dir.create('enrichResults/tables', recursive = TRUE)
+   file_path_tsv <- file.path('enrichResults', 'tables', file_name_tsv)
+   write.table(data.frame(enrich_list[[name]][[direction]][[ont]]),
+     file = file_path_tsv,
+     sep = ""\t"",
+     quote = FALSE,
+     row.names = FALSE,
+     col.names = TRUE)
+
+   mdcat('enrichResults data table:')
+   mdcat('- [', file_name_tsv, ']', '(', file_path_tsv, ')')
+ }
+ ```
+
+Add the following lines after [here for dotplot](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L114C19-L114C19) for example:  
+
+```
+       plot_type <- ""dotplot""
+       dotplot <- dotplot_list[[name]][[direction]][[ont]]
+       print(dotplot)
+       print_table_link(name, direction, ont)
+```
+
+File names should comprise of the contrast's 'name', 'direction' and 'ontology' used.
+Call print_table_link() under each plot print statement to maintain appropriate links for each plot being printed [here for dotplot](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L115), [here for emapplot](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L118), and [here for cnetplot](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L121)",menoldmt,https://github.com/lcdb/lcdb-wf/issues/389
+I_kwDOBG4Ass5ud9aG,Automatic plot resizing in gene-patterns,OPEN,2023-08-16T14:18:36Z,2023-08-16T14:18:36Z,,"Problem:  
+
+When degPatterns produces plots with many facets [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L214), the generated faceted ggplot becomes too crowded, in some cases making it hard or impossible to interpret the results.  
+ 
+ Proposed Solution:  
+
+Use dynamic chunk creation for each plot. Find the number of gene clusters to be plotted for each contrast, and use this number to determine the plot dimensions used in the chunk options in each of the dynamic chunks created using the subchunkify function's arguments. This will ensure readability regardless of the number of  clusters. 
+
+subchunkify:  
+
+```
+# Use subchunkify to dynamically create chunks for variable number of clusters
+subchunkify <- function(g, name, fig_height=10, fig_width=10) {
+  g_deparsed <- paste0(deparse(function() {g}), collapse = '')
+  sub_chunk <- paste0(""`"",""``{r subchunk_"", name,
+                      "", fig.height="", fig_height,
+                      "", fig.width="", fig_width,
+                      "" , echo=FALSE}"",
+                      ""\n("", g_deparsed, "")()"", ""\n`"", ""``"")
+  cat(knitr::knit(text = knitr::knit_expand(text = sub_chunk), quiet = TRUE))
+```
+
+can be inserted [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L117)
+
+and called [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L214-L221) like:  
+
+```
+deg_plot_cluster <- degPlotCluster(
+        n2,
+        time=time,
+        min_genes=minc,
+        col=col
+        )
+    print(deg_plot_cluster)
+    # Get number of cluseters to plot, n
+
+    #fig_dimm <- 10 + ceiling(sqrt(n))/10
+    #subchunkify(print(deg_plot_cluster), paste0(name, '_finalclusters'),
+    #fig.height=fig.dimm, fig.width=fig.dimm)
+```
+
+This solution is incomplete and requires testing.",menoldmt,https://github.com/lcdb/lcdb-wf/issues/390
+I_kwDOBG4Ass5ueL6M,"In functional-enrichment.Rmd and gene-patterns.Rmd, add config for turning on/off lazy caching",OPEN,2023-08-16T14:51:20Z,2024-02-05T22:05:46Z,,"Problem:  
+
+When Rds objects become too large, a lazy loading error will prevent functional enrichment and gene patterns from rendering.  
+
+Proposed Solution:   
+
+Add documentation to both files indicating that lazy caching will be disabled if the .Rds object is too big. Include the approximate size of the Rds object that prevented lazy loading from working [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L67) and [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L118). This was tested and found to be:  
+ 
+functional-enrichment.Rmd fails when combined.Rds (from rnaseq.Rmd):
+ 232.87 mb<combined.Rds<241.90 mb.  
+
+  functional-enrichment.Rmd tests on ‘combined.Rds’:                            
+contrasts used in test data:
+results 1-11 = 241.9mb check 1: fail
+results 1-10 = 232.87mb check 1: pass
+results 1-9 = 223.84mb check 1: pass
+results 1-8 = 214.82mb check 1: pass 2: Pass
+ 
+   gene-patterns.Rmd tests on ‘combined_functional_enrichment.Rds’  
+results 1-9 = 2071mb check 1: fail
+results 1-8 = needs further testing to confirm .Rds size limitation
+ 
+ In functional-enrichment.Rmd, add chunk before [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/functional-enrichment.Rmd#L67) that will test if the ‘combined.Rds’ object is over 230mb. If the .Rds object exceeds the threshold, set cache.lazy to FALSE in the 'enrich' chunk option like so:  
+
+```
+ {r set_lazy_cache}
+ rds_obj_limit_mb <- x
+ if (file.info('combined.Rds')$size/(1000^2) > x) {
+   cache.lazy=FALSE
+ }
+ else {
+   cache.lazy=FALSE
+ }
+```
+
+ Add the same chunk before ‘finalclusters’ in gene-patterns [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L118) using the gene-patterns specific threshold that is still being determined as shown above.
+   ",menoldmt,https://github.com/lcdb/lcdb-wf/issues/391
+I_kwDOBG4Ass5uePoT,Avoid overwriting combined.Rds in functional-enrichment.Rmd and gene-patterns.Rmd,CLOSED,2023-08-16T14:59:42Z,2024-10-19T22:33:38Z,2024-10-19T22:33:38Z,"Problem:  
+
+Currently, the same .Rds object (combined.Rds) is being used to transfer data from rnaseq.Rmd to functional-enrichment.Rmd to gene-patterns.Rmd. Since the modification time of this file is used in cached chunk options in the latter two files, the creation of the file at the end automatically invalidates the cache, making caching useless.  
+
+Solution:  
+
+Rnaseq.Rmd -> combined.Rds -> functional-enrichment.Rmd -> functional-enrichment-combined.Rds -> gene-patterns.Rmd -> gene-patterns-combined.Rds
+
+To account for the case where a user wishes to run gene patterns without having run functional enrichment previously, there needs to be a condition added before [here](https://github.com/lcdb/lcdb-wf/blob/d4f87aa723464cdfade20f685bf00f7d9a7fa117/workflows/rnaseq/downstream/gene-patterns.Rmd#L33) where the combined.Rds would be loaded instead of functional-enrichment-combined.Rds in the case that functional-enrichment-combined.Rds does not exist. ",menoldmt,https://github.com/lcdb/lcdb-wf/issues/392
+I_kwDOBG4Ass53_cf1,"Add documentation for ""Found duplicate names after removing pattern ^contr_[^_]+_"" error",CLOSED,2023-11-27T21:18:07Z,2023-11-28T20:59:54Z,2023-11-28T20:59:54Z,"**Problem:**
+
+In _rnaseq.Rmd_, there are many ways to attempt to add a previously existing contrast name to res_list. By accidentally attempting to do so, users encounter a single error that may be misleading in some cases. Here is an example of such a case:
+
+1. User sets up contrasts and runs all results_## chunks with config=TRUE, as the default examples show.
+2. Invalidates the cache of at least one results_## chunk.
+3. Re-renders the .Rmd file.
+4. The results_## chunk with invalidated cache runs again, and there is an attempt to add an object with an already been used name to res_list. This triggers a false duplicate contrast name error, as the mechanism checking for duplicates does not recognize if the same contrast is being rerun or if a new object with an already been used name is being added to res_list.
+5. The user encounters the error message: ""Found duplicates after removing the pattern ^contr_[^_]+_"", which is misleading in this case where there are no visible duplicate contrast names.
+
+**Solution:**
+
+Update the documentation to clarify that rerunning a results_## chunk will trigger the Found duplicates error. 
+
+Improve the error message to include: _""Don't have duplicate contrast names? Read here: https://lcdb.github.io/lcdb-wf/rnaseq-rmd.html#downstream-detailed#duplicates-found-after-removing""_",menoldmt,https://github.com/lcdb/lcdb-wf/issues/393
+I_kwDOBG4Ass54H1dX,"Add hyperlink to rnaseq.Rmd error message, 'duplicate names found after removing pattern ^contr_[^_]+_'",OPEN,2023-11-28T21:07:40Z,2023-11-28T21:14:35Z,,The hyperlink will lead to https://lcdb.github.io/lcdb-wf/rnaseq-rmd.html#Errors or the newly added paragraph on error handling in the detailed rnaseq.Rmd documentation page.,menoldmt,https://github.com/lcdb/lcdb-wf/issues/395
+I_kwDOBG4Ass6Ig9OL,Adding universe to functional enrichment analysis,CLOSED,2024-05-10T20:05:12Z,2024-05-22T01:32:43Z,2024-05-22T01:32:43Z,"The `universe` argument will be used to limit background genes only to detected genes in input dataset, when calling the `enricher` function in `functional-enrichment.Rmd`. 
+
+See https://github.com/YuLab-SMU/clusterProfiler/blob/devel/R/enricher.R#L8C21-L8C136 for the original usage.",Mira0507,https://github.com/lcdb/lcdb-wf/issues/400
+I_kwDOBG4Ass6ZcI2r,move strandedness in params,OPEN,2024-10-08T21:53:56Z,2024-10-08T21:53:56Z,,"Currently, strandedness is handled on a per-tool basis, and is handled inside the rule body. However, if the config entry for strandedness changes, this does NOT trigger a re-run of rules that use that config option -- because the body of the rule didn't change.
+
+It would be nice to have rules re-run if strandedness is updated. One way of doing this would be to move strandedness to the `params:` directive so the snakemake `--rerun-trigger` would detect the param changes.",daler,https://github.com/lcdb/lcdb-wf/issues/405
+I_kwDOBG4Ass6ZcKea,r1_only=False,CLOSED,2024-10-08T21:57:22Z,2024-10-15T20:35:05Z,2024-10-15T20:35:05Z,The [`r1_only` parameter](https://github.com/lcdb/lcdb-wf/blob/master/workflows/rnaseq/Snakefile#L67) doesn't seem to be used. Confirm this is the case and remove it (also in the [chipseq snakefile](https://github.com/lcdb/lcdb-wf/blob/master/workflows/chipseq/Snakefile#L73)).,daler,https://github.com/lcdb/lcdb-wf/issues/406
+I_kwDOBG4Ass6ZcLk4,Layout rather than LibraryLayout,OPEN,2024-10-08T22:00:18Z,2024-10-11T15:34:18Z,,"Recently it seems that the SRA sampletables downloaded from SRA use `Layout` rather than `LibraryLayout` as a column name. This breaks the SRA detection. Confirm this is the case, and make the SRA detection more robust, for example by looking for either of those column names.
+",daler,https://github.com/lcdb/lcdb-wf/issues/407
+I_kwDOBG4Ass6ZcNez,SRA runs should save data elsewhere and then symlink,OPEN,2024-10-08T22:07:09Z,2024-10-08T22:07:09Z,,"Currently, when running an SRA metadata sample table, the fastq files are saved directly in the `data` directory. However, this means that you can't delete the `data` directory to trigger a re-run of a workflow like you can in a non-SRA run, where it's just the symlinks living in the data directory -- because the downloaded SRA fastqs would be deleted as well.
+
+Instead, fastq-dump should put the files in a separate directory (will need to think carefully about where this should be), and then symlink to `data`.
+",daler,https://github.com/lcdb/lcdb-wf/issues/408
+I_kwDOBG4Ass6ZcOTc,use fasterq-dump,OPEN,2024-10-08T22:10:01Z,2024-10-08T22:10:01Z,,"fastq-dump has been on its way out for a while, but fasterq-dump is the replacement and we should figure out how to support it. 
+
+Lots of hints on the [NIH Biowulf help page](https://hpc.nih.gov/apps/sratoolkit.html) for sratoolkit. Looks like temp space will be important to have (and need to somehow calculate space needed for it); may also need to convert quality headers as documented on that page.",daler,https://github.com/lcdb/lcdb-wf/issues/409
+I_kwDOBG4Ass6hwvNz,FDR cutoff alpha not applied in rnaseq.Rmd,OPEN,2024-12-03T03:40:22Z,2024-12-03T04:22:32Z,,"The [`alpha`](https://github.com/lcdb/lcdb-wf/blob/53de923cdf6a45bf3342a977f029f4a6a1a1f82e/workflows/rnaseq/downstream/config.yaml#L42) value is configured in `workflows/rnaseq/downstream/config.yaml`, as shown below:
+
+```yaml
+  # By default DESeq2 assumes alpha of 0.1 when filtering low-count genes. This
+  # is also used to select significant genes in the various helper functions.
+  alpha: 0.1
+```
+
+This `alpha` is intended to be added to `metadata(res)$alpha` in the [`make_results`](https://github.com/lcdb/lcdb-wf/blob/53de923cdf6a45bf3342a977f029f4a6a1a1f82e/lib/lcdbwf/R/contrasts.R#L140) function, enabling the extraction of this value in the [`my_summary`](https://github.com/lcdb/lcdb-wf/blob/53de923cdf6a45bf3342a977f029f4a6a1a1f82e/lib/lcdbwf/R/helpers.R#L321) function, as shown below:
+
+
+```r
+
+make_results <- function(dds_name, label, dds_list=NULL, ...){
+
+  if (!is.null(dds_list)){
+    dds <- dds_list[[dds_name]]
+  } else {
+    # Get the dds object from the global dds_list.
+    dds <- get_dds(dds_name)
+  }
+
+  # Save a copy of the arbitrary arguments
+  dots <- list(...)         # <===== arguments added, including alpha!!! 
+
+# Lines skipped...
+# Lines skipped...
+
+  # Call results() with the subset of dots that it accepts.
+  results_dots <- lcdbwf:::match_from_dots(dots, DESeq2::results)     
+  res <- do.call(DESeq2::results, results_dots)        # <===== res built!!! 
+
+  # Adjust log2FoldChange for LRT test
+  if (!is.null(dots$test) && dots$test == 'LRT') {
+    res$log2FoldChange <- 0           
+    warning(""All log2FoldChange values in the DESeq2 results object have been set to 0. See https://github.com/lcdb/lcdb-wf/blob/master/docs/rnaseq-rmd.rst?plain=1#L269."")
+  }
+
+  # Checks for LRT test and non-NULL type
+  if (!is.null(dots$type) && !is.null(dots$test) && dots$test == 'LRT' && !test_detected) {
+    stop(""You cannot pass a non-NULL or missing type to make_results with test == 'LRT'. For LRT, LFC values are set to 0 and should not be passed to lfcShrink. Use type == NULL in make_results for LRT DDS objects."")
+  } else if (!is.null(dots$type) && !is.null(dots$test) && dots$test == 'LRT' && test_detected) {
+    stop(""You cannot pass a non-NULL or missing type to make_results with an LRT dds object. For LRT, LFC values are set to 0 and should not be passed to lfcShrink. Use type == NULL in make_results for LRT DDS objects."")
+  }
+
+  # Call lfcShrink if applicable
+  if (!is.null(dots$type) && dots$test != 'LRT') {
+    dots[['res']] <- res
+    dots[['dds']] <- dds
+
+    lfcShrink_dots <- lcdbwf:::match_from_dots(dots, DESeq2::lfcShrink)
+    res <- do.call(DESeq2::lfcShrink, lfcShrink_dots)
+
+    S4Vectors::metadata(res)$type <- dots$type          # <======= metadata of `res` updated!!!
+  } else {
+    S4Vectors::metadata(res)$type <- NULL
+  }
+
+  return(
+    list(
+      res=res,
+      dds=dds_name,
+      label=label
+    )
+  )
+```
+
+
+```r
+my_summary <- function(res, dds, name, ...){
+  dds_label <- dds
+  if (class(dds) != 'character'){
+    stop(""expecting dds to be a string"")
+  }
+  dds <- lcdbwf:::get_dds(dds_label)
+  alpha <- metadata(res)$alpha         # <===== alpha extracted from `res` obj
+
+# Lines skipped... 
+```
+
+Turned out that this is not a bug, but it would be helpful to explicitly add the `alpha` argument in the `rnaseq.Rmd`, as shown below:
+
+```r
+# results_01 chunk:
+contr_01_main <- lcdbwf:::make_results(
+  dds_name='main',
+  label='LFC>0',
+  contrast=treatment - control,
+  type='ashr',
+  alpha=config$main$alpha         # <==== updated!!!
+)
+```",Mira0507,https://github.com/lcdb/lcdb-wf/issues/422
+I_kwDOBG4Ass6jP0eZ,Configure functional enrichment to work with GSEA,OPEN,2024-12-13T17:09:39Z,2024-12-13T17:22:10Z,,"In [`lib/lcdbwf/R/functional-enrichment.R`](https://github.com/lcdb/lcdb-wf/blob/v1.12rc/lib/lcdbwf/R/functional_enrichment.R), enrich_test() at line 127 has ""OR"" (Over Representation Analysis) hardcoded as a default parameter and in fact never uses the value assigned in the `config.yaml` file. We want to be able to use ""GSEA""(Gene Set Enrichment Analysis) as well by assigning it in `config.yaml`, but it seems setting `kind=GSEA` currently throws an error. We need to configure this to work with both `kind=OR` as well as `kind=GSEA`.",b-full,https://github.com/lcdb/lcdb-wf/issues/424

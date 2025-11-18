@@ -1,0 +1,216 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOKl7w4M52LEVS,There is no ProtExcluder.pl,CLOSED,2023-11-08T02:39:58Z,2023-11-08T15:00:19Z,2023-11-08T15:00:19Z,"**Hi Dan, 
+I keep getting the following error when running step 2 of the pipeline:** 
+
+-----------------------------------------------------
+Input is being processed as unpaired
+Time:                           2.619 seconds.
+Reads Processed:        570k    217.70k reads/sec
+Bases Processed:        206m    78.72m bases/sec
+Reads Out:          569888
+Bases Out:          206062128
+/home/krablab/Documents/CO_data/LT_repeats/Ref_genome//scripts/run_repeatMasker.sh: line 36: /home/krablab/Documents/apps/ProtExcluder1.2/ProtExcluder.pl: No such file or directory
+RepeatMasker::setspecies: Could not find user specified library ../Lake_trout_RepeatModeler/Lake_trout_REPEAT_LIBRARY-families.fanoProtFinal, or the file is empty.
+gzip: ./RMask_denovoPrediction_protFiltered/*.cat.gz: No such file or directory
+gzip: ./RMask_denovoPlusDfam/*.cat.gz: No such file or directory
+cat: './RMask_denovoPrediction_protFiltered/*.cat': No such file or directory
+cat: './RMask_denovoPlusDfam/*.cat': No such file or directory
+gzip: ./RMask_denovoPrediction_protFiltered/*.cat: No such file or directory
+gzip: ./RMask_denovoPlusDfam/*.cat: No such file or directory
+-----------------------------------------------------
+
+**This issue is arising because there is no scripts/run_repeatMasker.sh file in the  the following directory :/home/krablab/Documents/apps/ProtExcluder/**
+
+**Below is the command (Line 36 of the run_repeatMasker.sh**
+-------------------------------------------------------
+# note that ProtExcluder requires ""esl-sfetch"" from the Easel library
+# on Bottlerocket, located at ""/home/krablab/miniconda2/envs/hmmer/bin/esl-sfetch""
+/home/krablab/Documents/apps/ProtExcluder/ProtExcluder.pl ${SPECIES}_blastx_uniprot_TEfiltered_e10.out ../${SPECIES}_RepeatModeler/${REPEAT_LIBRARY_NAME}-families.fa_
+
+**I tried downloading the ProtExcluder.pl script from this link https://github.com/NBISweden/ProtExcluder/blob/master/ProtExcluder.pl but even after adding that to the aforementioned directory and changing the file permissions, it still didn't work.**
+-----------------------------------------------------
+Executing driver.FilterReadsByName [in=uniprot_sprot.fasta, out=uniprot_sprot.TEfiltered.fasta, names=transposable,transposase, substring=name, ignorejunk]
+
+Exception in thread ""main"" java.lang.AssertionError: File uniprot_sprot.TEfiltered.fasta exists and overwrite=false
+        at shared.Tools.testOutputFiles(Tools.java:127)
+        at driver.FilterReadsByName.<init>(FilterReadsByName.java:225)
+        at driver.FilterReadsByName.main(FilterReadsByName.java:40)
+sh: 1: matchtract.pl: not found
+sh: 1: countaanu.pl: not found
+sh: 1: rmlowcomplexitymathc.pl: not found
+sh: 1: blastformatProt.pl: not found
+sh: 1: rmlowcomfromBF.pl: not found
+sh: 1: mergequeryBF.pl: not found
+sh: 1: unmatchedregionBF.pl: not found
+Can't exec ""mspesl-sfetch.pl"": No such file or directory at /home/krablab/Documents/apps/ProtExcluder1.2/ProtExcluder.pl line 33.
+sh: 1: mergeunmatchedregion.pl: not found
+sh: 1: GCcontent.pl: not found
+sh: 1: rmshortseq_noN.pl: not found
+sh: 1: getanycolumnuni.pl: not found
+sh: 1: rmlistedseq.pl: not found
+sh: 1: fasta-reformat.pl: not found
+mkdir: cannot create directory ‘RMask_denovoPrediction_protFiltered’: File exists
+RepeatMasker::setspecies: Could not find user specified library ../Lake_trout_RepeatModeler/Lake_trout_REPEAT_LIBRARY-families.fanoProtFinal, or the file is empty.
+mkdir: cannot create directory ‘RMask_denovoPlusDfam’: File exists
+mkdir: cannot create directory ‘final_repeat_mask’: File exists
+gzip: ./RMask_denovoPrediction_protFiltered/*.cat.gz: No such file or directory
+gzip: ./RMask_denovoPlusDfam/*.cat.gz: No such file or directory
+cat: './RMask_denovoPrediction_protFiltered/*.cat': No such file or directory
+cat: './RMask_denovoPlusDfam/*.cat': No such file or directory
+gzip: ./RMask_denovoPrediction_protFiltered/*.cat: No such file or directory
+gzip: ./RMask_denovoPlusDfam/*.cat: No such file or directory
+-----------------------------------------------------",Ozzborne,https://github.com/KrabbenhoftLab/genome_annotation_pipeline/issues/1
+I_kwDOKl7w4M57Vwth,Issues with getting Braker step to run,CLOSED,2024-01-07T21:41:14Z,2024-01-10T15:26:27Z,2024-01-10T15:26:27Z,"Hi Dan,
+
+I am having trouble getting the Braker step of the pipeline to run on CCR. Below is the content of the BRAKER.err file from the logFiles directory.
+
+If it helps, my annotation directory is here.
+/projects/academic/tkrabben/Osborne/LT_annotations/SE08
+
+mkdir: cannot create directory 'SE08_BRAKER': File exists
+[WARN  tini (273493)] Tini is not running as PID 1 and isn't registered as a child subreaper.
+Zombie processes will not be re-parented to Tini, so zombie reaping won't work.
+To fix the problem, use the -s option or set the environment variable TINI_SUBREAPER to register Tini as a child subreaper, or run Tini as PID 1.
+#**********************************************************************************
+#                               BRAKER CONFIGURATION
+#**********************************************************************************
+# BRAKER CALL: /opt/BRAKER/scripts/braker.pl --genome=Genome/SE08_Flye_Medaka_Pilon3_Purge_HiC_RagTag_GapCloser_Pilon1.masked.fasta --bam=SE08_HISAT2/SE08.sorted.rna.bam --prot_seq=/vscratch/grp-tkrabben/Osborne/LT>
+# Sun Jan  7 16:35:35 2024: braker.pl version 3.0.6
+# Sun Jan  7 16:35:35 2024:Both protein and RNA-Seq data in input detected. BRAKER will be executed in ETP mode (BRAKER3).
+#*********
+# Sun Jan  7 16:35:35 2024: Configuring of BRAKER for using external tools...
+# Sun Jan  7 16:35:35 2024: Trying to set $AUGUSTUS_CONFIG_PATH...
+# Sun Jan  7 16:35:35 2024: Found environment variable $AUGUSTUS_CONFIG_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /usr/share/augustus/config/ as potential path for $AUGUSTUS_CONFIG_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $AUGUSTUS_CONFIG_PATH to /usr/share/augustus/config/!
+# Sun Jan  7 16:35:35 2024: WARNING: in file /opt/BRAKER/scripts/braker.pl at line 1894
+AUGUSTUS_CONFIG_PATH/species (in this case /usr/share/augustus/config//species) is not writeable. BRAKER will try to copy the AUGUSTUS config directory to a writeable location.
+#**********************************************************************************
+#                               BRAKER CONFIGURATION
+#**********************************************************************************
+# BRAKER CALL: /opt/BRAKER/scripts/braker.pl --genome=Genome/SE08_Flye_Medaka_Pilon3_Purge_HiC_RagTag_GapCloser_Pilon1.masked.fasta --bam=SE08_HISAT2/SE08.sorted.rna.bam --prot_seq=/vscratch/grp-tkrabben/Osborne/LT>
+# Sun Jan  7 16:35:35 2024: braker.pl version 3.0.6
+# Sun Jan  7 16:35:35 2024:Both protein and RNA-Seq data in input detected. BRAKER will be executed in ETP mode (BRAKER3).
+#*********
+# Sun Jan  7 16:35:35 2024: Configuring of BRAKER for using external tools...
+# Sun Jan  7 16:35:35 2024: Trying to set $AUGUSTUS_CONFIG_PATH...
+# Sun Jan  7 16:35:35 2024: Found environment variable $AUGUSTUS_CONFIG_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /usr/share/augustus/config/ as potential path for $AUGUSTUS_CONFIG_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $AUGUSTUS_CONFIG_PATH to /usr/share/augustus/config/!
+# Sun Jan  7 16:35:35 2024: WARNING: in file /opt/BRAKER/scripts/braker.pl at line 1894
+AUGUSTUS_CONFIG_PATH/species (in this case /usr/share/augustus/config//species) is not writeable. BRAKER will try to copy the AUGUSTUS config directory to a writeable location.
+# Sun Jan  7 16:35:35 2024: Trying to set $AUGUSTUS_BIN_PATH...
+# Sun Jan  7 16:35:35 2024: Found environment variable $AUGUSTUS_BIN_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /usr/bin/ as potential path for $AUGUSTUS_BIN_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $AUGUSTUS_BIN_PATH to /usr/bin/!
+# Sun Jan  7 16:35:35 2024: Trying to set $AUGUSTUS_SCRIPTS_PATH...
+# Sun Jan  7 16:35:35 2024: Found environment variable $AUGUSTUS_SCRIPTS_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /usr/share/augustus/scripts/ as potential path for $AUGUSTUS_SCRIPTS_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $AUGUSTUS_SCRIPTS_PATH to /usr/share/augustus/scripts/!
+# Sun Jan  7 16:35:35 2024: WARNING: BRAKER will copy the
+ AUGUSTUS_CONFIG folder into your home directory!
+# Sun Jan  7 16:35:35 2024: WARNING: $AUGUSTUS_CONFIG_PATH/species (in this case /usr/share/augustus/config//species ) is not writeable.
+*** IMPORTANT: Resetting $AUGUSTUS_CONFIG_PATH=/projects/academic/tkrabben/Osborne/LT_annotations/SE08/.augustus because BRAKER requires a writable location!
+# Sun Jan  7 16:35:35 2024: Trying to set $PYTHON3_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $PYTHON3_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess PYTHON3_PATH from location of python3 executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /opt/conda/bin as potential path for $PYTHON3_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $PYTHON3_PATH to /opt/conda/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $GENEMARK_PATH...
+# Sun Jan  7 16:35:35 2024: Found command line argument $GENEMARK_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /gmes as potential path for $GENEMARK_PATH.
+#*********
+# WARNING: /gmes is not a directory. Will not set $GENEMARK_PATH to /gmes!
+****
+#*********
+# Sun Jan  7 16:35:35 2024: Found environment variable $GENEMARK_PATH.
+# Sun Jan  7 16:35:35 2024: Checking /opt/ETP/bin as potential path for $GENEMARK_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $GENEMARK_PATH to /opt/ETP/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $BAMTOOLS_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $BAMTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess BAMTOOLS_PATH from location of bamtools executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /usr/bin as potential path for $BAMTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $BAMTOOLS_PATH to /usr/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $SAMTOOLS_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $SAMTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess SAMTOOLS_PATH from location of samtools executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /usr/bin as potential path for $SAMTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $SAMTOOLS_PATH to /usr/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $DIAMOND_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $DIAMOND_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess DIAMOND_PATH from location of diamond executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /opt/ETP/tools as potential path for $DIAMOND_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $DIAMOND_PATH to /opt/ETP/tools!
+# Sun Jan  7 16:35:35 2024: Trying to set $PROTHINT_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $PROTHINT_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess PROTHINT_PATH from location of prothint.py executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /opt/ETP/bin/gmes/ProtHint/bin as potential path for $PROTHINT_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $PROTHINT_PATH to /opt/ETP/bin/gmes/ProtHint/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $TSEBRA_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $TSEBRA_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess TSEBRA_PATH from location of tsebra.py executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /opt/TSEBRA/bin as potential path for $TSEBRA_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $TSEBRA_PATH to /opt/TSEBRA/bin!
+# Sun Jan  7 16:35:35 2024: Trying to set $CDBTOOLS_PATH...
+# Sun Jan  7 16:35:35 2024: Did not find environment variable $CDBTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Trying to guess CDBTOOLS_PATH from location of cdbfasta executable that is available in your $PATH
+# Sun Jan  7 16:35:35 2024: Checking /opt/cdbfasta as potential path for $CDBTOOLS_PATH.
+# Sun Jan  7 16:35:35 2024: Success! Setting $CDBTOOLS_PATH to /opt/cdbfasta!
+# Sun Jan  7 16:35:36 2024: ERROR: in file /opt/BRAKER/scripts/braker.pl at line 3585
+protein sequence file /vscratch/grp-tkrabben/Osborne/LT_genomes/orthodbv11_metazoan_Salmonidae_proteins_refseq.fasta does not exist.
+[WARN  tini (273547)] Tini is not running as PID 1 and isn't registered as a child subreaper.
+Zombie processes will not be re-parented to Tini, so zombie reaping won't work.
+To fix the problem, use the -s option or set the environment variable TINI_SUBREAPER to register Tini as a child subreaper, or run Tini as PID 1.
+### READING GENE PREDICTION: [SE08_BRAKER/braker.gtf]
+Traceback (most recent call last):
+  File ""/opt/TSEBRA/bin/tsebra.py"", line 235, in <module>
+    main()
+  File ""/opt/TSEBRA/bin/tsebra.py"", line 67, in main
+    anno[-1].addGtf()
+  File ""/opt/TSEBRA/bin/genome_anno.py"", line 297, in addGtf
+    with open (self.path, 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'SE08_BRAKER/braker.gtf'
+",Ozzborne,https://github.com/KrabbenhoftLab/genome_annotation_pipeline/issues/2
+I_kwDOKl7w4M57WAyi,Issue running GeMoMa on CCr,CLOSED,2024-01-08T00:12:15Z,2024-01-08T17:16:02Z,2024-01-08T17:16:02Z,"Hi Dan, I am also having issues getting GeMoMa to run on CCR. Below is the error message I am getting.
+
+Thank you
+
+Exception in thread ""main"" de.jstacs.parameters.SimpleParameter$IllegalValueException: Error in parameter(ID): Parameter not permitted: value not valid: GCF_002021735.2_Okis_V2_genomic
+String does not match \w*
+        at de.jstacs.parameters.SimpleParameter.setValue(SimpleParameter.java:422)
+        at de.jstacs.tools.ui.cli.CLI.setValue(CLI.java:606)
+        at de.jstacs.tools.ui.cli.CLI.set(CLI.java:568)
+        at de.jstacs.tools.ui.cli.CLI.set(CLI.java:564)
+        at de.jstacs.tools.ui.cli.CLI.set(CLI.java:582)
+        at de.jstacs.tools.ui.cli.CLI.setToolParameters(CLI.java:502)
+        at de.jstacs.tools.ui.cli.CLI.run(CLI.java:404)
+        at projects.gemoma.GeMoMa.main(GeMoMa.java:399)
+Exception in thread ""main"" de.jstacs.parameters.SimpleParameter$IllegalValueException: Error in parameter(annotation): Parameter not permitted: File GeMoMa_combined/final_annotation.gff does not exist
+        at de.jstacs.parameters.FileParameter.setValue(FileParameter.java:305)
+        at de.jstacs.tools.ui.cli.CLI.setValue(CLI.java:606)
+        at de.jstacs.tools.ui.cli.CLI.set(CLI.java:568)
+        at de.jstacs.tools.ui.cli.CLI.setToolParameters(CLI.java:502)
+        at de.jstacs.tools.ui.cli.CLI.run(CLI.java:404)
+        at projects.gemoma.GeMoMa.main(GeMoMa.java:399)
+mv: cannot stat 'GeMoMa_combined/proteins.fasta': No such file or directory
+Parameters of tool ""Extractor"" (Extractor, version: 1.9):
+a - annotation (Reference annotation file (GFF or GTF), which contains gene models annotated in the reference genome, type = gff,gff3,gtf,gff.gz,gff3.gz,gtf.gz)        = GeMoMa_combined/final_annotation.longest_iso>
+g - genome (Reference genome file (FASTA), type = fasta,fa,fas,fna,fasta.gz,fa.gz,fas.gz,fna.gz)        = /projects/academic/tkrabben/Osborne/LT_annotations/SE08//Genome/SE08_Flye_Medaka_Pilon3_Purge_HiC_RagTag_Gap>
+gc - genetic code (optional user-specified genetic code, type = tabular, OPTIONAL)      = null
+p - proteins (whether the complete proteins sequences should returned as output, default = false)       = true
+c - cds (whether the complete CDSs should returned as output, default = false)  = false
+genomic - genomic (whether the genomic regions should be returned (upper case = coding, lower case = non coding), default = false)      = false
+i - introns (whether introns should be extracted from annotation, that might be used for test cases, default = false)   = false
+identical - identical (if CDS is identical Extractor only used one transcript. This parameter allows to return a table that lists in the first column the used transcript and in the second column the discarded trans>
+u - upcase IDs (whether the IDs in the GFF should be upcased, default = false)  = false
+r - repair (if a transcript annotation can not be parsed, the program will try to infer the phase of the CDS parts to repair the annotation, default = false)   = false
+s - selected (The path to list file, which allows to make only a predictions for the contained transcript ids. The first column should contain transcript IDs as given in the annotation. Remaining columns will be ig>
+Ambiguity - Ambiguity (This parameter defines how to deal with ambiguities in the DNA. There are 3 options: EXCEPTION, which will remove the corresponding transcript, AMBIGUOUS, which will use an X for the correspo>
+d - discard pre-mature stop (if *true* transcripts with pre-mature stop codon are discarded as they often indicate misannotation, default = true)       = true
+sefc - stop-codon excluded from CDS (A flag that states whether the reference annotation contains the stop codon in the CDS annotation or not, default = false) = false
+f - full-length (A flag which allows for choosing between only full-length and all (i.e., full-length and partial) transcripts, default = true) = true
+l - long fasta comment (whether a short (transcript ID) or a long (transcript ID, gene ID, chromosome, strand, interval) fasta comment should be written for proteins, CDSs, and genomic regions, default = false)    >
+v - verbose (A flag which allows to output a wealth of additional information, default = false) = false
+outdir - The output directory, defaults to the current working directory (.)    = GeMoMa_combined
+mv: cannot stat 'GeMoMa_combined/proteins_1.fasta': No such file or directory
+",Ozzborne,https://github.com/KrabbenhoftLab/genome_annotation_pipeline/issues/3

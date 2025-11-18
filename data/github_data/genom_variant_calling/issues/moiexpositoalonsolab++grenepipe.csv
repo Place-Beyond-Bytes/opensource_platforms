@@ -1,0 +1,1335 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4NTYwNjU4MTY=,Grenepipe gets stuck in qualimap step,CLOSED,2021-04-12T14:58:56Z,2021-04-17T09:35:40Z,2021-04-17T09:35:39Z,"Hey,
+looks like grenepipe would be super useful for us. Unfortunately, it seems to always get stuck in one of the final steps, namely in this command:
+java -Xms32m -Xmx1200M -classpath /lv01/home/hahn/downloads/grenepipe-0.2.0/.snakemake/conda/683a3dfbf01aef5bbb47865a237a8afc/share/qualimap-2.2.2a-1/* org.bioinfo.ngs.qc.qualimap.main.NgsSmartMain bamqc -bam dedup/WT-1.bam -nt 2 -outdir qc/qualimap/WT-1 -outformat HTML
+
+I attached a screenshot of the part where it gets stuck
+![image](https://user-images.githubusercontent.com/82394879/114415499-a67d3800-9ba7-11eb-89e4-9d7944c5425b.png)
+
+Is this a known problem and do you know a solution?
+
+Cheers,
+Florian
+",florianhahn87,https://github.com/moiexpositoalonsolab/grenepipe/issues/1
+MDU6SXNzdWU4NTk4NjY2MTM=,GATK Realigner,CLOSED,2021-04-16T14:27:31Z,2021-04-19T20:26:12Z,2021-04-19T20:26:12Z,"Hey again :)
+
+Is it possible to add the RealignerTargetCreator and the IndelRealigner from GATK to the pipeline as this always improves our alignments a lot or am I missing an option in the config.yaml file where I can do that already? 
+
+Thanks a lot,
+Florian",florianhahn87,https://github.com/moiexpositoalonsolab/grenepipe/issues/2
+MDU6SXNzdWU4Njg4NzIxODg=,Issues during variant calling,CLOSED,2021-04-27T13:53:09Z,2021-04-27T22:49:34Z,2021-04-27T22:49:34Z,"Hey again, we always encounter now an issue when running several samples on the grenepipe pipeline during the variant calling step. Weirdly, it seems to be only concerning one of the files but this is a file that is generated in the pipeline process and not by us (.g.vcf.gz) if i understand that error message correctly. The other weird thing is that after the error, the pipeline seems to continue for a few more steps before it stops. Also, in contrast to other errors that we encountered, this one does not refer to a specific log file so not really sure how to solve this. Did you come across this message before?
+![image](https://user-images.githubusercontent.com/82394879/116253009-ffcc9600-a767-11eb-91ab-8ded1a2e51f9.png)
+",florianhahn87,https://github.com/moiexpositoalonsolab/grenepipe/issues/3
+MDU6SXNzdWU4NzU2MzExNDE=,separate output files if running on multiple files,CLOSED,2021-05-04T16:28:56Z,2021-05-17T09:09:15Z,2021-05-17T09:09:15Z,"Hey Lucas,
+when we run the pipeline on multiple files, it produces one vcf file which has all our samples tap separated in the file. We want to have single, separate output files though for each sample, which e.g. would reduce the number of lines in the file for each sample vcf file (as not all SNPs are present in each sample) and would help us in downstream analysis. Is there a command which leads to separate output file(such as snakemake --cores 40 --use-conda --separate)? Also, we thought we could just run the pipeline again for each sample to create different output files, by just adding one sample in the sample.tsv file. However, as we ran the pipeline already once on all samples, it always still produces an output with all samples in the output file, i guess this has something to do with the pipeline storing all intermediate files? Any suggestions? :)
+Best,
+Florian",florianhahn87,https://github.com/moiexpositoalonsolab/grenepipe/issues/4
+MDU6SXNzdWU5MTc2NDk3MjE=,No module named 'numpy.core._multiarray_umath',CLOSED,2021-06-10T18:04:32Z,2021-06-29T17:59:57Z,2021-06-28T23:49:48Z,"Hi, I'm trying out grenepipe--thanks for making it. I'm on Ubuntu 20.04, I installed miniconda with Python 3.9, then snakemake, the downloaded grenepipe. Very late in the process (83 of 86 steps) I get the following error
+
+```
+  File ""/home/ben/miniconda3/envs/snakemake/lib/python3.9/site-packages/pandas/__init__.py"", line 17, in <module>
+    ""Unable to import required dependencies:\n"" + ""\n"".join(missing_dependencies)
+ImportError: Unable to import required dependencies:
+numpy: 
+
+IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
+
+Importing the numpy C-extensions failed. This error can happen for
+many reasons, often due to issues with your setup or how NumPy was
+installed.
+
+We have compiled some common reasons and troubleshooting tips at:
+
+    https://numpy.org/devdocs/user/troubleshooting-importerror.html
+
+Please note and check the following:
+
+  * The Python version is: Python3.6 from ""/home/ben/Synced/research/FitnessDistributionExperiments/2018_Sep-Dec_3654_and_3660/Temp-sequencing_Dec2020/grenepipe_try/.snakemake/conda/e2a4eb8e82f5806525944d44f65469a7/bin/python""
+  * The NumPy version is: ""1.20.3""
+
+and make sure that they are the versions you expect.
+Please carefully study the documentation linked above for further help.
+
+Original error was: No module named 'numpy.core._multiarray_umath'
+
+```
+
+I'll attach the full log file. Grateful if you are able to point me to what I need to do. 
+
+Thanks,
+Ben
+[2021-06-10T122216.640782.snakemake.log](https://github.com/moiexpositoalonsolab/grenepipe/files/6633493/2021-06-10T122216.640782.snakemake.log)
+
+",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/5
+MDU6SXNzdWU5MjkxMTI3ODQ=,vcf file with all positions,CLOSED,2021-06-24T11:06:40Z,2022-04-28T23:37:29Z,2022-04-28T23:37:29Z,"Hey Luc
+as,
+I was just wondering, is there a possibility to get as an output of grenepipe a vcf file just like the variance file, but not only with the variances, but with all the information on read depths etc for every position of the genome. I would like it to look something like this:
+
+![image](https://user-images.githubusercontent.com/82394879/123252631-6a8a1b80-d4e4-11eb-920c-67835510d84c.png)
+
+Is there any command line option for this when running grenepipe?
+
+Thanks a lot,
+Florian
+",florianhahn87,https://github.com/moiexpositoalonsolab/grenepipe/issues/6
+MDU6SXNzdWU5NjYyMzQ1MTk=,Add option to use bwa-mem2 for mapping,CLOSED,2021-08-11T08:33:24Z,2021-09-28T05:05:15Z,2021-09-28T05:00:53Z,"Hi, thanks for sharing the pipeline, it looks pretty nice. I was wondering if you would consider adding bwa-mem2 to the read mappers grenepipe supports?",J-Wall,https://github.com/moiexpositoalonsolab/grenepipe/issues/7
+MDU6SXNzdWU5Njc2OTI0MzI=,Too many jobs created if reference genome has a large number of contigs,CLOSED,2021-08-12T00:03:22Z,2021-09-29T07:56:43Z,2021-09-29T07:56:43Z,"Hi, I am facing the following problem:
+
+I am using grenepipe to do variant calling on a few dozen samples (around 80, whole-genome re-sequenced) of a non-model organism. The reference genome assembly I am working with has a large number (>4000) small fragmented contigs. Consequently, when the DAG has to be re-built after the `samtools_faidx` checkpoint, snakemake really struggles, as a few hundred-thousand jobs are created. This causes ""Updating job merge_variants."" to take a *very* long time, and causes problems for slurm queues etc. which may impose limits on the number of jobs submitted concurrently.
+
+In my situation, I could reduce the reference genome to just the core set of chromosome-level contigs we have, although I don't really want to do this, as there may be important variation in the un-scaffolded contigs. Other non-model genome assemblies might only have small contigs...
+
+My suggested solution is to add an option to pool contigs (ie. pass multiple contigs to `regions` input of `call_variants`) into fewer jobs. This is related to the existing `restrict-regions` option (and perhaps has to be mutually exclusive, but I am not sure). I am experimenting with something along these lines (https://github.com/J-Wall/grenepipe, currently only using `haplotypecaller`), although my solution is a little bit hacky at the moment. If it's a feature you would be interested in adding, I might be interested to contribute.
+
+Once again, thanks for the excellent pipeline!",J-Wall,https://github.com/moiexpositoalonsolab/grenepipe/issues/8
+I_kwDOD5fcUs48Q_GA,CollectMultipleMetrics: there is no package called ‘tidyverse’,CLOSED,2021-09-29T15:08:04Z,2021-10-06T14:30:17Z,2021-09-30T04:22:47Z,"I am not sure what I did that changed things since getting grenepipe to work successfully a few months ago, but I now get an error on step 8 saying that `picard-collectmultiplemetrics.py returned non-zero exit status 1`. If I look in the picard logs the problem is 
+
+```
+INFO	2021-09-29 14:19:26	RExecutor	Executing R script via command: Rscript /tmp/ben/script10615150585100640491.R /home/ben/grenepipe_try_2/qc/picard/121B01-1.base_distribution_by_cycle_metrics /home/ben/grenepipe_try_2/qc/picard/121B01-1.base_distribution_by_cycle.pdf 121B01-1.bam 
+ERROR	2021-09-29 14:19:26	ProcessExecutor	Error in library(tidyverse) : there is no package called ‘tidyverse’
+```
+
+Confusingly, tidyverse does seem to be installed in the environment (see below) so I am not sure how to try to fix this. I did download the latest grenepipe and also get this error in addition to it occurring with my older version.  
+
+```
+(snakemake) ben@OptiPlex990:~/grenepipe-master-2021Sep29$ echo ""library(tidyverse)"" > test.R
+(snakemake) ben@OptiPlex990:~/grenepipe-master-2021Sep29$ Rscript test.R
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.3     ✔ purrr   0.3.4
+✔ tibble  3.1.1     ✔ dplyr   1.0.5
+✔ tidyr   1.1.3     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ forcats 0.5.1
+```
+
+
+
+
+",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/9
+I_kwDOD5fcUs48tIgC,FastQC on one set of reads only,CLOSED,2021-10-06T14:36:01Z,2021-10-12T21:54:36Z,2021-10-12T21:54:36Z,"I'm not sure if this is a bug or if I'm misinterpreting something. I have paired-end reads. In the trimmomatic logs I can see we are indeed using both `fq1` and `fq2`:
+
+```
+TrimmomaticPE: Started with arguments:
+ -threads 1 /home/ben/Synced/research/mtDNA_copy_number/sequencing_2021-06-07/illumina/BGS5_S162_R1_001.fastq.gz /home/ben/Synced/research/mtDNA_copy_number/sequencing_2021-06-07/illumina/BGS5_S162_R2_001.fastq.gz trimmed/BGS5-1.1.fastq.gz trimmed/BGS5-1.1.unpaired.fastq.gz trimmed/BGS5-1.2.fastq.gz trimmed/BGS5-1.2.unpaired.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+Quality encoding detected as phred33
+Input Read Pairs: 3550692 Both Surviving: 3519199 (99.11%) Forward Only Surviving: 18163 (0.51%) Reverse Only Surviving: 7047 (0.20%) Dropped: 6283 (0.18%)
+TrimmomaticPE: Completed successfully
+```
+
+However the fastqc log only the first file appears: 
+
+```
+(base) ben@OptiPlex990:~/grenepipe_BGS5_W303/logs/fastqc$ cat BGS5-1.log 
+Input:       /home/ben/Synced/research/mtDNA_copy_number/sequencing_2021-06-07/illumina/BGS5_S162_R1_001.fastq.gz
+Output zip:  qc/fastqc/BGS5-1_fastqc.zip
+Output html: qc/fastqc/BGS5-1_fastqc.html
+
+--
+
+Started analysis of BGS5_S162_R1_001.fastq.gz
+Approx 5% complete for BGS5_S162_R1_001.fastq.gz
+Approx 10% complete for BGS5_S162_R1_001.fastq.gz
+Approx 15% complete for BGS5_S162_R1_001.fastq.gz
+Approx 20% complete for BGS5_S162_R1_001.fastq.gz
+Approx 25% complete for BGS5_S162_R1_001.fastq.gz
+Approx 30% complete for BGS5_S162_R1_001.fastq.gz
+Approx 35% complete for BGS5_S162_R1_001.fastq.gz
+Approx 40% complete for BGS5_S162_R1_001.fastq.gz
+Approx 45% complete for BGS5_S162_R1_001.fastq.gz
+Approx 50% complete for BGS5_S162_R1_001.fastq.gz
+Approx 55% complete for BGS5_S162_R1_001.fastq.gz
+Approx 60% complete for BGS5_S162_R1_001.fastq.gz
+Approx 65% complete for BGS5_S162_R1_001.fastq.gz
+Approx 70% complete for BGS5_S162_R1_001.fastq.gz
+Approx 75% complete for BGS5_S162_R1_001.fastq.gz
+Approx 80% complete for BGS5_S162_R1_001.fastq.gz
+Approx 85% complete for BGS5_S162_R1_001.fastq.gz
+Approx 90% complete for BGS5_S162_R1_001.fastq.gz
+Approx 95% complete for BGS5_S162_R1_001.fastq.gz
+Analysis complete for BGS5_S162_R1_001.fastq.gz
+```
+
+I noticed this because in MultiQC there seems to be one line for the sample as a whole, then another line for fq1, but no line for fq2:
+
+![image](https://user-images.githubusercontent.com/8964051/136224424-ebd388f5-38ed-414a-bc03-7b59a3b04e60.png)
+
+
+",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/10
+I_kwDOD5fcUs486n2e,Picard environment not created,CLOSED,2021-10-10T14:33:30Z,2022-12-17T19:53:57Z,2022-05-05T05:13:38Z,"When I run the command and it starts creating the required environments it gets stuck creating picard.yaml environment. 
+
+```
+Creating conda environment ../envs/picard.yaml...
+Downloading and installing remote packages.
+```
+
+I have tested the command separately and it keeps ""solving environment"" indefinitely. 
+
+```
+conda env create -f picard.yaml
+Collecting package metadata (repodata.json): done
+Solving environment: |
+```
+
+I have tested other environments from grenepipe and they work.  I also have tried to change some of the dependencies version, but no luck. My conda installation is relatively new and I don't have a lot of things installed on base, which usually causes the ""solving environment"" issue.",henriquevf,https://github.com/moiexpositoalonsolab/grenepipe/issues/11
+I_kwDOD5fcUs49ERTO,snpEff download directory only works with a trailing slash,CLOSED,2021-10-12T22:35:10Z,2022-05-07T06:40:00Z,2022-05-07T06:40:00Z,"It appears that the snpeff `download-dir` parameter in `config.yaml `must have a trailing slash to work properly, e.g. ""`/home/ben/my_download_dir/`"" works but with ""`/home/ben/my_download_dir`"" the downloads just go to my home folder. Not sure if that is the intended behavior (maybe just a warning about this in the comments would suffice?).",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/12
+I_kwDOD5fcUs49ES_w,feature request: pass local reference genome database to snpEff,CLOSED,2021-10-12T22:39:34Z,2022-05-07T07:23:48Z,2022-05-07T07:23:48Z,The pre-built references databases that snpEff can download may be limiting in some use cases. Therefore it might be helpful to allow the use of user-prepared reference databases. ,bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/13
+I_kwDOD5fcUs49t_2D,Updating run with new reads,CLOSED,2021-10-25T19:00:29Z,2022-05-12T01:32:18Z,2021-10-25T19:04:00Z,"Hi, I have found your pipeline very helpful and would like to know the best way to use it when new samples are added regularly.
+
+I have been running it separately for each set of reads I get in, but is there a way to get it to run only the new samples added to samples list?
+
+When I try to add new samples to the samples file and launch the pipeline again I get a message saying there is nothing to be done.
+
+I feel like I'm missing something obvious, as this seems like something snakemake is already good at.",Brent-Saylor-Canopy,https://github.com/moiexpositoalonsolab/grenepipe/issues/14
+I_kwDOD5fcUs4924ja,support for haploid genomes?,CLOSED,2021-10-27T19:45:03Z,2021-10-30T09:59:40Z,2021-10-29T22:43:54Z,"The documentation for GATK's haplotypecaller says ""This tool is able to handle many non-diploid use cases; the desired ploidy can be specified using the -ploidy argument"". I am working with haploid yeast. So I would like to be able to pass the argument `-ploidy 1` to haplotypecaller, is there a way to do this? Thanks!",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/15
+I_kwDOD5fcUs49-309,Error in picard_collectmultiplemetrics,CLOSED,2021-10-29T20:05:39Z,2022-01-05T01:35:23Z,2022-01-05T01:35:23Z,"Hi,
+
+I have another error for you. As I mentioned in another thread I am attempting to update a run with new samples. So far most things look good, but I am getting an error in the picard_collectmultiplemetrics job.
+
+This is the stdout output:
+```
+Traceback (most recent call last):
+  File ""/mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/.snakemake/scripts/tmpwsgg3p9h.picard-collectmultiplemetrics.py"", line 80, in <module>
+    ""(picard CollectMultipleMetrics ""
+  File ""/opt/miniconda/envs/SNAKEMAKE_env/lib/python3.9/site-packages/snakemake/shell.py"", line 263, in __new__
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '(picard CollectMultipleMetrics I=mapped/G3N-1.sorted.bam O=qc/picard/G3N-1 R=/mnt/Work_dir/Canopy_Genomes/Competed_NRGene_Phased_Assembelies/V2/Assemblies/91K_A.fasta VALIDATION_STRINGENCY=LENIENT METRIC_ACCUMULATION_LEVEL=null METRIC_ACCUMULATION_LEVEL=SAMPLE  PROGRAM=CollectAlignmentSummaryMetrics PROGRAM=CollectBaseDistributionByCycle PROGRAM=CollectInsertSizeMetrics PROGRAM=CollectGcBiasMetrics PROGRAM=CollectQualityYieldMetrics PROGRAM=MeanQualityByCycle PROGRAM=QualityScoreDistribution )  2> logs/picard/multiple_metrics/G3N-1.log' returned non-zero exit status 1.
+[Fri Oct 29 15:37:52 2021]
+Error in rule picard_collectmultiplemetrics:
+    jobid: 1035
+    output: qc/picard/G3N-1.alignment_summary_metrics, qc/picard/G3N-1.base_distribution_by_cycle_metrics, qc/picard/G3N-1.base_distribution_by_cycle.pdf, qc/picard/G3N-1.gc_bias.detail_metrics, qc/picard/G3N-1.gc_bias.summary_metrics, qc/picard/G3N-1.gc_bias.pdf, qc/picard/G3N-1.insert_size_metrics, qc/picard/G3N-1.insert_size_histogram.pdf, qc/picard/G3N-1.quality_by_cycle_metrics, qc/picard/G3N-1.quality_by_cycle.pdf, qc/picard/G3N-1.quality_distribution_metrics, qc/picard/G3N-1.quality_distribution.pdf, qc/picard/G3N-1.quality_yield_metrics
+    log: logs/picard/multiple_metrics/G3N-1.log (check log file(s) for error message)
+    conda-env: /mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/.snakemake/conda/31eebd0163ee2e1f9558bd20aa6edca5
+
+RuleException:
+CalledProcessError in line 192 of /mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/rules/qc.smk:
+Command 'source /opt/miniconda/envs/SNAKEMAKE_env/bin/activate '/mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/.snakemake/conda/31eebd0163ee2e1f9558bd20aa6edca5'; python /mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/.snakemake/scripts/tmpwsgg3p9h.picard-collectmultiplemetrics.py' returned non-zero exit status 1.
+  File ""/mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/rules/qc.smk"", line 192, in __rule_picard_collectmultiplemetrics
+  File ""/opt/miniconda/envs/SNAKEMAKE_env/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+
+```
+
+And this is the picard log for for that file:
+
+```
+INFO    2021-10-29 15:31:53     CollectMultipleMetrics
+
+********** NOTE: Picard's command line syntax is changing.
+**********
+********** For more information, please see:
+********** https://github.com/broadinstitute/picard/wiki/Command-Line-Syntax-Transition-For-Users-(Pre-Transition)
+**********
+********** The command line looks like this in the new syntax:
+**********
+**********    CollectMultipleMetrics -I mapped/G3N-1.sorted.bam -O qc/picard/G3N-1 -R /mnt/Work_dir/Canopy_Genomes/Competed_NRGene_Phased_Assembelies/V2/Assemblies/91K_A.fasta -VALIDATION_STRINGENCY LENIENT -METRIC_ACCUMULATION_LEVEL null -METRIC_ACCUMULATION_LEVEL SAMPLE -PROGRAM CollectAlignmentSummaryMetrics -PROGRAM CollectBaseDistributionByCycle -PROGRAM CollectInsertSizeMetrics -PROGRAM CollectGcBiasMetrics -PROGRAM CollectQualityYieldMetrics -PROGRAM MeanQualityByCycle -PROGRAM QualityScoreDistribution
+**********
+
+
+15:31:53.825 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/mnt/Data1/GBS_data/grenepipe_GBS_and_Skim_vs_91K/.snakemake/conda/31eebd0163ee2e1f9558bd20aa6edca5/share/picard-2.23.0-0/picard.jar!/com/intel/gkl/native/libgkl_compression.so
+[Fri Oct 29 15:31:53 EDT 2021] CollectMultipleMetrics INPUT=mapped/G3N-1.sorted.bam OUTPUT=qc/picard/G3N-1 METRIC_ACCUMULATION_LEVEL=[SAMPLE] PROGRAM=[CollectAlignmentSummaryMetrics, CollectBaseDistributionByCycle, CollectInsertSizeMetrics, MeanQualityByCycle, QualityScoreDistribution, CollectGcBiasMetrics, CollectQualityYieldMetrics] VALIDATION_STRINGENCY=LENIENT REFERENCE_SEQUENCE=/mnt/Work_dir/Canopy_Genomes/Competed_NRGene_Phased_Assembelies/V2/Assemblies/91K_A.fasta    ASSUME_SORTED=true STOP_AFTER=0 INCLUDE_UNPAIRED=false VERBOSITY=INFO QUIET=false COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_FILE=false GA4GH_CLIENT_SECRETS=client_secrets.json USE_JDK_DEFLATER=false USE_JDK_INFLATER=false
+[Fri Oct 29 15:31:53 EDT 2021] Executing as brent.saylor@corp.canopygrowth.com@ON7GENOM01 on Linux 5.10.0-1050-oem amd64; OpenJDK 64-Bit Server VM 11.0.8-internal+0-adhoc..src; Deflater: Intel; Inflater: Intel; Provider GCS is not available; Picard version: 2.23.0
+WARNING 2021-10-29 15:31:53     CollectMultipleMetrics  The CollectBaseDistributionByCycle program does not support a metric accumulation level, but METRIC_ACCUMULATION_LEVEL was overridden in the command line. CollectBaseDistributionByCycle will be run against the entire input.
+WARNING 2021-10-29 15:31:53     CollectMultipleMetrics  The MeanQualityByCycle program does not support a metric accumulation level, but METRIC_ACCUMULATION_LEVEL was overridden in the command line. MeanQualityByCycle will be run against the entire input.
+WARNING 2021-10-29 15:31:53     CollectMultipleMetrics  The QualityScoreDistribution program does not support a metric accumulation level, but METRIC_ACCUMULATION_LEVEL was overridden in the command line. QualityScoreDistribution will be run against the entire input.
+WARNING 2021-10-29 15:31:53     CollectMultipleMetrics  The CollectQualityYieldMetrics program does not support a metric accumulation level, but METRIC_ACCUMULATION_LEVEL was overridden in the command line. CollectQualityYieldMetrics will be run against the entire input.
+INFO    2021-10-29 15:33:26     SinglePassSamProgram    Processed     1,000,000 records.  Elapsed time: 00:01:07s.  Time for last 1,000,000:   64s.  Last read position: 10A:82,872,277
+INFO    2021-10-29 15:34:17     SinglePassSamProgram    Processed     2,000,000 records.  Elapsed time: 00:01:59s.  Time for last 1,000,000:   51s.  Last read position: 2A:6,536,813
+INFO    2021-10-29 15:35:04     SinglePassSamProgram    Processed     3,000,000 records.  Elapsed time: 00:02:45s.  Time for last 1,000,000:   46s.  Last read position: 3A:7,153,965
+INFO    2021-10-29 15:35:44     SinglePassSamProgram    Processed     4,000,000 records.  Elapsed time: 00:03:26s.  Time for last 1,000,000:   40s.  Last read position: 3A:81,414,252
+INFO    2021-10-29 15:36:29     SinglePassSamProgram    Processed     5,000,000 records.  Elapsed time: 00:04:11s.  Time for last 1,000,000:   45s.  Last read position: 4A:72,038,205
+INFO    2021-10-29 15:37:14     SinglePassSamProgram    Processed     6,000,000 records.  Elapsed time: 00:04:55s.  Time for last 1,000,000:   44s.  Last read position: 5A:77,537,799
+[Fri Oct 29 15:37:52 EDT 2021] picard.analysis.CollectMultipleMetrics done. Elapsed time: 5.98 minutes.
+Runtime.totalMemory()=536870912
+To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+Exception in thread ""main"" java.lang.ArrayIndexOutOfBoundsException: Index 0 out of bounds for length 0
+        at picard.analysis.AlignmentSummaryMetricsCollector$GroupAlignmentSummaryMetricsPerUnitMetricCollector$IndividualAlignmentSummaryMetricsCollector.collectQualityData(AlignmentSummaryMetricsCollector.java:322)
+        at picard.analysis.AlignmentSummaryMetricsCollector$GroupAlignmentSummaryMetricsPerUnitMetricCollector$IndividualAlignmentSummaryMetricsCollector.addRecord(AlignmentSummaryMetricsCollector.java:193)
+        at picard.analysis.AlignmentSummaryMetricsCollector$GroupAlignmentSummaryMetricsPerUnitMetricCollector.acceptRecord(AlignmentSummaryMetricsCollector.java:120)
+        at picard.analysis.AlignmentSummaryMetricsCollector$GroupAlignmentSummaryMetricsPerUnitMetricCollector.acceptRecord(AlignmentSummaryMetricsCollector.java:93)
+        at picard.metrics.MultiLevelCollector$Distributor.acceptRecord(MultiLevelCollector.java:164)
+        at picard.metrics.MultiLevelCollector.acceptRecord(MultiLevelCollector.java:315)
+        at picard.analysis.AlignmentSummaryMetricsCollector.acceptRecord(AlignmentSummaryMetricsCollector.java:89)
+        at picard.analysis.CollectAlignmentSummaryMetrics.acceptRead(CollectAlignmentSummaryMetrics.java:146)
+        at picard.analysis.SinglePassSamProgram.makeItSo(SinglePassSamProgram.java:158)
+        at picard.analysis.CollectMultipleMetrics.doWork(CollectMultipleMetrics.java:598)
+        at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:305)
+        at picard.cmdline.PicardCommandLine.instanceMain(PicardCommandLine.java:103)
+        at picard.cmdline.PicardCommandLine.main(PicardCommandLine.java:113)
+
+```
+I've done a little reading into into the index out of bounds error and it seems to be a problem with the bam file,  but I tried rerunning  the alignment and it didn't solve the problem. ",Brent-Saylor-Canopy,https://github.com/moiexpositoalonsolab/grenepipe/issues/16
+I_kwDOD5fcUs5AOqoK,freebayes causes early error about number of threads,CLOSED,2021-12-11T16:46:45Z,2021-12-30T13:27:21Z,2021-12-30T13:27:21Z,"Hi Lucas, got a weird one for you. If I change the caller from `hapotypecaller` to `freebayes`, I get the error below. It's doubly strange because it seems to occur well before `freebayes` would be used in the pipeline. 
+
+```
+[Sat Dec 11 11:13:02 2021]
+rule samtools_stats:
+    input: dedup/111D03-1.bam
+    output: qc/samtools-stats/111D03-1.txt
+    log: logs/samtools-stats/111D03-1.log
+    jobid: 19
+    benchmark: benchmarks/samtools-stats/111D03-1.bench.log
+    wildcards: sample=111D03, unit=1
+    resources: tmpdir=/tmp
+
+[Sat Dec 11 11:13:03 2021]
+Finished job 20.
+8 of 54 steps (15%) done
+Select jobs to execute...
+WorkflowError:
+Job needs threads=5 but only threads=3 are available. This is likely because two jobs are connected via a pipe and have to run simultaneously. Consider providing more resources (e.g. via --cores).
+Activating conda environment: /home/ben/grenepipe_111D03_S288C/.snakemake/conda/76c2600e72d572e62d62105144f7b21f
+/usr/bin/bash: qc/samtools-stats/111D03-1.txt: No such file or directory
+Traceback (most recent call last):
+  File ""/home/ben/grenepipe-master-2021Oct11/.snakemake/scripts/tmpfwffbzki.wrapper.py"", line 21, in <module>
+    shell(""samtools stats {extra} {snakemake.input}""
+  File ""/home/ben/mambaforge/envs/snakemake/lib/python3.9/site-packages/snakemake/shell.py"", line 263, in __new__
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'samtools stats  dedup/111D03-1.bam  > qc/samtools-stats/111D03-1.txt  2> logs/samtools-stats/111D03-1.log' returned non-zero exit status 1.
+[Sat Dec 11 11:13:04 2021]
+Error in rule samtools_stats:
+    jobid: 19
+    output: qc/samtools-stats/111D03-1.txt
+    log: logs/samtools-stats/111D03-1.log (check log file(s) for error message)
+    conda-env: /home/ben/grenepipe_111D03_S288C/.snakemake/conda/76c2600e72d572e62d62105144f7b21f
+
+RuleException:
+CalledProcessError in line 98 of /home/ben/grenepipe-master-2021Oct11/rules/qc.smk:
+Command 'source /home/ben/mambaforge/bin/activate '/home/ben/grenepipe_111D03_S288C/.snakemake/conda/76c2600e72d572e62d62105144f7b21f'; /home/ben/mambaforge/envs/snakemake/bin/python3.9 /home/ben/grenepipe-master-2021Oct11/.snakemake/scripts/tmpfwffbzki.wrapper.py' returned non-zero exit status 1.
+  File ""/home/ben/grenepipe-master-2021Oct11/rules/qc.smk"", line 98, in __rule_samtools_stats
+  File ""/home/ben/mambaforge/envs/snakemake/lib/python3.9/concurrent/futures/thread.py"", line 52, in run
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 177 of /home/ben/grenepipe-master-2021Oct11/rules/qc.smk:
+Job Missing files after 5 seconds:
+qc/picard/111D03-1.alignment_summary_metrics
+qc/picard/111D03-1.base_distribution_by_cycle_metrics
+qc/picard/111D03-1.base_distribution_by_cycle.pdf
+qc/picard/111D03-1.gc_bias.detail_metrics
+qc/picard/111D03-1.gc_bias.summary_metrics
+qc/picard/111D03-1.gc_bias.pdf
+qc/picard/111D03-1.insert_size_metrics
+qc/picard/111D03-1.insert_size_histogram.pdf
+qc/picard/111D03-1.quality_by_cycle_metrics
+qc/picard/111D03-1.quality_by_cycle.pdf
+qc/picard/111D03-1.quality_distribution_metrics
+qc/picard/111D03-1.quality_distribution.pdf
+qc/picard/111D03-1.quality_yield_metrics
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+Job id: 22 completed successfully, but some output files are missing. 22
+
+```",bensprung,https://github.com/moiexpositoalonsolab/grenepipe/issues/17
+I_kwDOD5fcUs5BL0zw,Call variants being rerun when adding new samples,CLOSED,2022-01-04T17:53:44Z,2022-05-07T03:02:53Z,2022-01-04T18:00:03Z,"HI,
+
+I've been running your pipeline to add 4-8 new samples to a previous analysis at a time as new data comes in. For the most part it works well, but I'm finding that the call_variants rule is being rerun for every new sample, even though I'm only adding a couple of samples. Is there a way to get these not to re-run, it's adding a lot of extra computation time.
+
+Here is an example dry run job list from trying to use haplotype caller 39 samples, 8 of which are new and 2 of which are additional files for the same sample.
+
+```
+Job stats:
+job                              count    min threads    max threads
+-----------------------------  -------  -------------  -------------
+all                                  1              1              1
+bam_index                            8              1              1
+call_variants                      407              1              1
+combine_calls                       11              1              1
+fastqc                              16              1              1
+genotype_variants                   11              1              1
+hard_filter_calls                    2              1              1
+map_reads                            8              1              1
+mark_duplicates                      8              1              1
+merge_calls                          1              1              1
+merge_variants                       1              1              1
+multiqc                              1              1              1
+picard_collectmultiplemetrics        8              1              1
+qualimap                             8              1              1
+samtools_flagstat                    8              1              1
+samtools_stats                       8              1              1
+select_calls                         2              1              1
+trim_reads_pe                        8              1              1
+vcf_index_gatk                     407              1              1
+total                              924              1              1
+
+```",Brent-Saylor-Canopy,https://github.com/moiexpositoalonsolab/grenepipe/issues/18
+I_kwDOD5fcUs5Cjqvk,Change link in wiki ,CLOSED,2022-01-27T19:14:41Z,2022-01-27T19:40:12Z,2022-01-27T19:40:12Z,"In the wiki:
+'Samples can either be in fastq format, or in compressed fastq.gz format (the file extension itself does not matter though). See also our exemplary table.' 
+the link should be changed
+https://github.com/moiexpositoalonsolab/grenepipe/blob/master/data/samples.tsv
+https://github.com/moiexpositoalonsolab/grenepipe/blob/master/example/samples.tsv
+
+XOXOXOXOXO",Tatianabellagio,https://github.com/moiexpositoalonsolab/grenepipe/issues/19
+I_kwDOD5fcUs5Dx0PV,BaseRecalibrator error - needs more readgroup info?,CLOSED,2022-02-14T11:03:06Z,2022-05-08T23:18:44Z,2022-05-08T23:18:44Z,"Hi Lucas,
+
+I would like to ask for your help with an error that occurs when trying to run the rule recalibrate_base_qualities (details are below). I suspect that this error happens because the current default settings in the snakemake file for bwa mem -R result in BAM headers that contain info for the fields ID and SM, but not for platform unit (PU) and platform type (PL).  
+
+If I understood the GATK BaseRecalibrator documentation well, the BaseRecalibrator may not work without the PU field. This PU field ({FLOWCELL_BARCODE}.{LANE}.{SAMPLE_BARCODE} holds the information for which library a read belongs to and what lane it was sequenced in on the flowcell. (https://gatk.broadinstitute.org/hc/en-us/articles/360035890671-Read-groups, https://gatk.broadinstitute.org/hc/en-us/articles/360035890531-Base-Quality-Score-Recalibration-BQSR-, https://gatk.broadinstitute.org/hc/en-us/articles/360036898312-BaseRecalibrator) 
+ 
+Do you think that this could indeed be the reason for the error message? If yes, do you know how I can extend the bwa mem -R command so that the RG tag includes the PU and PL info? 
+
+Thanks!
+
+Marieke
+
+ 
+## The error message I get in the .log file of the snakemake run: 
+ ```
+RuleException: 
+CalledProcessError in line 142 of /[..]/grenepipe-0.6.0/rules/mapping.smk: 
+Command 'source /[..]/mambaforge/bin/activate '/[..]/bin/mambaforge/envs/grenepipe/stable_conda_bin/6ab4ef66d24710ce1dcec6e2ab21e95e'; set -euo pipefail;  python /[..]/.snakemake/scripts/tmppyqdpcnq.wrapper.py' returned non-zero exit status 1. 
+  File ""/[..]/grenepipe-0.6.0/rules/mapping.smk"", line 142, in __rule_recalibrate_base_qualities 
+  File ""/[..]/mambaforge/envs/snakemake/lib/python3.10/concurrent/futures/thread.py"", line 58, in run 
+```
+
+## The error message in '/logs/gatk/bqsr/DRR058051-1.log': 
+ ```
+A USER ERROR has occurred: Read DRR058051.2067319 1:1000-1050 is malformed: The input .bam file contains reads with no platform information. First observed at read with name = DRR058051.2067319 
+```
+
+## The default settings for the rule recalibrate_base_qualities in the 'mapping-bwa-mem.smk' file: 
+ ```
+rule map_reads: 
+    input: 
+        reads=get_trimmed_reads, 
+        ref=config[""data""][""reference""][""genome""], 
+        refidcs=expand( 
+            config[""data""][""reference""][""genome""] + "".{ext}"", 
+            ext=[ ""amb"", ""ann"", ""bwt"", ""pac"", ""sa"", ""fai"" ] 
+        ) 
+    output: 
+        ""mapped/{sample}-{unit}.sorted.bam"" 
+    params: 
+        index=config[""data""][""reference""][""genome""], 
+ 
+        # We need the read group tags, including `ID` and `SM`, as downstream tools use these. 
+        extra=r""-R '@RG\tID:{sample}\tSM:{sample}' "" + config[""params""][""bwamem""][""extra""], 
+        # TODO Add LD field as well for the unit?! http://www.htslib.org/workflow/ 
+        # If so, same for bwa aln and bwa mem2 rules as well? 
+```",mvdloosdrecht,https://github.com/moiexpositoalonsolab/grenepipe/issues/20
+I_kwDOD5fcUs5Irt5q,Error while running example,CLOSED,2022-04-28T23:02:35Z,2022-05-05T05:08:35Z,2022-05-05T05:08:35Z,"Thanks for developing such a valuable software!
+
+Sadly, when I go to run the example, I get the following error messages (sorry this is so long):
+
+Traceback (most recent call last):
+  File ""/redser4/personal/andrew/src/grenepipe/example/.snakemake/scripts/tmpmpp3gy6n.wrapper.py"", line 3, in <module>
+    import sys; sys.path.extend(['/home/asharo/miniconda3/envs/snakemake2/lib/python3.9/site-packages']); import pickle; snakemake = pickle.loads(b'\x80\x04\x95\xac\x1a\x00\x00\x00\x00\x00\x00\x8c\x10snakemake.script\x94\x8c\tSnakemake\x94\x93\x94)\x81\x94}\x94(\x8c\x05input\x94\x8c\x0csnakemake.io\x94\x8c\nInputFiles\x94\x93\x94)\x81\x94(\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U1_R1.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U1_R2.fastq.gz\x94e}\x94(\x8c\x06_names\x94}\x94(\x8c\x02r1\x94K\x00N\x86\x94\x8c\x02r2\x94K\x01N\x86\x94u\x8c\x12_allowed_overrides\x94]\x94(\x8c\x05index\x94\x8c\x04sort\x94eh\x15\x8c\tfunctools\x94\x8c\x07partial\x94\x93\x94h\x06\x8c\x19Namedlist._used_attribute\x94\x93\x94\x85\x94R\x94(h\x1b)}\x94\x8c\x05_name\x94h\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94bh\x0fh\nh\x11h\x0bub\x8c\x06output\x94h\x06\x8c\x0bOutputFiles\x94\x93\x94)\x81\x94(\x8c\x17trimmed/S2-1.1.fastq.gz\x94\x8c\x17trimmed/S2-1.2.fastq.gz\x94\x8c trimmed/S2-1.1.unpaired.fastq.gz\x94\x8c trimmed/S2-1.2.unpaired.fastq.gz\x94e}\x94(h\r}\x94(h\x0fK\x00N\x86\x94h\x11K\x01N\x86\x94\x8c\x0br1_unpaired\x94K\x02N\x86\x94\x8c\x0br2_unpaired\x94K\x03N\x86\x94uh\x13]\x94(h\x15h\x16eh\x15h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94bh\x0fh)h\x11h*h1h+h3h,ub\x8c\x06params\x94h\x06\x8c\x06Params\x94\x93\x94)\x81\x94(\x8c\x00\x94]\x94(\x8c\tLEADING:3\x94\x8c\nTRAILING:3\x94\x8c\x12SLIDINGWINDOW:4:15\x94\x8c\tMINLEN:36\x94ee}\x94(h\r}\x94(\x8c\x05extra\x94K\x00N\x86\x94\x8c\x07trimmer\x94K\x01N\x86\x94uh\x13]\x94(h\x15h\x16eh\x15h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94bhJhBhLhCub\x8c\twildcards\x94h\x06\x8c\tWildcards\x94\x93\x94)\x81\x94(\x8c\x02S2\x94\x8c\x011\x94e}\x94(h\r}\x94(\x8c\x06sample\x94K\x00N\x86\x94\x8c\x04unit\x94K\x01N\x86\x94uh\x13]\x94(h\x15h\x16eh\x15h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94b\x8c\x06sample\x94h[\x8c\x04unit\x94h\\ub\x8c\x07threads\x94K\x04\x8c\tresources\x94h\x06\x8c\tResources\x94\x93\x94)\x81\x94(K\x04K\x01\x8c\x04/tmp\x94e}\x94(h\r}\x94(\x8c\x06_cores\x94K\x00N\x86\x94\x8c\x06_nodes\x94K\x01N\x86\x94\x8c\x06tmpdir\x94K\x02N\x86\x94uh\x13]\x94(h\x15h\x16eh\x15h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94bhvK\x04hxK\x01hzhsub\x8c\x03log\x94h\x06\x8c\x03Log\x94\x93\x94)\x81\x94\x8c\x19logs/trimmomatic/S2-1.log\x94a}\x94(h\r}\x94h\x13]\x94(h\x15h\x16eh\x15h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x15sNt\x94bh\x16h\x19h\x1b\x85\x94R\x94(h\x1b)}\x94h\x1fh\x16sNt\x94bub\x8c\x06config\x94}\x94(\x8c\x04data\x94}\x94(\x8c\x07samples\x94\x8c:/redser4/personal/andrew/src/grenepipe/example/samples.tsv\x94\x8c\treference\x94}\x94(\x8c\x06genome\x94\x8c@/redser4/personal/andrew/src/grenepipe/example/TAIR10_chr_all.fa\x94\x8c\x0eknown-variants\x94]\x94uu\x8c\x08settings\x94}\x94(\x8c\rtrimming-tool\x94\x8c\x0btrimmomatic\x94\x8c\x16merge-paired-end-reads\x94\x89\x8c\x0cmapping-tool\x94\x8c\x06bwamem\x94\x8c\x13filter-mapped-reads\x94\x89\x8c\x11remove-duplicates\x94\x88\x8c\x0fduplicates-tool\x94\x8c\x06picard\x94\x8c\x1arecalibrate-base-qualities\x94\x89\x8c\x0ccalling-tool\x94\x8c\x0fhaplotypecaller\x94\x8c\x11contig-group-size\x94K\x00\x8c\x10restrict-regions\x94]\x94\x8c\x06snpeff\x94\x89\x8c\x03vep\x94\x89\x8c\tmapdamage\x94\x89\x8c\x0edamageprofiler\x94\x89\x8c\x07pileups\x94]\x94\x8c\x0ffrequency-table\x94\x89\x8c\x16frequency-table-fields\x94\x8c\x18COV,FREQ,REF_CNT,ALT_CNT\x94u\x8c\x06params\x94}\x94(\x8c\x0eadapterremoval\x94}\x94(\x8c\x07threads\x94K\x04\x8c\x02se\x94hB\x8c\x02pe\x94hBu\x8c\x08cutadapt\x94}\x94(\x8c\x07threads\x94K\x04\x8c\x02se\x94}\x94(\x8c\x08adapters\x94\x8c%-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\x94\x8c\x05extra\x94\x8c\x05-q 20\x94u\x8c\x02pe\x94}\x94(\x8c\x08adapters\x94\x8c%-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\x94\x8c\x05extra\x94\x8c\x05-q 20\x94uu\x8c\x05fastp\x94}\x94(\x8c\x07threads\x94K\x04\x8c\x02se\x94hB\x8c\x02pe\x94hBu\x8c\x06skewer\x94}\x94(\x8c\x07threads\x94K\x04\x8c\x02se\x94\x8c\n--mode any\x94\x8c\x02pe\x94\x8c\t--mode pe\x94u\x8c\x0btrimmomatic\x94}\x94(\x8c\x07threads\x94K\x06\x8c\x02se\x94}\x94(\x8c\x05extra\x94hB\x8c\x07trimmer\x94]\x94(\x8c\tLEADING:3\x94\x8c\nTRAILING:3\x94\x8c\x12SLIDINGWINDOW:4:15\x94\x8c\tMINLEN:36\x94eu\x8c\x02pe\x94}\x94(\x8c\x05extra\x94hB\x8c\x07trimmer\x94]\x94(hDhEhFhGeuu\x8c\x07bowtie2\x94}\x94(\x8c\x07threads\x94K\x0c\x8c\x05extra\x94hBu\x8c\x06bwaaln\x94}\x94(\x8c\x07threads\x94K\x04\x8c\x05extra\x94hB\x8c\textra-sam\x94hB\x8c\nextra-sort\x94hBu\x8c\x06bwamem\x94}\x94(\x8c\x07threads\x94K\x0c\x8c\x05extra\x94hB\x8c\nextra-sort\x94hBu\x8c\x07bwamem2\x94}\x94(\x8c\x07threads\x94K\x0c\x8c\x05extra\x94hB\x8c\nextra-sort\x94hBu\x8c\x08samtools\x94}\x94(\x8c\x04view\x94\x8c\x04-q 1\x94\x8c\x06pileup\x94\x8c\x08-d 10000\x94\x8c\x05merge\x94hB\x8c\rmerge-threads\x94K\x04u\x8c\x06picard\x94}\x94(\x8c\x0eMarkDuplicates\x94\x8c\x16REMOVE_DUPLICATES=true\x94\x8c\x16CollectMultipleMetrics\x94}\x94(\x8c\x17AlignmentSummaryMetrics\x94\x88\x8c\x17BaseDistributionByCycle\x94\x88\x8c\rGcBiasMetrics\x94\x88\x8c\x11InsertSizeMetrics\x94\x88\x8c\x15QualityByCycleMetrics\x94\x88\x8c\x1fQualityScoreDistributionMetrics\x94\x88\x8c\x13QualityYieldMetrics\x94\x88\x8c\x05extra\x94\x8c]VALIDATION_STRINGENCY=LENIENT METRIC_ACCUMULATION_LEVEL=null METRIC_ACCUMULATION_LEVEL=SAMPLE\x94uu\x8c\x05dedup\x94}\x94\x8c\x05extra\x94\x8c\x02-m\x94s\x8c\x08bcftools\x94}\x94(\x8c\x07threads\x94K\x08\x8c\x07mpileup\x94\x8c\x11--max-depth 10000\x94\x8c\x04call\x94\x8c\x15--multiallelic-caller\x94u\x8c\tfreebayes\x94}\x94(\x8c\x05extra\x94hB\x8c\x07threads\x94K\x08\x8c\x10compress-threads\x94K\x02\x8c\tchunksize\x94J\xa0\x86\x01\x00u\x8c\x04gatk\x94}\x94(\x8c\x10BaseRecalibrator\x94hB\x8c\x0fHaplotypeCaller\x94hB\x8c\x17HaplotypeCaller-threads\x94K\x02\x8c\rGenotypeGVCFs\x94hBu\x8c\x16variantfiltration-hard\x94}\x94(\x8c\x04snvs\x94\x8cPQD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0\x94\x8c\x06indels\x94\x8c0QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0\x94u\x8c\x06fastqc\x94}\x94(\x8c\x05input\x94\x8c\x07samples\x94\x8c\x05extra\x94hBu\x8c\x08qualimap\x94}\x94(\x8c\x05extra\x94hB\x8c\x07threads\x94K\x02u\x8c\x06snpeff\x94}\x94(\x8c\x04name\x94\x8c\x14Arabidopsis_thaliana\x94\x8c\x0cdownload-dir\x94hB\x8c\x05extra\x94\x8c\x06-Xmx4g\x94u\x8c\x03vep\x94}\x94(\x8c\x07species\x94\x8c\x14arabidopsis_thaliana\x94\x8c\x05build\x94\x8c\x06TAIR10\x94\x8c\x07release\x94Kh\x8c\tcache-url\x94\x8cCftp://ftp.ebi.ac.uk/ensemblgenomes/pub/plants/current/variation/vep\x94\x8c\x07plugins\x94]\x94\x8c\x07LoFtool\x94a\x8c\tcache-dir\x94hB\x8c\x0bplugins-dir\x94hB\x8c\x05extra\x94hBu\x8c\tmapdamage\x94}\x94\x8c\x05extra\x94hBs\x8c\x0edamageprofiler\x94}\x94\x8c\x05extra\x94hBs\x8c\x07multiqc\x94}\x94\x8c\x05extra\x94hBsu\x8c\x06global\x94}\x94(\x8c\x07samples\x94\x8c\x11pandas.core.frame\x94\x8c\tDataFrame\x94\x93\x94)\x81\x94}\x94(\x8c\x04_mgr\x94\x8c\x1epandas.core.internals.managers\x94\x8c\x0cBlockManager\x94\x93\x94\x8c\x16pandas._libs.internals\x94\x8c\x0f_unpickle_block\x94\x93\x94\x8c\x15numpy.core.multiarray\x94\x8c\x0c_reconstruct\x94\x93\x94\x8c\x05numpy\x94\x8c\x07ndarray\x94\x93\x94K\x00\x85\x94C\x01b\x94\x87\x94R\x94(K\x01K\x05K\x04\x86\x94jp\x01\x00\x00\x8c\x05dtype\x94\x93\x94\x8c\x02O8\x94\x89\x88\x87\x94R\x94(K\x03\x8c\x01|\x94NNNJ\xff\xff\xff\xffJ\xff\xff\xff\xffK?t\x94b\x89]\x94(\x8c\x02S1\x94\x8c\x02S2\x94j\x81\x01\x00\x00\x8c\x02S3\x94h\\h\\\x8c\x012\x94h\\\x8c\x01-\x94j\x84\x01\x00\x00j\x84\x01\x00\x00j\x84\x01\x00\x00\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S1_U1_R1.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U1_R1.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U2_R1.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S3_U1_R1.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S1_U1_R2.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U1_R2.fastq.gz\x94\x8cH/redser4/personal/andrew/src/grenepipe/example/samples/S2_U2_R2.fastq.gz\x94G\x7f\xf8\x00\x00\x00\x00\x00\x00et\x94b\x8c\x08builtins\x94\x8c\x05slice\x94\x93\x94K\x00K\x05K\x01\x87\x94R\x94K\x02\x87\x94R\x94\x85\x94]\x94(\x8c\x18pandas.core.indexes.base\x94\x8c\n_new_Index\x94\x93\x94j\x96\x01\x00\x00\x8c\x05Index\x94\x93\x94}\x94(\x8c\x04data\x94jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x05\x85\x94j|\x01\x00\x00\x89]\x94(\x8c\x06sample\x94\x8c\x04unit\x94\x8c\x08platform\x94\x8c\x03fq1\x94\x8c\x03fq2\x94et\x94b\x8c\x04name\x94Nu\x86\x94R\x94j\x98\x01\x00\x00\x8c\x19pandas.core.indexes.multi\x94\x8c\nMultiIndex\x94\x93\x94}\x94(\x8c\x06levels\x94]\x94(j\x98\x01\x00\x00j\x9a\x01\x00\x00}\x94(j\x9c\x01\x00\x00jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x03\x85\x94j|\x01\x00\x00\x89]\x94(\x8c\x02S1\x94\x8c\x02S2\x94\x8c\x02S3\x94et\x94bj\xa8\x01\x00\x00hlu\x86\x94R\x94j\x98\x01\x00\x00j\x9a\x01\x00\x00}\x94(j\x9c\x01\x00\x00jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x02\x85\x94j|\x01\x00\x00\x89]\x94(h\\j\x83\x01\x00\x00et\x94bj\xa8\x01\x00\x00hmu\x86\x94R\x94e\x8c\x05codes\x94]\x94(jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x04\x85\x94jy\x01\x00\x00\x8c\x02i1\x94\x89\x88\x87\x94R\x94(K\x03j}\x01\x00\x00NNNJ\xff\xff\xff\xffJ\xff\xff\xff\xffK\x00t\x94b\x89C\x04\x00\x01\x01\x02\x94t\x94bjo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x04\x85\x94j\xce\x01\x00\x00\x89C\x04\x00\x00\x01\x00\x94t\x94be\x8c\tsortorder\x94N\x8c\x05names\x94]\x94(hlhmeu\x86\x94R\x94e\x86\x94R\x94\x8c\x04_typ\x94\x8c\tdataframe\x94\x8c\t_metadata\x94]\x94\x8c\x05attrs\x94}\x94\x8c\x06_flags\x94}\x94\x8c\x17allows_duplicate_labels\x94\x88sub\x8c\x0csample-names\x94]\x94(j\x80\x01\x00\x00j\x81\x01\x00\x00j\x82\x01\x00\x00e\x8c\nunit-names\x94]\x94(j\x83\x01\x00\x00h\\e\x8c\x0csample-units\x94]\x94(j\x80\x01\x00\x00h\\\x86\x94j\x81\x01\x00\x00h\\\x86\x94j\x81\x01\x00\x00j\x83\x01\x00\x00\x86\x94j\x82\x01\x00\x00h\\\x86\x94e\x8c\x06fastqc\x94jc\x01\x00\x00)\x81\x94}\x94(jf\x01\x00\x00ji\x01\x00\x00jl\x01\x00\x00jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x04K\x07\x86\x94j|\x01\x00\x00\x89]\x94(j\x80\x01\x00\x00j\x80\x01\x00\x00j\x81\x01\x00\x00j\x81\x01\x00\x00j\x81\x01\x00\x00j\x81\x01\x00\x00j\x82\x01\x00\x00h\\h\\h\\h\\j\x83\x01\x00\x00j\x83\x01\x00\x00h\\\x8c\x02R1\x94\x8c\x02R2\x94j\xfa\x01\x00\x00j\xfb\x01\x00\x00j\xfa\x01\x00\x00j\xfb\x01\x00\x00j\xfa\x01\x00\x00j\x85\x01\x00\x00j\x89\x01\x00\x00j\x86\x01\x00\x00j\x8a\x01\x00\x00j\x87\x01\x00\x00j\x8b\x01\x00\x00j\x88\x01\x00\x00et\x94bj\x8f\x01\x00\x00K\x00K\x04K\x01\x87\x94R\x94K\x02\x87\x94R\x94\x85\x94]\x94(j\x98\x01\x00\x00j\x9a\x01\x00\x00}\x94(j\x9c\x01\x00\x00jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x04\x85\x94j|\x01\x00\x00\x89]\x94(hlhm\x8c\x02id\x94\x8c\x04file\x94et\x94bj\xa8\x01\x00\x00Nu\x86\x94R\x94j\x98\x01\x00\x00\x8c\x19pandas.core.indexes.range\x94\x8c\nRangeIndex\x94\x93\x94}\x94(j\xa8\x01\x00\x00N\x8c\x05start\x94K\x00\x8c\x04stop\x94K\x07\x8c\x04step\x94K\x01u\x86\x94R\x94e\x86\x94R\x94j\xdf\x01\x00\x00j\xe0\x01\x00\x00j\xe1\x01\x00\x00j\xe2\x01\x00\x00j\xe3\x01\x00\x00}\x94j\xe5\x01\x00\x00}\x94j\xe7\x01\x00\x00\x88sub\x8c\x07contigs\x94\x8c\x12pandas.core.series\x94\x8c\x06Series\x94\x93\x94)\x81\x94}\x94(jf\x01\x00\x00jg\x01\x00\x00\x8c\x12SingleBlockManager\x94\x93\x94)\x81\x94(]\x94j\x98\x01\x00\x00j\x10\x02\x00\x00}\x94(j\xa8\x01\x00\x00Nj\x12\x02\x00\x00K\x00j\x13\x02\x00\x00K\x07j\x14\x02\x00\x00K\x01u\x86\x94R\x94a]\x94jo\x01\x00\x00jr\x01\x00\x00K\x00\x85\x94jt\x01\x00\x00\x87\x94R\x94(K\x01K\x07\x85\x94j|\x01\x00\x00\x89]\x94(h\\j\x83\x01\x00\x00\x8c\x013\x94\x8c\x014\x94\x8c\x015\x94\x8c\x0cmitochondria\x94\x8c\x0bchloroplast\x94et\x94ba]\x94j\x98\x01\x00\x00j\x10\x02\x00\x00}\x94(j\xa8\x01\x00\x00Nj\x12\x02\x00\x00K\x00j\x13\x02\x00\x00K\x07j\x14\x02\x00\x00K\x01u\x86\x94R\x94a}\x94\x8c\x060.14.1\x94}\x94(\x8c\x04axes\x94j$\x02\x00\x00\x8c\x06blocks\x94]\x94}\x94(\x8c\x06values\x94j+\x02\x00\x00\x8c\x08mgr_locs\x94j\x8f\x01\x00\x00K\x00K\x07K\x01\x87\x94R\x94uaust\x94bj\xdf\x01\x00\x00\x8c\x06series\x94j\xe1\x01\x00\x00]\x94j\xa8\x01\x00\x00aj\xe3\x01\x00\x00}\x94j\xe5\x01\x00\x00}\x94j\xe7\x01\x00\x00\x88sj\xa8\x01\x00\x00jm\x01\x00\x00\x8c\x06scalar\x94\x93\x94jy\x01\x00\x00\x8c\x02i8\x94\x89\x88\x87\x94R\x94(K\x03\x8c\x01<\x94NNNJ\xff\xff\xff\xffJ\xff\xff\xff\xffK\x00t\x94bC\x08\x00\x00\x00\x00\x00\x00\x00\x00\x94\x86\x94R\x94ubuu\x8c\x04rule\x94\x8c\rtrim_reads_pe\x94\x8c\x0fbench_iteration\x94K\x00\x8c\tscriptdir\x94\x8cMhttps://github.com/snakemake/snakemake-wrappers/raw/0.74.0/bio/trimmomatic/pe\x94ub.'); from snakemake.logging import logger; logger.printshellcmds = False; __real_file__ = __file__; __file__ = 'https://github.com/snakemake/snakemake-wrappers/raw/0.74.0/bio/trimmomatic/pe/wrapper.py';
+AttributeError: Can't get attribute '_unpickle_block' on <module 'pandas._libs.internals' from '/redser4/personal/andrew/src/grenepipe/example/.snakemake/conda/6fd3e3c20e70b66fb92639ab0919e7b2/lib/python3.7/site-packages/pandas/_libs/internals.cpython-37m-x86_64-linux-gnu.so'>
+[Thu Apr 28 15:56:00 2022]
+Error in rule trim_reads_pe:
+    jobid: 21
+    output: trimmed/S2-1.1.fastq.gz, trimmed/S2-1.2.fastq.gz, trimmed/S2-1.1.unpaired.fastq.gz, trimmed/S2-1.2.unpaired.fastq.gz
+    log: logs/trimmomatic/S2-1.log (check log file(s) for error message)
+    conda-env: /redser4/personal/andrew/src/grenepipe/example/.snakemake/conda/6fd3e3c20e70b66fb92639ab0919e7b2
+
+RuleException:
+CalledProcessError in line 50 of /redser4/personal/andrew/src/grenepipe/rules/trimming-trimmomatic.smk:
+Command 'source /home/asharo/miniconda3/bin/activate '/redser4/personal/andrew/src/grenepipe/example/.snakemake/conda/6fd3e3c20e70b66fb92639ab0919e7b2'; set -euo pipefail;  python /redser4/personal/andrew/src/grenepipe/example/.snakemake/scripts/tmpmpp3gy6n.wrapper.py' returned non-zero exit status 1.
+  File ""/redser4/personal/andrew/src/grenepipe/rules/trimming-trimmomatic.smk"", line 50, in __rule_trim_reads_pe
+  File ""/home/asharo/miniconda3/envs/snakemake2/lib/python3.9/concurrent/futures/thread.py"", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2022-04-28T154328.788125.snakemake.log
+
+
+
+As a note, this error appears to occur whether I use trimmomatic or not. Any thoughts on what might be causing this?",andrewSharo,https://github.com/moiexpositoalonsolab/grenepipe/issues/21
+I_kwDOD5fcUs5K0BQk,CondaMemoryError when creating conda envs in cluster,CLOSED,2022-06-01T06:53:35Z,2022-06-10T17:52:54Z,2022-06-10T10:52:13Z,"Hello,
+I would like to run the pipeline on the cluster of my university. I Installed the conda enviroment(grenepipe) with the yaml file. I am trying this step:
+snakemake \
+    --conda-frontend mamba \
+    --conda-prefix ~/conda-envs \
+    --profile profiles/slurm/ \
+    --directory /path/to/data
+
+However our cluster doesn't have mamba installed, so I skip the --conda-frontend. Snakemake started to work, but I keep receiving the error
+
+CreateCondaEnvironmentException:
+Could not create conda environment from xxx/grenepipe-master/rules/../envs/picard.yaml:
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... failed
+
+CondaMemoryError: The conda process ran out of memory. Increase system memory and/or try again.
+
+
+I tried many times, and I modified the cluster_config.yml file under /profiles/slurm. I changed the _default_ mem to up to xxxG, but it still failed quite fast (after several mins). And suggestions? 
+
+Our cluster does have guidelines on running snakemake on the cluster, with a script run.slurm. But I am a bit confused about how it should work with all the setting files grenepipe provided. Should I actually put the above snakemake commands into this run.slurm file and run it accordingly? In my previous trials, I just run this snakemake command on terminal.
+
+Thank you!
+
+Best,
+lc",orangelc1221,https://github.com/moiexpositoalonsolab/grenepipe/issues/22
+I_kwDOD5fcUs5Obqs8,Run snakemake on Cluster,CLOSED,2022-07-24T11:04:46Z,2022-08-19T16:32:38Z,2022-08-19T10:03:07Z,"Hello,
+
+I have been trying to run this pipeline on the cluster of my university. And in general, it works (sometimes) - I was able to go through it and got the final output - all.vcf.gz, although I needed to rerun it at some point, likely due to time limits on the variant calling step or so.
+
+However, there is one error that keeps popping out,
+
+Traceback (most recent call last):
+  File ""/net/cephfs/data/XXX/grenepipe-master/profiles/slurm/slurm-submit.py"", line 10, in <module>
+    from snakemake.utils import read_job_properties
+ModuleNotFoundError: No module named 'snakemake'
+
+I searched online a bit and I found this similar issue: https://stackoverflow.com/questions/59493422/snakemake-cluster-script-importerror-snakemake-utils
+
+As described, this issue seems to come and go randomly. However, I was not able to solve it based on the answers - since I am not sure where I should change the #PATH. Luckily in my successful trial, this error somehow disappeared at some point so I was able to finish the run. But now I am setting it to run with another dataset and starting to get this error again. Basically with such errors, seems no job was submitted to the cluster. In the output directory, there are two folders ""logs"" and ""contig-groups"" generated, both contain some empty files for the samples.
+
+Any suggestions? Do you think this is something I should rather figure out with my university cluster setting? I had a meeting with our IT already, but he couldn't tell much since he didn't really know the pipeline settings... But he offered to set up the pipeline on his env if needed :)
+
+Thank you very much!
+
+Best,
+lc",orangelc1221,https://github.com/moiexpositoalonsolab/grenepipe/issues/23
+I_kwDOD5fcUs5PuqXl,Conda installation error,CLOSED,2022-08-12T19:29:11Z,2022-08-15T18:09:01Z,2022-08-15T18:09:01Z,"(snakemake) samarth@ip-172-31-3-217:~/grenepipe$ mamba env create -f envs/grenepipe.yaml
+
+# >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+
+    Traceback (most recent call last):
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda/exceptions.py"", line 1082, in __call__
+        return func(*args, **kwargs)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/cli/main.py"", line 80, in do_call
+        exit_code = getattr(module, func_name)(args, parser)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/cli/main_create.py"", line 89, in execute
+        spec = specs.detect(name=name, filename=get_filename(args.file), directory=os.getcwd())
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/specs/__init__.py"", line 43, in detect
+        if spec.can_handle():
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/specs/yaml_file.py"", line 18, in can_handle
+        self._environment = env.from_file(self.filename)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/env.py"", line 166, in from_file
+        return from_yaml(yamlstr, filename=filename)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda_env/env.py"", line 143, in from_yaml
+        data = yaml_safe_load(yamlstr)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/conda/common/serialize.py"", line 67, in yaml_safe_load
+        return yaml.safe_load(string, version=""1.2"")
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/main.py"", line 980, in safe_load
+        return load(stream, SafeLoader, version)
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/main.py"", line 935, in load
+        return loader._constructor.get_single_data()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/constructor.py"", line 109, in get_single_data
+        node = self.composer.get_single_node()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/composer.py"", line 78, in get_single_node
+        document = self.compose_document()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/composer.py"", line 104, in compose_document
+        self.parser.get_event()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/parser.py"", line 163, in get_event
+        self.current_event = self.state()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/parser.py"", line 239, in parse_document_end
+        token = self.scanner.peek_token()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/scanner.py"", line 182, in peek_token
+        self.fetch_more_tokens()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/scanner.py"", line 282, in fetch_more_tokens
+        return self.fetch_value()
+      File ""/home/samarth/miniconda3/lib/python3.9/site-packages/ruamel_yaml/scanner.py"", line 651, in fetch_value
+        raise ScannerError(
+    ruamel_yaml.scanner.ScannerError: mapping values are not allowed here
+      in ""<unicode string>"", line 28, column 66:
+         ... le"" content=""{&quot;groups&quot;: [], &quot;environmentKey&quot; ... 
+                                             ^ (line: 28)
+
+`$ /home/samarth/miniconda3/condabin/mamba create -f envs/grenepipe.yaml`
+
+  environment variables:
+                 CIO_TEST=<not set>
+  CONDA_AUTO_UPDATE_CONDA=false
+        CONDA_DEFAULT_ENV=snakemake
+                CONDA_EXE=/home/samarth/miniconda3/bin/conda
+             CONDA_PREFIX=/home/samarth/miniconda3/envs/snakemake
+           CONDA_PREFIX_1=/home/samarth/miniconda3
+    CONDA_PROMPT_MODIFIER=(snakemake)
+         CONDA_PYTHON_EXE=/home/samarth/miniconda3/bin/python
+               CONDA_ROOT=/home/samarth/miniconda3
+              CONDA_SHLVL=2
+           CURL_CA_BUNDLE=<not set>
+                     PATH=/home/samarth/miniconda3/envs/snakemake/bin:/home/samarth/miniconda3/c
+                          ondabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/
+                          usr/games:/usr/local/games:/snap/bin
+       REQUESTS_CA_BUNDLE=<not set>
+            SSL_CERT_FILE=<not set>
+
+     active environment : snakemake
+    active env location : /home/samarth/miniconda3/envs/snakemake
+            shell level : 2
+       user config file : /home/samarth/.condarc
+ populated config files : 
+          conda version : 4.12.0
+    conda-build version : not installed
+         python version : 3.9.12.final.0
+       virtual packages : __linux=5.15.0=0
+                          __glibc=2.35=0
+                          __unix=0=0
+                          __archspec=1=x86_64
+       base environment : /home/samarth/miniconda3  (writable)
+      conda av data dir : /home/samarth/miniconda3/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /home/samarth/miniconda3/pkgs
+                          /home/samarth/.conda/pkgs
+       envs directories : /home/samarth/miniconda3/envs
+                          /home/samarth/.conda/envs
+               platform : linux-64
+             user-agent : conda/4.12.0 requests/2.28.1 CPython/3.9.12 Linux/5.15.0-1011-aws ubuntu/22.04 glibc/2.35
+                UID:GID : 1003:1003
+             netrc file : None
+           offline mode : False
+
+
+An unexpected error has occurred. Conda has prepared the above report.
+",Samarth-T-Setty,https://github.com/moiexpositoalonsolab/grenepipe/issues/24
+I_kwDOD5fcUs5RvdWS,Versions specified in conda env files and snakemake wrappers lead to conflicts/are not available,CLOSED,2022-09-13T12:42:50Z,2022-12-20T11:44:05Z,2022-12-17T19:52:22Z,"Hi, yesterday I wanted to try out the workflow but struggled to get everything installed. Before posting the issue I wanted to make sure, that I haven't overlooked anything obvious, but that doesn't seem to be the case.
+
+My grenepipe env has the following version numbers:
+```
+conda 4.14.0
+python 3.7.10
+snakemake 6.0.5
+Grenepipe 0.10.0-18ff70c
+```
+
+I set it up with the `grenepipe.yaml` file. I am running snakemake with the following command: 
+``` snakemake --cores all --directory example/ --use-conda --conda-frontend mamba```
+
+There seems to a problem across the local environment configurations which specify fixed version numbers of conda packages which partly have unavailable dependencies. Specifically, these are:
+- `bcftools.yaml`: removing the bcftools version fixed this (or updating it to the current 1.15.1)
+- `bwa.yaml`: `samtools ==1.12` requires some unavailable `htslib` version. Update to `samtools==1.15.1`
+- `gatk.yaml`: fixed by moving `conda-forge` as first channel
+- `multiqc.yaml`: `multiqc==1.10.1` is missing a dependency (`requests`), fix by adding `anaconda` as first channel
+- `picard.yaml`: fix by putting `conda-forge` in first channel
+
+Furthermore, the used snakemake wrappers seem to be using outdated versions:
+- samtools/stat: could be updated from 0.64.0 (samtools 1.10, missing htslib dependency) --> v1.12.0 (samtools 1.14)
+- samtools/flagstat: could be updated from 0.64.0 (samtools 1.10, missing htslib dependency) to v1.12.2 (samtools 1.14)
+- tabix (0.55.1) uses old htslib --> update to v1.12.2/bio/tabix/index (in 3 rule files)
+
+With the aboce fixes, the envs can successfully be installed. But the pipeline breaks with errors, which I have to investigate. These are probably caused by the breaking changes between dependency versions.
+
+Is grenepipe supposed to run out of the box as of _today_? If yes, could someone try out a fresh setup of grenepipe and see if it works on a different machine?
+
+Looking forward to hearing from someone :)
+",akriese,https://github.com/moiexpositoalonsolab/grenepipe/issues/25
+I_kwDOD5fcUs5TUIYu,config file error,CLOSED,2022-10-05T13:21:33Z,2022-11-16T02:00:21Z,2022-11-16T02:00:21Z,"Hi there,
+I was trying to use the most recent version of grenepipe since we had issues with getting all files processed previously. 
+I am now getting the following error
+""WorkflowError in line 28 of /cluster/home/bin/grenepipe-0.10.0/rules/common.smk:
+Config file is not valid JSON or YAML. In case of YAML, make sure to not mix whitespace and tab indentation.
+  File ""/cluster/home/bin/grenepipe-0.10.0/Snakefile"", line 7, in <module>
+  File ""/cluster/home/bin/grenepipe-0.10.0/rules/common.smk"", line 28, in <module>""
+
+Line 28 does not contain any intendation, not sure what the problem is....?
+Would be great if you could help out.
+best
+Barbara
+",BFeldmeyer,https://github.com/moiexpositoalonsolab/grenepipe/issues/26
+I_kwDOD5fcUs5V0Hx7,Error in mapping on cluster,CLOSED,2022-11-08T08:31:50Z,2023-01-24T04:41:27Z,2023-01-23T08:18:32Z,"Hello, 
+I'm trying to run the pipeline on a cluster but i keep getting an error on the job mapping.
+it seems that the error is related to the wrapper ""0.80.0/bio/bwa/mem"" in mapping-bwa-mem.smk
+i tried to upgrade the memory capacity in cluster_config.yaml but it didn't work.
+
+I am launching the pipeline with these options : 
+snakemake 
+--conda-frontend mamba 
+--conda-prefix ~/scratch/conda-envs 
+--profile profiles/slurm/ 
+--directory ../OutputGrenepipe
+
+The error message is the following :
+
+```
+ Traceback (most recent call last):
+  File ""/lustre/vaillanta/OutputGrenepipe/.snakemake/scripts/tmpm04ks8of.wrapper.py"", line 79, in <module>
+    "" | "" + pipe_cmd + "") {log}""
+  File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/shell.py"", line 231, in __new__
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'set -euo pipefail;  (bwa mem -t 12 -R '@RG\tID:ARP-28-c20_S343\tSM:ARP-28-c20_S343\tPL:-'  /lustre/vaillanta/grenepipe/TAIR10_chr_all.fa trimmed/ARP-28-c20_S343-1.1.fastq.gz trimmed/ARP-28-c20_S343-1.2.fastq.gz | samtools sort -T /tmp/tmpsdzuf3w8 -m 4G -o mapped/ARP-28-c20_S343-1.sorted.bam -)  2> logs/bwa-mem/ARP-28-c20_S343-1.log' returned non-zero exit status 1.
+[Mon Nov  7 19:10:21 2022]
+Error in rule map_reads:
+    jobid: 0
+    output: mapped/ARP-28-c20_S343-1.sorted.bam, mapped/ARP-28-c20_S343-1.sorted.done
+    log: logs/bwa-mem/ARP-28-c20_S343-1.log (check log file(s) for error message)
+    conda-env: /home/vaillanta/scratch/conda-envs/7141f65285b636cb7f62b59835a41269
+
+RuleException:
+CalledProcessError in line 58 of /lustre/vaillanta/grenepipe/rules/mapping-bwa-mem.smk:
+Command 'source /home/vaillanta/miniconda3/envs/grenepipe/bin/activate '/home/vaillanta/scratch/conda-envs/7141f65285b636cb7f62b59835a41269'; set -euo pipefail;  python /lustre/vaillanta/OutputGrenepipe/.snakemake/scripts/tmpm04ks8of.wrapper.py' returned non-zero exit status 1.
+  File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2293, in run_wrapper
+  File ""/lustre/vaillanta/grenepipe/rules/mapping-bwa-mem.smk"", line 58, in __rule_map_reads
+  File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+ File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/concurrent/futures/thread.py"", line 57, in run
+  File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/vaillanta/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2359, in run_wrapper
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=11817887.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
+```
+
+Thank you ! 
+
+",AxelVaillant,https://github.com/moiexpositoalonsolab/grenepipe/issues/27
+I_kwDOD5fcUs5Xg3p4,"bwa-mem2 ""{tmp}.0000.bam"": File exists",CLOSED,2022-11-29T15:11:59Z,2022-12-05T20:55:22Z,2022-12-05T19:33:08Z,"Hi, 
+I am running grenepipe (v0.10.0) via slurm and my map_reads jobs using bwa-mem2 result in the following error (from samtools):
+```
+[E::hts_open_format] Failed to open file ""{tmp}.0000.bam"" : File exists
+samtools sort: failed to create temporary file ""{tmp}.0000.bam"": File exists
+```
+I suspect this is because different jobs write temporary bam files with the same names to the output base directory. Any suggestion for a fix ? 
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/28
+I_kwDOD5fcUs5YZPkG,threads for bwa-mem2 via slurm,CLOSED,2022-12-07T22:40:20Z,2022-12-08T07:15:02Z,2022-12-08T01:07:08Z,"Hi Lucas, 
+I am running the pipeline via slurm and using bwa-mem2 for mapping. In the `config.yaml` file, have kept the default 
+```
+bwamem2:
+    threads: 12
+```
+Accordingly, the snakemake log shows `threads: 12` for mapping jobs and slurm jobs are submitted requesting 12 cores. However, progress is slower than expected and when logging into a compute node and running `htop` there seem to be only 4 bwa-mem2 processes running. These are shown as `bwa-mem2 mem -t {snakemake.threads}..... `. Are the number of threads perhaps not correctly transmitted to the bwa-mem2 call? 
+
+Note that when specifying bwa-mem as mapping tool, things work as expected (i.e. 12 processes running on the compute node). 
+
+Thanks ",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/29
+I_kwDOD5fcUs5ZajqF,Error running toy example,CLOSED,2022-12-16T12:31:17Z,2023-04-27T21:44:03Z,2023-04-27T21:44:02Z,"Hi!
+
+I'm trying to set up and run grenepipe but I'm running into some troubles when I play with the toy example. Please see below the screenshot of the error:
+
+<img width=""662"" alt=""image"" src=""https://user-images.githubusercontent.com/66737212/208097899-cf5f3d48-bb8e-4520-9cf2-015f8385b852.png"">
+
+As I am fairly new to all of this, I apologize in advance if this is just caused by something small I am missing, and appreciate all the help you can provide.
+
+Best,
+Célia
+
+",celianeto,https://github.com/moiexpositoalonsolab/grenepipe/issues/30
+I_kwDOD5fcUs5i4ZGr,MissingRuleException,CLOSED,2023-04-07T15:52:30Z,2023-09-19T19:13:54Z,2023-09-19T19:13:54Z,"Hello Lucas, 
+
+I am a bioinformatics beginner so I apologize in advance if my question is a trivial one: 
+I am getting this error message once I try to run the pipeline: 
+
+Building DAG of jobs...
+MissingRuleException:
+No rule to produce example (if you use input functions make sure that they don't raise unexpected exceptions).
+
+What does this mean exactly and how can I possibly fix it?
+
+Thank you!
+Mariano ",mrese001,https://github.com/moiexpositoalonsolab/grenepipe/issues/31
+I_kwDOD5fcUs5l0Coj,PID error,CLOSED,2023-05-12T20:01:26Z,2023-05-23T21:00:38Z,2023-05-23T20:58:03Z,"Hi Lucas,
+ 
+Tl;dr: What is a PID, and how can I amend my slurm profile to fix it?
+--------------------------------------------------------------------------------------
+To begin, Thank you for your “troubleshooting” page on the grenepipe wiki, as it helped me identify a specific error that was happening across all my samples.
+ 
+The error is regarding PID, which (after a lot of google searches) means that the process ID is off, and it is occurring during my paired end read trimming step. Here is the error I got from the slurm log:
+ 
+![image](https://github.com/moiexpositoalonsolab/grenepipe/assets/69033117/80717b02-e619-4d9b-953f-d9f014b1d311)
+
+ 
+And here is the rule for trim_reads_pe for reference:
+![image](https://github.com/moiexpositoalonsolab/grenepipe/assets/69033117/ece9c22c-a421-4750-883f-0fd8d6d77d1a)
+
+ 
+*Problem Solving/Troubleshooting Attempt:*
+ 
+After trying to understand the problem, I came to the conclusion that the problem may be with the slurm profile, as snakemake may have some sort of issue working with Stanford’s Server: Sherlock. Sherlock does in fact use slurm, and so I am convinced that I would need to amend grenepipe's provided slurm profile so that it can run properly. However, after doing some digging in grenepipe's slurm profile, including these these three files below, grenepipe does not have any instances where it describes a Process ID.
+* slurm-status.py (This is the one that I think has the issue!!)
+* slurm-jobscript.sh
+* slurm-submit.py
+ 
+Additionally, I do not think it is in slurm_utilis.py because it seems that file was meant not to be amended, so my gut tells me to leave that one alone.
+ 
+Overall, my question for you is “What is a PID, and how can I amend my slurm profile to fix this bug?”
+ 
+My best educated guess to resolve this is to input a code in one of those files that says
+                if PID == “not found”:
+                                PID = pid
+ 
+What do you think?
+Do you have any thought’s as if I’m heading in the right direction?
+ 
+Thank you!
+Kaiku Kaholoa'a",Kkaholoaa,https://github.com/moiexpositoalonsolab/grenepipe/issues/32
+I_kwDOD5fcUs5qfel-,java.lang.OutOfMemoryError: Java heap space,CLOSED,2023-07-03T18:29:34Z,2023-07-04T15:04:03Z,2023-07-04T15:04:03Z,"Hi Lucas,
+
+I am running grenepipe v0.12.0 via slurm and run into an error with rule `mark_duplicates` on some of my samples. Based on the picard logfile, it looks like the deduplication process finishes, but also throws an Out of Memory error. See tail of logfile, below:
+
+```
+INFO    2023-07-01 16:37:12     MarkDuplicates  Read   498,000,000 records.  Elapsed time: 01:04:09s.  Time for last 1,000,000:   62s.  Last read position: NC_044378.1:3,429,197
+INFO    2023-07-01 16:37:12     MarkDuplicates  Tracking 10747258 as yet unmatched pairs. 5068892 records in RAM.
+[Sat Jul 01 16:45:52 CEST 2023] picard.sam.markduplicates.MarkDuplicates done. Elapsed time: 72.83 minutes.
+Runtime.totalMemory()=2075918336
+To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+Exception in thread ""main"" java.lang.OutOfMemoryError: Java heap space
+        at htsjdk.samtools.util.BlockCompressedInputStream.inflateBlock(BlockCompressedInputStream.java:548)
+        at htsjdk.samtools.util.BlockCompressedInputStream.processNextBlock(BlockCompressedInputStream.java:532)
+        at htsjdk.samtools.util.BlockCompressedInputStream.nextBlock(BlockCompressedInputStream.java:468)
+        at htsjdk.samtools.util.BlockCompressedInputStream.readBlock(BlockCompressedInputStream.java:458)
+        at htsjdk.samtools.util.BlockCompressedInputStream.available(BlockCompressedInputStream.java:196)
+        at htsjdk.samtools.util.BlockCompressedInputStream.read(BlockCompressedInputStream.java:331)
+        at java.base/java.io.DataInputStream.read(DataInputStream.java:151)
+        at htsjdk.samtools.util.BinaryCodec.readBytesOrFewer(BinaryCodec.java:421)
+        at htsjdk.samtools.util.BinaryCodec.readBytes(BinaryCodec.java:394)
+        at htsjdk.samtools.util.BinaryCodec.readByteBuffer(BinaryCodec.java:507)
+        at htsjdk.samtools.util.BinaryCodec.readInt(BinaryCodec.java:518)
+        at htsjdk.samtools.BAMRecordCodec.decode(BAMRecordCodec.java:261)
+        at htsjdk.samtools.BAMFileReader$BAMFileIterator.getNextRecord(BAMFileReader.java:880)
+        at htsjdk.samtools.BAMFileReader$BAMFileIterator.advance(BAMFileReader.java:854)
+        at htsjdk.samtools.BAMFileReader$BAMFileIterator.next(BAMFileReader.java:848)
+        at htsjdk.samtools.BAMFileReader$BAMFileIterator.next(BAMFileReader.java:816)
+        at htsjdk.samtools.SamReader$AssertingIterator.next(SamReader.java:591)
+        at htsjdk.samtools.SamReader$AssertingIterator.next(SamReader.java:570)
+        at picard.sam.markduplicates.MarkDuplicates.buildSortedReadEndLists(MarkDuplicates.java:536)
+        at picard.sam.markduplicates.MarkDuplicates.doWork(MarkDuplicates.java:270)
+        at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:308)
+        at picard.cmdline.PicardCommandLine.instanceMain(PicardCommandLine.java:103)
+        at picard.cmdline.PicardCommandLine.main(PicardCommandLine.java:113)
+```
+I tried increasing the allocated memory via profile/slurm.yaml but this did not help. In any case, the slurm job did not throw a memory error so I am guessing the issue lies with the java process not having not enough allocated memory. However, i could not find a way to increase allocated memory for java. 
+
+Do you have an idea what may be going wrong and how I might solve this issue? 
+
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/33
+I_kwDOD5fcUs5rgeB2,GRENEPIPE v12.1,CLOSED,2023-07-13T19:53:39Z,2023-09-19T15:53:20Z,2023-09-19T15:53:19Z,"Hi Lucas!
+
+In an effort to troubleshoot as much as I can with Grenepipe I downloaded the latest version on a coworker's directory and am attempting to run a citrus genome through it. When I do, the errors seem to reference MarkDuplicates-java-opts. I read previous issues regarding this and attempted to apply a condition "" -Xmx10g"" and even scaled up to 40g but with no luck. Any advice on this? 
+
+Here is the Error output: 
+Full Traceback (most recent call last):
+  File ""/rhome/rpisc002/.conda/envs/grenepipe/lib/python3.7/site-packages/snakemake/__init__.py"", line 593, in snakemake
+    snakefile, overwrite_first_rule=True, print_compilation=print_compilation
+  File ""/rhome/rpisc002/.conda/envs/grenepipe/lib/python3.7/site-packages/snakemake/workflow.py"", line 1114, in include
+    exec(compile(code, snakefile, ""exec""), self.globals)
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/Snakefile"", line 67, in <module>
+  File ""/rhome/rpisc002/.conda/envs/grenepipe/lib/python3.7/site-packages/snakemake/workflow.py"", line 1114, in include
+    exec(compile(code, snakefile, ""exec""), self.globals)
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/rules/mapping.smk"", line 266, in <module>
+    if config[""settings""][""clip-read-overlaps""]:
+  File ""/rhome/rpisc002/.conda/envs/grenepipe/lib/python3.7/site-packages/snakemake/workflow.py"", line 1114, in include
+    exec(compile(code, snakefile, ""exec""), self.globals)
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/rules/duplicates-picard.smk"", line 44, in <module>
+    wrapper:
+KeyError: 'MarkDuplicates-java-opts'
+
+KeyError in line 35 of /bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/rules/duplicates-picard.smk:
+'MarkDuplicates-java-opts'
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/Snakefile"", line 57, in <module>
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/rules/mapping.smk"", line 211, in <module>
+  File ""/bigdata/koeniglab/rpisc002/GRENEPIPE/grenepipeWD/rules/duplicates-picard.smk"", line 35, in <module>
+",mrese001,https://github.com/moiexpositoalonsolab/grenepipe/issues/34
+I_kwDOD5fcUs505ckR,"Make ""trimming-tool"" optional",CLOSED,2023-10-25T11:53:58Z,2024-07-15T23:07:31Z,2024-07-15T23:07:31Z,"Hello,
+I had a first look to grenepipe and first, thanks for a handy tool.
+Would it be possible to make the ""trimming-tool"" step optional please ? Currently, valid values are: ""adapterremoval"", ""cutadapt"", ""fastp"", ""seqprep"", ""skewer"", ""trimmomatic"". But there are cases where you already have manually demultiplexed, removed adapters and trimmed the reads. So, the prepared fastq files could directly be used for mapping.
+Thanks.
+
+Cheers,
+Coolkom.",coolkom,https://github.com/moiexpositoalonsolab/grenepipe/issues/35
+I_kwDOD5fcUs54PCbH,restrict-regions and short contigs,OPEN,2023-11-29T18:47:25Z,2024-09-24T11:28:34Z,,"Hi Lucas, 
+
+I wish to call specific sites and have found that using the `restrict-regions` option to indicate a intervals.bed file specifying those sites works for this purpose (in combination with `HaplotypeCaller-extra: ""--output-mode EMIT_ALL_CONFIDENT_SITES""`). 
+
+However, my reference genome includes some very small contigs and in order to avoid overwhelmingly many jobs, I have previously been using the `contig-group-size` option. This is unfortunately not yet possible in combination with 'restrict-regions`.  
+
+Is there a way to specify these sites without generating overwhelmingly many jobs? Perhaps by adding a single job making empty vcf files for contigs that do not occur in the intervals.bed file?
+
+But of course, ensuring compatibility between both `contig-group-size` and `restrict-regions` would be ideal... 
+
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/36
+I_kwDOD5fcUs55JqZc,ModuleNotFoundError: No module named 'chardet',CLOSED,2023-12-08T12:30:35Z,2023-12-27T19:24:46Z,2023-12-27T19:24:46Z,"Hi, 
+FYI after (re-)installing grenepipe I received the error below:
+```
+Creating conda environment /grenepipe-0.12.2/rules/../envs/bcftools.yaml...
+Downloading and installing remote packages.
+CreateCondaEnvironmentException:
+Could not create conda environment from /grenepipe-0.12.2/rules/../envs/bcftools.yaml:
+Traceback (most recent call last):
+  File ""grenepipe/lib/python3.7/site-packages/requests/compat.py"", line 11, in <module>
+    import chardet
+ModuleNotFoundError: No module named 'chardet'
+```
+This was resolved after running `conda install -c anaconda chardet` from within the grenepipe environment. This may be an issue specific to my system (in which case it can be ignored) but else it may be something to add in the install scripts. ",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/37
+I_kwDOD5fcUs56teoY,Write full executed command for each step to log files for reproducibility,CLOSED,2023-12-28T19:05:28Z,2023-12-28T19:18:23Z,2023-12-28T19:17:07Z,"Perhaps this already exists and I haven't found it yet, but it would be really helpful for tuning and debugging a pipeline if we could see the individual commands at each step. 
+
+For example, all of the log/mpileup/*.log files are empty, which i guess means there was no output from the command, but ideally this should contain the command executed too.
+
+Thanks!",uzbit,https://github.com/moiexpositoalonsolab/grenepipe/issues/38
+I_kwDOD5fcUs57zCMm,merging calls from multiple pipeline runs?,CLOSED,2024-01-11T15:33:36Z,2024-01-12T07:52:38Z,2024-01-12T07:52:38Z,"Hi Lucas, 
+
+Me and my colleagues and students are avid users of the grenepipe pipeline as it offers great flexibility. Meanwhile, we have various directories from which the pipeline was run, and we would now like to run a larger, combined analysis. Is there a way to merge, e.g., the `called` directories from different runs and perform the final (genotyping and filtering) rules on the combined set?  
+
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/39
+I_kwDOD5fcUs59CCEj,mamba is difficult to install in grenepipe environment,CLOSED,2024-01-24T08:11:51Z,2024-07-16T15:22:35Z,2024-05-23T18:50:26Z,"(grenepipe) [sysu_mhwang_1@sy3ubuntu1804-23101937-698d4864d-99fwt envs]$conda install mamba
+Collecting package metadata (current_repodata.json): done
+Solving environment: failed with initial frozen solve. Retrying with flexible solve.
+Solving environment: failed with repodata from current_repodata.json, will retry with next repodata source.
+Collecting package metadata (repodata.json): / 
+Software installation would be too slow without mamba.I noticed that the yaml files in the envs folder don't have names, can I write a name for each yaml file and then install each virtual environment separately in the mamba environment",wangshuangyi,https://github.com/moiexpositoalonsolab/grenepipe/issues/40
+I_kwDOD5fcUs6AQd6h,Feature Request: Download reference genome and known variation,CLOSED,2024-02-23T21:07:30Z,2024-07-15T23:08:43Z,2024-07-15T23:08:42Z,"Hello,
+
+I've been looking around at published complete variant calling pipelines, and grenepipe seems both high quality and very flexible.
+
+It would be nice if there were the option to have grenepipe download reference genomes and known variation based on config, if one wanted complete reproducibility about which specific build was used for an analysis. The older, unmaintained https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling did this and we could basically lift their implementation if you're up for it.
+
+Theirs looks like this:
+https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling/blob/main/config/config.yaml
+https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling/blob/main/workflow/rules/ref.smk
+
+I'd be glad to be the one to implement this if you are interested in it.",pettyalex,https://github.com/moiexpositoalonsolab/grenepipe/issues/41
+I_kwDOD5fcUs6BJRQh,config file,CLOSED,2024-03-04T12:08:21Z,2024-03-22T11:06:03Z,2024-03-22T11:05:18Z,"
+I am trying to run grenepipe for the first time. 
+
+I run the following command from the directory where grenepipe is installed:
+
+(grenepipe) dau1@frey:~/software/grenepipe-0.12.2$ snakemake -nq  --cores  60  --use-conda --directory /mnt/data1/Project_KeePace/Operational/4_data_analysis/5_grenepipe/run1/  --conda-prefix /home/dau1/software/conda-envs/
+
+but I get this error message:
+
+WorkflowError in line 28 of /home/dau1/software/grenepipe-0.12.2/rules/common.smk:
+Config file is not valid JSON or YAML. In case of YAML, make sure to not mix whitespace and tab indentation.
+  File ""/home/dau1/software/grenepipe-0.12.2/Snakefile"", line 7, in <module>
+  File ""/home/dau1/software/grenepipe-0.12.2/rules/common.smk"", line 28, in <module>
+
+
+
+inside run1 directory I have the config.yaml and samples.tsv (generated with generate-table.py)
+
+The config file is a minimal modification of the template file edited with sublime in linux/ubuntu.
+
+Any suggestion?  
+
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/42
+I_kwDOD5fcUs6DQ9U7,greenepipe run error,CLOSED,2024-03-22T11:13:32Z,2024-04-08T15:51:21Z,2024-04-08T15:51:21Z,"I run  a test dataset with 10 WGR samples and everything went fine.
+
+After I run a dataset with 4 poolseq samples each with 4 files.
+
+Run went smoothly  but then I got this error message:
+any suggestion of what can be causing this problem?
+
+```
+ [Wed Mar 20 21:13:26 2024]
+Error in rule mark_duplicates:
+    jobid: 56
+    output: dedup/PN1.bam, qc/dedup/PN1.metrics.txt, dedup/PN1.done
+    log: logs/picard/dedup/PN1.log (check log file(s) for error message)
+    conda-env: /home/dau1/software/conda-envs/287e3d61d4ee335d97bc039a6f3b8820
+
+RuleException:
+CalledProcessError in line 45 of /home/dau1/software/grenepipe-0.12.2/rules/duplicates-picard.smk:
+Command 'source /home/dau1/miniconda3/envs/grenepipe/bin/activate '/home/dau1/software/conda-envs/287e3d61d4ee335d97bc039a6f3b8820'; set -euo pipefail;  python /mnt/data1/Project_QRO_Poolseq/Operational/4_data_analysis/5_grenepipe/run1/.snakemake/scripts/tmpuih01ava.wrapper.py' returned non-zero exit status 1.
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2293, in run_wrapper
+  File ""/home/dau1/software/grenepipe-0.12.2/rules/duplicates-picard.smk"", line 45, in __rule_mark_duplicates
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/concurrent/futures/thread.py"", line 57, in run
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2359, in run_wrapper
+
+
+Traceback (most recent call last):
+  File ""/mnt/data1/Project_QRO_Poolseq/Operational/4_data_analysis/5_grenepipe/run1/.snakemake/scripts/tmpi5vnpg2i.wrapper.py"", line 16, in <module>
+    ""picard MarkDuplicates {snakemake.params} INPUT={snakemake.input} ""
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/shell.py"", line 231, in __new__
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'set -euo pipefail; picard MarkDuplicates  REMOVE_DUPLICATES=true INPUT=mapped/PN2.merged.bam OUTPUT=dedup/PN2.bam METRICS_FILE=qc/dedup/PN2.metrics.txt  > logs/picard/dedup/PN2.log 2>&1' returned non-zero exit status 1. 
+```
+
+[2024-03-19T122620.330658.snakemake.log](https://github.com/moiexpositoalonsolab/grenepipe/files/14721748/2024-03-19T122620.330658.snakemake.log)
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/43
+I_kwDOD5fcUs6D4ewR,problem with dedup,CLOSED,2024-03-28T08:18:48Z,2024-04-11T14:01:22Z,2024-04-11T14:01:22Z,"Hi Lucas
+
+I after the problem with picard I tried the dedup instead  in a poolseq data.  I attached  the log file
+
+[2024-03-25T144328.892651.snakemake.log](https://github.com/moiexpositoalonsolab/grenepipe/files/14786042/2024-03-25T144328.892651.snakemake.log)
+
+
+I got this error message: 
+
+Error in rule sort_reads_dedup:
+    jobid: 56
+    output: dedup/PN1.bam, dedup/PN1.done
+    log: logs/samtools/sort/PN1-dedup.log (check log file(s) for error message)
+    conda-env: /home/dau1/software/conda-envs/461c39411718053aed08d5885bf47783
+
+RuleException:
+CalledProcessError in line 76 of /home/dau1/software/grenepipe-0.12.2/rules/duplicates-dedup.smk:
+Command 'source /home/dau1/miniconda3/envs/grenepipe/bin/activate '/home/dau1/software/conda-envs/461c39411718053aed08d5885bf47783'; set -euo pipefail;  /home/dau1/miniconda3/envs/grenepipe/bin/python3.7 /mnt/data1/Project_QRO_Poolseq/Operational/4_data_analysis/5_grenepipe/run2/.snakemake/scripts/tmpqov0n9y3.wrapper.py' returned non-zero exit status 1.
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2347, in run_wrapper
+  File ""/home/dau1/software/grenepipe-0.12.2/rules/duplicates-dedup.smk"", line 76, in __rule_sort_reads_dedup
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 568, in _callback
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/concurrent/futures/thread.py"", line 57, in run
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 554, in cached_or_run
+  File ""/home/dau1/miniconda3/envs/grenepipe/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 2359, in run_wrapper
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/44
+I_kwDOD5fcUs6FYbww,a new type of error,CLOSED,2024-04-11T13:49:31Z,2024-04-11T14:37:58Z,2024-04-11T14:37:58Z,,ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/45
+I_kwDOD5fcUs6FYcOF,a new type of error,CLOSED,2024-04-11T13:50:24Z,2024-04-11T13:59:36Z,2024-04-11T13:59:36Z,"Hi 
+
+Runs with samples from single individuals seems to be fine. But Runs of poolseq data run into a crash.
+
+terminal close by himself.
+
+This is my config part for freebayes
+
+```
+  # ----------------------------------------------------------------------
+  #     freebayes
+  # ----------------------------------------------------------------------
+
+  # Used only if settings:calling-tool == freebayes
+  # See https://github.com/freebayes/freebayes
+  freebayes:
+
+    # Extra parameters for freebayes.
+    extra: ""-p 40 --use-best-n-alleles 4 --pooled-discrete""
+
+    # Settings for parallelization
+    threads: 120
+    compress-threads: 2
+    chunksize: 100000
+```
+
+I attached the log file 
+
+
+
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/46
+I_kwDOD5fcUs6FYwUT,another type of error,CLOSED,2024-04-11T14:24:33Z,2024-07-15T23:10:59Z,2024-07-15T23:10:59Z,"Hi 
+
+After editing the reference genome file, as you suggested,  it worked for individual sample files but there is still a problem with PoolSeq data . It crashed and the terminal closed by himself.  The problem seems to be during the snpcalling
+
+
+This is my config part for freebayes
+
+```
+  # ----------------------------------------------------------------------
+  #     freebayes
+  # ----------------------------------------------------------------------
+
+  # Used only if settings:calling-tool == freebayes
+  # See https://github.com/freebayes/freebayes
+  freebayes:
+
+    # Extra parameters for freebayes.
+    extra: ""-p 40 --use-best-n-alleles 4 --pooled-discrete""
+
+    # Settings for parallelization
+    threads: 120
+    compress-threads: 2
+    chunksize: 100000
+```
+
+I attached the log file 
+
+[2024-04-09T151509.566084.snakemake.log](https://github.com/moiexpositoalonsolab/grenepipe/files/14947367/2024-04-09T151509.566084.snakemake.log)
+
+and the two log files that seems to be relevant
+
+log: logs/freebayes/JAVFWQ010000033.1.log
+
+[JAVFWQ010000033.1.log](https://github.com/moiexpositoalonsolab/grenepipe/files/14947385/JAVFWQ010000033.1.log)
+
+log: logs/freebayes/chromosome_1.log
+
+[chromosome_1.log](https://github.com/moiexpositoalonsolab/grenepipe/files/14947397/chromosome_1.log)
+
+thank you again
+osp
+
+
+
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/47
+I_kwDOD5fcUs6PvxeZ,permission denied error,CLOSED,2024-07-16T17:15:22Z,2024-07-17T10:11:57Z,2024-07-17T10:11:56Z,"Hello, sorry in advance, since I do not know how to format requests here.
+I'm trying to run grenepipe as per guide on our cluster, and so far it always shuts down like this:
+
+Job failed, going on with independent jobs.
+[Tue Jul 16 19:10:18 2024]
+
+group job qc (jobs in lexicogr. order):
+
+    [Tue Jul 16 19:10:18 2024]
+    rule fastqc:
+        input: /gpfs/bwfor/home/fr/fr_fr/fr_yf1009/GenoDat/P2021159DFGB5_1/DE40NGSUKBD139802_2.fq.gz
+        output: qc/fastqc/D-1-R2_fastqc.html, qc/fastqc/D-1-R2_fastqc.zip
+        log: logs/fastqc/D-1-R2.log
+        jobid: 18
+        benchmark: benchmarks/fastqc/D-1-R2.bench.log
+        wildcards: sample=D, unit=1, id=R2
+
+/bin/sh: /gpfs/bwfor/home/fr/fr_fr/fr_yf1009/software/grenepipe/profiles/slurm/slurm-submit.py: Permission denied
+Error submitting jobscript (exit code 126):
+
+This then repeats a couple of times, always ending with the Permission denied warning. What Permission is denied though, and how can I address this?
+Do you have any idea what even is going on here?
+Thanks in advance, and please tell me what Information I can add to facilitate the progress.
+Best regards
+Yannick",Leovar101,https://github.com/moiexpositoalonsolab/grenepipe/issues/48
+I_kwDOD5fcUs6P26W-,not sure what the issue is,CLOSED,2024-07-17T12:46:36Z,2024-09-24T13:27:04Z,2024-09-24T11:27:26Z,"Hei it's Yannick again. 
+As recommended, I started from stratch with the new release and installed micromamba and the newest version of snakemake alongside it.
+When trying to do a test run, I immediately am greeted by this:
+
+```
+Building DAG of jobs...
+/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/dag.py:1612: RuntimeWarning: coroutine 'DAG.sanitize_local_storage_copies' was never awaited
+  self.sanitize_local_storage_copies()
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+/usr/bin/bash: conda: command not found
+Traceback (most recent call last):
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/cli.py"", line 2103, in args_to_api
+    dag_api.execute_workflow(
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/api.py"", line 594, in execute_workflow
+    workflow.execute(
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/workflow.py"", line 1122, in execute
+    self.dag.create_conda_envs()
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/dag.py"", line 452, in create_conda_envs
+    env.create(self.workflow.dryrun)
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/deployment/conda.py"", line 392, in create
+    pin_file = self.pin_file
+               ^^^^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake_interface_common/utils.py"", line 33, in __get__
+    value = self.method(instance)
+            ^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/deployment/conda.py"", line 102, in pin_file
+    f"".{self.conda.platform}.pin.txt""
+        ^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake_interface_common/utils.py"", line 33, in __get__
+    value = self.method(instance)
+            ^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/deployment/conda.py"", line 95, in conda
+    return Conda(
+           ^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/deployment/conda.py"", line 654, in __init__
+    shell.check_output(self._get_cmd(""conda info --json""), text=True)
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/site-packages/snakemake/shell.py"", line 64, in check_output
+    return sp.check_output(cmd, shell=True, executable=executable, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/subprocess.py"", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File ""/gpfs/bwfor/home/fr/fr_fr/fr_yf1009/micromamba/envs/snakemake/lib/python3.12/subprocess.py"", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+
+subprocess.CalledProcessError: Command 'conda info --json' returned non-zero exit status 127.
+```
+
+What exactly is happening here? I'll attach the logfile in case that helps. 
+[2024-07-17T143629.772838.snakemake.log](https://github.com/user-attachments/files/16265773/2024-07-17T143629.772838.snakemake.log)
+
+Sorry if this turns out to be a minor issue.
+Best regards
+Yannick",Leovar101,https://github.com/moiexpositoalonsolab/grenepipe/issues/49
+I_kwDOD5fcUs6QJdL7,--rerun-incomplete flag repeat mapping step for all samples,CLOSED,2024-07-19T08:51:09Z,2024-07-30T13:53:52Z,2024-07-30T09:53:53Z,"Hi! 
+
+I have been using grenepipe v0.12.2 for calling variants in 93 samples, and I had instances where merging paired bams step for one sample failed somehow in the middle of the run and everything else continues until 97% of all jobs (until qc after variant calling) done, except for that one sample. Then, I thought if I run again with the --rerun-incomplete flag in the snakemake command, it would repeat only for that sample, but grenepipe would repeat everything from the mapping step for all samples again. Do you have any suggestion for me if this happens again? I imagine my cluster administrator might not be happy with me using large resources repeatedly. 
+
+I attached for you my current snakemake-log, slurm-submission and slurm-debug log files, as well as the previous snakemake run log file (that ran until 97%). Any help would be appreciated! Many thanks!
+
+[2024-07-16T115815.581017.snakemake.log](https://github.com/user-attachments/files/16309703/2024-07-16T115815.581017.snakemake.log)
+[2024-07-19T103454.572601.snakemake.log](https://github.com/user-attachments/files/16309704/2024-07-19T103454.572601.snakemake.log)
+[slurm-debug.log](https://github.com/user-attachments/files/16309705/slurm-debug.log)
+[slurm-submissions.log](https://github.com/user-attachments/files/16309706/slurm-submissions.log)
+
+Best, 
+Rifa",athenasyarifa,https://github.com/moiexpositoalonsolab/grenepipe/issues/50
+I_kwDOD5fcUs6RpAC-,SLURM cluster_config not recognized ,CLOSED,2024-08-01T21:06:54Z,2024-12-10T01:11:54Z,2024-12-10T01:11:54Z,"Hi, 
+
+I am trying to run grenepipe with SLURM. When I use the v0.13.1 release with a new install of micromamba, I get this error: 
+
+```
+No SLURM account given, trying to guess.
+Guessed SLURM account: xxx
+No wall time information given. This might or might not work on your cluster. If not, specify the resource runtime in your rule or as a reasonable default via --default-resources.
+No job memory information ('mem_mb' or 'mem_mb_per_cpu') is given - submitting without. This might or might not work on your cluster.
+....
+WorkflowError:
+SLURM job submission failed. The error message was sbatch: error: Batch job submission failed: Time limit specification required, but not provided
+```
+
+I think this issue can be fixed with updating the `workflow/profiles/slurm/config.yaml` file. When I add the following lines to the `workflow/profiles/slurm/config.yaml` file, my job can start.
+
+```
+default-resources:
+    slurm_partition: ""xxx""
+    slurm_account:   ""yyy""
+    runtime: 60
+```
+
+However, when I add these lines to `cluster_config.yaml`, snakemake can't recognize it and have the same error. I think the `cluster_config.yaml` file might be discontinued? 
+
+By the way, other variables (e.g. `time` needs to become `runtime`, details [here](https://github.com/snakemake/snakemake-executor-plugin-slurm/blob/main/docs/further.md)) might have to be updated as well. 
+
+Best,
+M",meixilin,https://github.com/moiexpositoalonsolab/grenepipe/issues/51
+I_kwDOD5fcUs6UqNRo,Workflow fails with contig-group-size != 0,CLOSED,2024-08-29T10:47:24Z,2024-11-27T13:04:53Z,2024-11-27T13:04:52Z,"Issue by @meixilin, moved here from https://github.com/moiexpositoalonsolab/grenepipe/issues/36#issuecomment-2270384816
+
+Hi, 
+
+I have an issue that might be relevant to this thread. I have noticed that when I set `contig-group-size: 0`, the pipeline runs fine (with a lot of jobs though given the amount of contigs). 
+
+```
+job                                      count
+-------------------------------------  -------
+all                                          1
+all_bams                                     1
+all_pileups                                  1
+bam_index                                    1
+call_variants                              280
+combine_calls                              280
+dedup_reports_collect                        1
+gatk_hard_filter_calls                       2
+genotype_variants                          280
+merge_calls                                  1
+merge_variants                               1
+mpileup_all_samples                          1
+multiqc                                      1
+picard_collectmultiplemetrics                1
+picard_collectmultiplemetrics_collect        1
+qualimap_collect                             1
+qualimap_sample                              1
+samtools_flagstat                            1
+samtools_flagstat_collect                    1
+samtools_stats                               1
+samtools_stats_collect                       1
+select_calls                                 2
+total                                      861
+```
+
+However, when I set a `contig-group-size: 34000000`, the `calling/contig-groups` folders get created just fine, but there are no more `call_variants` jobs created, in addition, the pipeline fails at the `bam_index`job this time.
+
+```
+job                                      count
+-------------------------------------  -------
+all                                          1
+all_bams                                     1
+all_pileups                                  1
+contig_groups                                1
+dedup_reports_collect                        1
+fastqc                                       2
+fastqc_collect                               1
+gatk_hard_filter_calls                       2
+map_reads                                    1
+mark_duplicates                              1
+merge_calls                                  1
+merge_sample_unit_bams                       1
+merge_variants                               1
+mpileup_all_sample_names                     1
+mpileup_all_samples                          1
+multiqc                                      1
+picard_collectmultiplemetrics                1
+picard_collectmultiplemetrics_collect        1
+qualimap_collect                             1
+qualimap_sample                              1
+samtools_flagstat                            1
+samtools_flagstat_collect                    1
+samtools_stats                               1
+samtools_stats_collect                       1
+select_calls                                 2
+trim_reads_pe                                1
+trimming_reports_collect                     1
+trimmomatic_multiqc_log                      1
+total                                       31
+```
+
+The error message is:  
+
+```
+Full Traceback (most recent call last):
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/cli.py"", line 2103, in args_to_api
+    dag_api.execute_workflow(
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/api.py"", line 594, in execute_workflow
+    workflow.execute(
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/workflow.py"", line 1248, in execute
+    raise e
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/workflow.py"", line 1244, in execute
+    success = self.scheduler.schedule()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/scheduler.py"", line 198, in schedule
+    self._finish_jobs()
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/scheduler.py"", line 388, in _finish_jobs
+    async_run(postprocess())
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/common/__init__.py"", line 94, in async_run
+    return asyncio.run(coroutine)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/asyncio/runners.py"", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/asyncio/runners.py"", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/asyncio/base_events.py"", line 664, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/scheduler.py"", line 383, in postprocess
+    await self.workflow.dag.finish(
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/dag.py"", line 1879, in finish
+    potential_new_ready_jobs = self.update_ready(depending)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""micromamba/envs/grenepipe/lib/python3.12/site-packages/snakemake/dag.py"", line 1578, in update_ready
+    group = self._group[job]
+            ~~~~~~~~~~~^^^^^
+KeyError: bam_index
+```
+
+Any thoughts would be greatly appreciated!
+
+_Originally posted by @meixilin in https://github.com/moiexpositoalonsolab/grenepipe/issues/36#issuecomment-2270384816_
+            ",lczech,https://github.com/moiexpositoalonsolab/grenepipe/issues/52
+I_kwDOD5fcUs6VpP1m,rerun after deleting input files & server update,CLOSED,2024-09-06T14:51:53Z,2024-09-24T11:25:11Z,2024-09-24T11:25:10Z,"Hi Lucas, 
+In order to free space on our server I have deleted fastq input files of samples that had already run successfully. I now want to rerun the pipeline with some additional samples. I therefore added those to the samples.txt and tried a dry run. However, I get an error due to missing input files.
+
+I suspect that this behavior may be due to the fact that our servers were updated and paths have changed (specifically, all paths started with `/scratch` and have changed to `/lustre/scratch`). I guess this may cause snakemake to consider everything as outdated and wants to re-run the entire pipeline. Could this be true and do you know if there is any way to solve this? 
+
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/53
+I_kwDOD5fcUs6Vu-Yu,SLURM No wall time information given,CLOSED,2024-09-07T23:48:50Z,2024-12-10T01:11:55Z,2024-12-10T01:11:55Z,"Hi Lucas, 
+I am running the latest version of grenepipe (v0.13.1) with snakemake 8.15.2 using SLURM using `--executor slurm --profile profiles/slurm` options. The file `profiles/slurm/cluster_config.yaml` includes the following:
+```
+__default__:
+  time: 120 # Default time (minutes). A time limit of zero requests that no time limit be imposed
+  mem: 10G # Default memory. A memory size specification of zero grants the job access to all of the memory on each node.
+  cpus-per-task: 1
+  nodes: 1
+  ntasks: 1
+```
+However, when executing the pipeline I get the following warnings and jobs do not get accepted: 
+```
+No wall time information given. This might or might not work on your cluster. If not, specify the resource runtime in your rule or as a reasonable default via --default-resources.
+No job memory information ('mem_mb' or 'mem_mb_per_cpu') is given - submitting without. This might or might not work on your cluster.
+```
+It seems the specified default settings are not appropriately transmitted. What may be going wrong? 
+Thanks",RvV1979,https://github.com/moiexpositoalonsolab/grenepipe/issues/54
+I_kwDOD5fcUs6XAp0G,Feature request: GenomicsDBImport,OPEN,2024-09-18T11:55:58Z,2024-10-21T13:27:13Z,,"Hi,
+Thanks for developing the tool. I was wondering whether it is possible to include GenomicsDBImport after running the GATK Haplotypecaller for SNP calling. Because for thousands of samples, I found GenomicsDBImport to be more efficient than CombineGVCFs.
+
+Thanks.",DuttaAnik,https://github.com/moiexpositoalonsolab/grenepipe/issues/55
+I_kwDOD5fcUs6ZGYl2,problem in running v0.13.1,CLOSED,2024-10-06T10:35:11Z,2024-11-27T13:06:23Z,2024-11-27T13:06:22Z,"Hi
+
+after installing the v0.13.1 ",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/56
+I_kwDOD5fcUs6ZNe4t,Columns in output file don't add up,CLOSED,2024-10-07T13:27:59Z,2024-10-10T14:49:06Z,2024-10-10T12:32:34Z,"I am running diversity on bam files to determine the diversity across the whole genome (--window-type genome) and expected the columns to add up to the total number of positions on my genome. 
+This is not the case and I think that I am missing the .missing positions. 
+Why is this the case? Depending on my averaging policy it is important to take these into account, right?",Easybel,https://github.com/moiexpositoalonsolab/grenepipe/issues/57
+I_kwDOD5fcUs6bP2bj,more problems with version  0.13.1,CLOSED,2024-10-22T08:05:56Z,2024-12-04T09:24:10Z,2024-12-04T09:24:10Z,"Dear Lucas
+
+Finally I try to run grenepipe after installing the environment with micromamba.
+
+I update the config file and add the relevant information as I did with previous version that I run in version 0.12.
+ 
+But this time  
+[2024-10-21T111227.306719.snakemake.log](https://github.com/user-attachments/files/17472428/2024-10-21T111227.306719.snakemake.log)
+it stops  in early stage....I attached the log file.
+
+I have this messages: 
+
+ 
+![image](https://github.com/user-attachments/assets/1bc29b96-0f6a-4696-8354-703be93da7cf)
+
+
+![image](https://github.com/user-attachments/assets/c18bae88-395a-43fe-a883-342aff1b3a86)
+
+![image](https://github.com/user-attachments/assets/8b12b7ec-29d4-4905-b05f-e69f4c6f7d40)
+
+any suggestion?
+
+thank you
+osp
+",ospfsg,https://github.com/moiexpositoalonsolab/grenepipe/issues/58

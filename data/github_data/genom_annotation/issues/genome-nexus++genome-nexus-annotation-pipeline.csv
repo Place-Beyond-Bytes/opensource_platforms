@@ -1,0 +1,772 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxODk4MzEwOTA=,Add cancer hotspot annotation to annotator for MAF annotation,OPEN,2016-11-16T20:17:50Z,2017-01-12T20:39:17Z,,Add a new column call `is-cancer-hotspot` with value of `yes` or `no`,jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/5
+MDU6SXNzdWUyODE4MDY2MTM=,Add annotation for variants without hgvsc/hgvsp,OPEN,2017-12-13T16:13:11Z,2017-12-13T19:09:55Z,,"Reported by @jjgao 
+
+“Ignoring record with HGVSp null classification ‘5’Flank’: (sampleId,chr,start,end,ref,alt,url)= (DS-uttcc-073-P,5,1295250,1295250,G,,http://annotation.genomenexus.org/hgvs/5:g.1295250G>A?isoformOverrideSource=mskcc&fields=hotspots)“.
+
+https://github.com/genome-nexus/genome-nexus-annotation-pipeline/blob/master/annotationPipeline/src/main/java/org/cbioportal/annotation/pipeline/MutationRecordReader.java#L158-L163. If u look at the response of genome nexus, there are no hgvsc and hgvsp changes. We should still annotate it as a 5'Flank variant, just leave those fields empty.",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/51
+MDU6SXNzdWUyODIyMTk3ODU=,Move annotation logic to the web server,OPEN,2017-12-14T19:53:52Z,2017-12-14T19:53:52Z,,"- The logic of amino acid changes for splice sites (the `X_splice`) should be in `genome-nexus/genome-nexus`
+- The logic of Hgvsp_Short should be in `genome-nexus/genome-nexus`
+- logic of converting ref/alt/pos/chrom to hgvs should be a different endpoint in `genome-nexus/genome-nexus` (potentially call annotation endpoint)
+- .. see if there is more logic that can be moved
+",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/53
+MDU6SXNzdWUyODM1ODM4Mzg=,Make maf test cover more chromosomes/mutation types,OPEN,2017-12-20T14:39:49Z,2017-12-20T19:22:51Z,,"Instead of just taking first 100 of impact maf, span more different types",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/54
+MDU6SXNzdWUzMzI1ODIzNTM=,application.properties.EXAMPLE base url,CLOSED,2018-06-14T22:12:09Z,2020-06-26T14:54:22Z,2020-06-26T14:54:22Z,"Currently, in [application.properties.EXAMPLE](https://github.com/genome-nexus/genome-nexus-annotation-pipeline/blob/master/annotationPipeline/src/main/resources/application.properties.EXAMPLE#L2), genomenexus.base=<HOST> is not specified. Maybe we can just add the public genome nexus address here?",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/66
+MDU6SXNzdWUzMzI1ODI2ODk=,no error messages in command line,OPEN,2018-06-14T22:13:35Z,2018-06-14T22:13:35Z,,there is currently no error message throwing out when annotation failed (e.g. BASE url is wrong),jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/67
+MDU6SXNzdWUzMzI2MDE3MDc=,annotate complete MAF,OPEN,2018-06-14T23:48:50Z,2018-06-14T23:48:50Z,,"I think we should annotate a more complete MAF, maybe based on [this spec](https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/)?
+
+Hugo_Symbol and Entrez_Gene_ID should also be populated.",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/68
+MDU6SXNzdWUzMzI2Mjc2NzI=,turn on replace-symbol-entrez by default,CLOSED,2018-06-15T02:37:06Z,2023-09-19T15:44:26Z,2023-09-19T15:44:26Z,"Should we consider turning on `replace-symbol-entrez` by default? The symbols should be synchronized with the annotated results.
+
+https://github.com/genome-nexus/genome-nexus-annotation-pipeline/blob/master/annotationPipeline/src/main/java/org/cbioportal/annotation/AnnotationPipeline.java#L59
+
+@n1zea144 @inodb @onursumer ",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/69
+MDU6SXNzdWU0MDY5OTY0NTY=,unskip MT mutations,CLOSED,2019-02-05T22:08:55Z,2019-02-08T19:46:09Z,2019-02-08T19:46:09Z,"Based on discussion on Slack, we are skipping MT mutations in annotator. Let's unskip that. ",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/80
+MDU6SXNzdWU0MTUzMzM3NDM=,Make the jar file accept proper command line parameters,OPEN,2019-02-27T21:24:50Z,2019-02-27T21:24:50Z,,"Instead of having to use `-D` system parameters it would be nice to use command line parameters. We can follow webapp-runners logic:
+
+https://github.com/jsimone/webapp-runner/blob/master/main/src/main/java/webapp/runner/launch/CommandLineParams.java",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/83
+MDU6SXNzdWU0Mjg5MDM0MDc=,turn on line number error by default,CLOSED,2019-04-03T18:07:55Z,2019-04-05T20:45:56Z,2019-04-05T20:45:56Z,now need to use `--verbose`,inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/89
+MDU6SXNzdWU0MzI2NzYzMjQ=,build releases and make them available on github,OPEN,2019-04-12T17:49:24Z,2020-05-15T22:40:40Z,,,jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/91
+MDU6SXNzdWU0NDQ1Nzg3Nzk=,check protein length of all canonical transcript (make sure they have it),OPEN,2019-05-15T18:20:08Z,2019-05-15T18:20:08Z,,,inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/92
+MDU6SXNzdWU0NDgzNjE2NTI=,Better representing of Tumor_Seq_Allele,OPEN,2019-05-24T21:36:23Z,2019-05-30T18:57:20Z,,"For example,
+
+| | Chromosome | Start_Position | End_Position | Reference_Allele | Tumor_Seq_Allele1 | Tumor_Seq_Allele2 | NCBI_Build |
+---|---|---|---|---|---|---|---
+**input**| 11 | 108151707 | 108151707 | T | TA | | 37 |
+**output**| 11 | 108151707 | 108151708 | - | TA | A | 37 |
+
+The `Tumor_Seq_Allele2`  can also represent the zygosity, so maybe we could consider a better way to show those fields? 
+",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/93
+MDU6SXNzdWU0NjE3NDExNTU=,Automatic Fill for `introgenic_variants` and `IGR`,OPEN,2019-06-27T20:46:01Z,2019-06-28T19:30:38Z,,"Right now the GN leaves `consequence` and `variants classification`columns empty, for rows annotated as `introgenic_variants`. 
+
+As a result:
+1. the circle CI validation wouldn't pass. 
+2. Sometimes when the MAF is really large and there are thousands of rows with this case (for example prostate_dkfz_2018), it is becoming really time consuming to manually check each unannotated rows and fill them in. 
+
+So here just requesting the GN to fill in rows with consequence as `introgenic_variants` (and variants classficiation as `IGR`) automatically.  ",yichaoS,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/95
+MDU6SXNzdWU1MzcxNzMyNzM=,VCF - Genome Nexus annotation script,CLOSED,2019-12-12T19:36:16Z,2020-01-29T17:47:50Z,2020-01-29T17:47:50Z,"Background -
+
+AACR Project GENIE collects VCFs of various flavors from consortium members.  Currently they use vcf2maf to annotate these files.  We desire to move them to the Genome Nexus platform. There we would like to create a script for annotating a set of VCF files using our GN annotation pipeline.  Rough outline:
+
+1. Point tool to folder which contains VCFs of various shapes/size.
+2. Run [vcf2vcf](https://github.com/mskcc/vcf2maf/) over files to normalize them. 
+3. Run normalized vcfs through @ao508 vcf2maf converter.
+3. Annoate mafs using genome nexus annotation client.
+4. Combine mafs into single file for import.
+
+Note, for 2:
+vcf2vcf is required because there is a need to normalize allele depths which is handled by [FixAllelDepths](https://github.com/mskcc/vcf2maf/blob/v1.6.17/vcf2maf.pl#L986).  Ensure the following option is set (should be set by default)
+
+--retain-format GT,AD,DP
+
+These three fields contain the values needed to extract t_depth, t_ref_count, t_alt_count, n_depth, n_ref_count, n_alt_count.
+",n1zea144,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/111
+MDU6SXNzdWU1MzkyNzgzMTU=,In_Frame mutation converted to frameshift,CLOSED,2019-12-17T19:55:58Z,2019-12-17T20:11:40Z,2019-12-17T20:11:40Z,"e.g. this:
+
+```
+7 55242466 55242485 AATTAAGAGAAGCAACATCT AGCAA
+```
+becomes
+```
+7 55242468 55242482 ATTAAGAGAAGCAAC GCAA
+```",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/112
+MDU6SXNzdWU1Mzk4MjYzMDE=,Add SORT Functionality before Sending POSTS to Server,CLOSED,2019-12-18T17:45:27Z,2020-02-26T20:34:30Z,2020-02-26T20:34:30Z,"Having sorted variants speeds up VEP performance. Since the pipeline batches out requests, performance would be better if all variants are sorted before batching. This way each batch will be localized to shred regions. 
+
+Unit tests included.",averyniceday,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/114
+MDU6SXNzdWU1NDQ2NjIyNzQ=,annotation pipeline (and CVR fetcher) notices failed records in response,CLOSED,2020-01-02T17:02:52Z,2020-02-27T03:01:17Z,2020-02-27T03:01:17Z,"After the response comes back from genome nexus, some records will have a failure status. These should be detected and logged / stripped out or otherwise treated properly.",sheridancbio,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/115
+MDU6SXNzdWU1NzE1MjA5ODc=,Migrate GN Annotation Pipeline to Work with Genome Nexus Server Master,CLOSED,2020-02-26T16:49:58Z,2020-03-11T21:10:28Z,2020-03-11T21:10:28Z,"- [x] Document and resolve differences in the model (verify that changes are okay, what data is lost or gained)
+- [x] Get GN Annotation Pipeline to build (including unit tests) when using a genome nexus java api hash that is based on master (including newest changes with successfully_annotated flag)
+- [x] document migration steps for future reference (as a readme checked in to docs)
+- [x] regression tests show that the revised code with a master branch deployment of genome nexus produces comparable results to the current production pipeline.",averyniceday,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/120
+MDU6SXNzdWU1ODYzMjk1Mjc=,GENIE Genome Nexus Documentation,CLOSED,2020-03-23T16:13:35Z,2021-06-09T16:30:40Z,2021-06-09T16:30:40Z,"documentation for Genome Nexus
+
+- [x] including VEP setup (S3 bucket, file renaming inside the kubectl description)
+- [x] including helm deployment for NFS/mongo
+- [x] setting up PV, PVCs
+- [x] mongo backups - loading, etc.
+- [x] migrating java api? ",averyniceday,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/122
+MDU6SXNzdWU2NTQ5MzE3ODM=,Msk-mind cohort upload,CLOSED,2020-07-10T17:36:15Z,2020-07-10T17:37:45Z,2020-07-10T17:37:45Z,,ritikakundra,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/139
+MDU6SXNzdWU2OTg1NTk4Nzk=,add Ref_Tri and Var_Tri columns,CLOSED,2020-09-10T22:21:54Z,2021-02-11T14:51:15Z,2021-02-11T14:51:15Z,"Can we add Ref_Tri and Var_Tri columns into the MAF?
+
+e.g. for [this variant](https://www.genomenexus.org/annotation/17:g.37880220T%3EC?fields=hotspots%2Cmutation_assessor%2Cmy_variant_info%2Cptms%2Cannotation_summary,nucleotide_context), Ref_Tri is 'TTG' and Var_Tri is 'TCG'.
+
+![image](https://user-images.githubusercontent.com/840895/92815590-62685180-f392-11ea-9e7c-69e2ebe34b93.png)
+",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/146
+MDU6SXNzdWU3MDIyOTI4MzE=,options to add functional impact columns into MAF,CLOSED,2020-09-15T21:40:24Z,2020-10-07T18:37:53Z,2020-10-07T18:37:52Z,"
+- MutationAssessor
+- SIFT
+- PolyPhen-2",jjgao,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/147
+MDU6SXNzdWU3NTk1NDUzMDM=,"Store immutable version of (chrom,pos,ref,alt1,alt2) in separate columns with prefix",OPEN,2020-12-08T15:34:23Z,2021-06-14T18:12:54Z,,"We have had a lot of issues trying to reproduce the original chrom/pos/ref/alt1/alt2 after normalizing it in the genome nexus annotation pipeline. Basically imagine the use case of running genome-nexus-annotation-pipeline twice in a row on the same MAF file. When there is an error in the normalization of chrom/pos/ref/alt1/alt2, we are not able to reproduce the original chrom/pos/ref/alt1/alt2. Let's store a copy as a separate column that's immutable to get around this issue
+
+We could have the following logic:
+
+If the columns prefixed with  `genome_nexus_ignore_original` are missing (`genome_nexus_ignore_original_Chromosome	genome_nexus_ignore_original_Start_Position	genome_nexus_ignore_original_End_Position	genome_nexus_ignore_original_Reference_Allele	genome_nexus_ignore_original_Tumor_Seq_Allele1	genome_nexus_ignore_original_Tumor_Seq_Allele2`) then create these columns and copy over the values from the inputted MAF `Chromosome	Start_Position	End_Position	Reference_Allele	Tumor_Seq_Allele1`
+
+If they are not missing then use the columns prefixed with `genome_nexus_ignore_original` to annotate them instead of the inputted  `Chromosome	Start_Position	End_Position	Reference_Allele	Tumor_Seq_Allele1	Tumor_Seq_Allele2`. We do this because we might have normalized the non-prefixed ones incorrectly before.
+
+Bonus points: note that if we really want to manually change some `genome_nexus_ignore_original` ones, we can add another column prefix like `genome_nexus_ignore_original_manual_override`. That one would be preferred over `genome_nexus_ignore_original`. That way we can continue to keep the immutable column truly immutable and also see which records we manually override.",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/157
+MDU6SXNzdWU4MTExMDU2MTE=,Figure out a way to handle default properties,OPEN,2021-02-18T13:36:00Z,2021-02-18T13:41:20Z,,"Currently we are putting all configuration in `application.properties.EXAMPLE`. There are some issues with this:
+
+1. It is unclear which of the configuration in EXAMPLE is for a user to change and which isn't (e.g. spring configuration that shouldn't be changed is in the EXAMPLE file)
+2. When a new default is introduced that requires a value, it will currently break the pipeline for anybody that's upgrading which already has a properties file
+3. Using `application.properties` for a command line client is in general questionable imo, everything should be a command line parameter. If we really want to use a configuration file it might be better to pass it as a command line argument and handle missing values etc elegantly with clear user output of what values are missing. Using spring properties files directly can result in very hard to understand errors for users unfamiliar with Java (there might be a way to override the way spring throws missing config errors, that could be another approach)",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/168
+MDU6SXNzdWU4MTIyNDgyNzk=,Migrate Spring version to 2.3.3.RELEASE ,CLOSED,2021-02-19T18:38:28Z,2021-02-22T16:15:08Z,2021-02-22T16:15:08Z,"This is part of an effort to synchronize the spring boot version we have across multiple projects. 
+
+Current pull request: https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/169
+
+The integration test still needs fixing. ",ao508,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/170
+MDU6SXNzdWU4MTM2NDE1NjM=,Fix broken integration test environment due to Spring boot migration to 2.3.3.RELEASE (updated from 1.2.7.RELEASE) (PR #169),CLOSED,2021-02-22T16:10:47Z,2021-08-06T14:12:35Z,2021-08-06T14:12:35Z,"https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/169
+
+
+this might be helpful https://www.baeldung.com/spring-boot-h2-database",ao508,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/171
+MDU6SXNzdWU4MjEyMDAzOTM=,Still annotating when mutation fails annotation,OPEN,2021-03-03T15:11:37Z,2021-03-16T22:08:43Z,,"It seems like we still try to annotate mutations even when the annotation failed, see: 
+
+https://github.com/genome-nexus/annotation-tools/issues/31
+
+For instance for this case:
+
+```
+17      7578212 CG      CA
+```
+
+The annotation pipeline might use this endpoint:
+
+https://genie.genomenexus.org/annotation/17:g.7578213G%3EA?fields=annotation_summary&isoformOverrideSource=uniprot
+
+and throws a warning:
+
+```
+07:14:36 [main] WARN  org.cbioportal.annotator.internal.GenomeNexusImpl - Annotated record is invalid for variant 17:7578213-7578213:1/A
+```
+
+Yet the `ANNOTATION_STATUS == SUCCESS`. This is slightly peculiar, it should probably indicate a fail if the annotated record is invalid.
+
+However the real issue is the following: 7578213 is not G at that position. But using region format we don't supply the inputted reference allele, so technically we would still annotate it and VEP would not fail. One would have to compare the resulting referenceAllele against the inputted reference allele and throw a failure if they don't match.",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/172
+MDU6SXNzdWU4Mzc5MzcxNTc=,Handle incorrect MAF format for deletions,CLOSED,2021-03-22T17:12:21Z,2021-03-26T18:22:37Z,2021-03-26T18:22:37Z,"This MAF format is incorrect:
+
+```
+ADGRA2  8       37699139        37699138        GENIE-SAGE-1-1  DEL     CCGCCCCGGGCCCTGCCCGCCGCC        -
+```
+
+Since it should be:
+
+```
+GPR124  8       37699138        37699161        GENIE-SAGE-1-1  DEL     CCGCCCCGGGCCCTGCCCGCCGCC        -
+```
+
+We could fix the MAF format on our end (since we know the length of the deletion and could for instance assume the start_position is correct). This might be better done at the server layer than in the command line annotator",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/174
+I_kwDOA8bm_85LgZYP,Many output errors and warnings when running the minimal example,OPEN,2022-06-09T23:58:23Z,2022-06-14T17:31:42Z,,"Seems like things get annotated correctly but tons of errors about reading fields:
+
+```
+Something went wrong reading field Entrez_Gene_Id
+Something went wrong reading field dbSNP_RS
+Something went wrong reading field Match_Norm_Seq_Allele1
+Something went wrong reading field Validation_Method
+Something went wrong reading field Match_Norm_Seq_Allele2
+Something went wrong reading field n_ref_count
+Something went wrong reading field t_alt_count
+Something went wrong reading field BAM_File
+Something went wrong reading field Variant_Classification
+Something went wrong reading field dbSNP_Val_Status
+Something went wrong reading field Mutation_Status
+Something went wrong reading field Matched_Norm_Sample_Barcode
+Something went wrong reading field Validation_Status
+Something went wrong reading field Variant_Type
+Something went wrong reading field Strand
+Something went wrong reading field Hugo_Symbol
+Something went wrong reading field Sequencer
+Something went wrong reading field n_alt_count
+Something went wrong reading field Center
+Something went wrong reading field Match_Norm_Validation_Allele2
+Something went wrong reading field Tumor_Sample_Barcode
+Something went wrong reading field Verification_Status
+Something went wrong reading field t_ref_count
+Something went wrong reading field Tumor_Seq_Allele2
+Something went wrong reading field Match_Norm_Validation_Allele1
+Something went wrong reading field Score
+Something went wrong reading field Sequencing_Phase
+Something went wrong reading field Tumor_Validation_Allele2
+Something went wrong reading field Tumor_Validation_Allele1
+Something went wrong reading field NCBI_Build
+Something went wrong reading field Sequence_Source
+Something went wrong reading field Entrez_Gene_Id
+Something went wrong reading field dbSNP_RS
+Something went wrong reading field Match_Norm_Seq_Allele1
+Something went wrong reading field Validation_Method
+Something went wrong reading field Match_Norm_Seq_Allele2
+Something went wrong reading field n_ref_count
+Something went wrong reading field t_alt_count
+Something went wrong reading field BAM_File
+Something went wrong reading field Variant_Classification
+Something went wrong reading field dbSNP_Val_Status
+Something went wrong reading field Mutation_Status
+Something went wrong reading field Matched_Norm_Sample_Barcode
+Something went wrong reading field Validation_Status
+Something went wrong reading field Variant_Type
+Something went wrong reading field Strand
+Something went wrong reading field Hugo_Symbol
+Something went wrong reading field Sequencer
+Something went wrong reading field n_alt_count
+Something went wrong reading field Center
+Something went wrong reading field Match_Norm_Validation_Allele2
+Something went wrong reading field Tumor_Sample_Barcode
+Something went wrong reading field Verification_Status
+Something went wrong reading field t_ref_count
+Something went wrong reading field Tumor_Seq_Allele2
+Something went wrong reading field Match_Norm_Validation_Allele1
+Something went wrong reading field Score
+Something went wrong reading field Sequencing_Phase
+Something went wrong reading field Tumor_Validation_Allele2
+Something went wrong reading field Tumor_Validation_Allele1
+Something went wrong reading field NCBI_Build
+Something went wrong reading field Sequence_Source
+Something went wrong reading field Entrez_Gene_Id
+Something went wrong reading field dbSNP_RS
+Something went wrong reading field Match_Norm_Seq_Allele1
+Something went wrong reading field Validation_Method
+Something went wrong reading field Match_Norm_Seq_Allele2
+Something went wrong reading field n_ref_count
+Something went wrong reading field t_alt_count
+Something went wrong reading field BAM_File
+Something went wrong reading field Variant_Classification
+Something went wrong reading field dbSNP_Val_Status
+Something went wrong reading field Mutation_Status
+Something went wrong reading field Matched_Norm_Sample_Barcode
+Something went wrong reading field Validation_Status
+Something went wrong reading field Variant_Type
+Something went wrong reading field Strand
+Something went wrong reading field Hugo_Symbol
+Something went wrong reading field Sequencer
+Something went wrong reading field n_alt_count
+Something went wrong reading field Center
+Something went wrong reading field Match_Norm_Validation_Allele2
+Something went wrong reading field Tumor_Sample_Barcode
+Something went wrong reading field Verification_Status
+Something went wrong reading field t_ref_count
+Something went wrong reading field Tumor_Seq_Allele2
+Something went wrong reading field Match_Norm_Validation_Allele1
+Something went wrong reading field Score
+Something went wrong reading field Sequencing_Phase
+Something went wrong reading field Tumor_Validation_Allele2
+Something went wrong reading field Tumor_Validation_Allele1
+Something went wrong reading field NCBI_Build
+Something went wrong reading field Sequence_Source
+
+Annotation Summary:
+	Records with ambiguous SNP and INDEL allele changes:  0
+	All variants annotated successfully without failures!
+```",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/193
+I_kwDOA8bm_85Lw-Sh,Custom output format files,OPEN,2022-06-14T17:31:10Z,2022-07-30T15:38:34Z,,"Allow changing the column names etc using a supplied output format file
+
+Some of the output formats could be:
+
+- [ ] `tcga`: https://docs.cbioportal.org/file-formats/#extended-maf-format. List all 37 first and anything extra goes in the back alphabetically
+- [ ] `minimal`: whatever was inputted and newly annotated columns by genome nexus
+- [ ] `gdc`: ??? Not sure what this should be yet. (They might have a few additional columns beyond `tcga`, 126 columns)
+- [ ] any custom ordering of columns (already implemented)",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/194
+I_kwDOA8bm_85OEgwi,Use subcommands for command line interface,OPEN,2022-07-19T16:57:31Z,2022-07-19T17:21:51Z,,"It would be nice if we could use a more subcommand style interface as done here: https://github.com/genome-nexus/genome-nexus-cli
+
+So e.g. to convert:
+
+```
+genome-nexus-annotation-pipeline convert variants.vcf > variants.maf
+```
+merge multiple MAFs:
+```
+genome-nexus-annotation-pipeline merge folder_with_mafs > output.maf
+```
+
+annotate a MAF:
+```
+genome-nexus-annotation-pipeline annotate maf test/data/minimal_example.in.txt [...more arguments] > test/data/minimal_example.out.txt
+```
+
+annotate a variant:
+```
+genome-nexus-annotation-pipeline annotate variant 17:g.41242962_41242963insGA > variant.json
+```
+
+show full help of all commands:
+
+```
+$ genome-nexus-annotation-pipeline --help
+    convert
+    merge
+    annotate
+```
+
+The current pipeline arguments are idiosyncratic to our internal annotation processes and not super user friendly for external users",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/201
+I_kwDOA8bm_85OEjWX,vcf2maf test implementation incomplete,CLOSED,2022-07-19T17:08:21Z,2022-08-08T21:33:28Z,2022-08-08T21:33:28Z,vcf2maf test implementation incomplete - needs to be completed,jagnathan,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/202
+I_kwDOA8bm_85OEj-S,MAF file validation,CLOSED,2022-07-19T17:10:53Z,2022-07-19T17:36:10Z,2022-07-19T17:36:10Z,"MAF file validation -
+
+Details
+
+- [x] Checks hard requirements of the MAF file. Search for these column names: Chromosome, Start_Position, End_Position, Reference_Allele. 
+- [x] Check if either Tumor_Seq_Allele1 or Tumor_Seq_Allele2 are present",jagnathan,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/203
+I_kwDOA8bm_85Ol1x9,genome nexus tests to support both hg19 and hg38 ,OPEN,2022-07-26T17:18:38Z,2024-01-28T14:12:24Z,,genome nexus tests to support both hg19 and hg38 versions,jagnathan,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/205
+I_kwDOA8bm_85OmMck,Account for Genome Nexus Timeout issue - check if all the variants in the MAF are annotated,OPEN,2022-07-26T18:55:24Z,2022-07-26T18:55:24Z,,"**Issue:**
+Sometimes when annotating a huge MAF, some variants do not get a protein change or the annotation times out. Re-running those failed records produces the amino acid change.
+
+**Solution:**
+Would be nice to add a flag to the `annotate` subcommand or let the default behaviour be such that if all the records are not successfully annotated on the first attempt, then the script will continue running the annotator on the remaining unannotated records until no new annotated records are produced in further attempts.
+
+**Logic:**
+- Let the annotation run normally the in the first attempt.
+- Subset the variants which failed annotation i.e, the `Variant_Classification` is not in `[""Silent"", ""Intron"", ""3'UTR"", ""5'UTR"", ""3'Flank"", ""5'Flank"", ""IGR""]` and the `HGVSp_Short` is `empty` or `Annotation_Status` is `FAILED`. Basically, split the MAF to annotated and unannotated parts.
+- Re-run the annotation of the unannotated MAF and merge the annotated records to the annotated MAF.
+- Repeat until all the variants are annotated or no new annotated records are produced in the further attempts.
+
+Refer to the python implementation here for more details - https://github.com/cBioPortal/datahub-study-curation-tools/tree/master/GN-annotation-wrapper",rmadupuri,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/206
+I_kwDOA8bm_85PfPD-,Minimal Output format is similar to TCGA,OPEN,2022-08-09T17:46:34Z,2022-08-09T17:46:40Z,,"As reported by @rmadupuri - the minimal and tcga formats are very similar 
+
+Let's find out:
+
+1. What columns are actually annotated by Genome Nexus
+2. What would be the real minimal set of output columns",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/210
+I_kwDOA8bm_85P6OtZ,documentation for MAF formats,OPEN,2022-08-16T17:26:35Z,2022-08-16T17:39:52Z,,"documentation for MAF formats - TCGA Extended and Minimal.
+
+Simple documentation describing the columns for the MAF formats that are used.
+
+Add link to cbioportal docs page to ensure the uptodate format is maintained.
+
+Update the main docs page and add additional pages based on length.",jagnathan,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/215
+I_kwDOA8bm_85P6XWS,Annotate big mutation file w/o failure,OPEN,2022-08-16T18:03:00Z,2022-09-09T13:37:02Z,,"We can use this file to test:
+
+https://github.com/cBioPortal/datahub/blob/master/public/difg_glass_2019/data_mutations.txt",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/216
+I_kwDOA8bm_85QJE2p,Add more versions in MAF header,OPEN,2022-08-19T14:58:36Z,2022-11-01T18:44:31Z,,"Now that we have a new endpoint with version of VEP etc, it would be nice to add this information in the MAF header. That is include versions for:
+
+- Genome Nexus Server
+- Genome Nexus Seed Database
+- Genome Nexus Annotation Pipeline
+- VEP (Ensembl version + reference version)",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/218
+I_kwDOA8bm_85QwMq-,Annotation pipeline issues,CLOSED,2022-08-29T20:06:06Z,2022-09-06T15:56:44Z,2022-09-06T15:56:18Z,"1. The annotation build fails
+![image](https://user-images.githubusercontent.com/34350829/187287465-cfcd593c-868f-4244-b0ce-0b5228b509e3.png)
+
+
+2. The **logging** seems to be not writing to the file - https://github.com/genome-nexus/genome-nexus-annotation-pipeline/blob/7c93747468098bdeaa0518f42b3c8ca6c831f96c/annotationPipeline/src/main/resources/log4j.properties.EXAMPLE#L19
+Something to do with - https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/199?
+
+3. If the annotation fails - the script just outputs the banner to stdout. Would be nice to throw a message of why it failed.
+![Screen Shot 2022-08-29 at 2 42 54 PM](https://user-images.githubusercontent.com/34350829/187287853-be86ff83-8969-4d4d-a117-90f09d6989b4.png)
+Ex: If a required column is missing per - https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/196, the script doesn't show why the annotation failed in stdout (missing field here)
+
+4. Custom output format **extended** didn’t produce any annotation (the annotation process didn’t begin)
+![Screen Shot 2022-08-29 at 2 46 10 PM](https://user-images.githubusercontent.com/34350829/187287965-c78389ab-ab1c-4313-be90-02f2a946334b.png)
+If I try to use **tcga** as the argument which was renamed to **extended**, should it throw a warning that tcga is not a recognized format? Currently shows the below,
+![Screen Shot 2022-08-29 at 2 47 43 PM](https://user-images.githubusercontent.com/34350829/187288047-6fa91883-95b9-4080-ae3b-b7cce44337cf.png)
+**minimal** output format works.
+
+5. The **custom** output format produced an error,
+![Screen Shot 2022-08-29 at 3 18 43 PM](https://user-images.githubusercontent.com/34350829/187288160-3adabd4c-c1ec-4d9e-be7d-91ff2f3abc7b.png)
+
+6. **Merge** subcommand - when merging two files with same variants but one file having more columns than the other, the file with more information should be outputted? Currently the variants from the first file are shown in the output in the case of duplicate variants in two files.
+",rmadupuri,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/223
+I_kwDOA8bm_85RA865,Fix version in MAF header,CLOSED,2022-09-01T17:50:05Z,2022-11-01T18:44:42Z,2022-11-01T18:44:42Z,"We are outputting the version in the output. Currently however it just shows unknown version:
+
+`#genome_nexus_version: 0-unknown-version-SNAPSHOT`
+
+Ideally we can give (1) version of the genome-nexus-annotation-pipeline and (2) version of the genome-nexus server.
+
+For (2) we can use https://www.genomenexus.org/actuator/info instead of https://www.genomenexus.org/version",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/225
+I_kwDOA8bm_85UIYDh,Allow not normalizing of bases in the MAF with command line option,CLOSED,2022-10-17T12:23:07Z,2022-12-12T20:41:25Z,2022-12-12T20:41:25Z,"This is related to this issue:
+
+https://github.com/mskcc/vcf2maf/issues/279
+
+Basically occasionally you might want to keep the ref/alt allele bases because it gives you more information about the surrounding bases. There are three options for the base normalization:
+
+1. Strip off only the very first matching base from ref+alt (first)
+2. Strip off all matching starting bases from ref+alt (all) -- this is the current behavior
+3. Don't do any harmonization (do store all the appropriate fields as if it were normalized) (none)
+
+This could be something that is relevant for both annotation-tools as well as genome-nexus-annotation-pipleine. The former does the vcf2maf conversion, but the latter also does harmonization of bases as well (the API returns harmonized version of chrom/pos/ref/alt). We should prolly add options to both those tools around this, so the annotation pipeline can have some option like this:
+
+```
+--strip-matching-bases {first,all,none}
+```
+And the annotation-tools could have something like:
+```
+--strip-matching-bases {first,all}
+```
+For annotation-tools it prolly doesn't make sense to have the ""none"" option since you are starting from the VCF file which by definition lists the additional base in ref and alt for indels
+
+Note that the issue with using ""first' is that if you run the MAF thru multiple times it will change every time until all bases are stripped off. This is not a big deal if you start from the source VCF, which is how it works for most internal pipelines at MSK, but it can be an issue when you use MAF as the source of truth file. Some way to capture immutable genomic locations was [implemented previously](https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/173) but never merged so might be good to revisit that. Another option is to add some feature like that in the conversion script from VCF to MAF i.e. add the original VCF fields in the resulting MAF to make sure you don't lose the source of truth. Then whenever you re-annotate you use the source of truth fields rather than the potentially harmonized fields
+
+Note: need to figure out what to do with matching ending bases",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/232
+I_kwDOA8bm_85Z9tWJ,Improve dockerhub documentation,OPEN,2022-12-23T13:26:38Z,2022-12-23T13:26:38Z,,"The current dockerhub page (https://hub.docker.com/r/genomenexus/gn-annotation-pipeline) has no information about this project. It would be nice to link back to the github location.
+
+
+
+![image](https://user-images.githubusercontent.com/2900303/209343581-cfb1df45-986f-47f8-85e5-52df5e065962.png)
+",pieterlukasse,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/237
+I_kwDOA8bm_85dFrcn,"Latest build of genomenexus/gn-annotation-pipeline:master is non-functional, even when using the toy example on https://docs.genomenexus.org/annotate-file",CLOSED,2023-01-30T05:20:15Z,2023-04-17T04:39:43Z,2023-04-17T04:39:43Z,"This tool used to work great, but the most recent build appears to be broken, no matter the input.  
+
+Whenever I try to use it, I get a SLF4J error. Because I kept getting these errors with my own MAFs, I decided to try using the toy example from https://docs.genomenexus.org/annotate-file, however, I get an error with that as well:
+
+`$ (echo -e ""Chromosome\tStart_Position\tEnd_Position\tReference_Allele\tTumor_Seq_Allele1""; echo -e ""7\t55220240\t55220240\tG\tT"") > input.txt`
+`$ docker run -v ${PWD}:/wd genomenexus/gn-annotation-pipeline:master --filename /wd/input.txt  --output-filename /wd/output.txt --isoform-override uniprot`
+```SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/genome-nexus-annotation-pipeline/annotationPipeline/target/annotationPipeline.jar!/BOOT-INF/lib/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/genome-nexus-annotation-pipeline/annotationPipeline/target/annotationPipeline.jar!/BOOT-INF/lib/logback-classic-1.2.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+log4j:WARN No appenders could be found for logger (org.cbioportal.annotation.AnnotationPipeline).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+ RUNTIME: 0 secs.
+```",pwaltman,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/238
+I_kwDOA8bm_85hnU-P,test failures building the project annotationPipeline,OPEN,2023-03-23T14:51:31Z,2024-06-14T15:02:45Z,,"Hi, 
+I'm trying to build the project annotationPipeline but got an error:
+
+Test set: org.cbioportal.annotation.SpringBatchIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 18, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 22.057 s <<< FAILURE! - in org.cbioportal.annotation.SpringBatchIntegrationTest
+check_if_maf_file_still_the_same_when_annotating_with_mskcc_transcripts  Time elapsed: 0.546 s  <<< FAILURE!
+org.junit.ComparisonFailure: Line number 15 does not match. expected:<...       202     244                     ENST00000[407796.2:c.49G>A      p.Glu17Lys      p.E17K  ENST00000407796 NM_001014431.1  17      Gag/Aag 3/14]   SUCCESS> but was:<...   202     244                     ENST00000[349310.3:c.49G>A      p.Glu17Lys      p.E17K  ENST00000349310 NM_001014432.1  17      Gag/Aag 4/15]   SUCCESS>
+        at org.cbioportal.annotation.SpringBatchIntegrationTest.testWith(SpringBatchIntegrationTest.java:405)
+        at org.cbioportal.annotation.SpringBatchIntegrationTest.check_if_maf_file_still_the_same_when_annotating_with_mskcc_transcripts(SpringBatchIntegrationTest.java:92)
+
+
+I'll appreciate any help. 
+Thanks, 
+
+Luisa. 
+
+",ldelgado-serrano,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/243
+I_kwDOA8bm_85k4nE1,Turn on logging for genome-nexus runs,CLOSED,2023-05-02T14:43:28Z,2023-06-09T06:18:57Z,2023-06-09T06:18:57Z,"Hello,
+
+I would like to change the logging threshold to debug so I can figure out why my annotations are failing. I see the following console output using a minimal example test run:
+
+```sh
+docker run -v ${PWD}:/wd genomenexus/gn-annotation-pipeline:master --filename /wd/scratch/minimal_example.in.txt --output-filename /wd/scratch/minimal_example.out.txt
+```
+
+```sh
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+log4j:WARN No appenders could be found for logger (org.springframework.core.env.StandardEnvironment).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+  _____                                               _   _                             
+ / ____|                                             | \ | |                            
+| |  __    ___   _ __     ___    _ __ ___     ___    |  \| |   ___  __  __  _   _   ___ 
+| | |_ |  / _ \ | '_ \   / _ \  | '_ ` _ \   / _ \   | . ` |  / _ \ \ \/ / | | | | / __|
+| |__| | |  __/ | | | | | (_) | | | | | | | |  __/   | |\  | |  __/  >  <  | |_| | \__ \
+ \_____|  \___| |_| |_|  \___/  |_| |_| |_|  \___|   |_| \_|  \___| /_/\_\  \__,_| |___/
+
+
+Annotation Summary:
+        Records with ambiguous SNP and INDEL allele changes:  0
+
+        Failed annotations summary:  3 total failed annotations
+                Records with HGVSp null variant classification:  0
+                Records that failed due to other unknown reason: 3
+
+        Average Response Time:  1.000 sec.
+          Total Response Time:  1 sec.
+
+ RUNTIME: 46 secs.
+ ```
+
+The line `log4j:WARN No appenders could be found for logger ` seems to indicate the log4j.properties file can not be found and the application instead performs no explicit configuration (https://logging.apache.org/log4j/1.2/faq.html#noconfig).
+
+I tried making own image, disabling the entrypoint and running the jar in an interactive shell with:
+
+```sh
+cd /genome-nexus-annotation-pipeline
+$JAVA_HOME/bin/java -cp ""/genome-nexus-annotation-pipeline/annotationPipeline/src/main/resources"" -Dlog4j.configuration=log4j.properties -jar annotationPipeline/target/annotationPipeline.jar -f /mnt/docker-sandbox-data/scratch/minimal_example.in.txt -o /mnt/docker-sandbox-data/annotate_output/scratch/minimal_example.out.txt
+```
+
+or
+
+```sh
+$JAVA_HOME/bin/java -Dlog4j.configuration=/genome-nexus-annotation-pipeline/annotationPipeline/src/main/resources/log4j.properties -jar annotationPipeline/target/annotationPipeline.jar -f /mnt/docker-sandbox-data/scratch/minimal_example.in.txt -o /mnt/docker-sandbox-data/annotate_output/scratch/minimal_example.out.txt
+```
+
+to no avail. 
+
+Any help on this front? 
+
+
+",japerez-cls,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/244
+I_kwDOA8bm_85o4T9-,Add new flag for logging verbosity and log output location,OPEN,2023-06-15T21:48:41Z,2024-04-29T18:49:30Z,,"The current logging is a bit complicated to see if running through docker. Add new flags for logging:
+1. set verbosity to print out logging info to command line: e.g. `--verbosity=verbose`
+2. set log file path: e.g. `--output-log=output.log`",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/247
+I_kwDOA8bm_85pb8ZW,CTNNB1 annotation fails but direct genome nexus API call succeed   ,OPEN,2023-06-22T05:04:25Z,2023-06-22T05:08:42Z,,"```
+CTNNB1		MSKCC	GRCh37	3	41265562	41266260	+	In_Frame_Del	DEL	GCTACTCAAGGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTGGTAAGAGTATTATTTTT	GCTACTCAAGGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTGGTAAGAGTATTATTTTT	-		NA	P-0013404-T01-IM5																	NA	NA	NA	NA	p.2_D81del
+CTNNB1		MSKCC	GRCh37	3	41265568	41266266	+	In_Frame_Del	DEL	CAAGGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTGGTAAGAGTATTATTTTTCATTGC	CAAGGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTGGTAAGAGTATTATTTTTCATTGC	-		NA	P-0007600-T01-IM5																	NA	NA	NA	NA	p.4_D81del
+CTNNB1		MSKCC	GRCh37	3	41265571	41266206	+	In_Frame_Del	DEL	GGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAG	GGTTTGTGTCATTAAATCTTTAGTTACTGAATTGGGGCTCTGCTTCGTTGCCATTAAGCCAGTCTGGCTGAGATCCCCCTGCTTTCCTCTCTCCCTGCTTACTTGTCAGGCTACCTTTTGCTCCATTTTCTGCTCACTCCTCCTAATGGCTTGGTGAAATAGCAAACAAGCCACCAGCAGGAATCTAGTCTGGATGACTGCTTCTGGAGCCTGGATGCAGTACCATTCTTCCACTGATTCAGTGAGTAACTGTTAGGTGGTTCCCTAAGGGATTAGGTATTTCATCACTGAGCTAACCCTGGCTATCATTCTGCTTTTCTTGGCTGTCTTTCAGATTTGACTTTATTTCTAAAAATATTTCAATGGGTCATATCACAGATTCTTTTTTTTTAAATTAAAGTAACATTTCCAATCTACTAATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAACAG	-		NA	P-0007066-T01-IM5																	NA	NA	NA	NA	p.A5_Q68del
+CTNNB1		MSKCC	GRCh37	3	41265990	41266204	+	In_Frame_Del	DEL	ATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAAC	ATGCTAATACTGTTTCGTATTTATAGCTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACTCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGAAGAGGATGTGGATACCTCCCAAGTCCTGTATGAGTGGGAAC	-		NA	P-0003501-T01-IM5																	NA	NA	NA	NA	p.A5_Q68del
+CTNNB1		MSKCC	GRCh37	3	41266017	41266244	+	In_Frame_Del	DEL	CTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTG	CTGATTTGATGGAGTTGGACATGGCCATGGAACCAGACAGAAAAGCGGCTGTTAGTCACTGGCAGCAACAGTCTTACCTGGACCTGGAATCCATTCTGGTGCCACTACCACAGCTCCTTCTCTGAGTGGTAAAGGCAATCCTGAGGAAGAGGATGTGGATACCTCCCAGTCCTGTATGAGTGGGAACAGGGATTTTCTCAGTCCTTCACTCAAGAACAAGTAGCTG	-		NA	P-0000874-T01-IM3																	NA	NA	NA	NA	p.A5_D81del
+```
+Annotation is failing but Genome Nexus api response is fine:
+https://www.genomenexus.org/annotation/3%3Ag.41265562_41266260del?isoformOverrideSource=mskcc&fields=annotation_summary
+",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/248
+I_kwDOA8bm_85tyW2P,Add a new command parameter to set oncokb token ,OPEN,2023-08-08T19:24:40Z,2023-08-08T19:57:21Z,,"Add support to set oncokb token in command line.
+E.g. ""--oncokbToken abc123""",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/254
+I_kwDOA8bm_85uZLPb,Add note column to include some important comments,CLOSED,2023-08-15T20:36:43Z,2023-09-25T14:28:38Z,2023-09-25T14:28:38Z,"**Background**:
+- If there are common prefix being removed, or end position is altered (when end position is missing or is not correct), start position and / or end position might be updated. We have a new field in genome nexus response, e.g. `""genomicLocationExplanation"":""End position changes from 123 to 122, because end position should be the position of last deleted nucleotide.`
+- Add comments for failing variants, we have a new field called `errorMessage`, e.g. `  ""errorMessage"": ""Unable to parse HGVS notation '12:g.58142319A>C': Reference allele extracted from 12:58142319-58142319 (T) does not match reference allele given by HGVS notation 12:g.58142319A>C (A)"",
+`
+    - wrong coordinates, alleles
+    - no matches in VEP
+ - server issues
+
+**Proposal**:
+- Add new parameter for instance `-n` `--note`.
+- If have `-n`, add a new column:`GenomicLocation Explanation`.
+- (if user defines `-e`) In error report, add `Error Message` column using the ""errorMessage"" value.
+",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/255
+I_kwDOA8bm_85ugDAF,Adding sift and polyphen causes all annotations fail,CLOSED,2023-08-16T20:56:11Z,2023-08-17T16:16:40Z,2023-08-17T16:16:40Z,"Adding `sift` and `polyphen` in ""enrichment_fields"" causes all annotations fail, this is because `sift` and `polyphen` are not valid fields name for genome nexus server, so giving `sift` and `polyphen` in genome nexus query causes failing annotation.
+The `sift` and `polyphen` annotations are actually resolved from canonical transcript.",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/257
+I_kwDOA8bm_85upBoR,Error runnnig docker on v1.0.0,CLOSED,2023-08-18T07:54:56Z,2023-09-07T17:59:10Z,2023-09-07T17:59:10Z,"Hi, 
+I am having troubles to run the new docker version. 
+
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: ""--filename"": executable file not found in $PATH: unknown.
+
+This error was not present in the previous version of the docker image. Also I was comparing both docker image version and the size is different.
+
+Could you please check the new docker image?
+
+Thanks",aclosa,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/258
+I_kwDOA8bm_85u33yD,Some complex variants with common prefix - suffix fail the annotation,OPEN,2023-08-21T20:58:53Z,2023-08-21T21:00:27Z,,"These variants needs some pre-processing like removing both common prefix and suffixes, adjusting the coordinates etc., before passing to GN. It's a bit tricky in some cases. 
+
+
+
+Chr | Start Pos | End Pos | Ref Allele | Tumor Allele
+-- | -- | -- | -- | --
+5 | 112175377 | 112175378 | CAAAAG | CAAAAAT
+17 | 7578231 | 7578232 | CAAAT | CAAAAAT
+17 | 7578439 | 7578440 | TTGT | TGCTTGG
+5 | 112175650 | 112175651 | TAAAAAT | TAAAAAAT
+20 | 31022441 | 31022442 | AGGGGGGGGT | AGGGGGGGGGT
+22 | 41574678 | 41574679 | GCCCCCCCA | GCCCCCCCCA
+2 | 48033651 | 48033652 | AAATT | AAATAATT
+17 | 11924243 | 11924244 | GGCGGCAGCGGCAGCGGCAC | GGCGGCAGCGGCAGCGGCAGCGGCAC
+6 | 157100116 | 157100117 | AGGCGGCGGCGGCGGCGGCT | AGGCGGCGGCGGCGGCGGCGGCT
+6 | 157099165 | 157099166 | GTCCTCCTCCTCCTCCTCCTCCG | GTCCTCCTCCTCCTCCTCCTCCTCCG
+1 | 27023007 | 27023008 | AGGCGGCGGCGGCGGCA | AGGCGGCGGCGGCGGCGGCGGCA
+7 | 55248999 | 55249000 | TGGCCAGCGTGGAC | TGGCCAGCGTGGCCAGCGTGGAT
+7 | 55242460 | 55242461 | ATCAAGGAATTAAGAGAAGCA | ATCAAAGGAATTAAGAGAAGCA
+7 | 55249015 | 55249016 | CCCC | CCCAACCCCT
+7 | 151874147 | 151874148 | CTTTTTTTTTG | CTTTTTTTTTTG
+17 | 7577091 | 7577092 | GCCG | GCCCCG
+16 | 67660601 | 67660602 | GATT | GATATT
+7 | 55248999 | 55249000 | TGGCCAGCGTGGAC | TGGCCAGCCGTGGAC
+19 | 1221313 | 1221314 | GCCCCCCG | GCCCCCCTG
+17 | 7578467 | 7578475 | GACGCGGGT | GACGCGGG
+7 | 55242465 | 55242482 | CAAGGAATTAAGAGAAGC | CAA
+9 | 1393967398 | 1393967410 | GTCCTCGCCGAGG | GCCCTC
+X | 66766357 | 66766356 | GGCGGCGGCGGCGGCGGCGGC | -
+17 | 7577541 | 7577540 | TTCATGCCGCCCATGCAGGAA | -
+
+",rmadupuri,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/259
+I_kwDOA8bm_85u39HK,Handling variants with common prefixes between GENIE and public GN,OPEN,2023-08-21T21:13:34Z,2023-08-29T17:39:10Z,,"A few variants successfully annotate when pointed to the public GN (https://www.genomenexus.org/) but are failing when pointing to the Genie GN (https://genie.genomenexus.org/). The variants are passed in region format for genie and hgvsg format for public and the variants with common prefixes are handled differently in each case. 
+
+Below are a few examples that pass annotation when pointed to public but fail when pointed to genie site.
+[test_failed_variants.txt](https://github.com/genome-nexus/genome-nexus-annotation-pipeline/files/12410849/test_failed_variants.txt)
+
+",rmadupuri,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/260
+I_kwDOA8bm_85wU_-8,entrypoint to cmd switch breaks old usage of cli,OPEN,2023-09-06T18:38:29Z,2023-09-06T18:39:13Z,,"See related PR: https://github.com/genome-nexus/genome-nexus-annotation-pipeline/pull/250 and example of how it breaks the old documented interface: https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/258
+
+- [ ] Restore old CLI usage
+- [ ] Add test that follows steps of the docs for annotating a MAF: https://docs.genomenexus.org/annotate-maf-file
+
+",inodb,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/262
+I_kwDOA8bm_85xeOHj,Add command parameter groups,OPEN,2023-09-19T21:23:09Z,2023-09-19T21:23:09Z,,"We have more and more parameters now that are a bit hard to track, the idea is to create a few groups for command parameters:
+for example:
+```
+--minimal activate minimal set of annotation columns
+--full add all available annotation columns
+--debug add all available annotation columns, and need to specify the log file and error report file, can also extend to different levels of logging (https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/247)
+```",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/266
+I_kwDOA8bm_85zYAMe,Tumor_Seq_Allele1 and Tumor_Seq_Allele2 should be the same,OPEN,2023-10-10T15:42:09Z,2023-10-10T15:43:29Z,,"If the variant has common postfix, e.g.
+
+23 | 8993426 | 8993426 | A | CA
+-- | -- | -- | -- | --
+
+**Problem**: The current output only updates Tumor_Seq_Allele2 but fill Tumor_Seq_Allele1 with the original input
+
+|Chromosome | Start_Position | End_Position |  Reference_Allele |Tumor_Seq_Allele1  | Tumor_Seq_Allele2 |
+|-- | -- | -- | -- | -- | --|
+|23 | 8993425 | 8993426 | -  | CA | C|
+
+**Expected result**: Tumor_Seq_Allele1 and Tumor_Seq_Allele2 should be the same so the expected output should be:
+
+|Chromosome | Start_Position | End_Position |  Reference_Allele |Tumor_Seq_Allele1  | Tumor_Seq_Allele2 |
+|-- | -- | -- | -- | -- | --|
+|23 | 8993425 | 8993426 | -  | C | C|
+
+",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/268
+I_kwDOA8bm_858YkVZ,Error when having duplicated variants and no end positions,OPEN,2024-01-17T19:13:34Z,2024-01-17T19:13:34Z,,"If the input file contains duplicated variants and doesn't have end positions,  the GN annotation pipeline fails with error: `java.lang.NullPointerException: Cannot invoke ""java.lang.Integer.compareTo(java.lang.Integer)"" because the return value of ""org.genome_nexus.client.GenomicLocation.getEnd()"" is null` .
+
+GN annotation pipeline can handle duplications with full genomic location, or missing end position with no duplication, but throws errors for duplication AND missing end position.
+",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/271
+I_kwDOA8bm_85_QePb,Handling Intergenic Variants in the MAF: Annotation Pipeline doesn't fill out any columns when VEP returns no transcript,OPEN,2024-02-14T19:15:47Z,2024-02-14T19:22:48Z,,"When VEP doesnt return any transcript info (for intergenic variants), the annotation pipeline doesnt fill out any columns. 
+For example, https://www.genomenexus.org/annotation/2%3Ag.159740254C%3EA?fields=annotation_summary is an intergenic variant and this would get imported as MUTATED into the database although this is an intergenic event and should be filtered out. Importer uses Variant_Classification column to filter out the variants. 
+
+Solution:
+Would be ideal to use the ""most_severe_consequence"" to update the Consequence (intergenic_variant) and Variant_Classification (IGR) coulumns so these would be filtered out during import. 
+
+More examples: 
+[error.txt](https://github.com/genome-nexus/genome-nexus-annotation-pipeline/files/14285125/error.txt)
+",rmadupuri,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/274
+I_kwDOA8bm_86Del5W,Documentation for application.properties overrides via ENV variables,OPEN,2024-03-25T14:00:00Z,2024-03-25T14:00:01Z,,"User to override application.properties via environment variables. ENV variables are currently supported in a limited or full-supported way, however it may not be clear to the end user.
+
+### Use case:
+It would be helpful for users to be able to
+1) Point to specific VEP version of genome-nexus. e.g. `<vep_version>.genomenexus.org`
+2) Modify the enrichment fields via environment variable
+
+Alternative (instead of ENV variables)
+1) User supplied application.properties file. Not friendly for usage in NextFlow
+
+### Deliverables:
+1) Provide examples of ENV usage, especially with `docker` usage.
+2) Provide example of user supplying custom `application.properties` file and location to file.
+3) Document the ENV variables currently being used",hweej,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/275
+I_kwDOA8bm_86ELdiY,Singularity 3.3 cannot pull master docker ,OPEN,2024-04-01T06:05:12Z,2024-04-01T06:05:12Z,,"When running on Singularity 3.3, it can run docker GN:latest but not GN:master. The ""latest"" tag is the same as the latest official tag (v1.0.3), while ""master"" has some commits that are not release yet (PR 267, 270, 272, 273)
+Error message:
+```
+error initializing image from source docker://genomenexus/gn-annotation-pipeline:master: unsupported schema version 2
+```",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/276
+I_kwDOA8bm_86ELeZW,Singularity 3.7 got LinkageError when running master,OPEN,2024-04-01T06:07:28Z,2024-04-01T06:07:53Z,,"Error message:
+```
+Error: LinkageError occurred while loading main class org.springframework.boot.loader.JarLauncher
+java.lang.UnsupportedClassVersionError: org/springframework/boot/loader/JarLauncher has been 
+compiled by a more recent version of the Java Runtime (class file version 61.0), this version of the 
+Java Runtime only recognizes class file versions up to 55.0
+```",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/277
+I_kwDOA8bm_86EYxlQ,Error report misses '/' in URL column,OPEN,2024-04-02T17:45:39Z,2024-04-02T17:46:57Z,,"E.g. https://www.genomenexus.organnotation/genomic/8,37539334,37539334,G,A?isofromOverrideSource=null&fields=annotation_summary,my_variant_info,mutation_assessor,nucleotide_context,oncokb
+Should have / after `.org`
+https://www.genomenexus.org/annotation/genomic/8,37539334,37539334,G,A?isofromOverrideSource=null&fields=annotation_summary,my_variant_info,mutation_assessor,nucleotide_context,oncokb",leexgh,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/278
+I_kwDOA8bm_86PbCyI,Java Null Pointer Exception while running annotator with Docker,OPEN,2024-07-12T19:46:37Z,2024-07-16T02:50:55Z,,"When running the annotator with Docker, I get a java.lang.NullPointerException. It reads data from my file just fine, but I would like to eliminate these errors and warnings. I have the most recent Docker image pulled down. Has anyone encountered this?
+
+
+### My command
+```
+$ docker run -v ${PWD}:/wd genomenexus/gn-annotation-pipeline:master java -jar annotationPipeline.jar --filename /wd/mutations.txt --output-filename /wd/output.txt
+```
+
+### TL;DR Output
+```
+2024-07-12 19:34:28 [main] ERROR org.springframework.batch.core.step.AbstractStep - Encountered an error executing step step in job annotationJob
+org.springframework.batch.item.ItemStreamException: java.lang.NullPointerException
+```
+
+### Full Output
+```
+  _____                                               _   _                             
+ / ____|                                             | \ | |                            
+| |  __    ___   _ __     ___    _ __ ___     ___    |  \| |   ___  __  __  _   _   ___ 
+| | |_ |  / _ \ | '_ \   / _ \  | '_ ` _ \   / _ \   | . ` |  / _ \ \ \/ / | | | | / __|
+| |__| | |  __/ | | | | | (_) | | | | | | | |  __/   | |\  | |  __/  >  <  | |_| | \__ \
+ \_____|  \___| |_| |_|  \___/  |_| |_| |_|  \___|   |_| \_|  \___| /_/\_\  \__,_| |___/
+                                                                                        
+
+2024-07-12 19:34:27 [main] INFO  org.cbioportal.annotation.AnnotationPipeline - Starting AnnotationPipeline v7a064a4-SNAPSHOT using Java 21.0.3 with PID 1 (/genome-nexus-annotation-pipeline/annotationPipeline/target/annotationPipeline.jar started by root in /genome-nexus-annotation-pipeline/annotationPipeline/target)
+2024-07-12 19:34:27 [main] INFO  org.cbioportal.annotation.AnnotationPipeline - No active profile set, falling back to 1 default profile: ""default""
+2024-07-12 19:34:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-07-12 19:34:27 [main] INFO  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Driver does not support get/set network timeout for connections. (Receiver class org.h2.jdbc.JdbcConnection does not define or inherit an implementation of the resolved method 'abstract int getNetworkTimeout()' of interface java.sql.Connection.)
+2024-07-12 19:34:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:7c100da6-32c8-43e7-9efa-fe77e318345b user=SA
+2024-07-12 19:34:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-07-12 19:34:28 [main] WARN  org.springframework.batch.core.listener.AbstractListenerFactoryBean - org.springframework.batch.item.ItemStreamReader is an interface. The implementing class will not be queried for annotation based listener configurations. If using @StepScope on a @Bean method, be sure to return the implementing class so listener annotations can be used.
+2024-07-12 19:34:28 [main] WARN  org.springframework.batch.core.listener.AbstractListenerFactoryBean - org.springframework.batch.item.ItemStreamWriter is an interface. The implementing class will not be queried for annotation based listener configurations. If using @StepScope on a @Bean method, be sure to return the implementing class so listener annotations can be used.
+2024-07-12 19:34:28 [main] INFO  org.cbioportal.annotation.AnnotationPipeline - Started AnnotationPipeline in 1.087 seconds (process running for 1.457)
+2024-07-12 19:34:28 [main] INFO  org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner - Running default command line with: [/wd/mutations.txt, /wd/output.txt]
+2024-07-12 19:34:28 [main] INFO  org.springframework.batch.core.launch.support.SimpleJobLauncher - Job: [SimpleJob: [name=annotationJob]] launched with the following parameters: [{}]
+2024-07-12 19:34:28 [main] INFO  org.springframework.batch.core.job.SimpleStepHandler - Executing step: [step]
+2024-07-12 19:34:28 [main] ERROR org.springframework.batch.core.step.AbstractStep - Encountered an error executing step step in job annotationJob
+org.springframework.batch.item.ItemStreamException: java.lang.NullPointerException
+	at org.cbioportal.annotation.pipeline.MutationRecordReader.processComments(MutationRecordReader.java:233)
+	at org.cbioportal.annotation.pipeline.MutationRecordReader.open(MutationRecordReader.java:109)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:137)
+	at org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:244)
+	at jdk.proxy2/jdk.proxy2.$Proxy32.open(Unknown Source)
+	at org.springframework.batch.item.support.CompositeItemStream.open(CompositeItemStream.java:124)
+	at org.springframework.batch.core.step.tasklet.TaskletStep.open(TaskletStep.java:293)
+	at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:226)
+	at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:153)
+	at org.springframework.batch.core.job.AbstractJob.handleStep(AbstractJob.java:418)
+	at org.springframework.batch.core.job.SimpleJob.doExecute(SimpleJob.java:132)
+	at org.springframework.batch.core.job.AbstractJob.execute(AbstractJob.java:317)
+	at org.springframework.batch.core.launch.support.SimpleJobLauncher$1.run(SimpleJobLauncher.java:157)
+	at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:50)
+	at org.springframework.batch.core.launch.support.SimpleJobLauncher.run(SimpleJobLauncher.java:148)
+	at org.springframework.batch.core.launch.support.TaskExecutorJobLauncher.run(TaskExecutorJobLauncher.java:59)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.execute(JobLauncherApplicationRunner.java:211)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.executeLocalJobs(JobLauncherApplicationRunner.java:195)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.launchJobFromProperties(JobLauncherApplicationRunner.java:175)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:170)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:165)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:765)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:755)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:322)
+	at org.cbioportal.annotation.AnnotationPipeline.annotateJob(AnnotationPipeline.java:75)
+	at org.cbioportal.annotation.AnnotationPipeline.annotate(AnnotationPipeline.java:267)
+	at org.cbioportal.annotation.AnnotationPipeline.subMain(AnnotationPipeline.java:127)
+	at org.cbioportal.annotation.AnnotationPipeline.main(AnnotationPipeline.java:138)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:95)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:65)
+Caused by: java.lang.NullPointerException
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:144)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:106)
+	at java.base/java.io.FileReader.<init>(FileReader.java:60)
+	at org.cbioportal.annotation.pipeline.MutationRecordReader.processComments(MutationRecordReader.java:216)
+	... 40 more
+2024-07-12 19:34:28 [main] INFO  org.springframework.batch.core.step.AbstractStep - Step: [step] executed in 751ms
+2024-07-12 19:34:28 [main] ERROR org.springframework.batch.core.step.AbstractStep - Exception while closing step execution resources in step step in job annotationJob
+java.lang.NullPointerException: Cannot invoke ""java.lang.Integer.intValue()"" because ""this.recordsToWriteCount"" is null
+	at org.cbioportal.annotation.pipeline.MutationRecordWriter.close(MutationRecordWriter.java:95)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:137)
+	at org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:244)
+	at jdk.proxy2/jdk.proxy2.$Proxy33.close(Unknown Source)
+	at org.springframework.batch.item.support.CompositeItemStream.close(CompositeItemStream.java:111)
+	at org.springframework.batch.core.step.tasklet.TaskletStep.close(TaskletStep.java:288)
+	at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:312)
+	at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:153)
+	at org.springframework.batch.core.job.AbstractJob.handleStep(AbstractJob.java:418)
+	at org.springframework.batch.core.job.SimpleJob.doExecute(SimpleJob.java:132)
+	at org.springframework.batch.core.job.AbstractJob.execute(AbstractJob.java:317)
+	at org.springframework.batch.core.launch.support.SimpleJobLauncher$1.run(SimpleJobLauncher.java:157)
+	at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:50)
+	at org.springframework.batch.core.launch.support.SimpleJobLauncher.run(SimpleJobLauncher.java:148)
+	at org.springframework.batch.core.launch.support.TaskExecutorJobLauncher.run(TaskExecutorJobLauncher.java:59)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.execute(JobLauncherApplicationRunner.java:211)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.executeLocalJobs(JobLauncherApplicationRunner.java:195)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.launchJobFromProperties(JobLauncherApplicationRunner.java:175)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:170)
+	at org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner.run(JobLauncherApplicationRunner.java:165)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:765)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:755)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:322)
+	at org.cbioportal.annotation.AnnotationPipeline.annotateJob(AnnotationPipeline.java:75)
+	at org.cbioportal.annotation.AnnotationPipeline.annotate(AnnotationPipeline.java:267)
+	at org.cbioportal.annotation.AnnotationPipeline.subMain(AnnotationPipeline.java:127)
+	at org.cbioportal.annotation.AnnotationPipeline.main(AnnotationPipeline.java:138)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:95)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:65)
+2024-07-12 19:34:28 [main] WARN  org.springframework.beans.factory.support.DisposableBeanAdapter - Custom destroy method 'close' on bean with name 'scopedTarget.writer' threw an exception: java.lang.NullPointerException: Cannot invoke ""java.lang.Integer.intValue()"" because ""this.recordsToWriteCount"" is null
+2024-07-12 19:34:28 [main] INFO  org.springframework.batch.core.launch.support.SimpleJobLauncher - Job: [SimpleJob: [name=annotationJob]] completed with the following parameters: [{}] and the following status: [FAILED] in 766ms
+2024-07-12 19:34:28 [main] INFO  org.springframework.batch.core.launch.support.SimpleJobLauncher - Job: [SimpleJob: [name=annotationJob]] launched with the following parameters: [{'ignoreOriginalGenomicLocation':'{value=false, type=class java.lang.String, identifying=true}','filename':'{value=/wd/mutations.txt, type=class java.lang.String, identifying=true}','outputFilename':'{value=/wd/output.txt, type=class java.lang.String, identifying=true}','noteColumn':'{value=true, type=class java.lang.String, identifying=true}','replace':'{value=true, type=class java.lang.String, identifying=true}','postIntervalSize':'{value=100, type=class java.lang.String, identifying=true}','stripMatchingBases':'{value=all, type=class java.lang.String, identifying=true}'}]
+```",grabnervan,https://github.com/genome-nexus/genome-nexus-annotation-pipeline/issues/283

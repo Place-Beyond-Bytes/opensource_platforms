@@ -1,0 +1,93 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFYT5ns5vCHIn,error in the R script of spikChIP,CLOSED,2023-08-23T08:22:42Z,2023-12-28T10:59:35Z,2023-12-28T10:59:35Z,"I was trying to apply the spikChIP methodology to my data and the script ended abruptly at this point:
+
+%%%% Run local regression adjusting sample values with spike values
+%%%% Performing the analysis on average values
+%%%% R CMD BATCH Rscripts/1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16_10000_avg.R
+%%%% R running: Error in read.table(""results/1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16_SPIKCHIP_10000_spike-sample_avg_names.txt"") : 
+
+%%%% [Wed Aug 23 09:54:54 2023] Stage X.  Abruptly finishing the work
+%%%% Total running time (hours): 0.578  hours
+%%%% Total running time (minutes): 34.683  mins
+%%%% Total running time (seconds): 2081  secs [OK]
+
+
+I've looked to the table ""results/1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16_SPIKCHIP_10000_spike-sample_avg_names.txt"" and it is empty. 
+Can you help me with this error? Thanks!
+
+",sgomezgonzalez,https://github.com/eblancoga/spikChIP/issues/2
+I_kwDOFYT5ns50n6dS,Output files,CLOSED,2023-10-23T08:23:28Z,2023-12-28T10:59:15Z,2023-12-28T10:59:14Z,"Hi,
+Thank you for this nice tool, I recently tested it on some Chip-RX data from my lab.
+I would like to ask for your help about a couple of issues  I faced.
+
+Among the output files,  I get the **1000_avg_normalized_sample** only for the SPIKCHIP method. I converted this file to bedGraph and then to bigwig. However, I would like to create a bigwig also for the other normalization methods in order to compare them. How could I achieve this?
+
+Moreover, when  I open in igv the output bigwigs files, for two samples of the same histone modification I get a high signal in the background regions that is also constant. I am struggling to understand what is happening. 
+
+See here:
+![image](https://github.com/eblancoga/spikChIP/assets/48018596/aa971e8a-f3b6-4b2e-978f-d8ec97fd4e44)
+
+Sample 1 and 3 are from the same histone modification (H3K27Me3), whereas 2 and 4 are from H2Ak119ub1
+
+Hope you can help me out.
+Thanks!
+Best
+
+Davide",DavideBrex,https://github.com/eblancoga/spikChIP/issues/3
+I_kwDOFYT5ns54sk1d,Bin size,CLOSED,2023-12-04T23:01:18Z,2023-12-28T11:00:17Z,2023-12-28T11:00:17Z,"Hi,
+
+First of all, thank you for making this software.
+
+I would like to use a bin size of 20 bp (or 50bp), because I would like higher ChIP-seq signal resolution.
+Qn 1: Would I lose reliability of normalisation if I use bin sizes this small?
+
+You mention ""selection of this [1000 bp] was based on finding a balance between ChIP-seq resolution, and the computational memory demand and running time required for a more compact bin segmentation"".
+Qn 2: Could I get an idea of how memory demand and run time scales for smaller bin sizes please?
+
+Thank you,
+PGS",tellyalogicalguy,https://github.com/eblancoga/spikChIP/issues/4
+I_kwDOFYT5ns6F1tlO,normalize.loess error,OPEN,2024-04-16T08:28:22Z,2024-05-06T09:17:12Z,,"Hi,
+
+Thank you for developing such a useful tool. I'm currently attempting to use spikChIP with human cell line samples and have encountered an error while running the R script (avg.R). The error message is:
+
+```
+mn <- normalize.loess(m,subset=s)
+Error in simpleLoess(y, x, w, span, degree = degree, parametric = parametric,  : 
+  NA/NaN/Inf in foreign function call (arg 1)
+In addition: There were 44 warnings (use warnings() to see them)
+```
+All values within the script are greater than 0.1, and there are no NAs, at least.
+
+Here is my R session:
+```
+sessionInfo()
+R version 4.0.3 (2020-10-10)
+Platform: x86_64-conda-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.6 LTS
+
+Matrix products: default
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+[1] MASS_7.3-60.0.1     affy_1.68.0         Biobase_2.50.0     
+[4] BiocGenerics_0.36.1
+
+loaded via a namespace (and not attached):
+[1] BiocManager_1.30.22   zlibbioc_1.36.0       compiler_4.0.3       
+[4] affyio_1.60.0         preprocessCore_1.52.1
+```
+
+Could you provide some guidance on resolving this issue? I appreciate your help.
+
+Thanks",rlbc,https://github.com/eblancoga/spikChIP/issues/5

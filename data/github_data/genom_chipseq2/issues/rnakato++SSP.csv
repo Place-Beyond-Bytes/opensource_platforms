@@ -1,0 +1,99 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOEENBls5N8GoC,SSP not working (Segmentation fault),CLOSED,2022-07-18T08:43:36Z,2022-10-11T08:14:31Z,2022-07-27T02:58:01Z,"Hi, 
+I have installed SSP in 3 different computers (Ubuntu 20.04.3, CentOS 7, and MacOS Monterrey 12.3.1), but I couldn't successfully run it on my bam or sam files, I always got a segmentation fault error. I have also tried it on CentOS 7 (an HPC) with the singularity image, but it finishes after a few seconds without an output message.
+
+My bam files are sorted and indexed and contain paired-end reads. Until now, I have used them with other programs with no issues. Do you know where might be the issue?
+Many thanks!
+",julenmendieta,https://github.com/rnakato/SSP/issues/2
+I_kwDOEENBls6Mj6t9,Seeking clarification for `ssp` argument `--thre_pb`,CLOSED,2024-06-17T20:45:33Z,2024-06-20T11:14:57Z,2024-06-20T11:14:57Z,"
+Dear @rnakato,
+
+Thank you to you and your lab personnel for making and maintaining this great tool. I am writing to seek clarification for the argument `--thre_pb`. In the `--help` documentation, `--thre_pb` is described as follows:
+```txt
+  --thre_pb arg (=0)           PCRbias threshold (default: more than max(1 read, 10 times greater
+                               than genome average))
+```
+
+- If I want to adjust the threshold for alignment redundancy, is this the argument I should use? For example, if I want any read alignments above threshold $T = 1$ to be considered redundant duplicates, should I invoke `ssp` with the argument `--thre_pb 1`?
+- Additionally, is the default value for `--thre_pb` zero (from ""`(=0)`"") or ""`more than max(1 read, 10 times greater than genome average)`""? If it is the latter, then does this mean the threshold for redundancy $T$ is set to $10 \times \(\text{mean number of duplicate alignments genome wide}\)$? I don't understand what the description means.
+
+I'll appreciate any help and guidance you can provide. Thank you.
+
+–Kris",kalavattam,https://github.com/rnakato/SSP/issues/3
+I_kwDOEENBls6NMjcw,Questions about parameterization of SSP for FCS calculations with *S. cerevisiae* ChIP-seq data,CLOSED,2024-06-23T20:29:50Z,2024-06-28T01:27:30Z,2024-06-28T01:27:30Z,"Dear @rnakato,
+
+Thank you again for developing and maintaining SSP. I have a question regarding the parameterization of SSP for FCS calculations with *S. cerevisiae* ChIP-seq data. In the SSP tutorial described in the [README.md](https://github.com/rnakato/SSP?tab=readme-ov-file#32-tutorial), it is advised to adjust the parameters for calculating the background Jaccard score $J(d_{bg})$ to use a range of 10 kb to 50 kb, averaging scores at steps of 500 bp, instead of the default 500 kb to 1 Mb range with 5 kb steps:
+```bash
+ssp -i ChIP1.bam -o ChIP --gt genometable.txt --ng_from 10000 --ng_to 50000 --ng_step 500
+```
+<br />
+
+Should the start (`--ng_from_fcs`), stop (`--ng_to_fcs`), and step (`--ng_step_fcs`) values for FCS background calculations also be reduced for *S. cerevisiae* ChIP-seq data? (Is $\text{cPNF}(d_{bg}, s) = \frac{f(d_{bg}, \space s)}{N_{d_{bg}}}$, where $N_{d_{bg}} = |v_c^{fwd} \cap v_c^{rev} (d_{bg})|$?)
+
+I tried running FCS calculations with default and reduced `--ng_from_fcs`, `--ng_to_fcs`, and `--ng_step_fcs` values:
+```bash
+dir_bam=...        # Directory containing BAM files
+dir_tbl=...        # Directory containing genome and mappability tables
+path_img=...       # Path to ssp_drompa.img
+file_tbl_gen=...   # Genome table file
+file_tbl_map=...   # Mappability table file
+thresh=0           # Calculate PCR bias threshold with program's internal logic
+SSP_ng_from=10000  # S. cerevisiae 10 kb (default for H. sapiens is 500 kb, a 50× reduction)
+SSP_ng_to=50000    # S. cerevisiae 50 kb (default for H. sapiens is 1 Mb, a 20× reduction)
+SSP_ng_step=500    # S. cerevisiae 500 bp (default for H. sapiens is 5 kb, a 10× reduction)
+FCS_ng_from=2000   # S. cerevisiae 2 kb (a 50× reduction from H. sapiens 100000)
+FCS_ng_to=50000    # S. cerevisiae 50 kb (a 20× reduction from H. sapiens 1000000)
+FCS_ng_step=1000   # S. cerevisiae 1 kb (a 10× reduction from H. sapiens 100000)
+
+#  Default values for FCS calculations
+singularity exec \
+    --no-home \
+    --bind ""${dir_bam}:/mnt_1"" \
+    --bind ""${dir_tbl}:/mnt_2"" \
+    ""${path_img}"" \
+        ssp \
+            --threads ${SLURM_CPUS_ON_NODE} \
+            --pair \
+            --input ""/mnt_1/${file_bam}"" \
+            --output ""${file_bam%.bam}_filt-${thresh}"" \
+            --gt ""/mnt_2/${file_tbl_gen}"" \
+            --mptable ""/mnt_2/${file_tbl_map}"" \
+            --include_allchr \
+            --ng_from ${SSP_ng_from} \
+            --ng_to ${SSP_ng_to} \
+            --ng_step ${SSP_ng_step} \
+            --thre_pb ${thresh}
+
+#  Reduced values for FCS calculations
+singularity exec \
+    --no-home \
+    --bind ""${dir_bam}:/mnt_1"" \
+    --bind ""${dir_tbl}:/mnt_2"" \
+    ""${path_img}"" \
+        ssp \
+            --threads ${SLURM_CPUS_ON_NODE} \
+            --pair \
+            --input ""/mnt_1/${file_bam}"" \
+            --output ""${file_bam%.bam}_filt-${thresh}"" \
+            --gt ""/mnt_2/${file_tbl_gen}"" \
+            --mptable ""/mnt_2/${file_tbl_map}"" \
+            --include_allchr \
+            --ng_from ${SSP_ng_from} \
+            --ng_to ${SSP_ng_to} \
+            --ng_step ${SSP_ng_step} \
+            --ng_from_fcs ${FCS_ng_from} \
+            --ng_to_fcs ${FCS_ng_to} \
+            --ng_step_fcs ${FCS_ng_step} \
+            --thre_pb ${thresh}
+```
+<br />
+
+Despite using different `--ng_from_fcs`, `--ng_to_fcs`, and `--ng_step_fcs` values, the related plots look largely the same (see `image_FCS-values_default-vs-reduced.png`). The top plots use default FCS background calculation values, and the bottom plots use reduced values. Could you provide any advice on why this might be happening and how to proceed? Also, the plots for ""Proportion of nearest neighbor fragments"" and ""Cumulative proportion"" reach respective minimal and maximal plateaus quickly, and the curves do not change with `len` values. Is this expected? This behavior is different than what is shown in the supplementary material for [Nakato, Shirahige, Sensitive and robust assessment of ChIP-seq read distribution using a strand-shift profile, *Bioinformatics* 2018-0307](https://academic.oup.com/bioinformatics/article/34/14/2356/4924717).
+
+Thank you again for your help and guidance.
+
+Best regards,  
+Kris
+
+<img width=""1440"" alt=""image_FCS-values_default-vs-reduced"" src=""https://github.com/rnakato/SSP/assets/34422552/4a9ab777-c298-4418-800d-c66933f9b990"">",kalavattam,https://github.com/rnakato/SSP/issues/4
+I_kwDOEENBls6YNM9-,mptable,OPEN,2024-09-27T19:26:22Z,2024-09-27T19:26:22Z,,How we can make mptable for plant genome? ,mforoozani,https://github.com/rnakato/SSP/issues/5

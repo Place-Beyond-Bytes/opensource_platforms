@@ -1,0 +1,25 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDODIFKhs5AnSWi,val(bam_file) -> file(bam_file),CLOSED,2021-12-19T08:16:54Z,2022-02-17T09:54:59Z,2022-02-17T09:52:19Z,"I think each instance of `val(bam_file)` in `generate-vcf/main.nf` should be `file(bam_file)` otherwise the process does not work under singularity.
+
+I have fixed locally so this is not urgent ",shaze,https://github.com/grbot/varcall/issues/41
+I_kwDODIFKhs5BEFZO,Staging problem using singularity with combine-gvcfs,CLOSED,2021-12-31T14:32:13Z,2023-05-02T14:22:13Z,2023-05-02T14:22:13Z,"I had some problems with the combine-gvcfs using singularity because the file that is staged is the _list_ of gvcfs rather than the gvcfs.
+
+My suggestion is to have parameter --gvcf_dir which contains (perhaps nested) all the gvcfs. The sampelsheet should then have file names that are relative to this.
+
+",shaze,https://github.com/grbot/varcall/issues/42
+I_kwDODIFKhs5IRUE3,Pull requests?,OPEN,2022-04-22T15:25:19Z,2023-05-02T14:23:18Z,,"Hi @grbot just checking, are you accepting pull requests on this? I may loop in Gloria and Lindsay on this but maybe work from a fork under HPCBio",cjfields,https://github.com/grbot/varcall/issues/43
+I_kwDODIFKhs5WmOUI,combine-lanes improvement,CLOSED,2022-11-17T07:36:14Z,2023-06-05T19:12:27Z,2023-06-05T19:12:27Z,"Hi Gerrit
+
+It would be great if you could modify the combine-lanes workflow to write a CRAM file as output with the extension .md.recal.cram so that it is consistent with the rest of the pipeline. Just a suggestion as at the moment we have to run bam-to-cram after combine-lanes and also rename the cram files with .md.recal.cram.
+
+Thanks,
+Melissa",melnel000,https://github.com/grbot/varcall/issues/45
+I_kwDODIFKhs5d77qa,Mitochondrial variant calling pipeline missing a step,OPEN,2023-02-08T12:00:57Z,2023-05-02T14:21:18Z,,"Hi @grbot 
+
+I see that the mitochondrial variant calling pipeline excluded ""Align the unmapped BAM file with the reference aligned BAM and shifted reference aligned BAM"" step described in [mt-variant calling gatk pipeline](https://gatk.broadinstitute.org/hc/en-us/articles/4403870837275-Mitochondrial-short-variant-discovery-SNVs-Indels-). Any particular reason for that. I am asking this because I don't understand this step either and was wondering if this is really necessary ?
+
+I can see shifted reference fasta available [here](https://github.com/broadinstitute/gatk/blob/master/scripts/mitochondria_m2_wdl/ExampleInputsMitochondriaPipeline.json)
+
+",Rohit-Satyam,https://github.com/grbot/varcall/issues/46
+I_kwDODIFKhs5jUKWg,DSL2-Modules.modules.align,CLOSED,2023-04-13T11:24:16Z,2023-06-05T19:13:14Z,2023-06-05T19:13:14Z,"@phelelani, I have been trying to rerun the align and generate-gvcf modules. But there is an issue that I have been struggling with at line 111 on the main.nf :  include { print_sample_info; log_tool_version_samtools_bwa; log_tool_version_gatk } from './modules/modules-general.nf' . modules-general.nf is not defined and nextflow gives me this error: ERROR nextflow.cli.Launcher - Can't find a matching module file for include: ./modules/modules-general.nf.
+At first, I thought maybe you made a mistake and wrote general.nf instead of generate-gvcf.nf",Thandeka325,https://github.com/grbot/varcall/issues/47

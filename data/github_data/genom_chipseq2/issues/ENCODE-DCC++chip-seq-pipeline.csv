@@ -1,0 +1,23 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NDk3OTU0OTg=,Find overlapped peaks about histone ChIPseq,OPEN,2020-07-02T09:49:07Z,2020-07-02T09:49:07Z,,"Hi,
+I'm curious about the function of finding overlapped peaks, expecially the scripts 'overlap_peaks.py'. But the explanation about how to excute this function is barely mentioned in your document? I even don't know what kind of files should be submitted. Could you help me to use it? I really want to get a more precise results.
+Hanwen",AIBio,https://github.com/ENCODE-DCC/chip-seq-pipeline/issues/79
+MDU6SXNzdWU5ODk2MDg0NTU=,why remove duplicates before calculate library complexity?,OPEN,2021-09-07T05:33:04Z,2021-09-07T05:33:04Z,,"Hi,
+I assumed you're using the following in the pipeline to calculate metrics for library complexity:
+
+# calculate PBC metrics 
+bedtools bamtobed -bedpe -i tmp.bam | awk 'BEGIN{OFS=""\t""}{print $1,$2,$4,$6,$9,$10}' \
+  | grep -v 'chrM' | sort | uniq -c | awk 'BEGIN{mt=0;m0=0;m1=0;m2=0}($1==1){m1=m1+1} \
+  ($1==2){m2=m2+1} {m0=m0+1} {mt=mt+$1} \
+  END{printf ""%d\t%d\t%d\t%d\t%f\t%f\t%f\n"", mt,m0,m1,m2,m0/mt,m1/m0,m1/m2}' > ${sample}.pbc.qc
+rm tmp.bam
+
+where mt = # TotalReadPairs, m0 =  # DistinctReadPairs, m1 = # OneReadPair, m2 = #TwoReadPairs, m0/mt = NRF=Distinct/Total,  PBC1 = m1/m0 = OnePair/Distinct, PBC2 = m1/m2 = OnePair/TwoPair
+
+Then if you remove duplicates mt becomes equal to m0 and NRF will be 1.
+As I see it, the line ""uniq -c"" prefixes lines by the number of occurrences, so it adds prefix 1 if the lines is unique i.e. m1, then prefix 2 for a second occurrence if the line is repeated. However, identical lines are usually removed during remooval of duplicates. If we would use the definition of distinct genomic location then the code should not search for identical occurrences lines to classify them as m2 but for lines that map to the same location (partially overlapping fragments that originates from a different dna molecule)
+
+I have tried to use these calculation after removing duplicates and the NRF does not look right. It is always. Maybe you can explain why this step is always after removing duplicates in the pipeline which cause NRF to be always 1
+
+ 
+",VictorGoitea,https://github.com/ENCODE-DCC/chip-seq-pipeline/issues/80

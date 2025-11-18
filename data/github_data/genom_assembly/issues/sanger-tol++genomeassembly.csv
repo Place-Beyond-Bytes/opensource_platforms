@@ -1,0 +1,125 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHptrP8590lfj,genomeassembly usage,CLOSED,2024-01-31T20:45:21Z,2024-02-01T12:24:07Z,2024-02-01T12:24:07Z,"Hi There,
+I'm so happy that this pipeline has been released, I was looking forward to using it.
+But while trying it on my data, I realized that the HiC dataset needs to be in .CRAM but I have it as paired .FASTQ (F and R). ",abdo3a,https://github.com/sanger-tol/genomeassembly/issues/34
+I_kwDOHptrP86DHF32,purge_dups and hifiasm?,OPEN,2024-03-21T09:46:36Z,2024-03-22T11:31:25Z,,"### Description of the bug
+
+Hifiasm has built-in purging of haplotigs and seem to claim that purge_dups is too aggressive in purging (https://github.com/chhylp123/hifiasm/issues/162).  Have you done comparisons of the purging done by hifiasm and purge_dups? Would it make sense to allow users to disable the purge_dups purging or allow users to set the hifiasm purging parameters?
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nikostr,https://github.com/sanger-tol/genomeassembly/issues/35
+I_kwDOHptrP86Egu4w,Input & help files,OPEN,2024-04-03T15:00:02Z,2024-06-10T17:09:39Z,,"### Description of feature
+
+@muffato @gq1 @ksenia-krasheninnikova Hi, I want to run the pipeline with some insect genomes, I was wondering if there is any input or help files I can start with. Thanks",cintiaoi,https://github.com/sanger-tol/genomeassembly/issues/36
+I_kwDOHptrP86IIKsi,Multiple BUSCO lineages?,OPEN,2024-05-07T17:05:04Z,2024-06-04T12:08:05Z,,"Hi!
+
+I was wondering if it's possible to specify more than one lineage and download path for BUSCO in the .yaml file.
+
+Thanks for the help!",malvaradol,https://github.com/sanger-tol/genomeassembly/issues/43
+I_kwDOHptrP86RGXVf,Broken singularity longranger image + help with organelles workflow,CLOSED,2024-07-29T03:22:49Z,2024-08-16T09:35:28Z,2024-08-16T09:35:28Z,"### Description of the bug
+
+Hi there!
+
+I'm currently using the pipeline to assembly some data, and I find myself having issues with the polishing step. According to the error message, the longranger singularity image seems to be broken or no longer exists. I include here the .log file of the run. 
+
+On the other hand, I had to run the pipeline without the organelles workflow as I have not figured out how to get it running, so I take advantage of the Longranger bug to make a few questions. Is the API key of the singularity secret provided by the HPC admin or is it something that I can find on my HPC home directory? Do i need to run the workflow with internet connection? This last question is because everything has to be run on an offline node, but pulling everything with nf-core tools was doing the work so far. I also include the .log of the organelles workflow.
+
+Thanks in advance for all the help with the bug and the questions. Looking forward to your response.
+
+### Command used and terminal output
+
+```console
+Longranger: nextflow run 0_10_0/main.nf --input tdimi_genome.yaml -profile singularity --outdir output_tdimi --organelles_on false --hifiasm_hic_on true --polishing_on true --max_cpus 32 --max_memory 640.GB
+
+Organelles: nextflow run 0_10_0/main.nf --input tdimi_genome.yaml -profile singularity --outdir test_data --hifiasm_hic_on true --polishing_on true --organelles_on true --max_cpus 32 --max_memory 640.GB
+```
+
+
+### Relevant files
+
+[nextflow_longranger.log](https://github.com/user-attachments/files/16407046/nextflow_longranger.log)
+[nextflow_organelles.log](https://github.com/user-attachments/files/16407047/nextflow_organelles.log)
+
+
+### System information
+
+NF version: 24.04.3
+Hardware: HPC
+Executor: LSF
+Container: Singularity
+OS: CentOS
+genomeassembly version: 0_10_0",malvaradol,https://github.com/sanger-tol/genomeassembly/issues/48
+I_kwDOHptrP86TNIbx,Version the mitohifi container,OPEN,2024-08-16T07:34:48Z,2024-08-16T07:34:48Z,,"### Description of feature
+
+The current `dev` branch uses the container `ghcr.io/marcelauliano/mitohifi:master`.
+I happened to have an old version of that container, from before Oct 2023, which made the pipeline fail when testing it.
+
+To prevent that, the containers should be versioned and the module should be using the version.",muffato,https://github.com/sanger-tol/genomeassembly/issues/52
+I_kwDOHptrP86XV5Ka,Latest minimap2 version reduces peak memory,OPEN,2024-09-20T15:28:36Z,2024-09-20T15:28:36Z,,"### Description of the bug
+
+The [latest version of minimap2](https://github.com/lh3/minimap2/releases/tag/v2.28) changes a default setting (`--cap-kalloc`) to reduce peak memory consumption. I keep running into memory issues, with the `MINIMAP2_ALIGN_ASSEMBLY` step requiring more than 100GB of RAM - would it make sense to update the version of minimap2 used in this pipeline?
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nikostr,https://github.com/sanger-tol/genomeassembly/issues/54
+I_kwDOHptrP86Xqww3,"BUSCO bug, solved in latest BUSCO version",OPEN,2024-09-24T07:22:12Z,2024-10-15T09:30:16Z,,"### Description of the bug
+
+I run into this bug https://gitlab.com/ezlab/busco/-/issues/721 when `SANGERTOL_GENOMEASSEMBLY:GENOMEASSEMBLY:GENOME_STATISTICS_PURGED:BUSCO` is being executed. This seems to be resolved in the latest version of BUSCO. 
+
+### Command used and terminal output
+
+```
+nextflow run sanger-tol/genomeassembly \
+        -resume \
+        -c custom.config \
+        -profile singularity,pdc_kth \
+        --input assets/dataset.yaml \
+        --outdir output-dir \
+        -r 0.10.0 \
+        --project <project-id>
+```
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nikostr,https://github.com/sanger-tol/genomeassembly/issues/56
+I_kwDOHptrP86Yg_av,MitoHiFi -a parameter,OPEN,2024-10-01T10:11:05Z,2024-10-01T14:49:56Z,,"### Description of the bug
+
+When attempting to run MitoHiFi it crashes with the following error message:
+```
+  'parsed_blast.txt' and 'parsed_blast_all.txt' files are empty.
+  The pipeline has stopped !! You need to run further scripts to check if you have mito reads pulled to a large NUMT!
+```
+In https://github.com/marcelauliano/MitoHiFi/issues/58 the MitoHiFi author suggests that this may have to do with the `-a` parameter being incorrectly set. Would it make sense to allow users to pass this parameter as a part of the config?
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",nikostr,https://github.com/sanger-tol/genomeassembly/issues/57

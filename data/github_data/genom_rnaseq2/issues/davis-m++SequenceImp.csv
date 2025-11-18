@@ -1,0 +1,29 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMzg0NDEzMjE=,Seqimp align step failing for some extreme fastq files,CLOSED,2016-03-04T10:39:23Z,2017-12-18T16:15:18Z,2017-12-18T16:15:18Z,"Hi,
+when aligning a file in which the vast majority of reads map to a single Ensembl category and all other categories have less then 1% of the reads each, Seqimp ""align"" gives the following error:
+
+```
+Error in rowSums(x) : 'x' must be an array of at least two dimensions
+Calls: unlist -> lapply -> FUN -> rowSums
+Execution halted
+QC plotting (boxBowtie_QC) hasn't worked: R --vanilla --slave --args --input=/path/to/seqimp/ENCODE_sRNA/132//BOWTIE/ --output=/path/to/seqimp/ENCODE_sRNA/132//QC/ --basicID=132 --grangesClass=/path/to/seqimp_annotation/Annotation_8917/ENSEMBL/human_1//GRangesObjects//human_1.annotation.classes.RData --chrTypes=/path/to/seqimp_annotation/Annotation_8917/ENSEMBL/human_1//Genome//human_1.chrom_class.tab --procSummary=/path/to/seqimp/ENCODE_sRNA/132//PROCESSED//total.saved.trimmit.tab --maxHits=20  < seqimp-15-075/bin/boxBowtie_QC.R:
+```
+
+The error can be reproduced with the following fastq file:
+http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCshlShortRnaSeq/wgEncodeCshlShortRnaSeqMcf7CellShorttotalRawDataRep3.fastq.gz
+",tleonardi,https://github.com/davis-m/SequenceImp/issues/1
+MDU6SXNzdWUxMzg5NTIxOTc=,Feature request: Providing paths to binaries other then $PATH,OPEN,2016-03-07T11:04:47Z,2016-03-07T11:04:47Z,,"Hi,
+it would be very useful is the user could specify at run time (e.g. through environment variables) the path to the binaries used by the pipeline, such as R, samtools, bowtie, etc...
+This would allow to run seqimp using a specific version of each dependency.
+
+thanks
+tom
+",tleonardi,https://github.com/davis-m/SequenceImp/issues/3
+MDU6SXNzdWUyMzkyNDMxNDQ=,miR_table.R terminates with an error,CLOSED,2017-06-28T17:48:08Z,2017-12-18T16:14:08Z,2017-12-18T16:14:08Z,"miR_table.R (run by the _features_ step of the pipeline) fails to complete and reports the following error:
+```
+Identifying overlapping miRBase annotation
+Error in .local(query, subject, maxgap, minoverlap, type, select, ...) : 
+  unused argument (ignoreSelf = TRUE)
+Calls: findOverlaps ... findOverlaps -> .local -> findOverlaps -> findOverlaps
+Execution halted
+```",tleonardi,https://github.com/davis-m/SequenceImp/issues/4

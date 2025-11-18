@@ -1,0 +1,1442 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzMDM5Mzc5MDk=,docker,CLOSED,2018-03-09T18:33:21Z,2021-02-03T15:07:27Z,2021-02-03T15:07:27Z,Has anyone made a docker image of this package?,arnoldliaoILMN,https://github.com/ngs-fzb/MTBseq_source/issues/6
+MDU6SXNzdWUzMzUxNTc0NzQ=,Replace all /usr/bin/perl ,CLOSED,2018-06-24T07:16:52Z,2018-07-09T16:15:33Z,2018-07-09T16:15:33Z,"In the main script  
+```
+#!/usr/bin/perl
+```
+should be
+```
+#!/usr/bin/env perl
+```
+so that it uses the Perl in my PATH, not the one you have chosen.
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/7
+MDU6SXNzdWUzMzUxNTkyNjE=,Missing github description,CLOSED,2018-06-24T07:44:44Z,2018-07-09T12:46:59Z,2018-07-09T12:46:58Z,"![image](https://user-images.githubusercontent.com/453972/41817023-456d385a-77d6-11e8-9f70-10c113c2e8a8.png)
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/8
+MDU6SXNzdWUzMzUxNTkzNzY=,Relax *.fastq.gz to also support *.fq.gz ,CLOSED,2018-06-24T07:46:10Z,2018-07-09T16:16:03Z,2018-07-09T16:16:02Z,"```
+      die(""wrong file name ($file_mod)"") if not $file_mod =~ s/(R1|R2).fastq.gz//;
+```
+
+maybe this?
+
+```
+if not $file_mod =~ s/(R1|R2).f(ast)?q.gz$//;
+```
+not sure where else this would need to be changed.",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/9
+MDU6SXNzdWUzMzUxNjA4MTE=,--help should return 0 not 1,CLOSED,2018-06-24T08:12:33Z,2018-07-09T16:16:13Z,2018-07-09T16:16:13Z,"If i ask for help, it should return 0 not 1, as it was not an error.
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/10
+MDU6SXNzdWUzMzUxNjEwNzA=,Check if each system() failed and stop pipeline,CLOSED,2018-06-24T08:17:12Z,2018-07-17T12:29:52Z,2018-07-17T12:29:52Z,"In trying to get the pipeline working i noticed it keeps on running even if a step fails.
+```
+system(""  .... "");
+```
+should check for the return code
+```
+my $cmd = ""bwa index ...."";
+system($cmd)==0 or die ""Could not run command: $cmd"";
+```
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/11
+MDU6SXNzdWUzMzUxNjE1NDE=,Do I have to put the FASTQ in the MTBseq.pl folder?,CLOSED,2018-06-24T08:25:42Z,2021-03-08T09:42:32Z,2021-03-08T09:42:32Z,"I am trying out MTBseq but am having some difficulties.
+
+1. I have installed it in a folder `/opt/mtbseq/` as user `nobody` and have it in my `$PATH`
+2. I put my reads in `/home/torst/tbdata` with the right naming system.
+3. Then I `cd  /home/torst/tdbdata` and run `MTBseq.pl --step TBbwa` as user `torst`
+
+But i get these errors:
+```
+<ERROR> [2018-06-24 18:19:47]   move failed: TBbwa.pm line: 116
+```
+Which i track backwards to the `.bamlog` to find:
+```
+/opt/mtbseq/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta.pac' : Permission denied
+```
+
+Do i really need write access to the software folder?
+That can never work on a HPC system.
+
+Could you make it such that you have an `--outdir` and/**or** copy the reference into that first, along with all the other folders?
+
+
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/12
+MDU6SXNzdWUzNDM0NjY0NzM=,Problems with GATK and provided reference,CLOSED,2018-07-23T02:24:53Z,2021-07-13T08:15:03Z,2018-11-26T13:55:28Z,"Hi,
+I am trying to use your pipeline, I have been able to install in and run the first TBbwa.
+
+However, after ensuring that java8 was being used (not java9) the following error resulted at the GATK step
+
+```
+##### ERROR ------------------------------------------------------------------------------------------
+##### ERROR A USER ERROR has occurred (version 3.8-0-ge9d806836): 
+INFO  10:20:10,530 SAMDataSource$SAMReaders - Initializing SAMRecords in serial 
+##### ERROR
+##### ERROR This means that one or more arguments or inputs in your command are incorrect.
+##### ERROR The error message below tells you what is the problem.
+##### ERROR
+##### ERROR If the problem is an invalid argument, please check the online documentation guide
+##### ERROR (or rerun your command with --help) to view allowable command-line arguments for this tool.
+##### ERROR
+##### ERROR Visit our website and forum for extensive documentation and answers to 
+##### ERROR commonly asked questions https://software.broadinstitute.org/gatk
+##### ERROR
+##### ERROR Please do NOT post this error to the GATK forum unless you have really tried to fix it yourself.
+##### ERROR
+##### ERROR MESSAGE: Bad input: We encountered a non-standard non-IUPAC base in the provided reference: '0'
+##### ERROR ------------------------------------------------------------------------------------------
+```
+After some investigation, it appeared that there was an inappropriate line ending in the reference, which I fixed, but which meant that the I had to re-index the fast file (`samtools faidx path/to/provided/reference.fasta`)
+
+The pipeline appears to run to completion now.
+Cheers
+Kristy",kristyhoran,https://github.com/ngs-fzb/MTBseq_source/issues/14
+MDU6SXNzdWUzNTE0NzA0MTc=,Creates all the folders before it knows reads exist,CLOSED,2018-08-17T06:18:16Z,2018-09-06T13:59:57Z,2018-09-06T13:59:57Z,"```
+% ls
+(empty)
+
+% MTBseq --step TBfull
+No read files to map! Check content of dir
+
+% ls
+mend  Called          GATK_Bam  Joint    MTBseq_2018-08-17.log  Statistics
+Bam    Classification  Groups    Mpileup  Position_Tables               R1.fq.gz R2.fq.gz
+
+```
+
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/15
+MDU6SXNzdWUzNTE0NzQzMTk=,rmdup has been superseded by markdup,OPEN,2018-08-17T06:35:27Z,2018-08-17T06:35:27Z,,see https://github.com/samtools/samtools/releases/tag/1.6,tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/16
+MDU6SXNzdWUzNTE0NzQ2MDE=,[bam_rmdup_core] inconsistent BAM file for pair ,CLOSED,2018-08-17T06:36:39Z,2021-03-08T09:32:44Z,2021-03-08T09:32:44Z,"From `gatk.bamlog`
+
+```
+[bam_rmdup_core] processing reference M.tuberculosis_H37Rv...
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:4:11405:8774:6713'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:3:21606:5786:8728'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:21207:9075:4861'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:21303:26846:3368'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:1:11206:24436:8998'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:1:11209:15229:9800'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:1:21212:11379:14636'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:11210:17442:6322'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:21308:26619:1343'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:21308:7076:15721'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:2:21309:20464:13518'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:3:11409:24863:14468'. Continue anyway.
+[bam_rmdup_core] inconsistent BAM file for pair 'NS500345:176:HTCKYAFXX:3:11502:10273:15918'. Continue anyway.
+```
+",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/17
+MDU6SXNzdWUzNTE0NzUyODQ=,GATK doesn't work on Java 1.9,OPEN,2018-08-17T06:39:45Z,2020-07-22T12:07:49Z,,"I was getting this error:
+
+```
+##### ERROR MESSAGE: Invalid command line: Malformed walker argument: Could not find walker with name: RealignerTargetCreator
+```
+
+Tracked it down to here:
+
+https://gatkforums.broadinstitute.org/gatk/discussion/10464/invalid-command-line-malformed-walker-argument
+
+it seems it needs older Java 1.8 :-(
+
+PS. picard seems to be ok",tseemann,https://github.com/ngs-fzb/MTBseq_source/issues/18
+MDU6SXNzdWUzNjQ5NTIwMDg=,bam does not exist error on test data,CLOSED,2018-09-28T16:07:05Z,2021-02-03T15:08:53Z,2021-02-03T15:08:53Z,"When I run `MTBseq --step TBfull` in the `test/` directory, it fails with a bam does not exist error. However, the bam file it is looking for does indeed exist. Here's a copy of my terminal:
+
+```
+vagrant@ubuntu-bionic:~/tmp/mtbseq/MTBseq_source-1.0.3/test$ MTBseq --step TBfull
+<INFO>	[2018-09-28 15:44:00]	Found perl module: MCE
+<INFO>	[2018-09-28 15:44:00]	Found perl module: Statistics::Basic
+<INFO>	[2018-09-28 15:44:00]	Found bwa in your PATH!
+<INFO>	[2018-09-28 15:44:00]	Found samtools in your PATH!
+<INFO>	[2018-09-28 15:44:00]	Found gatk in the MTBseq /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt folder!
+<INFO>	[2018-09-28 15:44:00]	Found picard in the MTBseq /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt folder!
+<WARN>	[2018-09-28 15:44:00]	Need samtools >= 1.6, please upgrade the version of samtools in your PATH.
+<WARN>	[2018-09-28 15:44:00]	For this execution of MTBseq samtools 1.6 from the MTBseq /opt directory will be used
+
+
+MTBseq 1.0.3 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener,
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+
+
+<INFO>	[2018-09-28 15:44:00]	You are vagrant.
+<INFO>	[2018-09-28 15:44:00]	Your current working directory is: /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test
+<INFO>	[2018-09-28 15:44:00]	You requested 1 thread(s) for the pipeline.
+
+<INFO>	[2018-09-28 15:44:00]	Your parameter setting is:
+<INFO>	[2018-09-28 15:44:00]	--step		TBfull
+<INFO>	[2018-09-28 15:44:00]	--continue	0
+<INFO>	[2018-09-28 15:44:00]	--samples	NONE
+<INFO>	[2018-09-28 15:44:00]	--project	NONE
+<INFO>	[2018-09-28 15:44:00]	--resilist	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2018-09-28 15:44:00]	--intregions	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2018-09-28 15:44:00]	--categories	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2018-09-28 15:44:00]	--basecalib	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2018-09-28 15:44:00]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2018-09-28 15:44:00]	--minbqual	13
+<INFO>	[2018-09-28 15:44:00]	--all_vars	0
+<INFO>	[2018-09-28 15:44:00]	--snp_vars	0
+<INFO>	[2018-09-28 15:44:00]	--lowfreq_vars	0
+<INFO>	[2018-09-28 15:44:00]	--mincovf	4
+<INFO>	[2018-09-28 15:44:00]	--mincovr	4
+<INFO>	[2018-09-28 15:44:00]	--minphred20	4
+<INFO>	[2018-09-28 15:44:00]	--minfreq	75
+<INFO>	[2018-09-28 15:44:00]	--unambig	95
+<INFO>	[2018-09-28 15:44:00]	--window	12
+<INFO>	[2018-09-28 15:44:00]	--distance	12
+<INFO>	[2018-09-28 15:44:00]	--quiet		0
+
+<INFO>	[2018-09-28 15:44:00]	The following programs will be used, if necessary:
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/bwa_0.7.17
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools_1.6
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/picard_2.17.0
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2018-09-28 15:44:00]	The following directories will be used, if necessary:
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Mpileup
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Position_Tables
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Called
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Joint
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Amend
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Classification
+<INFO>	[2018-09-28 15:44:00]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Groups
+
+<INFO>	[2018-09-28 15:44:00]	### [TBfull] selected ###
+
+<INFO>	[2018-09-28 15:44:00]	Mapping samples:
+<INFO>	[2018-09-28 15:44:00]	Test-20_MTBSeq_nextseq_151bp_R1.fastq.gz
+<INFO>	[2018-09-28 15:44:00]	Test-20_MTBSeq_nextseq_151bp_R2.fastq.gz
+
+<INFO>	[2018-09-28 15:44:00]	Start BWA mapping...
+<INFO>	[2018-09-28 15:44:00]	Found at most two files for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:44:00]	Start BWA mapping for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:44:00]	bwa mem -t 1 -R '@RG\tID:Test-20_MTBSeq_nextseq_151bp\tSM:Test-20\tPL:Illumina\tLB:MTBSeq' /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta  /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Test-20_MTBSeq_nextseq_151bp_R1.fastq.gz /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Test-20_MTBSeq_nextseq_151bp_R2.fastq.gz > /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.sam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:44:40]	Finished BWA mapping for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:44:40]	Start using samtools to convert from .sam to .bam for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:44:40]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools view -@ 1 -b -T /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta -o /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.sam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:44:55]	Finished file conversion for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:44:55]	Start using samtools for sorting of Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:44:55]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools sort -@ 1 -T /tmp/Test-20_MTBSeq_nextseq_151bp.sorted -o /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.sorted.bam /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:45:08]	Finished using samtools for sorting of Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:08]	Start using samtools for indexing of Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:08]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools index -b /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.sorted.bam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:45:09]	Finished using samtools for indexing of Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:09]	Start removing putative PCR duplicates from Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:09]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools rmdup /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.sorted.bam /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.nodup.bam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:45:23]	Finished removing putative PCR duplicates for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:23]	Start recreating index for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:23]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools index -b /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.nodup.bam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bamlog
+<INFO>	[2018-09-28 15:45:24]	Finished recreating index for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:24]	Removing temporary files...
+<INFO>	[2018-09-28 15:45:24]	Finished mapping for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:24]	Finished BWA mapping!
+
+<INFO>	[2018-09-28 15:45:24]	Refining mappings:
+<INFO>	[2018-09-28 15:45:24]	Test-20_MTBSeq_nextseq_151bp.bam
+
+<INFO>	[2018-09-28 15:45:24]	Start GATK refinement...
+<INFO>	[2018-09-28 15:45:24]	Updating log file for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:24]	Start using GATK RealignerTargetCreator for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:24]	java -jar /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/GenomeAnalysisTK.jar --analysis_type RealignerTargetCreator --reference_sequence /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta --input_file /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam --downsample_to_coverage 10000 --num_threads 1 --out /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.intervals 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog
+There were no warn messages.
+<INFO>	[2018-09-28 15:45:38]	Finished using GATK RealignerTargetCreator for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:38]	Start using GATK IndelRealigner for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:38]	java -jar /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/GenomeAnalysisTK.jar --analysis_type IndelRealigner --reference_sequence /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta --input_file /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam --defaultBaseQualities 12 --targetIntervals /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.intervals --noOriginalAlignmentTags --out /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.realigned.bam 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog
+There were no warn messages.
+<INFO>	[2018-09-28 15:45:55]	Finished using GATK IndelRealigner for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:45:55]	Start using GATK BaseRecalibrator for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:45:55]	java -jar /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/GenomeAnalysisTK.jar --analysis_type BaseRecalibrator --reference_sequence /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta --input_file /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.realigned.bam --knownSites /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Base_Calibration_List.vcf --maximum_cycle_value 600 --num_cpu_threads_per_data_thread 1 --out /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.grp 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog
+There were no warn messages.
+<INFO>	[2018-09-28 15:47:06]	Finished using GATK BaseRecalibrator for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:47:06]	Start using GATK PrintReads for Test-20_MTBSeq_nextseq_151bp...
+<INFO>	[2018-09-28 15:47:06]	java -jar /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/GenomeAnalysisTK.jar -T --analysis_type PrintReads --reference_sequence /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta --input_file /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.realigned.bam --BQSR /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.grp --num_cpu_threads_per_data_thread 1 --out /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bam  2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog
+There were no warn messages.
+<INFO>	[2018-09-28 15:48:33]	Finished using GATK PrintReads for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:48:33]	Removing temporary files...
+<INFO>	[2018-09-28 15:48:33]	GATK refinement finished for Test-20_MTBSeq_nextseq_151bp!
+<INFO>	[2018-09-28 15:48:33]	Finished GATK refinement!
+
+<INFO>	[2018-09-28 15:48:33]	Creating mpileups:
+<INFO>	[2018-09-28 15:48:33]	Test-20_MTBSeq_nextseq_151bp.gatk.bam
+
+<INFO>	[2018-09-28 15:48:33]	Start creating .mpileup files...
+<INFO>	[2018-09-28 15:48:33]	Updating logfile for Test-20_MTBSeq_nextseq_151bp.gatk...
+<INFO>	[2018-09-28 15:48:33]	Start using samtools for creating a .mpileup file for Test-20_MTBSeq_nextseq_151bp.gatk...
+<INFO>	[2018-09-28 15:48:33]	/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/opt/samtools mpileup -B -A -x -f /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bam > /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Mpileup/Test-20_MTBSeq_nextseq_151bp.gatk.mpileup 2>> /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Mpileup/Test-20_MTBSeq_nextseq_151bp.gatk.mpileuplog
+<INFO>	[2018-09-28 15:48:38]	Finished using samtools for creating a .mpileup file for Test-20_MTBSeq_nextseq_151bp.gatk!
+<INFO>	[2018-09-28 15:48:38]	Finished creating .mpileup files!
+
+<INFO>	[2018-09-28 15:48:38]	Creating position lists:
+<INFO>	[2018-09-28 15:48:38]	Test-20_MTBSeq_nextseq_151bp.gatk.mpileup
+
+<INFO>	[2018-09-28 15:48:38]	Start creating position lists...
+<INFO>	[2018-09-28 15:48:38]	Parsing reference genome M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2018-09-28 15:48:47]	Reference genome size (bp): 4411532!
+<INFO>	[2018-09-28 15:48:47]	Start creating temporary output file...
+<INFO>	[2018-09-28 15:48:47]	Finished creating temporary output file!
+<INFO>	[2018-09-28 15:48:47]	Start parallel processing...
+<INFO>	[2018-09-28 15:55:19]	Finished parallel processing!
+<INFO>	[2018-09-28 15:55:19]	Start loading temporary file into hash structure...
+<INFO>	[2018-09-28 15:55:44]	Finished loading temporary file into hash structure!
+<INFO>	[2018-09-28 15:55:44]	Start creating final output file...
+<INFO>	[2018-09-28 15:56:36]	Finished creating final output file!
+<INFO>	[2018-09-28 15:56:36]	Finished creating position lists!
+
+<INFO>	[2018-09-28 15:56:40]	Calling variants:
+<INFO>	[2018-09-28 15:56:40]	Test-20_MTBSeq_nextseq_151bp.gatk_position_table.tab
+
+<INFO>	[2018-09-28 15:56:40]	Start variant calling...
+<INFO>	[2018-09-28 15:56:40]	Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2018-09-28 15:56:40]	Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>	[2018-09-28 15:56:40]	Parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2018-09-28 15:56:47]	Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt!
+<INFO>	[2018-09-28 15:56:47]	Start parsing /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Resistance_Mediating.txt and /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Extended_Resistance_Mediating.txt...
+<INFO>	[2018-09-28 15:56:47]	Finished parsing /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Resistance_Mediating.txt and /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/var/res/MTB_Extended_Resistance_Mediating.txt!
+<INFO>	[2018-09-28 15:56:47]	Start parsing Test-20_MTBSeq_nextseq_151bp.gatk_position_table.tab...
+<INFO>	[2018-09-28 15:57:15]	Finished parsing Test-20_MTBSeq_nextseq_151bp.gatk_position_table.tab!
+<INFO>	[2018-09-28 15:57:15]	Start calling variants from Test-20_MTBSeq_nextseq_151bp.gatk_position_table.tab...
+<INFO>	[2018-09-28 15:58:39]	Finished calling variants from Test-20_MTBSeq_nextseq_151bp.gatk_position_table.tab!
+<INFO>	[2018-09-28 15:58:39]	Printing:
+<INFO>	[2018-09-28 15:58:39]	Test-20_MTBSeq_nextseq_151bp.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+<INFO>	[2018-09-28 15:58:39]	Test-20_MTBSeq_nextseq_151bp.gatk_position_uncovered_cf4_cr4_fr75_ph4_outmode000.tab
+<INFO>	[2018-09-28 15:58:43]	Printing finished!
+<INFO>	[2018-09-28 15:58:50]	Finished variant calling!
+
+<INFO>	[2018-09-28 15:58:50]	Calculating statistics for mappings:
+<INFO>	[2018-09-28 15:58:50]	Test-20_MTBSeq_nextseq_151bp.bam
+
+<INFO>	[2018-09-28 15:58:50]	Start statistics calculation...
+<INFO>	[2018-09-28 15:58:50]	Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2018-09-28 15:58:51]	Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>	[2018-09-28 15:58:51]	Start parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2018-09-28 15:58:58]	Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt!
+<INFO>	[2018-09-28 15:58:58]	Start using Samtools for BWA mapping statistics of Test-20_MTBSeq_nextseq_151bp.bam...
+/home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam does not exist, TBstats.pm line: 83
+1 at /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/lib/TBstats.pm line 83.
+vagrant@ubuntu-bionic:~/tmp/mtbseq/MTBseq_source-1.0.3/test$ ls -lh /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam
+-rw-rw-r-- 1 vagrant vagrant 62M Sep 28 15:45 /home/vagrant/tmp/mtbseq/MTBseq_source-1.0.3/test/Bam/Test-20_MTBSeq_nextseq_151bp.bam
+```",martinghunt,https://github.com/ngs-fzb/MTBseq_source/issues/21
+MDU6SXNzdWUzNzkzMDk4ODE=,non-unique naming in /tmp,CLOSED,2018-11-09T20:25:28Z,2021-03-08T09:34:59Z,2021-03-08T09:34:59Z,"Files are written into `/tmp` that are not guaranteed to have a unique name. I have this error:
+
+```
+[E::hts_open_format] Failed to open file /tmp/sampleID_libID.sorted.0000.bam
+samtools sort: failed to create temporary file ""/tmp/sampleID_libID.sorted.0000.bam"": File exists
+```
+ in the log file `Bam/sampleID_libID.bamlog`. I appreciate that the sample and library ID are put in the name, which is probably unique, but in my case it's not unique and breaks my pipeline if two runs happen to land on the same node of our compute cluster at the same time.
+
+I suggest using [File::Temp](https://perldoc.perl.org/File/Temp.html) to safely create a temporary directory.
+",martinghunt,https://github.com/ngs-fzb/MTBseq_source/issues/22
+MDU6SXNzdWUzODE3NzUxNTE=,GATK error with test data,CLOSED,2018-11-16T21:58:03Z,2018-11-28T12:33:40Z,2018-11-28T12:33:40Z,"The pipeline is stopping at the  ""Start GATK refinement"" step.
+
+I'm seeing the following error in the gatk.bamlog file:
+
+ERROR StatusLogger Unable to create class org.apache.logging.log4j.core.impl.Log4jContextFactory specified in jar:file:/[conda env]/opt/gatk-3.8/GenomeAnalysisTK.jar!/META-INF/log4j-provider.properties
+ERROR StatusLogger Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
+
+I'm using Java 1.8",dankein,https://github.com/ngs-fzb/MTBseq_source/issues/23
+MDU6SXNzdWUzOTcyOTAxNzY=,GATK error failed 256,CLOSED,2019-01-09T09:50:42Z,2019-09-09T14:57:32Z,2019-06-13T08:45:55Z,"I ran TBfull and it came out failed:256 message after GATK refinement started. 
+Is there any file for searching failed code? ",ChiehYin,https://github.com/ngs-fzb/MTBseq_source/issues/24
+MDU6SXNzdWU0MTczODg1MDQ=,Resistance output,CLOSED,2019-03-05T16:33:57Z,2019-06-13T08:41:08Z,2019-06-13T08:41:08Z,"Hello!
+Sorry for the basic question, but where can I find the resistance information in the output files? 
+
+Thanks in advance!
+Sara",saramonzon,https://github.com/ngs-fzb/MTBseq_source/issues/26
+MDU6SXNzdWU0MjIwMjY4ODU=,Improvement: Downgrade GATK version,OPEN,2019-03-18T03:56:19Z,2019-06-13T08:30:42Z,,"**Issue:**
+Working with GATK 3.8 is a hassle. It requires download the jar and registering it separately due to licensing issues. This limits the ease of installation and distribution of MTBseq.
+
+**Solution:**
+Downgrade the required version to GATK-lite 2.3.9. This is the last version of GATK released under a free for distribution license. It has pretty much the same functionality as version 3.8. There is a conda package available for it: https://anaconda.org/faircloth-lab/gatk-lite
+
+**Limitations:**
+GATK 2.3.9 does not support indel searching in BaseRecalibrator. This can easily be disabled in TBrefine with flag `--disable_indel_quals`. I made few other changes to make it work.
+The java version would also have to be downgraded to 1.7.
+
+**Summary:**
+I've activated a conda environment and made the above changes. MTBseq produces the exact same results.",schorlton,https://github.com/ngs-fzb/MTBseq_source/issues/27
+MDU6SXNzdWU0NDA1ODA1NDk=,compare isolates in different sequencing runs,CLOSED,2019-05-06T07:50:17Z,2019-09-05T19:45:45Z,2019-09-05T19:45:45Z,"I have successfully run MTBseq on all the fastq files in a single sequencing run.
+I am curious to know that if MTBseq could analyse the output files for different runs using TBjoin, TBamend and TBgroups, so that I could compare the isolates in different sequencing runs without re-mapping the fastq files again?",alantsangmb,https://github.com/ngs-fzb/MTBseq_source/issues/28
+MDU6SXNzdWU0NTA3Mjc5NjA=,gatk-register command,CLOSED,2019-05-31T10:24:36Z,2019-09-05T19:44:47Z,2019-09-05T19:44:46Z,"Hi, 
+
+I have installed MTBseq via conda and I am using the the gatk-register command to add GATK to the conda environment but I am told the command is not found.
+
+Any ideas?
+
+Cheers!",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/29
+MDU6SXNzdWU0NjI3MDk1NDM=,No Read Files To Map,CLOSED,2019-07-01T13:17:40Z,2019-07-08T14:31:36Z,2019-07-08T14:31:35Z,"Hi All,
+
+I am trying to run MTBseq and get the following error:
+
+""No read files to map""
+
+Anyone have any ideas? I have attached a copy of the terminal window below.
+
+Cheers,
+
+Peter
+
+
+(base) linux-biostation@Linux-BioStation:~$ MTBseq --step TBfull '/home/linux-biostation/Documents/Peter F Work/MTBseq Test/DK progression to MDR/IEMDR03_S3_L001_R1_001.fastq.gz' + '/home/linux-biostation/Documents/Peter F Work/MTBseq Test/DK progression to MDR/IEMDR03_S3_L001_R2_001.fastq.gz' 
+Missing option after +
+<INFO>	[2019-07-01 14:08:02]	Found perl module: MCE
+<INFO>	[2019-07-01 14:08:02]	Found perl module: Statistics::Basic
+<INFO>	[2019-07-01 14:08:02]	Found bwa in your PATH!
+<INFO>	[2019-07-01 14:08:02]	Found samtools in your PATH!
+<INFO>	[2019-07-01 14:08:02]	Found gatk3 in your PATH!
+<INFO>	[2019-07-01 14:08:02]	Found picard in your PATH!
+
+
+MTBseq 1.0.3 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener,
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+
+
+<INFO>	[2019-07-01 14:08:02]	You are linux-biostation.
+<INFO>	[2019-07-01 14:08:02]	Your current working directory is: /home/linux-biostation
+<INFO>	[2019-07-01 14:08:02]	You requested 1 thread(s) for the pipeline.
+
+<INFO>	[2019-07-01 14:08:02]	Your parameter setting is:
+<INFO>	[2019-07-01 14:08:02]	--step		TBfull
+<INFO>	[2019-07-01 14:08:02]	--continue	0
+<INFO>	[2019-07-01 14:08:02]	--samples	NONE
+<INFO>	[2019-07-01 14:08:02]	--project	NONE
+<INFO>	[2019-07-01 14:08:02]	--resilist	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2019-07-01 14:08:02]	--intregions	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2019-07-01 14:08:02]	--categories	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2019-07-01 14:08:02]	--basecalib	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2019-07-01 14:08:02]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2019-07-01 14:08:02]	--minbqual	13
+<INFO>	[2019-07-01 14:08:02]	--all_vars	0
+<INFO>	[2019-07-01 14:08:02]	--snp_vars	0
+<INFO>	[2019-07-01 14:08:02]	--lowfreq_vars	0
+<INFO>	[2019-07-01 14:08:02]	--mincovf	4
+<INFO>	[2019-07-01 14:08:02]	--mincovr	4
+<INFO>	[2019-07-01 14:08:02]	--minphred20	4
+<INFO>	[2019-07-01 14:08:02]	--minfreq	75
+<INFO>	[2019-07-01 14:08:02]	--unambig	95
+<INFO>	[2019-07-01 14:08:02]	--window	12
+<INFO>	[2019-07-01 14:08:02]	--distance	12
+<INFO>	[2019-07-01 14:08:02]	--quiet		0
+
+<INFO>	[2019-07-01 14:08:02]	The following programs will be used, if necessary:
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/opt/bwa_0.7.17
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/opt/samtools_1.6
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/opt/picard_2.17.0
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/miniconda3/share/mtbseq-1.0.4-0/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2019-07-01 14:08:02]	The following directories will be used, if necessary:
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Bam
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/GATK_Bam
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Mpileup
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Position_Tables
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Called
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Joint
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Amend
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Classification
+<INFO>	[2019-07-01 14:08:02]	/home/linux-biostation/Groups
+
+<INFO>	[2019-07-01 14:08:02]	### [TBfull] selected ###
+
+<ERROR>	[2019-07-01 14:08:02]	No read files to map! Check content of /home/linux-biostation!
+(base) linux-biostation@Linux-BioStation:~$ 
+
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/31
+MDU6SXNzdWU0NzMzMDA2Mjk=,SNP trees,CLOSED,2019-07-26T10:53:49Z,2019-09-06T09:09:32Z,2019-09-06T09:09:32Z,"Hi, 
+
+This is more a query than an issue. After running
+
+1) MTBseq --step TBfull
+2) MTBseq --step TBjoin .......
+
+I use the .....amended_u95_phylo_w12.plainIDs.fasta file to generate a newick file in FastTree
+
+
+My query is, is this tree showing SNP differences in the distance between isolates? 
+
+
+![Tree](https://user-images.githubusercontent.com/32863969/61947219-8f924e80-af9c-11e9-8090-d8be2e16f186.jpg)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/32
+MDU6SXNzdWU0ODU3MTc5Mzk=,TBjoin issue,CLOSED,2019-08-27T10:12:56Z,2019-09-06T09:01:07Z,2019-09-06T09:01:07Z,"Hi,
+
+I tried running TBjoin and got an error. I have attached a screenshot below. Could you perhaps tell me what I did wrong?
+
+
+Cheers,
+
+Peter
+
+![Screenshot 2019-08-27 at 11 11 16](https://user-images.githubusercontent.com/32863969/63762902-93770080-c8bb-11e9-8cb9-c019bdfa1439.png)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/33
+MDU6SXNzdWU0ODkxMDUyODc=,BWA Mapping Error,CLOSED,2019-09-04T11:34:36Z,2019-10-31T18:03:41Z,2019-10-31T18:03:41Z,"Hi All,
+
+I am trying to run MTBseq on all my sequence files and when it starts I get the error attached below. Can anyone shed light on this for me please?
+
+Thanks,
+
+P
+
+
+![Screenshot 2019-09-04 at 12 33 07](https://user-images.githubusercontent.com/32863969/64251374-568cb880-cf10-11e9-9d33-49a32b1165e8.png)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/34
+MDU6SXNzdWU0OTEyMjAzNzQ=,GATK error failed 256 - reopened,CLOSED,2019-09-09T17:13:42Z,2022-06-02T01:12:00Z,2019-10-31T18:03:17Z,"Hi,
+I am having the same issue as shown here and didnt know how to reopen.
+
+https://github.com/ngs-fzb/MTBseq_source/issues/24
+
+I have gone in to look at the bamlog file. The only think is I don't know what to do when I see the error. I tried to go to the website it stated but it doesn't load. I have copied the bamlog and MTBseq --TBfull log below. 
+
+Cheers,
+
+Peter
+[MTBseq_2019-09-09_linux-biostation.log](https://github.com/ngs-fzb/MTBseq_source/files/3591146/MTBseq_2019-09-09_linux-biostation.log)
+
+
+The error seems to be with samtools and a high quality score of 65
+[bamlog.txt](https://github.com/ngs-fzb/MTBseq_source/files/3591145/bamlog.txt)
+
+_Originally posted by @peflanag in https://github.com/ngs-fzb/MTBseq_source/issues/24#issuecomment-529516773_",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/35
+MDU6SXNzdWU1MDA4NDU2NzY=,MTBseq Failed at GATK refinment,CLOSED,2019-10-01T11:53:42Z,2019-10-15T08:42:59Z,2019-10-15T08:42:58Z,"Hi,
+
+I installed MTBseq on my college GPU cluster computer in a conda environment. However it failed at the GATK refinment step. I have attached a screenshot and logs below. Any help would be great. GATK is in my path so I dont know what it is!
+
+Cheers,
+
+Peter
+
+
+<img width=""1182"" alt=""Screenshot 2019-10-01 at 12 52 15"" src=""https://user-images.githubusercontent.com/32863969/65959591-51a52100-e44a-11e9-8e45-27c06c865099.png"">
+
+[MTBseq_2019-10-01_flanagap.log](https://github.com/ngs-fzb/MTBseq_source/files/3676035/MTBseq_2019-10-01_flanagap.log)
+
+[IMRLH28_S15.gatk copy.txt](https://github.com/ngs-fzb/MTBseq_source/files/3676038/IMRLH28_S15.gatk.copy.txt)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/36
+MDU6SXNzdWU1MTE4MTIzMTg=,MTBseq in Parallel,CLOSED,2019-10-24T09:11:45Z,2021-03-08T09:29:25Z,2021-03-08T09:29:25Z,"Hi,
+
+I run MTBseq on a college cluster. I am just wondering can I run it in parallel across multiple nodes?
+
+
+Cheers,
+
+P",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/37
+MDU6SXNzdWU1MTI0NDgyNzk=,Update Suggestions,CLOSED,2019-10-25T10:55:55Z,2021-02-03T15:09:39Z,2021-02-03T15:09:39Z,"Hi,
+
+I wonder could I make some suggestions for future updates of MTBseq?
+
+1) I'm currently running it on a college cluster. Is it possible to run it in parallel across a number of nodes?
+
+2) The file name system for accepting input files. Illumina ends in _R1_001 and its a bit a bit laborious having to clean up the naming system as well as make a samples text file when you've hundreds of samples. Unless theres a command line I'm not aware of?
+
+3) The input/output directory. Can we point to a location? Its annoying that we can't and that everything is in the one directory that have to be moved after. Also, If I run TBfull on a run and a few weeks later run it again on a new run, if I want to run TBjoin on both I have to copy them into the one directory. It would be nicer to be able to point to the directory for the files.
+
+4) Can it run on a GPU or on more threads? Currently I am running 108 samples on 8threads. I started this on the morning of the 23rd Oct and it is now lunch time on the 25th and it is still on the creating positions lists. I'm just curious if there is a way in which it can be sped up.
+
+
+Cheers,
+
+P",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/38
+MDU6SXNzdWU1MTU2Mzc1NDI=,MPI Aware,CLOSED,2019-10-31T18:02:54Z,2021-02-03T15:09:56Z,2021-02-03T15:09:56Z,"Hi,
+
+Is MTBseq MPI aware?
+
+Cheers,
+
+P",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/39
+MDU6SXNzdWU1MTcwNDQ0MDE=,cat failed: TBpile.pm line: 52,CLOSED,2019-11-04T09:50:38Z,2019-11-18T09:41:53Z,2019-11-18T09:41:53Z,"HI Guys,
+
+Im having an error with the TBpile step with the following error:
+
+cat failed: TBpile.pm line: 52
+
+I'm running it on my college cluster in case than makes a difference from running it locally!
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/40
+MDU6SXNzdWU1MjM4NTAyNzU=,How do you upgrade to Java 1.8? ,CLOSED,2019-11-16T14:15:13Z,2019-11-18T15:35:32Z,2019-11-18T15:35:32Z,"INFO>	[2019-11-17 03:08:58]	Found perl module: MCE
+<INFO>	[2019-11-17 03:08:58]	Found perl module: Statistics::Basic
+<INFO>	[2019-11-17 03:08:58]	Found bwa in your PATH!
+<INFO>	[2019-11-17 03:08:58]	Found samtools in your PATH!
+<INFO>	[2019-11-17 03:08:58]	Found gatk3 in your PATH!
+<INFO>	[2019-11-17 03:08:58]	Found picard in your PATH!
+<ERROR>	[2019-11-17 03:08:58]	Need exatly java 1.8 for GATK execution. You have java 1.6!
+I tried install numerous option to no success. please help",foamy1881,https://github.com/ngs-fzb/MTBseq_source/issues/41
+MDU6SXNzdWU1MjQzMjI5MDg=,Tbjoin_Reg,CLOSED,2019-11-18T12:03:29Z,2019-11-20T04:14:19Z,2019-11-20T04:14:19Z,"       Im currently running MTBseq pipeline for our analysis. I have successfully run with TBfull option. Now when i try to run TBjoin option, im getting error as ""Could not find files for  ampleID_LibID! Did you run TBlist and TBvariants for SampleID_LibID?"".  TBlist and TBvariants are already ran. Please kindly help how to solve this.  
+command - MTBseq --step TBjoin --samples list.txt --project phylo",Ashsel,https://github.com/ngs-fzb/MTBseq_source/issues/42
+MDU6SXNzdWU1Mjc5NDM5ODA=,No Sequence in Amend - PlainIDs.fasta,CLOSED,2019-11-25T09:05:08Z,2021-07-13T08:38:20Z,2021-07-13T08:38:20Z,"Hi All,
+
+I have managed to run MTBseq on 5 MiniSeq runs and generated MLTs. However, two of the runs failed to generate sequence in the PlainIDs.fasta file and I don't know why. Both logs for TBfull and TBjoin show that it finished fine.
+
+I have attached the logs below if someone could point me in the right direction as to why it failed?
+
+Cheers.
+
+
+[MTBseq_TBfull_Log.txt](https://github.com/ngs-fzb/MTBseq_source/files/3885651/MTBseq_TBfull_Log.txt)
+[MTBseq_TBjoin_Log.txt](https://github.com/ngs-fzb/MTBseq_source/files/3885652/MTBseq_TBjoin_Log.txt)
+
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/43
+MDU6SXNzdWU1MjkwMjU3MDY=,TBjoin missing samples?,CLOSED,2019-11-26T23:23:34Z,2019-11-27T08:25:54Z,2019-11-27T08:25:54Z,"I'm trying run TBjoin earlier and it said no samples defined for the analysis? I try to search for the input files but where do I find the samples.txt file? Do I need to create it? if yes how? and where should the samples.txt file be located?  Please help. #42 
+
+Log file below. 
+
+<INFO>	[2019-11-27 12:13:39]	### MTBseq finished!!! ###
+(MTBseq) yfong@yfong-VirtualBox:~/Documents/software/MTBseq/SequenceFiles$ MTBseq --step TBjoin --sample samples.txt --project phylo --threads 6
+<INFO>	[2019-11-27 12:14:37]	Found perl module: MCE
+<INFO>	[2019-11-27 12:14:37]	Found perl module: Statistics::Basic
+<INFO>	[2019-11-27 12:14:37]	Found bwa in your PATH!
+<INFO>	[2019-11-27 12:14:37]	Found samtools in your PATH!
+<INFO>	[2019-11-27 12:14:37]	Found gatk3 in your PATH!
+<INFO>	[2019-11-27 12:14:37]	Found picard in your PATH!
+
+
+MTBseq 1.0.3 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener,
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+
+
+<INFO>	[2019-11-27 12:14:37]	You are yfong.
+<INFO>	[2019-11-27 12:14:37]	Your current working directory is: /home/yfong/Documents/software/MTBseq/SequenceFiles
+<INFO>	[2019-11-27 12:14:37]	You requested 6 thread(s) for the pipeline.
+
+<INFO>	[2019-11-27 12:14:37]	Your parameter setting is:
+<INFO>	[2019-11-27 12:14:37]	--step		TBjoin
+<INFO>	[2019-11-27 12:14:37]	--continue	0
+<INFO>	[2019-11-27 12:14:37]	--samples	NONE
+<INFO>	[2019-11-27 12:14:37]	--project	phylo
+<INFO>	[2019-11-27 12:14:37]	--resilist	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2019-11-27 12:14:37]	--intregions	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2019-11-27 12:14:37]	--categories	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2019-11-27 12:14:37]	--basecalib	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2019-11-27 12:14:37]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2019-11-27 12:14:37]	--minbqual	13
+<INFO>	[2019-11-27 12:14:37]	--all_vars	0
+<INFO>	[2019-11-27 12:14:37]	--snp_vars	0
+<INFO>	[2019-11-27 12:14:37]	--lowfreq_vars	0
+<INFO>	[2019-11-27 12:14:37]	--mincovf	4
+<INFO>	[2019-11-27 12:14:37]	--mincovr	4
+<INFO>	[2019-11-27 12:14:37]	--minphred20	4
+<INFO>	[2019-11-27 12:14:37]	--minfreq	75
+<INFO>	[2019-11-27 12:14:37]	--unambig	95
+<INFO>	[2019-11-27 12:14:37]	--window	12
+<INFO>	[2019-11-27 12:14:37]	--distance	12
+<INFO>	[2019-11-27 12:14:37]	--quiet		0
+
+<INFO>	[2019-11-27 12:14:37]	The following programs will be used, if necessary:
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/opt/bwa_0.7.17
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/opt/samtools_1.6
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/opt/picard_2.17.0
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2019-11-27 12:14:37]	The following directories will be used, if necessary:
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Bam
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/GATK_Bam
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Mpileup
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Position_Tables
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Called
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Joint
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Amend
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Classification
+<INFO>	[2019-11-27 12:14:37]	/home/yfong/Documents/software/MTBseq/SequenceFiles/Groups
+
+<INFO>	[2019-11-27 12:14:37]	### [TBjoin] selected ###
+
+<INFO>	[2019-11-27 12:14:37]	Skipping Joint analysis. No samples defined for joint analysis.
+
+<INFO>	[2019-11-27 12:14:37]	### MTBseq finished!!! ###
+
+",foamy1881,https://github.com/ngs-fzb/MTBseq_source/issues/44
+MDU6SXNzdWU1MjkxNjQ2MDk=,Stop in TBjoin,CLOSED,2019-11-27T07:20:59Z,2023-07-31T08:36:58Z,2019-11-29T10:33:57Z,"I am analyzing 5 paired-end samples and at the time of doing the TBJoin I get the following error. ""Could not find files for SampleID_LibID! Did you run TBlist and TBvariants for SampleID_LibID?"" 
+My samples.txt file has two columns separated by tabs, the first row is ""SampleID"" and ""LibID"" and the next five rows the sample name and the library name. All samples have the same library name. The previous steps are ok. Attach log-file. Someone's had this issue
+[MTBseq_2019-11-26_.log](https://github.com/ngs-fzb/MTBseq_source/files/3895568/MTBseq_2019-11-26_.log)
+
+Thank you for your help
+
+",acebollada,https://github.com/ngs-fzb/MTBseq_source/issues/45
+MDU6SXNzdWU1MzAwODI0Njk=,No data in TBamend and TBgroup? Please help,CLOSED,2019-11-28T21:42:09Z,2021-02-03T15:11:09Z,2021-02-03T15:11:09Z,"<INFO>	[2019-11-28 12:25:50]	Start creating joint variant table...
+<INFO>	[2019-11-28 12:25:50]	Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2019-11-28 12:25:50]	Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>	[2019-11-28 12:25:59]	Start parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2019-11-28 12:26:02]	Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2019-11-28 12:26:02]	Parsing variant files...
+<INFO>	[2019-11-28 12:26:09]	Finished parsing variant files!
+<INFO>	[2019-11-28 12:26:09]	Sart printing joint variant file scaffold...
+<INFO>	[2019-11-28 12:26:09]	Finished printing joint variant file scaffold!
+<INFO>	[2019-11-28 12:26:09]	Start parsing position lists, extend called variants and complete joint variant list...
+<INFO>	[2019-11-29 01:28:07]	Finished parsing position lists, extend called variants and complete joint variant list!
+<INFO>	[2019-11-29 01:28:09]	Start printing coverage breadth output...
+<INFO>	[2019-11-29 01:29:00]	Finished printing coverage breadth output!
+<INFO>	[2019-11-29 01:29:04]	Finished creating joint variant table!
+
+<INFO>	[2019-11-29 01:29:06]	Amending joint variant table:
+<INFO>	[2019-11-29 01:29:06]	MTBphylo_joint_cf4_cr4_fr75_ph4_samples457.tab
+
+<INFO>	[2019-11-29 01:29:06]	Start amending joint variant table...
+<INFO>	[2019-11-29 01:29:06]	Start parsing /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/cat/MTB_Gene_Categories.txt..
+<INFO>	[2019-11-29 01:29:06]	Finished parsing /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/cat/MTB_Gene_Categories.txt!
+<INFO>	[2019-11-29 01:29:06]	Start parsing /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Resistance_Mediating.txt and /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Extended_Resistance_Mediating.txt..
+<INFO>	[2019-11-29 01:29:07]	Finished parsing /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Resistance_Mediating.txt and /home/yfong/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-0/var/res/MTB_Extended_Resistance_Mediating.txt!
+<INFO>	[2019-11-29 01:31:46]	Start creating MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo.tab with window length 12...
+<INFO>	[2019-11-29 01:31:46]	Finished creating MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo.tab with window length 12!
+<INFO>	[2019-11-29 01:31:46]	Finished amending joint variant table!
+
+<INFO>	[2019-11-29 01:31:46]	Calling groups from:
+<INFO>	[2019-11-29 01:31:46]	MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab
+
+<INFO>	[2019-11-29 01:31:46]	Start group calling...
+<INFO>	[2019-11-29 01:31:46]	Start parsing MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab...
+<INFO>	[2019-11-29 01:31:46]	Finished parsing MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab!
+<INFO>	[2019-11-29 01:31:46]	Start building distance matrix for MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab...
+<INFO>	[2019-11-29 01:31:47]	Finished building distance matrix for MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab!
+<INFO>	[2019-11-29 01:31:47]	Start calling groups for MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab...
+<INFO>	[2019-11-29 02:14:09]	Finished calling groups for MTBphylo_joint_cf4_cr4_fr75_ph4_samples457_amended_u95_phylo_w12.tab!
+<INFO>	[2019-11-29 02:14:09]	Finished group calling!
+
+<INFO>	[2019-11-29 02:14:09]	### MTBseq finished!!! ###
+
+It finished the analysis for TBjoin, and proceed towards amend and grouping for distance matrix and phylo but the result doesn't seem right where I do not have any fasta sequence at all and also all distance matrix is all 0. Maybe I have done something wrong? But I can't spot it myself with limited knowledge in bioinformatics. 
+
+ I zipped all the attachment.  
+
+
+[D.zip](https://github.com/ngs-fzb/MTBseq_source/files/3903047/D.zip)
+Can anyone please advise? and help? 
+
+
+
+
+
+",foamy1881,https://github.com/ngs-fzb/MTBseq_source/issues/46
+MDU6SXNzdWU1MzAyNjIzMjc=,mpileup to vcf,CLOSED,2019-11-29T10:11:09Z,2020-01-24T08:23:23Z,2020-01-24T08:23:22Z,"Hi,
+I'm newbie at bioinformatic and I have one question.Do you recommend me some tool that is suitable to convert mpileup  files that MTBseq generates to vcf files to visualize in IGV?? Or is it possible with MTBSeq generates the vcf files?
+Thank you in advance",acebollada,https://github.com/ngs-fzb/MTBseq_source/issues/47
+MDU6SXNzdWU1MzE5MjM3Nzk=,w12.PlainIDs.fasta Missing info,CLOSED,2019-12-03T11:39:23Z,2021-02-03T15:10:15Z,2021-02-03T15:10:15Z,"Hi, 
+
+When I run MTBseq on most of my sequence runs it seems to run fine. However I recently ran it on a years worth of sequencing and after the TBjoin step the w12.PlainIDs.fasta file is empty meaning I cannot process it in RAxML to generate a newick file for a MLT. I've attached the file as well as the log file but I dont see any error in it! its just odd that on some runs the w12.PlainIDs file sometimes doesnt have any sequence.
+
+[IMRL_Clusters_2019_joint_cf4_cr4_fr75_ph4_samples175_amended_u95_phylo_w12.plainIDs.txt](https://github.com/ngs-fzb/MTBseq_source/files/3916350/IMRL_Clusters_2019_joint_cf4_cr4_fr75_ph4_samples175_amended_u95_phylo_w12.plainIDs.txt)
+
+[MTBseq_TBjoin_Log.txt](https://github.com/ngs-fzb/MTBseq_source/files/3916342/MTBseq_TBjoin_Log.txt)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/48
+MDU6SXNzdWU1NDA4MTYyNTc=,454 input sequencing data (cff > fastq.gz),CLOSED,2019-12-20T07:13:58Z,2020-01-13T15:28:01Z,2020-01-13T15:28:01Z,"Tried to analyze data from 454 sequencing. Got the error ""failed: 256""
+
+How can I use my data in the correct format?
+
+2_1280_merged_R1.fastq.gz
+
+_
+
+```
+`@JI8HBZ101EU04N length=92 xy=1876_2277 region=1 run=R_2015_07_08_13_05_49_
+CGGCGGCGACTCGGGGCCGGGTCGCTGCCGTGGGCGACGACACCGATGCCGACGGTGGCGGCGCGGATCGCGGCCGCGTCATTGGAGCCGTC
++
+IIIIIIIHICI>111777====IICICCCA<3339CCCCGFC@DDIID<<;<IEEIEEHEEIIIEEIIIIIEEEEHEEG;62222>998<@9
+@JI8HBZ101ETFYY length=57 xy=1858_1928 region=1 run=R_2015_07_08_13_05_49_
+ACGCGGAGGTACGCGACCGCCGATGACACCACGAAGACCGGTCGCGTACCTCCGCGT
++
+IIIIIIIIIIIIIIIIIIIIIIIIIIIG777687776<CIIIIIIIIIHBB@EFIII`
+```
+
+_
+
+best regards, thanks",assetdaniyarov,https://github.com/ngs-fzb/MTBseq_source/issues/49
+MDU6SXNzdWU1NDc0MjE0NTY=,TBtools.pm error?,CLOSED,2020-01-09T11:30:10Z,2023-08-02T15:37:33Z,2023-08-02T15:37:33Z,"Hi, 
+
+I was trying to run TBjoin on a large sample size and it appeared to run and finish. But when I looked at the w12.PlainID.fasta file there was nothing in it. When I looked at the log there was a stream of string like the below with the line number changing from 1 to 23861. I'm not sure what it means. I cant send the log.txt file because its over 24GB in size!
+
+Any ideas?
+
+Peter
+
+Use of uninitialized value $freq1 in substitution (s///) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1767, <IN> line 4.
+Use of uninitialized value $type in string eq at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1769, <IN> line 4.
+Use of uninitialized value $allel1 in string eq at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1769, <IN> line 4.
+Use of uninitialized value $type in hash element at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1770, <IN> line 4.
+Use of uninitialized value $allel1 in hash element at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1771, <IN> line 4.
+Use of uninitialized value $covf in numeric ge (>=) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1774, <IN> line 4.
+Use of uninitialized value $allel1 in pattern match (m//) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1780, <IN> line 4.
+Use of uninitialized value $allel1 in pattern match (m//) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1781, <IN> line 4.
+Use of uninitialized value $type in pattern match (m//) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1785, <IN> line 4.
+Use of uninitialized value $type in pattern match (m//) at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1785, <IN> line 4.
+Use of uninitialized value $type in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $allel1 in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $covf in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $covr in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $qual20 in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $freq1 in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $cov in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $subs in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1789, <IN> line 4.
+Use of uninitialized value $allel1 in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1790, <IN> line 4.
+Use of uninitialized value $subs in concatenation (.) or string at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 1791, <IN> line 4.",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/50
+MDU6SXNzdWU1NzI1MDAwMzA=,--resislist ,CLOSED,2020-02-28T03:39:45Z,2021-02-03T15:11:59Z,2021-02-03T15:11:59Z,Hi sorry for the basic command questions. I completed the whole pipeline and I can't seem to find the conferring gene resistance prediction for first line/second line TB drugs? until i see the extra option --resislist? Now given i have completed the whole process how do I use this option without going back to restart the whole analysis again? ,foamy1881,https://github.com/ngs-fzb/MTBseq_source/issues/51
+MDU6SXNzdWU1OTY0NDA4Mzg=,Gatk High Quality Score,CLOSED,2020-04-08T09:32:29Z,2021-02-03T14:46:44Z,2021-02-03T14:46:44Z,"Hi, I got the following error;
+
+##### ERROR MESSAGE: SAM/BAM/CRAM file htsjdk.samtools.SamReader$PrimitiveSamReaderToSamReaderAdapter@e584b2b appears to be using the wrong encoding for quality scores: we encountered an extremely high quality score of 66. Please see https://software.broadinstitute.org/gatk/documentation/article?id=6470 for more details and options related to this error.
+
+I went to the site and it says;
+
+If this happens to you, you'll need to run again with the flag [ --fix_misencoded_quality_scores / -fixMisencodedQuals]. What will happen is that the engine will simply subtract 31 from every quality score as it is read in, and proceed with the corrected values. Output files will include the correct scores where applicable.
+
+I'm just wondering, in my sbatch script can I just throw the commands in like this;
+
+
+#!/bin/sh
+
+## SLURM Commands
+
+#SBATCH --partition=ProdQ
+#SBATCH --nodes=1
+#SBATCH --time=24:00:00
+#SBATCH --job-name=C10
+#SBATCH --account=ndlif075c
+#SBATCH --output=TBfull_Log.txt
+
+##SBATCH --mail-user=xxxxxxxxxxxxxxxx
+##SBATCH --mail-type=BEGIN,END
+
+cd $SLURM_SUBMIT_DIR
+
+# load the environment module
+module load conda/2
+
+# load the conda environment
+source activate MTBseq
+
+
+## BASH Commands
+
+MTBseq --step TBfull  --distance 5 ----fix_misencoded_quality_scores -fixMisencodedQuals --threads 8
+
+
+
+
+Cheers,
+
+P",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/52
+MDU6SXNzdWU1OTc4NjYzODk=,No Joint Variant File To Amend,CLOSED,2020-04-10T12:35:54Z,2021-02-03T14:45:48Z,2021-02-03T14:45:48Z,"Hi,
+
+I am pooling together all my 302 samples from multiple TBfull steps to carry out one TBjoin step and when I run it stops after 1min 40sec and the log states the following:
+
+
+<INFO>	[2020-04-10 13:28:21]	IMRLH94_L001.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+<INFO>	[2020-04-10 13:28:21]	IMRLH96_L001.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+<INFO>	[2020-04-10 13:28:21]	IMRLH99_S1.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+
+<INFO>	[2020-04-10 13:28:21]	Start creating joint variant table...
+<INFO>	[2020-04-10 13:28:21]	Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>	[2020-04-10 13:28:21]	Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>	[2020-04-10 13:28:30]	Start parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2020-04-10 13:28:33]	Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>	[2020-04-10 13:28:33]	Parsing variant files...
+<INFO>	[2020-04-10 13:28:45]	Finished parsing variant files!
+<INFO>	[2020-04-10 13:28:45]	Sart printing joint variant file scaffold...
+<INFO>	[2020-04-10 13:28:45]	Finished printing joint variant file scaffold!
+<INFO>	[2020-04-10 13:28:45]	Start parsing position lists, extend called variants and complete joint variant list...
+<INFO>	[2020-04-10 13:28:45]	Finished parsing position lists, extend called variants and complete joint variant list!
+<INFO>	[2020-04-10 13:28:47]	Start printing coverage breadth output...
+<INFO>	[2020-04-10 13:29:32]	Finished printing coverage breadth output!
+<INFO>	[2020-04-10 13:29:36]	Finished creating joint variant table!
+
+<ERROR>	[2020-04-10 13:29:38]	No joint variant file All_No_C10_joint_cf4_cr4_fr75_ph4_samples302.tab to amend! Check content of /ichec/work/ndlif075c/Peter/Clusters_2019/All_Except_C10/Joint!
+
+
+I'm at a bit of a loss. Any help would be great!",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/53
+MDU6SXNzdWU2MjQwMjE2Mzc=,"MTBseq unable to detect the Bam output, even though it's present in the file system",CLOSED,2020-05-25T03:29:53Z,2021-02-03T15:16:43Z,2021-02-03T15:16:43Z,"Hello team,
+
+Thanks for the wonderful tool!
+
+I've used this successfully for many genomes, however earlier today when I was trying to analyze something, I came across a wierd issue. 
+
+```
+<INFO>  [2020-05-24 21:34:39]   Start statistics calculation...
+<INFO>  [2020-05-24 21:34:39]   Start parsing M._tuberculosis_H37Rv_2015-11-13.fasta...
+<INFO>  [2020-05-24 21:34:39]   Finished parsing M._tuberculosis_H37Rv_2015-11-13.fasta!
+<INFO>  [2020-05-24 21:34:39]   Start parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt...
+<INFO>  [2020-05-24 21:34:50]   Finished parsing M._tuberculosis_H37Rv_2015-11-13_genes.txt!
+<INFO>  [2020-05-24 21:34:50]   Start using Samtools for BWA mapping statistics of G04880_MTBSeq_nextseq_151bp.bam...
+/root/projects/G04880/mtbseq/Bam/G04880_MTBSeq_nextseq_151bp.bam does not exist, TBstats.pm line: 83 
+1 at /root/miniconda3/envs/mtbseq/share/mtbseq-1.0.4-0/lib/TBstats.pm line 83.
+```
+
+
+I'm also attaching the screenshot 
+
+![image](https://user-images.githubusercontent.com/12799326/82775553-a4ae6700-9e65-11ea-9ce5-09b0b37d2cae.png)
+
+
+However, the file does exists on the file system
+
+```
+(mtbseq) root@tuffy:~/projects/G04880/mtbseq/Bam# file /root/projects/G04880/mtbseq/Bam/G04880_MTBSeq_nextseq_151bp.bam
+/root/projects/G04880/mtbseq/Bam/G04880_MTBSeq_nextseq_151bp.bam: gzip compressed data, extra field
+```
+
+
+Can't quite figure out what's wrong here - could you please help me?",abhi18av,https://github.com/ngs-fzb/MTBseq_source/issues/55
+MDU6SXNzdWU2NTcxNjcwNDg=,Annotation File - Other organisms,CLOSED,2020-07-15T08:31:36Z,2021-02-03T14:44:15Z,2021-02-03T14:44:14Z,"Hi,
+
+This isn't an issue but more help needed but cant find where to add the tag.
+
+I want to add Staph aureus to the /MTBseq_source/var/ref path. I have added the fasta file and want to add the annotation now. The only thing is I'm not sure how to get the file identical to the H37Rv.txt file thats in the path all ready. I downloaded the file from NCBI as a GFF3 file but format is different to that used by MTBseq. 
+
+Where would you recommend one downloads annotation files? Is there a universal standard? DO I have to make it myself? I have attached a zip of the file from NCBI.
+
+Cheers,
+
+P
+
+[CP007659_1.gff3.zip](https://github.com/ngs-fzb/MTBseq_source/files/4923929/CP007659_1.gff3.zip)
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/56
+MDU6SXNzdWU2OTU2OTgwNjM=,Variant Calling with M bovis,CLOSED,2020-09-08T09:09:36Z,2021-02-03T14:46:11Z,2021-02-03T14:46:11Z,"Hi,
+
+I placed an M bovis fasta reference file in ref path and ran MTBseq with teh following command;
+
+MTBseq --step TBfull --ref Mbovis_AF2122_97  --distance 5 --threads 1
+
+The program ran until it errored with this;
+
+<INFO>	[2020-09-07 18:20:11]	Start variant calling...
+<INFO>	[2020-09-07 18:20:11]	Start parsing Mbovis_AF2122_97.fasta...
+<INFO>	[2020-09-07 18:20:11]	Finished parsing Mbovis_AF2122_97.fasta!
+<INFO>	[2020-09-07 18:20:11]	Parsing Mbovis_AF2122_97_genes.txt...
+<ERROR>	[2020-09-07 18:20:11]	Can't open Mbovis_AF2122_97_genes.txt: TBtools line: 703 
+1 at /ichec/home/users/peflanag/.conda/envs/MTBseq/share/mtbseq-1.0.4-0/lib/TBtools.pm line 703.
+
+
+My question is, do i need to have made some form of _genes.txt file? I didnt see tah in the manual. It just mentioned a reference fasta and an annotations file. I didnt add an annotation file since I am not worried about annotations. I have noticed that MTBseq seems to have made additional files based on the Mbovis reference but no .txt file.
+
+
+Cheers,
+
+P
+
+<img width=""354"" alt=""Screenshot 2020-09-08 at 10 09 12"" src=""https://user-images.githubusercontent.com/32863969/92456867-62fabf80-f1bb-11ea-8655-b207ec894f4b.png"">
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/57
+MDU6SXNzdWU3MDYyMTE0ODc=,Updates for the resistance mutations database,CLOSED,2020-09-22T09:17:29Z,2021-02-03T14:41:36Z,2021-02-03T14:41:36Z,"Dear MTBseq developers,
+I am using MTBseq, and so far it works very well, with ease of use and accurate results.  
+I do have one concern I would like you to help me with: 
+Do you update the resistance mutations database regularly? 
+If yes, how often?
+If no, how do you propose to make sure the resistance data used is correct and up-to-date?
+
+Regards,
+Mor Rubinstein
+National Public Health Laboratory, Tel Aviv, Israel",Mor-Rubinsteinn,https://github.com/ngs-fzb/MTBseq_source/issues/58
+MDU6SXNzdWU3MzAzOTU4NDI=,MTBseq considers R1 and R2 as two different isolates rather than considering it as double reads of a single isolates.what shall i do?any help? ,CLOSED,2020-10-27T12:13:43Z,2021-02-03T14:41:19Z,2021-02-03T14:41:19Z,,AmanuelZewdu,https://github.com/ngs-fzb/MTBseq_source/issues/59
+MDU6SXNzdWU3NjU1NDIzNTU=,Amend multifasta with reference?,CLOSED,2020-12-13T17:19:35Z,2021-02-03T10:43:40Z,2021-02-03T10:43:40Z,"Dear MTBseq developers,
+
+I am running MTBseq (TBfull) using an _M.bovis_ reference (AF2122/97) and I am interested in the output files from the Amend command. I imagine that the multifasta that is obtained as an output could be considered the ""core snps""? If so, I have realised that I am missing the reference sequence in this multifasta for me to build a phylogeny. Is this normal behaviour or am I doing something wrong here?
+
+Thank you very much for your help,
+
+Kind regards",Viloleal,https://github.com/ngs-fzb/MTBseq_source/issues/60
+MDU6SXNzdWU3OTczMDc5MzQ=,A fatal error has been detected by the Java Runtime Environment:,CLOSED,2021-01-30T01:55:09Z,2021-03-08T09:26:47Z,2021-03-08T09:26:47Z,"When start using GATK PrintReads for Test-20_MTBSeq_nextseq_151bp... a fatal error has been detected by the Java Runtime Environment. The messages are in below.
+
+ A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x0000000114ae66f7, pid=7410, tid=0x0000000000002503
+#
+# JRE version: OpenJDK Runtime Environment (8.0_152-b12) (build 1.8.0_152-release-1056-b12)
+# Java VM: OpenJDK 64-Bit Server VM (25.152-b12 mixed mode bsd-amd64 compressed oops)
+# Problematic frame:
+# C  [libgkl_compression3719787253608670960.dylib+0x76f7]  deflate_medium+0x867
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try ""ulimit -c unlimited"" before starting Java again
+#
+# An error report file with more information is saved as:
+# /Users/tomotada/Desktop/iwamoto/MTB_test/hs_err_pid7410.log
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+gatk3 -T --analysis_type PrintReads --reference_sequence /Users/tomotada/miniconda3/envs/MTBseq/share/mtbseq-1.0.4-1/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta --input_file /Users/tomotada/Desktop/iwamoto/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.realigned.bam --BQSR /Users/tomotada/Desktop/iwamoto/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.grp --num_cpu_threads_per_data_thread 1 --out /Users/tomotada/Desktop/iwamoto/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bam  2>> /Users/tomotada/Desktop/iwamoto/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog failed: 64000
+
+
+[hs_err_pid7410.log](https://github.com/ngs-fzb/MTBseq_source/files/5897166/hs_err_pid7410.log)
+
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/61
+MDU6SXNzdWU3OTkyNTY1MDk=,remove snp for phylogenesis,CLOSED,2021-02-02T12:56:05Z,2021-03-08T09:26:24Z,2021-03-08T09:26:24Z,"Hi there,
+in the manual it says:
+"" --window This OPTION is used in TBamend. By default, the OPTION is set to 12. The OPTION sets a window size in which the algorithm scans for the occurrence of multiple variants within the same sample. If more than one variant occurs within this window in the same sample, the positions will be excluded.""
+Just to make sure that I understood well:
+ACC**C**GCG**T**CGTGCTGCGCTC**G**GGTTCCAATGCGTT**A**
+you will keep **G** and **A** only, removing **C** and **T**, right? basically left-right more than 12nt.
+Best",aspitaleri,https://github.com/ngs-fzb/MTBseq_source/issues/62
+MDU6SXNzdWU3OTk0Mjc5MTY=,samples.txt file,CLOSED,2021-02-02T16:17:09Z,2021-02-03T14:33:40Z,2021-02-03T14:33:40Z,"@cutpatel please help in TBjoin
+I have successfully analyzed more than 200 samples from multiple TBfull steps, each sample is located in its separate folder starting from 700 to 900. I am sorry but I can't write samples.txt file for TBjoin.  Some of my files of sample 724 are
+/724/Called/724_ERR3335724.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.tab
+/724/Called/724_ERR3335724.gatk_position_uncovered_cf4_cr4_fr75_ph4_outmode000.tab
+/724/Position_Tables/724_ERR3335724.gatk_position_table.tab",sajidjan80,https://github.com/ngs-fzb/MTBseq_source/issues/63
+MDU6SXNzdWU4MDExNzQ5NTY=,position_tables with slurm,CLOSED,2021-02-04T11:02:30Z,2021-03-08T09:29:48Z,2021-03-08T09:29:48Z,"Hi there,
+position tables (TBlist) is so far the most consuming time of the pipeline, mainly in case of several samples. One way to accelerate it is to make it embarrassingly parallel using for instance parallel or better slurm/srun array.
+I am working on that outside of the pipeline but I am wondering whether you find already a clean solution on it. 
+Best",aspitaleri,https://github.com/ngs-fzb/MTBseq_source/issues/64
+MDU6SXNzdWU4MjQyNzg0MDk=,Candida parapsilosis analysis,CLOSED,2021-03-08T07:42:37Z,2021-06-18T12:28:17Z,2021-06-18T12:28:17Z,"Hi @TaKohl I was wondering could I ask your advice in relation to issue #57 that I asked a while back. I wanted to the relationship between 7 parapsilosis sequences for a friend. Normally I would run Fastp then Snippy to get an alignment fasta and draw a tree from that using RAxML and look at SNP-Dists for the NxN matrix. But its a diploid organism so snippy doesn't seem to like that!
+
+I decided to try MTBseq and stuck the reference file where it needed to be and a blank annotated file. I ran everything with no errors but was shocked to see that it was 0 SNPs among the isolates and one showing 1 SNP difference. Now, this might be correct which suggests possible host to host transmission. But I just wanted to check does MTBseq work ok on a diploid organism?
+
+Cheers!",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/65
+MDU6SXNzdWU4Mjc4NjIwMzY=,Wrong option name --minphred in MANUAL.md,CLOSED,2021-03-10T14:52:56Z,2021-10-04T14:11:20Z,2021-10-04T14:11:20Z,"Under [OPTIONS & VALUES] in MANUAL.md there is an option --minphred listed, which  should be correctly listed as --minphred20. This should be corrected.",msmdev,https://github.com/ngs-fzb/MTBseq_source/issues/66
+MDU6SXNzdWU5NDk0MDE3NzM=,High confidence mutation,CLOSED,2021-07-21T07:12:42Z,2022-05-12T09:33:57Z,2022-05-12T09:33:57Z,"Hi,
+
+Thank you for this highly comprehensive and easy-to-use tool! I was just wondering how you define ""high confidence SNP""? Indeed, from the technical guide proposed by the WHO (https://apps.who.int/iris/handle/10665/274443), some mutations such a _rpoB_ Q432K for example are considered as high confidence mutation for rifampicine resistance. However from in your table MTB_Resistance_Mediating.txt it is not considered as high confidence SNP. What reference document did you use?
+
+And another question : are premature codon stop (in katG for example) taken into account?
+
+Thanks!
+
+Guilhem",GuilhemRoyer,https://github.com/ngs-fzb/MTBseq_source/issues/67
+MDU6SXNzdWU5NTIyMDg2MTk=,gatk.bamlog failed:256 when tested my own reference fasta,CLOSED,2021-07-25T06:34:41Z,2021-10-06T09:33:24Z,2021-10-06T09:33:24Z,"When I change the reference to my own created and set option --ref for TBfull, the gatk.bamlog failed:256 was shown. The below is the part of the log. Could you please advise me how to resolve this issue ?
+
+[MTBseq_2021-07-25_tomotada.log](https://github.com/ngs-fzb/MTBseq_source/files/6873467/MTBseq_2021-07-25_tomotada.log)
+[MTBseq_2021-07-25_tomotada.log](https://github.com/ngs-fzb/MTBseq_source/files/6873469/MTBseq_2021-07-25_tomotada.log)
+gatk3 --analysis_type RealignerTargetCreator --reference_sequence /home/tomotada/miniconda3/share/mtbseq-1.0.4-0/var/ref/IMC_NC_000962_H37Rv.fasta --input_file /mnt/c/users/tomotada/Desktop/MTB_test/Bam/Test-20_MTBSeq_nextseq_151bp.bam --downsample_to_coverage 10000 --num_threads 1 --out /mnt/c/users/tomotada/Desktop/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.intervals 2>> /mnt/c/users/tomotada/Desktop/MTB_test/GATK_Bam/Test-20_MTBSeq_nextseq_151bp.gatk.bamlog failed: 256",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/68
+MDU6SXNzdWU5NTU3OTM0MzI=,"no files generated inside statistics, amend, classification, joint folders",CLOSED,2021-07-29T12:30:45Z,2021-07-29T14:31:59Z,2021-07-29T14:31:59Z,"I ran MTBseq --step TBfull, the run got killed halfway without giving any error ",geethanjali97,https://github.com/ngs-fzb/MTBseq_source/issues/69
+I_kwDOBO-uwM48gWFw,Amend,OPEN,2021-10-04T12:23:17Z,2021-10-04T13:41:35Z,,"Hi all,
+the TBAmend step require a lot of time in case of several inputs. I am wondering whether there an option in TBAmend by which adding new samples in a previous run would increase the speed without redoing the TBAmed for all samples, including the previous one. So basically, MTBSeq could just compare the new samples with the previous fasta to calculate the new matrix. I know that MTBseq pipeline require some restraints to make the TBAmend but in first approximation using the previous matrix could help in terms of speed. What do you think? Does it need some perl-hacking?
+Best",aspitaleri,https://github.com/ngs-fzb/MTBseq_source/issues/70
+I_kwDOBO-uwM4_9w-s,How can I get a strain specific SNP from TBamed file ?,CLOSED,2021-12-07T10:04:21Z,2021-12-16T23:46:49Z,2021-12-16T23:46:49Z,"MTBseq is a great pipeline ! I performed comparison of 7 strains those from the outbreak. From the multi-fasta file I could extract six SNVs among these seven strains. However, I could not find where these 6 SNVs are located in the tab file by TBamend.
+
+Could you please let me know how I can get a detailed information of the strain specific SNVs from the TB amend file ?
+
+For your information, I have enclosed tab file and fasta file those I obtained by MTBseq-TBamend.
+
+[TBamend_result.xlsx](https://github.com/ngs-fzb/MTBseq_source/files/7667334/TBamend_result.xlsx)
+[NONE_joint_cf4_cr4_fr75_ph4_samples7_amended_u95_phylo_w12.plainIDs.txt](https://github.com/ngs-fzb/MTBseq_source/files/7667360/NONE_joint_cf4_cr4_fr75_ph4_samples7_amended_u95_phylo_w12.plainIDs.txt)
+
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/71
+I_kwDOBO-uwM5APWz8,File for the repetitive regions of the exchanged reference genome for TBamend,CLOSED,2021-12-12T10:13:03Z,2022-02-06T07:37:04Z,2022-02-06T07:37:04Z,"Hello, 
+With your response to my previous question, I understood the whole process of MTBseq and am really satisfied with the performance.
+
+As the next step, I would like to exchange the reference genome for my use. It is the genome of M. tuberculosis but not H37Rv strain.I have already identified the repetitive regions of the customized reference that can be used to filter the positions at the TBamend step. However, I could not find the original file for the H37Rv in the directory of MTBseq.
+
+Could you please let me know in which directory of MTBseq I can find the original file for repetitive regions that I should replace for my reference genome ? 
+
+I found the FASTA formatted genome sequence in the directory /MTBseq_source/var/ref/ but need your help to find the file for repetitive region.
+
+Thank you very much for your help in advance.
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/72
+I_kwDOBO-uwM5DECDb,Matrix file created by TBgroup,CLOSED,2022-02-06T07:36:35Z,2022-05-12T09:33:24Z,2022-05-12T09:33:24Z,"Hi,
+I performed TBGroup using the data from 397 strains.
+It worked well but I found out that the first row of the matrix file table is not displayed.
+Could you please check the attached matrix file ?
+
+
+[NONE_joint_cf4_cr4_fr75_ph4_samples_amended_u95_phylo_w12.matrix.xlsx](https://github.com/ngs-fzb/MTBseq_source/files/8009670/NONE_joint_cf4_cr4_fr75_ph4_samples_amended_u95_phylo_w12.matrix.xlsx)
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/73
+I_kwDOBO-uwM5DH5iU,gatk3 issue,CLOSED,2022-02-07T15:28:09Z,2022-05-12T09:32:49Z,2022-05-12T09:32:49Z,"Hi there,
+
+I have recently installed MTBseq and I have had an issue regarding `gatk` software.
+
+I installed following these instructions:
+```
+conda install -c bioconda mtbseq
+```
+
+I run `MTBseq --check` and it mentioned `gatk3` was not in the path. Ok, that was expected. So I followed instructions and did:
+
+```
+## download gatk
+wget https://storage.googleapis.com/gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
+
+## untar folder
+tar -xf GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
+
+## register gatk
+...
+```
+In the registration step, in your `README` files it says to use `gatk3-register`, but I had not `gatk3-register` available in my fresh installed conda environment. I got a `gatk-register` instead (note the missing 3).
+
+So I proceed using:
+```
+## register gatk
+gatk-register GenomeAnalysisTK-3.8-0-ge9d806836/GenomeAnalysisTK.jar 
+```
+
+I run again `MTBseq --check` and it mentioned again `gatk3` was not in the path. I check the installation path and Gatk jar file was working fine.
+
+I modified my `MTBseq` perl script code to take into account `gatk3` was now `gatk`. I basically modified lines 135 and 144 in the original script. And it succesfully identified gatk in the path.
+
+https://github.com/ngs-fzb/MTBseq_source/blob/cca5baf743e6bc5e99e60678febffeba8b5e00d3/MTBseq#L135-L144
+
+
+I am not sure why is it but I guess you should take into account for new users that fresh installed from conda.
+
+I am still running my first example dataset, no issues so far and looks like gatk is found in the path now.
+
+I will let you know if I have any additional issues regarding this modification of the original code.
+
+Best regards,
+Jose F.",JFsanchezherrero,https://github.com/ngs-fzb/MTBseq_source/issues/74
+I_kwDOBO-uwM5GSLqg,Can I add additional SNP bar coding for phylogenetic classification ?,CLOSED,2022-03-24T08:27:15Z,2023-01-29T01:38:35Z,2023-01-29T01:38:35Z,"Coll lineages have been further classified into numbers of sub-lineages. I would like to add some SNP coding so that I can get more resolution for lineage determination.
+
+Can I do this by adding more SNP information to MTB_Resistance_Mediating file ?
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/75
+I_kwDOBO-uwM5Ihi5P, TBlist and TBvariants,CLOSED,2022-04-27T04:01:25Z,2022-04-27T04:18:35Z,2022-04-27T04:17:05Z,"Hi. 
+
+I have an error when running the comparative analysis, MTBseq does not detect the output files of TBlist and TBvariant for input to TBjoin, but these are in their corresponding folder, correctly generated. I include the project and the list of sequences, but it marks me that one is not detected, each run is different sequence and to remove them from the list still appear the error another, so for all, it is as if it did not recognize the file. 
+
+This is the error message.
+
+<ERROR> [2022-04-27 03:39:52]    Could not find files for C068_S21_! Did you run TBlist and TBvariants for C068_S21_?
+
+
+These are the permissions of the folders that MTBseq generated.
+drwxr-xr-x 1 root root      4096 Apr 26 22:42 Called
+drwxr-xr-x 1 root root      4096 Apr 27 00:26 Classification
+drwxr-xr-x 1 root root      4096 Apr 26 05:54 GATK_Bam
+drwxr-xr-x 1 root root      4096 Apr 26 03:52 Groups
+drwxr-xr-x 1 root root      4096 Apr 26 03:52 Joint
+-rw-r--r-- 1 root root    401030 Apr 27 00:57 MTBseq_2022-04-26_.log
+drwxr-xr-x 1 root root      4096 Apr 26 06:15 Mpileup
+drwxr-xr-x 1 root root      4096 Apr 26 21:15 Position_Tables
+drwxr-xr-x 1 root root      4096 Apr 26 22:45 Statistics
+-rw-r--r-- 1 root root       398 Apr 26 03:50 samples.txt
+
+I already tried it on two different computers, installed from conda and as sourse, the result is the same error.
+
+What do you think is the problem?
+
+Regards
+
+I close it, the solution was in  #45",RichardUABC,https://github.com/ngs-fzb/MTBseq_source/issues/76
+I_kwDOBO-uwM5I8uO6,log4j issue with gatk3.8 and picard2.18,CLOSED,2022-05-03T09:36:38Z,2023-02-02T13:59:52Z,2023-02-02T13:59:52Z,"Hi, 
+we have been using MTBseq for some years but due to the log4j-issues end of 2021 and consequential IT resitrictions on our systems we had to put it out of service, as it uses older versions of gatk and picard that are affected by the security leak.
+
+From what I saw on  https://gatk.broadinstitute.org/hc/en-us/articles/4412955012379-Important-GATK-version-update-required-to-address-Log4j-security-vulnerability and https://github.com/broadinstitute/picard/issues/1763 all gatk versions <4.2.4.0 and picard <2.26.9 are affected. 
+ 
+Does this problem affects MTBseq at all using only some functionalities of gatk3.8 and picard (at the moment v2.18.29 comes with the conda installation)? Or is there any way to use the most recent versions of gatk/picard with mtbseq? 
+I was not able to implement it so far. We would really appreciate to use MTBseq again.
+Thanks a lot!! ",alexadn,https://github.com/ngs-fzb/MTBseq_source/issues/77
+I_kwDOBO-uwM5LAQDp,Error failed 256 in .bamlog,CLOSED,2022-06-02T15:36:23Z,2023-02-02T14:20:26Z,2023-02-02T14:20:26Z,"Hi,I have this error ""failed 256"", but muy ouputs  are like this:
+
+[2022-06-02 01:08:00] bwa mem -t 4 -R '@rg\tID:ERR2512461_S12\tSM:ERR2512461\tPL:Illumina\tLB:S12' /opt/conda/share/mtbseq-1.0.4-2/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta /home/ubuntudocker/MTB-AMR-CNN_MTBseq/ERR2512461_S12_R1.fastq.gz /home/ubuntudocker/MTB-AMR-CNN_MTBseq/ERR2512461_S12_R2.fastq.gz > /home/ubuntudocker/MTB-AMR-CNN_MTBseq/Bam/ERR2512461_S12.sam 2>> /home/ubuntudocker/MTB-AMR-CNN_MTBseq/Bam/ERR2512461_S12.bamlog
+bwa mem -t 4 -R '@rg\tID:ERR2512461_S12\tSM:ERR2512461\tPL:Illumina\tLB:S12' /opt/conda/share/mtbseq-1.0.4-2/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta /home/ubuntudocker/MTB-AMR-CNN_MTBseq/ERR2512461_S12_R1.fastq.gz /home/ubuntudocker/MTB-AMR-CNN_MTBseq/ERR2512461_S12_R2.fastq.gz > /home/ubuntudocker/MTB-AMR-CNN_MTBseq/Bam/ERR2512461_S12.sam 2>> /home/ubuntudocker/MTB-AMR-CNN_MTBseq/Bam/ERR2512461_S12.bamlog failed: 256
+
+in the bamlog:
+
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[M::process] read 264902 sequences (40000202 bp)...
+[gzread] fd:4: too many length or distance symbols
+
+or
+
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[W::bseq_read] the 2nd file has fewer sequences.
+[M::process] read 4 sequences (9074220 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (0, 0, 0, 0)
+[M::mem_pestat] skip orientation FF as there are not enough pairs
+[M::mem_pestat] skip orientation FR as there are not enough pairs
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+[mem_sam_pe] paired reads have different names: ""†��ù„„€€€……•š™›…”š—šŸ™š›š��ž›˜˜šŸŸž‰œœœ™ŸšœœŸžœ��œœ™˜š‰šŸ™š›”˜šž’‘Až’““’•�Š–žš€”v’I›•›�‘š™”’™šŠ˜�Ÿ�”ššššŸ˜™š–�™ž™’3˜œ”�‘œ�šž–ž›šžŸ�—Š�žž™š‹y”š›”•„™š—…›”6š–—••š••“””•–Ž•€�––„–†{„;–‡�•’•Š•––i‚•–…2–†Š…g3Œ5��•—�–;•—•”•…dyƒ5…0•––1j‘ej0fh–4q8f:f;f†j9;"", ""‚�<�BB€š•‚š—•—@‚š”–’�ƒ””:;�•D›‚x‘šŠŠ�‘Š™�›•“˜‹’{’šš•“–�’�š—8z��“�y“‘œ–‡žšz™…;’™™…Ÿ�Ÿž”š˜‰š”•–ˆw‡”ž�ž›–˜�žŸ™˜š�šš‰š“y‰šf7š�’g7Šxš™Š7€1–‡‡‰”™š”h?–˜}Š‚avi0z…0v|†•—„x•…�}1’0t0ha11`ba”…}}…~p|~29•ƒbb;3‡9„3…—–•31hzd9;|ba19j1}231a3a029293xi€}8a2b1""
+
+or
+
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[W::bseq_read] the 2nd file has fewer sequences.
+[M::process] read 12 sequences (75596 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (0, 0, 0, 0)
+[M::mem_pestat] skip orientation FF as there are not enough pairs
+[M::mem_pestat] skip orientation FR as there are not enough pairs
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+[mem_sam_pe] paired reads have different names: ""ERR2512437.1"", ""rkÔQ�!&eW…Þ��Žn“�ý[™…“¨»”³ËÉ[Ñ{h‹�Š/NãÉY-FÅmPóà�G­�%¬^‡�4¬¬0Ä�H_ôqRB ÊR<á*""
+
+[mem_sam_pe] paired reads have different names: ""ERR2512437.4"", ""ªè‡‚ô,�£�aEêµñ{oŸ^†Eeªæ�­Žz�.À¤³Ù‹S×…an��š³�b~fÕÙM!�§�œ�Ÿ.Œ�‘ì�þ3žüÃo†�§ýÁª¦‰®šý¼,èó��€*2²š""
+
+I tried with the mamba solution and there is no difference. These sequences are downloaded from GenBank. what do you think is the problem?",RichardUABC,https://github.com/ngs-fzb/MTBseq_source/issues/78
+I_kwDOBO-uwM5RqDA8,gatk does not recognize '--analysis_type',CLOSED,2022-09-12T14:10:13Z,2023-02-02T13:33:17Z,2023-02-02T13:33:16Z,"I have MTBseq 1.0.3 installed on my linux machine via bioconda. 
+I have gatk-4.2.6.1 installed and the command gatk3 points to it. This version of gatk seems to not recognize the --analysis_type option. 
+Therefore MTBseq --step TBrefine stops in the middle. 
+How do I solve this?
+Best Regards,
+Mor Rubinstein",Mor-Rubinsteinn,https://github.com/ngs-fzb/MTBseq_source/issues/79
+I_kwDOBO-uwM5R0VED,conda installation version,CLOSED,2022-09-14T09:39:02Z,2023-02-02T13:38:05Z,2023-02-02T13:38:05Z,"I had install mtbseq using conda, but the version was still 1.0.3 rather than 1.0.4.
+",alantsangmb,https://github.com/ngs-fzb/MTBseq_source/issues/80
+I_kwDOBO-uwM5Tqkn7,Pause and continue,CLOSED,2022-10-10T20:19:47Z,2023-08-02T15:38:03Z,2023-08-02T15:38:03Z,"Is it possible to pause mid process and then continue? I executed the pipeline with --step TBfull
+I want to increase the number of threads to be used...",jloubser,https://github.com/ngs-fzb/MTBseq_source/issues/81
+I_kwDOBO-uwM5UOl7B,Bam issue,CLOSED,2022-10-18T12:12:34Z,2023-08-02T15:37:02Z,2023-08-02T15:37:02Z,"Hi,
+
+Can someone help me with this? I have old HiSeq files that where in shred 64 formate. I converted to phred33 and went to run MTBseq and it failed with the following error;
+
+bwa mem -t 8 -R '@RG\tID:06IE03_L001_phred33\tSM:06IE03\tPL:Illumina\tLB:L001' /Users/peterflanagan/miniconda3/envs/mtbseq/share/mtbseq-1.0.4-2/var/ref/M._tuberculosis_H37Rv_2015-11-13.fasta  /Volumes/IMRL/Peter_F/Missing_MTBseq_ER/MTBseq/06IE03_L001_phred33_R1.fastq.gz /Volumes/IMRL/Peter_F/Missing_MTBseq_ER/MTBseq/06IE03_L001_phred33_R2.fastq.gz > /Volumes/IMRL/Peter_F/Missing_MTBseq_ER/MTBseq/Bam/06IE03_L001_phred33.sam 2>> /Volumes/IMRL/Peter_F/Missing_MTBseq_ER/MTBseq/Bam/06IE03_L001_phred33.bamlog failed: 256
+
+
+I looked at the log file and it says this;
+
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[W::bseq_read] the 2nd file has fewer sequences.
+[M::process] read 20 sequences (3020 bp)...
+[W::bseq_read] the 2nd file has fewer sequences.
+[M::process] read 20 sequences (3020 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (2, 2, 6, 0)
+[M::mem_pestat] skip orientation FF as there are not enough pairs
+[M::mem_pestat] skip orientation FR as there are not enough pairs
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+[mem_sam_pe] [mem_sam_pe] paired reads have different names: ""HISEQ2500-10:161:HF3TKADXX:2:1114:7144:12013"", ""HISEQ2500-10:161:HF3TKADXX:1:1213:9256:58517""
+[mem_sam_pe] paired reads have different names: ""HISEQ2500-10:161:HF3TKADXX:2:1114:7144:12013"", ""HISEQ2500-10:161:HF3TKADXX:1:1213:9256:58517""
+
+[mem_sam_pe] paired reads have different names: ""HISEQ2500-10:161:HF3TKADXX:2:2216:9421:44324"", ""HISEQ2500-10:161:HF3TKADXX:1:1206:16354:21346""
+
+
+But I don't understand how it has different names? I should add, these where originally bam files that our lab received from an external lab that did the segueing before I started working here. It was two bam files per sample that I converted to fastq, converted from phred64 to phred33 and then gzip'd the files to run MTBseq.
+
+Any help would be great!",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/82
+I_kwDOBO-uwM5aE7vD,TBjoin filename outputs adds number at end,CLOSED,2022-12-26T21:04:21Z,2023-08-02T15:36:51Z,2023-08-02T15:36:51Z,"Running **TBjoin** outputs files in the Joint folder that adds the number of sequences analyzed at the end of the filename. In this case I was just testing 3 sequences (e,g, tester_joint_cf4_cr4_fr75_ph4_samples**3**.tab) . This creates an issue with **TBamend** which is looking for a filename without this number and gives an error as a result: 
+
+ERROR:
+No joint variant file tester_joint_cf4_cr4_fr75_ph4_samples.tab to amend!
+
+If I manually change the filename to remove the number it will work. 
+
+Am I doing something incorrectly or does this require a fix in the code?",KatG3,https://github.com/ngs-fzb/MTBseq_source/issues/83
+I_kwDOBO-uwM5dXGi6,MTBseq Update?,CLOSED,2023-02-01T15:36:57Z,2024-09-17T15:01:12Z,2024-09-17T15:01:11Z,"Hi, 
+
+this is more a question than an issue. I am just wondering will there be an update of MTBseq anytime soon with the revised WHO mutation catalogue.
+
+Cheers,
+
+P",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/84
+I_kwDOBO-uwM5jLTHW,"No data in the column of ResistanceSNP, PhyloSNP, and InterestingRegion of variants called list.",CLOSED,2023-04-12T06:21:00Z,2024-03-18T15:06:00Z,2024-03-18T15:06:00Z,"Hi,
+
+I run MTBseq --step TBfull and got full results. However, I noticed that there were  no data in the column of ResistanceSNP, PhyloSNP, and InterestingRegion of variants called list. I have attached the file and log. Could you please let me know how to resolve this issue ?
+
+Thanks,
+
+[JPN-R2013-0096_S23_L001.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.txt](https://github.com/ngs-fzb/MTBseq_source/files/11207783/JPN-R2013-0096_S23_L001.gatk_position_variants_cf4_cr4_fr75_ph4_outmode000.txt)
+[MTBseq_2023-04-12_kansensho.log](https://github.com/ngs-fzb/MTBseq_source/files/11207785/MTBseq_2023-04-12_kansensho.log)
+",ryobon-dev,https://github.com/ngs-fzb/MTBseq_source/issues/86
+I_kwDOBO-uwM5loNrA,memory error,CLOSED,2023-05-11T04:23:21Z,2023-07-28T12:32:06Z,2023-07-28T12:32:05Z,"Hi
+
+I was trying to run my files on MTBseq but was getting this issue. How I can solve it? 
+
+ERROR MESSAGE: An error occurred because you did not provide enough memory to run this program. You can use the -xmx argument (before the -jar argument) to adjust the maximum heap size provided to Java. Note that this is a JVM argument, not a GATK argument. 
+
+
+How I can allow mtbseq to utilize the memory? Probably any commands? ",danaauganova,https://github.com/ngs-fzb/MTBseq_source/issues/87
+I_kwDOBO-uwM5sd8r6,Option doesn't work --snp_vars ,CLOSED,2023-07-25T08:13:45Z,2023-08-02T14:47:52Z,2023-08-02T14:47:51Z,"After running all steps of the MTBseq pipeline I would like to run a large joint analysis (841) with the --snp_vars option. However MTBseq tells me that there are no input files, although there are:
+
+""No files to create joint variant tables! Check content of ~/mtbseq/Position_Tables and /datadisk1~/mtbseq/Called!""
+
+Is there any solution for this?
+
+
+
+",ntmscope,https://github.com/ngs-fzb/MTBseq_source/issues/88
+I_kwDOBO-uwM5uoz4r,installing v1.1.0,CLOSED,2023-08-18T07:15:27Z,2023-08-21T11:38:49Z,2023-08-21T11:38:49Z,"Hi, I am trying to install on my MacBook Air M2 using iTerm running Rosetta. I have created a Conda env and when I use Conda to install it just hangs. It's been hating for nearly 24hrs now as you can see from the image below. Is there an issue with the Conda install method?
+
+Cheers!
+
+<img width=""716"" alt=""Screenshot 2023-08-18 at 06 52 11"" src=""https://github.com/ngs-fzb/MTBseq_source/assets/32863969/fe675391-fefb-4510-a163-79096cd3bb2c"">
+",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/89
+I_kwDOBO-uwM5uz97T,Bam issue 256,CLOSED,2023-08-21T10:54:08Z,2023-08-21T13:29:30Z,2023-08-21T13:29:30Z,"Hey, I was using my own isolate as a reference strain and when I run the program it says no file or directory found even though the fasta file is there. Just wondering is there a bug or something? 
+
+The error in the bam file is 
+
+[bwa_idx_build] fail to open file '/Users/drflanman/miniconda3/envs/mtbseq/share/mtbseq-1.0.4-2/var/ref//Users/drflanman/miniconda3/envs/mtbseq/share/mtbseq-1.0.4-2/var/ref/22S3269.fasta' : No such file or directory
+
+for some reason its putting two // after the ref with the path again even though that's not what I typed. I typed,
+
+mtbseq --step TBfull --ref /Users/drflanman/miniconda3/envs/mtbseq/share/mtbseq-1.0.4-2/var/ref/22S3269 --distance 5 --threads 8
+
+Cheers!",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/90
+I_kwDOBO-uwM5u7zhp,gatk.bam error 256,CLOSED,2023-08-22T10:32:02Z,2024-03-18T15:05:35Z,2024-03-18T15:05:35Z,"HI again! So the program was running fine for me till it got to the gatk.bam step and errored with the following error. I've never seen it before and no idea what it means! Any ideas? Do I need to downgrade my java?
+
+Cheers!
+
+Error: A JNI error has occurred, please check your installation and try again
+Exception in thread ""main"" java.lang.UnsupportedClassVersionError: picard/cmdline/PicardCommandLine has been compiled by a more recent version of the Java Runtime (class file version 61.0), this version of the Java Runtime only recognizes class file versions up to 52.0
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:757)
+	at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:473)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:74)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:369)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:363)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:362)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:419)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:352)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:352)
+	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:601)",peflanag,https://github.com/ngs-fzb/MTBseq_source/issues/91
+I_kwDOBO-uwM5yLueI,draft genome as reference,CLOSED,2023-09-27T14:09:07Z,2024-09-17T15:01:31Z,2024-09-17T15:01:31Z,"Hi, 
+
+Just wondering can draft genomes be used as a reference when running MTBseq ? I am trying to map M. gordonae sequences to the reference genome but there is no complete genome available for Mycobacterium gordonae DSM 44160. The draft genome consists of 260 contigs and when I use it as the reference in MTBseq, the % total bases is only ~3%. 
+
+Thanks in advance!
+",moks-micro,https://github.com/ngs-fzb/MTBseq_source/issues/92
+I_kwDOBO-uwM5yqtcx,Problem in the detection of amikacin resistances,CLOSED,2023-10-03T10:15:08Z,2024-09-17T15:05:47Z,2024-09-17T15:05:47Z,"Hi all!
+
+I analysed some samples that contain a mutation related with amikacin resitance, checked by other laboratoy techniques, but when I obtain amended results file, this mutation (genomic coordinate 1473329) only apear associated with streptomycin resistance.
+After observing the github folder https://github.com/ngs-fzb/MTBseq_source/tree/master/var/res, I was checking the log obtained in the analysis with MTBseq to a better understanding of the steps how it executes them and I drew some observations:
+
+- The file /master/var/res/MTB_Resistance_Mediating.txt does contain annotations regarding amikacin resistance mutations, but the other file master/var/res/MTB_Extended_Resistance_Mediating.txt does not.
+- During variant calling, the file MTB_Resistance_Mediating.txt is consulted and that is why amikacin resistance does appear noted in the vcf files.
+- When applying the TBJoin tool, the columns with the antibiotic resistance annotations of the vcf files are deleted, when creating the corresponding tab file.
+- When applying the TBAmend tool on this last tab, it happens that
+
+ INFO [2023-09-18 21:19:32] Start parsing /home/user/anaconda3/envs/mtbseq110/share/mtbseq-1.1.0-0/var/res/MTB_Resistance_Mediating.txt and /home/user/anaconda3 /envs/mtbseq110/share/mtbseq-1.1.0-0/var/res/MTB_Extended_Resistance_Mediating.txt..
+ INFO [2023-09-18 21:19:32] Finished parsing /home/user/anaconda3/envs/mtbseq110/share/mtbseq-1.1.0-0/var/res/MTB_Resistance_Mediating.txt and /home/user/anaconda3 /envs/mtbseq110/share/mtbseq-1.1.0-0/var/res/MTB_Extended_Resistance_Mediating.txt!
+ INFO [2023-09-18 21:19:32] Start creating TEST_joint_cf4_cr4_fr75_ph4_samples5_amended_u95_phylo.tab with window length 12...
+ INFO [2023-09-18 21:19:32] Finished creating TEST_joint_cf4_cr4_fr75_ph4_samples5_amended_u95_phylo.tab with window length 12!
+ INFO [2023-09-18 21:19:32] Finished amending joint variant table!
+
+The 2 files, MTB_Resistance_Mediating.txt and MTB_Extended_Resistance_Mediating.txt, are consulted, but in the file TEST_joint_cf4_cr4_fr75_ph4_samples5_amended.tab created in this step, the amikacin annotations existing in MTB_Resistance_Mediating.txt no longer appear, but only the corresponding to MTB_Extended_Resistance_Mediating.txt file, which in the same region indicates resistance to streptomycin. I get the feeling that this last file would have overlapped the information from the previous one.
+
+
+I'm still not clear on how to resolve this. Any idea is welcome.
+Thank you very much for the help.",amolares,https://github.com/ngs-fzb/MTBseq_source/issues/93
+I_kwDOBO-uwM5_OF8-,Annotation format and column meaning,CLOSED,2024-02-14T13:51:12Z,2024-09-17T15:04:57Z,2024-09-17T15:04:56Z,"Hello, thanks for the pipeline
+I' want to use different reference and needed to convert annotations as suggested in documentation.
+To get the feel about the annotation format, I've looked at the `M.abscessus` annotations; I' not sure what does the following columns mean and if/how this information is used in the pipeline and what are acceptable values:
+
+What I've seen in the file:
+```
+status_region             [status 3]
+status_function          [annotated]
+region_number                    [5]
+function_number                  [6]
+```
+
+Also, since genome can have multiple sequences (chromosomes or incomplete assembly with multiple contigs/scaffolds), how would this be specified in this pipeline, as it appears that no chromosome identification is present in the `*.txt` annotation file.?",SchwarzMarek,https://github.com/ngs-fzb/MTBseq_source/issues/94
+I_kwDOBO-uwM5_VL4a,Results TBgroups,CLOSED,2024-02-15T11:13:45Z,2024-06-18T07:13:27Z,2024-06-18T07:13:27Z,"I'm currently facing an issue with the output files while using MTBseq version 1.0.3 via Docker for analyzing 39 different tuberculosis samples. Here's a breakdown of the steps I've taken:
+
+Ran the command MTBseq --step TBfull --samples samples1202.txt --project Febrero.
+Executed various subsequent steps independently:
+MTBseq --step TBlist
+MTBseq --step TBvariants --snp_vars
+MTBseq --step TBstats
+MTBseq --step TBstrains
+MTBseq --step TBjoin --snp_vars --samples samples1202.txt --project Febrero
+MTBseq --step TBamend --samples samples1202.txt --project Febrero
+MTBseq --step TBgroups --samples samples1202.txt --project Febrero
+The issue arises in the output files of the TBGroups step. While the Strain_Classification file correctly classified the samples, I found discrepancies in the output files. Specifically:
+
+The matrix file Febrero_joint_cf4_cr4_fr75_ph4_samples39_amended_u95_phylo_w12.matrix contains only 0's.
+In the file Febrero_joint_cf4_cr4_fr75_ph4_samples39_amended_u95_phylo_w12_d12.groups, all samples are assigned to ""group1"".
+Previously, I encountered similar results when executing MTBseq --step TBvariants. However, I suspected that this might be due to the detection of additional indels and gaps in some samples, leading me to perform the analysis solely with SNPs.
+
+I would greatly appreciate any insights or suggestions on which step might be causing the issue or where to focus to identify the error. Your assistance would be invaluable in resolving this matter.
+
+Thank you all for your time and support.",acebollada80,https://github.com/ngs-fzb/MTBseq_source/issues/95
+I_kwDOBO-uwM6Clfr9,TBbwa.pm have an issue from Bioconda??,CLOSED,2024-03-17T21:10:42Z,2024-09-17T15:00:26Z,2024-09-17T15:00:26Z,"Recently I try to install MTBseq and encounter the following issue: 
+
+Downloading and Extracting Packages:
+Preparing transaction: done                                                                                                         
+Verifying transaction: -                                                                                                            
+SafetyError: The package for mtbseq located at /home/yang/miniconda3/pkgs/mtbseq-1.1.0-hdfd78af_0                                   
+appears to be corrupted. The path 'share/mtbseq-1.1.0-0/lib/TBbwa.pm' has an incorrect size.                                                                                                              
+reported size: 7901 bytes                                                                                                     
+actual size: 7905 bytes
+
+I went ahead to do the smaller sunset analysis and below is my file structure which is correct in accordance to MTBseq requirement but have issue with the TBbwa.pm script. 
+
+(mtbseq) yang@yang-VirtualBox:/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq$ MTBseq --step TBfull
+
+<INFO>	[2024-03-18 03:35:02]	Found perl module: MCE
+<INFO>	[2024-03-18 03:35:02]	Found perl module: Statistics::Basic
+<INFO>	[2024-03-18 03:35:02]	Found bwa in your PATH!
+<INFO>	[2024-03-18 03:35:02]	Found samtools in your PATH!
+<INFO>	[2024-03-18 03:35:02]	Found gatk3 in your PATH!
+<INFO>	[2024-03-18 03:35:02]	Found picard in your PATH!
+
+MTBseq 1.1.0 - Copyright (C) 2018   Thomas A. Kohl, Robin Koch, Christian Utpatel,
+                              Maria Rosaria De Filippo, Viola Schleusener
+                              Patrick Beckert, Daniela M. Cirillo, Stefan Niemann
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.
+
+<INFO>	[2024-03-18 03:35:02]	You are yang.
+<INFO>	[2024-03-18 03:35:02]	Your current working directory is: /media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq
+<INFO>	[2024-03-18 03:35:02]	You requested 1 thread(s) for the pipeline.
+<INFO>	[2024-03-18 03:35:02]	Your parameter setting is:
+<INFO>	[2024-03-18 03:35:02]	--step		TBfull
+<INFO>	[2024-03-18 03:35:02]	--continue	0
+<INFO>	[2024-03-18 03:35:02]	--samples	NONE
+<INFO>	[2024-03-18 03:35:02]	--project	NONE
+<INFO>	[2024-03-18 03:35:02]	--resilist	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/var/res/MTB_Resistance_Mediating.txt
+<INFO>	[2024-03-18 03:35:02]	--intregions	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/var/res/MTB_Extended_Resistance_Mediating.txt
+<INFO>	[2024-03-18 03:35:02]	--categories	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/var/cat/MTB_Gene_Categories.txt
+<INFO>	[2024-03-18 03:35:02]	--basecalib	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/var/res/MTB_Base_Calibration_List.vcf
+<INFO>	[2024-03-18 03:35:02]	--ref		M._tuberculosis_H37Rv_2015-11-13.fasta
+<INFO>	[2024-03-18 03:35:02]	--minbqual	13
+<INFO>	[2024-03-18 03:35:02]	--all_vars	0
+<INFO>	[2024-03-18 03:35:02]	--snp_vars	0
+<INFO>	[2024-03-18 03:35:02]	--lowfreq_vars	0
+<INFO>	[2024-03-18 03:35:02]	--mincovf	4
+<INFO>	[2024-03-18 03:35:02]	--mincovr	4
+<INFO>	[2024-03-18 03:35:02]	--minphred20	4
+<INFO>	[2024-03-18 03:35:02]	--minfreq	75
+<INFO>	[2024-03-18 03:35:02]	--unambig	95
+<INFO>	[2024-03-18 03:35:02]	--window	12
+<INFO>	[2024-03-18 03:35:02]	--distance	12
+<INFO>	[2024-03-18 03:35:02]	--quiet		0
+
+<INFO>	[2024-03-18 03:35:02]	The following programs will be used, if necessary:
+<INFO>	[2024-03-18 03:35:02]	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/opt/bwa_0.7.17
+<INFO>	[2024-03-18 03:35:02]	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/opt/samtools_1.6
+<INFO>	[2024-03-18 03:35:02]	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/opt/picard_2.17.0
+<INFO>	[2024-03-18 03:35:02]	/home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/opt/GenomeAnalysisTK_3.8
+
+<INFO>	[2024-03-18 03:35:02]	The following directories will be used, if necessary:
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Bam
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/GATK_Bam
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Mpileup
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Position_Tables
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Called
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Joint
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Amend
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Classification
+<INFO>	[2024-03-18 03:35:02]	/media/yang/PhD_NGS1/MTBC_Myanmar_Isolates_Illumina/Original_Raw_Reads_Fastq/Groups
+<INFO>	[2024-03-18 03:35:02]	### [TBfull] selected ###
+
+<INFO>	[2024-03-18 03:35:03]	Mapping samples:
+<INFO>	[2024-03-18 03:35:03]	M001_R1.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M001_R2.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M002_R1.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M002_R2.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M003_R1.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M003_R2.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M004_R1.fastq.gz
+<INFO>	[2024-03-18 03:35:03]	M004_R2.fastq.gz
+
+<INFO>	[2024-03-18 03:35:03]	Start BWA mapping...
+syntax error at /home/yang/miniconda3/envs/mtbseq/share/mtbseq-1.1.0-0/lib/TBbwa.pm line 136.  In according to this is the file structure is incorrect for the fastq.gz format? is there something wrong? I failed to pick it up myself and seek additional help from admin. 
+
+
+
+
+
+
+
+
+",foamy1881,https://github.com/ngs-fzb/MTBseq_source/issues/96
+I_kwDOBO-uwM6HCWQT,How to update to the newest WHO mutation catalogue?,OPEN,2024-04-26T10:58:57Z,2024-09-18T16:53:27Z,,"Hi.
+
+Recently, a new mutation catalogue have been released by WHO: https://github.com/GTB-tbsequencing/mutation-catalogue-2023/tree/main/Final%20Result%20Files
+I wonder if there is an easy way to renew the MTBseq file https://github.com/ngs-fzb/MTBseq_source/blob/master/var/res/MTB_Resistance_Mediating.txt for to incorporating this latest news.
+
+Many thanks for the support.",amolares,https://github.com/ngs-fzb/MTBseq_source/issues/97
+I_kwDOBO-uwM6WSqbp,same mutation multiple times,OPEN,2024-09-12T06:32:40Z,2024-09-17T14:50:09Z,,"Hello Developers,
+
+I have run the MTBseq pipeline for my 6000 TB samples.
+
+I noticed that some mutations are repeated in the same .tab file.
+
+I don't understand why is it so,
+
+So shall I consider them as 
+![Uploading Screenshot 2024-09-12 120212.png…]()
+one mutation or are they separate?
+",pratibha-kadam,https://github.com/ngs-fzb/MTBseq_source/issues/100
+I_kwDOBO-uwM6WwzVP,is it possible to change the location of /tmp directory? ,OPEN,2024-09-16T20:10:14Z,2024-09-17T15:59:33Z,,"Hi,
+
+I would like to know - is there a way to change the location of the /tmp directory in the following command or any other way?
+
+    MTBseq --step TBfull --project TEST --threads 8
+
+Any response would be highly appreciated.
+
+Thank you, ",ReemaSingh,https://github.com/ngs-fzb/MTBseq_source/issues/101

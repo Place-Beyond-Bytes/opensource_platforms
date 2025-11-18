@@ -1,0 +1,206 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1ODQ2NzQ2NzI=,Make test set to compare pipelines,CLOSED,2020-03-19T20:19:05Z,2020-03-19T20:19:39Z,2020-03-19T20:19:39Z,What is appropriate test set?,dmnfarrell,https://github.com/dmnfarrell/snipgenie/issues/1
+I_kwDODibLU85C67N1,Problem with pyvcf ,CLOSED,2022-02-03T07:29:10Z,2022-07-09T11:25:44Z,2022-07-09T11:25:44Z,"Hi
+I have a problem when run the command for installation:
+
+pip install -e git+https://github.com/dmnfarrell/snipgenie.git#egg=snipgenie
+
+This is what is displayed in the console: ( I have ubuntu 20.04 and python 3.8)
+
+
+ERROR: Could not find a version that satisfies the requirement pyvcf>=0.6 (from snipgenie) (from versions: 0.6.8.linux-x86_64, 0.0.0, 0.1, 0.2, 0.2.1, 0.3.0, 0.4.0, 0.4.1, 0.4.2, 0.4.3, 0.4.4, 0.4.5, 0.4.6, 0.5.0, 0.6.0, 0.6.1, 0.6.2, 0.6.3, 0.6.4, 0.6.5, 0.6.6, 0.6.7, 0.6.8)
+ERROR: No matching distribution found for pyvcf>=0.6
+
+How can I complete the installation?",RichardUABC,https://github.com/dmnfarrell/snipgenie/issues/2
+I_kwDODibLU851WqvT,[Feature Request] Use -1 and -2 arguments for reads,CLOSED,2023-10-30T17:26:31Z,2024-03-23T12:07:09Z,2024-03-23T12:07:09Z,It would be very convenient to use the -1 and -2 arguments like spades (or --R1 and --R2 like snippy) for inputting reads. ,jolespin,https://github.com/dmnfarrell/snipgenie/issues/3
+I_kwDODibLU853YWiE,[Question] What is the internal logic in Snipgenie for flagging a SNP? (Comparison with manual analysis),CLOSED,2023-11-20T19:38:33Z,2024-03-23T12:06:54Z,2024-03-23T12:06:54Z,"Our team has conducted WGS against various human cell lines in order to validate the presence of a molecule we were hoping to detect. We then sought to analyze sequence integrity (SNPs and indels) of particular regions using your tool Snipgenie. 
+
+Snipgenie returned what we understand to mean no SNPs or indels (see snapshot from calls.vcf file). Oddly, when we align our reads to each of these regions and look at the tracks with a conventional viewer (i.e. IGV), we observe what look like SNPs. 
+
+I've attached sample alignment tracks for reference. Dark grey denotes a perfect match to the reference; whereas, the other colors denote particular nucleotides that deviate from the reference. Now, the tracks are not completely grey, and we're wondering how we can reconcile the Snipgenie output with this result. 
+
+Base quality was one thought as many of these mismatches are comprised of >1 base called at that position, but this doesn't seem to be the case for all of them. For instance, if you look at the files labeled ""...YAC Region..."", you'll notice a few spots that have what would appear to be only one variant nucleotide and with high coverage. 
+
+**Can you explain what's happening in the backend where Snipgenie decides not to flag these regions as SNPs?**
+
+And to get the tool to run such that the output better mirrors the alignment results, are there certain parameters that you'd recommend playing with to accomplish that goal?
+
+Here's the current command: 
+
+```
+N_JOBS=4
+REF=References/antibiotic-myc-yac.concatenated.fa
+REF_NAME=$(basename $REF .fa)
+OUT_DIR=snipgenie_output/${REF_NAME}
+mkdir -p ${OUT_DIR}
+N=""snipgenie__${REF_NAME}""
+CMD=""source activate snippy_env && snipgenie -r ${REF} -i reads -o ${OUT_DIR} -t ${N_JOBS}""
+sbatch -J ${N} -p ind-shared -N 1 -c ${N_JOBS} --ntasks-per-node=1 -A jcl123 -o logs/${N}.o -e logs/${N}.e --export=ALL -t 48:00:00 --mem=48G --wrap=""${CMD}""
+```
+
+Here's the structure of the `reads/` directory: 
+
+```
+(base) [jespinoz@login02 SOLEXASEQ-1709]$ tree reads
+reads
+├── HAC1_15_Enriched_S5
+│   ├── HAC1_15_Enriched_S5_1.fastq.gz -> ../../preprocess_output/HAC1_15_Enriched_S5/output/trimmed_1.fastq.gz
+│   └── HAC1_15_Enriched_S5_2.fastq.gz -> ../../preprocess_output/HAC1_15_Enriched_S5/output/trimmed_2.fastq.gz
+└── HAC4_1_1_Enriched_S6
+    ├── HAC4_1_1_Enriched_S6_1.fastq.gz -> ../../preprocess_output/HAC4_1_1_Enriched_S6/output/trimmed_1.fastq.gz
+    └── HAC4_1_1_Enriched_S6_2.fastq.gz -> ../../preprocess_output/HAC4_1_1_Enriched_S6/output/trimmed_2.fastq.gz
+```
+
+Please let me know if you have any other questions or need any additional information.
+
+![11142-23_CloneReadsMappingtoYAC Region 751,339-757,911_Autoscaled](https://github.com/dmnfarrell/snipgenie/assets/9061708/b5ffe16a-93fd-4f4b-a63c-a748cb05431a)
+![11142-23_CloneReadsMappingtoYAC Region 751,339-757,911](https://github.com/dmnfarrell/snipgenie/assets/9061708/e01ff6fc-1c04-4c65-9cdd-15dfd28ce809)
+![11142023_CloneReadsMappingtoAntibiotic Resistance Gene Region 555,068-558,944](https://github.com/dmnfarrell/snipgenie/assets/9061708/76f79165-2cbb-432b-a721-51816902bab7)
+![11142023_CloneReadsMappingtoMyco Region 378,324-380,510](https://github.com/dmnfarrell/snipgenie/assets/9061708/389480c7-32b2-4de2-b56c-69c69aba8ac0)
+<img width=""1289"" alt=""CallsfromJoshsSNIPGenieAnalysis"" src=""https://github.com/dmnfarrell/snipgenie/assets/9061708/3cb264cf-cff3-4354-85e3-0681e6064dd6"">
+
+",jolespin,https://github.com/dmnfarrell/snipgenie/issues/4
+I_kwDODibLU854f-22,"subprocess.CalledProcessError: Command 'bcftools filter -i ""QUAL>=40 && FORMAT/DP>=30 && DP4>=4"" -o filtered.vcf.gz -O z calls.vcf' returned non-zero exit status 255.",CLOSED,2023-12-01T22:07:19Z,2023-12-14T21:43:50Z,2023-12-14T20:50:22Z,"I'm using the Snipgenie version installed from GitHub main repository on Dec 1, 2023
+
+Here's my log: 
+
+```
+The following options were supplied
+time:  01/12/2023 13:25:26
+-------
+input : []
+manifest : veba_output/misc/reads_table.DENV4.csv
+labelsep : _
+labelindex : 0
+reference : References/DENV4.fa
+species : None
+gb_file : None
+threads : 1
+overwrite : False
+trim : False
+unmapped : False
+quality : 25
+filters : QUAL>=40 && FORMAT/DP>=30 && DP4>=4
+mask : None
+custom_filters : False
+platform : illumina
+aligner : bwa
+buildtree : False
+bootstraps : 100
+outdir : snipgenie_output/reads_based/DENV4
+qc : False
+dummy : False
+test : False
+version : False
+omit_samples : []
+get_stats : True
+logfile : snipgenie_output/reads_based/DENV4/run.log
+
+using manifest file for samples
+57 samples were loaded:
+----------------------
+           sample                                          filename1                                          filename2  read_length
+0   DENV3_167_S33  ./veba_output/preprocess/DENV3_167_S33/output/...  ./veba_output/preprocess/DENV3_167_S33/output/...          251
+1   DENV3_168_S34  ./veba_output/preprocess/DENV3_168_S34/output/...  ./veba_output/preprocess/DENV3_168_S34/output/...          275
+2   DENV3_169_S35  ./veba_output/preprocess/DENV3_169_S35/output/...  ./veba_output/preprocess/DENV3_169_S35/output/...          274
+3   DENV3_170_S36  ./veba_output/preprocess/DENV3_170_S36/output/...  ./veba_output/preprocess/DENV3_170_S36/output/...          274
+4   DENV3_171_S37  ./veba_output/preprocess/DENV3_171_S37/output/...  ./veba_output/preprocess/DENV3_171_S37/output/...          256
+5   DENV3_172_S38  ./veba_output/preprocess/DENV3_172_S38/output/...  ./veba_output/preprocess/DENV3_172_S38/output/...          261
+6   DENV3_173_S39  ./veba_output/preprocess/DENV3_173_S39/output/...  ./veba_output/preprocess/DENV3_173_S39/output/...          221
+7   DENV3_174_S40  ./veba_output/preprocess/DENV3_174_S40/output/...  ./veba_output/preprocess/DENV3_174_S40/output/...          251
+8   DENV3_175_S41  ./veba_output/preprocess/DENV3_175_S41/output/...  ./veba_output/preprocess/DENV3_175_S41/output/...          202
+9   DENV3_176_S42  ./veba_output/preprocess/DENV3_176_S42/output/...  ./veba_output/preprocess/DENV3_176_S42/output/...          213
+10  DENV3_177_S43  ./veba_output/preprocess/DENV3_177_S43/output/...  ./veba_output/preprocess/DENV3_177_S43/output/...          207
+11  DENV3_178_S44  ./veba_output/preprocess/DENV3_178_S44/output/...  ./veba_output/preprocess/DENV3_178_S44/output/...          216
+12  DENV3_179_S45  ./veba_output/preprocess/DENV3_179_S45/output/...  ./veba_output/preprocess/DENV3_179_S45/output/...          197
+13  DENV3_180_S46  ./veba_output/preprocess/DENV3_180_S46/output/...  ./veba_output/preprocess/DENV3_180_S46/output/...          201
+14  DENV3_181_S47  ./veba_output/preprocess/DENV3_181_S47/output/...  ./veba_output/preprocess/DENV3_181_S47/output/...          183
+15  DENV3_182_S48  ./veba_output/preprocess/DENV3_182_S48/output/...  ./veba_output/preprocess/DENV3_182_S48/output/...          199
+16  DENV3_183_S49  ./veba_output/preprocess/DENV3_183_S49/output/...  ./veba_output/preprocess/DENV3_183_S49/output/...          249
+17  DENV3_184_S50  ./veba_output/preprocess/DENV3_184_S50/output/...  ./veba_output/preprocess/DENV3_184_S50/output/...          246
+18  DENV3_185_S51  ./veba_output/preprocess/DENV3_185_S51/output/...  ./veba_output/preprocess/DENV3_185_S51/output/...          237
+19  DENV3_186_S52  ./veba_output/preprocess/DENV3_186_S52/output/...  ./veba_output/preprocess/DENV3_186_S52/output/...          249
+20  DENV3_187_S53  ./veba_output/preprocess/DENV3_187_S53/output/...  ./veba_output/preprocess/DENV3_187_S53/output/...          257
+21  DENV3_188_S54  ./veba_output/preprocess/DENV3_188_S54/output/...  ./veba_output/preprocess/DENV3_188_S54/output/...          268
+22  DENV3_189_S55  ./veba_output/preprocess/DENV3_189_S55/output/...  ./veba_output/preprocess/DENV3_189_S55/output/...          254
+23  DENV3_190_S56  ./veba_output/preprocess/DENV3_190_S56/output/...  ./veba_output/preprocess/DENV3_190_S56/output/...          252
+24  DENV3_191_S57  ./veba_output/preprocess/DENV3_191_S57/output/...  ./veba_output/preprocess/DENV3_191_S57/output/...          250
+25    DENV3_45_S1  ./veba_output/preprocess/DENV3_45_S1/output/tr...  ./veba_output/preprocess/DENV3_45_S1/output/tr...          266
+26    DENV3_46_S2  ./veba_output/preprocess/DENV3_46_S2/output/tr...  ./veba_output/preprocess/DENV3_46_S2/output/tr...          267
+27    DENV3_47_S3  ./veba_output/preprocess/DENV3_47_S3/output/tr...  ./veba_output/preprocess/DENV3_47_S3/output/tr...          265
+28    DENV3_48_S4  ./veba_output/preprocess/DENV3_48_S4/output/tr...  ./veba_output/preprocess/DENV3_48_S4/output/tr...          259
+29    DENV3_49_S5  ./veba_output/preprocess/DENV3_49_S5/output/tr...  ./veba_output/preprocess/DENV3_49_S5/output/tr...          263
+30    DENV3_50_S6  ./veba_output/preprocess/DENV3_50_S6/output/tr...  ./veba_output/preprocess/DENV3_50_S6/output/tr...          214
+31    DENV3_51_S7  ./veba_output/preprocess/DENV3_51_S7/output/tr...  ./veba_output/preprocess/DENV3_51_S7/output/tr...          260
+32    DENV3_52_S8  ./veba_output/preprocess/DENV3_52_S8/output/tr...  ./veba_output/preprocess/DENV3_52_S8/output/tr...          246
+33    DENV3_53_S9  ./veba_output/preprocess/DENV3_53_S9/output/tr...  ./veba_output/preprocess/DENV3_53_S9/output/tr...          250
+34   DENV3_54_S10  ./veba_output/preprocess/DENV3_54_S10/output/t...  ./veba_output/preprocess/DENV3_54_S10/output/t...          249
+35   DENV3_55_S11  ./veba_output/preprocess/DENV3_55_S11/output/t...  ./veba_output/preprocess/DENV3_55_S11/output/t...          249
+36   DENV3_56_S12  ./veba_output/preprocess/DENV3_56_S12/output/t...  ./veba_output/preprocess/DENV3_56_S12/output/t...          258
+37   DENV3_57_S13  ./veba_output/preprocess/DENV3_57_S13/output/t...  ./veba_output/preprocess/DENV3_57_S13/output/t...          244
+38   DENV3_58_S14  ./veba_output/preprocess/DENV3_58_S14/output/t...  ./veba_output/preprocess/DENV3_58_S14/output/t...          251
+39   DENV3_59_S15  ./veba_output/preprocess/DENV3_59_S15/output/t...  ./veba_output/preprocess/DENV3_59_S15/output/t...          215
+40   DENV3_60_S16  ./veba_output/preprocess/DENV3_60_S16/output/t...  ./veba_output/preprocess/DENV3_60_S16/output/t...          226
+41   DENV3_61_S17  ./veba_output/preprocess/DENV3_61_S17/output/t...  ./veba_output/preprocess/DENV3_61_S17/output/t...          249
+42   DENV3_62_S18  ./veba_output/preprocess/DENV3_62_S18/output/t...  ./veba_output/preprocess/DENV3_62_S18/output/t...          246
+43   DENV3_63_S19  ./veba_output/preprocess/DENV3_63_S19/output/t...  ./veba_output/preprocess/DENV3_63_S19/output/t...          264
+44   DENV3_64_S20  ./veba_output/preprocess/DENV3_64_S20/output/t...  ./veba_output/preprocess/DENV3_64_S20/output/t...          195
+45   DENV3_65_S21  ./veba_output/preprocess/DENV3_65_S21/output/t...  ./veba_output/preprocess/DENV3_65_S21/output/t...          239
+46   DENV3_66_S22  ./veba_output/preprocess/DENV3_66_S22/output/t...  ./veba_output/preprocess/DENV3_66_S22/output/t...          258
+47   DENV3_67_S23  ./veba_output/preprocess/DENV3_67_S23/output/t...  ./veba_output/preprocess/DENV3_67_S23/output/t...          265
+48   DENV3_68_S24  ./veba_output/preprocess/DENV3_68_S24/output/t...  ./veba_output/preprocess/DENV3_68_S24/output/t...          250
+49   DENV3_69_S25  ./veba_output/preprocess/DENV3_69_S25/output/t...  ./veba_output/preprocess/DENV3_69_S25/output/t...          246
+50   DENV3_70_S26  ./veba_output/preprocess/DENV3_70_S26/output/t...  ./veba_output/preprocess/DENV3_70_S26/output/t...          213
+51   DENV3_71_S27  ./veba_output/preprocess/DENV3_71_S27/output/t...  ./veba_output/preprocess/DENV3_71_S27/output/t...          241
+52   DENV3_72_S28  ./veba_output/preprocess/DENV3_72_S28/output/t...  ./veba_output/preprocess/DENV3_72_S28/output/t...          261
+53   DENV3_73_S29  ./veba_output/preprocess/DENV3_73_S29/output/t...  ./veba_output/preprocess/DENV3_73_S29/output/t...          265
+54   DENV3_74_S30  ./veba_output/preprocess/DENV3_74_S30/output/t...  ./veba_output/preprocess/DENV3_74_S30/output/t...          256
+55   DENV3_75_S31  ./veba_output/preprocess/DENV3_75_S31/output/t...  ./veba_output/preprocess/DENV3_75_S31/output/t...          232
+56   DENV3_76_S32  ./veba_output/preprocess/DENV3_76_S32/output/t...  ./veba_output/preprocess/DENV3_76_S32/output/t...          249
+
+building index
+indexing..
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Pack forward-only FASTA... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index References/DENV4.fa
+[main] Real time: 0.053 sec; CPU: 0.007 sec
+bwa index References/DENV4.fa
+aligning files
+--------------
+Using reference genome: References/DENV4.fa
+57/57 samples already aligned
+
+calling variants
+----------------
+snipgenie_output/reads_based/DENV4/raw.bcf already exists
+calling variants..
+bcftools call --ploidy 1 -m -v -o snipgenie_output/reads_based/DENV4/calls.vcf snipgenie_output/reads_based/DENV4/raw.bcf
+1266 sites called as variants
+bcftools reheader --samples snipgenie_output/reads_based/DENV4/samples.txt -o /tmp/calls.vcf snipgenie_output/reads_based/DENV4/calls.vcf
+bcftools filter -i ""QUAL>=40 && FORMAT/DP>=30 && DP4>=4"" -o snipgenie_output/reads_based/DENV4/filtered.vcf.gz -O z snipgenie_output/reads_based/DENV4/calls.vcf
+[E::bcf_hdr_add_sample_len] Duplicated sample name 'DENV3'
+Failed to read from snipgenie_output/reads_based/DENV4/calls.vcf: could not parse header
+Traceback (most recent call last):
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/bin/snipgenie"", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/lib/python3.12/site-packages/snipgenie/app.py"", line 1140, in main
+    W.run()
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/lib/python3.12/site-packages/snipgenie/app.py"", line 989, in run
+    self.vcf_file = variant_calling(bam_files, self.reference, self.outdir,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/lib/python3.12/site-packages/snipgenie/app.py"", line 561, in variant_calling
+    tmp = subprocess.check_output(cmd,shell=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/lib/python3.12/subprocess.py"", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/expanse/projects/jcl110/anaconda3/envs/snippy_env/lib/python3.12/subprocess.py"", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'bcftools filter -i ""QUAL>=40 && FORMAT/DP>=30 && DP4>=4"" -o snipgenie_output/reads_based/DENV4/filtered.vcf.gz -O z snipgenie_output/reads_based/DENV4/calls.vcf' returned non-zero exit status 255.
+```",jolespin,https://github.com/dmnfarrell/snipgenie/issues/5

@@ -1,0 +1,93 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNjYzMDk3NA==,Add test data for master (WGS) pipeline,CLOSED,2013-07-11T13:36:02Z,2014-03-14T03:47:42Z,2014-03-14T03:47:42Z,"Instead of just example filenames, we should have small fastq files to allow the pipeline to be tested.
+",claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/1
+MDU6SXNzdWUxNjYzMTEyMA==,Handle single-end reads,OPEN,2013-07-11T13:39:33Z,2013-07-11T13:39:40Z,,"Currently we have a hard-coded assumption of paired-end reads
+",claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/2
+MDU6SXNzdWUxNjYzMTIwNQ==,Add better documentation for ENSEMBL VEP,OPEN,2013-07-11T13:41:23Z,2013-07-11T13:41:28Z,,"The annotation step uses the ENSEMBL Variant Effect Predictor but doesn't adequately explain how to get it.
+",claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/3
+MDU6SXNzdWUxNjY3NDMwNw==,Document the output directory structure,OPEN,2013-07-12T09:55:51Z,2013-07-12T09:55:51Z,,,claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/4
+MDU6SXNzdWUxNjY3NTc3OQ==,Give an intelligible warning if we cannot find any valid input data,CLOSED,2013-07-12T10:38:04Z,2013-07-12T15:58:35Z,2013-07-12T15:58:35Z,,claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/5
+MDU6SXNzdWUxNjg3MDE0Mw==,Add test data for exome pipeline,OPEN,2013-07-17T15:15:57Z,2013-07-17T15:16:04Z,,"This is really a separate task from WGS test data as data input should be different
+",claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/6
+MDU6SXNzdWUyOTE1MTk1Nw==,example doesn't run out of the box,CLOSED,2014-03-11T03:42:21Z,2014-03-14T03:47:23Z,2014-03-14T03:47:23Z,"# 
+# example doesn't run out of the box
+# 
+# Running in examples directory gives missing utils module error
+
+rubra example_pipeline.py --config example_config.py --style run
+
+[achalk@merri examples]$ ../rubra/rubra.py example_pipeline.py --config example_config.py --style run
+Traceback (most recent call last):
+  File ""../rubra/rubra.py"", line 86, in <module>
+    main()
+  File ""../rubra/rubra.py"", line 35, in main
+    **import**(drop_py_suffix(args.pipeline))
+  File ""example_pipeline.py"", line 15, in <module>
+    from rubra.utils import (runStageCheck)
+ImportError: No module named utils
+# copying the example_pipeline.p, example_config.py and examples/test to rubra directory fixes this
+# But there is an error in the pipeline.
+
+[achalk@merri rubra]$ rubra/rubra.py example_pipeline.py --config example_config.py --style run
+Traceback (most recent call last):
+  File ""rubra/rubra.py"", line 86, in <module>
+    main()
+  File ""rubra/rubra.py"", line 66, in main
+    gnu_make_maximal_rebuild_mode=rebuildMode)
+  File ""build/bdist.linux-x86_64/egg/ruffus/task.py"", line 2680, in pipeline_run
+ruffus.ruffus_exceptions.RethrownJobError: 
+
+```
+Exceptions running jobs for
+
+'def example_pipeline.countLines(...):'
+
+Original exceptions:
+
+Exception #1
+exceptions.AttributeError('NoneType' object has no attribute 'stages'):
+for example_pipeline.countLines.Job = [test/data2.txt -> [test/data2.count, test/data2.count.Success]]
+
+Traceback (most recent call last):
+  File ""build/bdist.linux-x86_64/egg/ruffus/task.py"", line 517, in run_pooled_job_without_exceptions
+    return_value =  job_wrapper(param, user_defined_work_func, register_cleanup, touch_files_only)
+  File ""build/bdist.linux-x86_64/egg/ruffus/task.py"", line 447, in job_wrapper_io_files
+    ret_val = user_defined_work_func(*param)
+  File ""example_pipeline.py"", line 25, in countLines
+    runStageCheck('countLines', flagFile, file, output)
+  File ""rubra/utils.py"", line 132, in runStageCheck
+    status = runStage(stage, *args)
+  File ""rubra/utils.py"", line 143, in runStage
+    command = getCommand(stage, pipeline_options)
+  File ""rubra/utils.py"", line 175, in getCommand
+    commandStr = getStageOptions(options, name, 'command')
+  File ""rubra/utils.py"", line 104, in getStageOptions
+    return options.stages[stage][optionName]
+AttributeError: 'NoneType' object has no attribute 'stages'
+
+
+Exception #2
+exceptions.AttributeError('NoneType' object has no attribute 'stages'):
+for example_pipeline.countLines.Job = [test/data1.txt -> [test/data1.count, test/data1.count.Success]]
+
+Traceback (most recent call last):
+  File ""build/bdist.linux-x86_64/egg/ruffus/task.py"", line 517, in run_pooled_job_without_exceptions
+    return_value =  job_wrapper(param, user_defined_work_func, register_cleanup, touch_files_only)
+  File ""build/bdist.linux-x86_64/egg/ruffus/task.py"", line 447, in job_wrapper_io_files
+    ret_val = user_defined_work_func(*param)
+  File ""example_pipeline.py"", line 25, in countLines
+    runStageCheck('countLines', flagFile, file, output)
+  File ""rubra/utils.py"", line 132, in runStageCheck
+    status = runStage(stage, *args)
+  File ""rubra/utils.py"", line 143, in runStage
+    command = getCommand(stage, pipeline_options)
+  File ""rubra/utils.py"", line 175, in getCommand
+    commandStr = getStageOptions(options, name, 'command')
+  File ""rubra/utils.py"", line 104, in getStageOptions
+    return options.stages[stage][optionName]
+AttributeError: 'NoneType' object has no attribute 'stages'
+```
+",AMChalkie,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/7
+MDU6SXNzdWUyOTQwOTI4Ng==,Update to bwa-mem,CLOSED,2014-03-14T03:48:03Z,2014-03-20T02:56:32Z,2014-03-20T02:56:32Z,,claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/8
+MDU6SXNzdWUyOTQwOTQyNQ==,Do bwa indexing inside the pipeline,OPEN,2014-03-14T03:53:12Z,2014-03-14T03:53:12Z,,"The disadvantage of this is that it's slightly trickier for a user to use their own pre-indexed genome. The advantage is that the pipeline is more self-contained; indexing gets updated with aligner version; and the sample data can be used to run out of the box if given a reference genome.
+",claresloggett,https://github.com/melbournebioinformatics/variant_calling_pipeline/issues/9

@@ -1,0 +1,96 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMjA2NTU0MDY=,Name of tarball after download?,OPEN,2015-12-06T19:55:03Z,2015-12-06T19:55:03Z,,"When I download by clicking the link for rseg-0.4.9.tar.gz I actually get rseg-rseg-0.4.9.tar.gz.
+
+Seems very strange. Is this expected or valid?
+",andrewdavidsmith,https://github.com/smithlabcode/rseg/issues/1
+MDU6SXNzdWUxNzI1MjA0NjM=,problem with gsl code compilation (gcc 5 and gcc 6),OPEN,2016-08-22T18:24:05Z,2020-12-09T00:13:48Z,,"I am trying to compile rseg (gcc (Debian 6.1.1-11) 6.1.1 20160802), but I am getting compilation problems in the GSL code:
+
+```
+gcc -Wall -fPIC -c -o ../gsl/math.o ../gsl/math.c -I../smithlab_cpp -I../common -I../gsl -I../samtools
+../gsl/math.c:56:1: error: redefinition of ‘gsl_complex_rect’
+ gsl_complex_rect (double x, double y)
+ ^~~~~~~~~~~~~~~~
+In file included from ../gsl/math.c:48:0:
+../gsl/gsl_complex_math.h:43:1: note: previous definition of ‘gsl_complex_rect’ was here
+ gsl_complex_rect (double x, double y)
+ ^~~~~~~~~~~~~~~~
+Makefile:109: recipe for target '../gsl/math.o' failed
+make[2]: *** [../gsl/math.o] Error 1
+```
+
+The problem seems to be how inline functions are treated in the header and the code. I tried adding -std=c99 and -DGSL_C99_INLINE to CFLAGS in the Makefiles, but neither helped.
+
+I also tried an older version of the compiler (gcc-5 (Debian 5.4.1-1) 5.4.1 20160803), again with the same error. The problem does not seem to be distro-related as I am getting these errors under Arch Linux too.
+
+Any idea how to tackle that?
+",balwierz,https://github.com/smithlabcode/rseg/issues/2
+MDU6SXNzdWUxODI5NzM2MTE=,deadzones quitting without a beep when -p above certain threshold,OPEN,2016-10-14T06:31:44Z,2016-10-14T06:31:44Z,,"```
+deadzones -s fa -k 50 -o data/deadzones/hg38.deadzones -p 40 data/genome/hg38/chroms
+```
+
+and then it quits after a minute. If I reduce the `-p` to 30 it keeps on going.
+
+Also, how are deadzones computed? There are blazingly fast kmer-counters out there, I might be able to throw together a script for computing deadzones using one of them if you could explain how you do it.
+",endrebak,https://github.com/smithlabcode/rseg/issues/3
+MDU6SXNzdWUyODY4MzY3NjQ=,deadzones not properly handled when consecutive positions reside in different intervals,OPEN,2018-01-08T18:14:35Z,2018-01-08T18:14:35Z,,"I've had problems with the bin scaling factor going negative if some deadzones are consecutive, but not merged. This should not be provided as input, but the algorithm should be able to handle non-overlapping intervals even if they should have been merged due to covering adjacent positions. The cause in my case was incorporating unassembled regions without merging intervals. This should be fixed in both the deadzones program and in rseg, specifically in how the deadzones are loaded for adjusting the scaling factors.",andrewdavidsmith,https://github.com/smithlabcode/rseg/issues/4
+MDU6SXNzdWUyODk0NDI5NTg=,Strange statement in code associated with writing the posterior scores,OPEN,2018-01-17T22:52:28Z,2018-01-17T22:52:28Z,,"There seems to be a condition check, but not an assignment. I'm not sure the purpose of this:
+
+  if (!posterior_score_file.empty() && posterior_score_file != ""None"")
+    {
+      size_t k = 0;
+      for (size_t i = 0; i < scores.size(); ++i)
+        for (size_t j = 0; j < scores[i].size(); ++j)
+	  {
+	    scores[i][j] == tmp_classes[k] ? scores[i][j] : 1 - scores[i][j];
+	    ++k;
+	  }
+      write_wigfile(scores, bin_bounds, posterior_score_file);
+      if (VERBOSE)
+	cout << ""Bin score file: "" + posterior_score_file << endl;
+    }",andrewdavidsmith,https://github.com/smithlabcode/rseg/issues/5
+MDU6SXNzdWUzMDc3OTI4NjA=,Error if multiple reads mapped onto the region,OPEN,2018-03-22T19:57:36Z,2018-03-22T19:57:36Z,,"I am having issues running rseg-diff where if different multiple reads are mapped to the same region, it's throwing error that it is not sorted.
+
+```[LOADING_DATA] reads
+ERROR: reads not sorted in CENH3_2C_allmerge_1M_sort.bed
+1	28	129	NS500599:158:H55CVBGX5:1:21108:3468:1367/1	0	-
+1	28	129	NS500599:159:HCHWVBGX5:2:12109:11569:19492/1	0	+
+```",wonaya,https://github.com/smithlabcode/rseg/issues/6
+MDU6SXNzdWU0ODQ1NDY0MDU=,RSEG error: gsl: ../gsl/gamma.c:1185: ERROR: error,CLOSED,2019-08-23T14:00:25Z,2021-02-01T08:07:44Z,2021-02-01T08:07:44Z,"Hi,
+
+I am having issues to run RSEG with certain ChIP-seq datasets. I get the following error:
+
+```{r}
+> # Running RSEG from R
+> cmd = paste('~/rseg-rseg-0.4.9/bin/rseg-diff -verbose -mode 3',
++             '-out',paste0('./hist_peaks/rseg/rseg_output.txt'),
++             '-score',paste0('./hist_peaks/rseg/rseg_postprob.txt'),
++             '-chrom gsize.txt',
++             '-deadzones deadzones.txt',
++             '-duplicates',
++             '-b',200,
++             '-fragment_length',100,
++             paste0('./hist_peaks/rseg/histone_A.sorted.bed'),
++             paste0('./hist_peaks/rseg/histone_B.sorted.bed'))
+> system(cmd)
+[LOADING_DATA] chromosomes
+[LOADING_DATA] reads
+[LOADING_DATA] deadzones
+[SELECTING BIN SIZE] bin size =  200
+[ESTIMATING PARAMETERS]
+gsl: ../gsl/gamma.c:1185: ERROR: error
+Default GSL error handler invoked.
+> 
+```
+
+I do not know what this error message means and it seems that other users have had issues with that in the past (https://groups.google.com/forum/#!topic/rseg-support/rR1K9HqEs-8). Any ideas on what that could be? 
+
+Again, this happens only with certain ChIP-seq datasets. Here is a [link](https://gofile.io/?c=tvMVhV) with an example of dataset to reproduce the error above. I am using RSEG version 0.4.9.",plbaldoni,https://github.com/smithlabcode/rseg/issues/7
+I_kwDOASGPsM5sruP4,RSEG sum of 100kb flanking center,OPEN,2023-07-27T00:30:20Z,2023-07-27T00:30:20Z,,"Hello,
+
+I am interested in following the methodology of this paper (https://pubmed.ncbi.nlm.nih.gov/28650485/) using RSEG to call peaks. 
+
+This group found the RSEG sums flanking 100kb from the center of super enhancers to perform unsupervised clustering analysis. Is RSEG capable of making these calculations?
+
+If not, any help in identifying a program that is able to do this is appreciated.
+
+Thank you!",mkunika,https://github.com/smithlabcode/rseg/issues/8

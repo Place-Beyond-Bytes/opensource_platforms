@@ -1,0 +1,815 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOH45Jhc50zxKL,Readme table columns swapped,CLOSED,2023-10-24T17:23:01Z,2023-10-24T17:52:37Z,2023-10-24T17:52:37Z,"Hello,
+
+For the COLO829 Pacbio hifi table, the columns are swapped. Specifically, I believe the FP and FN columns are swapped. Thanks.",tbenavi1,https://github.com/KolmogorovLab/Severus/issues/5
+I_kwDOH45Jhc501eoZ,pbmm2 no NM tag?,CLOSED,2023-10-24T22:25:32Z,2023-10-27T01:00:51Z,2023-10-27T01:00:51Z,Just running a test and noticed error with pbmm2 no NM tag. Looked at a few other of my pbmm2 files and none seem to have NM?. These are from a few years ago. Its running ok with minimap bams.,jo-mc,https://github.com/KolmogorovLab/Severus/issues/6
+I_kwDOH45Jhc58ZfJ4,severus for the tumor only mode,CLOSED,2024-01-17T21:53:46Z,2024-04-03T14:52:57Z,2024-04-03T14:52:57Z,"Dear authors, 
+
+Thank you for developing such a great software. I am using severus to look at our own data, we only have tumor only sample, but in your pipeline, you mentioned the phased vcf should always come from the normal sample, could we use the tumor sample to generate input for the phased vcf? Also, could you please provide the command used in the following benchmarking section? Thank you!
+
+<img width=""752"" alt=""image"" src=""https://github.com/KolmogorovLab/Severus/assets/884386/85504e84-9b13-4b3f-ae23-33f9b8b69138"">
+
+Best wishes,
+Alvin
+",qinqian,https://github.com/KolmogorovLab/Severus/issues/7
+I_kwDOH45Jhc5-nT_d,Error in version 0.1.2,OPEN,2024-02-08T02:16:33Z,2024-02-26T20:42:41Z,,"Hi @fenderglass and @aysegokce , this is Khi Pin. I've been trying to implement v0.1.2 in my WDL workflow (set to go public sometimes this month), but I've been running into errors where v0.1.1 had no issue:
+
+```
+[2024-02-08 09:17:40] INFO: Starting Severus 0.1.1
+[2024-02-08 09:17:40] INFO: Parsing reads from COLO829.tumor.aligned.hiphase.bam
+[2024-02-08 09:27:12] INFO: 	Total read length: 196360947730
+[2024-02-08 09:27:12] INFO: 	Total aligned length: 196397433408 (1.00)
+[2024-02-08 09:27:12] INFO: 	Read N50 / N90: 20063 / 12917
+[2024-02-08 09:27:12] INFO: 	Alignments N50 / N90: 19557 / 11599
+[2024-02-08 09:27:12] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0018 / 0.0035 / 0.0067
+[2024-02-08 09:27:12] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0004 / 0.0010 / 0.0018
+[2024-02-08 09:27:14] INFO: Parsing reads from COLO829.normal.aligned.hiphase.bam
+[2024-02-08 09:37:33] INFO: 	Total read length: 204693733243
+[2024-02-08 09:37:33] INFO: 	Total aligned length: 204676920510 (1.00)
+[2024-02-08 09:37:33] INFO: 	Read N50 / N90: 21131 / 15095
+[2024-02-08 09:37:33] INFO: 	Alignments N50 / N90: 20621 / 13732
+[2024-02-08 09:37:33] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0017 / 0.0033 / 0.0060
+[2024-02-08 09:37:33] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0004 / 0.0010 / 0.0017
+[2024-02-08 09:37:35] INFO: Computing read quality
+[2024-02-08 09:42:05] INFO: Annotating reads
+[2024-02-08 09:47:06] INFO: Computing coverage histogram
+[2024-02-08 09:50:17] INFO: 	Median coverage by PASS reads for COLO829.tumor.aligned.hiphase.bam (H1 / H2 / H0): 19.0 / 20.0 / 0.0
+[2024-02-08 09:50:18] INFO: 	Median coverage by PASS reads for COLO829.normal.aligned.hiphase.bam (H1 / H2 / H0): 31.0 / 31.0 / 0.0
+[2024-02-08 09:50:18] INFO: Resolving overlaps
+[2024-02-08 09:50:18] INFO: Extracting split alignments
+[2024-02-08 09:50:30] INFO: Extracting clipped reads
+[2024-02-08 09:50:57] INFO: Clustering unmapped insertions
+[2024-02-08 09:51:05] INFO: Starting breakpoint detection
+[2024-02-08 09:51:39] INFO: Starting match_long_ins
+[2024-02-08 09:51:39] INFO: Starting compute_bp_coverage
+[2024-02-08 10:02:18] INFO: Filtering breakpoints
+Traceback (most recent call last):
+  File ""/home/kpin/miniconda3/envs/severus/bin/severus"", line 33, in <module>
+    sys.exit(load_entry_point('severus==0.1.1', 'console_scripts', 'severus')())
+  File ""/home/kpin/miniconda3/envs/severus/lib/python3.10/site-packages/severus/main.py"", line 205, in main
+    double_breaks = call_breakpoints(segments_by_read, ref_lengths, coverage_histograms, bam_files, genome_ids, control_genomes, thread_pool, args)
+  File ""/home/kpin/miniconda3/envs/severus/lib/python3.10/site-packages/severus/breakpoint_finder.py"", line 2036, in call_breakpoints
+    double_breaks = double_breaks_filter(double_breaks, args.bp_min_support, cont_id)
+  File ""/home/kpin/miniconda3/envs/severus/lib/python3.10/site-packages/severus/breakpoint_finder.py"", line 598, in double_breaks_filter
+    dbs2.bp_1.spanning_reads[genome_id][ind_phased[0]] += db0.bp_1.spanning_reads[genome_id][0]
+IndexError: list index out of range
+
+real	45m39.039s
+user	199m59.976s
+sys	11m8.395s
+```
+
+Do you know why that is happening? The BAM files were aligned with `pbmm2` and phased with `hiphase` using variants from `clair3`.
+
+Thank you!",proteinosome,https://github.com/KolmogorovLab/Severus/issues/8
+I_kwDOH45Jhc5-uIZE,Somatic SV breakpoint boundary issue caused by supplementary alignment boundaries,OPEN,2024-02-08T20:30:11Z,2024-02-11T06:32:17Z,,"Version: Severus 0.1.2
+Data: 
+* Tumor: colo829
+* Normal: colo829bl
+
+command executed:
+```
+Severus-0.1.2/severus.py -t 16 --target-bam colo829.chr15_41M.bam --control-bam colo829bl.chr15_41M.bam --out-dir severus_unhaplotagged --vaf-thr 0.05 --single-bp
+```
+and
+```
+Severus-0.1.2/severus.py -t 16 --target-bam colo829.chr15_41M.tagged.bam --control-bam colo829bl.chr15_41M.tagged.bam --out-dir severus_haplotagged --vaf-thr 0.05 --single-bp
+```
+
+Resulting somatic SV DUP call can be viewed on the IGV screenshots:
+![severus_bug1 igv_snapshot 2](https://github.com/KolmogorovLab/Severus/assets/1204593/e3d540fa-c5ed-4c5c-bf60-5dfa077b5e77)
+![severus_bug1 igv_snapshot 1](https://github.com/KolmogorovLab/Severus/assets/1204593/a44759de-f036-4423-9bf1-581c5e4397d6)
+NB: the truthset is represented via individual breakends, while Severus vcf contains the more contiguous DUP call. Both refer to the same underlying somatic variant. 
+
+Somatic DUP left boundary extends beyond the truth set boundary into the supplementary alignment outermost location. As compared to the truth set DUP boundary breakpoint. 
+
+Issue persists with both unhaplotagged and haplotagged input data.",aganezov,https://github.com/KolmogorovLab/Severus/issues/9
+I_kwDOH45Jhc5-u6Ig,Missing somatic translocation/insertion SV breakpoint,OPEN,2024-02-08T23:23:42Z,2024-02-08T23:23:42Z,,"Version: Severus 0.1.2
+Data: 
+* Tumor: colo829
+* Normal: colo829bl
+
+command executed:
+```
+Severus-0.1.2/severus.py -t 16 --target-bam colo829.b2.bam --control-bam colo829bl.b2.bam --out-dir severus_unhaplotagged --vaf-thr 0.001 --single-bp
+```
+and
+```
+Severus-0.1.2/severus.py -t 16 --target-bam colo829.b2.tagged.bam --control-bam colo829bl.b2.tagged.bam --out-dir severus_haplotagged --vaf-thr 0.001 --single-bp 
+```
+
+The underlying situation is rather complex with a somatic trnalocation/insetion/foldback happening (see attached jbrowse2 view).
+![Screenshot 2024-02-08 at 18 08 12](https://github.com/KolmogorovLab/Severus/assets/1204593/04b1bad9-6d01-4998-80d3-98c146c6fd8b)
+
+Severus output suggests no somatic SV presence on the left boundary. In the IGV screenshot below the supplementary alignment for a DUP-like even in HP2 is clearly visible. But does suggest presence of non-somatic translocation/SV.
+![Screenshot 2024-02-08 at 18 13 07](https://github.com/KolmogorovLab/Severus/assets/1204593/68605d9d-bca5-4f01-9e67-ae7b755f5b8a)
+
+For the right boundary, somatic translocation-like SV is reported by Severus.
+![Screenshot 2024-02-08 at 18 17 17](https://github.com/KolmogorovLab/Severus/assets/1204593/d056d2bd-97dc-458d-8666-f375794b0011)
+
+
+Issue persists with both unhaplotagged and haplotagged input data.",aganezov,https://github.com/KolmogorovLab/Severus/issues/10
+I_kwDOH45Jhc6BdMv6,INFO/END is smaller than POS,CLOSED,2024-03-06T16:23:13Z,2024-10-03T14:51:51Z,2024-10-03T14:51:51Z,"Hi @aysegokce ,
+
+I'm currently trying to replicate your testing on COLO829 using the COLO829 nanopore data provided by epi2me labs. 
+The workflow likes: `Clair3 -> whatshap phasing and tagging -> severus call SV -> truvari bench`.
+
+However, I encountered an error while attempting to index severus_somatic.vcf using bcftools: 
+`[W::tbx_parse1] VCF INFO/END=10003 is smaller than POS at chr1:180575`. 
+It seems that this issue stems from the possibility of encountering END being smaller than POS when SVtype is BND.
+
+Could you please explain how you operate `Truvari` as a benchmarking tool?
+
+Best,
+Sin-Dian",linsindian,https://github.com/KolmogorovLab/Severus/issues/11
+I_kwDOH45Jhc6Boeqd,Calling without haplotagged alignments,CLOSED,2024-03-07T21:54:18Z,2024-03-08T18:27:42Z,2024-03-08T18:27:42Z,"Hi @fenderglass,
+Thanks for the great tool. For tumour only or germline calling with a single sample, does using non haplotagged alignments effect performance or runtime?
+Thanks!",kcleal,https://github.com/KolmogorovLab/Severus/issues/12
+I_kwDOH45Jhc6CX1_M,Discrepancy in DEL Calls Between Severus Nanopore and PacBio Datasets for COLO829 Cell Line,CLOSED,2024-03-14T21:21:11Z,2024-10-03T14:51:36Z,2024-10-03T14:51:36Z,"Dear Sir/Madam,
+
+I am currently testing the Severus tool for analyzing structural variations (SVs) in two datasets of the COLO829 cell line: one generated by Nanopore sequencing and the other by PacBio sequencing. While most SV types show consistent results between the two datasets, there is a noticeable difference in the number of deletions (DEL) called by Severus.
+
+TOOL | SEVERUS R9 |  
+Type | INS | DEL | INV | DUP | BND |  
+Somatic | 116 | **1439** | 16 | 11 | 132 | =total 1714
+  |   |   |   |   |   |  
+  |   |   |   |   |   |  
+  |   |   |   |   |   |  
+TOOL | SEVERUS PACBIO |  
+Type | INS | DEL | INV | DUP | BND |  
+Somatic | 20 | **43** | 10 | 8 | 28 | =total 109
+
+Analysis Parameters:
+
+The parameters used for SV calling in both runs are identical.
+The same cell line (COLO829) was used for both Nanopore and PacBio datasets.
+
+Request for Insight:
+
+I would appreciate any insights into why there is such a discrepancy specifically in the number of deletion calls between the two datasets. Since the parameters and the cell line are the same for both runs, I expected more consistency in the results.
+
+",skeremaydin,https://github.com/KolmogorovLab/Severus/issues/13
+I_kwDOH45Jhc6DHMf6,Phased bam from longshot,CLOSED,2024-03-21T09:58:15Z,2024-03-22T09:45:30Z,2024-03-22T09:45:30Z,"Hi @aysegokce,
+
+Im trying to run Severus using a haplotagged bam from longshot, but ran in to an error:
+
+```
+~/miniconda3/bin/python severus.py --target-bam ../COLO829/PAO32033.longshot_phased.bam --control-bam ../COLO829BL/PAO33946.longshot_phased.bam -t 16 --out-dir out_longshot_phased --vntr-bed vntrs/human_grch37.trf.bed
+[2024-03-20 09:58:31] INFO: Starting Severus 0.1.1
+[2024-03-20 09:58:31] INFO: Parsing reads from PAO32033.longshot_phased.bam
+[2024-03-20 10:14:37] INFO: 	Total read length: 122983372112
+[2024-03-20 10:14:37] INFO: 	Total aligned length: 123236735831 (1.00)
+[2024-03-20 10:14:37] INFO: 	Read N50 / N90: 23624 / 6088
+[2024-03-20 10:14:37] INFO: 	Alignments N50 / N90: 20792 / 4926
+[2024-03-20 10:14:37] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-03-20 10:14:37] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-03-20 10:14:38] INFO: Parsing reads from PAO33946.longshot_phased.bam
+[2024-03-20 10:29:44] INFO: 	Total read length: 122983372112
+[2024-03-20 10:29:44] INFO: 	Total aligned length: 123236735831 (1.00)
+[2024-03-20 10:29:44] INFO: 	Read N50 / N90: 23624 / 6088
+[2024-03-20 10:29:44] INFO: 	Alignments N50 / N90: 20792 / 4926
+[2024-03-20 10:29:44] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-03-20 10:29:44] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-03-20 10:29:45] INFO: Computing read quality
+[2024-03-20 10:30:37] INFO: Annotating reads
+[2024-03-20 10:31:55] INFO: Computing coverage histogram
+[2024-03-20 10:32:33] INFO: 	Median coverage by PASS reads for PAO32033.longshot_phased.bam (H1 / H2 / H0): 16.0 / 16.0 / 2.0
+[2024-03-20 10:32:34] INFO: 	Median coverage by PASS reads for PAO33946.longshot_phased.bam (H1 / H2 / H0): 16.0 / 16.0 / 2.0
+[2024-03-20 10:32:34] INFO: Resolving overlaps
+[2024-03-20 10:32:34] INFO: Extracting split alignments
+[2024-03-20 10:32:38] INFO: Extracting clipped reads
+[2024-03-20 10:32:47] INFO: Clustering unmapped insertions
+[2024-03-20 10:32:52] INFO: Starting breakpoint detection
+[2024-03-20 10:34:12] INFO: Starting match_long_ins
+[2024-03-20 10:34:13] INFO: Starting compute_bp_coverage
+[2024-03-20 11:55:47] INFO: Filtering breakpoints
+Traceback (most recent call last):
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus.py"", line 30, in <module>
+    main()
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus.py"", line 26, in main
+    sys.exit(main())
+             ^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/main.py"", line 205, in main
+    double_breaks = call_breakpoints(segments_by_read, ref_lengths, coverage_histograms, bam_files, genome_ids, control_genomes, thread_pool, args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/breakpoint_finder.py"", line 2036, in call_breakpoints
+    double_breaks = double_breaks_filter(double_breaks, args.bp_min_support, cont_id)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/breakpoint_finder.py"", line 601, in double_breaks_filter
+    to_keep.remove(ind0)
+ValueError: list.remove(x): x not in list
+```
+
+I added a try except block around the offending line, but ran in to another error:
+
+```
+/usr/bin/time ~/miniconda3/bin/python severus.py --target-bam ../COLO829/PAO32033.longshot_phased.bam --control-bam ../COLO829BL/PAO33946.longshot_phased.bam -t 16 --out-dir out_longshot_phased --vntr-bed vntrs/human_grch37.trf.bed
+[2024-03-20 15:46:27] INFO: Starting Severus 0.1.1
+[2024-03-20 15:46:27] INFO: Parsing reads from PAO32033.longshot_phased.bam
+[2024-03-20 16:02:24] INFO: 	Total read length: 122983372112
+[2024-03-20 16:02:24] INFO: 	Total aligned length: 123236735831 (1.00)
+[2024-03-20 16:02:24] INFO: 	Read N50 / N90: 23624 / 6088
+[2024-03-20 16:02:24] INFO: 	Alignments N50 / N90: 20792 / 4926
+[2024-03-20 16:02:24] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-03-20 16:02:24] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-03-20 16:02:24] INFO: Parsing reads from PAO33946.longshot_phased.bam
+[2024-03-20 16:17:22] INFO: 	Total read length: 122983372112
+[2024-03-20 16:17:22] INFO: 	Total aligned length: 123236735831 (1.00)
+[2024-03-20 16:17:22] INFO: 	Read N50 / N90: 23624 / 6088
+[2024-03-20 16:17:22] INFO: 	Alignments N50 / N90: 20792 / 4926
+[2024-03-20 16:17:22] INFO: 	Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-03-20 16:17:22] INFO: 	Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-03-20 16:17:23] INFO: Computing read quality
+[2024-03-20 16:18:16] INFO: Annotating reads
+[2024-03-20 16:19:33] INFO: Computing coverage histogram
+[2024-03-20 16:20:12] INFO: 	Median coverage by PASS reads for PAO32033.longshot_phased.bam (H1 / H2 / H0): 16.0 / 16.0 / 2.0
+[2024-03-20 16:20:13] INFO: 	Median coverage by PASS reads for PAO33946.longshot_phased.bam (H1 / H2 / H0): 16.0 / 16.0 / 2.0
+[2024-03-20 16:20:13] INFO: Resolving overlaps
+[2024-03-20 16:20:13] INFO: Extracting split alignments
+[2024-03-20 16:20:17] INFO: Extracting clipped reads
+[2024-03-20 16:20:26] INFO: Clustering unmapped insertions
+[2024-03-20 16:20:31] INFO: Starting breakpoint detection
+[2024-03-20 16:21:52] INFO: Starting match_long_ins
+[2024-03-20 16:21:53] INFO: Starting compute_bp_coverage
+[2024-03-20 17:44:51] INFO: Filtering breakpoints
+Traceback (most recent call last):
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus.py"", line 30, in <module>
+    main()
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus.py"", line 26, in main
+    sys.exit(main())
+             ^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/main.py"", line 205, in main
+    double_breaks = call_breakpoints(segments_by_read, ref_lengths, coverage_histograms, bam_files, genome_ids, control_genomes, thread_pool, args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/breakpoint_finder.py"", line 2037, in call_breakpoints
+    double_breaks = double_breaks_filter(double_breaks, args.bp_min_support, cont_id)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/media/kez/9377f7a6-1ddc-488c-be9f-946154c35bd1/public_genomes/colo829/kit14/Severus/severus/breakpoint_finder.py"", line 598, in double_breaks_filter
+    dbs2.bp_1.spanning_reads[genome_id][ind_phased[0]] += db0.bp_1.spanning_reads[genome_id][0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+IndexError: list index out of range
+```
+
+Not sure what has gone wrong, but I will try and bypass this too.
+
+Thanks
+",kcleal,https://github.com/KolmogorovLab/Severus/issues/14
+I_kwDOH45Jhc6ExDWW,COLO829 recall regression in v1.0,OPEN,2024-04-05T09:06:38Z,2024-08-07T02:33:36Z,,"Hi @fenderglass and @aysegokce , this is Khi Pin. As you know I've implemented Severus 0.1.1 in the somatic variants WDL pipeline. I've been looking into Severus 1.0 and while the majority of the truth variants remain, there are two BND events that's filtered out in v1.0. This is `truthset_1` and `truthset_19`. Looking into `breakpoints_double.csv`, `truthset_1` is filtered out due to missing mapping quality threshold (MAPQ of 26 in v0.1.1 output, but I can tell from the source code there's a minimum of 30 now). For `truthset_19`, the reasons given was `FAIL_CONNS_CONNS`. 
+
+Have you observed similar regression comparing v01.1. and 1.0? Additionally, v1.0 calls **145** SVs compared to **122** in v0.1.1, which seems counterintuitive if the filtering threshold is not stricter. 
+
+Command used with v1.0:
+
+```
+python ~/softwares/Severus/severus.py \
+  --target-bam COLO829.tumor.aligned.hiphase.bam \
+  --control-bam COLO829.normal.aligned.hiphase.bam \
+  --phasing-vcf COLO829.tumor.clair3.small_variantscorrect_ref.hiphase.vcf.gz \
+  --out-dir severus_results_withsupp_minsup3 \
+  -t 32 --vntr-bed ~/references/hifisomatic_resources/human_GRCh38_no_alt_analysis_set.trf.bed \
+  --use-supplementary-tag --min-support 3
+```
+
+With 0.1.1:
+
+```
+severus \
+  --target-bam COLO829.tumor.aligned.hiphase.bam \
+  --control-bam COLO829.normal.aligned.hiphase.bam \
+  --phasing-vcf COLO829.tumor.clair3.small_variantscorrect_ref.hiphase.vcf.gz \
+  --out-dir severus_results_0.1.1_minsupp3 \
+  -t 32 --vntr-bed ~/references/hifisomatic_resources/human_GRCh38_no_alt_analysis_set.trf.bed \
+  --min-support 3
+```
+
+The BAMs are identical and were aligned with `pbmm2` version 1.10 to `GCA_000001405.15_GRCh38_no_alt_analysis_set_maskedGRC_exclusions_v2.fasta` using the full COLO829 BAM (No down-sampling).",proteinosome,https://github.com/KolmogorovLab/Severus/issues/15
+I_kwDOH45Jhc6FXS36,Allow VNTR BED to be compressed,CLOSED,2024-04-11T11:13:56Z,2024-10-03T14:51:21Z,2024-10-03T14:51:21Z,"It would be quite useful if the program was able to handle the `--vntr-bed` being supplied as a `.gz` file compressed with `bgzip` as this allows the same file to be used as elsewhere which require an indexed bed file, which can be quite common in bioinformatics tools and workflows. 
+
+It may be as simple as replacing the current `open` with `fileinput.hook_compressed` [docs](https://docs.python.org/3.10/library/fileinput.html#fileinput.hook_compressed).",awgymer,https://github.com/KolmogorovLab/Severus/issues/16
+I_kwDOH45Jhc6F1etr,Severus v1.0 much slower than v0.1.2 on COLO829 ,CLOSED,2024-04-16T08:01:02Z,2024-07-01T16:30:15Z,2024-07-01T16:30:15Z,"Hello,
+I've been testing Severus v0.1.2 and v1.0 on the COLO829 ONT open dataset. Version 1.0 appears to be much slower than v0.1.2, with the clustering step taking over three hours vs 5 min in the older release.
+Below the log for the clustering of v0.1.2:
+```
+[2024-04-11 16:48:48] root: INFO: Starting Severus 0.1.1
+[2024-04-11 16:48:48] root: DEBUG: Cmd: /home/epi2melabs/conda/bin/severus --target-bam COLO829.bam --control-bam COLO829_normal.bam --out-dir ./severus-output --threads 8 --min-sv-size 50 --min-support 3
+[2024-04-11 16:48:48] root: DEBUG: Python version: 3.8.19 | packaged by conda-forge | (default, Mar 20 2024, 12:47:35)
+[GCC 12.3.0]
+[2024-04-11 16:48:49] root: INFO: Parsing reads from COLO829.bam
+[2024-04-11 16:59:39] root: INFO:       Total read length: 186035485516
+[2024-04-11 16:59:39] root: INFO:       Total aligned length: 186619930870 (1.00)
+[2024-04-11 16:59:39] root: INFO:       Read N50 / N90: 29973 / 7951
+[2024-04-11 16:59:39] root: INFO:       Alignments N50 / N90: 26581 / 6216
+[2024-04-11 16:59:39] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0075 / 0.0112 / 0.0203
+[2024-04-11 16:59:39] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0026 / 0.0040 / 0.0071
+[2024-04-11 16:59:40] root: INFO: Parsing reads from COLO829_normal.bam
+[2024-04-11 17:05:56] root: INFO:       Total read length: 94620127689
+[2024-04-11 17:05:56] root: INFO:       Total aligned length: 94818924715 (1.00)
+[2024-04-11 17:05:56] root: INFO:       Read N50 / N90: 23616 / 6086
+[2024-04-11 17:05:56] root: INFO:       Alignments N50 / N90: 20784 / 4923
+[2024-04-11 17:05:56] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-04-11 17:05:56] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-04-11 17:05:57] root: INFO: Computing read quality
+[2024-04-11 17:07:11] root: INFO: Annotating reads
+[2024-04-11 17:11:06] root: INFO: Computing coverage histogram
+[2024-04-11 17:13:01] root: INFO:       Median coverage by PASS reads for COLO829.bam (H1 / H2 / H0): 0.0 / 0.0 / 56.0
+[2024-04-11 17:13:02] root: INFO:       Median coverage by PASS reads for COLO829_normal.bam (H1 / H2 / H0): 0.0 / 0.0 / 29.0
+[2024-04-11 17:13:02] root: INFO: Resolving overlaps
+[2024-04-11 17:13:02] root: INFO: Extracting split alignments
+[2024-04-11 17:13:16] root: INFO: Extracting clipped reads
+[2024-04-11 17:13:43] root: INFO: Clustering unmapped insertions
+[2024-04-11 17:13:57] root: INFO: Starting breakpoint detection
+[2024-04-11 17:18:37] root: INFO: Starting match_long_ins
+[2024-04-11 17:18:40] root: INFO: Starting compute_bp_coverage
+[2024-04-11 17:28:36] root: INFO: Filtering breakpoints
+[2024-04-11 17:28:43] root: INFO: annotate_mut_type
+[2024-04-11 17:28:44] root: INFO: Writing breakpoints
+[2024-04-11 17:28:46] root: INFO: Preparing outputs for all_SVs
+[2024-04-11 17:28:46] root: INFO:       Computing segment coverage
+[2024-04-11 17:28:49] root: INFO:       Preparing graph
+[2024-04-11 17:28:51] root: INFO:       Writing vcf
+[2024-04-11 17:28:52] root: INFO: Preparing outputs for somatic_SVs
+[2024-04-11 17:28:52] root: INFO:       Computing segment coverage
+[2024-04-11 17:28:52] root: INFO:       Preparing graph
+[2024-04-11 17:28:52] root: INFO:       Writing vcf
+```
+
+And the same for v1.0:
+```
+[2024-04-10 12:16:58] root: INFO: Starting Severus 1.0
+[2024-04-10 12:16:58] root: DEBUG: Cmd: /home/epi2melabs/conda/bin/severus --target-bam COLO829.bam --control-bam COLO829_normal.bam --out-dir ./severus-output --threads 8 --min-sv-size 50 --min-support 3
+[2024-04-10 12:16:58] root: DEBUG: Python version: 3.8.19 | packaged by conda-forge | (default, Mar 20 2024, 12:47:35)
+[GCC 12.3.0]
+[2024-04-10 12:16:59] root: INFO: Parsing reads from COLO829.bam
+[2024-04-10 12:35:34] root: INFO:       Total read length: 186035485516                                                                                                                                          [2024-04-10 12:35:34] root: INFO:       Total aligned length: 186456548485 (1.00)                                                                                                                                [2024-04-10 12:35:34] root: INFO:       Read N50 / N90: 29973 / 7951
+[2024-04-10 12:35:34] root: INFO:       Alignments N50 / N90: 26602 / 6240
+[2024-04-10 12:35:34] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0075 / 0.0112 / 0.0203
+[2024-04-10 12:35:34] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0026 / 0.0040 / 0.0071
+[2024-04-10 12:35:36] root: INFO: Parsing reads from COLO829_normal.bam
+[2024-04-10 12:45:28] root: INFO:       Total read length: 94620127689
+[2024-04-10 12:45:28] root: INFO:       Total aligned length: 94733987248 (1.00)
+[2024-04-10 12:45:28] root: INFO:       Read N50 / N90: 23616 / 6086
+[2024-04-10 12:45:28] root: INFO:       Alignments N50 / N90: 20801 / 4937
+[2024-04-10 12:45:28] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0068 / 0.0104 / 0.0194
+[2024-04-10 12:45:28] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0023 / 0.0037 / 0.0068
+[2024-04-10 12:45:29] root: INFO: Computing read quality
+[2024-04-10 12:47:34] root: INFO: Annotating reads
+[2024-04-10 12:53:50] root: INFO: Computing coverage histogram
+[2024-04-10 12:56:50] root: INFO:       Median coverage by PASS reads for COLO829.bam (H1 / H2 / H0): 0.0 / 0.0 / 56.0
+[2024-04-10 12:56:51] root: INFO:       Median coverage by PASS reads for COLO829_normal.bam (H1 / H2 / H0): 0.0 / 0.0 / 29.0
+[2024-04-10 12:56:51] root: INFO: Extracting split alignments
+[2024-04-10 12:57:08] root: INFO: Extracting clipped reads
+[2024-04-10 12:57:49] root: INFO: Starting breakpoint detection
+[2024-04-10 13:06:42] root: INFO: Clustering unmapped insertions
+[2024-04-10 16:13:10] root: INFO: Starting compute_bp_coverage
+[2024-04-10 16:25:17] root: INFO: Filtering breakpoints
+[2024-04-10 16:25:30] root: INFO: Writing breakpoints
+[2024-04-10 16:25:33] root: INFO: Preparing outputs for all_SVs
+[2024-04-10 16:25:33] root: INFO:       Computing segment coverage
+[2024-04-10 16:25:35] root: INFO:       Preparing graph
+[2024-04-10 16:25:40] root: INFO:       Writing vcf
+[2024-04-10 16:25:42] root: INFO: Preparing outputs for somatic_SVs
+[2024-04-10 16:25:42] root: INFO:       Computing segment coverage
+[2024-04-10 16:25:42] root: INFO:       Preparing graph
+[2024-04-10 16:25:43] root: INFO:       Writing vcf
+```
+
+Both software were installed via anaconda in a docker container, but I observe the same slowdown using an anaconda environment directly.
+
+Thanks
+Andrea",RenzoTale88,https://github.com/KolmogorovLab/Severus/issues/17
+I_kwDOH45Jhc6JIUzs,Phasing with tumour-only long-reads as input for severus,CLOSED,2024-05-16T15:02:53Z,2024-07-26T16:40:31Z,2024-07-26T16:40:31Z,"I have nanopore long-reads from tumor (tumor only)
+I also have SNP/indel variant calls from the same sample from illumina in both germline (normal) and tumor data
+
+I want to try and phase the tumour bam so I can use severus to detect complex rearrangements. 
+
+as such, which input.vcf should I use to accompany my tumor.bam for phasing for best results with severus?
+a) illumina SNP/indel calls from normal
+b) illumina SNP/indel calls from tumor
+I could also generate c) nanopore SNP/indel calls from tumor ",eesiribloom,https://github.com/KolmogorovLab/Severus/issues/18
+I_kwDOH45Jhc6K6tpM,Insert ALT format,CLOSED,2024-06-03T09:32:29Z,2024-09-03T15:33:09Z,2024-09-03T15:33:09Z,"I notice some inserts with an ALT format like `<chr>:<start>-<stop>` (i.e. `chr8:141415620-141415787`) and as far as I can tell this is not VCF spec. This causes downstream tools to throw errors. 
+
+Where do these format `INS` come from and is it possible to have them replaced by a spec format? ",awgymer,https://github.com/KolmogorovLab/Severus/issues/19
+I_kwDOH45Jhc6LfwqG,Sample IDs based on filenames causing errors in computation,CLOSED,2024-06-07T12:39:26Z,2024-08-19T09:09:00Z,2024-07-01T16:28:57Z,"I have a pipeline that uses clair3 for haplotyping and severus afterward. I noticed that even though I have control samples, the output only included all_SVs. I suspected the cause to be that the input bams have the same name (as clair3 generates them). So I ran some tests, and that seems to be the case.
+
+This is the log for the run with files named the same:
+
+```
+[2024-06-07 12:37:38] root: INFO: Starting Severus 1.0
+[2024-06-07 12:37:38] root: DEBUG: Cmd: severus --target-bam results/clair3/tumour/phased_output.bam --control-bam results/clair3/normal/phased_output.bam --out-dir severus_test_samename -t 64 --phasing-vcf results/clair3/tumour/phased_merge_output.vcf.gz --vntr-bed human_GRCh38_no_alt_analysis_set.trf.bed
+[2024-06-07 12:37:38] root: DEBUG: Python version: 3.10.14 | packaged by conda-forge | (main, Mar 20 2024, 12:45:18) [GCC 12.3.0]
+[2024-06-07 12:37:38] root: INFO: Parsing reads from phased_output.bam
+[2024-06-07 12:40:41] root: INFO:       Total read length: 96463990191
+[2024-06-07 12:40:41] root: INFO:       Total aligned length: 93395728985 (0.97)
+[2024-06-07 12:40:41] root: INFO:       Read N50 / N90: 17207 / 4360
+[2024-06-07 12:40:41] root: INFO:       Alignments N50 / N90: 15474 / 3734
+[2024-06-07 12:40:41] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0057 / 0.0095 / 0.0194
+[2024-06-07 12:40:41] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0019 / 0.0034 / 0.0070
+[2024-06-07 12:40:42] root: INFO: Parsing reads from phased_output.bam
+[2024-06-07 12:44:23] root: INFO:       Total read length: 91950759372
+[2024-06-07 12:44:23] root: INFO:       Total aligned length: 87270955492 (0.95)
+[2024-06-07 12:44:23] root: INFO:       Read N50 / N90: 9758 / 3341
+[2024-06-07 12:44:23] root: INFO:       Alignments N50 / N90: 8771 / 2967
+[2024-06-07 12:44:23] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0051 / 0.0085 / 0.0169
+[2024-06-07 12:44:23] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0016 / 0.0030 / 0.0060
+[2024-06-07 12:44:24] root: INFO: Computing read quality
+[2024-06-07 12:46:45] root: INFO: Annotating reads
+[2024-06-07 12:48:52] root: INFO: Computing coverage histogram
+[2024-06-07 12:49:48] root: INFO:       Median coverage by PASS reads for phased_output.bam (H1 / H2 / H0): 22.0 / 22.0 / 1.0
+[2024-06-07 12:49:48] root: INFO:       Median coverage by PASS reads for phased_output.bam (H1 / H2 / H0): 22.0 / 22.0 / 1.0
+[2024-06-07 12:49:48] root: INFO: Extracting split alignments
+[2024-06-07 12:49:56] root: INFO: Extracting clipped reads
+[2024-06-07 12:50:17] root: INFO: Starting breakpoint detection
+[2024-06-07 12:50:40] root: INFO: Clustering unmapped insertions
+[2024-06-07 12:50:46] root: INFO: Starting compute_bp_coverage
+[2024-06-07 12:52:03] root: INFO: Filtering breakpoints
+[2024-06-07 12:52:05] root: INFO: Writing breakpoints
+[2024-06-07 12:52:06] root: INFO: Preparing outputs for all_SVs
+[2024-06-07 12:52:06] root: INFO:       Computing segment coverage
+[2024-06-07 12:52:36] root: INFO:       Total phased length: 2341332850
+[2024-06-07 12:52:36] root: INFO:       Phase blocks N50: 994777
+[2024-06-07 12:52:37] root: INFO:       Preparing graph
+[2024-06-07 12:52:38] root: INFO:       Writing vcf
+```
+And this is the available output:
+
+```
+.
+├── all_SVs
+│   ├── breakpoint_clusters_list.tsv
+│   ├── breakpoint_clusters.tsv
+│   ├── plots
+│   │   ├── severus_0.html
+│   │   ├── severus_1.html
+│   │   ├── severus_4.html
+│   │   ├── severus_5.html
+│   │   └── severus_7.html
+│   └── severus_all.vcf
+├── breakpoints_double.csv
+├── read_qual.txt
+└── severus.log
+```
+
+And this is the log for the run where I created symlinks for the same bams, to have different filenames:
+
+```
+[2024-06-07 12:02:41] root: INFO: Starting Severus 1.0
+[2024-06-07 12:02:41] root: DEBUG: Cmd: severus --target-bam results/clair3/tumour/target.bam --control-bam results/clair3/normal/control.bam --out-dir severus_test_diffname -t 64 --phasing-vcf results/clair3/tumour/phased_merge_output.vcf.gz --vntr-bed human_GRCh38_no_alt_analysis_set.trf.bed
+[2024-06-07 12:02:41] root: DEBUG: Python version: 3.10.14 | packaged by conda-forge | (main, Mar 20 2024, 12:45:18) [GCC 12.3.0]
+[2024-06-07 12:02:42] root: INFO: Parsing reads from target.bam
+[2024-06-07 12:10:58] root: INFO:       Total read length: 96463990191
+[2024-06-07 12:10:58] root: INFO:       Total aligned length: 93395728985 (0.97)
+[2024-06-07 12:10:58] root: INFO:       Read N50 / N90: 17207 / 4360 
+[2024-06-07 12:10:58] root: INFO:       Alignments N50 / N90: 15474 / 3734
+[2024-06-07 12:10:58] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0057 / 0.0095 / 0.0194
+[2024-06-07 12:10:58] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0019 / 0.0034 / 0.0070
+[2024-06-07 12:10:59] root: INFO: Parsing reads from control.bam
+[2024-06-07 12:18:30] root: INFO:       Total read length: 91950759372
+[2024-06-07 12:18:30] root: INFO:       Total aligned length: 87270955492 (0.95)
+[2024-06-07 12:18:30] root: INFO:       Read N50 / N90: 9758 / 3341
+[2024-06-07 12:18:30] root: INFO:       Alignments N50 / N90: 8771 / 2967
+[2024-06-07 12:18:30] root: INFO:       Read error rate (Q25 / Q50 / Q75): 0.0051 / 0.0085 / 0.0169
+[2024-06-07 12:18:30] root: INFO:       Read mismatch rate (Q25 / Q50 / Q75): 0.0016 / 0.0030 / 0.0060
+[2024-06-07 12:18:31] root: INFO: Computing read quality
+[2024-06-07 12:21:08] root: INFO: Annotating reads
+[2024-06-07 12:23:01] root: INFO: Computing coverage histogram
+[2024-06-07 12:23:59] root: INFO:       Median coverage by PASS reads for target.bam (H1 / H2 / H0): 11.0 / 11.0 / 0.0
+[2024-06-07 12:24:00] root: INFO:       Median coverage by PASS reads for control.bam (H1 / H2 / H0): 10.0 / 10.0 / 1.0
+[2024-06-07 12:24:00] root: INFO: Extracting split alignments
+[2024-06-07 12:24:08] root: INFO: Extracting clipped reads
+[2024-06-07 12:24:49] root: INFO: Starting breakpoint detection
+[2024-06-07 12:25:15] root: INFO: Clustering unmapped insertions
+[2024-06-07 12:25:18] root: INFO: Starting compute_bp_coverage
+[2024-06-07 12:34:41] root: INFO: Filtering breakpoints 
+[2024-06-07 12:34:43] root: INFO: Writing breakpoints
+[2024-06-07 12:34:45] root: INFO: Preparing outputs for all_SVs
+[2024-06-07 12:34:45] root: INFO:       Computing segment coverage
+[2024-06-07 12:35:15] root: INFO:       Total phased length: 2341332850
+[2024-06-07 12:35:15] root: INFO:       Phase blocks N50: 994777
+[2024-06-07 12:35:15] root: INFO:       Preparing graph 
+[2024-06-07 12:35:21] root: INFO:       Writing vcf
+[2024-06-07 12:35:22] root: INFO: Preparing outputs for somatic_SVs
+[2024-06-07 12:35:22] root: INFO:       Computing segment coverage
+[2024-06-07 12:35:51] root: INFO:       Total phased length: 2341332850
+[2024-06-07 12:35:51] root: INFO:       Phase blocks N50: 994777
+[2024-06-07 12:35:51] root: INFO:       Preparing graph
+[2024-06-07 12:35:51] root: INFO:       Writing vcf
+```
+
+And the corresponding output tree:
+
+```
+.
+├── all_SVs
+│   ├── breakpoint_clusters_list.tsv
+│   ├── breakpoint_clusters.tsv
+│   ├── plots
+│   │   ├── severus_0.html
+│   │   ├── severus_1.html
+│   │   ├── severus_2.html
+│   │   ├── severus_3.html
+│   │   ├── severus_5.html
+│   │   └── severus_7.html
+│   └── severus_all.vcf
+├── breakpoints_double.csv
+├── read_qual.txt
+├── severus.log
+└── somatic_SVs
+    ├── breakpoint_clusters_list.tsv
+    ├── breakpoint_clusters.tsv
+    ├── plots
+    └── severus_somatic.vcf
+```",tdido,https://github.com/KolmogorovLab/Severus/issues/20
+I_kwDOH45Jhc6MDDDb,The reference sequence is masked with N,OPEN,2024-06-12T20:16:28Z,2024-08-09T16:14:15Z,,"Hi,
+
+Thanks for developing such a wonderful tool for long-read analysis. Recently, I performed Severus to call somatic mutations between paired tumor-normal samples using the command 
+`--target-bam COLO829_merge_haplotagged.bam --control-bam ../colo829bl/COLO829BL_merge_haplotagged.bam --out-dir severus_out -t 80 --phasing-vcf /data/dyang11/COLO829/phasing2/HiC_ONT_haplotype.phased.VCF --vntr-bed /data/dyang11/index/repeats/chm13_VNTR.bed --use-supplementary-tag --vaf-thr 0.05 --min-support 5 --output-read-ids`.
+
+The command indeed works but the reference sequence of the output vcf file is N-masked. For example:
+```
+chr1	72963755	severus_DEL230	N	<DEL>	60.0	PASS	PRECISE;SVTYPE=DEL;SVLEN=7696;END=72971451;STRANDS=+-;MAPQ=60.0;PHASESETID=50486685;HP=1	GT:GQ:VAF:hVAF:DR:DV	0/0:242:0.17:0.00,1.00,0.00:24:5
+chr1	207054623	severus_DEL464	N	<DEL>	60.0	PASS	IMPRECISE;SVTYPE=DEL;SVLEN=33618;END=207088241;STRANDS=+-;MAPQ=60.0;PHASESETID=0;HP=2	GT:GQ:VAF:hVAF:DR:DV	0/1:629:0.29:0.00,0.00,1.00:79:33
+chr1	223647755	severus_DUP499	N	<DUP>	60.0	PASS	PRECISE;SVTYPE=DUP;SVLEN=153463;END=223801218;STRANDS=-+;DETAILED_TYPE=tandem_duplication;MAPQ=60.0;PHASESETID=0;HP=2	GT:GQ:VAF:hVAF:DR:DV	0/1:603:0.31:0.00,0.00,1.00:129:59
+chr1	223783960	severus_DEL500	N	<DEL>	60.0	PASS	PRECISE;SVTYPE=DEL;SVLEN=3187;END=223787147;STRANDS=+-;MAPQ=60.0;PHASESETID=0;HP=2	GT:GQ:VAF:hVAF:DR:DV	0/1:680:0.25:0.00,0.00,1.00:182:62
+
+```
+Can you help me figure it out? Thank you very much!",DexinYang1998,https://github.com/KolmogorovLab/Severus/issues/21
+I_kwDOH45Jhc6M0Qww,Severus version is hardcoded in `source` field,CLOSED,2024-06-19T14:19:16Z,2024-07-01T16:27:07Z,2024-07-01T16:27:07Z,"The severus version is hardcoded in the `source` field of the VCF header:
+
+```python
+outfile.write('##source=Severusv0.1.2\n')
+```
+
+This is not the correct version now. Ideally this should be set dynamically somehow or else updated to match the latest release",awgymer,https://github.com/KolmogorovLab/Severus/issues/22
+I_kwDOH45Jhc6STqtk,VNTRs,CLOSED,2024-08-08T01:05:59Z,2024-10-03T14:50:14Z,2024-10-03T14:50:14Z,"Hello, 
+
+Thank you for creating this tool. 
+
+This issue is related to a closed issue [#19](https://github.com/KolmogorovLab/Severus/issues/19), which I cannot reopen. 
+
+The latest VCF specification (version 4.5) which was released on 28 Jun 2024, has section 5.7 devoted to STR and VNTR. https://github.com/samtools/hts-specs/blob/master/VCFv4.5.pdf
+
+Would you consider aligning the Severus output format with the latest VCF specification in a future release? 
+This would help streamline downstream tools. 
+
+Thank you!",minw2828,https://github.com/KolmogorovLab/Severus/issues/23
+I_kwDOH45Jhc6TBVqE,Haptype information in output files,CLOSED,2024-08-14T18:59:46Z,2024-08-16T19:44:25Z,2024-08-16T19:44:25Z,"Hi,
+
+Severus is fantastic and very helpful for my current study. In particular, the complex SVs were visualized in a convient way.
+However, I still has several questions about the output files and hope you can give a brief explanation.
+
+1. As shown in the below figure, there is a label for the interactive breakends. I was confused about the meaning of ""Haplotype 2|1"". I feel it was used to characterize Hom and Het. Does ""2"" stand for Hap2, ""1"" stand for Hap1, and ""0"" stand for both Haps?
+
+![image](https://github.com/user-attachments/assets/46c01397-a4dd-4345-b4ba-040592d859e5)
+
+2. I saw some items in the VCF file have no HP tag. Does it mean that they are not well phased or they present in both haploids?
+
+Thanks!",ywzhang071394,https://github.com/KolmogorovLab/Severus/issues/24
+I_kwDOH45Jhc6UYLV5,`<INV>` format,OPEN,2024-08-27T13:25:40Z,2024-10-03T14:50:00Z,,"We are facing some issues with the formatting for rows of type `INV`. 
+
+Based on the [4.2 spec](https://samtools.github.io/hts-specs/VCFv4.2.pdf) (see section 5.4.7) it seems that if an `INV` is represented by a single row it should have an `END` value. However there is no such value provided in the output of Severus. 
+
+It may be as simple as adding the `SVLEN` value to the `POS`?   ",awgymer,https://github.com/KolmogorovLab/Severus/issues/25
+I_kwDOH45Jhc6VRA8E,Incompatability of VACmap,CLOSED,2024-09-04T04:14:58Z,2024-09-06T02:11:05Z,2024-09-06T02:11:04Z,"Hi there,
+
+Thanks for developing this amazing tool! I am having some issues during running Severus on [VACmap](https://github.com/micahvista/VACmap) aligned BAM files.
+
+The header of aligned BAM file looks like:
+```
+/hgsc_software/samtools/samtools-1.19.2/bin/samtools view -H ~/ryan_scratch_ln/benchmark_inv/rawdata/hg002/pacbio/vacmap/rg_added_sorted_PacBio_HG002_m54238_180916_191625.Q20.bam
+@HD     VN:1.0  SO:coordinate
+@SQ     SN:chr1 LN:248956422
+@SQ     SN:chr2 LN:242193529
+@SQ     SN:chr3 LN:198295559
+@SQ     SN:chr4 LN:190214555
+@SQ     SN:chr5 LN:181538259
+@SQ     SN:chr6 LN:170805979
+@SQ     SN:chr7 LN:159345973
+@SQ     SN:chr8 LN:145138636
+@SQ     SN:chr9 LN:138394717
+@SQ     SN:chr10        LN:133797422
+@SQ     SN:chr11        LN:135086622
+@SQ     SN:chr12        LN:133275309
+@SQ     SN:chr13        LN:114364328
+@SQ     SN:chr14        LN:107043718
+@SQ     SN:chr15        LN:101991189
+@SQ     SN:chr16        LN:90338345
+@SQ     SN:chr17        LN:83257441
+@SQ     SN:chr18        LN:80373285
+@SQ     SN:chr19        LN:58617616
+@SQ     SN:chr20        LN:64444167
+@SQ     SN:chr21        LN:46709983
+@SQ     SN:chr22        LN:50818468
+@SQ     SN:chrX LN:156040895
+@SQ     SN:chrY LN:57227415
+@SQ     SN:chrM LN:16569
+@PG     PN:VACmap       ID:VACmap       VN:1.0  CL:vacmap -ref /stornext/snfs4/next-gen/scratch/ryan/reference/human-grch38.fasta -read /users/u250191/ryan_scratch_ln/reference/raw_data/hg002/PacBio_HG002_m54238_180916_191625.Q20.fastq -mode S --MD -t 12 --rg-id PacBio_HG002_m54238_180916_191625.Q20 --rg-sm PacBio_HG002
+@PG     ID:samtools     PN:samtools     PP:VACmap       VN:1.19.2       CL:/hgsc_software/samtools/samtools-1.19.2/bin/samtools view -H /users/u250191/ryan_scratch_ln/benchmark_inv/rawdata/hg002/pacbio/vacmap/rg_added_sorted_PacBio_HG002_m54238_180916_191625.Q20.bam
+@RG     ID:HG002_PacBio_vacmap  SM:HG002_PacBio_vacmap
+```
+
+the codes to run Severus:
+```
+#!/bin/bash
+#SBATCH --job-name=severus
+#SBATCH --output=%x_%A_%a.out
+#SBATCH --error=%x_%A_%a.err
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32gb
+#SBATCH --time=72:00:00
+#SBATCH --partition=medium
+#SBATCH -A proj-fs0002
+
+source /users/u250191/.bashrc 
+conda activate severus_env
+
+ref38=""/users/u250191/ryan_scratch_ln/reference/human-grch38.fasta""
+tr_bed=""/users/u250191/ryan_scratch_ln/benchmark_inv/caller/severus/human_GRCh38_no_alt_analysis_set.trf.bed""
+WORK_DIR=$(pwd) 
+
+input_bam=$1
+
+severus --target-bam ${input_bam} --out-dir ${WORK_DIR} -t 8 --vntr-bed ${tr_bed}
+```
+
+error when running Severus on VACmap aligned BAM files:
+```
+[2024-09-02 10:17:53] INFO: Starting Severus 1.1
+[2024-09-02 10:17:56] INFO: Parsing reads from rg_added_sorted_0.5_30x_HG00731_ONT_vacmap.bam
+multiprocessing.pool.RemoteTraceback: 
+""""""
+Traceback (most recent call last):
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/multiprocessing/pool.py"", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/multiprocessing/pool.py"", line 51, in starmapstar
+    return list(itertools.starmap(args[0], args[1]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/site-packages/severus/bam_processing.py"", line 336, in get_all_reads
+    new_segment, read_inf = get_segment(aln, genome_id, sv_size,use_supplementary_tag, ref_ind)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/site-packages/severus/bam_processing.py"", line 92, in get_segment
+    mm_rate = int(num_of_mismatch * K_MM / total_segment_length)
+                  ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: division by zero
+""""""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/bin/severus"", line 33, in <module>
+    sys.exit(load_entry_point('severus==1.1', 'console_scripts', 'severus')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/site-packages/severus/main.py"", line 224, in main
+    segments_by_read_bam = get_all_reads_parallel(bam_file, thread_pool, ref_lengths, genome_id,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/site-packages/severus/bam_processing.py"", line 378, in get_all_reads_parallel
+    parsing_results = thread_pool.starmap(get_all_reads, tasks)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/multiprocessing/pool.py"", line 375, in starmap
+    return self._map_async(func, iterable, starmapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/stornext/snfs4/next-gen/scratch/ryan/tools/miniconda3/envs/severus_env/lib/python3.12/multiprocessing/pool.py"", line 774, in get
+    raise self._value
+ZeroDivisionError: division by zero
+
+```
+
+
+I think this might be caused by the missing information of the BAM files required by Severus. I also attached a test data for your debug. 
+
+Thanks again,
+Ryan
+[test_hg002_pacbio_vacmap.zip](https://github.com/user-attachments/files/16860695/test_hg002_pacbio_vacmap.zip)
+",jamesc99,https://github.com/KolmogorovLab/Severus/issues/26
+I_kwDOH45Jhc6ViG1d,"Hello @jamesc99 ,",CLOSED,2024-09-05T21:19:16Z,2024-09-05T21:19:33Z,2024-09-05T21:19:33Z,"              Hello @jamesc99 ,
+Thank you for the test data. It looks like there is a bug in the Vacmap output. There are segments with only clipped sequences without any match or mismatch sequences, as in the example below. Although these segments are practically unaligned, they are flagged as aligned, which is causing a problem in Severus.
+
+`m54328_180928_230446/57803164/ccs       2048    chr17   26938531        60      13520S  *       0       0       TCAAATGGAATGGAATCGAAATGGATG...`
+
+We will incorporate this issue in our next release, but in the meantime, adding the code between [line 91 and 92 in severus/bam_processing.py](https://github.com/KolmogorovLab/Severus/blob/bcb4b67b394dac420a5ad0c765e56cedcc9a710c/severus/bam_processing.py#L91) should solve the problem. 
+
+`if total_segment_length == 0:
+        return [[], []] `
+
+Please let me know if the problem persists. 
+Best
+Ayse
+
+_Originally posted by @aysegokce in https://github.com/KolmogorovLab/Severus/issues/26#issuecomment-2332032952_
+            ",jamesc99,https://github.com/KolmogorovLab/Severus/issues/27
+I_kwDOH45Jhc6XJF2M,Redundant `CHR2` field,OPEN,2024-09-19T09:05:12Z,2024-10-03T14:47:01Z,,I think that with the change to `END` value being outputted for `BND` that the `CHR2` field is also no longer emitted but is still listed in the output header. It would be good to remove this field from the header if it is now redundant. ,awgymer,https://github.com/KolmogorovLab/Severus/issues/28
+I_kwDOH45Jhc6Zb6nO,How to understand the haplotags in the output file,CLOSED,2024-10-08T21:19:30Z,2024-10-10T20:00:05Z,2024-10-10T20:00:04Z,"Hi,
+
+Thank you for the nice tool. We recently used severus to detect the somatic variants from Pacbio data. However, we are confused of the haplotags in the output file.
+For example:
+Below is a large deletion of chr8: 43010350-67270902. The reads supporting this deletion are very far apart and are definitely not in the same phase set. In this case, their haplotags were not comparable. But how can severus report it as HP=1? Also, for inter-chromosome translocations, they must be in different phase sets. How can we understand the meaning of HP tags?
+ 
+`chr8	43010350	severus_DEL6851	N	<DEL>	60.0	PASS	PRECISE;SVTYPE=DEL;SVLEN=24260552;END=67270902;STRANDS=+-;MAPQ=60.0;PHASESETID=42840731|67041081;HP=1	GT:GQ:VAF:hVAF:DR:DV	0/1:153:0.26:0.00,0.43,0.00:17:6`
+
+Thank you so much!
+
+",ywzhang071394,https://github.com/KolmogorovLab/Severus/issues/29
+I_kwDOH45Jhc6cTzko,Question: distinction between DEL and DEL-like BND events,CLOSED,2024-10-29T22:22:26Z,2024-10-30T00:42:14Z,2024-10-30T00:42:14Z,"Hello -- thanks for writing this fantastic tool!  
+
+In looking into severus output and comparing to other callers, I've identified some examples where severus seems to be representing deletions by their constituent breakends.  This got me wondering whether their is a distinction between DEL-like breakends and events classed explicitly by severus as DELs.  
+
+In this example event below, severus (working off of PacBio HiFi reads) calls the event a pair of BNDs, whereas Manta, working off of Illumina short read data generated from the same sample, calls the event a DEL.  Minda successfully identifies the severus and manta events as one and the same.  Because it's clear that severus often _does_ explicitly categorize events as DELs, I was confused as to why it didn't in this case.  Could you help me understand?  Apologies if I'm missing the explanation somewhere!
+
+**Severus representation**
+chr14	21724318	severus_BND2141_1	N	]chr14:22522039]N	60.0	PASS	PRECISE;SVTYPE=BND;SVLEN=797721;MATE_ID=severus_BND2141_2;STRANDS=+-;MAPQ=60.0;PHASESETID=21703814|22377673;HP=2	GT:GQ:VAF:hVAF:DR:DV	0/1:193:0.64:0.00,0.00,0.85:13:23
+chr14	22522039	severus_BND2141_2	N	N[chr14:21724318[	60.0	PASS	PRECISE;SVTYPE=BND;SVLEN=797721;MATE_ID=severus_BND2141_1;STRANDS=+-;MAPQ=60.0;PHASESETID=21703814|22377673;HP=2	GT:GQ:VAF:hVAF:DR:DV	0/1:193:0.64:0.00,0.00,0.85:13:23
+
+**Manta representation**
+chr14	21724318	MantaDEL:99758:0:1:0:0:0	G	\<DEL\>    .   PASS	END=22522039;SVTYPE=DEL;SVLEN=-797721;SVINSLEN=10;SVINSSEQ=GGGGGTCTTC;SOMATIC;SOMATICSCORE=128	PR:SR	34,0:54,0	5,12:25,16",ajw2329,https://github.com/KolmogorovLab/Severus/issues/30
+I_kwDOH45Jhc6dG3CS,How to choose phased.vcf ?,OPEN,2024-11-05T15:43:55Z,2024-11-05T20:20:18Z,,"Hi,
+
+I am confused about `--phasing-vcf phased.vcf`, I don't know which phased.vcf should I choose.
+```
+severus --target-bam phased_tumor.bam --control-bam phased_normal.bam --out-dir severus_out \
+    -t 16 --phasing-vcf phased.vcf --vntr-bed ./vntrs/human_GRCh38_no_alt_analysis_set.trf.bed
+```
+I used Clair3 to get `phased_merge_output.vcf.gz` for normal and tumor, seperately. But severus only need one `phased.vcf `file.
+
+**Clair3 for normal:** the output is `phased_merge_output.vcf.gz` 
+```
+docker run -it \
+  -v ${INPUT_DIR}:${INPUT_DIR} \
+  -v ${OUTPUT_DIR}:${OUTPUT_DIR} \
+  hkubal/clair3:latest \
+  /opt/bin/run_clair3.sh \
+  --bam_fn=${INPUT_DIR}/normal.bam \    
+  --ref_fn=${INPUT_DIR}/ref.fa \       
+  --threads=${THREADS} \               
+  --platform=""hifi"" \                   
+  --model_path=""/opt/models/${MODEL_NAME}"" \
+  --output=${OUTPUT_DIR} \
+  --enable_phasing \
+  --longphase_for_phasing
+```
+**Clair3 for tumor:** the output is `phased_merge_output.vcf.gz` 
+```
+docker run -it \
+  -v ${INPUT_DIR}:${INPUT_DIR} \
+  -v ${OUTPUT_DIR}:${OUTPUT_DIR} \
+  hkubal/clair3:latest \
+  /opt/bin/run_clair3.sh \
+  --bam_fn=${INPUT_DIR}/tumor.bam \    
+  --ref_fn=${INPUT_DIR}/ref.fa \       
+  --threads=${THREADS} \               
+  --platform=""hifi"" \                   
+  --model_path=""/opt/models/${MODEL_NAME}"" \
+  --output=${OUTPUT_DIR} \
+  --enable_phasing \
+  --longphase_for_phasing
+```
+How to choose/get `--phasing-vcf phased.vcf` ?
+
+```
+# To run HiPhase with DV or Clair3 output
+    
+    hiphase --bam tumor.bam\
+        --vcf phased_merge_output.vcf.gz\
+        --output-vcf tumor_hifi_hiphase.vcf.gz\
+        --reference ref.fa --threads 16 --ignore-read-groups
+```
+Should I  run HiPhase with Clair3 output(`phased_merge_output.vcf.gz`) to get ` tumor_hifi_hiphase.vcf.gz` as `--phasing-vcf phased.vcf`?
+
+Best regards.",DayTimeMouse,https://github.com/KolmogorovLab/Severus/issues/31
+I_kwDOH45Jhc6dcBVx,converting insertions to translocations,OPEN,2024-11-07T15:28:14Z,2024-11-11T18:09:10Z,,"Please could you provide more detail on the parameter `--ins-to-tra`?
+When would you recommend using this parameter and why?",eesiribloom,https://github.com/KolmogorovLab/Severus/issues/32
+I_kwDOH45Jhc6dvG9B,explanation of TIN-ratio?,OPEN,2024-11-09T17:48:40Z,2024-11-12T03:04:26Z,,"Hello,
+
+Thank you for building this great tool. I am doing somatic SV calling, and I wanted to filter out any SVs which have a single supporting read in the normal tissue. Is this possible with the TIN-ratio parameter? Could I set this to `--TIN-ratio 0`?
+
+I was also wondering if you could elaborate on what this parameter is?
+
+Thanks for your time and help.
+
+Best,
+Asher",apsteinberg,https://github.com/KolmogorovLab/Severus/issues/33
+I_kwDOH45Jhc6dvxVL,Typo in the get_segment function in bam_processing.py script,OPEN,2024-11-09T21:10:03Z,2024-11-11T18:10:11Z,,"For get_segment function in bam_processing.py (line 125 and 198), should the segment length be cigar[-1][1] instead of cigar[0][1] since cigar[-1] is used in the if condition. Thank you so much!",JinHuan95,https://github.com/KolmogorovLab/Severus/issues/34
+I_kwDOH45Jhc6dyNg4,The number of somatic SVs is too less,OPEN,2024-11-10T12:32:01Z,2024-11-11T17:58:12Z,,"Hi,
+
+I used Severus to call somatic SVs, but the number of somatic SVs is only ~200(tumor/normal paired sample).Is it normal?
+
+Best regards.",DayTimeMouse,https://github.com/KolmogorovLab/Severus/issues/35
+I_kwDOH45Jhc6fYeU_,output-read-ids output unmatched variant id and read id,OPEN,2024-11-20T00:47:49Z,2024-11-20T00:47:49Z,,"Hi,
+
+I am using Severus v1.2 tumour only mode. 
+To begin with, I noticed in my read_id.csv files the #SV_ID section only contain variants with ID starts with severus_BND.
+
+Then I picked one read id and found its correspnding variant ID as shown below
+`severus_BND616,""5ed47513-1397-4e41-9449-5a77adf4242c""`
+
+when I looked deeper into this variant ID, this is where the variant has been mapped in severus_somatic.vcf
+`chr10	11539157	severus_BND616_1	N	]chr10:11559203]N`
+
+I then looked back to the read itself, it was mapped to a different region.
+`read_start=0 read_end=9846 ref_start=15815602 ref_end=15825448 read_id=5ed47513-1397-4e41-9449-5a77adf4242c ref_id=chr1 strand=1 read_length=12616 haplotype=0 mapq=60mismatch_rate=3 read_qual=PASS genome_id=test_phased.bam`
+
+I have checked that information in vcf and read_alignments are all matched with what I have seen in igv. Seems like the discrepancy only occurs in the read_id.csv output. 
+
+Please let me know if more information needed.
+
+Thank you!",lijunx33,https://github.com/KolmogorovLab/Severus/issues/36

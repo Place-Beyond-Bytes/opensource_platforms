@@ -1,0 +1,34 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOKPsgBs5yGcpR,Retain the last image for each user.,CLOSED,2023-09-26T20:55:34Z,2023-09-27T19:24:33Z,2023-09-27T19:24:33Z,"Now, when an annotator saves a partially complete transcription (one that is not marked as complete), the page reloads and this means that the image is lost. This is very bad UX: it discourages saving often, and thus increases the likelihood of losing work (hence marking this as a bug).
+
+A solution would be to retain the image data in local storage in the browser and reload it when the melody ID stays the same.
+More generally, we can cache the images for *each* melody ID that the user looks at, so that at some point when a dashboard gets implemented, giving them a choice of melodies to continue annotating, all the images are available. ",hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/1
+I_kwDOKPsgBs5yGgRv,Auto-render after the next Volpiano word is finished?,OPEN,2023-09-26T21:08:15Z,2023-09-26T21:08:15Z,,"To make sure that the user basically cannot submit without rendering, and that errors are caught early, we could render every time the user writes three hyphens in the Volpiano (or possibly 2). 
+
+This can possibly be also an options checkbox (likely a bit hidden, because we don't want the users to switch it off without being sure).",hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/2
+I_kwDOKPsgBs5yNZOK,Syllabization can be taken from a transcribed melody with the same Cantus ID,OPEN,2023-09-27T18:32:47Z,2023-09-27T18:32:48Z,,"Many texts will have the same syllabization (if the manuscript spelling is the same).
+
+For instance, the Melody with the chant of the same Cantus ID that has the most syllables in its text. Can be further filtered by 
+status -- prioritize syllabification from finalized melodies, then those in checks, then those in transcription.
+
+If the manuscript spelling is not the same, then syllabization guessing will be a more involved process -- likely some kind of Needleman-Wunsch alignment and inferring gaps from that.",hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/3
+I_kwDOKPsgBs50F2P_,Add basic annotator leaderboard.,CLOSED,2023-10-17T15:22:44Z,2023-10-17T15:28:37Z,2023-10-17T15:28:37Z,,hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/4
+I_kwDOKPsgBs50F3-z,Image pasting fails when a chant goes into transcription for the first time.,CLOSED,2023-10-17T15:26:08Z,2023-10-17T15:28:38Z,2023-10-17T15:28:37Z,"
+The annotate() view creates a Melody object, but it does not yet have an ID. The script that tries to retrieve an image from local storage is run with ""None"" (but not as a string), which results in an error, and the rest of the script that adds the onpaste() event never gets read. Thus, not only does it not retrieve an image from storage (which is the expected behavior when the melody is new), pasting a new image has no response.",hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/5
+I_kwDOKPsgBs50GM2B,Add annotator reporting system to the (admin) dashboard.,OPEN,2023-10-17T16:11:29Z,2023-10-17T16:11:30Z,,In order to figure out the payments and other metrics.,hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/6
+I_kwDOKPsgBs50eZHb,Race condition on selecting the next chant: two annotators can be given the same chant.,CLOSED,2023-10-20T11:49:29Z,2023-10-20T12:47:06Z,2023-10-20T12:47:06Z,,hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/7
+I_kwDOKPsgBs50evho,Saving a melody with empty Volpiano fails.,CLOSED,2023-10-20T12:44:54Z,2023-10-20T12:52:39Z,2023-10-20T12:52:39Z,,hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/8
+I_kwDOKPsgBs507UU5,REST API for annotation,OPEN,2023-10-25T15:31:12Z,2023-10-25T15:31:12Z,,"It would be useful to have annotations available over a REST API - both for the annotators, and for exporting data on the fly.
+
+The specification would be:
+
+```
+/annotate/{melody_id}
+/annotator/{annotator_name}  -- clickable list of melodies that the annotator has done
+/export/json/{chant_id} -- JSON of a single chant
+/export/csv/{chant_id} -- CSV row of a single chant
+/export/csv/all -- CSV of all the chants
+/export/csv/annotated -- CSV of all the chants that have a melody
+
+```",hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/9
+I_kwDOKPsgBs530T9P,Switch between writing the melody directly rendered as Volpiano vs. plain text,OPEN,2023-11-24T20:36:09Z,2023-11-24T20:36:09Z,,,hajicj,https://github.com/Genome-of-Melody/genomel_editor/issues/10

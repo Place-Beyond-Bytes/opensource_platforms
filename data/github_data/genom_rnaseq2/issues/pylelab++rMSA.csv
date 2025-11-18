@@ -1,0 +1,69 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFZLOrs6C8_C3,Error: [blastdbcmd],CLOSED,2024-03-20T09:17:12Z,2024-03-21T03:32:50Z,2024-03-21T03:32:49Z,"**what do these errors mean?**
+
+Error: [blastdbcmd] Skipped NJGU01000008.1
+Error: [blastdbcmd] Skipped NJIH01000006.1
+Error: [blastdbcmd] Skipped NJIH01000007.1
+Error: [blastdbcmd] Skipped NMUI01000258.1
+Error: [blastdbcmd] Skipped NNAY01000028.1
+Error: [blastdbcmd] Skipped U00096.2
+Error: [blastdbcmd] Skipped URS0000D65980_12908
+Error: [blastdbcmd] Skipped URS0000D65CE5_12908
+Error: [blastdbcmd] Skipped URS0000D66367_12908
+Error: [blastdbcmd] Skipped URS0000D6690B_12908
+Error: [blastdbcmd] Skipped URS0000D66E23_12908
+Error: [blastdbcmd] Skipped URS0000D6710A_12908
+Error: [blastdbcmd] Skipped URS0000D67735_12908
+Error: [blastdbcmd] Skipped URS0000D678D0_12908
+Error: [blastdbcmd] Skipped URS0000D6849F_12908
+Error: [blastdbcmd] Skipped URS0000D68F86_12908
+Error: [blastdbcmd] Skipped URS0000D695D1_12908
+Error: [blastdbcmd] Skipped URS0000D69AE5_12908
+Error: [blastdbcmd] Skipped URS0000D69C8A_12908
+Error: [blastdbcmd] Skipped URS0000D6A10A_12908
+Error: [blastdbcmd] Skipped URS0000D6A1FC_12908
+Error: [blastdbcmd] Skipped URS0000D6A9A3_12908
+Error: [blastdbcmd] Skipped URS0000D6ADD7_12908
+Error: [blastdbcmd] Skipped URS0000D6B460_12908
+Error: [blastdbcmd] Skipped URS0000D6B5DE_12908
+Error: [blastdbcmd] Skipped URS0000D6BE97_12908
+Error: [blastdbcmd] Skipped URS0000D6C3A3_12908
+Error: [blastdbcmd] Skipped URS0000D6CB96_12908",llk15,https://github.com/pylelab/rMSA/issues/1
+I_kwDOFZLOrs6E561p,"cannot find any MSA for certain fasta, and find some errors",OPEN,2024-04-07T13:34:21Z,2024-11-03T09:25:57Z,,"here is the outputs when executing rMSA.pl
+
+```
+creating /tmp/root/rMSA_23925_928759702
+>/home/rMSA/fasta/3/3.fasta	length=15
+AAAATCAAAAAGAAG
+using 4 cpu
+cp /home/rMSA/fasta/3/3.dbn /tmp/root/rMSA_23925_928759702/RNAfold.dbn
+==== rfam pre-screening ====
+wc: /tmp/root/rMSA_23925_928759702/rfam*.db: No such file or directory
+wc: /tmp/root/rMSA_23925_928759702/db0: No such file or directory
+0 total
+==== blastn-short pre-screening ====
+/home/rMSA/bin/blastn -num_threads 4 -query /tmp/root/rMSA_23925_928759702/seq.fasta -strand plus -db /home/rMSA/database/rnacentral.fasta -out /tmp/root/rMSA_23925_928759702/blastn0.tab -task blastn-short -max_target_seqs 50000 -outfmt '6 saccver sstart send evalue bitscore nident staxids'
+cut -f1 /tmp/root/rMSA_23925_928759702/blastn0.tab|sort|uniq > /tmp/root/rMSA_23925_928759702/blastn0.list
+split -l 5000 /tmp/root/rMSA_23925_928759702/blastn0.list /tmp/root/rMSA_23925_928759702/blastn0.list.split.
+cat /tmp/root/rMSA_23925_928759702/blastn0.trim.split.* | /home/rMSA/bin/fasta2pfam - | sort -u -k2 | /home/rMSA/bin/pfam2fasta - > /tmp/root/rMSA_23925_928759702/blastn0.db
+cat: /tmp/root/rMSA_23925_928759702/blastn0.trim.split.*: No such file or directory
+rm  /tmp/root/rMSA_23925_928759702/blastn0.trim.split.*
+rm: cannot remove ‘/tmp/root/rMSA_23925_928759702/blastn0.trim.split.*’: No such file or directory
+/home/rMSA/bin/blastn -num_threads 4 -query /tmp/root/rMSA_23925_928759702/seq.fasta -strand both -db /home/rMSA/database/nt -out /tmp/root/rMSA_23925_928759702/blastn1.tab -task blastn-short -max_target_seqs 50000 -outfmt '6 saccver sstart send evalue bitscore nident staxids'
+```",llk15,https://github.com/pylelab/rMSA/issues/2
+I_kwDOFZLOrs6YOsEN,Files are downloaded but not handled,CLOSED,2024-09-28T03:46:04Z,2024-10-16T13:37:15Z,2024-10-16T13:37:14Z,"In the download.sh file, the Rfam.full_region.gz and the rfam_annotations.tsv.gz are downloaded. However in the curate.sh file, there is no code to handle these files. So, when running update.sh these files are just left there. Are they not needed or was there supposed to be code to handle these files?",pcs-jim,https://github.com/pylelab/rMSA/issues/3
+I_kwDOFZLOrs6cupZO,Error: [blastdbcmd] Skipped SEQ_ACCESSION,CLOSED,2024-11-01T17:03:11Z,2024-11-04T08:53:42Z,2024-11-03T09:23:24Z,"I am facing the error:
+Error: [blastdbcmd] Skipped SEQ_ACCESSION
+67532 (!) times, when running:
+path/to/rMSA/bin/blastdbcmd -db path/to/rMSA/database/nt -entry_batch tmp/user/rMSA_38167_200247988/rfam2.0.list.split.aa -out /tmp/user/rMSA_38167_200247988/rfam2.0.db.aa
+
+What could have gone wrong? Thank you!",ReaKal,https://github.com/pylelab/rMSA/issues/4
+I_kwDOFZLOrs6c5IQ4,Empty alignment file,OPEN,2024-11-04T08:58:27Z,2024-11-04T09:00:00Z,,"I am receiving an empty alingment file (only the query sequence is in the file), which means that alignment was not successful.
+
+In the running log I noticed three errors:
+
+1) Error: [blastdbcmd] Skipped SEQ_ACCESSION - Has already been solved in another issue and it is [not an actual error](https://github.com/pylelab/rMSA/issues/4).
+2) Error: Failed to open target sequence database /tmp/user/rMSA_38167_200247988/db for reading
+3) sort: write error
+
+Could you please help me?",ReaKal,https://github.com/pylelab/rMSA/issues/5

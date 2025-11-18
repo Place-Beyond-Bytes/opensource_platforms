@@ -1,0 +1,43 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NDc2MzYxMzg=,Complete BQSR subworkflow,CLOSED,2020-06-29T20:15:33Z,2020-07-23T19:40:52Z,2020-07-23T19:40:52Z,"implementation of BQSR workflow in WDL is included here: https://github.com/gatk-workflows/gatk4-genome-processing-pipeline/blob/master/tasks/UnmappedBamToAlignedBam.wdl, specific steps are here: https://github.com/gatk-workflows/gatk4-genome-processing-pipeline/blob/master/tasks/BamProcessing.wdl.
+
+We can use this as reference to implement them in Nextflow:
+- [x] nextflow sub-workflow (this repo)
+- [x] BaseRecalibrator module in `gatk-tools` repo (icgc-argo/gatk-tools#30)
+- [x] ApplyBQSR module in `gatk-tools` repo (icgc-argo/gatk-tools#31)
+- [x] GatherBQSRReports module in `gatk-tools` repo (icgc-argo/gatk-tools#34)
+",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/1
+MDU6SXNzdWU2NDc2NjM3OTY=,Complete calculate-contamination NF sub-workflow,CLOSED,2020-06-29T20:57:36Z,2020-08-07T20:15:12Z,2020-08-07T20:15:12Z,"this includes:
+- [x] NF subworkflow in this repo
+- [x] GetPileupSummaries module in `gatk-tools` (icgc-argo/gatk-tools#32)
+- [x] GatherPileupSummaries NF module in `gatk-tools` (icgc-argo/gatk-tools#33)
+- [x] CalculateContamination NF module in `gatk-tools` (icgc-argo/gatk-tools#36)",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/2
+MDU6SXNzdWU2NjcyMjA5NDk=,Duplicated identical reads in BAM produced by GatherBamFiles tool,CLOSED,2020-07-28T16:47:17Z,2020-08-07T20:16:30Z,2020-08-07T20:16:30Z,"it appears using auto-generated intervals by SplitIntervals resulted in same reads being present in different intervals, this leads to them be duplicated in merged BAM.
+a quick solution is to use predefined intervals, like chromosome arms, which can void same reads spanning across boundaries presented in different intervals.",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/3
+MDU6SXNzdWU2NzYzNDYzNjQ=,"starting from af-only-gnomad.hg38.vcf.gz prepare PASS only, biallelic only resouce file for mutect2 workflow",CLOSED,2020-08-10T18:58:03Z,2020-08-13T17:03:12Z,2020-08-13T17:03:12Z,"need to prepare `variants_for_contamination` vcf as input, this can be produced from af-only-gnomad.hg38.vcf.gz (which is produced by Broad, downloaded from Google Cloud bucket url: gs://gatk-best-practices/somatic-hg38/af-only-gnomad.hg38.vcf.gz, md5sum: a4209be7fb4b5a5a8d3b778132cb7401) by filtering out multi-allelic variants, something like this: https://github.com/broadinstitute/gatk/blob/4.1.8.0/scripts/mutect2_wdl/mutect_resources.wdl#L200-L205
+
+According to here: https://github.com/broadinstitute/gatk/blob/4.1.8.0/scripts/mutect2_wdl/mutect_resources_json/mutect_resources_process_gnomAD_2.1.json#L6, they set the frequency cutoff to 0 which means no frequency filter. This is ok because GetPileupSummaries uses a defult 0.01 cutoff
+",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/5
+MDU6SXNzdWU2NzYzNDk5MTM=,Drop alignment artifact filtering step which is marked as experimental tool in GATK,CLOSED,2020-08-10T19:04:36Z,2020-08-20T18:07:54Z,2020-08-20T18:07:54Z,The easiest thing to do maybe is simply drop it. We can add it when GATK releases it for production.,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/6
+MDU6SXNzdWU2NzY0MzA0Njg=,Potential file name conflict at calCont step in calculateContamination subworkflow,CLOSED,2020-08-10T21:34:00Z,2020-09-04T17:57:51Z,2020-09-04T17:57:50Z,"The two input files, one from tumour the other from normal could have the same name: https://github.com/icgc-argo/gatk-mutect2-variant-calling/blob/5985ce6f9adb7da9effc4a4cfce1463c855cccb3/calculate-contamination/calculate-contamination.nf#L118-L119
+
+A reliable solution is to allow user specific output file basename in `gatherPS` and `gatherMPS` steps, which are both based on this tool: https://github.com/icgc-argo/gatk-tools/tree/master/tools/gatk-gather-pileup-summaries",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/7
+MDU6SXNzdWU2NzY0MzExNzk=,Refine input params for mutect2 workflow,CLOSED,2020-08-10T21:35:36Z,2020-09-09T17:39:50Z,2020-09-09T17:39:50Z,This include assigning sensible default values for the workflow params and task specific params,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/8
+MDU6SXNzdWU2ODIwNTE4NDc=,Add a step to split original raw mutect2 VCF into two VCFs each contain SNV/MNV and InDel calls,CLOSED,2020-08-19T18:37:04Z,2020-09-04T17:58:20Z,2020-09-04T17:58:20Z,,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/9
+MDU6SXNzdWU2ODM3MTk5Mjc=,add a param to control whether or not to run BQSR,CLOSED,2020-08-21T17:53:21Z,2020-09-04T17:58:56Z,2020-09-04T17:58:56Z,this is a response to the possibility Broad drops BQSR as part of GATK best practices,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/10
+MDU6SXNzdWU2ODM4MjI2NDI=,"tools needed for payload generation for mutect2 snv_mnv and indel calls, and QC metrics",CLOSED,2020-08-21T20:54:00Z,2020-09-09T17:37:10Z,2020-09-09T17:37:10Z,"This should include:
+- [x] a QC preparation tool for contamination payload
+- [x] confirm the current payload gen for variant calling is still useable for mutect2, if not update as needed",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/11
+MDU6SXNzdWU2OTEzODQ0MDA=,upgrade the song/score modules to 2.1.0,CLOSED,2020-09-02T20:07:29Z,2020-09-09T17:27:15Z,2020-09-09T17:27:15Z,Here is the release: https://github.com/icgc-argo/nextflow-data-processing-utility-tools/releases/tag/2.0.0,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/13
+MDU6SXNzdWU2OTIwNzQ4NzU=,Update calculate contamination subworkflow to include normal sample,CLOSED,2020-09-03T15:35:21Z,2020-09-09T17:27:51Z,2020-09-09T17:27:50Z,,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/14
+MDU6SXNzdWU2OTY5NTY0NjM=,Update to latest version of dependent modules,CLOSED,2020-09-09T16:21:28Z,2020-09-14T21:49:16Z,2020-09-14T21:49:16Z,,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/19
+MDU6SXNzdWU4NTkzMDkxMzA=,Update workflow to use updated payload gen tool package,CLOSED,2021-04-15T22:48:30Z,2024-09-19T19:44:59Z,2021-04-16T19:04:55Z,ticket for tool package update (new terminlogies) is here: icgc-argo/data-processing-utility-tools#118,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/27
+MDU6SXNzdWU4NjEzODg5NDY=,update payload gen variant calling package to 0.5.0,CLOSED,2021-04-19T14:47:12Z,2024-09-19T19:44:59Z,2021-04-19T21:01:08Z,related tool pacakge update: icgc-argo/data-processing-utility-tools#121,junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/29
+MDU6SXNzdWU4NjkyNTU0NTM=,Investigating failed Mutect2 calling on DO50311,OPEN,2021-04-27T20:53:27Z,2024-09-19T19:44:59Z,,"Investigating failed Mutect2 calling on DO50311, the error is related to chr13. This is likely due to some kind of issue with the aligned BAM.
+
+in addition to the mutect2 error, there are also errors observed when using get read counts from variant sites, and DepthOfCoverage",junjun-zhang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/31
+I_kwDOD91gL85nZhq0,Update the `song_score_upload` and `song_score_download` modules to latest versions,CLOSED,2023-05-31T18:10:32Z,2023-06-29T18:59:21Z,2023-06-29T18:59:21Z,"song/score client have some fixes to address the upload/download issue:
+https://github.com/icgc-argo/workflow-roadmap/issues/324
+https://github.com/icgc-argo/workflow-roadmap/issues/333
+
+Similar as sanger workflow, gatk-mutect2 workflow also needs to update the modules to use the latest versions of song/score client.",lindaxiang,https://github.com/icgc-argo-workflows/gatk-mutect2-variant-calling/issues/33

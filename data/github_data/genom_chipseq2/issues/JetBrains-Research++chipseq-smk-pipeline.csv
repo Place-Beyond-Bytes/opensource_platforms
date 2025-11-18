@@ -1,0 +1,62 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NTE1MTUyNTE=,Support input processing,CLOSED,2019-06-03T14:27:52Z,2019-10-21T09:47:37Z,2019-10-21T09:47:21Z,See http://github.com/jetBrains-Research/washu,olegs,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/1
+MDU6SXNzdWU1MDk0Mjk3MDI=,Allow to run pipeline from workdir (with -s param) and not only from src dir,OPEN,2019-10-19T10:20:35Z,2019-10-21T09:46:00Z,,,olegs,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/2
+MDU6SXNzdWU1MDk0MzAwNjg=,Check that raw data are available on start and warn user if not reads were found,OPEN,2019-10-19T10:23:53Z,2019-10-21T09:44:50Z,,"The following command line fails on franklin:
+```
+cd /mnt/stripe/shpynov/chipseq-smk-pipeline
+source activate snakemake
+snakemake all --use-conda --cores 28  --config work_dir=/mnt/stripe/bio/raw-data/geo-samples/GSE53643 fastq_dir=/mnt/stripe/bio/raw-data/geo-samples/GSE53643/fastq genome=mm10 macs2_params=""-q 0.05"" span_bin=100 span_fdr=0.05 -n
+```
+
+But fastq_dir contains a lot of fastq files.",olegs,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/3
+MDU6SXNzdWU1MDk1MTQ4NTQ=,Bowtie fails,CLOSED,2019-10-19T21:59:06Z,2019-10-21T09:43:40Z,2019-10-21T09:34:34Z,"```
+Activating conda environment: /mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/conda/a30ef292
+Traceback (most recent call last):
+  File ""/mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/scripts/tmpuscfchbw.wrapper.py"", line 25, in <module>
+    ""(bowtie2 --threads {snakemake.threads} {snakemake.params.extra} ""
+  File ""/home/user/anaconda/envs/snakemake/lib/python3.6/site-packages/snakemake/shell.py"", line 133, in __new__
+Traceback (most recent call last):
+  File ""/mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/scripts/tmpbjbxtwx7.wrapper.py"", line 25, in <module>
+    ""(bowtie2 --threads {snakemake.threads} {snakemake.params.extra} ""
+  File ""/home/user/anaconda/envs/snakemake/lib/python3.6/site-packages/snakemake/shell.py"", line 133, in __new__
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command ' set -euo pipefail;  (bowtie2 --threads 4  -x bowtie2-index/mm10 -U /mnt/stripe/bio/raw-data/geo-samples/GSE53643/fastq/GSM1297956.fa
+stq | samtools view -Sbh -o bams/GSM1297956.bam.raw -)  > logs/bam_raw/bowtie2/GSM1297956.log 2>&1 ' returned non-zero exit status 1.
+    raise sp.CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command ' set -euo pipefail;  (bowtie2 --threads 4  -x bowtie2-index/mm10 -U /mnt/stripe/bio/raw-data/geo-samples/GSE53643/fastq/GSM1297966.fa
+stq | samtools view -Sbh -o bams/GSM1297966.bam.raw -)  > logs/bam_raw/bowtie2/GSM1297966.log 2>&1 ' returned non-zero exit status 1.
+[Sat Oct 19 16:30:02 2019]
+[Sat Oct 19 16:30:02 2019]
+Error in rule bowtie2_align_single:
+Error in rule bowtie2_align_single:
+    jobid: 465
+    jobid: 483
+    output: bams/GSM1297956.bam.raw
+    output: bams/GSM1297966.bam.raw
+    log: logs/bam_raw/bowtie2/GSM1297956.log
+    log: logs/bam_raw/bowtie2/GSM1297966.log
+    conda-env: /mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/conda/a30ef292
+    conda-env: /mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/conda/a30ef292
+
+
+RuleException:
+CalledProcessError in line 57 of /mnt/stripe/shpynov/chipseq-smk-pipeline/rules/alignment.smk:
+Command 'source activate /mnt/stripe/bio/raw-data/geo-samples/GSE53643/.snakemake/conda/a30ef292; set -euo pipefail;  python /mnt/stripe/bio/raw-data/geo-samples/GSE53643/.s
+nakemake/scripts/tmpuscfchbw.wrapper.py ' returned non-zero exit status 1.
+  File ""/mnt/stripe/shpynov/chipseq-smk-pipeline/rules/alignment.smk"", line 57, in __rule_bowtie2_align_single
+  File ""/home/user/anaconda/envs/snakemake/lib/python3.6/concurrent/futures/thread.py"", line 56, in run
+```",olegs,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/4
+MDU6SXNzdWU1MDk4NTI4NTk=,Use Epic instead of SICER,OPEN,2019-10-21T09:48:10Z,2019-10-21T09:48:10Z,,Use Epic instead of SICER.,iromeo,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/5
+MDU6SXNzdWU1MzQ1NzI4NDI=,Pipeline fails with _1 suffix in file name without corresponding _2 file,OPEN,2019-12-08T17:20:59Z,2019-12-08T17:20:59Z,,"```
+user@franklin:/mnt/stripe/shpynov/chipseq-smk-pipeline(master)$ snakemake all --use-conda --cores 28  --directory /mnt/stripe/bio/raw-data/geo-samples/GSE104284 --config fastq_dir=/mnt/stripe/bio/raw-data/geo-samples/GSE104284/fastq genome=mm10 macs2_mode=broad macs2_suffix=""broad_0.05"" macs2_params=""--broad --broad-cutoff 0.05"" -n
+KeyError in line 20 of /mnt/stripe/shpynov/chipseq-smk-pipeline/rules/sicer.smk:
+'GSM2794123_C36UVACXX.1.48hr_01_Left_K27ac_1'
+  File ""/mnt/stripe/shpynov/chipseq-smk-pipeline/Snakefile"", line 55, in <module>
+  File ""/mnt/stripe/shpynov/chipseq-smk-pipeline/rules/sicer.smk"", line 32, in <module>
+  File ""/mnt/stripe/shpynov/chipseq-smk-pipeline/rules/sicer.smk"", line 20, in sicer_all_peaks_input
+```
+
+Workaround used at the moment:
+```
+mv /mnt/stripe/bio/raw-data/geo-samples/GSE104284/fastq/GSM2794123_C36UVACXX.1.48hr_01_Left_K27ac_1.fastq /mnt/stripe/bio/raw-data/geo-samples/GSE104284/fastq/GSM2794123_C36UVACXX.1.48hr_01_Left_K27ac.fastq
+```",olegs,https://github.com/JetBrains-Research/chipseq-smk-pipeline/issues/6
