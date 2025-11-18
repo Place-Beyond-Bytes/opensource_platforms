@@ -1,0 +1,295 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1ODg5NzAwNzI=,Building genome.dict fails at first try,CLOSED,2020-03-27T08:29:10Z,2020-03-31T19:34:26Z,2020-03-31T19:34:26Z,"While running the workflow rule `recalibrate_base_qualities` fails, telling that the genome dictionary in invalid.
+To solve this `genome.dict` needs to be deleted and newly created by rule `genome_dict`.
+The new `genome.dict` has a bigger file size than the old/first one.
+This always happens when running the workflow for the first time.
+
+[get-genome.log](https://github.com/snakemake-workflows/dna-seq-varlociraptor/files/4392308/get-genome.log)
+[create_dict_bak.log](https://github.com/snakemake-workflows/dna-seq-varlociraptor/files/4392310/create_dict_bak.log)
+
+Any idea why this happens?",FelixMoelder,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/16
+MDU6SXNzdWU3MDM1MjI0NTY=,Allow choice of trimmer program,OPEN,2020-09-17T11:58:19Z,2024-12-16T07:30:28Z,,"Dear all,
+
+not sure if it is supposed to be feature requests in template, but I think it would quite nice to have the option to choose which trimmer to use. For example:
+- cutadapt
+- fastp
+- pear
+
+As I see it, the config could look something like:
+```
+trimming:
+  activate: false
+  tool: cutadapt
+  cutadapt:
+    # Cutadapt options
+    """"
+  fastp:
+    # Fastp options
+    """"
+  pear:
+    # Pear options
+    """"
+```
+",fgvieira,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/53
+MDU6SXNzdWU5Mjk2Mjk1NDQ=,Tumor only variant calling,CLOSED,2021-06-24T21:36:03Z,2024-12-16T07:35:06Z,2024-12-16T07:35:06Z,"Hi everyone,
+
+Can I use this workflow for tumor only variant calling to detect both Somatic and Germline variants? Or should I first run my data with Mutect in tumor only mode and then use varlociraptor?
+
+In general, do you have any recommendations for Tumor only variant calling?
+
+Thank you for your time,
+Konstantinos Kyriakidis",kokyriakidis,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/81
+I_kwDODfqZfM5BLKWb,Usage link broken,CLOSED,2022-01-04T15:05:06Z,2022-01-06T09:53:34Z,2022-01-06T09:53:34Z,"Hi,
+
+this link no longer leads to usage:
+
+https://snakemake.github.io/snakemake-workflow-catalog/?usage=snakemake-workflows%2Fdna-seq-varlociraptorhttps://snakemake.github.io/snakemake-workflow-catalog/?usage=snakemake-workflows%2Fdna-seq-varlociraptor
+
+Thanks",colindaven,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/102
+I_kwDODfqZfM5GJM3L,fail in render_scenario rule,CLOSED,2022-03-22T13:50:12Z,2024-12-16T07:39:07Z,2024-12-16T07:39:07Z,"Dear everyone,
+I have problem running the snakemake. The stdout/stderr looks like this:
+
+```
+Error in rule render_scenario:
+    jobid: 39
+    output: results/scenarios/A.yaml
+    log: logs/render-scenario/A.log (check log file(s) for error message)
+
+RuleException:
+CalledProcessError in line 20 of path_to1/dna-seq-varlociraptor/workflow/rules/calling.smk:
+Command 'set -euo pipefail; path_to2/bin/python3.10 path_to1/dna-seq-varlociraptor/.snakemake/scripts/tmpe3uwiuwx.render-scenario.py' returned non-zero exit status 1.
+  File ""path_to1/dna-seq-varlociraptor/workflow/rules/calling.smk"", line 20, in __rule_render_scenario
+  File ""path_to3/miniconda3/envs/snakemake/lib/python3.10/concurrent/futures/thread.py"", line 58, in run
+```
+the content of `logs/render-scenario/A.log` is:
+```
+path_to1/dna-seq-varlociraptor$ cat logs/render-scenario/A.log
+Traceback (most recent call last):
+  File ""path_to1/dna-seq-varlociraptor/.snakemake/scripts/tmpe3uwiuwx.render-scenario.py"", line 15, in <module>
+    Template(template.read()).render(
+  File ""path_to2/miniconda3/envs/snakemake/lib/python3.10/site-packages/jinja2/environment.py"", line 1291, in render
+    self.environment.handle_exception()
+  File ""path_to2/miniconda3/envs/snakemake/lib/python3.10/site-packages/jinja2/environment.py"", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File ""<template>"", line 14, in top-level template code
+jinja2.exceptions.UndefinedError: pandas.core.series.Series object has no element 0
+
+```
+The content of sample.tsv and the units.tsv are: 
+
+sample.tsv
+```
+path_to1/practic_available_sms/dna-seq-varlociraptor$ cat config/samples.tsv 
+sample_name	alias	group	platform	purity	panel
+A	A	A	ILLUMINA	NA	NA
+```
+
+units.tsv
+```
+
+(base)path_to1/dna-seq-varlociraptor$ cat config/units.tsv 
+sample_name	unit_name	fq1	fq2	sra	adapters	umis
+A	UNAME	path_to_fastq/illumina/fastq/sample_R1.fastq.gz	path_to_fastq/illumina/fastq/sample_R2.fastq.gz	NA	""-a ACGCGATCG -A GCTAGCGTACT""	NA
+```
+Could you please help me solve this issue?
+All the best,
+Hossein",moeinzadeh,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/122
+I_kwDODfqZfM5IBnlj,estimate TMB in tumor only variants,CLOSED,2022-04-19T13:36:21Z,2024-12-16T07:41:28Z,2024-12-16T07:41:28Z,"Hi! Thanks for this wonderful tool!
+
+I used varlociraptor for tumor only variant calling, and now I want to use its ""estimate mutational-burden"" funtion to estimate the TMB in my data. I tried this code`varlociraptor estimate mutational-burden --coding-genome-size 6.5e3 --events SOMATIC_TUMOR+GERMILNE_TUMOR --plot-mode curve --sample calls_anno.vcf`, but I got nothing even the error message.
+
+Can I use ""estimate mutational-burden"" to estimate TMB in the tumor only variants? If so, is there anything wrong with my usage?
+
+Thank you for your time!",yihancc,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/131
+I_kwDODfqZfM5OjbW2,issues with cutadapt,CLOSED,2022-07-26T08:50:15Z,2024-12-16T07:42:16Z,2024-12-16T07:42:16Z,"Hi everyone,
+
+I am having trouble using this pipeline apparently at the step of cutadapt.
+
+For my analysis I submitted already trimmed fastq files, and so I left empty the adapters field in units.tsv and I deactivated trimming in the config.yaml.
+
+By running the pipeline, I got errors from the rules cutadapt-pe and cutadapt-pipe with no information in their corresponding log files. The only informative massage seems to be in the terminal as the following:
+
+```
+Traceback (most recent call last):
+  File ""/mnt/data/crivellopi/Bioinformatics/dna-seq-varlociraptor/.snakemake/scripts/tmpgsy5av3k.wrapper.py"", line 23, in <module>
+    assert (
+AssertionError: No options provided to cutadapt. Please use 'params: adapters=' or 'params: extra='.
+```
+
+I hope you can help me solving this.
+
+All the best,
+Pietro
+",piecrivello,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/155
+I_kwDODfqZfM5VmqL9,Revel download link does not work,CLOSED,2022-11-04T14:49:02Z,2022-11-14T14:06:05Z,2022-11-14T14:04:32Z,"Hi, when running the pipeline, the revel download link does not work:
+```
+Error in rule download_revel:
+    jobid: 73
+    output: resources/revel_scores.zip
+    log: logs/vep_plugins/download_revel.log (check log file(s) for error message)
+    shell:
+        curl https://rothsj06.u.hpc.mssm.edu/revel-v1.3_all_chromosomes.zip -o resources/revel_scores.zip &> logs/vep_plugins/download_revel.log
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+```
+I currently downloaded the revel plugin through this link: https://zenodo.org/record/7072866/files/revel-v1.3_all_chromosomes.zip?download=1
+
+Can you fix the link?
+
+Best
+Kai
+",sci-kai,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/169
+I_kwDODfqZfM5gj-KH, may need to modify the rule mark_ duplicates,CLOSED,2023-03-11T15:03:09Z,2023-03-14T09:13:43Z,2023-03-14T09:13:42Z,"When trying to allow this pipeline, I encountered an error
+```
+ bams = snakemake.input.bams
+           ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'InputFiles' object has no attribute 'bams'
+```
+Due to network reasons, [ localized wrapper and varlocaliraptor and forced varlocaliraptor to use version 1.23.5 wrapper](https://github.com/snakemake/snakemake-wrappers/issues/1113#issue-1614908616), which made it relatively easy for me to find the problem.（Or maybe this is a problem created by me. Sorry, I'm not an expert in this field）
+
+I insert in the picard/markduplicates/wrapper.py
+```
+print(snakemake.__dict__)
+print(snakemake.input.__dict__)
+```
+![image](https://user-images.githubusercontent.com/72878144/224491411-2f9bb7f6-3e77-4c64-aaeb-f6eb239cbecb.png)
+
+i think is wrong to write
+```
+rule mark_duplicates:
+    input:
+        lambda wc: ""results/mapped/{sample}.bam""
+        if units.loc[wc.sample, ""umis""].isnull().any()
+        else ""results/mapped/{sample}.annotated.bam"",
+```
+maybe it should be
+
+```
+rule mark_duplicates:
+    input:
+        bams=lambda wc: ""results/mapped/{sample}.bam""
+        if units.loc[wc.sample, ""umis""].isnull().any()
+        else ""results/mapped/{sample}.annotated.bam"",
+```
+",user-tq,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/215
+I_kwDODfqZfM5gkEap,modify the rule filter_offtarget_variants or fix_delly_calls,CLOSED,2023-03-11T16:32:06Z,2023-03-15T09:10:00Z,2023-03-15T09:10:00Z,"get erro
+```
+[E::idx_find_and_load] Could not retrieve index file for 'results/candidate-calls/2022NC.delly.no_bnds.bcf'
+Failed to read from results/candidate-calls/2022NC.delly.no_bnds.bcf: could not load index
+```
+![image](https://user-images.githubusercontent.com/72878144/224495914-b33e40f7-8c3f-4e71-9893-e4e7721add8a.png)
+Maybe it can be changed to
+```
+rule fix_delly_calls:
+    input:
+        ""results/candidate-calls/{group}.delly.bcf"",
+    output:
+        ""results/candidate-calls/{group}.delly.no_bnds.bcf"",
+    log:
+        ""logs/fix_delly_calls/{group}.log"",
+    conda:
+        ""../envs/bcftools.yaml""
+    shell:
+        """"""bcftools view -e 'INFO/SVTYPE=""BND""' {input} -Ob > {output} 2> {log} && bcftools index   {output} """"""
+```",user-tq,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/216
+I_kwDODfqZfM5lKcPD,Coding mutations in non-coding variants table,OPEN,2023-05-05T08:41:36Z,2024-12-16T07:43:33Z,,"Hi, I have an issue with the table splitting in coding and non-coding variants.
+Within my dataset there are (germline) variants annotated in their consequence with ""frameshift_variation"" or even ""coding_sequence_variant"" that are sorted within the ""non-coding"" table.
+I may not understand the criteria which define coding and non-coding variants, it would be nice to have more documentation and clarity about these to understand this error.
+Here is an example variant that I found in the non-coding table:
+
+> chr: 11
+> position: 87622535
+> ref: C
+> alt: \<DEL\>
+> gene: Rnf43
+> impact: HIGH
+> consequence: frameshift_variant&feature_truncation",sci-kai,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/231
+I_kwDODfqZfM50CkAZ,Workflow fails due to multiqc,CLOSED,2023-10-17T08:15:21Z,2023-10-26T09:07:31Z,2023-10-26T09:07:31Z,"The multiqc-rule currently fails when the environment is newly created.
+This happens as multiqc depends on `future` which is incompatible with python v3.12.
+As there is already a [PR](https://github.com/PythonCharmers/python-future/pull/626) being prepared I would suggest to just wait for a new release instead of implementing a workaround. While this is an annoying issue and we have no config option to deactivate multiqc a workaround would require to pin an earlier version of python in the snakemake-wrapper. This issue also came up on [conda-forge](https://github.com/conda-forge/future-feedstock/issues/30) lately.
+",FelixMoelder,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/269
+I_kwDODfqZfM6bTrat,"Failure to extend header parameters from tables/output/annotation_fields for 'vembrane table --header ""{params.config[header]}"" ""{params.config[expr]}'",OPEN,2024-10-22T14:27:57Z,2024-10-24T20:48:49Z,,"In table.smk, the rule vembrane_table calls get_vembrane_config to get the parameters for the vembrane header table.  This should add the annotation fields from config.yaml.  
+
+Example from config.yaml
+```
+tables:
+  activate: true
+  output:
+    annotation_fields:
+      - BIOTYPE
+      - LoFtool
+      - REVEL
+    event_prob: true
+    observations: true
+    short_observations: true
+  generate_excel: false
+```
+
+get_vembrane_config appends the fields with the following code.  The fields being BIOTYPE, Loftool, and REVEL in this example.
+
+```
+       annotation_fields = get_annotation_fields_for_tables(wildcards)
+        append_items(
+            annotation_fields,
+            rename_ann_fields,
+            ""ANN['{}']"".format,
+            lambda x: x.lower(),
+        )
+```
+
+sort_order is created and contains ""ANN['SYMBOL']"", ""ANN['IMPACT']"", etc, but is a limited list.  It is extended with additional values but the list in not a complete list of all values available in vembrane ANN types.
+
+Complete list of custome ANN types.
+https://github.com/vembrane/vembrane/blob/main/docs/ann_types.md
+
+
+Finally, the sorted_columns_dict is created to return the values used in the vembrane_table rule.  This removes any values which were added to columns_dict if they are not in sort_order.  It would remove BIOTYPE and Loftool, but not REVEL as it is in sort_order.
+```
+    # sort columns, keeping only those in sort_order
+    sorted_columns_dict = {k: columns_dict[k] for k in sort_order if k in columns_dict}
+    join_items = "", "".join
+    return {
+        ""expr"": join_items(sorted_columns_dict.keys()),
+        ""header"": join_items(sorted_columns_dict.values()),
+    }
+```
+
+For a  variants.fdr-controlled.tsv file, the final output of the tsv files consists only of the following columns and can't be extended.
+
+symbol
+impact
+hgvsp
+hgvsc
+consequence
+clinical significance
+gnomad genome af
+exon
+revel
+chromosome
+position
+reference allele
+alternative allele
+protein position
+protein alteration (short)
+canonical
+mane_plus_clinical
+prob: absent
+prob: artifact
+prob: variant
+patient: allele frequency
+patient: read depth
+patient: short ref observations
+patient: short alt observations
+patient: observations
+id
+gene
+hgvsg
+feature
+end position
+",delpropo,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/333
+I_kwDODfqZfM6glJVP,Add per cohort/population gene summary plot,OPEN,2024-11-26T10:31:55Z,2024-11-26T10:31:55Z,,"Similar to what cBioPortal does here:
+![image](https://github.com/user-attachments/assets/accfdae6-ed85-4b03-afb8-32c9846b371e)
+",johanneskoester,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/340
+I_kwDODfqZfM6gyUYr,Add protvar linkout for missense mutations,OPEN,2024-11-27T07:58:00Z,2024-11-27T07:58:15Z,,Using HGVSC notation: `https://www.ebi.ac.uk/ProtVar/query?search=NM_000202.8%3Ac.1327C%3ET&assembly=GRCh38,johanneskoester,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/341
+I_kwDODfqZfM6jaX0W,Merge conding and noncoding variant tables,OPEN,2024-12-16T07:49:21Z,2024-12-16T07:49:43Z,,"Distinguishing them is not always possible. Also, it is easy to miss noncoding variants as they are only shown when changing the view in datavzrd.
+
+Fixes #231.",johanneskoester,https://github.com/snakemake-workflows/dna-seq-varlociraptor/issues/347

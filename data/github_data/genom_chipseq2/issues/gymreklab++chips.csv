@@ -1,0 +1,191 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NDE2NzQ1NTg=,map error running simreads,CLOSED,2019-05-08T10:56:11Z,2019-05-30T22:54:45Z,2019-05-30T22:54:44Z,"See below, any ideas?
+
+```
+
+export LD_LIBRARY_PATH=$HOME/tulip-1.10.1/htslib/lib && $HOME/tulip-1.10.1/src/tulip simreads -f /home/dnanexus/Genomes/Homo_sapiens/NCBI/GRCh38Decoy/GRCh38Decoy.fa -p /home/dnanexus/CEGX_Run701/CEGX_Run701-12345678/CEG99_701_01PC-230652576/CEG99-701-01PC_S97_L00.bml.GRCh38.karyo.deduplicated.mqge1.redu.c.CEG99-701-01IC_S1_L00.bml.GRCh38.karyo.deduplicated.mqge1.redu.nm.e166.test.fbpe.macs2_peaks.narrowPeak -t bed -c 5 --model foo.json -o sim                                                                                                                               
+[tulip-1.10.1] ProgressMeter: Running simulate with the following model
+K: 6.06943 Theta: 15.49
+f: 1.24449e-05
+s: 0.104336
+pcr rate: 1
+[tulip-1.10.1] ProgressMeter: Loading the input ChIP-seq peak file (and BAM file if given)
+[tulip-1.10.1] ProgressMeter: Simulating reads based on the input profile
+terminate called after throwing an instance of 'std::out_of_range'
+  what():  map::at
+Aborted
+```",avilella,https://github.com/gymreklab/chips/issues/40
+MDU6SXNzdWU0NDIwNzg2NTk=,Running with several different seeds,CLOSED,2019-05-09T06:56:41Z,2019-05-30T23:12:49Z,2019-05-30T23:11:39Z,Can I simulate reads from same input but given different seeds? Eg. Simulate 10 times for same starting input library/peakset.,avilella,https://github.com/gymreklab/chips/issues/41
+MDU6SXNzdWU1NTY0MzY2MTg=,Running WCE on high read lengths,CLOSED,2020-01-28T20:01:54Z,2020-03-13T02:43:49Z,2020-03-13T02:43:31Z,"Below was the command ran which encountered what seemed to be an infinite loop. However, it finished to completion when the readlength was 250. 
+
+```/storage/mlamkin/projects/tulip/src/tulip simreads -t wce --model params/GM12878_CTCF_ENCFF124LLI_ENCFF256QBB-1.9.json -f /storage/resources/dbase/human/hg19/hg19.fa -o fastqs/readlen500_wce --scale-outliers -c 7 --numcopies 1000 --numreads 10000 --readlen 500 --region chr22:1-51304566```
+
+GM12878_CTCF_ENCFF124LLI_ENCFF256QBB-1.9.json
+```
+{
+    ""frag"": {
+        ""k"": 21,
+        ""theta"": 9.5
+    },
+    ""pcr_rate"": 0.80,
+    ""pulldown"": {
+        ""f"": 0.0003432990051805973,
+        ""s"": 0.3999766409397125
+    }
+}
+```
+",mlamkin7,https://github.com/gymreklab/chips/issues/46
+MDU6SXNzdWU1OTEwMTczMTg=,Project status,CLOSED,2020-03-31T11:13:15Z,2021-02-12T23:19:34Z,2021-02-12T23:19:34Z,"Hello!
+
+I was searching for a tool to simulate ChIP-seq experiments targeting histone modifications and found this repository with accompanying preprint. The results are conviencieble, great work. 
+
+Question: Is v2.0 is ready to use, or should I wait for more stable release? 
+(Under construction note in the README)
+
+Thanks.
+
+P.S. By the way, v2.0 doesn't compile because of the missing random header in several files.",alnfedorov,https://github.com/gymreklab/chips/issues/53
+MDU6SXNzdWU4NDk4MjY5MzA=,Problem building chips - zlib not found,CLOSED,2021-04-04T08:30:11Z,2021-04-05T16:48:07Z,2021-04-05T16:48:07Z,"Dear authors, I try to build chips from the latest source code version (master) and get the following errors.
+```
+mkdir build
+cd build
+cmake .. 
+```
+Output of `cmake`:
+```
+-- The C compiler identification is GNU 9.3.0
+-- The CXX compiler identification is GNU 9.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/user/miniconda3/envs/span_noise2a/bin/x86_64-conda-linux-gnu-cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /home/user/miniconda3/envs/span_noise2a/bin/x86_64-conda-linux-gnu-c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/stripe/shpynov/chips/build
+```
+The I launch `make`, and get the following error:
+```
+Scanning dependencies of target zlib
+[  2%] Creating directories for 'zlib'
+[  5%] Performing download step (git clone) for 'zlib'
+-- zlib download command succeeded.  See also /mnt/stripe/shpynov/chips/build/thirdparty/zlib/src/zlib-stamp/zlib-download-*.log
+[  8%] No update step for 'zlib'
+[ 11%] No patch step for 'zlib'
+[ 13%] Performing configure step for 'zlib'
+Building static library libz.a version 1.2.8 with /home/user/miniconda3/envs/span_noise2a/bin/x86_64-conda-linux-gnu-cc.
+Checking for off64_t... Yes.
+Checking for fseeko... Yes.
+Checking for strerror... Yes.
+Checking for unistd.h... Yes.
+Checking for stdarg.h... Yes.
+Checking whether to use vs[n]printf() or s[n]printf()... using vs[n]printf().
+Checking for vsnprintf() in stdio.h... Yes.
+Checking for return value of vsnprintf()... Yes.
+Checking for attribute(visibility) support... Yes.
+[ 16%] Performing build step for 'zlib'
+[ 19%] Performing install step for 'zlib'
+-- zlib install command succeeded.  See also /mnt/stripe/shpynov/chips/build/thirdparty/zlib/src/zlib-stamp/zlib-install-*.log
+[ 22%] Completed 'zlib'
+[ 22%] Built target zlib
+Scanning dependencies of target htslib
+[ 25%] Creating directories for 'htslib'
+[ 27%] Performing download step (git clone) for 'htslib'
+-- htslib download command succeeded.  See also /mnt/stripe/shpynov/chips/build/thirdparty/htslib/src/htslib-stamp/htslib-download-*.log
+[ 30%] No update step for 'htslib'
+[ 33%] No patch step for 'htslib'
+[ 36%] No configure step for 'htslib'
+[ 38%] Performing build step for 'htslib'
+In file included from bgzf.c:39:
+htslib/bgzf.h:34:10: fatal error: zlib.h: No such file or directory
+   34 | #include <zlib.h>
+      |          ^~~~~~~~
+compilation terminated.
+make[3]: *** [bgzf.o] Error 1
+make[2]: *** [thirdparty/htslib/src/htslib-stamp/htslib-build] Error 2
+make[1]: *** [CMakeFiles/htslib.dir/all] Error 2
+make: *** [all] Error 2
+```
+
+Am I missing somethings, it looks like zlib build is not used while building htslib?",olegs,https://github.com/gymreklab/chips/issues/63
+MDU6SXNzdWU4NDk4NTgxMTE=,Exception std::out_of_range during simreads,CLOSED,2021-04-04T11:48:09Z,2021-04-04T19:27:56Z,2021-04-04T19:27:56Z,"I am using chips 2.4 (installed with anaconda) to simulate ChIP-seq reads coverage using peaks file from ENCODE [H3K27ac.bed.gz](https://www.encodeproject.org/files/ENCFF039XWV/@@download/ENCFF039XWV.bed.gz) and reference faster file [GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta](https://www.encodeproject.org/files/GRCh38_no_alt_analysis_set_GCA_000001405.15/@@download/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta.gz).
+Chips successfully learned model (`model.json`):
+```
+{
+    ""frag"": {
+        ""k"": 9.943953514099121,
+        ""theta"": 28.363868713378906
+    },
+    ""pcr_rate"": 1.0,
+    ""pulldown"": {
+        ""f"": 0.002062314422801137,
+        ""s"": 0.4932500720024109
+    }
+}
+```
+
+I launch simreads with the command line:
+```
+chips simreads  -p H3K27ac.bed -f GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta -o H3K27ac -t bed -c 5 --numreads 175000000 --model model.json
+```
+
+And I see the error message: 
+```
+terminate called after throwing an instance of 'std::out_of_range'
+  what():  map::at
+Aborted
+```",olegs,https://github.com/gymreklab/chips/issues/64
+I_kwDOB20cuM5PZyiK,Segmentation Fault when simulating WCE,CLOSED,2022-08-08T17:15:30Z,2023-02-10T20:45:25Z,2023-02-10T20:45:25Z,"I'm getting a Segmentation Fault when I try to simulate WCE (`bed` works fine). 
+
+```
+[chips-2.4]ProgressMeter: Running simulate with the following model
+K: 6.22944 Theta: 35.8361
+f: 6.11061e-05
+s: 0.164201
+pcr rate: 1
+Current random seed: 3597572743
+[chips-2.4]ProgressMeter: Loading the input ChIP-seq peak file (and BAM file if given)
+*** Error in `chips': free(): invalid size: 0x00007ffed191c2d0 ***
+Segmentation fault (core dumped)
+```
+
+This is the command that I used -- 
+
+```
+chips simreads -f hg19.fa -t wce -o wce_test --scale-outliers -c 7 --model h3k27me3_sim.json --region chr21:1-48000000
+```
+
+Any help would be much appreciated! ",ntanmayee,https://github.com/gymreklab/chips/issues/65
+I_kwDOB20cuM5glY9r,How many reads?,CLOSED,2023-03-12T15:54:24Z,2023-03-13T15:50:27Z,2023-03-13T15:50:26Z,"Hi!
+
+I'm trying to use chips for simulating chip-seq reads. My input is a set of simulated peaks (simulated by other software, so that I know the peak position), and both the genome size and number of peaks vary greatly.
+
+I'm having trouble setting parameters for chips that seem to make meaningful simulated reads. Specifically, I have no idea what to set `--numreads` to. I assume the number of reads ideally should be a function of genome size and number of peaks, and I would have hoped that the software would be able to find out how many reads to simulate. Do you have any suggestions on how to set number of reads?
+
+I'm also unsure about `--frac`. Is there a way to compute what `--frac` should be base on my input peaks? I'm guessing maybe number of peks x fragment size / genome size, but not sure if that is correct.",ivargr,https://github.com/gymreklab/chips/issues/66
+I_kwDOB20cuM5gsLof,Conda installation fails,CLOSED,2023-03-13T20:14:42Z,2023-03-13T22:05:03Z,2023-03-13T22:05:03Z,"Hi!
+
+Trying to install chips using conda I get this:
+
+
+```
+Could not solve for environment specs
+Encountered problems while solving:
+  - package chips-2.4-h00214ad_2 requires htslib >=1.14,<1.15.0a0, but none of the providers can be installed
+```
+
+The command I ran (also verified that this fails on a github action on a fresh system):
+
+```
+conda create --name chips -c bioconda chips`
+```
+
+I see that the latest conda version of chips is 2.4, and that my conda tries to install the h00214ad_2 which requires old htslib which does not exist. I also see there's another file with version 2.4 at https://anaconda.org/bioconda/chips/files that is updated to use newer htslib (pushed 3 days agon). However I'm not sure how to specify that file (since that one is also version 2.4, so specifying chips=2.4 does not help).
+
+Am I doing something wrong here, or is there a problem with the conda installation?
+",ivargr,https://github.com/gymreklab/chips/issues/67

@@ -1,0 +1,43 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOJUCwBM6M1Lq7,DERNA consistently crashes on certain amino acid sequences,CLOSED,2024-06-19T16:23:33Z,2024-10-28T17:57:25Z,2024-10-28T17:57:15Z,"Thanks for an excellent package.
+
+My issue is as above. Certain amino acid sequences simply crash with an error of type
+`[1]    132848 segmentation fault (core dumped)  ./derna -i ~/test.fasta -o out.txt -m 1 -s 1`
+
+A partial output is written, e.g.
+
+```
+protein sequence: <my-sequence>
+
+```
+
+I have noticed that other amino acid sequences also crash, but only occasionally. 
+
+I have tried building from source, as well as using DERNA through bioconda.",h-ahl,https://github.com/elkebir-group/derna/issues/1
+I_kwDOJUCwBM6QquGW,bug: cannot pass codon tables,CLOSED,2024-07-24T09:57:18Z,2024-09-20T01:27:01Z,2024-09-20T01:27:00Z,"Hi! I'm trying to pass a codon table, but am getting issues like below:
+
+```
+╰─± ./build/derna -i data/input.fasta -o data/output.txt -c /home/hahl/derna/data/InputFiles/sample_codon_usage.csv -m 1 -s 2 -l 0.5
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  stod
+[1]    88748 IOT instruction (core dumped)  ./build/derna -i data/input.fasta -o data/output.txt -c  -m 1 -s 2 -l 0.5
+```
+
+As you can see, this happens for the sample table provided, which is meant to be the default values used as far as I'm aware. I'm attaching the input files below:
+[inputs.zip](https://github.com/user-attachments/files/16360428/inputs.zip)
+",h-ahl,https://github.com/elkebir-group/derna/issues/2
+I_kwDOJUCwBM6QqvpX,build: bioconda version is obsolete,OPEN,2024-07-24T10:00:00Z,2024-09-27T09:29:07Z,,"The bioconda version (1.0.2) is obsolete, as has issues in it preventing it from optimising CAI as intended. E.g. maximal CAI optimisation does not lead to a CAI of 1.",h-ahl,https://github.com/elkebir-group/derna/issues/3
+I_kwDOJUCwBM6ai1Vi,Index out of bounds,CLOSED,2024-10-16T19:13:04Z,2024-11-19T19:34:54Z,2024-11-19T19:34:54Z,"Hi @melkebir, 
+
+I was debugging unexpected crashes of your program. While doing that, I encountered that your Zuker.cpp algorithm is running out of bounds, which causes unexpected behavior. In particular, Zuker.cpp line 86 says: `for (int a = 0; a < n; ++a)`.  `a` is then used in line 90 and 91 for `ava_nucleotides_int`, which in turn calls: `int pna = protein[a+1]` or `int ppa = protein[a-1]`. Both of these calls are undefined for `a=n-1` or `a=0`, respectively. You can easily reproduce this error by enforcing a runtime error instead of unexpected behavior if you run out of bounds. Vector has an [`.at`](https://cplusplus.com/reference/vector/vector/at/) method for this use case. So if you replace line 572 with `int pna = protein.at(a+1)` your program will reliable crash with an out of bounds error.
+
+Since I don't know the inner workings of your algorithm, I'm not sure what the best fix is. Starting the index for `a` at `1` and ending at `n-1` will obviously prevent the problem, but I don't know if this is the correct behavior. 
+
+After I apply this rudimentary fix the program crashes here: 
+
+```
+0x0000aaaaaaafa7b0 in Zuker::internal_CAI (this=0xfffffffff198, lambda=0.5, 
+    a=113, b=115, i=0, j=1, x=0, y=0, la=339, lb=346, xi=0, yj=3)
+    at /derna/src/Zuker.cpp:1055
+1055	                    const int n_codon_dn = n_codon[pnd];
+```",Schlaubischlump,https://github.com/elkebir-group/derna/issues/4

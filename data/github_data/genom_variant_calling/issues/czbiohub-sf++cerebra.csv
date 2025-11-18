@@ -1,0 +1,800 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MzIxMjAwMjg=,integrate interval trees,CLOSED,2019-04-11T16:36:54Z,2019-06-18T21:35:36Z,2019-06-18T21:35:36Z,,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/1
+MDU6SXNzdWU0NDI0Nzk2MDA=,get_specific_mutations not working for X or Y chrom,CLOSED,2019-05-09T23:44:31Z,2019-05-17T00:15:58Z,2019-05-17T00:15:58Z,"only accepting integer chromosome names right now
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/2
+MDU6SXNzdWU0NTYwMjMxNDk=,how to deal with vcf records with multiple *ALT*s? ,CLOSED,2019-06-14T01:42:11Z,2020-01-06T23:45:56Z,2020-01-06T23:45:56Z,"right now we're just picking the longest one...which may not be the smartest choice. essentially, what if you get a SNP and indel at the exact same loci?
+          - (rn our code would just pick up the indel)",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/4
+MDU6SXNzdWU0NTcxNzY1Mjc=,mapping ambiguity between vcf and gtf,CLOSED,2019-06-17T22:28:27Z,2020-01-06T23:46:52Z,2020-01-06T23:46:52Z,"some vcf mutations correspond to multiple records in the gtf file; ie. stop codon in one gene could be an exon in another. how to assign these ambiguous vcf hits?
+
+- a relevant question is how often does this happen? if its 0.01% of cases, we can afford to just throw out these ambiguous vcf records",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/5
+MDU6SXNzdWU0NTc3MDc2Mzg=,are we dealing with deletions properly? ,CLOSED,2019-06-18T21:36:20Z,2019-06-22T00:28:30Z,2019-06-22T00:28:08Z,"im pretty confident were getting insertions, but what about deletions? ",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/8
+MDU6SXNzdWU0NTc3MTk1MTc=,fathmm filter excludes a bunch of indels,CLOSED,2019-06-18T22:12:24Z,2020-01-06T23:52:11Z,2020-01-06T23:52:11Z,"- im pretty sure fathmm is a per-amino acid score, so i dont think it can properly handle indels
+- keep this in mind when searching for things like EGFR del19",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/9
+MDU6SXNzdWU0NTgyNDE1MzE=,in get_specific_mutations.py it probably makes sense to first subset the cosmic db by gene name,CLOSED,2019-06-19T21:48:05Z,2019-06-22T00:22:55Z,2019-06-21T19:50:43Z,- runs wicked fast when i test this on a just-EGFR dataframe,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/11
+MDU6SXNzdWU0NTkzMjk2NDE=,germline_filter.py requires 'ID' field to match...this probably makes things too strict,CLOSED,2019-06-21T18:55:06Z,2019-07-15T23:13:16Z,2019-07-15T23:13:15Z,,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/14
+MDU6SXNzdWU0NTkzNDkyNzY=,"when we reconstruct vcfs during the germline filter step, we excluded the 2 last columns",CLOSED,2019-06-21T19:52:24Z,2019-07-15T23:13:01Z,2019-07-15T23:13:01Z,"- _FORMAT_ and this wierd _20_ field dont make the cut...
+- probably want to sub out my janky vcf parsing/writing functions for something more official
+- ie. pyVCF or VCFpy",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/15
+MDU6SXNzdWU0NTkzNTAzNTE=,"during vcf reconstruction (germline filter) step, we're literally appending the same vcf header to all our files",CLOSED,2019-06-21T19:55:48Z,2019-07-15T23:13:42Z,2019-07-15T23:13:42Z,"- related to #15 
+- this is not ideal, we need _INFO_ field to do any sort of coverage analysis",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/16
+MDU6SXNzdWU0NTk0MTE4OTM=,how does utils.get_best_overlap deal with genome positions that have multiple hits,CLOSED,2019-06-22T00:20:47Z,2019-06-22T00:21:21Z,2019-06-22T00:21:21Z,"- this seems to be most of them...cosmic database has TONS of repeated shit
+- specifically the problem is with SNP calling in get_aa_mutations:
+       - i want to be able to match CDSs against entries in the cosmic db in order to determine the AA substitution, but what happens if there are multiple cosmic entries, with multiple CDSs
+       - `utils.get_best_overlap` is probably just returning the first matching entry, so the CDSs do not necessarily match ",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/17
+MDU6SXNzdWU0NjA2NzIyNjY=,not picking up intronic variants,OPEN,2019-06-25T22:23:04Z,2020-01-10T20:41:41Z,,"in `mutations_table.py`, if a vcf record reports a hit to an intronic region (we think), it will NOT be included in the final table
+- this is because while the COSMIC db includes hits to intron, the gtf does not contain entries for intron bounds, so the COSMIC hit wont match anything in the gtf
+- solution is probably just not matching back to the gtf when doing the COSMIC filter; ie. just grab the gene name from the COSMIC database line, and dont do the gene matching back to the gtf
+- only really need the gtf for the un-filtered case",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/18
+MDU6SXNzdWU0NjEyMTc4NDI=,need to integrate coverage module,CLOSED,2019-06-26T23:00:33Z,2019-07-13T00:30:47Z,2019-07-13T00:30:46Z,"_a la:_ https://github.com/czbiohub/SNP_calling_pipeline/blob/master/coverage/coverage_search_from_vcf_parallel.py
+
+lets make a new branch for this, and clean it up",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/19
+MDU6SXNzdWU0NjE3OTgyNTM=,vcf and cosmic appear to disagree about the strandedness for certain genes? ,CLOSED,2019-06-28T00:02:26Z,2019-07-02T20:04:24Z,2019-07-02T20:04:24Z,"- originally noticed for BRAF; base positions seem to be reverse complements of each other, as if the reading direction were reversed
+- have only seen this in BRAF so far
+- not sure how this could be, given both VCF and COSMIC rely on the same reference genome",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/20
+MDU6SXNzdWU0NjE4MDg2NzI=,"add dbSNP filter, probably in germline_filter.py module",CLOSED,2019-06-28T00:54:25Z,2019-07-03T17:12:37Z,2019-07-03T17:12:37Z,fuck,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/21
+MDU6SXNzdWU0NjU4OTc5MDE=,perhaps give non-tumor cells better names for germline filtering,CLOSED,2019-07-09T17:20:57Z,2020-06-10T16:27:51Z,2020-06-10T16:27:51Z,"Right now, my revision of germline filter differentiates tumor from non-tumor bulk-seq VCFs based on the non-tumor cells having three parts (`X_Y_Z.vcf`). It would probably be better to have a more explicit method for differentiating between the bulk-seq VCFs.",rvanheusden,https://github.com/czbiohub-sf/cerebra/issues/22
+MDU6SXNzdWU0NjYwMzgzMjY=,"refactor check_coverage module to work on gene-level, rather than with a user-defined set of ROIs",CLOSED,2019-07-10T00:18:36Z,2019-07-10T22:33:58Z,2019-07-10T22:33:57Z,,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/23
+MDU6SXNzdWU0NjY1NDY1Njk=,improve germline filtering: handle multiple ALTs better,CLOSED,2019-07-10T22:07:29Z,2019-07-15T23:14:04Z,2019-07-15T23:14:04Z,"I was just thinking—right now, the germline filter will only match two records if the `CHROM`, `POS`, `REF`, and `ALT` are all the same. But, since VCFs will encode all mutations that happen at a particular `POS` as multiple `ALT`s, we could instead just check if **one** (not all) of the `ALT`s match, and then remove that `ALT` specifically.",rvanheusden,https://github.com/czbiohub-sf/cerebra/issues/24
+MDU6SXNzdWU0NjY1NTc3OTc=,vcf '20' field is sometimes malformed,CLOSED,2019-07-10T22:39:53Z,2020-01-06T23:45:26Z,2020-01-06T23:45:25Z,"- seeing `0/0:46:46` instead of `1/1:0,2:2:6:84,6,0`
+- relevant when trying to extract AD, in `check_coverage_whole_gene` module
+- not sure what this edge case means...
+- ignoring it for now, with try/except block
+
+
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/25
+MDU6SXNzdWU0NjgyODI2MDk=,GenomePosition.from_str shouldn't assume 1-index,OPEN,2019-07-15T18:54:34Z,2019-07-15T18:54:34Z,,I've found that BEDtools seems to convert 1-based genome position strings into 0-based ones. Perhaps GenomePosition.from_str should offer an argument allowing one to indicate if the string is 0-based or 1-based.,rvanheusden,https://github.com/czbiohub-sf/cerebra/issues/26
+MDU6SXNzdWU0NjgzOTYzMDE=,need to integrate gvcf search into coverage module,CLOSED,2019-07-16T00:56:58Z,2019-12-17T22:22:21Z,2019-12-17T22:22:21Z,"- if a cell/sample doesnt have a variant, is it because its wildtype, or because it doesnt have coverage
+- right now i think this is happening in the summary table module...not ideal
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/27
+MDU6SXNzdWU0Njg5MTY2MTU=,look into potential changes in mutation_counts functionality due to GenomePosition.from_vcf_record change,OPEN,2019-07-16T23:32:29Z,2020-01-08T17:47:32Z,,,rvanheusden,https://github.com/czbiohub-sf/cerebra/issues/28
+MDU6SXNzdWU0ODQ3MzU2MTU=,Supporting different types of annotation GTFs,CLOSED,2019-08-23T22:29:12Z,2020-07-28T13:43:02Z,2020-07-28T13:43:02Z,"find_aa_mutations soft-requires gencode’s gtf annotation, which for whatever reason has 5 comment lines at the top which pandas doesn’t like
+might be good to document somewhere that those have to be removed from the file or add handling so that comment lines are cut off
+right now there’s a disparity; mutation_counts’ annotation read_csv call is normal (hg38.gtf), while find_aa_mutations’ has to use `skiprows=5` (gencode .gtf)",rvanheusden,https://github.com/czbiohub-sf/cerebra/issues/36
+MDU6SXNzdWU1MTYzODI2MzM=,"find-aa-mutations not working, post-merge with Rohan's branch",CLOSED,2019-11-01T22:40:34Z,2019-11-04T21:17:32Z,2019-11-04T21:17:31Z,"exiting gracefully, but not actually finding variants. I tested on remade artificial vcfs as well as real vcfs, same behavior seen for both. returns empty matrix with only the cell names. merged with `rvanheusen/aa-mutations`. have also checked out raw versions of `rvanheusen/aa-mutations` and `rvanheusen/mutation-counts-cleanup`, and same behavior is observed",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/41
+MDU6SXNzdWU1Mzc3NDUxMDc=,multiprocessing race condition,CLOSED,2019-12-13T19:50:28Z,2020-02-27T00:00:01Z,2020-02-27T00:00:01Z,"was getting a biopython.seq error when running through some new vcf files:
+
+`TranslationError: Codon '>' is invalid`
+
+but seems to have resolved its self somehow",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/47
+MDU6SXNzdWU1NDExMzE4MTc=,output json instead of csv,CLOSED,2019-12-20T18:19:45Z,2020-06-16T22:18:49Z,2020-06-16T22:18:49Z,"json might be better suited here because its a better way to represent hierarchical data, such as 
+             `cell -> gene -> amino acid mutation` relationships
+
+also nice for very sparse matricies like ours",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/48
+MDU6SXNzdWU1NDcwNjE0MzY=,setup docker container,CLOSED,2020-01-08T19:36:46Z,2020-07-20T20:09:34Z,2020-07-20T20:09:34Z,,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/51
+MDU6SXNzdWU1NTE2NjY5NjQ=,clarification on AD field of vcf files,CLOSED,2020-01-17T22:45:57Z,2020-01-18T01:02:47Z,2020-01-18T01:02:47Z,"want to make sure `find_aa_mutations --report_coverage` is pulling out the right thing. 
+vcf documentation is not very clear on what information the **AD** field actually contains",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/52
+MDU6SXNzdWU1NTI4OTU0MjY=,germline-filter run instructions,CLOSED,2020-01-21T14:00:35Z,2020-06-10T22:07:34Z,2020-06-10T16:26:32Z,"Hi,
+ 
+I am trying to run the germline-filter tool but am unclear as to what the contents should be for the metadata csv file.
+
+The message from the tools help page is somewhat vague on the requirements for each argument:
+
+```
+Usage: cerebra germline-filter [OPTIONS]
+
+  filter out common SNPs/indels between germline samples and samples of
+  interest
+
+Options:
+  --processes INTEGER
+  --germline TEXT      [required]
+  --cells TEXT         [required]
+  --metadata TEXT      [required]
+  --outdir TEXT        [required]
+  -h, --help           Show this message and exit.
+```
+
+Please could the run instructions be updated to describe how to run the germline-filter tool with all the required files.
+
+An example dataset would also be useful to demonstrate the required contents of the metadata csv.
+
+Also then just to clarify I am assuming the germline and cells should be the VCF files for each? 
+
+Best wishes,
+Roshan",not-rs,https://github.com/czbiohub-sf/cerebra/issues/53
+MDU6SXNzdWU1NTcwNzM3OTQ=,JOSS guidelines,CLOSED,2020-01-29T19:39:32Z,2020-05-08T21:56:44Z,2020-05-08T21:56:44Z,"something to keep in mind
+
+write up [JOSS](https://joss.theoj.org/) submission in the form of a markdown document (.md)
+a nice template to follow comes from @pranathivemuri:  https://github.com/czbiohub/bam2fasta/blob/master/paper/paper.md
+
+JOSS submissions are meant to be very lightweight descriptions of the software, how it works, and testing procedures
+
+the benchmarking figures I have are probably better suited for something like [BMC App Notes](https://biologydirect.biomedcentral.com/submission-guidelines/preparing-your-manuscript/application-notes)",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/54
+MDU6SXNzdWU2MTUwMDgyMTc=,wierd Bioseq install error -- package not found,CLOSED,2020-05-08T21:58:03Z,2020-05-08T21:58:53Z,2020-05-08T21:58:53Z,"when I try to invoke cli, getting `ModuleNotFoundError: No module named 'Bio'` even though `Biopython` is listed in `requirements.txt`",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/59
+MDU6SXNzdWU2MjI2ODU5NzA=,filtered_cosmic_db in find_aa_mutations limiting to lung,CLOSED,2020-05-21T18:17:03Z,2020-05-27T21:22:57Z,2020-05-27T21:22:57Z,"I'm an effing idiot
+https://github.com/czbiohub/cerebra/blob/1e654649277f37bd4391917c293df14ab0a8c579/cerebra/find_aa_mutations.py#L48",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/63
+MDU6SXNzdWU2MjYwNDEyNTE=,filtered_cosmic_db in count_mutations.py limiting to lung,CLOSED,2020-05-27T21:23:45Z,2020-05-27T21:33:03Z,2020-05-27T21:33:03Z,same thing as #63 ,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/65
+MDU6SXNzdWU2MjYxMTYyMzE=,add comprehensive test for germline_filter,CLOSED,2020-05-28T00:01:20Z,2020-05-28T00:51:12Z,2020-05-28T00:51:12Z,"want to add a `CliRunner` test in the vein of [test_basic_functionality.py](https://github.com/czbiohub/cerebra/blob/master/tests/test_basic_functionality.py), for the full run. 
+just for my own sanity ",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/66
+MDU6SXNzdWU2MjYxNzIwMzY=,make germline-filter module more robust,OPEN,2020-05-28T02:50:07Z,2020-06-16T18:07:37Z,,"right now it only works if you have a metadata file with a very specific format
+
+> cell_id,patient_id
+sample1,gl_sample1
+sample2,gl_sample1
+sample3,gl_sample2
+sample4,gl_sample2
+sample5,gl_sample2
+
+would be nice if we could loosen up this requirement a bit. for example, what if you had germline vcfs for some experimental samples but not all? 
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/67
+MDU6SXNzdWU2MzQ4MjQxNzI=,add prebuilt index for genome.fa,OPEN,2020-06-08T18:06:15Z,2020-06-10T22:57:14Z,,"can we add a prebuilt index for the human genome .gtf / .fa that would load much faster? 
+
+hg38.fa -> 3 Gb
+hg38.gtf -> 144 Mb",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/70
+MDU6SXNzdWU2MzUwMTIyNDg=,consider changing mutations -> variants in module names,CLOSED,2020-06-09T00:05:31Z,2020-06-16T18:07:05Z,2020-06-16T18:07:05Z,mutations implies functional or perhaps known consequence,lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/71
+MDU6SXNzdWU2NTUzMjU5ODU=,Versioning question,CLOSED,2020-07-12T04:01:12Z,2020-07-15T15:13:05Z,2020-07-15T15:13:05Z,"This repo has only a single release, 1.0.0. However, setup.py sets the version as 1.0.9 and the PyPI version is 1.1.0. `__init__.py` sets the version as 0.1.0.
+
+Additionally, the seemingly-neglected HISTORY.md has only a single entry for 0.1.0 (despite this tag not existing in the repo).
+
+This is important to reconcile as part of https://github.com/openjournals/joss-reviews/issues/2432",afrubin,https://github.com/czbiohub-sf/cerebra/issues/78
+MDU6SXNzdWU2NTUzMjgzMzA=,Requirements and CI,CLOSED,2020-07-12T04:22:39Z,2020-07-15T15:13:05Z,2020-07-15T15:13:05Z,"It looks like conda_requirements.txt is a subset of requirements.txt and conda_requirements.txt is only used by the CI testing.
+
+Why is this file included and why does the CI testing use conda at all? As a user who is looking to install the software, this is quite confusing.
+
+requirements.txt also includes test-only requirements (coverage, flake8, etc.). These should be excluded from the requirements file and standard installation.
+
+https://github.com/openjournals/joss-reviews/issues/2432",afrubin,https://github.com/czbiohub-sf/cerebra/issues/79
+MDU6SXNzdWU2NTUzMjg4MjY=,Python 3.8 support,CLOSED,2020-07-12T04:28:05Z,2020-07-15T15:13:05Z,2020-07-15T15:13:05Z,"The software is not tested against Python 3.8, despite this being the current major release.
+
+I suggest the authors add '3.8' '3.8-dev' and '3.9-dev' to the CI testing, with allowed failures for the dev versions. It also wouldn't hurt to test against (and allow failures for) 'pypy3'. Here is a simple example of this from one of my own projects: https://github.com/CountESS-Project/fqfa/blob/master/.travis.yml
+
+Once 3.8 support is established, it should also be added to the setup.py classifiers section.
+
+https://github.com/openjournals/joss-reviews/issues/2432",afrubin,https://github.com/czbiohub-sf/cerebra/issues/80
+MDU6SXNzdWU2NTUzMzQxNDI=,Universal wheel,CLOSED,2020-07-12T05:22:52Z,2020-07-15T15:13:05Z,2020-07-15T15:13:05Z,"Currently the project has a setup.cfg file that specifies a universal wheel. Based on [the definition in the Python Packaging User Guide](https://packaging.python.org/guides/distributing-packages-using-setuptools/#universal-wheels) this is doesn't seem necessary or correct, since the project does not support Python 2 (nor should it at this point).
+
+https://github.com/openjournals/joss-reviews/issues/2432
+
+",afrubin,https://github.com/czbiohub-sf/cerebra/issues/81
+MDU6SXNzdWU2NTUzMzcwNjY=,Review comments on CONTRIBUTING.md,CLOSED,2020-07-12T05:50:40Z,2020-09-15T23:08:37Z,2020-09-15T23:08:37Z,"The CONTRIBUTING.md document includes most of the required material, but there are a few issues.
+
+The links in the document lead to the site home pages rather than the specified pages due to misplaced `>`. The document would benefit from including additional links, such as a link to the relevant GitHub documentation in the first ""Get Started!"" list item.
+
+This document has very different installation instructions to the README. They should be harmonized, and it will probably be simpler to maintain if CONTRIBUTING refers the user to the README, with notes about changes required to create a dev environment. It's quite confusing to have one document require conda and another require virtualenvwrapper. Ideally both should just use standard library venv.
+
+This document specifies tox but the main project seems to use pytest. The Tips section uses unittest. The project should pick one testing framework and stick to it throughout.
+
+https://github.com/openjournals/joss-reviews/issues/2432",afrubin,https://github.com/czbiohub-sf/cerebra/issues/82
+MDU6SXNzdWU2NTUzNTIwOTU=,Installation process,CLOSED,2020-07-12T07:56:55Z,2020-09-16T03:06:34Z,2020-09-16T03:06:34Z,"Currently the cerebra installation process requires some system packages to be installed. These are all relatively standard requirements that many users will already have. It's good to see that users have the option of running this in Docker. Providing a [Nix expression](https://nixos.org/nix/manual/) is another option.
+
+However, the documentation should be improved with an explanation of why these system packages are needed. They seem to be requirements for cerebra's dependencies rather than the package itself. This transparency is especially important if the dependencies-of-dependencies change in the future.
+
+There are no installation instructions for Windows users, although there are is a large population of bioinformatics specialists who use Windows as their primary environment and might benefit from this software. I'm guessing this is because the package won't install on Windows due to the pysam dependency, but it should be explicitly stated.
+
+The installation instructions for the package itself are not ideal. The primary method of installation (especially for research software with pinned requirements) should be a virtual environment. The primary installation method suggested is a system-level installation.
+
+There are instructions for installing in a virtual environment via conda, but there is no reason I could see to require conda rather than using [standard library's venv](https://docs.python.org/3/library/venv.html). The virtual environment instructions also install the package in editable mode, which is ideal for development but not what most users would be expecting.
+
+The installation section could be split into a ""for users"" section and a ""for developers"" section, where the latter describes an editable installation with test requirements and instructions for running unit tests locally.
+
+https://github.com/openjournals/joss-reviews/issues/2432",afrubin,https://github.com/czbiohub-sf/cerebra/issues/83
+MDU6SXNzdWU2NTYxNjE3NDk=,improve testing speed,CLOSED,2020-07-13T21:36:40Z,2020-07-22T17:10:09Z,2020-07-22T17:10:09Z,"the biggest thing to do here is gonna be removing that massive hg38.fa chr7 / chr12 file. 
+
+either reworking the tests to get around using the .fa entirely or else figuring out how to further compress it",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/85
+MDU6SXNzdWU2NTc0MjYwOTA=,pysam build fails on python3.8,OPEN,2020-07-15T15:06:40Z,2020-07-16T14:59:10Z,,"this is a known issue: https://github.com/jbloomlab/alignparse/issues/58
+
+one way to get around it is perhaps a conda installation of `pysam`?",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/86
+MDU6SXNzdWU2NTgzMDIwMjg=,JoSS Review: Clarify README.md,CLOSED,2020-07-16T15:24:31Z,2020-08-18T20:56:35Z,2020-08-18T20:56:35Z,"With regard to the ongoing review for your [JoSS submission](https://github.com/openjournals/joss-reviews/issues/2432), I would like to suggest stating some sort of use cases and/or warnings in your `README.md`. In particular, one of the largest drawbacks is the case of large VCF files. You even state as much in your [code](https://github.com/czbiohub/cerebra/blob/a6e4463fc6cff5b02583c8020cff09a288cbf598/cerebra/VCF.py#L61-L68):
+
+>```python
+> def dataframe(filename, large=True):
+>     """""" [...]
+>     Note: Using large=False with large VCF files. It will be painfully slow.
+>     [...]
+>     """"""
+> ```
+
+This same cannot be said about your instructions/quickstart.
+
+VCFs can be excruciatingly large sometimes (looking at you 1KG/ENCODE). Many times, researchers want/need to summarize from this starting point. Therefore, suggesting something like _filtering_ the VCF based on region/contig _prior_ to running `cerebra` would be thoughtful suggestion to gung-ho users to preempt potentially long-running jobs.",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/89
+MDU6SXNzdWU2NTgzMzkwNTA=,JoSS Review: Quality of writing,CLOSED,2020-07-16T16:07:03Z,2020-09-15T23:07:50Z,2020-09-15T23:07:50Z,"With regard to the ""Quality of writing"" section for the ongoing review for your JoSS submission (https://github.com/openjournals/joss-reviews/issues/2432), these are my (very minor/nitpicky) remarks:
+
+* ""wrangling"" is somewhat parlance and may be a difficult word to discern context from for international audiences
+* I may be wrong here, but surnames should be written for both in-text and bibliographic citation. For groups of 6 or more, it is acceptable to use ""_et al_"" after the first author. This simplifies the citation so as to not break up the thought of the sentence any more than it already has.
+* You are already use LaTex to write the paper, so it may be simpler to write 10^8 as <img src=""https://render.githubusercontent.com/render/math?math=10^{8}""> instead
+* (Question) What happens if a `*.fai` is already provided prior to `find-peptide-variants`? Will it construct a new one?
+* It might be helpful to state in the caption of **Figure 3** that the first 10+ minutes appear to be the construction of the `genome interval tree` and can be considered overhead for the process, which runs approximately linearly thereafter (Ha! Just saw that you state the same thing just below)
+",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/90
+MDU6SXNzdWU2NjE5MTU1MDE=,trouble adding to bioconda,OPEN,2020-07-20T14:52:38Z,2020-07-20T14:55:37Z,,"linking https://github.com/bioconda/bioconda-recipes/pull/23260
+
+tried to add recipe to bioconda. 
+for now failing due to `hgvs` dependency....there is no bioconda or conda-forge recipe for `hgvs`
+
+until this exists we wont be able to add to bioconda, unfortunately 
+
+all I could find in the way of conda builds was this https://anaconda.org/aroth85/hgvs
+
+not sure its possible to add independent channels to `meta.yaml`, and even if it was, doesnt seem like a good idea to add in an outdate third-party recipe
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/92
+MDU6SXNzdWU2NjQ2MDA1OTM=,would like to make cerebra modules importable,CLOSED,2020-07-23T16:08:51Z,2020-07-23T16:40:47Z,2020-07-23T16:40:47Z,"would like to make modules importable, so that `cerebra` can be used more easily by developers.
+
+right now its really geared toward end users. 
+
+dont know how to do this, yet
+
+could look at https://github.com/biocommons/hgvs for inspiration",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/97
+MDU6SXNzdWU2NjQ2MjAwMTQ=,hgvs throwing stdout,CLOSED,2020-07-23T16:41:07Z,2020-08-26T17:59:41Z,2020-08-26T17:59:41Z,"cryptic error message in `cerebra find-peptide-variants`:
+
+`<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>`
+
+would like to find out where this (error?) message is coming from",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/99
+MDU6SXNzdWU2NjcwOTczNzM=,zlib error,CLOSED,2020-07-28T13:59:57Z,2020-07-28T15:51:50Z,2020-07-28T15:51:50Z,"seeing this: 
+
+`zlib.error: Error -3 while decompressing data: invalid distance too far back`
+
+but only when I run in multiprocessed mode, for some reason? 
+",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/101
+MDU6SXNzdWU2NjcxNDQ3OTg=,vcfpy exception,CLOSED,2020-07-28T15:00:08Z,2020-07-28T15:50:58Z,2020-07-28T15:50:58Z,"seeing this exception: 
+
+`vcfpy.exceptions.InvalidRecordException: The line contains an invalid number of fields. Was 8 but expected 10`
+
+but only when I run on large set of previously untested VCFs.
+`pytest` suite seems to be unaffected by this exception",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/103
+MDU6SXNzdWU2ODEzMTcxOTc=,JoSS Review: Installation,CLOSED,2020-08-18T20:25:20Z,2020-09-03T15:22:30Z,2020-09-03T15:22:30Z,"With regard to the ongoing review for your [JoSS submission](https://github.com/openjournals/joss-reviews/issues/2432) here are my notes/questions:
+1. Why suggest users to install via `pip` in editable (`-e`) mode?
+2. For your `pip` installations you could write the command as: `pip install [--user] .` to free up any global install concerns
+3. You should preface the OS dependencies _prior_ to the package installation process. This might prevent users from getting towards the end of the install process and throwing up their hands in defeat.
+
+Below are my commands and history from following through the process.
+```bash
+$ git clone https://github.com/czbiohub/cerebra.git
+Cloning into 'cerebra'...
+remote: Enumerating objects: 20, done.
+remote: Counting objects: 100% (20/20), done.
+remote: Compressing objects: 100% (16/16), done.
+remote: Total 3239 (delta 5), reused 9 (delta 4), pack-reused 3219
+Receiving objects: 100% (3239/3239), 167.98 MiB | 26.08 MiB/s, done.
+Resolving deltas: 100% (2144/2144), done.
+$ conda create -n cerebra python=3.7
+Collecting package metadata (current_repodata.json): done
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.8.3
+  latest version: 4.8.4
+
+Please update conda by running
+
+    $ conda update -n base conda
+
+
+
+## Package Plan ##
+
+  environment location: /root/miniconda3/envs/cerebra
+
+  added / updated specs:
+    - conda
+    - pip
+    - python=3.7
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    _openmp_mutex-4.5          |            1_gnu          22 KB  conda-forge
+    certifi-2020.6.20          |   py37hc8dfbb8_0         151 KB  conda-forge
+    cffi-1.14.1                |   py37h2b28604_0         223 KB  conda-forge
+    conda-4.8.4                |   py37hc8dfbb8_2         3.1 MB  conda-forge
+    conda-package-handling-1.7.0|   py37h8f50634_4         2.0 MB  conda-forge
+    cryptography-3.0           |   py37hb09aad4_0         633 KB  conda-forge
+    libgcc-ng-9.3.0            |      h24d8f2e_15         7.8 MB  conda-forge
+    libgomp-9.3.0              |      h24d8f2e_15         378 KB  conda-forge
+    libstdcxx-ng-9.3.0         |      hdf63c60_15         4.0 MB  conda-forge
+    ncurses-6.2                |       he1b5a44_1         993 KB  conda-forge
+    pip-20.2.2                 |             py_0         1.1 MB  conda-forge
+    python-3.7.8               |h6f2ec95_1_cpython        53.1 MB  conda-forge
+    readline-8.0               |       he28a2e2_2         281 KB  conda-forge
+    setuptools-49.6.0          |   py37hc8dfbb8_0         948 KB  conda-forge
+    sqlite-3.33.0              |       h4cf870e_0         1.4 MB  conda-forge
+    tqdm-4.48.2                |     pyh9f0ad1d_0          53 KB  conda-forge
+    wheel-0.35.1               |     pyh9f0ad1d_0          29 KB  conda-forge
+    zlib-1.2.11                |    h516909a_1007         106 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        76.2 MB
+
+The following NEW packages will be INSTALLED:
+
+  _libgcc_mutex      conda-forge/linux-64::_libgcc_mutex-0.1-conda_forge
+  _openmp_mutex      conda-forge/linux-64::_openmp_mutex-4.5-1_gnu
+  brotlipy           conda-forge/linux-64::brotlipy-0.7.0-py37h8f50634_1000
+  ca-certificates    conda-forge/linux-64::ca-certificates-2020.6.20-hecda079_0
+  certifi            conda-forge/linux-64::certifi-2020.6.20-py37hc8dfbb8_0
+  cffi               conda-forge/linux-64::cffi-1.14.1-py37h2b28604_0
+  chardet            conda-forge/linux-64::chardet-3.0.4-py37hc8dfbb8_1006
+  conda              conda-forge/linux-64::conda-4.8.4-py37hc8dfbb8_2
+  conda-package-han~ conda-forge/linux-64::conda-package-handling-1.7.0-py37h8f50634_4
+  cryptography       conda-forge/linux-64::cryptography-3.0-py37hb09aad4_0
+  idna               conda-forge/noarch::idna-2.10-pyh9f0ad1d_0
+  ld_impl_linux-64   conda-forge/linux-64::ld_impl_linux-64-2.34-hc38a660_9
+  libffi             conda-forge/linux-64::libffi-3.2.1-he1b5a44_1007
+  libgcc-ng          conda-forge/linux-64::libgcc-ng-9.3.0-h24d8f2e_15
+  libgomp            conda-forge/linux-64::libgomp-9.3.0-h24d8f2e_15
+  libstdcxx-ng       conda-forge/linux-64::libstdcxx-ng-9.3.0-hdf63c60_15
+  ncurses            conda-forge/linux-64::ncurses-6.2-he1b5a44_1
+  openssl            conda-forge/linux-64::openssl-1.1.1g-h516909a_1
+  pip                conda-forge/noarch::pip-20.2.2-py_0
+  pycosat            conda-forge/linux-64::pycosat-0.6.3-py37h8f50634_1004
+  pycparser          conda-forge/noarch::pycparser-2.20-pyh9f0ad1d_2
+  pyopenssl          conda-forge/noarch::pyopenssl-19.1.0-py_1
+  pysocks            conda-forge/linux-64::pysocks-1.7.1-py37hc8dfbb8_1
+  python             conda-forge/linux-64::python-3.7.8-h6f2ec95_1_cpython
+  python_abi         conda-forge/linux-64::python_abi-3.7-1_cp37m
+  readline           conda-forge/linux-64::readline-8.0-he28a2e2_2
+  requests           conda-forge/noarch::requests-2.24.0-pyh9f0ad1d_0
+  ruamel_yaml        conda-forge/linux-64::ruamel_yaml-0.15.80-py37h8f50634_1001
+  setuptools         conda-forge/linux-64::setuptools-49.6.0-py37hc8dfbb8_0
+  six                conda-forge/noarch::six-1.15.0-pyh9f0ad1d_0
+  sqlite             conda-forge/linux-64::sqlite-3.33.0-h4cf870e_0
+  tk                 conda-forge/linux-64::tk-8.6.10-hed695b0_0
+  tqdm               conda-forge/noarch::tqdm-4.48.2-pyh9f0ad1d_0
+  urllib3            conda-forge/noarch::urllib3-1.25.10-py_0
+  wheel              conda-forge/noarch::wheel-0.35.1-pyh9f0ad1d_0
+  xz                 conda-forge/linux-64::xz-5.2.5-h516909a_1
+  yaml               conda-forge/linux-64::yaml-0.2.5-h516909a_0
+  zlib               conda-forge/linux-64::zlib-1.2.11-h516909a_1007
+
+
+
+Downloading and Extracting Packages
+pip-20.2.2           | 1.1 MB    | ############################################################################################################################### | 100%
+cryptography-3.0     | 633 KB    | ############################################################################################################################### | 100%
+setuptools-49.6.0    | 948 KB    | ############################################################################################################################### | 100%
+wheel-0.35.1         | 29 KB     | ############################################################################################################################### | 100%
+libgcc-ng-9.3.0      | 7.8 MB    | ############################################################################################################################### | 100%
+sqlite-3.33.0        | 1.4 MB    | ############################################################################################################################### | 100%
+conda-package-handli | 2.0 MB    | ############################################################################################################################### | 100%
+readline-8.0         | 281 KB    | ############################################################################################################################### | 100%
+zlib-1.2.11          | 106 KB    | ############################################################################################################################### | 100%
+ncurses-6.2          | 993 KB    | ############################################################################################################################### | 100%
+tqdm-4.48.2          | 53 KB     | ############################################################################################################################### | 100%
+libstdcxx-ng-9.3.0   | 4.0 MB    | ############################################################################################################################### | 100%
+_openmp_mutex-4.5    | 22 KB     | ############################################################################################################################### | 100%
+certifi-2020.6.20    | 151 KB    | ############################################################################################################################### | 100%
+cffi-1.14.1          | 223 KB    | ############################################################################################################################### | 100%
+libgomp-9.3.0        | 378 KB    | ############################################################################################################################### | 100%
+python-3.7.8         | 53.1 MB   | ############################################################################################################################### | 100%
+conda-4.8.4          | 3.1 MB    | ############################################################################################################################### | 100%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+#
+# To activate this environment, use
+#
+#     $ conda activate cerebra
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+$ conda activate cerebra
+$ cd cerebra/
+$ pip install -e .
+Obtaining file:///root/Downloads/cerebra
+Collecting biopython
+  Downloading biopython-1.77-cp37-cp37m-manylinux1_x86_64.whl (2.3 MB)
+     |████████████████████████████████| 2.3 MB 1.8 MB/s
+Collecting click
+  Downloading click-7.1.2-py2.py3-none-any.whl (82 kB)
+     |████████████████████████████████| 82 kB 1.3 MB/s
+Collecting cython==0.29.13
+  Downloading Cython-0.29.13-cp37-cp37m-manylinux1_x86_64.whl (2.1 MB)
+     |████████████████████████████████| 2.1 MB 33.7 MB/s
+Collecting hgvs
+  Downloading hgvs-1.5.1-py2.py3-none-any.whl (98 kB)
+     |████████████████████████████████| 98 kB 5.6 MB/s
+Collecting ncls
+  Downloading ncls-0.0.53.tar.gz (463 kB)
+     |████████████████████████████████| 463 kB 36.7 MB/s
+Collecting numpy
+  Downloading numpy-1.19.1-cp37-cp37m-manylinux2010_x86_64.whl (14.5 MB)
+     |████████████████████████████████| 14.5 MB 27.5 MB/s
+Collecting pandas
+  Downloading pandas-1.1.0-cp37-cp37m-manylinux1_x86_64.whl (10.5 MB)
+     |████████████████████████████████| 10.5 MB 6.1 MB/s
+Collecting pathos
+  Downloading pathos-0.2.6.zip (219 kB)
+     |████████████████████████████████| 219 kB 5.1 MB/s
+Collecting pyfaidx
+  Downloading pyfaidx-0.5.9.1.tar.gz (32 kB)
+Requirement already satisfied: setuptools>=38.6.0 in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from cerebra==1.1.1) (49.6.0.post20200814)
+Requirement already satisfied: tqdm in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from cerebra==1.1.1) (4.48.2)
+Collecting vcfpy
+  Downloading vcfpy-0.13.0.tar.gz (1.0 MB)
+     |████████████████████████████████| 1.0 MB 27.0 MB/s
+Collecting bioutils<1.0,>=0.4.0
+  Downloading bioutils-0.5.2.post3-py2.py3-none-any.whl (256 kB)
+     |████████████████████████████████| 256 kB 4.2 MB/s
+Collecting biocommons.seqrepo<1.0
+  Downloading biocommons.seqrepo-0.6.2-py2.py3-none-any.whl (31 kB)
+Collecting ipython
+  Downloading ipython-7.17.0-py3-none-any.whl (786 kB)
+     |████████████████████████████████| 786 kB 40.8 MB/s
+Collecting configparser>=3.3.0
+  Downloading configparser-5.0.0-py3-none-any.whl (22 kB)
+Collecting parsley
+  Downloading Parsley-1.3-py2.py3-none-any.whl (88 kB)
+     |████████████████████████████████| 88 kB 4.0 MB/s
+Collecting psycopg2-binary
+  Downloading psycopg2_binary-2.8.5-cp37-cp37m-manylinux1_x86_64.whl (2.9 MB)
+     |████████████████████████████████| 2.9 MB 26.1 MB/s
+Requirement already satisfied: six in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from hgvs->cerebra==1.1.1) (1.15.0)
+Collecting attrs>=17.4.0
+  Using cached attrs-19.3.0-py2.py3-none-any.whl (39 kB)
+Collecting python-dateutil>=2.7.3
+  Downloading python_dateutil-2.8.1-py2.py3-none-any.whl (227 kB)
+     |████████████████████████████████| 227 kB 6.0 MB/s
+Collecting pytz>=2017.2
+  Downloading pytz-2020.1-py2.py3-none-any.whl (510 kB)
+     |████████████████████████████████| 510 kB 27.5 MB/s
+Collecting ppft>=1.6.6.2
+  Downloading ppft-1.6.6.2.zip (106 kB)
+     |████████████████████████████████| 106 kB 5.4 MB/s
+Collecting dill>=0.3.2
+  Downloading dill-0.3.2.zip (177 kB)
+     |████████████████████████████████| 177 kB 25.0 MB/s
+Collecting pox>=0.2.8
+  Downloading pox-0.2.8.zip (128 kB)
+     |████████████████████████████████| 128 kB 30.6 MB/s
+Collecting multiprocess>=0.70.10
+  Downloading multiprocess-0.70.10.zip (2.4 MB)
+     |████████████████████████████████| 2.4 MB 31.6 MB/s
+Requirement already satisfied: requests in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from bioutils<1.0,>=0.4.0->hgvs->cerebra==1.1.1) (2.24.0)
+Collecting yoyo-migrations
+  Downloading yoyo_migrations-7.2.0-py3-none-any.whl (36 kB)
+Collecting requests-html
+  Downloading requests_html-0.10.0-py3-none-any.whl (13 kB)
+Collecting pysam
+  Downloading pysam-0.16.0.1-cp37-cp37m-manylinux1_x86_64.whl (9.9 MB)
+     |████████████████████████████████| 9.9 MB 10.0 MB/s
+Collecting coloredlogs
+  Downloading coloredlogs-14.0-py2.py3-none-any.whl (43 kB)
+     |████████████████████████████████| 43 kB 1.8 MB/s
+Collecting backcall
+  Downloading backcall-0.2.0-py2.py3-none-any.whl (11 kB)
+Collecting jedi>=0.10
+  Downloading jedi-0.17.2-py2.py3-none-any.whl (1.4 MB)
+     |████████████████████████████████| 1.4 MB 26.8 MB/s
+Collecting pexpect; sys_platform != ""win32""
+  Downloading pexpect-4.8.0-py2.py3-none-any.whl (59 kB)
+     |████████████████████████████████| 59 kB 3.6 MB/s
+Collecting decorator
+  Downloading decorator-4.4.2-py2.py3-none-any.whl (9.2 kB)
+Collecting pygments
+  Downloading Pygments-2.6.1-py3-none-any.whl (914 kB)
+     |████████████████████████████████| 914 kB 38.2 MB/s
+Collecting prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0
+  Downloading prompt_toolkit-3.0.6-py3-none-any.whl (354 kB)
+     |████████████████████████████████| 354 kB 4.8 MB/s
+Collecting traitlets>=4.2
+  Using cached traitlets-4.3.3-py2.py3-none-any.whl (75 kB)
+Collecting pickleshare
+  Using cached pickleshare-0.7.5-py2.py3-none-any.whl (6.9 kB)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from requests->bioutils<1.0,>=0.4.0->hgvs->cerebra==1.1.1) (1.25.10)
+Requirement already satisfied: certifi>=2017.4.17 in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from requests->bioutils<1.0,>=0.4.0->hgvs->cerebra==1.1.1) (2020.6.20)
+Requirement already satisfied: idna<3,>=2.5 in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from requests->bioutils<1.0,>=0.4.0->hgvs->cerebra==1.1.1) (2.10)
+Requirement already satisfied: chardet<4,>=3.0.2 in /root/miniconda3/envs/cerebra/lib/python3.7/site-packages (from requests->bioutils<1.0,>=0.4.0->hgvs->cerebra==1.1.1) (3.0.4)
+Collecting tabulate
+  Downloading tabulate-0.8.7-py3-none-any.whl (24 kB)
+Collecting sqlparse
+  Downloading sqlparse-0.3.1-py2.py3-none-any.whl (40 kB)
+     |████████████████████████████████| 40 kB 3.6 MB/s
+Collecting pyquery
+  Downloading pyquery-1.4.1-py2.py3-none-any.whl (22 kB)
+Collecting pyppeteer>=0.0.14
+  Downloading pyppeteer-0.2.2-py3-none-any.whl (145 kB)
+     |████████████████████████████████| 145 kB 22.9 MB/s
+Collecting parse
+  Downloading parse-1.16.0.tar.gz (30 kB)
+Collecting w3lib
+  Downloading w3lib-1.22.0-py2.py3-none-any.whl (20 kB)
+Collecting fake-useragent
+  Downloading fake-useragent-0.1.11.tar.gz (13 kB)
+Collecting bs4
+  Downloading bs4-0.0.1.tar.gz (1.1 kB)
+Collecting humanfriendly>=7.1
+  Downloading humanfriendly-8.2-py2.py3-none-any.whl (86 kB)
+     |████████████████████████████████| 86 kB 7.8 MB/s
+Collecting parso<0.8.0,>=0.7.0
+  Downloading parso-0.7.1-py2.py3-none-any.whl (109 kB)
+     |████████████████████████████████| 109 kB 36.0 MB/s
+Collecting ptyprocess>=0.5
+  Using cached ptyprocess-0.6.0-py2.py3-none-any.whl (39 kB)
+Collecting wcwidth
+  Downloading wcwidth-0.2.5-py2.py3-none-any.whl (30 kB)
+Collecting ipython-genutils
+  Using cached ipython_genutils-0.2.0-py2.py3-none-any.whl (26 kB)
+Collecting cssselect>0.7.9
+  Downloading cssselect-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting lxml>=2.1
+  Downloading lxml-4.5.2-cp37-cp37m-manylinux1_x86_64.whl (5.5 MB)
+     |████████████████████████████████| 5.5 MB 35.7 MB/s
+Collecting appdirs<2.0.0,>=1.4.3
+  Downloading appdirs-1.4.4-py2.py3-none-any.whl (9.6 kB)
+Collecting pyee<8.0.0,>=7.0.1
+  Downloading pyee-7.0.2-py2.py3-none-any.whl (12 kB)
+Collecting websockets<9.0,>=8.1
+  Downloading websockets-8.1-cp37-cp37m-manylinux2010_x86_64.whl (79 kB)
+     |████████████████████████████████| 79 kB 6.5 MB/s
+Collecting beautifulsoup4
+  Downloading beautifulsoup4-4.9.1-py3-none-any.whl (115 kB)
+     |████████████████████████████████| 115 kB 35.1 MB/s
+Collecting soupsieve>1.2
+  Downloading soupsieve-2.0.1-py3-none-any.whl (32 kB)
+Building wheels for collected packages: ncls, pathos, pyfaidx, vcfpy, ppft, dill, pox, multiprocess, parse, fake-useragent, bs4
+  Building wheel for ncls (setup.py) ... done
+  Created wheel for ncls: filename=ncls-0.0.53-cp37-cp37m-linux_x86_64.whl size=1813415 sha256=3b7450600946c3c040c124a71b741d48ae717d8ed2d7f3ce21724d2b3acfc055
+  Stored in directory: /root/.cache/pip/wheels/b9/5a/6e/14e0fa19b2c9749376eb91aa956485565bd4a3e7d37ec438aa
+  Building wheel for pathos (setup.py) ... done
+  Created wheel for pathos: filename=pathos-0.2.6-py3-none-any.whl size=77675 sha256=29d2d541ccdf98754866d6ab3223dc2094f73d2f6b3208c2f634cff01c7d37f0
+  Stored in directory: /root/.cache/pip/wheels/34/c0/d9/580a0af39a46bc51b0ffe4ad8bc09b4ad4a99865d64b3d379d
+  Building wheel for pyfaidx (setup.py) ... done
+  Created wheel for pyfaidx: filename=pyfaidx-0.5.9.1-py3-none-any.whl size=25118 sha256=55a25b9374c3954d5a4b1f8e561cfc98112c26d11d26804faf59cea959504604
+  Stored in directory: /root/.cache/pip/wheels/d8/2b/eb/61b2b24f40d3d68f5a0ec6883aea7e0a6bbc4d4db0707fe2d3
+  Building wheel for vcfpy (setup.py) ... done
+  Created wheel for vcfpy: filename=vcfpy-0.13.0-py2.py3-none-any.whl size=34278 sha256=2dc6f9a6d886f5ad9c919c81c0d71c0bbde454950ec2f6f8a29ac91257187cfb
+  Stored in directory: /root/.cache/pip/wheels/7b/f4/07/5136706296f1b804543a7db4e3943cda0a8ac581d9b7adb2ae
+  Building wheel for ppft (setup.py) ... done
+  Created wheel for ppft: filename=ppft-1.6.6.2-py3-none-any.whl size=64744 sha256=fa2552f98c3e5dc1a94caf5c6a03f62acaf0e62714c75cfedac5e1a38c885701
+  Stored in directory: /root/.cache/pip/wheels/b0/6d/96/a352a1cb50c4a197c05ac0ac95c4eaeed92874b8737497af34
+  Building wheel for dill (setup.py) ... done
+  Created wheel for dill: filename=dill-0.3.2-py3-none-any.whl size=78912 sha256=7ddc729ce73326712ddfe2c8941a30350ff5be47b9132c91135551c9ef2da3d3
+  Stored in directory: /root/.cache/pip/wheels/72/6b/d5/5548aa1b73b8c3d176ea13f9f92066b02e82141549d90e2100
+  Building wheel for pox (setup.py) ... done
+  Created wheel for pox: filename=pox-0.2.8-py3-none-any.whl size=28288 sha256=5a6acd38217865b6755fc9dee7fb2545a8d35f38a2fbc6ed0c236cd636aea807
+  Stored in directory: /root/.cache/pip/wheels/3d/a8/3a/712ebffd829266bcb1be24c2617849960fd885aa5f81db07dd
+  Building wheel for multiprocess (setup.py) ... done
+  Created wheel for multiprocess: filename=multiprocess-0.70.10-py3-none-any.whl size=108187 sha256=38e7e9f535e621d9bb76a5879ae5747ac45b150f96d30af53dfe2016e2d34dcb
+  Stored in directory: /root/.cache/pip/wheels/69/a0/aa/14379d16112299afa0b5f8464971648ea2a660a8f6aa1ca088
+  Building wheel for parse (setup.py) ... done
+  Created wheel for parse: filename=parse-1.16.0-py3-none-any.whl size=23996 sha256=5729511ef07faf0fa557ec1b296e9fcb40b533afda8bc3f701ead8e4536642a9
+  Stored in directory: /root/.cache/pip/wheels/37/38/13/bc4f6e36a416d53588e5957b870d23bc76aa1710dc08719ee4
+  Building wheel for fake-useragent (setup.py) ... done
+  Created wheel for fake-useragent: filename=fake_useragent-0.1.11-py3-none-any.whl size=13486 sha256=9edc66760848d1676043770fbfce6a9830f771977890fd150a3a36b1c2e0c42a
+  Stored in directory: /root/.cache/pip/wheels/ed/f7/62/50ab6c9a0b5567267ab76a9daa9d06315704209b2c5d032031
+  Building wheel for bs4 (setup.py) ... done
+  Created wheel for bs4: filename=bs4-0.0.1-py3-none-any.whl size=1273 sha256=f5c07aae05c7fd3dc0a90672b8298acb7ab179fb1e2343922b4457d23a2344dd
+  Stored in directory: /root/.cache/pip/wheels/0a/9e/ba/20e5bbc1afef3a491f0b3bb74d508f99403aabe76eda2167ca
+Successfully built ncls pathos pyfaidx vcfpy ppft dill pox multiprocess parse fake-useragent bs4
+Installing collected packages: numpy, biopython, click, cython, attrs, bioutils, tabulate, sqlparse, yoyo-migrations, cssselect, lxml, pyquery, appdirs, pyee, websockets, pyppeteer, parse, w3lib, fake-useragent, soupsieve, beautifulsoup4, bs4, requests-html, pysam, humanfriendly, coloredlogs, biocommons.seqrepo, backcall, parso, jedi, ptyprocess, pexpect, decorator, pygments, wcwidth, prompt-toolkit, ipython-genutils, traitlets, pickleshare, ipython, configparser, parsley, psycopg2-binary, hgvs, ncls, python-dateutil, pytz, pandas, ppft, dill, pox, multiprocess, pathos, pyfaidx, vcfpy, cerebra
+  Running setup.py develop for cerebra
+Successfully installed appdirs-1.4.4 attrs-19.3.0 backcall-0.2.0 beautifulsoup4-4.9.1 biocommons.seqrepo-0.6.2 biopython-1.77 bioutils-0.5.2.post3 bs4-0.0.1 cerebra click-7.1.2 coloredlogs-14.0 configparser-5.0.0 cssselect-1.1.0 cython-0.29.13 decorator-4.4.2 dill-0.3.2 fake-useragent-0.1.11 hgvs-1.5.1 humanfriendly-8.2 ipython-7.17.0 ipython-genutils-0.2.0 jedi-0.17.2 lxml-4.5.2 multiprocess-0.70.10 ncls-0.0.53 numpy-1.19.1 pandas-1.1.0 parse-1.16.0 parsley-1.3 parso-0.7.1 pathos-0.2.6 pexpect-4.8.0 pickleshare-0.7.5 pox-0.2.8 ppft-1.6.6.2 prompt-toolkit-3.0.6 psycopg2-binary-2.8.5 ptyprocess-0.6.0 pyee-7.0.2 pyfaidx-0.5.9.1 pygments-2.6.1 pyppeteer-0.2.2 pyquery-1.4.1 pysam-0.16.0.1 python-dateutil-2.8.1 pytz-2020.1 requests-html-0.10.0 soupsieve-2.0.1 sqlparse-0.3.1 tabulate-0.8.7 traitlets-4.3.3 vcfpy-0.13.0 w3lib-1.22.0 wcwidth-0.2.5 websockets-8.1 yoyo-migrations-7.2.0
+
+```",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/105
+MDU6SXNzdWU2ODEzMjcwODc=,JoSS Review: Functionality,CLOSED,2020-08-18T20:39:07Z,2020-09-03T15:21:32Z,2020-09-03T15:21:32Z,"With regard to the ongoing review for your [JoSS submission](https://github.com/openjournals/joss-reviews/issues/2432), here are my notes/questions about the functionality of the package:
+
+1. The hyperlink to [USAGE.md(https://github.com/czbiohub/cerebra/blob/master/docs/USAGE.md) within your [README.md](https://github.com/czbiohub/cerebra/blob/master/README.md) is not pointing to the correct place.
+2. This might clear up my 3rd question: What does the `report_coverage` argument for `find-peptide-variants` do and why does it take an integer? If the argument is expecting a boolean, you can tell it to do so as such. If it has a range of options, those should be listed in the `-h` prompt.
+3. If I used `1` for `report_coverage`, I got screen full of output that looked like `<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>`. This looks like somewhere in the code there is a `print()` on an object that does not have a representative `__repr__` or `__str__` methods. Therefore, to anyone that is not knee-deep in the code as a developer may be, this output means nothing to them. Consider defining those methods or making the output more meaningful.
+4. What kind of file format is the output of `find-peptide-variants`? If it is a JSON (which I think you describe in the readme [section](https://github.com/czbiohub/cerebra#what-makes-cerebra-different-from-traditional-vcf-parsers)), maybe adding the `.json` suffix to the file path that the user supplies would be helpful. However, my `outfile` produced below does not seem to follow traditional JSON format (I see no brackets).
+
+Below is my command history as detailed in your [README.md](https://github.com/czbiohub/cerebra/blob/master/README.md):
+
+```bash
+$ cerebra -h
+Usage: cerebra  <command>
+
+  a tool for fast and accurate summarizing of variant calling format (VCF)
+  files
+
+Options:
+  -h, --help  Show this message and exit.
+
+Commands:
+  count-variants         count total number of variants in each sample, and...
+  find-peptide-variants  report peptide-level SNPs and indels in each...
+  germline-filter        filter out common SNPs/indels between...
+$ cerebra germline-filter -h
+Usage: cerebra germline-filter [OPTIONS]
+
+  filter out common SNPs/indels between control/germline samples and samples
+  of interest
+
+Options:
+  --processes INTEGER
+  --control_path TEXT       [required]
+  --experimental_path TEXT  [required]
+  --metadata TEXT           [required]
+  --outdir TEXT             [required]
+  -h, --help                Show this message and exit.
+$ cerebra count-variants -h
+Usage: cerebra count-variants [OPTIONS] FILES...
+
+  count total number of variants in each sample, and report on a per-gene
+  basis
+
+Options:
+  --processes INTEGER
+  --cosmicdb TEXT      [required]
+  --refgenome TEXT     [required]
+  --outfile TEXT       [required]
+  -h, --help           Show this message and exit.
+$ cerebra find-peptide-variants -h
+Usage: cerebra find-peptide-variants [OPTIONS] INPUT_FILES...
+
+  report peptide-level SNPs and indels in each sample, and associated
+  coverage
+
+Options:
+  --processes INTEGER        number of processes to use for computation
+  --cosmicdb TEXT            optional path to cosmic db file (.tsv)
+  --annotation TEXT          path to genome annotation (.gtf)  [required]
+  --genomefa TEXT            path to full genome sequences (.fasta)
+                             [required]
+
+  --report_coverage INTEGER  do you want to report coverage information?
+                             [required]
+
+  --output_path TEXT         path to output file  [required]
+  -h, --help                 Show this message and exit.
+$ cerebra germline-filter --processes 2 --control_path ./germline/ --experimental_path ./experimental/ --metadata meta.csv --outdir ./gl_out/
+Running germline filter...
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00, 18.90it/s]
+Done!
+$ cat A1.vcf
+##fileformat=VCFv4.2
+#CHROM  POS ID  REF ALT QUAL    FILTER  INFO
+chr1    1   .   A   T,AT    0   .   .
+chr1    5   .   C   T,G 0   .   .
+chr1    18  .   GG  TAC,G,GC    0   .   .
+$ cerebra find-peptide-variants ./vcf/* --processes 2 --cosmicdb cosmic_min.tsv --annotation gencode_min.gtf --genomefa GRCh38_limited_chr7.fa --report_coverage 1 --output_path ./outfile
+Beginning setup (this may take several minutes!)
+Loading COSMIC database...
+Loading genome annotation...
+Loading genome sequences...
+Building genome trees...
+Setup complete.
+Finding mutations...
+  0%|                                                                                                                                                                                         | 0/5 [00:00<?, ?it/s]<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+<class 'hgvs.edit.AASub'> <class 'hgvs.edit.AARefAlt'>
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00, 19.93it/s]
+Writing file...
+Done!
+$ cat outfile
+,EGFR
+A1,""['ENSP00000275493.2:p.(Leu858Arg),[2:0]']""
+A2,""['ENSP00000275493.2:p.(Leu858Arg),[3:2:1]', 'ENSP00000275493.2:p.(Leu858Arg),[0:2]']""
+A3,[]
+A4,[]
+A5,[]
+```",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/106
+MDU6SXNzdWU2ODEzMzQxMTM=,JoSS Review: Automated Tests,CLOSED,2020-08-18T20:50:32Z,2020-09-03T15:22:38Z,2020-09-03T15:22:38Z,"With regard to the ongoing review for your [JoSS submission](https://github.com/openjournals/joss-reviews/issues/2432), here are my notes about the automated testing of the package:
+
+Coverage appears to be fine. Tests can be somewhat slow, but that is understandable. I have nothing further to add here.
+
+```bash
+$ pytest --cov=. tests/
+=============================================================================================== test session starts ================================================================================================
+platform linux -- Python 3.7.8, pytest-6.0.1, py-1.9.0, pluggy-0.13.1
+rootdir: /root/Downloads/cerebra
+plugins: cov-2.10.1
+collected 49 items
+
+tests/test_commandline.py ...                                                                                                                                                                                [  6%]
+tests/test_count_variants.py s.....                                                                                                                                                                          [ 18%]
+tests/test_count_variants_adnl.py .....                                                                                                                                                                      [ 28%]
+tests/test_find_peptide_variants_cosmic_setup.py .                                                                                                                                                           [ 30%]
+tests/test_find_peptide_variants_exceptions.py ...                                                                                                                                                           [ 36%]
+tests/test_find_peptide_variants_modules.py ...                                                                                                                                                              [ 42%]
+tests/test_find_peptide_variants_output.py ..                                                                                                                                                                [ 46%]
+tests/test_find_peptide_variants_runtime.py ...                                                                                                                                                              [ 53%]
+tests/test_germline_filter.py ...                                                                                                                                                                            [ 59%]
+tests/test_os_utils.py ...                                                                                                                                                                                   [ 65%]
+tests/test_protein_variant_predictor.py ...                                                                                                                                                                  [ 71%]
+tests/test_protein_variant_predictor_cosmic_setup.py .                                                                                                                                                       [ 73%]
+tests/test_utils.py .....s.......                                                                                                                                                                            [100%]
+
+================================================================================================= warnings summary =================================================================================================
+/root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:30
+  /root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:30: DeprecationWarning: The usage of `cmp` is deprecated and will be removed on or after 2021-06-01.  Please use `eq` and `order` instead.
+    @attr.s(slots=True, repr=False, cmp=False)
+
+/root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:81
+  /root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:81: DeprecationWarning: The usage of `cmp` is deprecated and will be removed on or after 2021-06-01.  Please use `eq` and `order` instead.
+    @attr.s(slots=True, repr=False, cmp=False)
+
+/root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:206
+  /root/miniconda3/envs/cerebra/lib/python3.7/site-packages/hgvs/location.py:206: DeprecationWarning: The usage of `cmp` is deprecated and will be removed on or after 2021-06-01.  Please use `eq` and `order` instead.
+    @attr.s(slots=True, repr=False, cmp=False)
+
+/root/miniconda3/envs/cerebra/lib/python3.7/site-packages/Bio/Alphabet/__init__.py:27
+  /root/miniconda3/envs/cerebra/lib/python3.7/site-packages/Bio/Alphabet/__init__.py:27: PendingDeprecationWarning: We intend to remove or replace Bio.Alphabet in 2020, ideally avoid using it explicitly in your code. Please get in touch if you will be adversely affected by this. https://github.com/biopython/biopython/issues/2046
+    PendingDeprecationWarning,
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+
+----------- coverage: platform linux, python 3.7.8-final-0 -----------
+Name                                                   Stmts   Miss  Cover
+--------------------------------------------------------------------------
+cerebra/__init__.py                                        3      0   100%
+cerebra/commandline.py                                    15      2    87%
+cerebra/count_variants.py                                 92      3    97%
+cerebra/find_peptide_variants.py                         142      1    99%
+cerebra/germline_filter.py                                61      2    97%
+cerebra/os_utils.py                                       24      4    83%
+cerebra/protein_variant_predictor.py                     138     10    93%
+cerebra/utils.py                                         234     28    88%
+setup.py                                                  12     12     0%
+tests/test_commandline.py                                 17      0   100%
+tests/test_count_variants.py                              85     26    69%
+tests/test_count_variants_adnl.py                         75      2    97%
+tests/test_find_peptide_variants_cosmic_setup.py          35      2    94%
+tests/test_find_peptide_variants_exceptions.py            83      6    93%
+tests/test_find_peptide_variants_modules.py               60      6    90%
+tests/test_find_peptide_variants_output.py                33      1    97%
+tests/test_find_peptide_variants_runtime.py               68      0   100%
+tests/test_germline_filter.py                             58      1    98%
+tests/test_os_utils.py                                    18      0   100%
+tests/test_protein_variant_predictor.py                   48      1    98%
+tests/test_protein_variant_predictor_cosmic_setup.py      49      2    96%
+tests/test_utils.py                                      119      5    96%
+--------------------------------------------------------------------------
+TOTAL                                                   1469    114    92%
+
+============================================================================== 47 passed, 2 skipped, 4 warnings in 370.78s (0:06:10) ===============================================================================
+```",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/107
+MDU6SXNzdWU2ODEzMzY2NjI=,JoSS Review: Community Guidelines,CLOSED,2020-08-18T20:55:25Z,2020-10-26T17:09:00Z,2020-10-26T17:09:00Z,"With regard to the ongoing review for your [JoSS submission](https://github.com/openjournals/joss-reviews/issues/2432), here is a thought regarding your Community Guidelines requirement.
+
+I see you have a [CONTRIBUTING.md](https://github.com/czbiohub/cerebra/blob/master/docs/CONTRIBUTING.md), but it also may go a long way to create some Issue/bug/feature templates. You can find the process for setting them up here: https://docs.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository",betteridiot,https://github.com/czbiohub-sf/cerebra/issues/108
+MDU6SXNzdWU5NTk1NTk5NzM=,count-variants not runnable without specifying cosmicdb,OPEN,2021-08-03T22:08:51Z,2022-06-20T10:11:16Z,,"`count-variants` module cannot be run without specifying a path to a cosmic database file
+
+this is a relatively easy fix",lincoln-harris,https://github.com/czbiohub-sf/cerebra/issues/110

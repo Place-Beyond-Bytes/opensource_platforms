@@ -1,0 +1,56 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzOTgxNTczODg=,provide support for mm10,OPEN,2019-01-11T07:04:26Z,2021-03-17T17:17:30Z,,"Hi! ChIC is a very useful package. However, as long as it does not support mm10, I cannot use it. Could you add support for mm10? 
+Many thanks in advance!",rgraus,https://github.com/carmencita/ChIC/issues/2
+I_kwDOB09x0M4_vaUB,"Customize the plots (e.g., change colour; merge samples)",OPEN,2021-12-02T10:41:20Z,2021-12-02T10:41:20Z,,"Hi and thanks for developing this tool, it's very well done and easy to use!
+
+I was wondering whether you have any suggestions on how to customize the plots. For example, when I run the ChIC analysis for several samples, it would be nice to be able to change the colour of the plots (i.e., a different colour for each sample). Also, I would really like to be able to merge some of the samples in one single plot (e.g.,  to emphasize differences/similarities among ChIP experiments). Perhaps this is easy to accomplish and I'm missing something, but any suggestion on how to do this would be great!
+
+Thanks again for your work!
+Best,
+Matteo",MatteoT23,https://github.com/carmencita/ChIC/issues/13
+I_kwDOB09x0M5CHJWc,negativa values error,OPEN,2022-01-20T11:12:48Z,2022-01-20T11:12:48Z,,"Hi, 
+thank you for your very useful tool, but unfortunately, while using the chicWrapper function, I sometimes encounter the following error message:
+
+Error in densum(ad, bw = bandwidth, from = rng[1], to = rng[2], return.x = T, : range extends into negative values
+Traceback:
+
+1. chicWrapper(chipName = ""1_KO_K4_D0_S6_R1_filtered"", inputName = ""1_KO_INP_D0_S3_R1"", 
+ .     target = ""H3K4me3"", read_length = 74, annotationID = ""hg38"", 
+ .     mc = 15)
+2. createMetageneProfile(selectedTagsChip = EM_Results$SelectedTagsChip, 
+ .     selectedTagsInput = EM_Results$SelectedTagsInput, smoothed.densityChip = smoothed.densityChip, 
+ .     smoothed.densityInput = smoothed.densityInput, tag.shift = finalTagshift, 
+ .     annotationID = annotationID, debug = debug, mc = mc)
+3. spp::get.smoothed.enrichment.mle(selectedTagsChip, selectedTagsInput, 
+ .     background.density.scaling = T, bandwidth = smoothingBandwidth, 
+ .     step = smoothingStep, tag.shift = tag.shift)
+4. get.smoothed.tag.density(signal.tags, rngl = rngl, ..., scale.by.dataset.size = F)
+5. lapply(chrl, function(chr) {
+ .     ad <- abs(signal.tags[[chr]] + tag.shift)
+ .     rng <- NULL
+ .     if (!is.null(rngl)) {
+ .         rng <- rngl[[chr]]
+ .     }
+ .     if (is.null(rng)) {
+ .         rng <- range(ad)
+ .     }
+ .     ds <- densum(ad, bw = bandwidth, from = rng[1], to = rng[2], 
+ .         return.x = T, step = step)
+ .     if (!is.null(control.tags)) {
+ .         if (!is.null(control.tags[[chr]])) {
+ .             bsd <- densum(abs(control.tags[[chr]] + tag.shift), 
+ .                 bw = bandwidth, from = rng[1], to = rng[2], return.x = F, 
+ .                 step = step)
+ .             ds$y <- ds$y - bsd * bg.weight
+ .         }
+ .     }
+ .     return(data.frame(x = seq(ds$x[1], ds$x[2], by = step), y = den.scaling * 
+ .         ds$y))
+ . })
+6. FUN(X[[i]], ...)
+7. densum(ad, bw = bandwidth, from = rng[1], to = rng[2], return.x = T, 
+ .     step = step)
+8. stop(""range extends into negative values"")
+
+
+I would be very grateful if you could you somehow fix that.",MariaRosariaNucera,https://github.com/carmencita/ChIC/issues/14

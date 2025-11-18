@@ -1,0 +1,822 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMDQ4MTA1MjA=,can't load HTSLib Shared library despite it being on the $PATH; no config file to modify,CLOSED,2015-09-04T01:10:21Z,2015-09-04T16:21:38Z,2015-09-04T16:08:59Z,"Hi,
+
+I'm excited to use your tool on some of my data. However, I have an error that I can't figure out how to solve.
+
+Here is the output I see:
+
+```
+$ ./giremi
+giremi: error while loading shared libraries: libhts.so.1: cannot open shared object file: No such file or directory
+```
+
+However, my $PATH variable includes the location of this file:
+
+```
+$ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/lib
+$ ls /usr/local/lib/libhts.so.1
+/usr/local/lib/libhtso.so.1
+```
+
+Your README.md says `Please make sure your dynamic library path in your configuration file includes the directory in which HTSlib is installed`, but I don't see what configuration file I'm supposed to be modifying, and I don't know how to recompile the giremi script from source.
+
+Let me know how I can solve this issue.
+
+Thanks,
+Warren
+",warrenmcg,https://github.com/zhqingit/giremi/issues/1
+MDU6SXNzdWUxMTgyNTk5NzQ=,Serious error in giremi.r ,OPEN,2015-11-22T12:11:58Z,2015-11-26T05:51:01Z,,"Because several lines in `*.Rout` have only 23 columns, error occurred at the following code in `giremi.r`:
+
+```
+dat <- read.table(file=finput,header=T,comment.char="""")
+```
+
+Two examples of lines with only 23 columns are as follows:
+
+```
+3    51241928        I       0       Inte    N       N       N       N       0       0       0.000000        -1      -1.000000       -1.000000e+00   0.500000        0       0       0.000000                0       0       0       0
+
+# Corresponding VCF entry
+3       51241928        .       A       G       165     PASS    DP=28;VDB=0.248536;SGB=-0.680642;RPB=0.247299;MQB=1;MQSB=1;BQB=0.00241324;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=12,2,10,2;MQ=50    GT:PL:DP:DV:SP:DP4:DPR  0/1:198,0,243:26:12:0:12,2,10,2:14,12
+```
+
+```
+4    61225437        I       0       Inte    A       C       C       N       0       0       0.000000        -1      -1.000000       -1.000000e+00   0.500000        0       0       0.000000                0       0       0       0
+
+# Corresponding VCF entry
+4       61225437        .       A       T       17.3338 PASS    DP=17;VDB=0.0279572;SGB=-0.511536;RPB=0.979844;MQB=1;MQSB=1;BQB=0.990991;MQ0F=0;ICB=1;HOB=0.5;AC=1;AN=2;DP4=7,6,2,1;MQ=50       GT:PL:DP:DV:SP:DP4:DPR  0/1:52,0,252:16:3:0:7,6,2,1:13,3
+```
+
+Could you guess the cause of this error?
+",yuifu,https://github.com/zhqingit/giremi/issues/2
+MDU6SXNzdWUxMjk1NzUyMjA=,About SNP in Intergenic Region,OPEN,2016-01-28T20:43:36Z,2018-03-20T15:30:34Z,,"It seems that the software cannot perform MI test (first step) on the SNP in the intergenic region, but the methods in the first step is gene-independent based on my understanding. Some species, such as pig and chicken, may not have good gene annotation as human, so many de novo SNPs can be detected in regions without annotated genes, which are showed as intergenic snps in my input files. Could you please fix it?
+",N/A,https://github.com/zhqingit/giremi/issues/3
+MDU6SXNzdWUxMzMwODc3ODY=,N's in Output File,OPEN,2016-02-11T21:07:01Z,2016-03-14T04:34:19Z,,"Dr. Zhang,
+
+I'm Dr. Taylor's student at CHOP. We had been communicating via email, but your ucla address seems to be down. 
+
+I've run giremi on several samples, and I'm running into a problem. The program stops short of generating the 'ifRNAE' column. This is likely related to the fact that in the output file, there are only N's in the columns refB, upB, downB and majorB, even though the corresponding positions are not N's. Do you know what might be causing this issue?
+
+The list of SNV's I made looks like this:
+
+chr1    87278   87279   Inte    0   #
+
+chr1    87286   87287   Inte    0   #
+
+chr1    87313   87314   Inte    0   #
+
+chr1    91013   91014   Inte    0   #
+
+chr1    91038   91039   Inte    0   #
+
+chr1    91081   91082   Inte    0   #
+
+chr1    91094   91095   Inte    0   #
+
+chr1    128867  128868  Inte    0   #
+
+chr1    128868  128869  Inte    0   #
+
+chr1    233473  233474  Inte    0   #
+
+Thanks, Bobby
+",doughertyr,https://github.com/zhqingit/giremi/issues/4
+MDU6SXNzdWUxMzU5OTM0MzM=,IfRNAE Column not generating,OPEN,2016-02-24T08:37:33Z,2016-02-26T02:34:55Z,,"I have been trying to run Giremi but I cant't seem to figure out how to get it to work properly.
+In my output everything seems fine as far as I can tell but there is no ""IfRNAE"" column and no ""RNAE_t"" column. I'm a bit new to the subject so please excuse if I'm making some huge mistake.
+
+I'm running Giremi with a fasta ref file from GRC the first line looks like this: 
+
+> 1 dna:chromosome chromosome:GRCh37:1:1:249250621:1
+
+The RNA_seq data that is the bam file inserted into Giremi I received from my professor it looks like this: 
+[head_of_RNA-seq.txt](https://github.com/zhqingit/giremi/files/144119/head_of_RNA-seq.txt)
+
+The SNV file I'm using I created from what I believe to be a standard SNP data set, that file is called dbsnp_142.GRCh38.vcf, but in this file there were no gene names mentioned but everything else required of this input file seemed to be present. As I'm new to this subject the fact that this data is missing in this file makes me wonder if I'm not making some huge misinterpretation of how to use this file. 
+
+The output I get from Giremi is: 
+[head_out.txt](https://github.com/zhqingit/giremi/files/144138/head_out.txt)
+and the tekst: 
+[mpileup] 1 samples in 1 input files 
+meanMI:0.007311 sdMI:0.017326
+
+Thank you in advance.
+
+best, 
+Bram
+",BramUni,https://github.com/zhqingit/giremi/issues/5
+MDU6SXNzdWUxMzY2ODkzNDM=,Error when run giremi.r,OPEN,2016-02-26T12:50:23Z,2017-07-10T03:58:54Z,,"When I run giremi.pl, I will get an error in the *.Rout file. The error message is:
+Error in data.frame(..., check.names = FALSE) : 
+  参数值意味着不同的行数: 0, 1
+Calls: cbind -> cbind -> data.frame
+And here is my SNV list:
+chr21   47739577    47739578    A   0   -
+chr21   47739643    47739644    B   0   -
+chr21   47739646    47739647    C   0   -
+chr21   47739723    47739724    D   0   -
+chr21   47739724    47739725    E   0   -
+chr21   47739763    47739764    F   0   -
+chr21   47740294    47740295    G   0   -
+chr21   47741149    47741150    H   0   -
+chr21   47741220    47741221    I   0   -
+The output of giremi(the executable file) is:
+chr coor    strand  ifsnp   gene    refB    upB downB   majorB  majorN  totN    majorR  ifmi    mi  mip ar  ifneg   iflm    lmp type    A   C   G   T
+chr21   47739578    -   0   A   T   C   G   T   14  17  0.823529    2   0.095463    0.000000e+00    0.500000    0   0   0.000000    AG  0   3   0   14
+chr21   47739644    -   0   B   T   C   A   T   14  20  0.700000    4   0.262167    0.000000e+00    0.500000    0   0   0.000000    AG  0   6   0   14
+chr21   47739647    -   0   C   T   C   A   C   12  20  0.600000    4   0.173686    0.000000e+00    0.500000    0   0   0.000000    AG  0   12  0   8
+chr21   47739724    -   0   D   T   A   T   T   6   8   0.750000    4   0.167866    0.000000e+00    0.500000    0   0   0.000000    AG  0   2   0   6
+chr21   47739725    -   0   E   T   T   G   T   5   8   0.625000    4   0.256663    0.000000e+00    0.500000    0   0   0.000000    AG  0   3   0   5
+chr21   47739764    -   0   F   T   A   T   T   5   7   0.714286    2   0.151391    0.000000e+00    0.500000    0   0   0.000000    AG  0   2   0   5
+chr21   47740295    -   0   G   T   G   G   T   8   12  0.666667    -1  -1.000000   -1.000000e+00   0.500000    0   0   0.000000    AG  0   4   0   8
+chr21   47741150    -   0   H   T   C   T   T   33  36  0.916667    1   0.278906    0.000000e+00    0.500000    0   0   0.000000    AG  0   3   0   33
+chr21   47741221    -   0   I   T   C   A   T   52  57  0.912281    1   0.278906    0.000000e+00    0.500000    0   0   0.000000    AG  0   5   0   52
+Would you mind to help me to figure it out?
+",liyao001,https://github.com/zhqingit/giremi/issues/6
+MDU6SXNzdWUxMzcyNjY0NTg=,Can you provide a set of sample input file?,OPEN,2016-02-29T14:16:00Z,2016-03-02T04:34:26Z,,"Hi Qing,
+I've been trying to run giremi, but I'm not able to figure out how to get it to work properly. Unlike other issuse, I always get a ""meanMI: -nan sdMI: -nan"", and bases near SNV sites are not 'N'. So would you mind to provide a demo data for the -f, -l option and the bam file? I think this will be very helpful for us to run giremi.
+
+Best,
+Thurber
+",bighole1972,https://github.com/zhqingit/giremi/issues/7
+MDU6SXNzdWUxNDA4ODQxODI=,Error while running giremi.r,CLOSED,2016-03-15T06:12:07Z,2016-03-21T04:12:50Z,2016-03-21T04:12:50Z,"Hi Qing,
+
+I am also getting error while running giremi.r:
+
+Error in data.frame(..., check.names = FALSE) : 
+  arguments imply differing number of rows: 0, 1
+Calls: cbind -> cbind -> data.frame
+Execution halted
+
+I have attached my giremi output files.  Please help!
+
+[giremi_output.Rout.txt](https://github.com/zhqingit/giremi/files/173348/giremi_output.Rout.txt)
+
+[giremi_output.zip](https://github.com/zhqingit/giremi/files/173350/giremi_output.zip)
+",narangsign,https://github.com/zhqingit/giremi/issues/8
+MDU6SXNzdWUxNDIxNDM1NTM=,error:Can't find snv in ss!i,OPEN,2016-03-20T09:13:44Z,2016-03-21T07:02:19Z,,"Hi Qing.
+
+I made a input.vcf containing about 660000 SNVs and about 15% were in dbSNP.
+
+I got an error while running giremi:
+
+```
+             [mpileup] 1 samples in 1 input files
+             error:Can't find snv in ss!i
+```
+
+Does it mean snv was not found in .bam file?
+
+Also, I made a small input.vcf from the large vcf, it contains about 20000 SNVs. GIREMI seems to run well. 
+
+Best.
+Li
+",Angelven,https://github.com/zhqingit/giremi/issues/9
+MDU6SXNzdWUxNDMwMDg4ODY=,issues with the error while loading shared libraries: libhts.so.1(already set the LD_LIBRARY_PATH),OPEN,2016-03-23T16:23:58Z,2016-05-13T16:13:19Z,,"Hi Dr Zhang,
+         I am trying to use the giremi program, but get the following error:
+         ""error while loading shared libraries: libhts.so.1: cannot open shared object file: No such file or directory"".
+         I have already set the LD_LIBRARY_PATH in the .bashrc file:
+         LD_LIBRARY_PATH=/usr/local/lib/
+         But it doesn't work.
+         How could I solve this issue?
+Best,
+Mengyi
+",mengysun,https://github.com/zhqingit/giremi/issues/10
+MDU6SXNzdWUxNDUyNTc3NjY=,strand in SNV file,OPEN,2016-04-01T18:54:57Z,2016-04-04T22:05:05Z,,"Hi Qing,
+
+I was wondering how you define the ""strand"" in the SNV file. I run the GATK pipeline for RNA-Seq, and extract the SNV locations, and the dbsnp membership flags. but it is not clear how you define other columns in SNV file especially the ""strand"". I would appreciate if you could help on this.
+
+Best,
+Mohammad
+",msahraeian,https://github.com/zhqingit/giremi/issues/11
+MDU6SXNzdWUxNDY4MTkyMjY=,-bash: giremi: cannot execute binary file,OPEN,2016-04-08T05:37:32Z,2016-04-09T00:25:19Z,,"After I download and unzip the giremi software(version 0.2.1). I got three files name ""giremi"" ""giremi.r"" and ""README.md"", all of it are binary file that I couldn't open it. And I had add the directory to environment  PATH. But after I run command 'giremi' or 'giremi -h' or 'giremi -help', it give me the error message ""-bash: giremi: cannot execute binary file"", I had search the error message in google, but I found nothing about it. Could you tell me where I take a mistake? 
+",HungerNature,https://github.com/zhqingit/giremi/issues/12
+MDU6SXNzdWUxNDc3ODM5MTE=,Segmentation fault (core dumped),OPEN,2016-04-12T15:16:25Z,2016-04-14T06:29:51Z,,"Hi Qing,
+
+When I run giremi, I got the following error:
+Segmentation fault (core dumped)
+
+If I reduce the number of SNVs to < 1,000, it did not output such error. But if the number of SNVs is greater than 1,000, it will give the above error. Could you tell me how to fix this? Moreover, I also did not get the column of IfRNAE in the results. Thank you very much!
+
+All the best,
+
+Geng
+",chengeng,https://github.com/zhqingit/giremi/issues/13
+MDU6SXNzdWUxNTI0NTc5MTM=,Segmentation fault,OPEN,2016-05-01T22:03:59Z,2016-05-03T21:56:22Z,,"Hello Qing,
+
+I can't start Giremi due to segmentation fault occurring at the very beginning of the run.
+My command is following:
+./giremi -f /home/schukinai/research/hg19.fa -l ENCFF001SGE.fixed.M.grm -o giremi_K562_test.res /Johnny/shchukinai/ENCFF001SGE.purified.fixed.bam
+SNV file is attached.
+
+Could you help me with this problem? Thank you!
+
+Best,
+Ira
+
+[ENCFF001SGE.fixed.M.txt](https://github.com/zhqingit/giremi/files/244360/ENCFF001SGE.fixed.M.txt)
+",IraShch,https://github.com/zhqingit/giremi/issues/14
+MDU6SXNzdWUxNTQyNDY3NzY=,Problem in file.res.out : dat.pos empty,OPEN,2016-05-11T13:42:29Z,2016-05-19T16:26:37Z,,"Dear all,
+
+I try to use GIREMI on my RNAseq data with the simple command :
+
+giremi -f genome.fasta -l panel.txt -o file.res  A11_aligned_sort.bam
+
+and I have always the same error : 
+
+cbind(dat.pos[,c(""upstream_1base"",""downstream_1base"")],abs(dat.pos[,""major_ratio""]-dat.pos[,""estimated_allelic_ratio""]),1)
+Erreur dans data.frame(..., check.names = FALSE) : 
+  les arguments impliquent des nombres de lignes différents : 0, 1
+Calls: cbind -> cbind -> data.frame
+Exécution arrêtée
+
+I understand than the table dat.pos in giremi.r is empty because i have a problem at the line : 
+dat[rownames(subset(dat,pvalue_MI>0 & pvalue_MI <= 0.05)),""ifRNAE""]= 1
+-> But I don't have lines with the condition : pvalue_MI>0 & pvalue_MI <= 0.05...
+
+The two values on screen ""meanMI"" and ""sdMI"" seem correct :
+meanMI:0.107369 sdMI:0.239185
+
+Is it possible that this is a problem with the coverage in my bam file ?
+
+Best,
+Stephanie
+",stoumoi,https://github.com/zhqingit/giremi/issues/15
+MDU6SXNzdWUxNTQyOTEwNzk=,Segmentation fault,CLOSED,2016-05-11T16:51:02Z,2016-05-19T14:09:10Z,2016-05-19T14:09:10Z,"Hi, 
+
+I ran the giremi with the following command, and got an error.
+
+$ ./giremi -f ../reference_seq/chr22.fa -l snp_chr22.txt -o test 400.chr22.bam
+[mpileup] 1 samples in 1 input files
+error : Can't find the snv!
+Segmentation fault (core dumped)
+
+I downloaded the giremi execution through git clone command,
+and the bam file includes alignments on Chr 22 only.
+
+I know all issues in here about the Seg fault are due to some errors in SNV list.
+But I can't find any problem in my SNV list (it is attached).
+
+Could anyone help me?
+If i can get a toy example, it will be very helpful.
+
+Thanks.
+YY.
+
+[snp_chr22.txt](https://github.com/zhqingit/giremi/files/259752/snp_chr22.txt)
+",purplerainf,https://github.com/zhqingit/giremi/issues/16
+MDU6SXNzdWUxNTY0MDA4MzA=,Problems in running a long time,OPEN,2016-05-24T01:24:26Z,2016-05-25T03:07:55Z,,"Dear All,
+I had try to use giremi to run on my RNA-seq datasets, two weeks ago I begun to run it. But it still run until now. Did I make some problems? Fllowing is my excute command line: 
+ ~/software/giremi/giremi -f /path/to/genome.fa -l /home/database/GRCh38/SNPs.giremi.txt -o sample.res sample.sorted.bam > sample.giremi.run.log 2>&1 &
+
+The bam file was used hisat2 software to mapping with index download from hisat2 software websites. We have four bam file to run, the file size from 2.0G to  12.0G. But all of them didn't finish yet. The SNPs.giremi.txt got from dbSNPs, and make it to fit giremi. And it has 61351128 lines. Its head lines look like:
+1       10642   10643   R5      1       +
+1       11008   11009   R5      1       +
+1       11012   11013   R5      1       +
+1       11063   11064   R5      1       +
+1       13110   13111   INT     1       +
+1       13116   13117   INT     1       +
+1       13273   13274   ASP     1       +
+1       13284   13285   ASP     1       +
+1       13380   13381   ASP     1       +
+1       13445   13446   ASP     1       +
+Any suggestions and comments are welcome! Thank you for your kindness!
+",HungerNature,https://github.com/zhqingit/giremi/issues/17
+MDU6SXNzdWUxNTc4MjU0MDc=,GIREMI troubleshooting,OPEN,2016-06-01T05:21:16Z,2018-06-14T06:02:15Z,,"I tried to use GIREMI for RNA-editing detection. Unfortunately, the ifRNAE column is not printed to the output file. The reason is probably that the main executable can't locate and open the giremi.r script as indicated in the output.Rout file:
+
+Fatal error: cannot open file 'giremi.r': No such file or directory
+
+The R script is found, of course, within the same directory as the giremi executable.
+I'll appreciate your help in understanding what can cause this sort of problem and how to fix it.
+
+Additionally, while running a massage reads ""error: repeat snv"" is printed numerous times to the screen. What is the cause to this error?
+
+Best,
+Adar
+",N/A,https://github.com/zhqingit/giremi/issues/18
+MDU6SXNzdWUxNTg4NjgyNzY=,error:Can't find snv in ss!i,OPEN,2016-06-07T08:37:06Z,2016-08-08T06:35:43Z,,"command:
+giremi  -f  Zea_mays.B73_RefGen_v2.genome.fa -l Input_for_RNA_edit.txt  -o out.res accepted_hits.bam
+
+Error:
+[mpileup] 1 samples in 1 input files
+error:Can't find snv in ss!i
+
+head Input_for_RNA_edit.txt 
+
+chr1    6742    6743    GRMZM5G888250   1   -
+chr1    6748    6749    GRMZM5G888250   1   -
+chr1    6849    6850    GRMZM5G888250   1   -
+chr1    6890    6891    GRMZM5G888250   1   -
+chr1    6983    6984    GRMZM5G888250   1   -
+chr1    7034    7035    GRMZM5G888250   1   -
+chr1    7079    7080    GRMZM5G888250   1   -
+chr1    7796    7797    GRMZM5G888250   1   -
+chr1    8995    8996    GRMZM5G888250   1   -
+chr1    9098    9099    GRMZM5G888250   1   -
+",jingyayeah,https://github.com/zhqingit/giremi/issues/19
+MDU6SXNzdWUxNjY3NDM2NDY=,repeat snv and cannot find the ifRNAE,OPEN,2016-07-21T06:01:03Z,2016-08-11T17:00:24Z,,"Hi Qing,
+I have some problems when I use the giremi.
+The first is the ""repeat snv"".When I annotated the variations, some point be annotated to 2 more genes.The 2 point are the same position,but the gene is different. For example,
+chr1     15664086    15664087   DDI2    0   +
+chr1     15664086    15664087   RSC1A1  0   +
+so how do I deal with this problem?
+Another question is I cannot computed the ifRNAE.
+I am looking forward to your reply.
+Heming
+",hemingwang,https://github.com/zhqingit/giremi/issues/20
+MDU6SXNzdWUxNjcxNjI5Njg=,Mapping,OPEN,2016-07-23T02:40:22Z,2016-07-27T08:51:41Z,,"Hi，Qing
+I have some questions about mapping. Following  the article,the  unbiased mapping is mapping each end of the paired-end reads to the genome and a dual-filtering scheme is used，so my questions is：
+1. Blat  result  do not include  informations about mismatch position , how to used if for filtering?
+2. Which bam file is used as the input of giremi? (Bowtie ? but there are 4 bam files from 1 sample)
+
+Best,
+Wang
+",jingyayeah,https://github.com/zhqingit/giremi/issues/21
+MDU6SXNzdWUxNzY0Mjk0ODQ=,Not strictly about the code: the LLR test,OPEN,2016-09-12T17:05:03Z,2016-09-12T17:05:03Z,,"Hi Qing,
+
+Can you confirm the LLR test you mentioned in the GIREMI paper is the same one implemented in, say, @REDetector's RED?
+
+Thanks!
+",JohnMCMa,https://github.com/zhqingit/giremi/issues/22
+MDU6SXNzdWUxODA3NDIzMzA=,Question about SNV list,OPEN,2016-10-03T20:45:46Z,2016-10-20T19:09:56Z,,"Hi qing,
+
+I'm new to bioinformatics and I'm wondering how other users get the list of SNVs? I'm analyzing data from  mouse and I could download dbSNPs information from UCSC.  Thanks for your time!
+
+Bests,
+Ray
+",rz2333,https://github.com/zhqingit/giremi/issues/23
+MDU6SXNzdWUxODE5NjIxNzI=,Error in data.frame,CLOSED,2016-10-10T08:41:17Z,2016-10-12T07:14:28Z,2016-10-12T07:14:28Z,"Dear Qing,
+
+I have been trying to get giremi running over the past few weeks, and used the issues on this page to try to solve my problems. 
+But now I have the following error:
+
+> dat.pos <- cbind(dat.pos[,c(""upstream_1base"",""downstream_1base"")],abs(dat.pos[,""major_ratio""]-dat.pos[,""estimated_allelic_ratio""]),1)
+> Error in data.frame(..., check.names = FALSE) : 
+>   arguments imply differing number of rows: 0, 1
+> Calls: cbind -> cbind -> data.frame
+> Execution halted
+
+I have seen you suggest to remove the homozygous SNV's from the list, I think I have done this  correctly but the error persists. 
+The output files and my list of SNV's are attached and I would greatly appreciate it if you could take some of your time to help me figure out this problem.
+
+[giremi_out.txt](https://github.com/zhqingit/giremi/files/519046/giremi_out.txt)
+[giremi_out.vcf.Rout.txt](https://github.com/zhqingit/giremi/files/519049/giremi_out.vcf.Rout.txt)
+[test_snps.txt](https://github.com/zhqingit/giremi/files/519052/test_snps.txt)
+
+Cheers,
+
+Lars
+",Lsteenhuis,https://github.com/zhqingit/giremi/issues/24
+MDU6SXNzdWUxODM1NjU0OTg=,STAR mapping + GATK,OPEN,2016-10-18T01:01:37Z,2016-12-08T21:25:01Z,,"Hi Qing,
+
+As you said in Issues #21 , multi-mapping to a combined alignments and strict criterion were used to get the real SNVs and these can be replaced by other methods such as GATK. So should I run the STAR mapping + GATK pipeline instead of multi-mapping to combined alignment + Samtools 'pileup' program ? a best-practice  for variant discovery in RNA-seq as descripted in GATK team.
+
+Best,
+Li
+",Angelven,https://github.com/zhqingit/giremi/issues/25
+MDU6SXNzdWUxODM1ODg1MzI=, Segmentation fault (core dumped),OPEN,2016-10-18T04:36:15Z,2020-02-03T13:56:32Z,,"Hi Qing，
+
+When I run giremi, I got the following error: Segmentation fault (core dumped). I don't know if it's the problem of the SNV list, please see the attached file. Thanks.
+
+Best,
+Fan
+
+[SRR307897.txt](https://github.com/zhqingit/giremi/files/535267/SRR307897.txt)
+",fzhang005,https://github.com/zhqingit/giremi/issues/26
+MDU6SXNzdWUxODQ1NDA0MjM=,"Allelic depth calculated, but glm & ifRNAE not calculated, MI statistics are off",CLOSED,2016-10-21T18:13:26Z,2016-11-14T14:54:14Z,2016-11-14T14:54:14Z,"I'm running GIREMI with a list of 2,233 locations, with the first 10 lines as follows:
+
+chr1    135124  135125  Inte    0   #
+chr1    944681  944682  NOC2L   0   -
+chr1    1296622 1296623 ACAP3   0   -
+chr1    1635542 1635543 CDK11B  0   -
+chr1    1825442 1825443 GNB1    0   -
+chr1    6185501 6185502 RPL22   0   -
+chr1    6223953 6223954 ICMT    0   -
+chr1    6646402 6646403 DNAJC11 0   -
+chr1    7970927 7970928 PARK7   0   +
+chr1    7985013 7985014 PARK7   0   +
+
+The commandline output was something like this:
+
+[mpileup] 1 samples in 1 input files
+coor:135125     chr:chr1coor:944682     chr:chr1[long list of locations with no newlines]
+
+Calculating the MI values...
+meanMI:-nan     sdMI:-nan
+Estimating the allelic ratios...
+R CMD BATCH --no-save --no-restore '--args finput=""/scratch/lym_myl_rsch/mma/Biovest/RNA-seq/RNAEditingSites/GIREMI/1112961-Tumor/1112961-Tumor-GIREMI.out-2.txt"" fout=""/scratch/lym_myl_rsch/mma/Biovest/RNA-seq/RNAEditingSites/GIREMI/1112961-Tumor/1112961-Tumor-GIREMI.out-2.txt.res""' giremi.r /scratch/lym_myl_rsch/mma/Biovest/RNA-seq/RNAEditingSites/GIREMI/1112961-Tumor/1112961-Tumor-GIREMI.out-2.txt.Rout
+Analysis DONE!
+
+GIREMI failed to run the R script, and reviewing the intermediate output, it looks like samtools was able to do its job as the allelic depths were counted corrected, but the stats were strange. ifRNAE doesn't exist, the GLM stats are all zero, and while raw MI looks fine, ifMI, pvalue_MI, and allelic ratio were off:
+
+chr coor    strand  ifsnp   gene    refB    upB downB   majorB  majorN  totN    majorR  ifmi    mi  mip ar  ifneg   iflm    lmp type    A   C   G   T
+chr1    135125  #   0   Inte    C   C   G   T   89  89  1   -1  -1  -1.00E+00   0.5 0   0   0   CT  0   0   0   89
+chr1    944682  -   0   NOC2L   A   C   G   A   92  95  0.968421    2   0.064177    0.00E+00    0.5 0   0   0   TC  92  0   3   0
+chr1    1296623 -   0   ACAP3   C   G   G   G   16  18  0.888889    -1  -1  -1.00E+00   0.5 0   0   0   GC  0   2   16  0
+chr1    1635543 -   0   CDK11B  T   G   C   C   39  39  1   2   0   0.00E+00    0.5 0   0   0   AG  0   39  0   0
+chr1    1825443 -   0   GNB1    A   A   G   A   288 290 0.993103    -1  -1  -1.00E+00   0.5 0   0   0   TC  288 0   2   0
+chr1    6185502 -   0   RPL22   A   G   G   A   248 250 0.992   2   0.016064    0.00E+00    0.5 0   0   0   TC  248 0   2   0
+chr1    6223954 -   0   ICMT    A   C   A   A   99  102 0.970588    2   0.059706    0.00E+00    0.5 0   0   0   TC  99  0   3   0
+chr1    6646403 -   0   DNAJC11 T   G   G   T   6   9   0.666667    -1  -1  -1.00E+00   0.5 0   0   0   AC  0   0   3   6
+chr1    7970928 +   0   PARK7   A   G   A   A   282 283 0.996466    -1  -1  -1.00E+00   0.5 0   0   0   AG  282 0   1   0
+chr1    7985014 +   0   PARK7   T   G   G   T   278 292 0.952055    -1  -1  -1.00E+00   0.5 0   0   0   TC  3   7   4   278
+
+I would appreciate any assistance.
+
+PS: I can confirm the chromosome names are fine, and since I used the same index files for GATK, I take that to mean it wasn't corrupted.
+",JohnMCMa,https://github.com/zhqingit/giremi/issues/27
+MDU6SXNzdWUxOTEwNTQ3MDY=,Interpretation of GIREMI results,OPEN,2016-11-22T16:27:15Z,2016-11-30T11:50:42Z,,"Hi,
+
+I used GIREMI to analyze an RNA-seq sample, which was previously processed by GATK to obtain the list of heterozygous SNVs required by your tool. 
+GIREMI generated 2 different output files: file.res and file.res.res, which differ in some fields
+
+file.res content 
+chr
+coor
+strand
+ifsnp
+gene
+refB
+upB
+downB
+majorB
+majorN
+totN
+majorR
+ifmi
+mi
+mip
+ar
+ifneg
+iflm
+lmp
+type
+A
+C
+G
+T
+
+file.res.res content:
+chr
+coordinate
+strand
+ifSNP
+gene
+reference_base
+upstream_1base
+downstream_1base
+major_base
+major_count
+tot_count
+major_ratio
+MI
+pvalue_MI
+estimated_allelic_ratio
+ifNEG
+RNAE_t
+A
+C
+G
+T
+ifRNAE
+
+Could you please tell me if file.res is just a temporary file?
+Moreover, I see that for some editing sites only 1 base (generally the reference base) was detected, e.g.
+
+chr	coordinate	strand	ifSNP	gene	reference_base	upstream_1base	downstream_1base	major_base	major_count	tot_count	major_ratio	MI	pvalue_MI	estimated_allelic_ratio	ifNEG	RNAE_t	A	C	G	T	ifRNAE
+chr1|899917|+	chr1	899917	+	0	KLHL17	A	C	G	A	8	8	1	0	0.002023009	0.9	0	AC	8	0	0	0	1
+
+Could you please tell me why this is identified as an edited site?
+Thank you,
+Maria Angela",ma-diroma,https://github.com/zhqingit/giremi/issues/28
+MDU6SXNzdWUyMDI1NzMxMDU=,SNV File Format,OPEN,2017-01-23T15:56:13Z,2017-01-24T17:32:07Z,,"Hi I am relatively new to bioinformatics and I was wondering how you formatted the vcf file to the 6 columns. Did you write a python script or something for this? 
+
+",carlshotwell,https://github.com/zhqingit/giremi/issues/29
+MDU6SXNzdWUyMDkzNzA2OTE=,Publish the sourch code,OPEN,2017-02-22T07:10:23Z,2017-02-22T07:10:23Z,,"""Source codes will be updated and released soon"" on your home page. When will you be able to publish the source code？",lipan6461188,https://github.com/zhqingit/giremi/issues/30
+MDU6SXNzdWUyMTA3MTAxMjU=,can't find ifRNAE,OPEN,2017-02-28T07:41:39Z,2017-02-28T07:41:39Z,,"Hi ,Qing,
+I have some problems when I use the GIREMI.
+I used STAR+GATK and also samtools to call the SNV, but they all can’t compute the ifRNAE and no significant pvalue_mi. 
+
+I don’t understand homozygous SNV in issues 20. attached is the SNV list. 
+
+the reads length is 37bp, single strand, strand specificity. I am not sure if the reads length will influence the results. but our sequence depth is very high.
+
+./giremi \
+    -f hg38.fa \
+    -l SNV.uniq.data \
+    -o SNV.out \
+    -m 5 \
+    -p 0 \
+    -s 0 \
+
+I am looking forward to your reply.
+
+Best
+
+Lei
+[results.out.zip](https://github.com/zhqingit/giremi/files/805987/results.out.zip)
+[SNV.uniq.data.zip](https://github.com/zhqingit/giremi/files/805991/SNV.uniq.data.zip)
+",sunlei0227,https://github.com/zhqingit/giremi/issues/31
+MDU6SXNzdWUyMTgwNjA0MzU=,SNV list strategy for normal and tumor samples,OPEN,2017-03-30T02:06:58Z,2017-03-30T15:22:57Z,,"Hi,
+
+I am trying to detect RNA editing differences between RNASeq normal and tumor samples from the same individual, but I am a bit confused about the list(s) of SNV to use.
+
+I am using the following strategy but not sure if it is correct:
+(1) detect germline mutations from normal (with GATK HaplotypeCaller)
+(2) detect germline and somatic mutations from tumor (with GATK Mutect2)
+(3) Discard homozygous variants
+(4) Annotate the variants and tag the ones present in dbSNP and COSMIC databases
+(5) Call RNA editing sites in normal and tumor separately with their respective lists
+(6) Check which sites are present in tumor but not in normal.
+
+Questions:
+* Variants present in dbSNP and COSMIC (tagged as ""1"") will be filtered out by GIREMI, right?
+* For the tumor sample, should I use instead the germline SNV list obtained from the normal sample (since it is the same individual) and just add the somatic variants detected?
+* Or, for the tumor sample, call the germline variants in the tumor sample with the same program as the normal sample and then call the somatic variants with Mutect and add them together to the tumor SNV list?
+* Should I include germline and somatic variants called from the DNA of these sample as well?
+
+Thanks !
+",u9090,https://github.com/zhqingit/giremi/issues/32
+MDU6SXNzdWUyMjMxMDM0Nzg=,Prepare SNV list,CLOSED,2017-04-20T15:18:39Z,2017-04-21T16:56:14Z,2017-04-21T16:56:14Z,"Hello Qing,
+
+Is it possible to know how to prepare SNV list from VCF file obtained after GATK.
+
+From where I can give information about gene and strand ?
+
+Thanks
+",dfv,https://github.com/zhqingit/giremi/issues/33
+MDU6SXNzdWUyMzQxNjY4OTE=,Mouse public SNP data,OPEN,2017-06-07T10:42:11Z,2017-06-07T19:56:01Z,,"Hi, 
+I am trying to use GIREMI but I am not sure which public SNPs should be used.
+(1) Should I use the VCF format? (2) Do I run GIREMI for each chromosome separately?
+
+Best,
+
+Felipe",felipeadgr,https://github.com/zhqingit/giremi/issues/34
+MDU6SXNzdWUyMzY0NzUyNzI=,Is it possible not to input SNV list?,OPEN,2017-06-16T12:57:04Z,2017-06-20T22:36:25Z,,"Hi, Qing,
+I only have RNA-seq data, is it possible not to input SNV list data when running GIREMI? Thanks!",XMaBio,https://github.com/zhqingit/giremi/issues/35
+MDU6SXNzdWUyMzczNDM3NDI=,Homozygous SNV's,CLOSED,2017-06-20T21:00:14Z,2017-06-24T17:43:26Z,2017-06-24T17:43:26Z,Hello! I have some question: in previous issues you reccomend to remove homozygous SNV's from SNV list. Now I have a question: should I remove homozygous **SNV's** or I should remove homozygous **SNP's** known from dbSNP? I found in article that this requirement is necessary only for GLM stage: you train this model assuming that all SNP's from list are heterozygous. So why should I remove all homozygous **SNV's**? Thank you!,steveners,https://github.com/zhqingit/giremi/issues/36
+MDU6SXNzdWUyNDExOTA2ODQ=,Low quantity of RNA editings found,OPEN,2017-07-07T08:15:28Z,2017-07-19T08:39:57Z,,"Hi, Qing,
+
+I'm using GIREMI to find some RNAE in my RNA-seq data. I have good aligned file src.bam, reads are paired end (and properly paired). I'm performing following steps:
+
+1. Sorting bam in coordinate order and indexing it via samtools sort and index. Output file: sorted.bam
+2. Variant calling: samtools mpileup -ugf genome.fa sorted.bam -q 1 | bcftools view -bvcg - > raw.bcf
+3. Filtering results: 
+bcftools view  raw.bcf | vcfutils.pl varFilter -D100 | awk '$6>=10' | grep ""0\/1:"" > filtered.vcf
+In this line I remove homozygous SNV's by grep ""0\/1:""
+4. Annotating filtered.vcf and generating SNV list file (if dbSNP, gene name, strand etc) via snpEff and own simple python script
+5. Running GIREMI: ./giremi -f genome.fa -l SNV_list.txt -o result sorted.bam
+
+My problem is that GIREMI generates 56616 lines .res file and only 3654 of them are RNAE. I have meanMI:0.669357	sdMI:0.143034 and it seems to be normal (as I read in previous issues). I think it's very low quantity of RNA editings (my bam file is 15GB) and they don't normally match with results of other RNA editing find tools. Maybe I'm doing something wrong or missing some important steps? Looking forward for your answer and thank you very much!
+
+
+",s-a-nersisyan,https://github.com/zhqingit/giremi/issues/37
+MDU6SXNzdWUyNDMwMDI4ODA=,stack smashing detected ,OPEN,2017-07-14T13:48:56Z,2017-07-14T13:48:56Z,,"Hi,
+
+I got the ""stack smashing detected "" error when I ran the following command.   
+
+**Command:**
+giremi -f Gallus_gallus-5.0.dna.toplevel.fa -p 1 -l snv_list -o result.txt Aligned_out.bam.
+
+**Error:**
+*** stack smashing detected ***: giremi terminated
+/var/spool/gridscheduler/execd/node2i06/job_scripts/3444521: line 49: 105513 Segmentation fault        (core dumped)   giremi -f Gallus_gallus-5.0.dna.toplevel.fa -p 1 -l snv_list -o result.txt Aligned_out.bam
+
+Please let me know how to resolve this.
+
+Thanks
+Dadu",DDoddamani,https://github.com/zhqingit/giremi/issues/38
+MDU6SXNzdWUyNDgyMjMyNjI=,Can GIREMI be used in non-mammalian species?,OPEN,2017-08-06T03:34:55Z,2017-08-08T06:19:31Z,,"Hi, Qing,
+
+Can i use GIREMI to detect RNA editing in non-mammalian species?  I just want to ascertain the algorithm  is suitable for RNA-seq data from other species.
+
+Thanks a lot!
+Xuan",XMaBio,https://github.com/zhqingit/giremi/issues/39
+MDU6SXNzdWUyNTgzNTg2MzM=,double free or corruption (!prev): 0x000000000dd4aaa0 ***,OPEN,2017-09-18T02:49:49Z,2018-06-13T01:27:11Z,,"Hi,
+
+  I've tried GIREMI on my SNV datasets generated by tophat2+picard+GATK+annovar pipline, while it reported 
+
+> /home/yangxx/software/giremi-master/giremi': double free or corruption (!prev): 0x000000000d97faa0 ***
+>  Segmentation fault      (core dumped)
+
+my command is `/home/yangxx/software/giremi-master/giremi -f $ref/Homo_sapiens_assembly38.fa -l $path/script/GIREMI/Severe_Early-New.GIREMI.input.txt -p 1 -o /$path/Result/GIREMI/ $path/Result/picard/PHPR0008_L8_I349-NewBatch2/Mark_duplicates.bam.`
+
+my SNV inputs are like below:
+
+> chr1    16494   16495   WASH7P  1       -
+> chr1    16736   16737   WASH7P  0       -
+> chr1    16741   16742   WASH7P  0       -
+> chr1    16948   16949   WASH7P  1       -
+> chr1    17019   17020   WASH7P  1       -
+> chr1    17279   17280   WASH7P  0       -
+> chr1    17311   17312   WASH7P  0       -
+> chr1    17378   17379   MIR6859-1,MIR6859-2,MIR6859-3,MIR6859-4 1       -
+> chr1    17384   17385   MIR6859-1,MIR6859-2,MIR6859-3,MIR6859-4 1       -
+> chr1    17397   17398   MIR6859-1,MIR6859-2,MIR6859-3,MIR6859-4 1       -
+
+and `top` command displays of my server like below:
+
+> KiB Mem : 13191555+total, 42587552 free,   797532 used, 88530472 buff/cache
+> KiB Swap: 19531212+total, 19436460+free,   947508 used. 13036427+avail Mem
+
+Since JohnMCMa had mentioned in #25 that GATK would achieve local realignment around indels before using HaplotypeCaller to call variants, I've tried to use bam files produced by GATK as bam inputs in GIREMI, while the error remained.
+
+Could anyone give some solutions about it? Thanks very much!",yang91,https://github.com/zhqingit/giremi/issues/40
+MDU6SXNzdWUyNjUxNDkwNjM=,major_base all N and pvalue_MI all -1,OPEN,2017-10-13T02:20:01Z,2017-10-13T02:20:01Z,,"
+Hi, Qing,
+
+I met some problems when running the Rscript of Giremi (for Drosophila melanogaster RNA-seq data):
+(1) The major_base column is all N;
+(2) The pvalue_MI column is all -1, or sometimes with a few zero.
+(3) The ifRNAE column is all 0.
+
+These cause the abortion in the ""ids = which(dat[,""major_base""]==""N"")  if (length(ids)>0) dat = dat[-ids,]"" step and ""pvalue_MI>0 & pvalue_MI <= 0.01"" step.
+Thus the dat.pos, dat.neg and dat.unknown files are all empty.
+
+I have read the instructions and comments in these pages, and it doesn't seem to be the problem of the ""list file"", 
+2L	5091	5092	Inte	1	+
+2L	5094	5095	Inte	1	+
+2L	5371	5372	Inte	1	+
+2L	5389	5390	Inte	1	+
+2L	5402	5403	Inte	1	+
+
+The SNP sites were called from GATK with strict criteria, and I have tried to set the $5 to be 0 or 1, and got the same problems.
+I have also tried both single-end and pair-end libraries, and the same problems occurred.
+
+I wonder what I should do to make the script run? I just want to get the list of editing sites in each library.
+
+Thanks !
+",duanyuange,https://github.com/zhqingit/giremi/issues/41
+MDU6SXNzdWUyNzkyNjYwOTk=,error in R out files,OPEN,2017-12-05T06:56:18Z,2018-02-13T10:51:48Z,,"Dear, after running the programme, I got this:
+> #dat <- read.table(file=finput,header=F,row.names=1,comment.char="""")
+> dat <- read.table(file=finput,header=T,comment.char="""")
+Error in scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings,  : 
+  line 1 did not have 24 elements
+Calls: read.table -> scan
+Execution halted
+
+Could you give me some demo data to run this programme? like snp file, bam files. How can I get snp files for -l ? I know little about snp, thank you!
+
+Best,
+Doc. Fan",mj163163,https://github.com/zhqingit/giremi/issues/42
+MDU6SXNzdWUzMTU4OTY2MTY=,why don't print SNV in intergenic region,OPEN,2018-04-19T14:13:52Z,2018-04-19T14:13:52Z,,"Hi, zhang
+Why don't print intergenic SNV when using mark_snp.py?
+would  it be possible  to obtain intergenic sites by Giremi?",zambofd,https://github.com/zhqingit/giremi/issues/43
+MDU6SXNzdWUzMjc2NDI0NTg=,a problem about mark_snp.py,OPEN,2018-05-30T09:14:37Z,2018-06-04T09:20:31Z,,"Hi qing，
+when i used the commend : $ mark_snp.py -g '/home/liu/11/giremi-master/ref_gene.txt', but i got the problem like that:
+Traceback (most recent call last):
+  File ""/home/liu/111/giremi-master/mark_snp.py"", line 87, in <module>
+    main(sys.argv[1:])
+NameError: name 'sys' is not defined
+ i have tried many times but nothing i can do, the python version i used was python2.12 , could you please tell what i could do to deal with this problem? appreciated ",ajkshdkjahdka,https://github.com/zhqingit/giremi/issues/44
+MDU6SXNzdWUzMjgxOTM1Nzc=,Error: Can't find snv in SNV list,OPEN,2018-05-31T15:45:08Z,2023-06-06T13:44:36Z,,"Hi qing,
+when i used the command:
+giremi -f Sus_scrofa.Sscrofa10.2.dna.toplevel.fa  -l H.txt -p 1 -s 0 -o H.RNAE.lst brain.sort.rmdup.bam,
+I got the problem like that:
+[mpileup] 1 samples in 1 input files
+error:Can't find snv in SNV list:13:118446201:+",zambofd,https://github.com/zhqingit/giremi/issues/45
+MDU6SXNzdWUzMjg4MTAzMTc=,convert the VCF_file into the input_fIle of GIREMI,OPEN,2018-06-03T08:30:41Z,2018-06-03T08:30:41Z,,"Hi qing, 
+   i just wonder that  any other methods can replace the mark_snp.py, and could you please give me some clues! thank you very much! because i got some trouble in  the mark_snp.py!",ajkshdkjahdka,https://github.com/zhqingit/giremi/issues/46
+MDU6SXNzdWUzMjkzMTk1NDQ=,Segmentation fault (core dumped),OPEN,2018-06-05T06:36:36Z,2020-01-17T07:31:39Z,,"Hi~
+when I try to use giremi, my comman line is as follows:
+```
+/opt/software/GIREMI/giremi-0.2.1/giremi -f /data/database/hgdownload.cse.ucsc.edu/Hg38-bwa/hg38.fa -l var.snp_filter.giremi.vcf -o test.giremi.txt ec118.bwa.sort.bam 
+```
+
+but this error always  appears:
+[mpileup] 1 samples in 1 input files
+Segmentation fault (core dumped)
+
+What is wrong with it? Thank U!!",Li-Michael,https://github.com/zhqingit/giremi/issues/47
+MDU6SXNzdWUzMzE0MDUwMTU=,SNV list: How to get the Giremi input file from the vcf file,CLOSED,2018-06-12T01:28:23Z,2018-06-13T08:39:27Z,2018-06-13T08:39:27Z,"Hi,
+I've get the SNV list by using STAR and GATK. But the output vcf file don't have the information like the name of the gene harboring this SNV, strand of SNV and whether the SNV belongs to dbSNP. So I just want to know if I need to use annotation tools like annovar, SnpEff to annotate the vcf file and then try get the Giremi input file.
+
+Thanks.",mt831,https://github.com/zhqingit/giremi/issues/48
+MDU6SXNzdWUzNDQ2MjQ4MTU=,"GIREMI stopped working, Rout Error attached",CLOSED,2018-07-25T22:07:35Z,2018-08-01T22:49:16Z,2018-08-01T22:49:16Z,"Dr. Qing,
+
+First of all thank you for a great tool. While running GIREMI we encountered an error. Below is the terminal error:
+
+[mpileup] 1 samples in 1 input files
+Calculating the MI values...
+meanMI:0.245166	sdMI:0.330423
+Estimating the allelic ratios...
+R CMD BATCH --no-save --no-restore '--args finput=""RNAE.lst"" fout=""RNAE.lst.res""' giremi.r RNAE.lst.Rout
+Analysis DONE!
+
+The Rout file error is the following:
+
+#dat <- read.table(file=finput,header=F,row.names=1,comment.char="""")
+> dat <- read.table(file=finput,header=T,comment.char="""")
+Error in scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  : 
+  line 98 did not have 24 elements
+Calls: read.table -> scan
+Execution halted
+
+Our input .txt file did not include multiple SNPs for a single site. We would be happy if you could help.
+
+Regards,
+Farid Ahadli",LastGenomeBender,https://github.com/zhqingit/giremi/issues/49
+MDU6SXNzdWUzNjc2ODM0MDU=,GIREMI executable depends on glibc 2.14 ,OPEN,2018-10-08T08:29:31Z,2018-10-08T08:29:31Z,,"Hi,
+
+We are trying  to run GIREMI on CentOS 6.7 with glibc 2.12. The command `./giremi` returns the following error:
+```
+./giremi: /lib64/libc.so.6: version `GLIBC_2.14' not found (required by ./giremi)
+```
+Could you please help?",alcharal,https://github.com/zhqingit/giremi/issues/50
+MDU6SXNzdWUzODY0ODE2NDc=,Running problem,OPEN,2018-12-01T18:02:20Z,2019-11-12T18:29:44Z,,"Hi, I got such problem as follow:
+
+*** Error in `/home/user/liu/Software/giremi-master/giremi': free(): invalid next size (normal): 0x00000000a1814770 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x81499)[0x7fd20a236499]
+/home/user/liu/Software/giremi-master/giremi[0x41f02d]
+/home/user/liu/Software/giremi-master/giremi[0x41f52e]
+/home/user/liu/Software/giremi-master/giremi[0x411703]
+/home/user/liu/Software/giremi-master/giremi[0x402165]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7fd20a1d7445]
+/home/user/liu/Software/giremi-master/giremi[0x401c79]
+======= Memory map: ========
+00400000-00425000 r-xp 00000000 00:29 76411379                           /home/user/liu/Software/giremi-master/giremi
+00624000-00625000 r--p 00024000 00:29 76411379                           /home/user/liu/Software/giremi-master/giremi
+00625000-00626000 rw-p 00025000 00:29 76411379                           /home/user/liu/Software/giremi-master/giremi
+01791000-a181a000 rw-p 00000000 00:00 0                                  [heap]
+7fd200000000-7fd200021000 rw-p 00000000 00:00 0
+7fd200021000-7fd204000000 ---p 00000000 00:00 0
+7fd20558c000-7fd20758d000 rw-p 00000000 00:00 0
+7fd208b75000-7fd208b8a000 r-xp 00000000 08:03 951696                     /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fd208b8a000-7fd208d89000 ---p 00015000 08:03 951696                     /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fd208d89000-7fd208d8a000 r--p 00014000 08:03 951696                     /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fd208d8a000-7fd208d8b000 rw-p 00015000 08:03 951696                     /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fd208d8f000-7fd209d90000 rw-p 00000000 00:00 0
+7fd209f95000-7fd209fac000 r-xp 00000000 08:03 918504                     /usr/lib64/libpthread-2.17.so
+7fd209fac000-7fd20a1ab000 ---p 00017000 08:03 918504                     /usr/lib64/libpthread-2.17.so
+7fd20a1ab000-7fd20a1ac000 r--p 00016000 08:03 918504                     /usr/lib64/libpthread-2.17.so
+7fd20a1ac000-7fd20a1ad000 rw-p 00017000 08:03 918504                     /usr/lib64/libpthread-2.17.so
+7fd20a1ad000-7fd20a1b1000 rw-p 00000000 00:00 0
+7fd20a1b5000-7fd20a378000 r-xp 00000000 08:03 918478                     /usr/lib64/libc-2.17.so
+7fd20a378000-7fd20a577000 ---p 001c3000 08:03 918478                     /usr/lib64/libc-2.17.so
+7fd20a577000-7fd20a57b000 r--p 001c2000 08:03 918478                     /usr/lib64/libc-2.17.so
+7fd20a57b000-7fd20a57d000 rw-p 001c6000 08:03 918478                     /usr/lib64/libc-2.17.so
+7fd20a57d000-7fd20a582000 rw-p 00000000 00:00 0
+7fd20a585000-7fd20a614000 r-xp 00000000 00:29 76622768                   /home/user/liu/Software/lib/lib/libhts.so.1.3
+7fd20a614000-7fd20a813000 ---p 0008f000 00:29 76622768                   /home/user/liu/Software/lib/lib/libhts.so.1.3
+7fd20a813000-7fd20a814000 r--p 0008e000 00:29 76622768                   /home/user/liu/Software/lib/lib/libhts.so.1.3
+7fd20a814000-7fd20a816000 rw-p 0008f000 00:29 76622768                   /home/user/liu/Software/lib/lib/libhts.so.1.3
+7fd20a81d000-7fd20a91e000 r-xp 00000000 08:03 954340                     /usr/lib64/libm-2.17.so
+7fd20a91e000-7fd20ab1d000 ---p 00101000 08:03 954340                     /usr/lib64/libm-2.17.so
+7fd20ab1d000-7fd20ab1e000 r--p 00100000 08:03 954340                     /usr/lib64/libm-2.17.so
+7fd20ab1e000-7fd20ab1f000 rw-p 00101000 08:03 954340                     /usr/lib64/libm-2.17.so
+7fd20ab25000-7fd20ab3a000 r-xp 00000000 08:03 918928                     /usr/lib64/libz.so.1.2.7
+7fd20ab3a000-7fd20ad39000 ---p 00015000 08:03 918928                     /usr/lib64/libz.so.1.2.7
+7fd20ad39000-7fd20ad3a000 r--p 00014000 08:03 918928                     /usr/lib64/libz.so.1.2.7
+7fd20ad3a000-7fd20ad3b000 rw-p 00015000 08:03 918928                     /usr/lib64/libz.so.1.2.7
+7fd20ad3d000-7fd20ad5f000 r-xp 00000000 08:03 918467                     /usr/lib64/ld-2.17.so
+7fd20af3b000-7fd20af3d000 rw-p 00000000 00:00 0
+7fd20af59000-7fd20af5e000 rw-p 00000000 00:00 0
+7fd20af5e000-7fd20af5f000 r--p 00021000 08:03 918467                     /usr/lib64/ld-2.17.so
+7fd20af5f000-7fd20af60000 rw-p 00022000 08:03 918467                     /usr/lib64/ld-2.17.so
+7fd20af60000-7fd20af61000 rw-p 00000000 00:00 0
+7fff07cc9000-7fff07cec000 rw-p 00000000 00:00 0                          [stack]
+7fff07cfd000-7fff07cff000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+/var/spool/slurm/slurmd/job4587259/slurm_script: line 11: 26894 Aborted                 giremi -f dmel.fasta -l Dmel.DB.SNPlist -m 5 -p 1 -s 0 -o Dmel.RNAediting D.mel_carcass.bam 
+
+I set a big memmory as 500Gb, but it still gets problem. Could you help solve this?
+Best~
+Jing",JhinAir,https://github.com/zhqingit/giremi/issues/51
+MDU6SXNzdWUzOTI4OTI5Mzk=,SNV list in an analysis using an inbred mouse with/without drug treatment,OPEN,2018-12-20T05:11:56Z,2018-12-20T05:11:56Z,,"Hi, developers of Giremi,
+
+Consideration of SNVs seems not to be required for the comparison of RNA-editing effects  between  C57/B6 mouse with and without drug treatment. The SNV list, however, is required for running Giremi for analysis.
+I wonder what kinds of problem occur in the result if Giremi with mouse SNPs data applies to such a study.
+Can you avoid the occurrence of problems by using any parameter setting?
+
+Thanks,
+
+Tyaoi",tyaoi,https://github.com/zhqingit/giremi/issues/52
+MDU6SXNzdWU1MjYzMDM2NzE=,there is no results and log after running,OPEN,2019-11-21T01:06:37Z,2019-11-21T01:06:37Z,,"i got nothing after running giremi, is there anything wrong? 
+giremi -f GRCh37.primary_assembly.genome.fa -l S00382.bed -s 0 -p 1 -o ERR123456.uniq_rmdup.giremi ERR123456.uniquemap.Aligned.sortedByCoord.out.markdup.bam",Li-ZhiD,https://github.com/zhqingit/giremi/issues/53
+MDU6SXNzdWU1NDkzNzU5MDA=,demo for giremi,OPEN,2020-01-14T07:09:11Z,2020-01-14T07:10:21Z,,"colud you provide some demo files by giremi 
+
+thank you!
+
+I have no idea about the snplist file!",huangl07,https://github.com/zhqingit/giremi/issues/54
+MDU6SXNzdWU4OTYyNzIzMTU=,error while loading shared libraries: libhts.so.1,OPEN,2021-05-20T04:45:53Z,2024-07-25T12:56:31Z,,"Hi Zhang,
+The programme return error:""./giremi: error while loading shared libraries: libhts.so.1: cannot open shared object file: No such file or directory"". Could please fix this? Thank you!",JiajunQiu,https://github.com/zhqingit/giremi/issues/55
+I_kwDOAfoVPs5g3Hqn,"[fai_fetch_seq] The sequence ""10"" not found",OPEN,2023-03-15T09:04:00Z,2023-03-15T09:04:00Z,,"Hi,
+
+I'm having an issue after human genome alignment.
+I followed these steps before encounter this issue:
+1. index with bowtie2 (GRCh37)
+2. alignment without trimming
+3. samtools to create .sam file after sorting it.
+
+This is the command that creates the issue:
+
+$ samtools mpileup -E -uf GRCh37.genome.fa name_sorted.bam > name.mpileup
+
+[fai_fetch_seq] The sequence ""10"" not found
+[fai_fetch_seq] The sequence ""10"" not found
+
+How can I get the .vcf files? Am I use the genome index instead of the genome.fa?
+
+Thanks a lot
+",JasminZarah,https://github.com/zhqingit/giremi/issues/56
+I_kwDOAfoVPs5g3Hq1,/,CLOSED,2023-03-15T09:04:01Z,2023-03-15T09:35:36Z,2023-03-15T09:35:35Z,,JasminZarah,https://github.com/zhqingit/giremi/issues/57

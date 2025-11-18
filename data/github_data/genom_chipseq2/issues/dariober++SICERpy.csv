@@ -1,0 +1,374 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNDY1MjUwMzU=,Is it okay if I steal some of your bam-handling code and list you as a contributor to epic?,CLOSED,2016-04-07T06:53:02Z,2016-04-07T07:18:34Z,2016-04-07T07:18:34Z,"Will add to README.md and make a contributors.TXT file in addition.
+",endrebak,https://github.com/dariober/SICERpy/issues/1
+MDU6SXNzdWUxNDY1Nzc1Mjc=,Not superseded at all,CLOSED,2016-04-07T10:44:07Z,2016-04-07T11:51:40Z,2016-04-07T11:51:40Z,"For one, there might be bugs in my software; SICER has been vetted for more than half a decade (although the code could be hard to find flaws in for many reasons.) Furthermore, SICER contains many scripts and much functionality epic does not. 
+
+I'll use SICERpy to compare epic and SICER to find potential differences.
+
+Edit: of course this might not be so much fun to work on if someone else is more or less doing the same thing. And if you think SICERpy is superseded I should not tell you it is not - I just felt bad having taken (potentially) the fun out of working on your project.
+
+And thanks for the link, our projects have the same aim so there might be mutual interest from users.
+",endrebak,https://github.com/dariober/SICERpy/issues/2
+MDU6SXNzdWUxODk4MTgwNjY=,"List index out of range in ""associate_tags_with_regions.py""",CLOSED,2016-11-16T19:32:49Z,2019-02-25T08:28:43Z,2019-02-25T08:28:42Z,"I ran:
+
+`$ python $chipseq/SICER.py -c /<path>/bam/mock_input_A.bam -t /home/exacloud/lustre1/<path>/bam/mock_BRD4_A.bam -rt 0 > mock_a_peaks.bed 2> sicermocka.log`
+
+And got this in my log:
+
+```
+
+*** Preprocess raw files to remove reduntant reads
+cd /<path>/tmp_sicer_EgQ7hT/tmp_mock_BRD4_A.bam_dir
+export PYTHONPATH=/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib
+/<path>/miniconda2/bin/python /<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/remove_redundant_reads_bam.py -t 0 -b /<path>/results/bam/mock_BRD4_A.bam -o /h<path>/tmp_sicer_EgQ7hT/mock_BRD4_A.removed.bam -f 0 -F 4 -q 5
+
+cd /<path>/tmp_sicer_EgQ7hT/tmp_mock_input_A.bam_dir
+export PYTHONPATH=/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib
+/<path>/miniconda2/bin/python /<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/remove_redundant_reads_bam.py -t 0 -b /<path>/results/bam/mock_input_A.bam -o /<path>/tmp_sicer_EgQ7hT/mock_input_A.removed.bam -f 0 -F 4 -q 5
+
+
+
+*** Partion the genome in windows
+cd /<path>/tmp_sicer_EgQ7hT
+export PYTHONPATH=/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib
+/<path>/miniconda2/bin/python /<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/run-make-graph-file-by-chrom_bam.py -b /<path>/tmp_sicer_EgQ7hT/mock_BRD4_A.removed.bam -w 200 -i 150 -o /<path>/tmp_sicer_EgQ7hT/summary.bedgraph
+
+
+*** Find candidate islands exhibiting clustering
+export PYTHONPATH=/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib
+/<path>/miniconda2/bin/python /<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/find_islands_in_pr.py --bam /<path>/results/bam/mock_BRD4_A.bam -b /<path>/tmp_sicer_EgQ7hT/summary.bedgraph -w 200 -g 600 -t 0.74 -e 1000  -f /<path>/tmp_sicer_EgQ7hT/scoreisland.bed
+Window_size: 200
+Gap size: 600
+E value is: 1000.0
+Total read count: 44053384.0
+Genome Length: 3099750718
+Effective genome Length: 2293815531
+Window average: 3.84105726068
+Window pvalue: 0.2
+Minimum num of tags in a qualified window: 6
+Generate the enriched probscore summary graph and filter the summary graph to get rid of ineligible windows
+Determine the score threshold from random background
+The score threshold is: 38.137
+Make and write islands
+	KI270747.1 does not have any islands meeting the required significance
+	KI270302.1 does not have any islands meeting the required significance
+	KI270710.1 does not have any islands meeting the required significance
+	KI270755.1 does not have any islands meeting the required significance
+	KI270583.1 does not have any islands meeting the required significance
+	KI270322.1 does not have any islands meeting the required significance
+	KI270708.1 does not have any islands meeting the required significance
+	KI270743.1 does not have any islands meeting the required significance
+	KI270510.1 does not have any islands meeting the required significance
+	KI270741.1 does not have any islands meeting the required significance
+	KI270521.1 does not have any islands meeting the required significance
+	KI270587.1 does not have any islands meeting the required significance
+	KI270320.1 does not have any islands meeting the required significance
+	GL000221.1 does not have any islands meeting the required significance
+	KI270310.1 does not have any islands meeting the required significance
+	KI270714.1 does not have any islands meeting the required significance
+	KI270716.1 does not have any islands meeting the required significance
+	KI270737.1 does not have any islands meeting the required significance
+	KI270580.1 does not have any islands meeting the required significance
+	KI270749.1 does not have any islands meeting the required significance
+	KI270423.1 does not have any islands meeting the required significance
+	KI270706.1 does not have any islands meeting the required significance
+	KI270721.1 does not have any islands meeting the required significance
+	KI270753.1 does not have any islands meeting the required significance
+	KI270508.1 does not have any islands meeting the required significance
+	GL000194.1 does not have any islands meeting the required significance
+	KI270582.1 does not have any islands meeting the required significance
+	KI270522.1 does not have any islands meeting the required significance
+	GL000009.2 does not have any islands meeting the required significance
+	GL000226.1 does not have any islands meeting the required significance
+	KI270362.1 does not have any islands meeting the required significance
+	KI270707.1 does not have any islands meeting the required significance
+	KI270734.1 does not have any islands meeting the required significance
+	KI270418.1 does not have any islands meeting the required significance
+Total number of islands: 19312
+
+
+*** Calculate significance of candidate islands using the control library
+export PYTHONPATH=/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib
+/<path>/miniconda2/bin/python /<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/associate_tags_with_chip_and_control_w_fc_q_bam.py -a /<path>/tmp_sicer_EgQ7hT/mock_BRD4_A.removed.bam -b /<path>/tmp_sicer_EgQ7hT/mock_input_A.removed.bam -d /<path>/tmp_sicer_EgQ7hT/scoreisland.bed -f 150 -t 0.74 -o /<path>/tmp_sicer_EgQ7hT/island-summary.bed
+chip library size  44056150
+control library size 48890374
+Traceback (most recent call last):
+  File ""/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/associate_tags_with_chip_and_control_w_fc_q_bam.py"", line 204, in <module>
+    main(sys.argv)
+  File ""/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/src/associate_tags_with_chip_and_control_w_fc_q_bam.py"", line 105, in main
+    position = associate_tags_with_regions.tag_position(sline, opt.fragment_size)
+  File ""/<path>/users/balter/chip-seq-analysis/chipseq/SICERpy/SICERpy/lib/associate_tags_with_regions.py"", line 37, in tag_position
+    if plus.match(sline[5]):
+IndexError: list index out of range
+
+
+```",abalter,https://github.com/dariober/SICERpy/issues/3
+MDU6SXNzdWUxODk4MjQ2MzE=,Couldn't add hg38 genome,CLOSED,2016-11-16T19:55:06Z,2016-11-17T14:51:38Z,2016-11-17T09:37:46Z,"I followed the instructions from the [SICER Readme](https://bioweb.pasteur.fr/docs/modules/SICER/1.1/SICER-README.pdf) section 4.4 to add a genome, but still got an error about not finding the genome.
+
+Attempt 1
+```
+$ python $chipseq/SICER.py -c /<path>bam/mock_input_A.bam -t /<path>/bam/mock_BRD4_A.bam --species hg38 -rt 0 > mock_a_peaks.bed 2> sicermocka.log
+balter@exalab3:/home/exacloud/lustre1/CompBio/projs/alumkal_160630$ cat sicermocka.log
+usage: SICER.py [-h] [--treatment TREATMENT] --control CONTROL
+                [--effGenomeSize EFFGENOMESIZE] [--requiredFlag REQUIREDFLAG]
+                [--filterFlag FILTERFLAG] [--mapq MAPQ]
+                [--redThresh REDTHRESH] [--windowSize WINDOWSIZE]
+                [--gapSize GAPSIZE] [--fragSize FRAGSIZE] [--keeptmp]
+                [--version]
+SICER.py: error: unrecognized arguments: --species hg38
+```
+
+Attempt2
+```
+$ python $chipseq/SICER.py -c /<path>/bam/mock_input_A.bam -t /<path>/bam/mock_BRD4_A.bam -s hg38 -rt 0 > mock_a_peaks.bed 2> sicermocka.log
+$ cat sicermocka.log
+usage: SICER.py [-h] [--treatment TREATMENT] --control CONTROL
+                [--effGenomeSize EFFGENOMESIZE] [--requiredFlag REQUIREDFLAG]
+                [--filterFlag FILTERFLAG] [--mapq MAPQ]
+                [--redThresh REDTHRESH] [--windowSize WINDOWSIZE]
+                [--gapSize GAPSIZE] [--fragSize FRAGSIZE] [--keeptmp]
+                [--version]
+SICER.py: error: unrecognized arguments: -s hg38
+```
+
+In `GenomeData.py`:
+
+```
+hg38_chroms = ['chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9',
+	     'chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17',
+	     'chr18','chr19','chr20','chr21','chr22','chrX','chrY','chrM']
+
+hg38_chrom_lengths = {'chr1':248956422, 'chr2':242193529, 'chr3':198295559,
+            'chr4':190214555, 'chr5':181538259, 'chr6':170805979,
+            'chr7':159345973, 'chr8':145138636, 'chr9':138394717,
+            'chr10':133797422, 'chr11':135086622, 'chr12':133275309,
+            'chr13':114364328, 'chr14':107043718, 'chr15':101991189,
+            'chr16':90338345, 'chr17':83257441, 'chr18':80373285,
+            'chr19':58617616, 'chr20':64444167, 'chr21':46709983,
+            'chr22':50818468, 'chrX':156040895, 'chrY':57227415,
+            'chrM':16569}
+
+species_chroms = {'mm8':mm8_chroms, 
+			'mm9':mm9_chroms, 
+			'hg18':hg18_chroms,
+			'hg19':hg19_chroms,
+			'hg38':hg38_chroms,
+...
+...
+...
+
+species_chrom_lengths={'mm8':mm8_chrom_lengths,
+		       'mm9':mm9_chrom_lengths,
+		       'hg18':hg18_chrom_lengths,
+		       'hg19':hg19_chrom_lengths,
+		       'hg38':hg38_chrom_lengths,
+...
+...
+...
+```",abalter,https://github.com/dariober/SICERpy/issues/4
+MDU6SXNzdWUyNDYxMDIyMjY=,SyntaxError: Missing parentheses in call to 'print',CLOSED,2017-07-27T16:45:41Z,2017-07-28T19:38:29Z,2017-07-28T19:38:29Z,"Hi, there, 
+
+I'm trying to install SICER and make it work on our cluster. I have downloaded the package from here, installed scipy and pysam and changed the path in the SICER.sh script. But when I trying to run a simple example command, I'm not able to make this example work. Here is the command I use and the error I got:
+
+[xx@host ex]$ pwd
+/ifs/home/xx/utilities/SICER/ex
+[xx@host ex]$ module load python/3.5.3
+[xx@host ex]$ ~/utilities/SICER/SICER.sh ./ test.bed control.bed . hg18 1 200 150 0.74 600 .01
+#############################################
+######           SICER v1.1            ######
+#############################################
+Input library directory: ./
+ChIP library: test.bed
+Control library: control.bed
+Output directory: .
+Species: hg18
+Threshold for redundancy allowed for chip reads: 1
+Threshold for redundancy allowed for control reads: 1
+Window size: 200 bps
+Fragment size: 150 bps. The shift for reads is half of 150
+Effective genome size as a fraction of the reference genome of hg18: 0.74
+Gap size: 600 bps
+Evalue for identification of candidate islands that exhibit clustering: 1000
+False discovery rate controlling significance: .01
+
+
+Preprocess the raw test file to remove redundancy with threshold 1...
+python /ifs/home/xx/utilities/SICER/src/remove_redundant_reads.py -s hg18 -b .//test.bed -t 1 -o ./test-1-removed.bed
+  File ""/ifs/home/xx/utilities/SICER/src/remove_redundant_reads.py"", line 84
+    print chrom, ""\tPlus reads:"",p_total, ""\tRetained plus reads:"", p_retained,     "";\tMinus reads:"", m_total, ""\tRetained minus reads:"", m_retained;
+              ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Preprocess the raw control file to remove redundancy with threshold 1...
+python /ifs/home/xx/utilities/SICER/src/remove_redundant_reads.py -s hg18 -b .//control.bed -t 1 -o ./control-1-removed.bed
+  File ""/ifs/home/xx/utilities/SICER/src/remove_redundant_reads.py"", line 84
+    print chrom, ""\tPlus reads:"",p_total, ""\tRetained plus reads:"", p_retained,     "";\tMinus reads:"", m_total, ""\tRetained minus reads:"", m_retained;
+              ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Partion the genome in windows ...
+Generate summary files ...
+python /ifs/home/xx/utilities/SICER/src/run-make-graph-file-by-chrom.py -s hg18 -b ./test-1-removed.bed -w 200 -i 150 -o ./test-W200.graph
+  File ""/ifs/home/xx/utilities/SICER/src/run-make-graph-file-by-chrom.py"", line 27
+    print ""Can not find the length of "", chrom;
+                                      ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Normalize summary graph by total island filtered reads per million for test ...
+python /ifs/home/xx/utilities/SICER/src/normalize.py -i ./test-W200.graph -a 3 -t 1000000 -o ./test-W200-normalized.graph
+Traceback (most recent call last):
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 60, in <module>
+    main(sys.argv)
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 55, in main
+    total = total_counts(opt.input_file, opt.colum) / opt.ScalingFactor
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 32, in total_counts
+    infile = open(file,'r')
+FileNotFoundError: [Errno 2] No such file or directory: './test-W200.graph'
+
+
+Convert the normalized summary graph into wig vstep format...
+sh /ifs/home/xx/utilities/SICER/src/variableStep.sh ./test-W200-normalized.graph ./test-W200-normalized.wig test 200
+head: cannot open `./test-W200-normalized.graph' for reading: No such file or directory
+grep: ./test-W200-normalized.graph: No such file or directory
+rm: cannot remove `./test-W200-normalized.graph': No such file or directory
+
+
+Find candidate islands exhibiting clustering ...
+python /ifs/home/xx/utilities/SICER/src/find_islands_in_pr.py -s hg18 -b ./test-W200.graph -w 200 -g 600 -t 0.74 -e 1000 -f ./test-W200-G600.scoreisland
+Traceback (most recent call last):
+  File ""/ifs/home/xx/utilities/SICER/src/find_islands_in_pr.py"", line 24, in <module>
+    import SeparateByChrom # GenomeData
+  File ""/ifs/home/xx/utilities/SICER/lib/SeparateByChrom.py"", line 141
+    print file, "" file does not exist.""
+             ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Calculate significance of candidate islands using the control library ...
+python /ifs/home/xx/utilities/SICER/src/associate_tags_with_chip_and_control_w_fc_q.py -s hg18  -a ./test-1-removed.bed -b ./control-1-removed.bed -d ./test-W200-G600.scoreisland -f 150 -t 0.74 -o ./test-W200-G600-islands-summary
+  File ""/ifs/home/xx/utilities/SICER/src/associate_tags_with_chip_and_control_w_fc_q.py"", line 54
+    print ""This species is not recognized, exiting"";
+                                                  ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Identify significant islands using FDR criterion ...
+python /ifs/home/xx/utilities/SICER/src/filter_islands_by_significance.py -i ./test-W200-G600-islands-summary -p .01 -c 7 -o ./test-W200-G600-islands-summary-FDR.01
+  File ""/ifs/home/xx/utilities/SICER/src/filter_islands_by_significance.py"", line 48
+    print ""Given significance"",  opt.significance, "",  there are"", totalislands, ""significant islands"";
+                             ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Convert island summary to island bed file of format chr start end ChIP-read-count
+python /ifs/home/xx/utilities/SICER/utility/convert_summary_to_bed.py -i ./test-W200-G600-islands-summary-FDR.01  -o  ./test-W200-G600-FDR.01-island.bed
+Traceback (most recent call last):
+  File ""/ifs/home/xx/utilities/SICER/utility/convert_summary_to_bed.py"", line 52, in <module>
+    main(sys.argv)
+  File ""/ifs/home/xx/utilities/SICER/utility/convert_summary_to_bed.py"", line 38, in main
+    file = open(opt.islandsummaryfile,'r')
+FileNotFoundError: [Errno 2] No such file or directory: './test-W200-G600-islands-summary-FDR.01'
+
+
+Filter reads with identified significant islands...
+python /ifs/home/xx/utilities/SICER/utility/filter_raw_tags_by_islands.py -s hg18 -a ./test-1-removed.bed -i 150 -b ./test-W200-G600-FDR.01-island.bed  -o  ./test-W200-G600-FDR.01-islandfiltered.bed
+  File ""/ifs/home/xx/utilities/SICER/utility/filter_raw_tags_by_islands.py"", line 96
+    print ""This species is not recognized, exiting"";
+                                                  ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Make summary graph with filtered reads...
+python /ifs/home/xx/utilities/SICER/src/run-make-graph-file-by-chrom.py -s hg18 -b ./test-W200-G600-FDR.01-islandfiltered.bed -w 200 -i 150 -o ./test-W200-G600-FDR.01-islandfiltered.graph
+  File ""/ifs/home/xx/utilities/SICER/src/run-make-graph-file-by-chrom.py"", line 27
+    print ""Can not find the length of "", chrom;
+                                      ^
+SyntaxError: Missing parentheses in call to 'print'
+
+
+Normalize summary graph with filtered reads for test by total island filtered reads per million...
+python /ifs/home/xx/utilities/SICER/src/normalize.py -i ./test-W200-G600-FDR.01-islandfiltered.graph -a 3 -t 1000000 -o ./test-W200-G600-FDR.01-islandfiltered-normalized.graph
+Traceback (most recent call last):
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 60, in <module>
+    main(sys.argv)
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 55, in main
+    total = total_counts(opt.input_file, opt.colum) / opt.ScalingFactor
+  File ""/ifs/home/xx/utilities/SICER/src/normalize.py"", line 32, in total_counts
+    infile = open(file,'r')
+FileNotFoundError: [Errno 2] No such file or directory: './test-W200-G600-FDR.01-islandfiltered.graph'
+
+
+Convert the summary graph made with the filtered reads into wig vstep format and normalize by total island-filtered read count per million...
+sh /ifs/home/xx/utilities/SICER/src/variableStep.sh ./test-W200-G600-FDR.01-islandfiltered-normalized.graph ./test-W200-G600-FDR.01-islandfiltered-normalized.wig test 200
+head: cannot open `./test-W200-G600-FDR.01-islandfiltered-normalized.graph' for reading: No such file or directory
+grep: ./test-W200-G600-FDR.01-islandfiltered-normalized.graph: No such file or directory
+rm: cannot remove `./test-W200-G600-FDR.01-islandfiltered.graph': No such file or directory
+rm: cannot remove `./test-W200-G600-FDR.01-islandfiltered-normalized.graph': No such file or directory
+
+
+Done!",gongyixiao,https://github.com/dariober/SICERpy/issues/5
+MDU6SXNzdWUyNDYzNDIxNTk=,OSError with SICERpy,CLOSED,2017-07-28T13:06:31Z,2017-07-28T14:24:05Z,2017-07-28T14:20:04Z,"Hi,
+I have used SICERpy before and it worked well. But, this time it gives me the following error. 
+
+```
+$ inputBAM=test_alignments.bam
+$ testBAM=input_alignments.bam
+$ sampleNAME=test
+$ SICER.py -t ${testBAM} -c ${inputBAM} -q 10 -fs 200 > ${sampleNAME}_SICER.bed
+
+*** Preprocess raw files to remove reduntant reads
+cd /SICER/tmp_sicer_L8kz2w/tmp_alignments.bam_dir
+export PYTHONPATH=/local/apps/sicer/1.1/SICERpy/lib
+/local/apps/python/2.7.3/bin/python /local/apps/sicer/1.1/SICERpy/src/remove_redundant_reads_bam.py -t 0 -b test_alignments.bam -o /SICER/tmp_sicer_L8kz2w/test_alignments.bam.removed.bam -f 0 -F 4 -q 10
+
+Traceback (most recent call last):
+  File ""/local/apps/sicer/1.1/SICERpy/SICER.py"", line 153, in <module>
+    os.makedirs(tmpRedDir)
+  File ""/local/apps/python/2.7.3/lib/python2.7/os.py"", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 17] File exists: '/SICER/tmp_sicer_L8kz2w/tmp_alignments.bam_dir'
+```
+There is no such file/folder 'tmp_sicer_L8kz2w/tmp_alignments.bam_dir' present. Can you please help me fix this?
+
+Thanks,
+Gunjan",gunjangala,https://github.com/dariober/SICERpy/issues/6
+MDU6SXNzdWUyNTgyNTczNzU=,Can SICERpy be used for samples without control?,CLOSED,2017-09-16T20:43:08Z,2017-09-21T14:49:46Z,2017-09-17T10:43:45Z,"Was wondering if this wrapper can be used to call broad histone modifications for samples without input, MACS2 isn't very good at calling very diffuse peaks.
+
+Thanks!",c-guzman,https://github.com/dariober/SICERpy/issues/7
+MDU6SXNzdWUyNzk5MTE5Mzg=,Can not pass species to SICER.py,CLOSED,2017-12-06T21:25:18Z,2017-12-07T08:29:21Z,2017-12-07T08:29:20Z,"I just installed your latest version and noticed that I get the following error when I tried to use SICER.py while providing a species with the option --species as indicated on your readme. 
+```
+SICER.py: error: unrecognized arguments: --species hg19
+```
+I noticed if you look at the help from the command line, there is no species option available :
+```
+SICER.py -h
+usage: SICER.py [-h] [--treatment TREATMENT] --control CONTROL
+                [--effGenomeSize EFFGENOMESIZE] [--requiredFlag REQUIREDFLAG]
+                [--filterFlag FILTERFLAG] [--mapq MAPQ]
+                [--redThresh REDTHRESH] [--windowSize WINDOWSIZE]
+                [--gapSize GAPSIZE] [--fragSize FRAGSIZE] [--keeptmp]
+                [--version]
+```
+
+Could you look into this discrepancy?
+Thanks,
+Ashley ",ashrosewood,https://github.com/dariober/SICERpy/issues/8
+MDU6SXNzdWUyOTk3MDkwMzE=,remove redundant reads threshold,CLOSED,2018-02-23T13:20:01Z,2018-02-27T12:12:53Z,2018-02-27T12:12:53Z,Why has the option to remove redundant reads been commented out?,dinovski,https://github.com/dariober/SICERpy/issues/9
+MDU6SXNzdWUzNjM5NzcyMjE=,get_total_tag_counts_bam gives different result than give_total_tag_counts_bed_graph,CLOSED,2018-09-26T11:15:51Z,2018-09-27T11:14:10Z,2018-09-27T10:13:42Z,"This is on the test data. I do not know if this is a bug in the original SICER, as I find it too unpleasant to get the original running to bother 😳 Sorry.
+
+With a remove duplicates of 1, `get_total_tag_counts_bam` gives 9924, `give_total_tag_counts_bed_graph` 9904. 
+
+```
+# find_islands_in_pr.py
+Total read count: 9904.0
+```
+
+```
+# associate_tags_with_chip_and_control_w_fc_q_bam.py
+chip_library_size  9924 # added print statement to line 61
+```
+
+This can have a teensy effect on the p-values of ChIP-seq data with many duplicates. I guess the easiest thing is just to add a warning about this instead of fixing it.",endrebak,https://github.com/dariober/SICERpy/issues/10

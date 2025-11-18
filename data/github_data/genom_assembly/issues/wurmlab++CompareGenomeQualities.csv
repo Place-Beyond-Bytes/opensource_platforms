@@ -1,0 +1,138 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOED2S9s6ArklP,ruby: No such file or directory -- solid_pairs.rb (LoadError),OPEN,2024-02-28T12:53:42Z,2024-02-28T12:53:42Z,,"Hi,
+
+Thank you for making this tool available to the community.
+
+I am running `compare-genome-qualities` using the following command:
+
+```
+nohup docker run --volume=`pwd`:/mnt:rw wurmlab/compare-genome-qualities \
+	--genome-size 7000000 \
+	--busco-lineage burkholderiales_odb10.2024-01-08.tar.gz \
+	--illumina-R1 Cmet/NA4_R1.fastq.gz \
+	--illumina-R2 Cmet/NA4_R2.fastq.gz \
+	--num-cpus 8 \
+	Cmet/assemblies/original_files/NA4.unicycler.fasta \
+	Cmet/assemblies/original_files/NA4.try.polish.fasta \
+	Cmet/assemblies/original_files/NA4.raven.fasta \
+	Cmet/assemblies/original_files/NA4.miniasm.fasta \
+	Cmet/assemblies/original_files/NA4.flye.fasta \
+	Cmet/assemblies/original_files/NA4.canu.trim.fasta \
+    > nohup-nextflow.out \
+    2> nohup-nextflow.err
+```
+
+And I am getting the following error:
+
+```
+--2024-02-28 12:24:16--  https://busco-data.ezlab.org/v5/data/lineages/burkholderiales_odb10.2024-01-08.tar.gz
+Resolving busco-data.ezlab.org (busco-data.ezlab.org)... 129.194.190.40
+Connecting to busco-data.ezlab.org (busco-data.ezlab.org)|129.194.190.40|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 17750318 (17M) [application/octet-stream]
+Saving to: ‘compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10.2024-01-08.tar.gz’
+
+     0K .......... .......... .......... .......... ..........  0% 2.94M 6s
+    50K .......... .......... .......... .......... ..........  0% 3.01M 6s
+   100K .......... .......... .......... .......... ..........  0% 75.4M 4s
+   ...
+ 17150K .......... .......... .......... .......... .......... 99% 79.6M 0s
+ 17200K .......... .......... .......... .......... .......... 99%  110M 0s
+ 17250K .......... .......... .......... .......... .......... 99%  107M 0s
+ 17300K .......... .......... .......... ....                 100%  141M=0.2s
+
+2024-02-28 12:24:17 (68.6 MB/s) - ‘compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10.2024-01-08.tar.gz’ saved [17750318/17750318]
+
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.unicycler.fasta)/quast Cmet/assemblies/original_files/NA4.unicycler.fasta
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.try.polish.fasta)/quast Cmet/assemblies/original_files/NA4.try.polish.fasta
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.raven.fasta)/quast Cmet/assemblies/original_files/NA4.raven.fasta
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.miniasm.fasta)/quast Cmet/assemblies/original_files/NA4.miniasm.fasta
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.flye.fasta)/quast Cmet/assemblies/original_files/NA4.flye.fasta
+/cmg/quast.sh -g 7000000 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.canu.trim.fasta)/quast Cmet/assemblies/original_files/NA4.canu.trim.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.unicycler.fasta)/busco Cmet/assemblies/original_files/NA4.unicycler.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.try.polish.fasta)/busco Cmet/assemblies/original_files/NA4.try.polish.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.raven.fasta)/busco Cmet/assemblies/original_files/NA4.raven.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.miniasm.fasta)/busco Cmet/assemblies/original_files/NA4.miniasm.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.flye.fasta)/busco Cmet/assemblies/original_files/NA4.flye.fasta
+/cmg/busco.sh -b compare-genome-qualities-2024-02-28-122415/burkholderiales_odb10 -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.canu.trim.fasta)/busco Cmet/assemblies/original_files/NA4.canu.trim.fasta
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.unicycler.fasta)/illumina Cmet/assemblies/original_files/NA4.unicycler.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.try.polish.fasta)/illumina Cmet/assemblies/original_files/NA4.try.polish.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.raven.fasta)/illumina Cmet/assemblies/original_files/NA4.raven.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.miniasm.fasta)/illumina Cmet/assemblies/original_files/NA4.miniasm.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.flye.fasta)/illumina Cmet/assemblies/original_files/NA4.flye.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+/cmg/map_illumina.sh -n 8 -o compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.canu.trim.fasta)/illumina Cmet/assemblies/original_files/NA4.canu.trim.fasta Cmet/NA4_R1.fastq.gz Cmet/NA4_R2.fastq.gz
+[bwa_index] Pack FASTA... 0.09 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 2.91 seconds elapse.
+[bwa_index] Update BWT... 0.08 sec
+[bwa_index] Pack forward-only FASTA... 0.05 sec
+[bwa_index] Construct SA from BWT and Occ... 1.06 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.raven.fasta/illumina/NA4.raven.fasta
+[main] Real time: 4.458 sec; CPU: 4.193 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+[bwa_index] Pack FASTA... 0.09 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 3.13 seconds elapse.
+[bwa_index] Update BWT... 0.07 sec
+[bwa_index] Pack forward-only FASTA... 0.06 sec
+[bwa_index] Construct SA from BWT and Occ... 1.05 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.try.polish.fasta/illumina/NA4.try.polish.fasta
+[main] Real time: 4.697 sec; CPU: 4.408 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+[bwa_index] Pack FASTA... 0.06 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 3.00 seconds elapse.
+[bwa_index] Update BWT... 0.08 sec
+[bwa_index] Pack forward-only FASTA... 0.06 sec
+[bwa_index] Construct SA from BWT and Occ... 1.05 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.miniasm.fasta/illumina/NA4.miniasm.fasta
+[main] Real time: 4.709 sec; CPU: 4.262 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+[bwa_index] Pack FASTA... 0.10 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 2.86 seconds elapse.
+[bwa_index] Update BWT... 0.08 sec
+[bwa_index] Pack forward-only FASTA... 0.06 sec
+[bwa_index] Construct SA from BWT and Occ... 1.06 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.unicycler.fasta/illumina/NA4.unicycler.fasta
+[main] Real time: 4.515 sec; CPU: 4.158 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+[bwa_index] Pack FASTA... 0.06 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 2.89 seconds elapse.
+[bwa_index] Update BWT... 0.06 sec
+[bwa_index] Pack forward-only FASTA... 0.06 sec
+[bwa_index] Construct SA from BWT and Occ... 1.11 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.canu.trim.fasta/illumina/NA4.canu.trim.fasta
+[main] Real time: 4.545 sec; CPU: 4.180 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+[bwa_index] Pack FASTA... 0.09 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 2.46 seconds elapse.
+[bwa_index] Update BWT... 0.07 sec
+[bwa_index] Pack forward-only FASTA... 0.06 sec
+[bwa_index] Construct SA from BWT and Occ... 1.11 sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa index compare-genome-qualities-2024-02-28-122415/NA4.flye.fasta/illumina/NA4.flye.fasta
+[main] Real time: 4.050 sec; CPU: 3.795 sec
+[bam_sort_core] merging from 0 files and 8 in-memory blocks...
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.unicycler.fasta)/illumina/bwa_mem_default.bam
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.try.polish.fasta)/illumina/bwa_mem_default.bam
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.raven.fasta)/illumina/bwa_mem_default.bam
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.miniasm.fasta)/illumina/bwa_mem_default.bam
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.flye.fasta)/illumina/bwa_mem_default.bam
+/cmg/solid_pairs.sh compare-genome-qualities-2024-02-28-122415/$(basename Cmet/assemblies/original_files/NA4.canu.trim.fasta)/illumina/bwa_mem_default.bam
+ruby: No such file or directory -- solid_pairs.rb (LoadError)
+ruby: No such file or directory -- solid_pairs.rb (LoadError)
+ruby: No such file or directory -- solid_pairs.rb (LoadError)
+ruby: No such file or directory -- solid_pairs.rb (LoadError)
+ruby: No such file or directory -- solid_pairs.rb (LoadError)
+```
+
+Would you have any suggestions to overcome this?
+",etlioglu,https://github.com/wurmlab/CompareGenomeQualities/issues/1

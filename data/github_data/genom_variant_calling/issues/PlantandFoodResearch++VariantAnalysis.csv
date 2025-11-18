@@ -1,0 +1,78 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNzYyNDkyNjQ=,Need some more explanation about config and usage ,OPEN,2016-09-11T15:29:23Z,2016-09-11T20:26:20Z,,"A few comments:
+
+A few issues I encountered:
+1.  there needs to be some clarification of what config files are and which we edit. I was confused by 
+
+```
+config: Location of config file [""$baseDir/design.config""]
+```
+
+I think this parameter is meant to be design since the corresponding entry in Nextflow.config is:
+
+```
+design = ""./design.config""
+```
+
+So do we edit the design.config and Nextflow.config file per project then tweak per run by passing in parameters???
+2. I think **rep** needs to be explained from the design file. Does this mean that reps are eg runs of the same sample across different lanes so that appropriate read groups can be assigned within samples?
+3. Monitoring of a run. How can we determine status of our run?
+4. Default ploidy value in the master config file should be 2
+5. How to stop, restart run?
+6. Best practices for reproducibility. How can I best track how I generated data? 
+",cfljam,https://github.com/PlantandFoodResearch/VariantAnalysis/issues/3
+MDU6SXNzdWUxNzkwNzIyMjQ=,Align Template Issues-Demo Data and Failure to Respect Config,OPEN,2016-09-25T06:57:24Z,2016-11-02T16:22:54Z,,"When i run the alignment template there is a some zombie data I presume from the default/demo data coming through in the output
+
+My config file looks like this:
+
+| sample | file | rep | read | experiment | date | comments |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pool1 | C95VLANXX-2143-01-11-1_L007_R1.fastq.gz | 1 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/High Fruit Weight |
+| Pool1 | C95VLANXX-2143-01-11-1_L007_R2.fastq.gz | 1 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/High Fruit Weight |
+| Pool1 | C95VLANXX-2143-01-11-1_L008_R1.fastq.gz | 2 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/High Fruit Weight |
+| Pool1 | C95VLANXX-2143-01-11-1_L008_R2.fastq.gz | 2 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/High Fruit Weight |
+| Pool2 | C95VLANXX-2143-02-11-1_L007_R1.fastq.gz | 1 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/Low Fruit Weight |
+| Pool2 | C95VLANXX-2143-02-11-1_L007_R2.fastq.gz | 1 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/Low Fruit Weight |
+| Pool2 | C95VLANXX-2143-02-11-1_L008_R1.fastq.gz | 2 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/Low Fruit Weight |
+| Pool2 | C95VLANXX-2143-02-11-1_L008_R2.fastq.gz | 2 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | HighVitC/Low Fruit Weight |
+| Pool3 | C95VLANXX-2143-03-11-1_L007_R1.fastq.gz | 1 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/High Fruit Weight |
+| Pool3 | C95VLANXX-2143-03-11-1_L007_R2.fastq.gz | 1 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/High Fruit Weight |
+| Pool3 | C95VLANXX-2143-03-11-1_L008_R1.fastq.gz | 2 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/High Fruit Weight |
+| Pool3 | C95VLANXX-2143-03-11-1_L008_R2.fastq.gz | 2 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/High Fruit Weight |
+| Pool4 | C95VLANXX-2143-04-11-1_L007_R1.fastq.gz | 1 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/Low Fruit Weight |
+| Pool4 | C95VLANXX-2143-04-11-1_L007_R2.fastq.gz | 1 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/Low Fruit Weight |
+| Pool4 | C95VLANXX-2143-04-11-1_L008_R1.fastq.gz | 2 | R2 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/Low Fruit Weight |
+| Pool4 | C95VLANXX-2143-04-11-1_L008_R2.fastq.gz | 2 | R1 | Req_10471_HighHealthAlleles | 1/01/16 | LowVitC/Low Fruit Weight |
+
+but there is spurious mystery output:
+
+```
+(py3r-env) [19:49][cfljam@aklppf31:align (master)] $ ls 240.add_read_group_id/ -lh
+total 52G
+-rw-rw-r--. 1 cfljam powerplant  6.9K Sep 25 13:48 add_read_group_id_HW1_1.bai
+-rw-rw-r--. 1 cfljam powerplant  114K Sep 25 13:48 add_read_group_id_HW1_1.bam
+-rw-rw-r--. 1 cfljam powerplant  6.9K Sep 25 13:48 add_read_group_id_HW2_2.bai
+-rw-rw-r--. 1 cfljam powerplant  113K Sep 25 13:48 add_read_group_id_HW2_2.bam
+-rw-rw-r--. 1 cfljam powerplant  956K Sep 25 18:04 add_read_group_id_Pool1_1.bai
+-rw-rw-r--. 1 cfljam powerplant  5.6G Sep 25 18:04 add_read_group_id_Pool1_1.bam
+-rw-rw-r--. 1 cfljam powerplant  1.6M Sep 25 19:04 add_read_group_id_Pool1_2.bai
+-rw-rw-r--. 1 cfljam powerplant  8.6G Sep 25 19:04 add_read_group_id_Pool1_2.bam
+-rw-rw-r--. 1 cfljam powerplant  942K Sep 25 16:40 add_read_group_id_Pool2_1.bai
+-rw-rw-r--. 1 cfljam powerplant  4.7G Sep 25 16:40 add_read_group_id_Pool2_1.bam
+-rw-rw-r--. 1 cfljam powerplant  1.6M Sep 25 19:07 add_read_group_id_Pool2_2.bai
+-rw-rw-r--. 1 cfljam powerplant  8.3G Sep 25 19:07 add_read_group_id_Pool2_2.bam
+-rw-rw-r--. 1 cfljam powerplant  974K Sep 25 16:21 add_read_group_id_Pool3_1.bai
+-rw-rw-r--. 1 cfljam powerplant  4.4G Sep 25 16:21 add_read_group_id_Pool3_1.bam
+-rw-rw-r--. 1 cfljam powerplant  993K Sep 25 17:13 add_read_group_id_Pool4_1.bai
+-rw-rw-r--. 1 cfljam powerplant  6.5G Sep 25 17:13 add_read_group_id_Pool4_1.bam
+-rw-rw-r--. 1 cfljam powerplant 1004K Sep 25 16:32 add_read_group_id_Pool5_1.bai
+-rw-rw-r--. 1 cfljam powerplant  4.9G Sep 25 16:32 add_read_group_id_Pool5_1.bam
+```
+## 2 issues
+1. What are the  _HW1_ and _HW2_ files doing in here??? they from demo data 
+2. The config file lists 4 pool samples x 2 reps  but Pool3_2 has become (non-existent) Pool5 rep 1  
+",cfljam,https://github.com/PlantandFoodResearch/VariantAnalysis/issues/4
+MDU6SXNzdWUxODQ3MDc2MTA=,Additional features  in align template,OPEN,2016-10-23T18:52:03Z,2016-10-23T18:52:03Z,,"Some obvious ones:
+1. merge up bamfiles by rep
+2. simple flagstats
+",cfljam,https://github.com/PlantandFoodResearch/VariantAnalysis/issues/5

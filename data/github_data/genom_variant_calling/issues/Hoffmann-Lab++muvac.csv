@@ -1,0 +1,38 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMjU3MjQyMzI=,Problems in recognizing Bash 4.3,CLOSED,2017-05-02T15:04:02Z,2017-06-06T15:41:16Z,2017-05-05T10:52:55Z,"Hi,
+thank you for the work! I have the problem that my bash 4.3 is not recognized. The problem seems to come that my OS (openSUSE 42.2 (x86_64), VERSION = 42.2, CODENAME = Malachite) writes the string **version** capitalized (**V**ersion instead of **v**ersion):
+
+bash -version | head -1
+GNU bash, Version 4.3.42(1)-release (x86_64-suse-linux-gnu)
+
+
+I experienced it in vs. 0.1.2 (installed by the root, not me) but the recent change in 0.1.3 still seems to have the same problem:
+bash -version | head -1 | perl -lane 'if ($_=~/version\s+4\.(\d+)/){if($1>=3){print 1}else{print 0}}else{print 0}'
+0
+
+Thanks!
+Holger",holgerman,https://github.com/Hoffmann-Lab/muvac/issues/1
+MDU6SXNzdWUyMzM5NDE4NTk=,Problems creating java memory parameter,CLOSED,2017-06-06T16:00:05Z,2017-06-15T13:26:23Z,2017-06-08T15:18:40Z,"Hi,
+I run into another problem: 
+After the fastq, the trimming section starts with an error: 
+> :INFO: trimming
+> Invalid maximum heap size: -Xmx-18g
+> 
+Indeed, in muvac, the creation of the memory parameter in row 1225  is
+> memory=$(script -e -q -c ""stty rows 1000; top -b -n 1"" /dev/null | grep 'KiB Mem' | perl -lane '$_=~/(\d+)\D+(\d+)\D+(\d+)/; printf(""%d"",($1-$3)/1024/1024)')
+
+so that on my OS (openSUSE 42.2 (x86_64), VERSION = 42.2, CODENAME = Malachite) 
+the parameter memory becomes _-18_ and later on _-Xmx-18g_ instead of _18_  and later on _-Xmx18g_ causing an error.
+
+Thanks again!
+Holger
+
+
+",holgerman,https://github.com/Hoffmann-Lab/muvac/issues/2
+MDU6SXNzdWUyMzYxOTM1MTg=,Segemehl fails,CLOSED,2017-06-15T13:32:16Z,2017-07-07T09:38:17Z,2017-07-07T09:38:17Z,"Unfortunately, I run into another problem, where segemehl failed. here is the log file:
+[170614test2.log.txt](https://github.com/koriege/muvac/files/1077760/170614test2.log.txt)
+
+If you like you can send me two fastq files that previously run in your hands in order to exclude any problems due to the input data.
+
+Thanks again!
+Best, Holger",holgerman,https://github.com/Hoffmann-Lab/muvac/issues/3

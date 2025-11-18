@@ -1,0 +1,241 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+176f84ff260d54357ec9fac445230a4ae78d55ad,Blake Sweeney,blakes.85@gmail.com,"Improve summary counts
+
+It is useful to have ta count of correct/incorrect and total as well.
+Should probably add something about never run and such.",2017-05-03T13:15:47Z,blakesweeney
+fe6c04712faaa2ed612cf57bee0005e3c62bd580,Blake Sweeney,bsweeney@ebi.ac.uk,Update gitignore,2017-04-27T11:35:47Z,blakesweeney
+7386f9dbe78984d00d2801e7159b4a785fcecb44,Blake Sweeney,bsweeney@ebi.ac.uk,Make summary csv easier to read,2017-04-27T11:35:13Z,blakesweeney
+b295bf45dc60c608535216f6194a7d26568f0af8,Blake Sweeney,bsweeney@ebi.ac.uk,Also write fasta of skipped sequences,2017-04-27T11:34:56Z,blakesweeney
+7f47c25758bebcfa58f11202ba9ef1c4e5905589,Blake Sweeney,bsweeney@ebi.ac.uk,Do not automatically delete expensive files,2017-04-27T11:34:01Z,blakesweeney
+deaa071d18ca4f013f18a3c6289fd6faf722f2c1,Blake Sweeney,blakes.85@gmail.com,Update sums,2017-04-27T10:49:29Z,blakesweeney
+56d572cbfd16e1020509e58d8f235ae26eb76858,Blake Sweeney,blakes.85@gmail.com,Add brief notes on current summary,2017-04-26T22:30:29Z,blakesweeney
+fc5dda6459a719d00a54951a02de144fcabcbd86,Blake Sweeney,blakes.85@gmail.com,Modify searching scripts,2017-04-26T22:30:10Z,blakesweeney
+6d8d2aa63bcb5dec73dab553798dbea204261e55,Blake Sweeney,blakes.85@gmail.com,"Use streams not lists
+
+By using streams we don't have to fit all the data in memory at once.
+This is really useful in making the scripts faster and use less memory.
+This requires reworking how everything is structured though.",2017-04-26T22:29:09Z,blakesweeney
+635cab4bf8a62eb0bd07a12f355caa0088e5e71c,Blake Sweeney,blakes.85@gmail.com,Add filter option to fasta.py,2017-04-26T15:16:35Z,blakesweeney
+e3a1c9388bac9edad731cb9c00880a58036bbf2f,Blake Sweeney,blakes.85@gmail.com,Ensure we always have at least 1 job,2017-04-25T14:54:20Z,blakesweeney
+9a3d132ed6f644ba2e446507fee3adb65f724c7c,Blake Sweeney,blakes.85@gmail.com,Whoops forgot some stuff,2017-04-24T16:14:10Z,blakesweeney
+7a6f262f5c65fe809f41900cf14f674a62fb9d59,Blake Sweeney,blakes.85@gmail.com,"Many improvements
+
+This now computes the targets.fasta file for all the organism here. In
+addition it will compute the psl files on the cluster and then can
+generate the hits file as needed.",2017-04-24T15:39:38Z,blakesweeney
+5f05ed0ed87c947ebad2a732a68c11e85215ba2e,Blake Sweeney,blakes.85@gmail.com,Update ignores,2017-04-24T15:38:39Z,blakesweeney
+f41950fa22ca618d628a519cec42a9605fc2f58c,Blake Sweeney,blakes.85@gmail.com,"Add script to guess number of jobs
+
+Basically we want to use as many as possible to minimize the overall
+runtime while staying within the allowed limits. If running with bsub
+then we should use up to 100, while locally I limit to 4.",2017-04-24T15:37:52Z,blakesweeney
+79f5b7710d238dea35d0c3171dcebb63b12b50c4,Blake Sweeney,blakes.85@gmail.com,Add some bad-ids,2017-04-24T15:37:42Z,blakesweeney
+3c2b624d26980ecb5b9a772f22567f8208de344b,Blake Sweeney,blakes.85@gmail.com,Implement polling to wait for remote jobs,2017-04-24T09:45:11Z,blakesweeney
+b82689016dbee6d6872940fb95cb53012b076f37,Blake Sweeney,blakes.85@gmail.com,Update gitignore,2017-04-24T09:44:47Z,blakesweeney
+58d932b4b5950a3e2b1d20ca48a401c3bf8e2dfb,Blake Sweeney,blakes.85@gmail.com,"Begin work on script to execute blat remotely
+
+This is a script which will either run blat locally or remotely
+depending upon settings in the environment. I think I can slot this into
+the normal matcher and have it work to run blat on the server and the
+parse results locally. It isn't finished yet as I need to test the
+sleep/poll loop for detecting a finished job.",2017-04-21T17:06:19Z,blakesweeney
+84a472aafb449b84dcc62d16c77ca9becbd30544,Blake Sweeney,blakes.85@gmail.com,Clean up temp files,2017-04-21T17:06:14Z,blakesweeney
+93fd9cc16e208e1615c02bd1083dfe282b20c2b3,Blake Sweeney,blakes.85@gmail.com,"Add more organisms to map
+
+In theory this all works correctly. However, while it can map may of the
+unknown sequences it takes too long to map the known ones. This means it
+is impossible for me to validate if the selected approach works well.
+So I can't really trust the mappings. I will rewrite the mapping logic
+to use the cluster and hopefully that will make things efficient enough
+that I can actually work with them.",2017-04-20T16:51:10Z,blakesweeney
+4b0fea573f8fb747c0eb47e82b673d1f1426aaf4,Blake Sweeney,blakes.85@gmail.com,Initial addition of required worm files,2017-04-20T11:38:50Z,blakesweeney
+00b2c6c6f19cc6abf96c4b14ce63b0c0f231075e,Blake Sweeney,blakes.85@gmail.com,"Rework to a Makefile approach
+
+This now can do the pombe mapping using the Makefile. This should be
+easy to extend to a new organism like C. elegans. I also reduce the
+amount of stuff in the repo so this is easier to clone. This probably
+makes it less reproducible as it is possible that the genomes and such
+will change without our knowing.",2017-04-20T11:05:20Z,blakesweeney
+492cd800c951895ce6f1b03253c33ac81eae8327,Blake Sweeney,blakes.85@gmail.com,"Begin work on mapping C. elegans
+
+I want to reuse lots of the logic I already have but that is proving
+annoying using shell scripts. So I'm moving to a hopefully more reusable
+Makefile based approach. This doesn't yet work but does outline what I
+think the generic Makefile will be.
+
+The general idea is that most of the logic is the same cross organisms,
+the only bit that is different is where to get input
+sequences/coordinates and how to do the mapping. I think using a
+Makefile I can more or less enforce this.
+
+This is my initial attempt at this. Nothing will work yet but this is
+the start of how I will try to move things.",2017-04-19T16:07:47Z,blakesweeney
+23524bd0197b63a0155d3c592339a5ef875fb019,Blake Sweeney,blakes.85@gmail.com,"Fix best-match logic
+
+Best match now does more or less the right thing and we take advantage
+of it to find the missing coordinates. The idea is to take as many of
+the best hits as we can but never take any bad hits. Right now I have it
+set to 99% as the minimum allowed difference and 100% query
+completeness. This seems to let us match nearly all the unknown
+sequences with very few issues compared to 100% match on the known hits.",2017-04-19T10:11:31Z,blakesweeney
+0d8eb0f4daade583cd78f68cbd8cf2a894424851,Blake Sweeney,blakes.85@gmail.com,"Improve best match method
+
+This is closer to being correct now.",2017-04-19T09:26:48Z,blakesweeney
+def64214c95985cae9c7720f39f4846268f51c6c,Blake Sweeney,blakes.85@gmail.com,"Correct bugs and add new matcher
+
+There were some bugs with how various things were computed. I've
+reworked the data to reflect this.
+
+Also I've begun work on a new matcher best-match. This basically takes
+as many of the best hits as possible and then will take up to a
+specified number of less good hits.",2017-04-18T16:47:42Z,blakesweeney
+9de3433af5cd11c2fd7b50ccf32305eb0de59a13,Blake Sweeney,blakes.85@gmail.com,Correct logic of using defines,2017-04-18T16:47:27Z,blakesweeney
+75b71c1b6fdcb5f798d2b2d6776d36c3fe906a6d,Blake Sweeney,blakes.85@gmail.com,Add an editor config,2017-04-18T16:47:10Z,blakesweeney
+20778fc61c0cffdb06fbdf43796a21e52513578c,Blake Sweeney,blakes.85@gmail.com,Write to valid insterable json,2017-04-13T14:58:45Z,blakesweeney
+f785ef09685c36ce91e567b1c7dff600c1d00076,Blake Sweeney,blakes.85@gmail.com,Unzip fasta file and create new format,2017-04-13T09:41:34Z,blakesweeney
+57da8abc6f407b2f00ca5e8406e5614ced35d134,Blake Sweeney,blakes.85@gmail.com,Compute the unknown coordinates as well,2017-04-12T16:21:32Z,blakesweeney
+2f70f917e8630392d74a910a6506ba23776a86fc,Blake Sweeney,blakes.85@gmail.com,Update gitignore,2017-04-12T15:36:32Z,blakesweeney
+39ac00b459834406c9b8c7f973c7fbe3c295d7d8,Blake Sweeney,blakes.85@gmail.com,Show how this actually works in the readme,2017-04-12T15:36:01Z,blakesweeney
+736c643ff074bd47e0f66408b2500772182098f6,Blake Sweeney,blakes.85@gmail.com,Update paths and such to be easier to work with,2017-04-12T15:34:28Z,blakesweeney
+f408d24df98df698617958beb6277cc7166f74b5,Blake Sweeney,bsweeney@ebi.ac.uk,"Improve detection of splicing
+
+This does a better job of finding spliced vs unspliced for both hits and
+features. This is pretty helpful when examining the results to see why
+there are incorrect matches. I've also improved the detection of
+identity so it will require 100% identity, not just 0 gaps in the
+alignment.
+
+The splicing detection does rely upon the feature of BLAT where it
+writes out multiple HSPfragments, so it likely won't work with BLAST.
+Not ideal and should be improved. Summarily, the computation of identity
+requires a BLAT output.
+
+Also some spelling fixes and the like.",2017-02-16T16:26:00Z,blakesweeney
+3173c405737d5d04f741deaed39370aad50b4ce6,Blake Sweeney,bsweeney@ebi.ac.uk,"Improve detection of hits
+
+This does a better job of detecting where hits belong. We have probably
+increased the false positive (extra hits) a bit but that is ok for now.
+I suspect the false positives are just spliced vs unspliced hits. With
+the improved parsing I can probably detect these cases and mark them
+separately.",2017-02-15T16:58:36Z,blakesweeney
+933afc02981043d205652fd67e1932647e23a31d,Blake Sweeney,bsweeney@ebi.ac.uk,"Minor update to name
+
+Just to follow the naming conventions I have.",2017-02-15T11:51:36Z,blakesweeney
+04ad61fb07bbe269fb224d2d66f849f214f25b23,Blake Sweeney,bsweeney@ebi.ac.uk,"Better parsing of hits
+
+We can now pull out the fragments that some programs create. This will
+provide a better idea of exon/intron structure and hopefully let me
+evaluate the hits better.",2017-02-14T16:32:45Z,blakesweeney
+d582a92e9a1a8644a3a673a03fb915203ca04e0e,Blake Sweeney,bsweeney@ebi.ac.uk,"Improve naming and flush sequences
+
+Sequences must be flushed so we are sure that we are searching all data.",2017-02-14T10:32:02Z,blakesweeney
+fcff75db7625a3c93459ccf36c7e3f968d2cd4b2,Blake Sweeney,bsweeney@ebi.ac.uk,Add some notes on missing locations,2017-02-13T15:24:37Z,blakesweeney
+68bac6e83408ff8437034b92f3ca58498153f5f9,Blake Sweeney,bsweeney@ebi.ac.uk,Move notes around,2017-02-13T12:00:34Z,blakesweeney
+65d7c069052c21aa95da4a5e294e6f8d0e12dc24,Blake Sweeney,bsweeney@ebi.ac.uk,Write gff3 of missing locations,2017-02-13T09:40:39Z,blakesweeney
+2e74f7132809a9dc7f3a37e3ae3c07ce7277f531,Blake Sweeney,bsweeney@ebi.ac.uk,Correct attribute naming,2017-02-13T09:40:19Z,blakesweeney
+4a84e7a5307c56f70c59c228338abf05c2dad3ec,Blake Sweeney,bsweeney@ebi.ac.uk,Add more mappers,2017-02-13T09:30:15Z,blakesweeney
+b0ec24ef7b8ec997f06236f6905e4b37e7790f97,Blake Sweeney,bsweeney@ebi.ac.uk,Rename upi to uri,2017-02-13T09:29:59Z,blakesweeney
+c9a4931bf238ba732533d48cd341dda0ee42ae30,Blake Sweeney,bsweeney@ebi.ac.uk,Rename upi to uri,2017-02-13T09:29:35Z,blakesweeney
+5e7a8d134cc0c9552e4afa09914b69052ef4c820,Blake Sweeney,bsweeney@ebi.ac.uk,Cleanup script,2017-02-13T09:29:05Z,blakesweeney
+74de6f6ffff44bf2b5e3ed0c094a4c9ae7633cd0,Blake Sweeney,bsweeney@ebi.ac.uk,"Improve genome mapping in a variety of ways
+
+This does a better and more straightforward way of comparing to the
+known. I've also added the ability to pull out the best match within a
+range. This is useful in a variety of ways.",2017-02-09T16:46:06Z,blakesweeney
+14b5c77ee4bb7aa4b4d9a539560e6e5fa4267e3d,Blake Sweeney,bsweeney@ebi.ac.uk,"Yet more improvements
+
+This can now correctly extract all sequences from the genome, check that
+the right sequences were found and then run searches. This requires lots
+of changes, including this like removing entries where the range and
+sequence do not match as well as lots of other issues.",2017-02-08T16:57:16Z,blakesweeney
+6ba3715626e8cfb1405133bf143a34b96b65cda5,Blake Sweeney,bsweeney@ebi.ac.uk,"Make analysis more or less reproducible
+
+This fixes issues where the bed files were not 0 based but instead 1
+based. In addition, I do not exclude a few (4) sequences where the
+location information is from silva. This because the location
+information is wrong. Also, I convert sequences to RNA so that the blast
+search works as expected.",2017-02-08T12:55:54Z,blakesweeney
+c8c5898a2e9066fd9ba358c396dc049fa150f42b,Blake Sweeney,bsweeney@ebi.ac.uk,Update gitignore,2017-02-08T12:55:41Z,blakesweeney
+c9b8c1c862700bfd70913c2a872324935a25ca68,Blake Sweeney,bsweeney@ebi.ac.uk,Add correct hash for md5 hashes,2017-02-07T17:58:00Z,blakesweeney
+70630d006177ed4fa843797d8a569ee1624f5c23,Blake Sweeney,bsweeney@ebi.ac.uk,"Attempt to validate md5 hashes of targets
+
+This attempts to validate that the md5 hashes of sequences is correct.
+However, right now this will fail as the BED file are 1 based when they
+should be 0 based. This is a bug that needs to be fixed.",2017-02-07T17:48:25Z,blakesweeney
+8d52532deb5853be4bf7176cd53a8501ed794a60,Blake Sweeney,bsweeney@ebi.ac.uk,"Add script to do pombe analysis
+
+This is my start at making this stuff reproducible and make it easier to
+see where all the data came from. In addition, I've starting doing
+something that may be odd. That is I am using the downloaded .bed file
+and bedtools to extract the sequences of molecules that have genome
+coordinates. Depending on the genome used this may not produce the same
+sequences as what is in rnacentral, which is odd. This should be checked
+as part of the script as well.",2017-02-07T16:26:19Z,blakesweeney
+782012ce5c4a9f0138ec4383acac792c53ddeefe,Blake Sweeney,bsweeney@ebi.ac.uk,Ignore some stuff,2017-02-07T16:26:12Z,blakesweeney
+7898a24154bb3b8a65e4008124448d0489d1cfc6,Blake Sweeney,bsweeney@ebi.ac.uk,Improve gff3 formatting,2017-02-07T16:26:01Z,blakesweeney
+1e83e707bc7f441ebc38a14642ba11cd66dd7815,Blake Sweeney,bsweeney@ebi.ac.uk,"Update data
+
+I am now going to be using a script to fetch the data. This updates the
+stored data to match what is fetched.",2017-02-07T16:25:18Z,blakesweeney
+c23e1a2db4a1c6d70264b01426c07d1a77c02e1e,Blake Sweeney,bsweeney@ebi.ac.uk,Rename script,2017-02-07T14:30:13Z,blakesweeney
+54ebbb7ddb4627c5cf7e85d39786b9a67903d706,Blake Sweeney,bsweeney@ebi.ac.uk,Shorten building locals,2017-02-07T12:31:18Z,blakesweeney
+b7d89e784d9045b5a498c150d5c3a8913431a9b3,Blake Sweeney,bsweeney@ebi.ac.uk,"Better storage of features
+
+We can more or less store the Features from gff now.",2017-02-07T12:30:49Z,blakesweeney
+03a88dd575f838665a53dfaab93deada5a54b4ed,Blake Sweeney,bsweeney@ebi.ac.uk,"Refactor and add new features
+
+Some of this is useful stuff (ignoring all warnings) and others are me
+being a bit cute (parsing strings on the command line into python code
+to provide a generic filter). I've also fixed the bug where things are
+marked as 'UNKNOWN', I forgot the whole elif structure. I've also
+reworked formatting to allow a more generic style and added some limited
+ability to write gff3 data.
+
+Still this is organized a bit better, has more useful features and fixes
+a bug.",2017-02-07T12:03:47Z,blakesweeney
+126031aace7c3c2233cc569bbe9f6c331b0d70e2,Blake Sweeney,bsweeney@ebi.ac.uk,Updates,2017-02-07T09:37:37Z,blakesweeney
+794546e09d9821aa3865ff3156e979cebd33da25,Blake Sweeney,bsweeney@ebi.ac.uk,Some changes to write out shift,2017-02-03T17:58:55Z,blakesweeney
+edc146a6bac0e42c3943a19aa3ef1f6faa0d3087,Blake Sweeney,bsweeney@ebi.ac.uk,Stopping for now,2017-02-03T17:38:50Z,blakesweeney
+efb421c3331a6d9ece0343a8e4120166c13db137,Blake Sweeney,bsweeney@ebi.ac.uk,"Major refactor
+
+Basic reworked all of this, plus some notes and stuff.",2017-02-03T17:08:41Z,blakesweeney
+ab055f0af682696ac1f96cbb25cd53dbbaea9540,Blake Sweeney,bsweeney@ebi.ac.uk,"Updates
+
+A better version in terms of output and the shift comparisons.",2017-02-02T15:21:52Z,blakesweeney
+233134c0e68d8ee0120ea7f5a8c49a6b892be891,Blake Sweeney,bsweeney@ebi.ac.uk,Add some more notes and thoughts,2017-01-30T19:56:49Z,blakesweeney
+aa2040526ecc18dffbe349ebfc34db806e9a82ea,Blake Sweeney,bsweeney@ebi.ac.uk,"Update call to blat
+
+Blat requires the -q=rna option in order to properly find RNA sequences
+of course. This is the reason why I do not get prefect recall for all
+the known positions.",2017-01-30T18:39:25Z,blakesweeney
+33fc8a1f1439cb2c3db094f55ee8a5b46141ab2c,Blake Sweeney,bsweeney@ebi.ac.uk,"Creating working script
+
+This script can map sequences to a genome. It has been tested for the
+case of S. pombe. The idea is to use BLAT to map to the genome and only
+accept the hits which are exact. So far it does ok. A full discussion of
+how it does will be in the notes.",2017-01-30T16:33:12Z,blakesweeney
+237fea2ddd0aca3cc9fb0ca8d98dbc74d85d83c3,Blake Sweeney,bsweeney@ebi.ac.uk,"Add basic readme, not correct yet",2017-01-30T16:33:04Z,blakesweeney
+df495fb743dceee77a353f763edb1b6e3e3d8d6c,Blake Sweeney,bsweeney@ebi.ac.uk,Add note about numbering,2017-01-30T16:28:08Z,blakesweeney
+51dc1b77c3a538a4a27dc23285f372418c8d97d9,Blake Sweeney,bsweeney@ebi.ac.uk,Update pombe data,2017-01-30T16:27:32Z,blakesweeney
+0ec204f7b7f9a311f185fb3ab48f0c866e956204,Blake Sweeney,bsweeney@ebi.ac.uk,"Add some notes on variant calling
+
+This may be a useful approach so I should note it.",2017-01-30T14:04:11Z,blakesweeney
+ff3d80b1ee76d2f8c2dfbff619f29444ed57d0a1,Blake Sweeney,bsweeney@ebi.ac.uk,"Make a version that runs
+
+While this does not actually make the correct mappings, it does now actually
+run and parse everything. That said it is not producing correct mappings
+yet.",2017-01-27T15:54:21Z,blakesweeney
+e85de241e654094387f22678a8f5005cd7929c82,Blake Sweeney,bsweeney@ebi.ac.uk,Update requirements file,2017-01-27T15:53:05Z,blakesweeney
+d5aef30a7a45e6714d5575953d2142b3498be7a9,Blake Sweeney,bsweeney@ebi.ac.uk,First attempt at dockerizing,2017-01-06T16:20:17Z,blakesweeney
+fb6683cdaa61036de09ea2b667c8f1fef39d2ccb,Blake Sweeney,bsweeney@ebi.ac.uk,Move notes,2017-01-06T16:19:54Z,blakesweeney
+75c01b6b76f73ee82c9bcd51485f1880e586cc13,Blake Sweeney,bsweeney@ebi.ac.uk,Move some code around,2017-01-06T16:19:32Z,blakesweeney
+7589a85abd8d972123de0810a704953c1ee1abb4,Blake Sweeney,bsweeney@ebi.ac.uk,"First pass at general code
+
+This is my first pass at creating the code to produce mappings to the
+genome. Nothing works, probably but it is a start.",2017-01-05T18:12:21Z,blakesweeney
+3be87086f081ebeacff91f873062275ddb48b0f7,Blake Sweeney,bsweeney@ebi.ac.uk,Add some sample data from pombe,2017-01-05T18:11:38Z,blakesweeney
+6193bc774f7272105eac1d21688e36d67302bb15,Blake Sweeney,bsweeney@ebi.ac.uk,"Updates
+
+Add some more complete details. I think this will be enough to start a
+discussion of what to do.",2017-01-04T16:58:23Z,blakesweeney
+4c7c598333156059c81cad9c71cade3615657654,Blake Sweeney,bsweeney@ebi.ac.uk,First version,2017-01-04T16:48:40Z,blakesweeney

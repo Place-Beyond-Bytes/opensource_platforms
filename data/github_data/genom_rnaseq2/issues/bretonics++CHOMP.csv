@@ -1,0 +1,112 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNzQ1NTg4MTA=,Rank off targets,CLOSED,2016-09-01T15:46:39Z,2016-09-21T17:52:25Z,2016-09-21T17:52:25Z,"Get match hits for each CRISPR and rank matches according to how many bp are matched. Not only how many occurrences per target throughout genome but which has the least matching base pairs.
+",bretonics,https://github.com/bretonics/CHOMP/issues/2
+MDU6SXNzdWUxNzQ1NTkzNDQ=,Add genome parameter,CLOSED,2016-09-01T15:48:46Z,2016-09-02T17:12:00Z,2016-09-02T17:12:00Z,"Add the following parameters as command line arguments:
+- [x] `-genome`: Genome file to use in blast search instead of self `-seq` option
+",bretonics,https://github.com/bretonics/CHOMP/issues/3
+MDU6SXNzdWUxNzQ3OTc3MzA=,Subroutines,CLOSED,2016-09-02T16:22:37Z,2016-09-02T17:12:00Z,2016-09-02T17:12:00Z,"Subroutines:
+- [x] **setParameters** (manage #3)
+- [x] **getSequence** subroutine to return sequence details with BioPerl
+",bretonics,https://github.com/bretonics/CHOMP/issues/4
+MDU6SXNzdWUxNzc1MTY2MDY=,CRISPRS sequences differ between files,CLOSED,2016-09-16T20:45:05Z,2016-09-19T19:49:33Z,2016-09-19T19:49:33Z,"Different CRISPR sequences in BLAST results than from 'crisprs.txt' file containing detailed information.
+- ✔︎ FASTA file names matche with HTML output
+- ❌ BLAST output does **not** match 'crisprs.txt'
+",bretonics,https://github.com/bretonics/CHOMP/issues/6
+MDU6SXNzdWUxNzc1MjA0NTM=,blast subroutine - BAD data structure,CLOSED,2016-09-16T21:04:52Z,2016-09-19T19:48:59Z,2016-09-19T19:48:59Z,"Anonymous hash data structure incorrectly constructed at [line 54](https://github.com/bretonics/CHOMP/blob/master/lib/Search.pm#L154).
+
+May be related to #6 , but needs to correctly pair key->value
+
+```
+'CRISPR_9' => [
+                          {
+                            'qseqid' => '1',
+                            'qend' => '25',
+                            'qstart' => '23',
+                            'nident' => undef,
+                            'pident' => '23
+',
+                            'sstart' => '47',
+                            'send' => 'plus',
+                            'sstrand' => '100.000'
+                          },
+                          {
+                            'pident' => '15
+',
+                            'sstart' => '213',
+                            'send' => 'plus',
+                            'sstrand' => '93.750',
+                            'nident' => undef,
+                            'qseqid' => '1',
+                            'qstart' => '16',
+                            'qend' => '198'
+                          },
+```
+",bretonics,https://github.com/bretonics/CHOMP/issues/7
+MDU6SXNzdWUxNzgxNzQzMjI=,Search reverse input sequence,CLOSED,2016-09-20T20:40:08Z,2016-09-22T03:26:38Z,2016-09-22T03:26:38Z,"Search CRISPR targets in reverse input sequence.
+",bretonics,https://github.com/bretonics/CHOMP/issues/8
+MDU6SXNzdWUxNzg5NDQwNDU=,Sort based on number or occurrences first,CLOSED,2016-09-23T18:32:00Z,2016-12-16T20:00:15Z,2016-12-16T20:00:15Z,"The number of off-target sites should be minimized, thus the number of occurrences (number of times the CRISPR oligo matches back to the sequence -- may it be genomic or onto itself--) the least number of off-target matches the better.",bretonics,https://github.com/bretonics/CHOMP/issues/10
+MDU6SXNzdWUxNzg5NjUyNDg=,BLAST against multiple sequences,CLOSED,2016-09-23T20:21:04Z,2016-12-07T18:26:42Z,2016-12-07T18:26:42Z,"Add support to BLAST against multiple chromosomes or sequences.
+- [x] append name (`-out` and subject sequence) to **blast.html** output. Ex.) **blast_geneX_ChrX.html**
+- [x] mv output to `CRISPRS/blast/`
+- [x] support directory vs. files
+",bretonics,https://github.com/bretonics/CHOMP/issues/11
+MDU6SXNzdWUxODczNzM0Nzc=,ViennaRNA support,OPEN,2016-11-04T16:06:48Z,2017-01-12T14:49:58Z,,Add support for [ViennaRNA](https://github.com/ViennaRNA/ViennaRNA) secondary structure prediction.,bretonics,https://github.com/bretonics/CHOMP/issues/12
+MDU6SXNzdWUxODczNzM5MjQ=,STAR Aligner,OPEN,2016-11-04T16:08:31Z,2016-11-04T16:08:31Z,,Possibly switch to [STAR](https://github.com/alexdobin/STAR) RNA-seq aligner to search sequence to CRISPR sequence matches.,bretonics,https://github.com/bretonics/CHOMP/issues/13
+MDU6SXNzdWUxOTM4NDY3Mzc=,Multi FASTA,OPEN,2016-12-06T18:20:49Z,2016-12-06T18:21:00Z,,"Allow multi fasta file for `-genome` option.
+
+Currently searches against multiple files passed in `-genome` option, but only searches first sequence in multi fasta file (or first '>').",bretonics,https://github.com/bretonics/CHOMP/issues/14
+MDU6SXNzdWUxOTYxNTQ2NTk=,Number of occurrences incorrect,CLOSED,2016-12-16T21:08:26Z,2017-01-03T15:59:06Z,2017-01-03T15:59:06Z,"The number of [occurrences](https://github.com/bretonics/CHOMP/blob/dev/chomp.pl#L307) per CRISPR query match is incorrect. Each successive match gets it's previous match added to the number of occurrences.
+
+This [array](https://github.com/bretonics/CHOMP/blob/dev/chomp.pl#L293) is not flushing.
+
+Seems to work without `-genomes` option...what don't I see",bretonics,https://github.com/bretonics/CHOMP/issues/15
+MDU6SXNzdWUxOTkwNTcwMTE=,Arguments to allow setting sorting options,OPEN,2017-01-05T20:56:06Z,2017-01-10T20:33:54Z,,"Allow the sorting to be increasing or decreasing of occurrences/identities. This can be achieved in 3 different ways:
+
+- `-sorting` option setting each or both simultaneously
+- `-occ` option to allow sorting by occurrences to be inc/dec
+- `-ident` option to allow sorting by identities to be inc/dec",bretonics,https://github.com/bretonics/CHOMP/issues/16
+MDU6SXNzdWUyMDAxMzcyNjA=,Create report,OPEN,2017-01-11T16:15:42Z,2017-01-27T15:56:30Z,,"Report should have headers with descriptive comments on how the results were generated.
+
+**ADD** 
+- [ ] Add call parameters
+- [ ]  Time/date
+- [ ] Number of hits per subject
+- [ ] Total number of (no)/hits
+",bretonics,https://github.com/bretonics/CHOMP/issues/17
+MDU6SXNzdWUyMDAxMzkyMDA=,Refactor sequence handling,OPEN,2017-01-11T16:22:35Z,2017-01-11T16:22:35Z,,"Handling of sequence information should reside in module and check for errors:
+- [ ] mv getSeqDetails to Search module
+- [ ] croak if sequence empty",bretonics,https://github.com/bretonics/CHOMP/issues/18
+MDU6SXNzdWUyMDAzODUwMzY=,Handle process if gene present in same genome searched,CLOSED,2017-01-12T14:45:44Z,2017-02-07T21:21:37Z,2017-02-07T21:21:37Z,"In cases where crispr sequences are being searched  in sequence`-seq`, where the same gene sequence is present in the genome `-genome`, output should reflect handling exact (23 bp) matches.
+
+Since same gene sequence is searched for crisprs, there will be exact matches in the genome for each crispr sequence found. We want to base sorting on 2nd most matched bp in this case and omit exact matches.",bretonics,https://github.com/bretonics/CHOMP/issues/19
+MDU6SXNzdWUyMDEzMjEzMzY=,"""No hits found"" in blast search breaks hash sorting",CLOSED,2017-01-17T15:37:29Z,2017-02-07T21:20:40Z,2017-02-07T21:20:40Z,"When a crispr sequence has no matching sequences in search sequence, then nothing is stored in hash. This causes an ""undefined value"" error when sorting unique identities for each match.
+
+- [x]  The integrity of the 'targets' hash must be checked to include all crispr occurrences (keys)
+- [x] If no matches found for crispr, then store appropriate info in attributes",bretonics,https://github.com/bretonics/CHOMP/issues/20
+MDU6SXNzdWUyMDM3NDU3NjU=,Sorting using 'No hits' gets messed up,CLOSED,2017-01-27T21:34:17Z,2017-02-07T21:14:08Z,2017-02-07T21:14:08Z,"After fixing issue #20, the removal of CRISPRs with 'No Hits' results in removing them completely when sorting on [line 337](https://github.com/bretonics/CHOMP/blob/master/chomp.pl#L337).
+
+#20 fixes 'undef' issue, but introduces bug where CRISPR may not necessarily be missing in all **subject** sequences (not only from the singular subject where it is **not** found). Currently it completely omits those others.
+
+> Searching CRISPR targets against subject_1
+	CRISPR_22 has 0 hits here
+	CRISPR_50 has 0 hits here
+	CRISPR_72 has 0 hits here
+	CRISPR_93 has 0 hits here
+	CRISPR_129 has 0 hits here
+
+>Searching CRISPR targets against subject_2
+        CRISPR_25 has 0 hits here
+	CRISPR_91 has 0 hits here
+
+So instead of omitting CRISPRS 22, 50, 72, 93, 129 **only** for subject_1, it does it for all subjects.
+
+If 'No Hits' CRISPRs are not removed, sorting fails. Conundrum.",bretonics,https://github.com/bretonics/CHOMP/issues/21
+MDU6SXNzdWUyMjI4NTcxMzU=,Output directory,OPEN,2017-04-19T20:11:24Z,2017-04-19T20:11:24Z,,"Fix output directory to a be under default top level **gRNA** directory
+
+```
+gRNA
+    |_gene1
+    |_gene2
+    |_gene3
+```
+",bretonics,https://github.com/bretonics/CHOMP/issues/23

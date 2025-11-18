@@ -1,0 +1,204 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOLhbgFM6DYZoy,Resources & Tools: Mapping,CLOSED,2024-03-24T06:53:55Z,2024-03-24T17:36:48Z,2024-03-24T17:08:53Z,"Tools and resources to include in the Docker image
+
+- FASTA reference genomes for chrM and chrM_shift (from [gatk public resources](https://console.cloud.google.com/storage/browser/genomics-public-data/references/hg38/v0/chrM;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22)&prefix=&forceOnObjectsSortingFiltering=false)))
+- samtools
+- htslib
+- bcftools
+- picard
+- bwa",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/1
+I_kwDOLhbgFM6DYcZv,Nextflow: Mapping,CLOSED,2024-03-24T07:25:10Z,2024-03-24T17:09:29Z,2024-03-24T17:09:29Z,Nextflow implementation of the mapping section of the pipeline,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/2
+I_kwDOLhbgFM6DYrAD,Nextflow: Variant Calling,CLOSED,2024-03-24T10:26:18Z,2024-03-25T10:41:50Z,2024-03-25T10:41:50Z,Nextflow implementation of the variant calling section of the pipeline,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/4
+I_kwDOLhbgFM6DYr0k,Nextflow: Variant Annotation,CLOSED,2024-03-24T10:36:25Z,2024-03-26T17:08:05Z,2024-03-26T17:08:05Z,Nextflow implementation of the annotation section of the pipeline,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/5
+I_kwDOLhbgFM6DYr5A,Nextflow: Variant Report,CLOSED,2024-03-24T10:37:14Z,2024-04-01T18:41:07Z,2024-04-01T18:41:07Z,Nextflow implementation of the visualization section of the pipeline,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/6
+I_kwDOLhbgFM6DZY2j,Resources & Tools: Variant Calling,CLOSED,2024-03-24T17:37:06Z,2024-03-25T10:36:30Z,2024-03-25T10:36:30Z,"Tools and resources to include in the Docker image
+
+- FASTA reference genomes for chrM and chrM_shift (from [gatk public resources](https://console.cloud.google.com/storage/browser/genomics-public-data/references/hg38/v0/chrM;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22)&prefix=&forceOnObjectsSortingFiltering=false)))
+- Shiftback chain file (from [gatk public resources](https://console.cloud.google.com/storage/browser/genomics-public-data/references/hg38/v0/chrM;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22)&prefix=&forceOnObjectsSortingFiltering=false)))
+- blacklisted sites (from [gatk public resources](https://console.cloud.google.com/storage/browser/genomics-public-data/references/hg38/v0/chrM;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22)&prefix=&forceOnObjectsSortingFiltering=false)))
+- GATK (already in base image)
+- picard
+",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/7
+I_kwDOLhbgFM6DZmPj,Read Group is required for Mutect2 variant calling ,CLOSED,2024-03-24T19:45:49Z,2024-03-25T10:07:14Z,2024-03-25T10:07:13Z,"When running Mutect2 with my development BAMs, where I removed the @RG information, I get following error:
+
+~~~
+java.lang.IllegalArgumentException: samples cannot be empty
+~~~
+
+According to [this biostars post](https://www.biostars.org/p/424817/) HaplotypeCaller (so I assume Mutect2 as well) needs Read Group in the BAM file. ",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/8
+I_kwDOLhbgFM6DdBt2,Resources & Tools: Variant Annotation,CLOSED,2024-03-25T10:39:01Z,2024-03-26T17:07:35Z,2024-03-26T17:07:35Z,"Tools and resources to include in the Docker image:
+
+- [x] gnomAD 3.1 mitochondrial
+- [x] haplogrep
+- [x] haplocheck
+- [x] varnote
+- [x] annoc file",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/9
+I_kwDOLhbgFM6DdCU7,Resources & Tools: Variant Report,CLOSED,2024-03-25T10:39:57Z,2024-04-01T18:40:26Z,2024-04-01T18:40:26Z,"Tools and resources to include in the conda environment:
+
+- pydantic
+- altair
+- datapane",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/10
+I_kwDOLhbgFM6Dgt7T,Whitespace in the gnomAD INFO field,OPEN,2024-03-25T18:17:13Z,2024-03-25T18:44:40Z,,"When trying to annotate with Haplogrep2, it complains because INFO contains whitespace from gnomAD. Source gnomAD VCF already contains this, so I need to fix it at the Dockerfile. 
+
+Exception is as follows:
+
+~~~
+(base) dani@toshiba:/tmp/borrar$ ./haplogrep classify --in annotated_gnomad.vcf --out annotated_haplogrep2.vcf --format vcf --extend-report  
+mtDNA Haplogroup Classifiction v2.4.0
+https://github.com/seppinho/haplogrep-cmd
+(c) Sebastian Schönherr, Hansi Weissensteiner, Lukas Forer, Dominic Pacher
+sebastian.schoenherr@i-med.ac.at
+
+[classify, --in, annotated_gnomad.vcf, --out, annotated_haplogrep2.vcf, --format, vcf, --extend-report]
+phylotree17_FU1.xml
+Parameters:
+Input format: vcf
+Phylotree version: 17_FU1
+Reference: rCRS
+Extended report: true
+Skip alignment rules: false
+Used metric: kulczynski
+Chip array data: false
+Lineage: 0
+
+Start Classification...
+htsjdk.tribble.TribbleException: The provided VCF file is malformed at approximately line number 240: The VCF specification does not allow for whitespace in the INFO field. Offending field value was ""AS_FilterStatus=SITE;AS_SB_TABLE=2087,2353|10,14;DP=5571;ECNT=1;MBQ=39,40;MFRL=180,179;MMQ=60,60;MPOS=20;OCM=0;POPAF=2.40;RPA=8,7;RU=A;STR;TLOD=2.72;vep=[-|frameshift_variant|HIGH|MT-ND5|ENSG00000198786|Transcript|ENST00000361567|protein_coding|1/1||ENST00000361567.2:c.89del|ENSP00000354813.2:p.Asn30ThrfsTer7|82|82|28|K/X|Aaa/aa|1||1|deletion||HGNC|HGNC:7461|YES||P1||ENSP00000354813||||1|||ENSP_mappings:5xtc&ENSP_mappings:5xtd&ENSP_mappings:5xth&ENSP_mappings:5xti&ENSP_mappings:5xti&PANTHER:PTHR42829&PANTHER:PTHR42829&TIGRFAM:TIGR01974|7|||||HC|||PERCENTILE:0.0491169977924945, GERP_DIST:-3294.1159532547, BP_DIST:1730, DIST_FROM_LAST_EXON:-81, 50_BP_RULE:FAIL, PHYLOCSF_TOO_SHORT];AN=56299;AC_hom=0;AC_het=4"", for input source: file:///tmp/borrar/annotated_gnomad.vcf
+	at htsjdk.variant.vcf.AbstractVCFCodec.generateException(AbstractVCFCodec.java:883)
+	at htsjdk.variant.vcf.AbstractVCFCodec.parseInfo(AbstractVCFCodec.java:515)
+	at htsjdk.variant.vcf.AbstractVCFCodec.parseVCFLine(AbstractVCFCodec.java:428)
+	at htsjdk.variant.vcf.AbstractVCFCodec.decodeLine(AbstractVCFCodec.java:384)
+	at htsjdk.variant.vcf.AbstractVCFCodec.decode(AbstractVCFCodec.java:328)
+	at htsjdk.variant.vcf.AbstractVCFCodec.decode(AbstractVCFCodec.java:48)
+	at htsjdk.tribble.AsciiFeatureCodec.decode(AsciiFeatureCodec.java:70)
+	at htsjdk.tribble.AsciiFeatureCodec.decode(AsciiFeatureCodec.java:37)
+	at htsjdk.tribble.TribbleIndexedFeatureReader$WFIterator.readNextRecord(TribbleIndexedFeatureReader.java:375)
+	at htsjdk.tribble.TribbleIndexedFeatureReader$WFIterator.next(TribbleIndexedFeatureReader.java:354)
+	at htsjdk.tribble.TribbleIndexedFeatureReader$WFIterator.next(TribbleIndexedFeatureReader.java:315)
+	at importer.VcfImporter.load(VcfImporter.java:46)
+	at genepi.commands.HaplogrepCommand.call(HaplogrepCommand.java:156)
+	at genepi.commands.HaplogrepCommand.call(HaplogrepCommand.java:20)
+	at picocli.CommandLine.executeUserObject(CommandLine.java:1953)
+	at picocli.CommandLine.access$1300(CommandLine.java:145)
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2346)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2311)
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179)
+	at picocli.CommandLine.execute(CommandLine.java:2078)
+	at genepi.App.main(App.java:59)
+~~~",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/11
+I_kwDOLhbgFM6DwJcu,Refactor according to nf-core guidelines,CLOSED,2024-03-27T10:35:57Z,2024-03-28T11:56:39Z,2024-03-28T11:56:39Z,So far I have developed the pipeline in a single file. Now it's time to split it into modules so the code is easily reusable. Also I have to generate config files etc. This is new to me so let's see what else should I do.,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/12
+I_kwDOLhbgFM6D5_zZ,`-resume` executing already done processes,CLOSED,2024-03-28T11:48:25Z,2024-03-29T16:20:22Z,2024-03-29T16:20:22Z,"After a few executions with the `-resume` parameter I have noticed that, sometimes, already finished jobs are launched again. With this being not ideal at all, it is even worst at process such as `MERGE_BAMS` and `MERGE_VCFS` which directly fail.
+
+Example:
+
+```
+(base) dani@toshiba:~/effidotpy/mito-variant-calling$ nextflow run main.nf -with-docker mapping_gatk -resume
+N E X T F L O W  ~  version 23.10.1
+Launching `main.nf` [mad_euler] DSL2 - revision: 60ac87cd16
+executor >  local (4)
+[ef/0809c9] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:ADD_READGROUP (1)     [100%] 2 of 2, cached: 2 ✔
+[15/576e33] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:NAME_SORT (2)         [100%] 2 of 2, cached: 2 ✔
+[82/9ea4f5] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:FIX_PAIRING (2)       [100%] 2 of 2, cached: 2 ✔
+[b3/4291a7] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:REMOVE_SINGLETONS (2) [100%] 2 of 2, cached: 2 ✔
+[d5/0f68bb] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:REVERT_BAM (1)        [100%] 2 of 2, cached: 2 ✔
+[ed/71945b] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:BAM_TO_FASTQ (1)      [100%] 2 of 2, cached: 2 ✔
+[d5/7c978d] process > MITO_SNVS_INDELS:ALIGN_TO_REF:ALIGN_BWA (2)              [100%] 2 of 2, cached: 2 ✔
+[c1/1823ce] process > MITO_SNVS_INDELS:ALIGN_TO_REF:MERGE_BAMS (2)             [  0%] 0 of 2
+[-        ] process > MITO_SNVS_INDELS:ALIGN_TO_REF:SORT_BAM                   -
+[ae/3fd984] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:ALIGN_BWA (2)            [100%] 2 of 2, cached: 2 ✔
+[d7/be82d2] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)           [  0%] 0 of 2
+[-        ] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:SORT_BAM                 -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:VAR_CALLING             -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:VAR_CALLING_SHIFT       -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:LIFTOVER                -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:MERGE_VCFS              -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:MERGE_STATS             -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:FILTER_MUTECT           -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:BLACKLIST_SITES         -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:NORMALIZE_CALLS         -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:VARNOTE                      -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:HAPLOCHECK                   -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:HAPLOGREP                    -
+ERROR ~ Error executing process > 'MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)'
+
+Caused by:
+  Process `MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)` terminated with an error exit status (1)
+
+Command executed:
+
+  java -jar /app/picard.jar MergeBamAlignment -UNMAPPED revert.bam -ALIGNED aligned.bam -R /references/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta \
+  -O merged.bam --ATTRIBUTES_TO_RETAIN ""X0"" --ATTRIBUTES_TO_REMOVE NM --ATTRIBUTES_TO_REMOVE MD
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+executor >  local (4)
+[ef/0809c9] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:ADD_READGROUP (1)     [100%] 2 of 2, cached: 2 ✔
+[15/576e33] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:NAME_SORT (2)         [100%] 2 of 2, cached: 2 ✔
+[82/9ea4f5] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:FIX_PAIRING (2)       [100%] 2 of 2, cached: 2 ✔
+[b3/4291a7] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:REMOVE_SINGLETONS (2) [100%] 2 of 2, cached: 2 ✔
+[d5/0f68bb] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:REVERT_BAM (1)        [100%] 2 of 2, cached: 2 ✔
+[ed/71945b] process > MITO_SNVS_INDELS:PROCESS_INPUT_BAM:BAM_TO_FASTQ (1)      [100%] 2 of 2, cached: 2 ✔
+[d5/7c978d] process > MITO_SNVS_INDELS:ALIGN_TO_REF:ALIGN_BWA (2)              [100%] 2 of 2, cached: 2 ✔
+[c1/1823ce] process > MITO_SNVS_INDELS:ALIGN_TO_REF:MERGE_BAMS (2)             [  0%] 0 of 2
+[-        ] process > MITO_SNVS_INDELS:ALIGN_TO_REF:SORT_BAM                   -
+[ae/3fd984] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:ALIGN_BWA (2)            [100%] 2 of 2, cached: 2 ✔
+[d7/be82d2] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)           [ 50%] 1 of 2, failed: 1
+[-        ] process > MITO_SNVS_INDELS:ALIGN_TO_SHIFT:SORT_BAM                 -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:VAR_CALLING             -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:VAR_CALLING_SHIFT       -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:LIFTOVER                -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:MERGE_VCFS              -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:MERGE_STATS             -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:FILTER_MUTECT           -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:BLACKLIST_SITES         -
+[-        ] process > MITO_SNVS_INDELS:VARIANT_CALLING:NORMALIZE_CALLS         -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:VARNOTE                      -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:HAPLOCHECK                   -
+[-        ] process > MITO_SNVS_INDELS:ANNOTATION:HAPLOGREP                    -
+ERROR ~ Error executing process > 'MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)'
+
+Caused by:
+  Process `MITO_SNVS_INDELS:ALIGN_TO_SHIFT:MERGE_BAMS (2)` terminated with an error exit status (1)
+
+Command executed:
+
+  java -jar /app/picard.jar MergeBamAlignment -UNMAPPED revert.bam -ALIGNED aligned.bam -R /references/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta \
+  -O merged.bam --ATTRIBUTES_TO_RETAIN ""X0"" --ATTRIBUTES_TO_REMOVE NM --ATTRIBUTES_TO_REMOVE MD
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Mar 28, 2024 11:37:59 AM com.intel.gkl.NativeLibraryLoader load
+  INFO: Loading libgkl_compression.so from jar:file:/app/picard.jar!/com/intel/gkl/native/libgkl_compression.so
+  [Thu Mar 28 11:37:59 GMT 2024] MergeBamAlignment --UNMAPPED_BAM revert.bam --ALIGNED_BAM aligned.bam --OUTPUT merged.bam --ATTRIBUTES_TO_RETAIN X0 --ATTRIBUTES_TO_REMOVE NM --ATTRIBUTES_TO_REMOVE MD --REFERENCE_SEQUENCE /references/Homo_sapiens_assembly38.chrM.shifted_by_8000_bases.fasta --ADD_PG_TAG_TO_READS true --PAIRED_RUN true --CLIP_ADAPTERS true --IS_BISULFITE_SEQUENCE false --ALIGNED_READS_ONLY false --MAX_INSERTIONS_OR_DELETIONS 1 --ATTRIBUTES_TO_REVERSE OQ --ATTRIBUTES_TO_REVERSE U2 --ATTRIBUTES_TO_REVERSE_COMPLEMENT E2 --ATTRIBUTES_TO_REVERSE_COMPLEMENT SQ --READ1_TRIM 0 --READ2_TRIM 0 --ALIGNER_PROPER_PAIR_FLAGS false --SORT_ORDER coordinate --PRIMARY_ALIGNMENT_STRATEGY BestMapq --CLIP_OVERLAPPING_READS true --HARD_CLIP_OVERLAPPING_READS false --INCLUDE_SECONDARY_ALIGNMENTS true --ADD_MATE_CIGAR true --UNMAP_CONTAMINANT_READS false --MIN_UNCLIPPED_BASES 32 --MATCHING_DICTIONARY_TAGS M5 --MATCHING_DICTIONARY_TAGS LN --UNMAPPED_READ_STRATEGY DO_NOT_CHANGE --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false
+  [Thu Mar 28 11:38:00 GMT 2024] Executing as root@dcad1c8db4be on Linux 5.15.0-101-generic amd64; OpenJDK 64-Bit Server VM 17.0.9+9-Ubuntu-122.04; Deflater: Intel; Inflater: Intel; Provider GCS is available; Picard version: Version:3.1.1
+  INFO	2024-03-28 11:38:00	SamAlignmentMerger	Processing SAM file(s): [aligned.bam]
+  WARNING	2024-03-28 11:38:00	SamAlignmentMerger	Exception merging bam alignment - attempting to sort aligned reads and try again: Aligned record iterator (V350159019L1C001R00100059450) is behind the unmapped reads (V350159019L1C001R00100070732)
+  INFO	2024-03-28 11:38:03	SamAlignmentMerger	Finished reading 85968 total records from alignment SAM/BAM.
+  [Thu Mar 28 11:38:03 GMT 2024] picard.sam.MergeBamAlignment done. Elapsed time: 0.07 minutes.
+  Runtime.totalMemory()=392167424
+  To get help, see http://broadinstitute.github.io/picard/index.html#GettingHelp
+  Exception in thread ""main"" java.lang.IllegalStateException: Aligned record iterator (V350159019L1C001R00100059450) is behind the unmapped reads (V350159019L1C001R00100070732)
+  	at picard.sam.AbstractAlignmentMerger.mergeAlignment(AbstractAlignmentMerger.java:557)
+  	at picard.sam.SamAlignmentMerger.mergeAlignment(SamAlignmentMerger.java:186)
+  	at picard.sam.MergeBamAlignment.doWork(MergeBamAlignment.java:368)
+  	at picard.cmdline.CommandLineProgram.instanceMain(CommandLineProgram.java:280)
+  	at picard.cmdline.PicardCommandLine.instanceMain(PicardCommandLine.java:105)
+  	at picard.cmdline.PicardCommandLine.main(PicardCommandLine.java:115)
+
+Work dir:
+  /home/dani/effidotpy/mito-variant-calling/work/d7/be82d2ceb1dff882939bd39018cc04
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+
+ -- Check '.nextflow.log' file for details
+
+```",effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/13
+I_kwDOLhbgFM6EQc6f,action to check workflow render,CLOSED,2024-04-01T19:22:45Z,2024-04-01T19:37:54Z,2024-04-01T19:37:54Z,Implementation of a github action that runs nextflow with the `-preview` parameter to check for syntax & logic errors in the workflow,effidotpy,https://github.com/effidotpy/mito-variant-calling/issues/15

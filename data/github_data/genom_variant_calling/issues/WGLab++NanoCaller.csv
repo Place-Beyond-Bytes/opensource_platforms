@@ -1,0 +1,1040 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MzM3NzE4NTk=,usage information,OPEN,2019-04-16T13:11:00Z,2020-07-23T22:44:39Z,,"There is no description of input, output and example usage information. There is no description what this tool actually does, and what this particular script does, and how it can be used to call variants given a BAM file.",kaichop,https://github.com/WGLab/NanoCaller/issues/1
+MDU6SXNzdWU2MzcxNjg1ODM=,NANOCALLER WITH NANOPORE BACTERIA READS,OPEN,2020-06-11T16:41:00Z,2020-08-07T04:03:44Z,,"Can the NanoCaller be used to call reads from bacteria samples?
+
+Also in your readme file there is an argument for selecting contig -chrom .  If I want to call snps on the whole genome what argument do I use?
+
+Thanks",vappiah,https://github.com/WGLab/NanoCaller/issues/2
+MDU6SXNzdWU2NjE5NjY2MDg=,ValueError: invalid literal for int() with base 10: '',OPEN,2020-07-20T15:40:48Z,2020-07-21T16:54:06Z,,"Hi there,
+
+I would like to use your tool on plant nanopore data and am encountering an error, I hope you can help me!
+
+Installed via miniconda with commit b0719b72ea64d0ee3ce086ab712b8765f0636e11
+
+CMD:
+python NanoCaller/scripts/NanoCaller.py -mode both -chrom 1790 -ref WGS-CM.fasta -bam 09.sorted.filtered.unique.targets.bam -model NanoCaller1 -vcf 09_ctg1790.vcf -cpu 10 --prefix 09
+
+ERROR:
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([(""qint8"", np.int8, 1)])
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([(""quint8"", np.uint8, 1)])
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:528: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([(""qint16"", np.int16, 1)])
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:529: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([(""quint16"", np.uint16, 1)])
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:530: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([(""qint32"", np.int32, 1)])
+/home/mye/.conda/envs/NanoCaller/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:535: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([(""resource"", np.ubyte, 1)])
+Traceback (most recent call last):
+  File ""/data/interos/mye/tools/nanocaller/NanoCaller/scripts/NanoCaller.py"", line 79, in <module>
+    snp_vcf=snpCaller.test_model(in_dict, pool)
+  File ""/data/interos/mye/tools/nanocaller/NanoCaller/scripts/snpCaller.py"", line 21, in test_model
+    coverage = int(stream.read().rstrip('\n'))/(end-start+1)
+ValueError: invalid literal for int() with base 10: ''",MarleyCodes,https://github.com/WGLab/NanoCaller/issues/3
+MDU6SXNzdWU2OTcwNTY0Nzc=,Issue --end flag resquested in whole alignment Nanocaller,OPEN,2020-09-09T18:43:15Z,2020-09-21T22:26:41Z,,"Dear all.
+
+ I'm using your Nanocaller tool in my Pacbio data. However I'm facing some issues related with the -end flag.
+
+Currently Im planning to extract all SNPs and Indel from a bam file derived from CCS_reads aligned to contigs assembly. Despite the --end flag being optional, the tool is asking me to define this -end flag
+
+How can I fix it?
+
+Thanks for the help
+
+",AG-Run,https://github.com/WGLab/NanoCaller/issues/5
+MDU6SXNzdWU2OTc5MjQ5MjM=,extract whole genome SNP and haplotype,OPEN,2020-09-10T12:59:32Z,2020-09-22T05:13:20Z,,"The tutorial provided the command to extract a specific region of SNP and haplotype. If I want to extract ALL the SNP and haplotype of the genome, how to set -chrom parameter? I tried ""-chrom None"". It does not work.",qiang-huang,https://github.com/WGLab/NanoCaller/issues/6
+MDU6SXNzdWU3MjY1NzA2Mzc=,Not calling variant present in bam,OPEN,2020-10-21T14:55:32Z,2020-10-21T16:37:58Z,,"I have used your tool on one of my bam files. However, I am wondering why it isn't calling a variant I can clearly see present in the file in IGV. There is plenty of coverage, and few indels in the reads at this position. 
+
+![image](https://user-images.githubusercontent.com/60882704/96734961-58873480-13bb-11eb-91ad-2c2fdc8c2ac7.png)
+
+I find it in the snp_stats, but I do not understand why it is not output in the snps.vcf:
+pos,ref,prob_GT,prob_A,prob_G,prob_T,prob_C,DP,freq
+42131531,G,0.9530,0.1847,0.9624,0.0013,0.0008,111,0.3063
+
+I'm running the following command:
+python ../NanoCaller/scripts/NanoCaller.py -bam gene.sort2.bam -ref hg38_genome.fasta -prefix output -chrom Chr_22 -start 42076077 -end 42176157 --disable_whatshap -sup",Mailinnia,https://github.com/WGLab/NanoCaller/issues/7
+MDU6SXNzdWU3MzQ2MzEyODQ=,Low F1 score for NA12878,CLOSED,2020-11-02T16:09:50Z,2021-03-01T17:54:56Z,2021-03-01T17:54:56Z,"I ran NanoCaller on ONT release 6 NA12878 data with the default parameters (NanoCaller1). Reads were aligned with minimap2 and all alignments were kept. Reads were filtered for the quality score 7, final coverage 34X). The resulted SNP callset was compared to the GIAB hg38 variant true set with vcfeval from RTG tools. As a result, I obtained F1 ~ 0,4 and precision ~0,3. Could you please tell me where can I find the optimal parameters with which you ran the benchmarking. Are they are the default one? Do you have any ideas why there are so many FPs ? Do you recommend any prefiltering of alignments? Thank you for your answer in advance!",illarionovaanastasia,https://github.com/WGLab/NanoCaller/issues/8
+MDU6SXNzdWU3OTgwNTE1MjI=,AttributeError: module 'tensorflow' has no attribute 'contrib',CLOSED,2021-02-01T07:22:21Z,2021-03-01T17:54:22Z,2021-03-01T17:54:22Z,"Hey i am new in this 
+I am trying to run following command:
+python3 /home/iob/Documents/test/Assembly/graphmap/NanoCaller/scripts/NanoCaller.py -seq ont -o nanocaller_variants -bam sorted_graphmap_out1.bam -ref NC_012920.1.fasta -chrom 1 -prefix nano
+
+but i am this getting error 
+
+Traceback (most recent call last):
+  File ""/home/iob/Documents/test/Assembly/graphmap/NanoCaller/scripts/NanoCaller.py"", line 210, in <module>
+    run(args)
+  File ""/home/iob/Documents/test/Assembly/graphmap/NanoCaller/scripts/NanoCaller.py"", line 11, in run
+    import snpCaller, indelCaller
+  File ""/home/iob/Documents/test/Assembly/graphmap/NanoCaller/scripts/snpCaller.py"", line 13, in <module>
+    if type(tf.contrib) != type(tf): tf.contrib._warning = None
+AttributeError: module 'tensorflow' has no attribute 'contrib'
+
+please suggest any possible solution.
+Thanks you for your help. 
+
+
+
+",pvap3,https://github.com/WGLab/NanoCaller/issues/9
+MDU6SXNzdWU3OTg4Mzg4MTA=, Fail to do variant calling,CLOSED,2021-02-02T01:16:02Z,2021-04-02T18:35:34Z,2021-04-02T18:35:34Z,"Hi,
+I have several issues when doing the variant calling and would really appreciate it if you can help:
+
+1. I am trying to install your packages but got the error when install `parallel` package with `pip3 install parallel`/`pip install parallel`/`pip install parallel==0.2.5`
+
+Here is the error information:
+```
+\Collecting parallel==0.2.5
+  Using cached parallel-0.2.5.tar.gz (57 kB)
+    ERROR: Command errored out with exit status 1:
+     command: /projects/li-lab/Ziwei/Anaconda3/envs/NanoCaller/bin/python -c 'import sys, setuptools, tokenize; sys.argv[0] = '""'""'/tmp/pip-install-2t3yafw8/parallel_3f9d07c107ca42d2bba5ddd63ac5efed/setup.py'""'""'; __file__='""'""'/tmp/pip-install-2t3yafw8/parallel_3f9d07c107ca42d2bba5ddd63ac5efed/setup.py'""'""';f=getattr(tokenize, '""'""'open'""'""', open)(__file__);code=f.read().replace('""'""'\r\n'""'""', '""'""'\n'""'""');f.close();exec(compile(code, __file__, '""'""'exec'""'""'))' egg_info --egg-base /tmp/pip-pip-egg-info-md6zu29q
+         cwd: /tmp/pip-install-2t3yafw8/parallel_3f9d07c107ca42d2bba5ddd63ac5efed/
+    Complete output (8 lines):
+    Traceback (most recent call last):
+      File ""<string>"", line 1, in <module>
+      File ""/tmp/pip-install-2t3yafw8/parallel_3f9d07c107ca42d2bba5ddd63ac5efed/setup.py"", line 5, in <module>
+        import pprocess
+      File ""/tmp/pip-install-2t3yafw8/parallel_3f9d07c107ca42d2bba5ddd63ac5efed/pprocess.py"", line 255
+        raise AcknowledgementError, obj
+                                  ^
+    SyntaxError: invalid syntax
+    ----------------------------------------
+WARNING: Discarding https://files.pythonhosted.org/packages/31/5b/66966fb4d103191b7cbc92730db6a335986fbdb3d9f55cbb54b7ba87e9d4/parallel-0.2.5.tar.gz#sha256=2c9f08dac392859c83e43c9f0e38fb4b4e1516b54cdd5fda8da20a3cf5f75498 (from https://pypi.org/simple/parallel/). Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+ERROR: Could not find a version that satisfies the requirement parallel==0.2.5
+ERROR: No matching distribution found for parallel==0.2.5
+```
+Any idea on this issue?
+
+2. I tried to call variants with the command below:
+```
+python $nanocaller_dir/scripts/NanoCaller_WGS.py \
+-bam $output_dir/data.bam \
+-ref $ref_dir/GRCh37_new.fa \
+-prefix data \
+-o $output_dir \
+-cpu $CPU \
+-seq ont
+```
+
+But I got the error:
+```
+2021-02-02 00:09:39.582079: Starting NanoCaller.
+
+Running arguments are saved in the following file: /fastscratch/c-panz/HL60/args
+
+2021-02-02 00:09:39.591100: Commands for running NanoCaller on contigs in whole genome are saved in the file /fastscratch/c-panz/HL60/wg_commands
+Running 300 jobs using 16 workers in parallel.
+
+/bin/sh: parallel: command not found
+
+ls: cannot access /fastscratch/c-panz/HL60/intermediate_files/*/*snps.vcf.gz: No such file or directory
+Writing to /tmp/bcftools-sort.DM8H4p
+Could not read the file: -
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+
+Writing to /tmp/bcftools-sort.Qfioho
+ls: cannot access /fastscratch/c-panz/HL60/intermediate_files/*/*snps.phased.vcf.gz: No such file or directory
+Could not read the file: -
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+
+Writing to /tmp/bcftools-sort.pGwRmr
+ls: cannot access /fastscratch/c-panz/HL60/intermediate_files/*/*indels.vcf.gz: No such file or directory
+Could not read the file: -
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+
+Writing to /tmp/bcftools-sort.0RSJtu
+ls: cannot access /fastscratch/c-panz/HL60/intermediate_files/*/*final.vcf.gz: No such file or directory
+Could not read the file: -
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+
+2021-02-02 00:09:39.713361: Total Time Elapsed: 0.14 seconds
+Nanocaller is done!
+```
+How can I solve the problem?
+
+3. In `Usage.md` you mentioned that ""you can run NanoCaller for whole genome variant calling is to use NanoCaller.py or NanoCaller_WGS.py on each chromosome separately by setting chrom argument"" with the following command:
+```
+for i in {1..22};do echo ""python PATH_TO_NANOCALLER_REPOSITORY/scripts/NanoCaller.py
+-chrom chr$i
+-bam YOUR_BAM \
+-ref YOUR_REF \
+-prefix PREFIX \
+-o OUTPUT_DIRECTORY \
+-cpu 16
+-seq SEQUENCING_TYPE"" |qsub -V -cwd -pe smp 16 -N chr$i -e chr$i.log -o chr$i.log; done
+```
+However, I think `qsub` is SGE job? Do you have the command version for SLURM job? Can I directly replace `qsub` with `sbatch` for SLURM job?
+
+Thank you so much for your help!",PanZiwei,https://github.com/WGLab/NanoCaller/issues/10
+MDU6SXNzdWU4MjAzNzU0Mzg=,info required on duplicate reads ,CLOSED,2021-03-02T20:42:26Z,2021-03-22T15:24:24Z,2021-03-20T16:03:53Z,"Hi Umair,
+
+I hope you are doing well!
+I am working on cluster scale acceleration of different neural networks based (like DeepVariant) variant calling complete workflows (BWA/minimap2 for alignment, sorting and duplicates removal stages). I am using PySpark to leverage the benefits of Apache Arrow in-memory columnar data format. I want to integrate NanoCaller in my workflow as well. I have couple of questions regarding this.
+
+For PacBio CCS data:
+1).  You mentioned ""PacBio CCS alignment files for HG001 are downloaded from the GIAB database [30, 34]"" Do you mean this ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/HG002_NA24385_son/PacBio_MtSinai_NIST/ dataset? If yes, did you align this dataset yourself or just used BAM files. I want to know if duplicate removal step is essential for this dataset or this is PCR-free.
+
+2). Does PCR-free FASTQ dataset means no need of running duplicates removal application on it (just for my info.)?
+
+3). Does PacBio CCS reads available on precisionFDA challengev2 website needs duplicates removal stage?
+
+Thanks!
+
+
+",tahashmi,https://github.com/WGLab/NanoCaller/issues/11
+MDU6SXNzdWU4MjIzMjQ2OTc=,ls: cannot access '/output/intermediate_files/*/*snps.vcf.gz': No such file or directory,CLOSED,2021-03-04T17:04:27Z,2021-03-11T09:06:24Z,2021-03-11T09:06:24Z,"Hi
+
+I am trying out Nanocaller via docker for WGS.
+
+I tried running via the command below, but it is done after seconds without an obvious error message, other than 
+
+```
+2021-03-04 16:50:02.678299: Starting NanoCaller.
+
+Running arguments are saved in the following file: /output/args
+
+2021-03-04 16:50:02.679210: Commands for running NanoCaller on contigs in whole genome are saved in the file /output/wg_commands
+Running 17 jobs using 10 workers in parallel.
+
+
+ls: cannot access '/output/intermediate_files/*/*snps.vcf.gz': No such file or directory
+Could not read the file: -
+Writing to /tmp/bcftools-sort.ZfQoeq
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+Could not read VCF/BCF headers from -
+Cleaning
+
+ls: cannot access '/output/intermediate_files/*/*snps.phased.vcf.gz': No such file or directory
+Writing to /tmp/bcftools-sort.o8MIcM
+Could not read the file: -
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+Could not read VCF/BCF headers from -
+Cleaning
+```
+
+
+The output I get are empty vcf and a intermediate_files directory with empty directories for each chromosome.
+
+command:
+```
+docker run -it -v `pwd`/input:/input/ -v `pwd`/output:/output/ genomicslab/nanocaller:0.3.2 python NanoCaller_WGS.py -bam /input/nanopore.sorted.bam -ref /input/ref.fna -o /output/ -cpu 12 -seq ont -mode both -model NanoCaller1 -wgs_contigs_type all -mincov 10 -min_allele_freq 0.7  -cpu 10 
+```
+
+Any thoughts? My input is in the dir `input` ",KewinOgink,https://github.com/WGLab/NanoCaller/issues/12
+MDU6SXNzdWU5MjgxODAwMTk=,Upgrade model to tensorflow 2,OPEN,2021-06-23T12:00:57Z,2021-06-24T02:45:13Z,,"Greetings!
+
+I was wondering if the model could be upgraded to tensorflow 2 since having to use tensorflow 1.13 requires from the virtual environment I use to have lower version of some specific tools which makes them lose some functionality.
+
+Best regards,
+
+Jonatan",Akazhiel,https://github.com/WGLab/NanoCaller/issues/13
+MDU6SXNzdWU5Mzg4MTYwMTM=,Calling on chromosome X,CLOSED,2021-07-07T12:00:14Z,2021-09-13T15:20:59Z,2021-09-13T15:20:59Z,"Hello!
+
+I've checked that NanoCaller only calls SNPs and Indels for chromosomes 1-22 and I was wondering why the chromosome X gets excluded from the variant calling? I would assume is due to the models having been trained on these chromosomes, but I still would know why chromosome X is left out.
+
+Best regards,
+
+Jonatan",Akazhiel,https://github.com/WGLab/NanoCaller/issues/14
+MDU6SXNzdWU5NTA0MDQ1ODU=,Runtime,OPEN,2021-07-22T08:06:26Z,2021-08-05T11:25:49Z,,"Hello!
+
+On the NanoCaller paper you have a table of run times for the different modes and different technologies. And I noticed that for ONT on the mode to call `both` on 16 CPUs the runtime was about 18h. But I've been running my data on 8 CPUs since it's the max I have on this machine, and it's been going on for 23h already and it hasn't reached chromosome 3 yet. The type of data is ONT running in the `both` mode. What could be the reason is taking so long? 
+
+Best regards,
+
+Jonatan",Akazhiel,https://github.com/WGLab/NanoCaller/issues/15
+MDU6SXNzdWU5OTE1NTgzMTA=,failed log report,CLOSED,2021-09-08T21:43:04Z,2021-09-13T15:20:47Z,2021-09-13T15:20:47Z,"I am sometimes getting a failed report for some of my scaffolds in some of my individuals. Not sure what is going on here; 
+
+021-09-08 13:45:38.945625: SNP calling completed for contig contig_109746. Time taken= 10.9951
+
+
+2021-09-08 13:45:38.945724: ------WhatsHap SNP phasing log------
+
+This is WhatsHap 1.0 running under Python 3.6.13
+Working on 1 samples from 1 family
+======== Working on chromosome 'contig_109746'
+---- Processing individual SAMPLE
+Using maximum coverage per sample of 15X
+Number of variants skipped due to missing genotypes: 0
+Number of remaining heterozygous variants: 3
+Reading alignments and detecting alleles ...
+Found 43 reads covering 3 variants
+Kept 34 reads that cover at least two variants each
+Reducing coverage to at most 15X by selecting most informative reads ...
+Selected 15 reads covering 3 variants
+Best-case phasing would result in 1 non-singleton phased blocks (1 in total)
+... after read selection: 1 non-singleton phased blocks (1 in total)
+Variants covered by at least one phase-informative read in at least one individual after read selection: 3
+Phasing 1 sample by solving the MEC problem ...
+MEC cost: 150
+No. of phased blocks: 1
+Largest component contains 3 variants (100.0% of accessible variants) between position 8310 and 9657
+======== Writing VCF
+Done writing VCF
+
+== SUMMARY ==
+Maximum memory usage: 0.203 GB
+Time spent reading BAM/CRAM:                    0.0 s
+Time spent parsing VCF:                         0.0 s
+Time spent selecting reads:                     0.0 s
+Time spent phasing:                             0.0 s
+Time spent writing VCF:                         0.0 s
+Time spent finding components:                  0.0 s
+Time spent on rest:                             0.3 s
+Total elapsed time:                             0.4 s
+
+
+2021-09-08 13:45:45.886753: ------SNP phasing completed------
+
+
+2021-09-08 13:45:45.886864: ------WhatsHap BAM phasing log------
+
+Found 1 samples in input VCF
+Keeping 1 samples for haplo-tagging
+Found 0 samples in BAM file
+Reading alignments and detecting alleles ...
+Found 43 reads covering 3 variants
+
+== SUMMARY ==
+Total alignments processed:                       189
+Alignments that could be tagged:                   72
+Alignments spanning multiple phase sets:            0
+haplotag - total processing time: 0.5968549251556396
+
+
+
+2021-09-08 13:45:50.542123: ------BAM phasing completed-----
+
+2021-09-08 13:45:50.542413: Indel calling started.
+Traceback (most recent call last):
+  File ""/n/home08/aggarner/NanoCaller/scripts/NanoCaller.py"", line 257, in <module>
+    run(args)
+  File ""/n/home08/aggarner/NanoCaller/scripts/NanoCaller.py"", line 115, in run
+    indel_vcf=indelCaller.test_model(in_dict, pool)
+  File ""/n/home08/aggarner/NanoCaller/scripts/indelCaller.py"", line 106, in test_model
+    for res in result:            
+  File ""/n/home08/aggarner/NanoCaller/scripts/generate_indel_pileups.py"", line 328, in get_indel_testing_candidates
+    ref=''.join([ref_dict[p] for p in range(v_pos-window_before,v_pos+window_after+1)])
+  File ""/n/home08/aggarner/NanoCaller/scripts/generate_indel_pileups.py"", line 328, in <listcomp>
+    ref=''.join([ref_dict[p] for p in range(v_pos-window_before,v_pos+window_after+1)])
+KeyError: 10410
+",aguygarner,https://github.com/WGLab/NanoCaller/issues/16
+MDU6SXNzdWU5OTE5MDI5MDk=,Error: Resource temporarily unavailable ,CLOSED,2021-09-09T07:37:58Z,2021-10-21T00:30:06Z,2021-10-21T00:30:06Z,"Hi,
+     When I ran NanoCaller to find variants  with ONT data, the program exited without completing execution. There are some failed information.
+```
+OpenBLAS blas_thread_init: pthread_create failed for thread 21 of 48: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 4096 current, 766195 max
+```
+I used 48 cpu threads and the memory is 256GB.
+
+Best 
+Neng
+",huangnengCSU,https://github.com/WGLab/NanoCaller/issues/17
+I_kwDOCs-g2s485F28," ""-phase_bam"" doesn't work",CLOSED,2021-10-09T04:40:16Z,2021-10-31T16:59:25Z,2021-10-31T16:59:25Z,"The tag ""-phase_bam"" doesn't work. It looks it gets removed in the cleaning because the 'bam.bai' file exist. However one can use ""-keep_bam"" works instead",moeinzadeh,https://github.com/WGLab/NanoCaller/issues/18
+I_kwDOCs-g2s49YU5q,provide the pre-trained model in other websites,CLOSED,2021-10-19T02:30:27Z,2021-10-21T00:26:55Z,2021-10-21T00:26:55Z,"Hi, 
+    The models of NanoCaller are very rich. It takes very long time to clone the project and it is easy to disconnect because of the model files. I think it would be better if the code and model are separated and github only hosts the code.
+
+Best,
+Neng",huangnengCSU,https://github.com/WGLab/NanoCaller/issues/19
+I_kwDOCs-g2s5Ax85m,ONT Indel calling on polyploid plant ,OPEN,2021-12-22T13:44:16Z,2021-12-22T13:44:16Z,,"I have ONT data of a plant genome, which can be a tetraploid or diploid genome.  we see (igv) multiple INDELS occuring within the length of single reads. However, I do not see any snps in my region of interest. Can nanocaller find indels without any snps present? 
+I tried it on a 1kb contig, but although for example gatk does report indels, nanocaller does not seem to find any.
+I tried making bams with several coverage cuttoffs (50x,75x,100x), but that does not seem so help. I use the singularity version 1.01.
+`
+singularity exec --pwd /app /mnt/local_backup/singularity/nanocaller_1.0.1.sif python NanoCaller_WGS.py -bam sample.bam -ref ref.fa  --chrom plant_contig000001  -o nanocaller --sequencing ont -mode indels `",HenrivdGeest,https://github.com/WGLab/NanoCaller/issues/20
+I_kwDOCs-g2s5DVxQq,multisample SNP calling?,CLOSED,2022-02-10T10:20:05Z,2022-11-11T08:47:45Z,2022-02-15T10:39:51Z,"Hi,
+
+I'm looking for a nanopore variant caller which can manage multisample SNP calling. To my knowledge, Longshot and Clair3 cannot do this (yet). Does your new tool do this or is this feature planned ?
+
+Thanks,
+Colin",colindaven,https://github.com/WGLab/NanoCaller/issues/21
+I_kwDOCs-g2s5E-GWW,Link to HiFi trained models,OPEN,2022-03-02T12:28:27Z,2022-03-07T10:49:36Z,,"Hello,
+
+The [link ](https://github.com/WGLab/NanoCaller/tree/master/scripts/release_data/hifi_models) for HiFi trained models seems to be a dead link. Has the link been updated?
+
+Best
+Julien",bbalog87,https://github.com/WGLab/NanoCaller/issues/22
+I_kwDOCs-g2s5E_SuS,AttributeError: tuple object has no attribute ndims ,OPEN,2022-03-02T16:47:54Z,2022-03-03T21:47:13Z,,"Hello,
+
+While trying to call SNPs variant, Nanocaller outputs this error. Have you experienced similar errors?
+
+I've used the following command:
+
+```bash
+python $HOME/anaconda3/envs/nanocaller_env/bin/NanoCaller \
+       -bam AB.nanacaller.sort.bam  \
+       -ref AB.ref.fa \
+       -cpu 94 \
+       -keep_bam \
+       -prefix scaffold_1.calls.vcf \
+       -phase_bam  \
+       -enable_whatshap \
+       -seq pacbio \
+       -mode snps \
+       -chrom scaffold_1 \
+       -o scaffold_1.out
+```
+
+
+```
+2022-03-02 17:35:24.799099: Starting NanoCaller.
+
+NanoCaller command and arguments are saved in the following file: scaffold_5.out/args
+
+2022-03-02 17:35:26.704283: SNP calling started.
+2022-03-02 17:35:28.001220: Coverage=126.00x.
+2022-03-02 17:35:28.070411: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX
+2022-03-02 17:35:28.081328: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2400015000 Hz
+2022-03-02 17:35:28.086629: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x5649235df020 executing computations on platform Host. Devices:
+2022-03-02 17:35:28.086657: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+Traceback (most recent call last):
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/bin/NanoCaller"", line 259, in <module>
+    run(args)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/bin/NanoCaller"", line 77, in run
+    snp_vcf=snpCaller.test_model(in_dict, pool)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/bin/nanocaller_src/snpCaller.py"", line 138, in test_model
+    batch_prob_A, batch_prob_G, batch_prob_T, batch_prob_C, batch_prob_GT = snp_model([batch_x, batch_ref[:,0][:,np.newaxis], batch_ref[:,1][:,np.newaxis], batch_ref[:,2][:,np.newaxis], batch_ref[:,3][:,np.newaxis]])
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/lib/python3.6/site-packages/tensorflow/python/keras/engine/base_layer.py"", line 592, in __call__
+    outputs = self.call(inputs, *args, **kwargs)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/bin/nanocaller_src/model_architect.py"", line 38, in call
+    C1_1 = self.conv1_1(x)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/lib/python3.6/site-packages/tensorflow/python/keras/engine/base_layer.py"", line 538, in __call__
+    self._maybe_build(inputs)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/lib/python3.6/site-packages/tensorflow/python/keras/engine/base_layer.py"", line 1591, in _maybe_build
+    self.input_spec, inputs, self.name)
+  File ""/home/fb3/nguinkal/anaconda3/envs/nanocaller_env/lib/python3.6/site-packages/tensorflow/python/keras/engine/input_spec.py"", line 109, in assert_input_compatibility
+    if x.shape.ndims is None:
+AttributeError: 'tuple' object has no attribute 'ndims'
+```
+
+Would appreciate any help.
+Thanks",bbalog87,https://github.com/WGLab/NanoCaller/issues/23
+I_kwDOCs-g2s5JRGcR,The output data is now only an args file (previously several vcf files were generated).,CLOSED,2022-05-09T06:05:51Z,2022-05-09T08:37:22Z,2022-05-09T08:37:22Z,"Hello,
+
+I would like to ask you a few questions.
+
+I have been using nanocaller, and in the past, I was successfully generating multiple vcf files.
+
+However, in the last few days, I have been getting only ""args"" in the output file, even though I tried to do the same thing.
+In that case, there is no error message and the parsing is finished in a few seconds.
+
+The contents of the args file are as follows
+``
+Command: python /Users/eura/miniconda3/envs/nanocaller_env/bin/Nanocaller -bam fastq_pass/20220413_Higuchi/220413_SP_q90_min5000_max18000.bam -p ont -o fastq_pass/output_0509_S -chrom chr9 -ref fastq_pass/Homo_sapiens_UCSC_hg38/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa -cpu 16
+
+
+------Parameters Used For Variant Calling------
+mode: both
+sequencing: ont
+cpu: 16
+mincov: 8
+maxcov: 160
+keep_bam: False
+output: fastq_pass/output_0509_S
+prefix: variant_calls
+sample: SAMPLE
+include_bed: None
+exclude_bed: None
+start: None
+end: None
+preset: ont
+bam: fastq_pass/20220413_Higuchi/220413_SP_q90_min5000_max18000.bam
+ref: fastq_pass/Homo_sapiens_UCSC_hg38/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa
+chrom: chr9
+snp_model: ONT-HG002
+min_allele_freq: 0.15
+min_nbr_sites: 1
+neighbor_threshold: 0.4,0.6
+supplementary: False
+indel_model: ONT-HG002
+ins_threshold: 0.4
+del_threshold: 0.6
+win_size: 40
+small_win_size: 4
+impute_indel_phase: False
+phase_bam: False
+enable_whatshap: False
+``
+
+What are the possible causes of this problem?
+Any advice would be greatly appreciated.
+
+Best regards,
+Yuka",erarin,https://github.com/WGLab/NanoCaller/issues/24
+I_kwDOCs-g2s5LSVzW,index file .fai error,OPEN,2022-06-07T10:49:57Z,2022-06-08T19:27:50Z,,"Hello,
+While trying to run NanoCaller_WGS 
+
+I receive the error-index file .fai required for reference genome file, although the index file exists in the same folder as the ref genome.
+What could be the reason? 
+
+Thanks",Meirom-Michal,https://github.com/WGLab/NanoCaller/issues/25
+I_kwDOCs-g2s5Mt9sz,NanoCaller for microbial genomes,OPEN,2022-06-28T10:15:08Z,2022-06-28T10:15:08Z,,"Dear Developer,
+
+I used NanoCaller on microbial genomes sets and the results are quit different from the Mapping results (e.g. Alleles frequencies and the Probability scores correspond to them). I am wondering if the default models are using only for Human genome or is it universal.
+
+
+Thanks,
+Liren",rhinempi,https://github.com/WGLab/NanoCaller/issues/26
+I_kwDOCs-g2s5Mu1KO,High coverage genotyping outputs only G,OPEN,2022-06-28T13:24:04Z,2023-03-17T14:07:53Z,,"Dear Developer,
+
+I am trying to use NanoCaller on a high coverage (2000x on Microbial genomes) datasets. When I omit the sub-sampling process, the result genotypes all turned to G
+
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description=""All filters passed"">
+##contig=<ID=umi1bins>
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype"">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description=""Depth"">
+##FORMAT=<ID=FQ,Number=1,Type=Float,Description=""Alternative Allele Frequency"">
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  SAMPLE
+xxx        511     .       T       G       37.230  PASS    .       GT:DP:FQ        1/1:2519:0.2588
+xxx        1077    .       C       G       53.094  PASS    .       GT:DP:FQ        1/1:2519:0.2060
+xxx        1078    .       T       G       60.799  PASS    .       GT:DP:FQ        1/1:2519:0.2557
+xxx        1944    .       C       G       40.271  PASS    .       GT:DP:FQ        1/1:2518:0.2121
+xxx        1949    .       C       G       31.177  PASS    .       GT:DP:FQ        1/1:2518:0.1898
+xxx        2173    .       C       G       43.839  PASS    .       GT:DP:FQ        1/1:2517:0.5161
+xxx        2232    .       C       G       38.336  PASS    .       GT:DP:FQ        1/1:2504:0.1773
+
+
+
+Liren",rhinempi,https://github.com/WGLab/NanoCaller/issues/27
+I_kwDOCs-g2s5NNuzj,Using NanoCaller with BED files and Indel Calling Gives Empty VCF files,OPEN,2022-07-06T08:27:37Z,2022-11-11T00:54:39Z,,"Hello everyone,
+Thank you for developing NanoCaller. I have multiple questions about the usage.
+First, when I give a BED file to Nanocaller using --bed parameter, it takes really long compared to run without BED file. Is it normal?
+And when I use ""--exclude_bed hg19"" I have messages for SNP calling in terminal as:
+[W::tbx_parse1] Coordinate <= 0 detected. Did you forget to use the -0 option?
+
+I downloaded the Docker image of NanoCaller and tried to test it with ONT Case Study you provided. 
+
+I ran NanoCaller with this code:
+
+`sudo docker run -v ${PWD}:'/input/'  genomicslab/nanocaller:3.0.0 NanoCaller --bam /input/nanocall.bam --ref /input/GRCh38.fa --prefix HG002 --preset ont --output /input/calls --cpu 15 --exclude_bed hg38 --wgs_contigs chr1-22XY`
+
+After installation I used the code to call SNPs and Indels. SNPs are working okay. But Indel calling have this error message:
+
+`Indel Calling Progress:   0%|                                                                                                                                                            | 0/30970 [00:00<?, ?it/s]
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-18:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-28:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-26:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-23:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-21:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-19:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-27:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-24:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-20:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-22:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-17:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+
+[E::hts_open_format] Failed to open file ""vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam"" : No such file or directory
+Process Process-25:
+Traceback (most recent call last):
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/huk/anaconda3/envs/nanocaller_env/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 200, in caller
+    indel_run(params, indel_dict, job_Q, counter_Q, indel_files_list)
+  File ""/home/huk/NanoCaller/nanocaller_src/indelCaller.py"", line 59, in indel_run
+    pos, x0_test, x1_test, x2_test, alleles_seq, phase = get_indel_testing_candidates(params, chunk)
+  File ""/home/huk/NanoCaller/nanocaller_src/generate_indel_pileups.py"", line 147, in get_indel_testing_candidates
+    samfile = pysam.Samfile(sam_path, ""rb"")
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `vcf_files_nanocaller/FAB42395_fast/intermediate_phase_files/chr9.phased.bam`: No such file or directory
+Indel Calling Progress:   0%|                                                                                                                                                            | 0/30970 [00:04<?, ?it/s]
+
+2022-07-06 10:57:51.977706: Compressing and indexing indel calls.
+Writing to /tmp/bcftools.NVRBLx
+Lines   total/split/realigned/skipped:	0/0/0/0
+Merging 0 temporary files
+Cleaning
+Done
+
+Checking the headers and starting positions of 2 files
+
+
+2022-07-06 10:57:52.054713: Indel calling completed. Time taken= 17.7431
+`
+
+I have no idea what is the problem in my codes. Is something wrong with my codes or data?
+
+Thank you in advance",hkarakurt8742,https://github.com/WGLab/NanoCaller/issues/28
+I_kwDOCs-g2s5RBYvp,bcf tools error and error in whatshap,OPEN,2022-09-01T19:37:34Z,2023-09-05T19:14:04Z,,"Hi, 
+I am trying to run Nanocaller using the command : 
+`NanoCaller --bam _sorted.bam --ref ./sly.fa -chrom ch00 --mode snps --preset ont --cpu 64 --output Nano_Ch00 | tee stdout.txt`
+
+With the snp mode it runs through until variant calling mode and then throws this error 
+
+```
+bcftools: symbol lookup error: /home/dnalinux/anaconda3/envs/bioenv/bin/../lib/libgsl.so.25: undefined symbol: cblas_ctrmv
+
+2022-09-01 18:59:01.609302: ------WhatsHap SNP phasing log------
+
+This is WhatsHap 1.1 running under Python 3.9.6
+Traceback (most recent call last):
+  File ""/home/dnalinux/anaconda3/envs/bioenv/bin/whatshap"", line 10, in <module>
+    sys.exit(main())
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/__main__.py"", line 83, in main
+    module.main(args)
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/cli/phase.py"", line 1107, in main
+    run_whatshap(**vars(args))
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/cli/phase.py"", line 338, in run_whatshap
+    PhasedVcfWriter(
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/vcf.py"", line 888, in __init__
+    super().__init__(in_path, command_line, out_file, include_haploid_sets)
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/vcf.py"", line 795, in __init__
+    contigs, formats, infos = missing_headers(in_path)
+  File ""/home/dnalinux/anaconda3/envs/bioenv/lib/python3.9/site-packages/whatshap/vcf.py"", line 700, in missing_headers
+    with VariantFile(path) as variant_file:
+  File ""pysam/libcbcf.pyx"", line 4036, in pysam.libcbcf.VariantFile.__init__
+  File ""pysam/libcbcf.pyx"", line 4266, in pysam.libcbcf.VariantFile.open
+ValueError: invalid file `b'Nano_Ch001/variant_calls.snps.vcf.gz'` (mode=`b'r'`) - is it VCF/BCF format?
+```
+
+In the documentation it says whatshap is disabled by deafult. Not sure how to resolve this. I have attached my stdout file with this. 
+[stdout.txt](https://github.com/WGLab/NanoCaller/files/9472829/stdout.txt)
+
+I get the same error when I use mode 'all' as well. ",kprabhu-soundag,https://github.com/WGLab/NanoCaller/issues/29
+I_kwDOCs-g2s5RGLwX,docker build fails due to missing NanoCaller_WGS file,CLOSED,2022-09-02T20:13:33Z,2023-09-26T21:44:06Z,2023-09-26T21:44:06Z,"When I try to build the image, I get an error in this step:
+
+```
+COPY ./NanoCaller_WGS /opt/conda/envs/nanocaller_env/bin
+```
+
+Since the NanoCaller_WGS file is missing.
+",sbassi,https://github.com/WGLab/NanoCaller/issues/30
+I_kwDOCs-g2s5SRGil,Models compatible with Guppy6.x.x,OPEN,2022-09-21T02:21:23Z,2022-09-21T21:38:09Z,,"Hello,
+
+Are the error models compatible with the latest version of guppy? If not, which models would you suggest for r9.4.1 and r.10.1?
+
+Thanks",sagnikbanerjee15,https://github.com/WGLab/NanoCaller/issues/31
+I_kwDOCs-g2s5WqU-Z,Failed installation,OPEN,2022-11-17T20:19:43Z,2023-01-04T15:03:14Z,,"Hi, I am trying to download the NanoCaller Docker image but running into the following error
+
+Command:
+`docker pull genomicslab/nanocaller`
+
+Error:
+```
+Using default tag: latest
+Error response from daemon: manifest for genomicslab/nanocaller:latest not found: manifest unknown: manifest unknown
+```",twesigomwedavid,https://github.com/WGLab/NanoCaller/issues/33
+I_kwDOCs-g2s5a2XGa, bam file issue!,OPEN,2023-01-07T22:45:28Z,2023-01-07T22:45:28Z,,"Hi, I am trying to run nanocaller but it does not recognize the bam file . I am getting this error msg: s) 
+
+~/data/minion/drs-output/drs-output-final/diversetools$
+
+ docker run genomicslab/nanocaller:3.0.0 NanoCaller \
+> --bam filtered-minmap_rsv_n1_9hpi-soreted.bam\
+>  --ref ~/data/minion/drs-output/drs-output-final/diversetools/subsample/KT992094.1.fasta --cpu 10 --snp_model SNP_MODEL
+
+2023-01-07 22:30:52.732861: Starting NanoCaller.
+
+NanoCaller command and arguments are saved in the following file: /app/args
+
+[E::hts_open_format] Failed to open file ""filtered-minmap_rsv_n1_9hpi-soreted.bam"" : No such file or directory
+Traceback (most recent call last):
+  File ""/opt/conda/envs/nanocaller_env/bin/NanoCaller"", line 178, in <module>
+    run(args)
+  File ""/opt/conda/envs/nanocaller_env/bin/NanoCaller"", line 19, in run
+    regions_list=get_regions_list(args)
+  File ""/opt/conda/envs/nanocaller_env/bin/nanocaller_src/utils.py"", line 45, in get_regions_list
+    sam_file=pysam.Samfile(args.bam)
+  File ""pysam/libcalignmentfile.pyx"", line 751, in pysam.libcalignmentfile.AlignmentFile.__cinit__
+  File ""pysam/libcalignmentfile.pyx"", line 950, in pysam.libcalignmentfile.AlignmentFile._open
+FileNotFoundError: [Errno 2] could not open alignment file `filtered-minmap_rsv_n1_9hpi-soreted.bam`: No such file or directory 
+
+
+
+
+Any help would be much appreciated!",g-s-2018,https://github.com/WGLab/NanoCaller/issues/34
+I_kwDOCs-g2s5hEnzz,what do you want to fill in the “--chrom” option? I read the instructions and there is no document.,OPEN,2023-03-17T02:55:06Z,2023-05-23T01:25:14Z,,,oranges7,https://github.com/WGLab/NanoCaller/issues/35
+I_kwDOCs-g2s5pkwFR,header error in variant_calls.snps.phrased.vcf.gz ,OPEN,2023-06-23T10:48:04Z,2023-07-11T19:19:06Z,,"Hello I ran this command in order to detect variants in my mapped ONT reads (mapped with minimap2)
+`NanoCaller --mode all --sequencing ont --haploid_genome --bam sorted_mapped_reads.bam --ref genes.fna `
+-------------------------------------------------------------------------------------------------------
+I got this as a result:
+
+2023-06-23 12:27:16.562651: Starting NanoCaller.
+
+NanoCaller command and arguments are saved in the following file: /home/aziz/mapping/SRR23337893/args
+
+2023-06-23 12:27:16.947255: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+SNP Calling Progress: 100%|███████████████████████| 2/2 [00:00<00:00,  6.89it/s]
+
+2023-06-23 12:27:18.763662: Combining SNP calls.
+
+2023-06-23 12:27:18.764897: Compressing and indexing SNP calls.
+Writing to /tmp/bcftools.dkVQT8
+Merging 1 temporary files
+Cleaning
+Done
+
+
+2023-06-23 12:27:18.824115: SNP calling completed. Time taken= 0.4034
+
+Indel Calling Progress: 100%|█████████████████████| 2/2 [00:00<00:00,  3.99it/s]
+
+2023-06-23 12:27:19.487620: Compressing and indexing indel calls.
+Checking the headers and starting positions of 2 files
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+Failed to parse header: /home/aziz/mapping/SRR23337893/variant_calls.snps.phased.vcf.gz
+
+
+2023-06-23 12:27:20.501190: Indel calling completed. Time taken= 1.6770
+
+
+2023-06-23 12:27:20.501373: Total Time Elapsed: 3.94 seconds
+-----------------------------------------------------------------------------------------------
+It seems that everything is going well, but there was a problem in the header in the file variant_calls.snps.phased.vcf.gz
+**2023-06-23 12:27:19.487620: Compressing and indexing indel calls.
+Checking the headers and starting positions of 2 files
+[E::bcf_hdr_read] Input is not detected as bcf or vcf format
+Failed to parse header: /home/aziz/mapping/SRR23337893/variant_calls.snps.phased.vcf.gz**
+
+Does this error can influence my results, does anyone have an idea about it ? Thanks in advance
+
+",AzizHN,https://github.com/WGLab/NanoCaller/issues/36
+I_kwDOCs-g2s5p4aVc,Unnormal results ! ,OPEN,2023-06-27T08:42:04Z,2023-07-14T03:49:35Z,,"Hello,
+
+I have some ONT reads of _Aspergillus fumigatus_ that I mapped against a reference sequence.
+
+I am using Nanocaller for variants calling, My input files are a BAM file (555,1 Ko; 85 sequences mapped) and my ref is a fasta file (3,6 Ko, length = 1200pb)
+
+The command that I am using is :
+
+`NanoCaller --mode snps --sequencing ont --haploid_genome --bam sorted_mapped.bam --ref gene.fna
+`
+
+
+I have few questions:
+
+1/ Is it normal that my VCF output file contains only 8 snps ! Since, as I know the VCF file should mention all variations in all sequences compared to the ref seq, and when I have a look through IGV, I have more than 8 snps. (I think the tool mentioned only the variations that are present in almost all sequences! )? I tried to use other flags as `--min_allele_freq` to precise that the minimum allele frequency should be 0,01 and `--mincov `to precise that coverage of 1 is good to call a variant, but nothing changed, always 8 variants ! 
+
+
+2/ Is there any way to perform some performance analysis on the tool? I was thinking to use a true dataset containing some known variants, but It seems that I didn't find the one until now.
+
+
+I will be very grateful if you can help.
+
+Thanks in advance!
+
+have a good day!",AzizHN,https://github.com/WGLab/NanoCaller/issues/37
+I_kwDOCs-g2s5ruHGo,AD (allelic depth) field,CLOSED,2023-07-17T08:22:35Z,2023-07-31T15:30:44Z,2023-07-29T02:37:27Z,"To the community:
+I really think this is a fantastic tool, with incredible speed and great options for phasing.
+Is there a way to get the AD field to populate with NanoCaller, much like Deepvariant and GATK's HaplotypeCaller? There are multiple downstream tools that require this information and I'm wondering if I can somehow coax NanoCaller into giving this information, it would be a much faster alternative than deepvariant (which has some stages of the code that don't parallelize well and take days).",jamesdalg,https://github.com/WGLab/NanoCaller/issues/38
+I_kwDOCs-g2s5ub3ir,TypeError,CLOSED,2023-08-16T08:53:00Z,2023-08-20T13:09:30Z,2023-08-20T13:09:30Z,"I am using this command : 
+
+NanoCaller --bam ""$Sample""_mapped.bam --ref mtb.fasta --haploid_genome --output ""$Sample""_output_nanocaller --mode snps
+
+This is error message : 
+```
+(nanocaller) root@mtb_nanopore_1# NanoCaller --bam ""$Sample""_mapped.bam --ref mtb.fasta --haploid_genome --output ""$Sample""_output_nanocaller --mode snps
+
+2023-08-16 08:47:42.214468: Starting NanoCaller.
+
+NanoCaller command and arguments are saved in the following file: ERR3863207_1_output_nanocaller/args
+
+2023-08-16 08:47:42.438961: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE4.1 SSE4.2 AVX AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+SNP Calling Progress:   0%|                                                                                                                          | 0/9 [00:00<?, ?it/s]Process Process-3:
+Traceback (most recent call last):
+  File ""/root/miniconda3/envs/nanocaller/lib/python3.10/multiprocessing/process.py"", line 314, in _bootstrap
+    self.run()
+  File ""/root/miniconda3/envs/nanocaller/lib/python3.10/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""/root/miniconda3/envs/nanocaller/bin/nanocaller_src/snpCaller.py"", line 184, in caller
+    info_field='PR='+','.join(""{:.4f}"".format(x) for x in batch_probs[j,[0,3,1,2]])+ "";FQ={:.4f}"".format(batch_freq[j])
+  File ""/root/miniconda3/envs/nanocaller/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py"", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File ""/root/miniconda3/envs/nanocaller/lib/python3.10/site-packages/tensorflow/python/ops/array_ops.py"", line 924, in _check_index
+    raise TypeError(_SLICE_TYPE_ERROR + "", got {!r}"".format(idx))
+TypeError: Only integers, slices (`:`), ellipsis (`...`), tf.newaxis (`None`) and scalar tf.int32/tf.int64 tensors are valid indices, got [0, 3, 1, 2]
+SNP Calling Progress:   0%|                                                                                                                          | 0/9 [00:14<?, ?it/s]
+
+2023-08-16 08:47:58.078533: Combining SNP calls.
+
+2023-08-16 08:47:58.079593: Compressing and indexing SNP calls.
+Writing to /tmp/bcftools.n8E0wQ
+Merging 0 temporary files
+Cleaning
+Done
+
+
+2023-08-16 08:47:58.117314: SNP calling completed. Time taken= 14.3334
+
+
+2023-08-16 08:47:58.117386: Total Time Elapsed: 15.90 seconds
+```",mansi-aai,https://github.com/WGLab/NanoCaller/issues/39
+I_kwDOCs-g2s50eJod,Supporting reads,CLOSED,2023-10-20T11:06:11Z,2023-11-01T14:15:54Z,2023-11-01T14:15:54Z,Is there a way to find which supporting reads contain the SNP in question using nanocaller? Perhaps there are some temp files that are created in the process of SNP calling that help to determine this.,jamesdalg,https://github.com/WGLab/NanoCaller/issues/40
+I_kwDOCs-g2s50zfIW,conda install incompatibilities,OPEN,2023-10-24T16:34:40Z,2023-12-10T00:04:15Z,,"Hi,
+I get these incompatibilities and a failed installation - how can I get around this? Thanks!
+
+warning  libmamba Added empty dependency for problem type SOLVER_RULE_UPDATE
+Could not solve for environment specs
+The following packages are incompatible
+└─ nanocaller is installable with the potential options
+   ├─ nanocaller [2.0.0|2.1.0|2.1.1|2.1.2] would require
+   │  └─ python >=3.6,<3.7 , which can be installed;
+   ├─ nanocaller 2.1.2 would require
+   │  └─ whatshap >=1.0  with the potential options
+   │     ├─ whatshap [1.4|1.6|1.7|2.0|2.1] would require
+   │     │  └─ python >=3.10,<3.11.0a0 , which can be installed;
+   │     ├─ whatshap [1.0|1.1|...|1.7] would require
+   │     │  └─ python >=3.7,<3.8.0a0 , which can be installed;
+   │     ├─ whatshap [1.0|1.1|...|2.1] would require
+   │     │  └─ python >=3.8,<3.9.0a0 , which can be installed;
+   │     ├─ whatshap [1.1|1.2.1|...|2.1] would require
+   │     │  └─ python >=3.9,<3.10.0a0 , which can be installed;
+   │     └─ whatshap [1.0|1.1|1.2.1|1.3] would require
+   │        └─ python >=3.6,<3.7.0a0 , which can be installed;
+   ├─ nanocaller [3.0.0|3.0.1|3.1.0|3.2.0] would require
+   │  └─ python >=3.8,<3.9 , which can be installed;
+   └─ nanocaller [3.2.0|3.3.0|3.4.0|3.4.1] would require
+      └─ whatshap >=1.4 , which can be installed (as previously explained).
+",jannafierst,https://github.com/WGLab/NanoCaller/issues/41
+I_kwDOCs-g2s592mXm,Models for R10.4.1 dorado,CLOSED,2024-02-01T03:46:36Z,2024-10-02T00:01:15Z,2024-10-02T00:01:15Z,"Hi,
+
+Just wondering if there are any models for R10.4.1 flowcells basecaller with dorado's (v0.5.0) latest v4.3.0 models?",mbhall88,https://github.com/WGLab/NanoCaller/issues/42
+I_kwDOCs-g2s6DJ_Eg,Module not found tqtm after install with conda,OPEN,2024-03-21T15:02:24Z,2024-03-25T17:09:51Z,,"Hello there !
+
+I have installed NanoCaller with conda (mamba) : 
+
+`mamba install -c bioconda nanocaller`
+
+I install this within its own environnement with no other tool in it.
+
+And then trying to call nanocaller, I get the following error : 
+
+```
+Nanocaller --bam myBam.bam --ref my_ref.fasta --cpu 4 --mode snps
+
+NanoCaller command and arguments are saved in the following file: SequencingProjects/202408/analysis/Flongle/ASC410/sushi/args
+Traceback (most recent call last):
+  File ""/miniconda3/envs/nanocaller/bin/NanoCaller"", line 186, in <module>
+    run(args)
+  File ""/miniconda3/envs/nanocaller/bin/NanoCaller"", line 13, in run
+    from nanocaller_src import snpCaller, indelCaller
+  File ""/miniconda3/envs/nanocaller/bin/nanocaller_src/snpCaller.py"", line 2, in <module>
+    from tqdm import tqdm
+ModuleNotFoundError: No module named 'tqdm'
+```
+
+I find this odd, but as I try to fix the issue by installling the requested package with conda, it shows it is actually already installed.
+
+Any idea of what is going on here ? :) 
+
+Thank you for your help !
+
+Best,
+
+Roxane",RxLoutre,https://github.com/WGLab/NanoCaller/issues/43
+I_kwDOCs-g2s6GLQkV,Error phasing large chromosomes (550mb chromosome) due to inability to store as tbi index ,CLOSED,2024-04-18T16:22:22Z,2024-05-02T14:41:00Z,2024-05-02T14:41:00Z,"We are trying to run nanocaller on a large genomed plant species that contains a single chromosome over 535mb, which appears to be the limit for the size of a tbi index, leading to it failing out when trying to phase the SNPs, leading to an inability to call indels when running in ""--mode all"".  We are hoping to look for a way around this, but im not sure if its possible to tell nanocaller to build a  csi index as the error message recommends:
+
+**""[E::hts_idx_check_range] Region 536870986..536870987 cannot be stored in a tbi index. Try using a csi index                                                                   
+tbx_index_build failed: /temp/A1Pea_0.35_chr5/variant_calls.snps.vcf.gz                                                                                                       
+                                                                                                                                                                              
+                                                                                                                                                                              
+2024-04-18 14:15:25.954753: SNP calling completed. Time taken= 2484.7080                                                                                                      
+                                                                                                                                                                              
+Indel Calling Progress:   0%|                                                                                                              | 0/5793 [00:00<?, ?it/s]          
+[E::hts_open_format] Failed to open file ""/temp/A1Pea_0.35_chr5/intermediate_phase_files/chr5LG3.phased.bam"" : No such file or directory  ""**
+
+Let me know if there are any fixes that will allow this to work, it is working great for all chromosomes under 530mb.  I am using the docker and The command I am running is as follows:
+
+NanoCaller --bam /temp/A_Lines_sorted.bam --ref /temp/BigPlant.fa --mode all --preset ont --cpu 60 --mincov 6 --min_allele_freq 0.35 --output /temp/Plant_0.35_chr2 --regions chr2LG1 | tee /temp/stdout_Plant_chr2.txt
+
+Thanks
+Jack
+
+
+
+",jcolicchio-soundag,https://github.com/WGLab/NanoCaller/issues/44
+I_kwDOCs-g2s6Hm-a7,Applications,OPEN,2024-05-02T10:22:55Z,2024-05-29T18:57:10Z,,"Hello,
+I hope that you can help me with this :
+
+Can I use nanocaller on my fastq.gz files generated using ONT minion technology ?
+Can I use it to detect variants in fungus ?",QuentinPerriere,https://github.com/WGLab/NanoCaller/issues/45
+I_kwDOCs-g2s6Rj5TW,indels,OPEN,2024-08-01T10:35:53Z,2024-09-02T09:01:05Z,,"Hi! In the vcf generated by NanoCaller there are some records that differ from others because they are only defined by ORP (Original variant position), ORL (Original reference length) and GQ (Genotype Probability) instead of GT, DP, VF... What are these records? Are they variants?",RafaFariasVarona,https://github.com/WGLab/NanoCaller/issues/46
+I_kwDOCs-g2s6TTwYA,keras import issue by conda install,OPEN,2024-08-17T08:28:03Z,2024-11-16T01:04:23Z,,"Hi,
+
+I encountered an issue labeled ""ModuleNotFoundError: No module named 'tensorflow.keras'"" when attempting to use NanoCaller, which was installed via mamba. Upon inspection, the installed version of TensorFlow was ""2.17.0"". However, after downgrading it to ""2.15.0"", NanoCaller functioned properly.",xuejinghub,https://github.com/WGLab/NanoCaller/issues/47
+I_kwDOCs-g2s6YbkoH,will NanoCaller support dorado basecaller with R10.4.1 flowcells?,OPEN,2024-09-30T18:22:36Z,2024-10-01T15:46:28Z,,"The same question here. Given the situation that Guppy has been deprecated, will NanoCaller support dorado basecaller with R10.4.1 flowcells?",kerenzhou062,https://github.com/WGLab/NanoCaller/issues/48
+I_kwDOCs-g2s6dHLjX,Low recall and precision using v3.6.0,OPEN,2024-11-05T16:17:29Z,2024-12-11T00:14:53Z,,"I ran NanoCaller v3.6.0 on ONT NA24385 data using the default parameters:
+`NanoCaller --bam ${bam} --ref ${reference} --cpu 15`
+
+I also tried specifying the SNP and indel models: 
+`NanoCaller --bam ${bam} --ref ${reference} --seq ont --snp_model ONT-HG002 --indel_model ONT-HG002 --sample HG002`
+
+I compared the calling results using hap.py and the hg19 reference. When using both sets of parameters, the evaluated indel recall and precision were ~0.086 and ~.007, respectively. The SNP recall and precision were ~0.44 and ~0.81. Do these low values make sense? If not, please let me know how to fix this. Thanks!",LilyWang07,https://github.com/WGLab/NanoCaller/issues/49
+I_kwDOCs-g2s6jMS7a,MAF filter question,OPEN,2024-12-13T09:15:43Z,2024-12-17T17:35:35Z,,"Hi ! Thanks for the development of NanoCaller :) I was wondering, how does the filter for MAF work exactly ? Since only one sample is called at a time, how can the software calculate an accurate MAF ? Thank you ! ",stacyrousse,https://github.com/WGLab/NanoCaller/issues/51

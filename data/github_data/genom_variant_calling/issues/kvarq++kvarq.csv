@@ -1,0 +1,64 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NjAwMzY4MA==,Fails on (some) valid input data,CLOSED,2014-10-16T16:01:39Z,2014-10-18T13:05:48Z,2014-10-18T13:05:48Z,"KvarQ failed to scan some vaild fastqs 
+
+[2014-10-16 14:14:57,638] -INFO- cli.py:477(main) :: loaded testsuite ""example"" from ""/home/phelimb/tools/kvarq-master/testsuites/MTBC/example.py""
+[2014-10-16 14:14:57,655] -INFO- cli.py:477(main) :: loaded testsuite ""phylo"" from ""/home/phelimb/tools/kvarq-master/testsuites/MTBC/phylo.py""
+[2014-10-16 14:14:57,666] -INFO- cli.py:477(main) :: loaded testsuite ""resistance"" from ""/home/phelimb/tools/kvarq-master/testsuites/MTBC/resistance.py""
+[2014-10-16 14:14:57,671] -INFO- cli.py:477(main) :: loaded testsuite ""spoligo"" from ""/home/phelimb/tools/kvarq-master/testsuites/MTBC/spoligo.py""
+[2014-10-16 14:14:57,916] -INFO- fastq.py:146(**init**) :: gzipped fastq : readlength=? records_approx=? dQ=0 variants=['Sanger']
+[2014-10-16 14:14:57,917] -INFO- cli.py:86(scan) :: scanning 
+[===================== 99% ====================>] 1m 0s / 1m 2s   [2014-10-16 14:15:57,981] -ERROR- cli.py:161(scan) :: could not scan 
+file : record must start with '@' (and not 'F') fpos=984389052 [cli.py:101 -> /python2.7/site-packages/kvarq-0.12.2-py2.7-linux-x86_64.egg/kvarq/analyse.py:322]
+
+grep '^F' fastq_file returns nothing so it doesn't look like there's any line in the file that starts with an F. 
+
+fpos=984389052 is out of 984389772 total bytes. so 99.9999% of the way through the file. 
+
+I've manually checked the fastq and the last record looks fine. I've also fully parsed the file with BioPython and with another fq parser without error. 
+
+The last record looks like this. 
+!!!!CDCF8:DCDGGDFEGF-EDHGH?GGFDHEFBEDIAFBFEGFDGEEGGG7GHEFHGFE.EDECE8FGFDG@GFBHCFCFFCFDGF=GC,FE+>E@DF
+@HS22_09330:8:2316:21315:56524#77
+NNNNTCCCTTTTCTCAACATTGCCGAAGACCACCTGTATGGGGAGGCAACGATGGCCGAATCAACCGGGCCCAAGCCCCGGGGGCGGCCCGCGGGGGGGG
++
+!!!!7?-?(-,?EA?6BF?F9EE68,,DCBB9FB7?,,,,C,''+-D''78-7D>D+,8''(.-E#7-6'C,,-7,7,'E66',7,,557C,6,HFE'&4
+
+This issue does not appear on every sample, only a few files. 
+",Phelimb,https://github.com/kvarq/kvarq/issues/1
+MDU6SXNzdWU0NjAwNDgxNA==,Fails if Qscore>=50,CLOSED,2014-10-16T16:11:25Z,2014-10-18T01:13:18Z,2014-10-18T01:13:18Z,"I'm not sure what the fastq specs are for illumina 1.8 but I think they can have quality scores > 41. 
+
+A quote from wikipedia ""For processed reads, scores may be even higher. For example, quality values of 45 are observed in reads from Illumina's Long Read Sequencing Service (previously Moleculo)."" http://en.wikipedia.org/wiki/FASTQ_format
+
+Files have failed as they have quality scores of 50. Although this is outside the expected range they don't violate the file format specs which I think is 0 - 62 http://wiki.christophchamp.com/index.php/FASTQ_format so I'm not sure if failing is the ideal behaviour. 
+",Phelimb,https://github.com/kvarq/kvarq/issues/2
+MDU6SXNzdWU5MTI3NjMyNA==,engine.py,CLOSED,2015-06-26T15:15:55Z,2015-07-12T16:54:59Z,2015-07-12T16:54:59Z,"I could not locate this module in the kvarq/kvarq directory. I think it is required by both the cli.py and analyse.py scripts. 
+
+Maybe I am doing something wrong, please advice.
+
+Thanks,
+Matthew.
+",mezewudo,https://github.com/kvarq/kvarq/issues/3
+MDU6SXNzdWU5MzIwODE0OQ==,PE fastq-file recognition *_R2*,OPEN,2015-07-06T07:16:33Z,2015-07-09T12:01:32Z,,"Newer Illumina PE paired end files often have __R1_ and __R2_ for the two paired fastq-files. So far kvarq recognizes automatically ""_1.fastq"" and ""_2.fastq"".
+
+Examples:
+ABCDS_genoscreen_genoscreen_2013-10-31_101bp_R1-01.fastq.gz
+ABCDS_genoscreen_genoscreen_2013-10-31_101bp_R2-01.fastq.gz
+
+BSSE_QGF_22111_140729_D00535_0017_BH9YKEADXX_1_TCCTGAG-AAGGAGT_L001_R1_001_D1_G01938.fastq.gz
+BSSE_QGF_22111_140729_D00535_0017_BH9YKEADXX_1_TCCTGAG-AAGGAGT_L001_R2_001_D1_G01938.fastq.gz
+",dastu,https://github.com/kvarq/kvarq/issues/4
+MDU6SXNzdWU5MzIxMjAyNQ==,fastq-format quality encoding exceeding scale,OPEN,2015-07-06T07:35:42Z,2015-10-27T23:35:58Z,,"> [2015-07-03 10:02:36,191] -ERROR- cli.py:75(scan) :: cannot open file /path/SRR671719_1.fastq.gz : could not find any suitable fastq vendor variant
+
+Reason: fastq-quality values larger than 40? Reads have „i“ - does that quality score, exceeding 40, break the recognition?
+
+Example read:
+
+@SRR671719.1 FCC02TBACXX:2:1101:1248:2210/1
+TGGGCAACGGGGTGTGCGTTCGGCGGCTGGGGTCGCGCGACCGGTCGCAGCACTTCGGGCAATGCGTCAAACCCTGGGAACACGTCAACC
++
+bbbeeeeeggggbffghhiihiiiiiiggeec`acaUVOOVY_TTTTTTLW[`bbaacZV_^bbaWWVO]YW^[[`a^^V[[[`accc_
+
+Looks like Illumina format:
+https://en.wikipedia.org/wiki/FASTQ_format#Encoding
+",dastu,https://github.com/kvarq/kvarq/issues/5
+MDU6SXNzdWU0ODY1NjE3Nzc=,Error on MacOS,OPEN,2019-08-28T19:16:28Z,2019-08-28T19:16:28Z,,The program does not open. Just show a window with the options: console and terminate.,icarordg,https://github.com/kvarq/kvarq/issues/7

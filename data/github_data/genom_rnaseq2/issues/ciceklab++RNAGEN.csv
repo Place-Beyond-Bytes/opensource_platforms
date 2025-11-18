@@ -1,0 +1,25 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOJ1ibu854-ALM,rerunning the training from a checkpoint,OPEN,2023-12-06T22:41:10Z,2023-12-06T22:41:10Z,,"Hi,
+
+I have a limit on running time. I need to save the checkpoints and run the training from the saved checkpoints again. Do you have the code for running the training after the saved checkpoints?",nzarnaghi,https://github.com/ciceklab/RNAGEN/issues/1
+I_kwDOJ1ibu86TG9OX,`generate.py` need to be updated,OPEN,2024-08-15T13:39:08Z,2024-08-15T13:40:14Z,,"While `train.py` uses `tf.compat.v1` module and I can run it without error, `generate.py` cannot properly load the models trained with `train_rnagen.py` and do generation (Although it can properly load the checkpoint provided in the repository). 
+
+I think the problem was caused by that the model is implemented with TensorFlow 1.15, but the provided code is based on TensorFlow v2.
+
+
+
+I spent a lot of time debugging. Hope that would help someone in case you meet similar issues.
+
+1. The line `batch_size, latent_dim = session.run(tf.shape(latents))` doesn't automatically retrieve the model's `batch_size` and `latent_dim`, so I had to explicitly define these values.
+
+2. Replace `import tensorflow as tf` with the following:
+```python
+   import tensorflow.compat.v1 as tf
+   from tensorflow.compat.v1 import Session, get_default_graph
+   from tensorflow.compat.v1.keras import backend as K
+   tf.disable_v2_behavior()
+   tf.compat.v1.disable_eager_execution()
+```
+
+3. add `session.run(latent_vars.initializer)` after defining `latent_vars = [c for c in get_default_graph().get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES) if 'generator/latent_vars' in c.name][0]
+`",ekkkkki,https://github.com/ciceklab/RNAGEN/issues/2

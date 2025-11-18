@@ -1,0 +1,53 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2MTE1NTg1MDM=,multiple DE gene list for one TF,CLOSED,2020-05-04T01:38:01Z,2020-05-16T05:20:47Z,2020-05-16T05:20:47Z,"Does one TF allow multiple DE gene list? 
+For example, there are two lines fo mutants bzip76-1 and bzip76-2 with wildtype. 
+Do I keep two lists as **bzip76-1 vs wt** and **bzip76-2 vs wt**?
+
+Or combine them together? Is so, should I use a union or intersection?",timedreamer,https://github.com/timedreamer/riceTFs/issues/1
+MDU6SXNzdWU2MTIxNTM5NzE=,problems with OsNTL3,CLOSED,2020-05-04T20:40:12Z,2020-05-10T20:08:00Z,2020-05-10T20:08:00Z,"1. there is no treatment info from the SRP meta-data. So I used the GSM ID to find the treatment info from [GSE](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122021).
+![image](https://user-images.githubusercontent.com/6330709/81011011-373e8600-8e25-11ea-809c-fb00b378ddd1.png)
+
+2. I added the info to the **treatment** column in `SraRunTable_20200430_11SRP.tsv` file.
+
+3. There are two SRA correspondent to one GSM. At first, I thought they split the single-end files because of the file size. However, they all have the same number of reads. So I think they are actually paired-end reads! But which is read1 and which is read2 is not clear.
+
+![image](https://user-images.githubusercontent.com/6330709/81011233-99978680-8e25-11ea-8e66-76bb7e0651b4.png)
+
+In conclusion, unless we really want this TF. I can try to reallign. Otherwise, I gave up this TF.",timedreamer,https://github.com/timedreamer/riceTFs/issues/2
+MDU6SXNzdWU2MTIxNjM2OTA=,problems with MADS78/79,CLOSED,2020-05-04T20:57:39Z,2020-05-06T16:25:51Z,2020-05-06T16:25:51Z,"1. The data was from this [paper](https://www.ncbi.nlm.nih.gov/pubmed/31818903).
+
+2. In the paper TableS3, there are **14** libraries. However, only **12** in the GEO/SRA. Missing one WT-48HAF and one WT-72-HAF.
+
+3. There is only one replicate of **genotype x time** combination. For example, one replicate of **OE78 x 48HAF**. So there is no way to do good the statistical tests. See table below.
+![image](https://user-images.githubusercontent.com/6330709/81012864-470b9980-8e28-11ea-8186-af4a22c69cc0.png)
+
+
+4. The conclusion: give up MADS78/79. Unless we want to combine 48HAF and 72HAF and use as replicates.",timedreamer,https://github.com/timedreamer/riceTFs/issues/3
+MDU6SXNzdWU2MTMzNjAxNTU=,OsNAC6 data set alone ,CLOSED,2020-05-06T14:22:28Z,2020-05-06T16:39:35Z,2020-05-06T16:39:35Z,"This paper has a root specific OX line, whole body OX line and a KO mutant, but I could only find one replicate for each of the mutant lines - so we probably can't use this right? - I think it is fine to skip since we already have OsNAC6 from the paper with the 4 NACs. ",csacks,https://github.com/timedreamer/riceTFs/issues/4
+MDU6SXNzdWU2MTk2MTA1MDg=,OsTF1L(Rock 10) few peaks,OPEN,2020-05-17T04:55:54Z,2020-05-17T04:55:54Z,,"It's not clear how they call peaks for this TF in the paper. I have many issues with the dataset.
+
+1.  There are no **control** or **input** for *Roc10-myc α-myc*. 
+2. The GEO supplementary tables are very confusing. What's the meaning for *46*, *H3K4me3*, *H3K27me3*? *46* probably means transgenic plants?
+3. How were the binding sites in **Table 1** calculated? I thought they were anti-myc. But in the GEO tables, many of them were labeled something else, like `chr03-7132344-7133928-NT-H3K4me3-7455`. Besides, the peak range is too long, probably from `--broad` in MACS? But should TF use this setting?
+
+In summary, I re-did the analysis using the same pipeline as PE.
+Only **SRR5164450 Roc10-myc α-myc ChIPseq** was used for peak calling.  
+I have to use `--nomodel --extsize 147`, otherwise, no peaks could be found. 
+
+In the end I got **161** peaks correspondent to **85** genes (within 2kb region)
+
+",timedreamer,https://github.com/timedreamer/riceTFs/issues/5
+MDU6SXNzdWU2MTk2MTMwMTA=,OsNAC127/129 few peaks,OPEN,2020-05-17T05:16:59Z,2020-05-17T05:16:59Z,,"In the paper, it says:
+> After sequencing, 185, 6125, 220, 455 peaks were finally obtained respectively in OX127H, OX127N, OX129H and OX129N.
+
+However, I got: 52--> NAC127H; 179--> NAC127N; 132-->NAC129H; 139-->NAC129N.
+
+I tried some several settings in `masc2`, but always have fewer peaks than reported.
+The method that got more peaks would be analyzing three reps individually with the control. Then combine all the peaks.
+
+",timedreamer,https://github.com/timedreamer/riceTFs/issues/6
+MDU6SXNzdWU2MjIxMTM2NDI=,GSE72186 OsNF-YB1 ChIP replicate 1 and 2,CLOSED,2020-05-20T22:06:08Z,2020-05-20T22:06:12Z,2020-05-20T22:06:12Z,"For GSE72186 OsNF-YB1 ChIP, genes that found in either replicate were kept. 
+I think this is similar to what the paper did:
+> Overlapping peaks (having a stronger but narrower peak in at least one replicate) between two biological replicates were used for further analysis.
+
+The final file is the `GSE72186_rep12.MACS2_summits_gene_list_2404`",timedreamer,https://github.com/timedreamer/riceTFs/issues/7

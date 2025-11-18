@@ -1,0 +1,146 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4NDIzMzAxNjg=,Arguments are required limits,OPEN,2021-03-26T22:15:53Z,2021-03-26T22:15:53Z,,"Hi @ckrushton,
+
+I'm currently trying to run your Dellingr pipeline on fastq files with 4bp UMI which flank the insert (for example NNNN----------------------------NNNN). I've followed all the installation steps noted in the README. However when I run the following command:
+
+`
+ python3.8 /path/to/Dellingr/DellingrPipeline.py \
+        --fastqs R1.fastq.gz R2.fastq.gz
+        --reference REF_GENOME
+        --outdir alignment
+        --barcode_sequence NNNN 
+        --barcode_position 1111
+        --max_mismatch 0
+        --family_mask 1111
+        -fmm 0
+        --duplex_mask 1111
+        -dmm 0
+        --targets path/to/BED
+        --tag_family_members
+        --threshold 0.01
+        --bwa /path/to/bwa
+        --samtools /path/to/samtools
+`
+
+The pipeline completes the trim and BWA tasks, but fails at the collapse stage:
+
+> DELLINGR-MAIN		16:29:38	Starting...
+DELLINGR-MAIN		D36466_R1	16:29:39	Processing Sample 'test_R1'
+DELLINGR-TRIM		D36466_R1	16:29:39	Starting...
+DELLINGR-TRIM		D36466_R1	16:29:56	Discard Rate:0.11%	Count:100000
+DELLINGR-TRIM		D36466_R1	16:30:13	Discard Rate:0.09%	Count:200000
+DELLINGR-TRIM		D36466_R1	16:30:30	Discard Rate:0.10%	Count:300000
+DELLINGR-TRIM		D36466_R1	16:30:47	Discard Rate:0.07%	Count:400000
+DELLINGR-TRIM		D36466_R1	16:31:04	Discard Rate:0.08%	Count:500000
+DELLINGR-TRIM		D36466_R1	16:31:21	Discard Rate:0.08%	Count:600000
+DELLINGR-TRIM		D36466_R1	16:31:39	Discard Rate:0.08%	Count:700000
+DELLINGR-TRIM		D36466_R1	16:31:57	Discard Rate:0.07%	Count:800000
+DELLINGR-TRIM		D36466_R1	16:32:14	Discard Rate:0.07%	Count:900000
+DELLINGR-TRIM		D36466_R1	16:32:30	Discard Rate:0.07%	Count:1000000
+DELLINGR-TRIM		D36466_R1	16:32:48	Discard Rate:0.07%	Count:1100000
+DELLINGR-TRIM		D36466_R1	16:33:06	Discard Rate:0.07%	Count:1200000
+DELLINGR-TRIM		D36466_R1	16:33:24	Discard Rate:0.07%	Count:1300000
+DELLINGR-TRIM		D36466_R1	16:33:42	Discard Rate:0.07%	Count:1400000
+DELLINGR-TRIM		D36466_R1	16:34:00	Discard Rate:0.07%	Count:1500000
+DELLINGR-TRIM		D36466_R1	16:34:18	Discard Rate:0.06%	Count:1600000
+DELLINGR-TRIM		D36466_R1	16:34:36	Discard Rate:0.06%	Count:1700000
+DELLINGR-TRIM		D36466_R1	16:34:54	Discard Rate:0.07%	Count:1800000
+DELLINGR-TRIM		D36466_R1	16:35:13	Discard Rate:0.06%	Count:1900000
+DELLINGR-TRIM		D36466_R1	16:35:31	Discard Rate:0.06%	Count:2000000
+DELLINGR-TRIM		D36466_R1	16:35:49	Discard Rate:0.06%	Count:2100000
+DELLINGR-TRIM		D36466_R1	16:36:07	Discard Rate:0.06%	Count:2200000
+DELLINGR-TRIM		D36466_R1	16:36:25	Discard Rate:0.06%	Count:2300000
+DELLINGR-TRIM		D36466_R1	16:36:42	Discard Rate:0.06%	Count:2400000
+DELLINGR-TRIM		D36466_R1	16:37:00	Discard Rate:0.06%	Count:2500000
+DELLINGR-TRIM		D36466_R1	16:37:19	Discard Rate:0.05%	Count:2600000
+DELLINGR-TRIM		D36466_R1	16:37:36	Discard Rate:0.05%	Count:2700000
+DELLINGR-TRIM		D36466_R1	16:37:54	Discard Rate:0.05%	Count:2800000
+DELLINGR-TRIM		D36466_R1	16:38:13	Discard Rate:0.05%	Count:2900000
+DELLINGR-TRIM		D36466_R1	16:38:31	Discard Rate:0.05%	Count:3000000
+DELLINGR-TRIM		D36466_R1	16:38:49	Discard Rate:0.05%	Count:3100000
+DELLINGR-TRIM		D36466_R1	16:39:07	Discard Rate:0.05%	Count:3200000
+DELLINGR-TRIM		D36466_R1	16:39:25	Discard Rate:0.05%	Count:3300000
+DELLINGR-TRIM		D36466_R1	16:39:43	Discard Rate:0.05%	Count:3400000
+DELLINGR-TRIM		D36466_R1	16:40:02	Discard Rate:0.05%	Count:3500000
+DELLINGR-TRIM		D36466_R1	16:40:20	Discard Rate:0.05%	Count:3600000
+DELLINGR-TRIM		D36466_R1	16:40:37	Discard Rate:0.05%	Count:3700000
+DELLINGR-TRIM		D36466_R1	16:40:56	Discard Rate:0.04%	Count:3800000
+DELLINGR-TRIM		D36466_R1	16:41:14	Discard Rate:0.04%	Count:3900000
+DELLINGR-TRIM		D36466_R1	16:41:28	Discard Rate:0.04%	Count:3977336
+DELLINGR-TRIM		D36466_R1	16:41:28	Trimming Complete
+DELLINGR-MAIN		D36466_R1	16:41:28	Running BWA...
+DELLINGR-MAIN		D36466_R1	16:43:03	Reads Processed:68494
+DELLINGR-MAIN		D36466_R1	16:43:49	Reads Processed:136988
+DELLINGR-MAIN		D36466_R1	16:44:35	Reads Processed:205482
+DELLINGR-MAIN		D36466_R1	16:45:18	Reads Processed:273976
+DELLINGR-MAIN		D36466_R1	16:46:04	Reads Processed:342470
+DELLINGR-MAIN		D36466_R1	16:46:48	Reads Processed:410964
+DELLINGR-MAIN		D36466_R1	16:47:34	Reads Processed:479458
+DELLINGR-MAIN		D36466_R1	16:48:18	Reads Processed:547952
+DELLINGR-MAIN		D36466_R1	16:49:03	Reads Processed:616446
+DELLINGR-MAIN		D36466_R1	16:49:48	Reads Processed:684940
+DELLINGR-MAIN		D36466_R1	16:50:33	Reads Processed:753434
+DELLINGR-MAIN		D36466_R1	16:51:18	Reads Processed:821928
+DELLINGR-MAIN		D36466_R1	16:52:03	Reads Processed:890422
+DELLINGR-MAIN		D36466_R1	16:52:48	Reads Processed:958916
+DELLINGR-MAIN		D36466_R1	16:53:33	Reads Processed:1027410
+DELLINGR-MAIN		D36466_R1	16:54:17	Reads Processed:1095904
+DELLINGR-MAIN		D36466_R1	16:55:01	Reads Processed:1164398
+DELLINGR-MAIN		D36466_R1	16:55:47	Reads Processed:1232892
+DELLINGR-MAIN		D36466_R1	16:56:32	Reads Processed:1301386
+DELLINGR-MAIN		D36466_R1	16:57:16	Reads Processed:1369880
+DELLINGR-MAIN		D36466_R1	16:58:00	Reads Processed:1438374
+DELLINGR-MAIN		D36466_R1	16:58:45	Reads Processed:1506868
+DELLINGR-MAIN		D36466_R1	16:59:28	Reads Processed:1575362
+DELLINGR-MAIN		D36466_R1	17:00:13	Reads Processed:1643856
+DELLINGR-MAIN		D36466_R1	17:00:57	Reads Processed:1712350
+DELLINGR-MAIN		D36466_R1	17:01:41	Reads Processed:1780844
+DELLINGR-MAIN		D36466_R1	17:02:26	Reads Processed:1849338
+DELLINGR-MAIN		D36466_R1	17:03:09	Reads Processed:1917832
+DELLINGR-MAIN		D36466_R1	17:03:53	Reads Processed:1986326
+DELLINGR-MAIN		D36466_R1	17:04:37	Reads Processed:2054820
+DELLINGR-MAIN		D36466_R1	17:05:21	Reads Processed:2123314
+DELLINGR-MAIN		D36466_R1	17:06:05	Reads Processed:2191808
+DELLINGR-MAIN		D36466_R1	17:06:50	Reads Processed:2260302
+DELLINGR-MAIN		D36466_R1	17:07:34	Reads Processed:2328796
+DELLINGR-MAIN		D36466_R1	17:08:19	Reads Processed:2397290
+DELLINGR-MAIN		D36466_R1	17:09:03	Reads Processed:2465784
+DELLINGR-MAIN		D36466_R1	17:09:49	Reads Processed:2534278
+DELLINGR-MAIN		D36466_R1	17:10:32	Reads Processed:2602772
+DELLINGR-MAIN		D36466_R1	17:11:17	Reads Processed:2671266
+DELLINGR-MAIN		D36466_R1	17:12:01	Reads Processed:2739760
+DELLINGR-MAIN		D36466_R1	17:12:45	Reads Processed:2808254
+DELLINGR-MAIN		D36466_R1	17:13:29	Reads Processed:2876748
+DELLINGR-MAIN		D36466_R1	17:14:13	Reads Processed:2945242
+DELLINGR-MAIN		D36466_R1	17:14:56	Reads Processed:3013736
+DELLINGR-MAIN		D36466_R1	17:15:39	Reads Processed:3082230
+DELLINGR-MAIN		D36466_R1	17:16:24	Reads Processed:3150724
+DELLINGR-MAIN		D36466_R1	17:17:07	Reads Processed:3219218
+DELLINGR-MAIN		D36466_R1	17:17:49	Reads Processed:3287712
+DELLINGR-MAIN		D36466_R1	17:18:31	Reads Processed:3356206
+DELLINGR-MAIN		D36466_R1	17:19:15	Reads Processed:3424700
+DELLINGR-MAIN		D36466_R1	17:19:58	Reads Processed:3493194
+DELLINGR-MAIN		D36466_R1	17:20:41	Reads Processed:3561688
+DELLINGR-MAIN		D36466_R1	17:21:23	Reads Processed:3630182
+DELLINGR-MAIN		D36466_R1	17:22:06	Reads Processed:3698676
+DELLINGR-MAIN		D36466_R1	17:22:48	Reads Processed:3767170
+DELLINGR-MAIN		D36466_R1	17:23:30	Reads Processed:3835664
+DELLINGR-MAIN		D36466_R1	17:24:13	Reads Processed:3904158
+DELLINGR-MAIN		D36466_R1	17:24:54	Reads Processed:3972652
+DELLINGR-MAIN		D36466_R1	17:24:56	Reads Processed:3975418
+DELLINGR-MAIN		D36466_R1	17:26:41	Mapping Complete
+usage: DellingrPipeline.py [-h] [-c INI] -i SAM/BAM/CRAM -o SAM/BAM/CRAM
+                           [-t BED] [--no_barcodes] [--collapse_duplexes]
+                           [-fm 0001111111111110] [-dm 0000000001111110]
+                           [-fmm INT] [-dmm INT] [--tag_family_members]
+                           [--plot_prefix DIR] -r REFERENCE
+                           [--input_format SAM/BAM/CRAM]
+DellingrPipeline.py: error: the following arguments are required: (-fmm/--family_mismatch, -dmm/--duplex_mismatch) OR --no_barcodes
+
+I tried the above command using -fmm/--family_mismatch and -dmm/--duplex_mismatch 0, but the program fails with the same error message. I ran the command using -fmm 1 and -dmm 1 and the program ran to completion. I looked into the Collapse code and saw https://github.com/morinlab/Dellingr/blob/master/Dellingr/Collapse.py#L1489-L1495 that the -fmm/-dmm can be 0, but the program fails when run with a 0. Am I doing something wrong on my end, or is there an issue with the validateArgs?
+
+Best,
+Chad
+
+
+ ",ChadFibke,https://github.com/morinlab/Dellingr/issues/1

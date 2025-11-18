@@ -1,0 +1,165 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NTcyMDYxNzQ=,Some questions about dataset in scziDesk,OPEN,2020-07-15T09:30:41Z,2023-03-24T13:18:11Z,,"Hi Liang, I just wanna to use more real world data under scziDesk so I want to know where the original download link for the dataset is, for example the Quake_10x datasets. Can you give me the original download link or the URL？
+THX！ :)",AllenWu18,https://github.com/xuebaliang/scziDesk/issues/1
+MDU6SXNzdWU2ODcxNzM1MjA=,Problem in running few datasets,OPEN,2020-08-27T11:41:13Z,2023-05-05T11:53:29Z,,"I tried few datasets provided in this repo. Only one ""Romanov"" is working at my system. Other incur some issues as shown in the log below. Any idea? One possible reason maybe, I am using the latest versions of Keras and TF with Python3.8 because of some reasons in installation for recommended versions.  
+
+```
+$ python3 zidpkm.py --dataname Quake_Smart-seq2_Lung
+2020-08-26 20:37:45.675009: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2020-08-26 20:37:45.675041: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+WARNING:tensorflow:From /home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+begin the pretraining
+2020-08-26 20:37:50.473345: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-26 20:37:50.498469: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2799925000 Hz
+2020-08-26 20:37:50.498869: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55ab2c828240 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-26 20:37:50.498923: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-08-26 20:37:50.501941: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2020-08-26 20:37:50.502017: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-26 20:37:50.502080: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (TUD256255): /proc/driver/nvidia/version does not exist
+Traceback (most recent call last):
+  File ""zidpkm.py"", line 67, in <module>
+    chencluster.pretrain(X, count_X, size_factor, args.batch_size, args.pretrain_epoch, args.gpu_option)
+  File ""/home/tahmad/ogits/scziDesk/network.py"", line 109, in pretrain
+    _, likelihood_loss, latent = self.sess.run(
+  File ""/home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py"", line 957, in run
+    result = self._run(None, fetches, feed_dict, options_ptr,
+  File ""/home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py"", line 1154, in _run
+    raise ValueError(
+ValueError: Cannot feed value of shape (256, 499) for Tensor 'Placeholder_1:0', which has shape '(?, 500)'
+
+```
+
+```
+$ python3 zidpkm.py --dataname Quake_10x_Bladder
+2020-08-26 20:37:11.479722: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2020-08-26 20:37:11.479754: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+WARNING:tensorflow:From /home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+begin the pretraining
+2020-08-26 20:37:16.896362: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-26 20:37:16.918379: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2799925000 Hz
+2020-08-26 20:37:16.918786: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55b73f466570 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-26 20:37:16.918837: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-08-26 20:37:16.921324: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2020-08-26 20:37:16.921384: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-26 20:37:16.921439: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (TUD256255): /proc/driver/nvidia/version does not exist
+Traceback (most recent call last):
+  File ""zidpkm.py"", line 67, in <module>
+    chencluster.pretrain(X, count_X, size_factor, args.batch_size, args.pretrain_epoch, args.gpu_option)
+  File ""/home/tahmad/ogits/scziDesk/network.py"", line 109, in pretrain
+    _, likelihood_loss, latent = self.sess.run(
+  File ""/home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py"", line 957, in run
+    result = self._run(None, fetches, feed_dict, options_ptr,
+  File ""/home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/client/session.py"", line 1154, in _run
+    raise ValueError(
+ValueError: Cannot feed value of shape (256, 499) for Tensor 'Placeholder_1:0', which has shape '(?, 500)'
+
+```
+
+This is the log with Romanov dataset:
+
+```
+$ python3 zidpkm.py --dataname Romanov
+2020-08-26 18:45:47.849892: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory
+2020-08-26 18:45:47.849923: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+WARNING:tensorflow:From /home/tahmad/anaconda3/lib/python3.8/site-packages/tensorflow/python/compat/v2_compat.py:96: disable_resource_variables (from tensorflow.python.ops.variable_scope) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+begin the pretraining
+2020-08-26 18:45:53.861427: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-26 18:45:53.885418: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2799925000 Hz
+2020-08-26 18:45:53.885753: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557076fa0140 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-26 18:45:53.885777: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-08-26 18:45:53.888498: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory
+2020-08-26 18:45:53.888571: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-08-26 18:45:53.888619: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (TUD256255): /proc/driver/nvidia/version does not exist
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:18: FutureWarning: The linear_assignment_ module is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+begin the pretraining
+begin the funetraining
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+/home/tahmad/anaconda3/lib/python3.8/site-packages/sklearn/utils/linear_assignment_.py:124: FutureWarning: The linear_assignment function is deprecated in 0.21 and will be removed from 0.23. Use scipy.optimize.linear_sum_assignment instead.
+  warnings.warn(
+  dataset name kmeans accuracy kmeans ARI kmeans NMI accuracy      ARI      NMI
+0      Romanov         0.87956    0.72475    0.71113  0.88199  0.72742  0.71808
+1      Romanov         0.88407    0.74607     0.7135  0.89622  0.77092  0.73498
+2      Romanov         0.87643    0.72001    0.70887   0.8799  0.72469  0.71408
+3      Romanov         0.89448    0.75458    0.73029  0.90003  0.76492  0.74113
+4      Romanov         0.87817    0.72162    0.71079  0.88997  0.75294  0.72513
+5      Romanov         0.88199    0.73597    0.71028  0.90212  0.78338  0.74301
+6      Romanov         0.89136    0.75587    0.73317  0.89969  0.77332  0.74383
+7      Romanov         0.88476    0.72787    0.71705  0.89101  0.74291  0.72474
+8      Romanov         0.88303    0.73709    0.71759  0.88858  0.74974  0.72634
+9      Romanov         0.88199    0.73324     0.7164  0.89379  0.75698  0.73332
+
+```",tahashmi,https://github.com/xuebaliang/scziDesk/issues/2
+MDU6SXNzdWU4MTE2MzE0OTk=,Example for Seurat and SC3 method,OPEN,2021-02-19T02:38:07Z,2021-02-19T10:48:11Z,,"Hi, i am quite interested in your scziDesk method. However when i tried to re-run your results in the paper, i found it really hard to implement Seurat and SC3 method for dataset provided in your paper. Tutorials of Seurat and SC3 are mainly based on 10x dataset which has a different structure. So i wanna ask Do u have any example code of how could i implement Seurat/SC3 on your dataset? ",laocaoshilaocao,https://github.com/xuebaliang/scziDesk/issues/3
+I_kwDODPl0zs48fEBO,10X data sources,OPEN,2021-10-04T06:16:26Z,2021-10-04T06:16:26Z,,"36/5000 
+May I ask whether the 10X data comes from the 10X official website? Why would it be wrong if I replace the data from the 10X official website？",pengfeigaonice,https://github.com/xuebaliang/scziDesk/issues/4
+I_kwDODPl0zs5jldZO,About Geometric Anchor Correspondence Mining with Uncertainty Modeling for Universal Domain Adaptation,OPEN,2023-04-17T09:22:26Z,2023-04-17T09:22:26Z,,"Hi Liang, I am Shuo Wen from EPFL. I am super interested in your work _About Geometric Anchor Correspondence Mining with Uncertainty Modeling for Universal Domain Adaptation_. However, I need help finding the code. Could you please point me to the code of this paper?
+
+Thank you in advance!
+
+(Sorry to contact you this way. I did not manage to find your email.)
+
+",wenshuo128,https://github.com/xuebaliang/scziDesk/issues/5

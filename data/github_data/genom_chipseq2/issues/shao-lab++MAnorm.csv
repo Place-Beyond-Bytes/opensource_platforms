@@ -1,0 +1,470 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyODg1Mjk5MjE=,questions about read file ,CLOSED,2018-01-15T09:32:49Z,2021-11-06T00:50:10Z,2018-01-17T15:17:10Z,"Dear shao-lab:
+
+I am very glad to find your tools which is help for my Chip-seq analysis. But I want to know whether the ways I get the reads file is correct.
+
+First, I used bowtie2 to map the reads to genome and get a bam file. Then I should transfer the bam to bed. But I wonder that weather I should only preserve the unique mapped reads to bed or use all reads?
+
+Best Regards ",gaoyishu,https://github.com/shao-lab/MAnorm/issues/1
+MDU6SXNzdWUyOTM3NjgyNzg=,0 peaks are loaded,CLOSED,2018-02-02T04:14:46Z,2018-02-05T08:00:49Z,2018-02-02T05:49:18Z,"Dear Developer,
+
+I'am facing error when using the python version of MAnorm. I'm using 3-columns bed files for peaks input since the peaks are broad peaks called by MACS2, no summit coordinates can be obtained.
+
+Error message:
+```
+/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/statsmodels/compat/pandas.py:56: FutureWarning: The pandas.core.datetools module is deprecated and will be removed in a future version. Please use the pandas.tseries module instead.
+  from pandas.core import datetools
+INFO     02/02/2018 11:56: # MAnorm Arguments:
+INFO     02/02/2018 11:56: # Name of sample1 = T1-D0-J2b_vs_D0_I
+INFO     02/02/2018 11:56: # Name of sample2 = T1-D2-J2b_vs_D2_I
+INFO     02/02/2018 11:56: # Peaks file of sample1 = T1-D0-J2b_vs_D0_I_peaks_merged.bed
+INFO     02/02/2018 11:56: # Peaks file of sample2 = T1-D2-J2b_vs_D2_I_peaks_merged.bed
+INFO     02/02/2018 11:56: # Reads file of sample1 = T1-D0-J2b.dup.removed.sort.bam.bed
+INFO     02/02/2018 11:56: # Reads file of sample2 = T1-D2-J2b.dup.removed.sort.bam.bed
+INFO     02/02/2018 11:56: # Reads shift size of sample1 = 71
+INFO     02/02/2018 11:56: # Reads shift size of sample2 = 71
+INFO     02/02/2018 11:56: # Peak width to extend from summit = 1000
+INFO     02/02/2018 11:56: # Summit-to-summit distance cutoff = 500
+INFO     02/02/2018 11:56: # Output directory = /Volumes/SharedFolders/AllFiles/Users/kyliehm/Documents/Study/MPhil/HKU/Reserach_project/NGS/ChIP-seq./Data_analysis/Called_peak/MAnorm/Replicate_unpolled/diff_D0-J2b_vs_D2-J2b/
+INFO     02/02/2018 11:56: Step1: Loading input data
+INFO     02/02/2018 11:56: 0 peaks are loaded from T1-D0-J2b_vs_D0_I_peaks_merged.bed
+INFO     02/02/2018 11:56: 0 peaks are loaded from T1-D2-J2b_vs_D2_I_peaks_merged.bed
+INFO     02/02/2018 11:59: 57252590 reads are loaded from T1-D0-J2b.dup.removed.sort.bam.bed
+INFO     02/02/2018 12:01: 38587656 reads are loaded from T1-D2-J2b.dup.removed.sort.bam.bed
+INFO     02/02/2018 12:01: Step2: Classifying peaks by overlap
+INFO     02/02/2018 12:01: T1-D0-J2b_vs_D0_I: 0(unique) 0(common)
+INFO     02/02/2018 12:01: T1-D2-J2b_vs_D2_I: 0(unique) 0(common)
+INFO     02/02/2018 12:01: Merged common peaks: 0
+INFO     02/02/2018 12:01: Step3: Performing overlap enrichment test
+INFO     02/02/2018 12:01: Overlapping peaks in random simulation: mean:1.0 std:0.0
+INFO     02/02/2018 12:01: Fold Change: 0.0
+INFO     02/02/2018 12:01: Step4: Calculating the read densities
+INFO     02/02/2018 12:01: Step5: Fitting normalization model
+Traceback (most recent call last):
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/bin/manorm"", line 6, in <module>
+    sys.exit(manorm.cmdline.main())
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/manorm/cmdline.py"", line 95, in main
+    full_output=full_output, name1=name1, name2=name2, output_name=output_name)
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/manorm/workflow.py"", line 56, in main
+    ma.fit_model(summit_dis_cutoff)
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/manorm/core.py"", line 103, in fit_model
+    x = sm.add_constant(a_values[mask])
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/statsmodels/tools/tools.py"", line 279, in add_constant
+    is_nonzero_const = np.ptp(x, axis=0) == 0
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/numpy/core/fromnumeric.py"", line 2171, in ptp
+    return _wrapfunc(a, 'ptp', axis=axis, out=out)
+  File ""/Users/kylie_coding/miniconda3/envs/MAnorm_env/lib/python2.7/site-packages/numpy/core/fromnumeric.py"", line 57, in _wrapfunc
+    return getattr(obj, method)(*args, **kwds)
+ValueError: zero-size array to reduction operation maximum which has no identity
+(MAnorm_env) 
+```
+
+Packages in the python environment:
+```
+$ conda list -n MAnorm_env
+# packages in environment at /Users/kylie_coding/miniconda3/envs/MAnorm_env:
+#
+backports                 1.0                      py27_1    conda-forge
+backports.functools_lru_cache 1.4                      py27_1    conda-forge
+backports_abc             0.5                      py27_0    conda-forge
+ca-certificates           2017.11.5                     0    conda-forge
+certifi                   2017.11.5                py27_0    conda-forge
+cycler                    0.10.0                   py27_0    conda-forge
+freetype                  2.8.1                         0    conda-forge
+functools32               3.2.3.2                  py27_1    conda-forge
+libpng                    1.6.34                        0    conda-forge
+manorm                    1.1.3                    py27_0    bioconda
+matplotlib                2.1.2                    py27_0    conda-forge
+mkl                       2017.0.3                      0  
+ncurses                   5.9                          10    conda-forge
+numpy                     1.13.1                   py27_0  
+openssl                   1.0.2n                        0    conda-forge
+pandas                    0.22.0                   py27_0    conda-forge
+patsy                     0.5.0                    py27_0    conda-forge
+pip                       9.0.1                    py27_1    conda-forge
+pyparsing                 2.2.0                    py27_0    conda-forge
+python                    2.7.14                        4    conda-forge
+python-dateutil           2.3                      py27_0    bioconda
+pytz                      2017.3                     py_2    conda-forge
+readline                  7.0                           0    conda-forge
+scipy                     0.19.1              np113py27_0  
+setuptools                38.4.0                   py27_0    conda-forge
+singledispatch            3.4.0.3                  py27_0    conda-forge
+six                       1.11.0                   py27_1    conda-forge
+sqlite                    3.20.1                        2    conda-forge
+ssl_match_hostname        3.5.0.1                  py27_1    conda-forge
+statsmodels               0.8.0                    py27_0    conda-forge
+subprocess32              3.2.7                    py27_0    conda-forge
+tk                        8.6.7                         0    conda-forge
+tornado                   4.5.3                    py27_0    conda-forge
+wheel                     0.30.0                   py27_2    conda-forge
+zlib                      1.2.11                        0    conda-forge
+(MAnorm_env) 
+```
+
+Hoping very much for your help, thanks!!
+
+Kylie",chiefcat,https://github.com/shao-lab/MAnorm/issues/2
+MDU6SXNzdWUyOTQ2NzY1MzU=,Calling Differential peaks consistent between biological replicates,CLOSED,2018-02-06T08:51:18Z,2018-02-28T05:37:08Z,2018-02-15T10:30:52Z,"Dear MAnorm developer,
+
+Hi, I'm struggling with the workflow when calling differential peaks using MAnorm.
+The experimental setting is like this:
+
+Samples I've got:
+Sample 1 Control, rep1 (MACS2 called peaks, read files)
+Sample 2 Control, rep2 (MACS2 called peaks, read files)
+Sample 3 Treatment, rep1 (MACS2 called peaks, read files)
+Sample 4 Treatment, rep2 (MACS2 called peaks, read files)
+
+Goal: I would like to identify Control biased, Treatment biased, and Unbiased peaks happen in both rep1 and rep2.
+
+I'm not sure in which step I should pull the rep1 and rep2 together.
+
+I've thought of 3 approaches, which approach is correct, or do you have any other suggestions?
+Approach 1:
+Step 1a.: Identify Control rep1 & rep2 unbiased peaks by MAnorm (Output merge peaks between rep1 &2)
+Step 1b.: Identify Treatment rep1 & rep2 common peaks by MAnorm (Output merge peaks between rep1 &2)
+Step 2.: Differential peak calling between Control & Treatment using the unbiased peaks from Step1a & 1b.
+
+Approach 2:
+Step1.: Construct a consensus peak set, which contains all peak coordinates from the 4 samples (merge peaks coordinate whenever overlapped) by bedtools
+Step2a. : Perform differential peak calling for rep1 (Control, rep1 vs Treatment, rep1)
+Step2b. : Perform differential peak calling for rep2 (Control, rep2 vs Treatment, rep2)
+Step3.: Find out the rep1 & rep2 consistent differential peaks by coordinate overlapping (peaks coordinate from rep1 & rep2 are identical)
+
+Approach 3:
+Step1a. : Perform differential peak calling for rep1 (Control, rep1 vs Treatment, rep1)
+Step1b. : Perform differential peak calling for rep2 (Control, rep2 vs Treatment, rep2)
+Step3.: Identify rep1 and rep2 consistent differential peaks by coordinate overlapping (peaks coordinate from rep1 & rep2 are different, output the merged or interest coordinates)
+
+Thanks! Hoping very much for your reply.
+
+Kylie",chiefcat,https://github.com/shao-lab/MAnorm/issues/3
+MDU6SXNzdWUzMDA1MzAxMjc=,Heatmap output. [Feature request],CLOSED,2018-02-27T08:13:01Z,2019-01-03T07:55:25Z,2019-01-03T07:54:55Z,"Hi, there 
+
+Sorry for the interruption. MAnorm worked well for my problems, many thanks for you :)  I just wondering could you please add an additional output file of differential peaks heatmap. Normally a heatmap is a more direct visualization way. 
+
+Something like this?
+![Differential heatmap](https://image.ibb.co/icFkJH/111111111.jpg)
+
+Thanks in advance. ",AlicePsyche,https://github.com/shao-lab/MAnorm/issues/4
+MDU6SXNzdWUzMDQwNDQ1ODc=,IndexError: list index out of range,CLOSED,2018-03-10T05:42:41Z,2018-03-10T10:47:17Z,2018-03-10T10:47:17Z,"INFO     03/10/2018 11:21: # MAnorm Arguments:
+INFO     03/10/2018 11:21: # Peaks file of sample1 = D872_raw_peaks.bed
+INFO     03/10/2018 11:21: # Peaks file of sample2 = DZ_raw_peaks.bed
+INFO     03/10/2018 11:21: # Reads file of sample1 = D872_reads_4.bed
+INFO     03/10/2018 11:21: # Reads file of sample2 = DZ_reads_4.bed
+INFO     03/10/2018 11:21: # Reads shift size of sample1 = 125
+INFO     03/10/2018 11:21: # Reads shift size of sample2 = 125
+INFO     03/10/2018 11:21: # Peak width to extend from summit = 1000
+INFO     03/10/2018 11:21: # Summit-to-summit distance cutoff = 500
+INFO     03/10/2018 11:21: # Output directory = MAnorm
+INFO     03/10/2018 11:21: Step1: Loading input data
+INFO     03/10/2018 11:21: 161613 peaks are loaded from D872_raw_peaks.bed
+INFO     03/10/2018 11:21: 160980 peaks are loaded from DZ_raw_peaks.bed
+Traceback (most recent call last):
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/bin/manorm"", line 11, in <module>
+    sys.exit(main())
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/lib/python2.7/site-packages/manorm/cmdline.py"", line 95, in main
+    full_output=full_output, name1=name1, name2=name2, output_name=output_name)
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/lib/python2.7/site-packages/manorm/workflow.py"", line 33, in main
+    ma.load_reads(reads_file1, reads_file2, shift_size1, shift_size2)
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/lib/python2.7/site-packages/manorm/core.py"", line 32, in load_reads
+    self.reads1 = Reads(reads_file1, self.name1, shift_size1)
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/lib/python2.7/site-packages/manorm/lib/read.py"", line 22, in __init__
+    self.load_reads(path, shift)
+  File ""/ifs2/home/qzhang/Soft/Python-2.7.2/lib/python2.7/site-packages/manorm/lib/read.py"", line 30, in load_reads
+    chrom, start, end, strand = fields[0], int(fields[1]), int(fields[2]), fields[5]
+IndexError: list index out of range
+
+reads file was created by bedtools bamtobed and cut 1-3 & strand.
+peaks was macs2 created .xls. 
+whether reads file need to be 6 tab bed files ? but the README said that reads files need chr start end strand if fine ?
+
+
+
+",Yippee0,https://github.com/shao-lab/MAnorm/issues/5
+MDU6SXNzdWUzMzA0OTcwMzM=,Macs2 format,CLOSED,2018-06-08T02:23:00Z,2020-05-18T05:32:41Z,2020-05-18T05:32:41Z,"MAnorm always tread macs2 as bed
+
+I think the problem is the way determine input format in MAnorm/manorm/lib/peak.py load_peaks, ",liehu232,https://github.com/shao-lab/MAnorm/issues/6
+MDU6SXNzdWUzNDU4MDUxMDM=,No Figure output,CLOSED,2018-07-30T15:20:05Z,2018-08-17T10:21:00Z,2018-08-17T10:21:00Z,"Dear all,
+
+I am using MAnorm version 1.1.3. The code runs fine and gives a the output files, except that there are no figures in the output_figures folder.
+I used the bioconda version of MAnorm.
+
+Any idea what the probem might be?
+Thanks,
+Carl",crg-eilslabs,https://github.com/shao-lab/MAnorm/issues/7
+MDU6SXNzdWU0MTM5MTczMzI=,where can I get v1.2.0?,CLOSED,2019-02-25T03:28:07Z,2019-02-25T06:14:00Z,2019-02-25T06:14:00Z,"Excuse me, but there's no resource in Github, how can I install v1.2.0 (2019-01-03)? ",xiaonian92,https://github.com/shao-lab/MAnorm/issues/10
+MDU6SXNzdWU1MTQ4NjE0Mzc=,Inconsistent numbers of differential binding sites,CLOSED,2019-10-30T17:43:22Z,2019-11-02T16:53:21Z,2019-11-02T16:53:21Z,"Dear MAnorm developers,
+
+I am comparing two conditions with the following numbers of peaks:
+- control condition: 64 peaks
+- treated condition: 15883 peaks
+
+I notice several abnormal behaviour:
+- At the step 6 of running, I have an error message:
+`ValueError: max() arg is an empty sequence`
+- Then no writing output ==== Stats =====
+- read_density_on_common_peaks.png is the only files in output_figures
+- output_filters folder have 3 bed files with inconsistent numbers of peaks: above: 1668 peaks; below: 2906 peaks, unbiased: 6354 peaks. I would expect the number of below peaks being limited by the number of peaks in the control condition.
+- The majority of below peaks comes from the treated condition set of peaks.
+
+I'm am using Manorm version 1.2.0
+
+Have you already encounter those issues?
+Thank you in advance
+
+
+",ckntav,https://github.com/shao-lab/MAnorm/issues/11
+MDU6SXNzdWU1MTQ4NjI5MzM=,Difference between MAnorm and MAnorm2,CLOSED,2019-10-30T17:45:41Z,2019-11-01T13:36:10Z,2019-11-01T13:36:10Z,"Hello,
+
+A second version of MAnorm have been developped.
+What are the major differences between those two softwares?
+Do you suggest using one instead of the other?
+
+Thank you in advance",ckntav,https://github.com/shao-lab/MAnorm/issues/12
+MDU6SXNzdWU1MjM4MzQ4Mjk=,The influence of read number on MAnorm result.,CLOSED,2019-11-16T11:45:44Z,2019-11-26T03:36:27Z,2019-11-26T03:36:27Z,"Due to the library construction and filiter reads after mapping(low MAPQ), we get two samples: WT_TFs and KO_TFs, but the reads using in MAnorm are 15M and 23M seperately(actually the raw reads before mapping are both 25M). Thus, what i want to ask is if and how the reads number influence the result of MAnorm?",a091601,https://github.com/shao-lab/MAnorm/issues/13
+MDU6SXNzdWU1NTY0NTE0OTk=,Value error: Invlaid literal,CLOSED,2020-01-28T20:31:48Z,2020-07-03T04:02:24Z,2020-07-03T04:02:24Z,"Hi,
+
+I was hoping to run MAnorm to assess differentially bound regions between two transcription factors. The code starts running fine but eventually runs into the following error:
+Traceback (most recent call last):
+  File ""C:\Anaconda\envs\myenv\Scripts\manorm-script.py"", line 9, in <module>
+    sys.exit(main())
+  File ""C:\Anaconda\envs\myenv\lib\site-packages\manorm\cmdline.py"", line 95, in main
+    full_output=full_output, name1=name1, name2=name2, output_name=output_name)
+  File ""C:\Anaconda\envs\myenv\lib\site-packages\manorm\workflow.py"", line 36, in main
+    ma.load_reads(reads_file1, reads_file2, shift_size1, shift_size2)
+  File ""C:\Anaconda\envs\myenv\lib\site-packages\manorm\core.py"", line 32, in load_reads
+    self.reads1 = Reads(reads_file1, self.name1, shift_size1)
+  File ""C:\Anaconda\envs\myenv\lib\site-packages\manorm\lib\read.py"", line 22, in __init__
+    self.load_reads(path, shift)
+  File ""C:\Anaconda\envs\myenv\lib\site-packages\manorm\lib\read.py"", line 30, in load_reads
+    chrom, start, end, strand = fields[0], int(fields[1]), int(fields[2]), fields[5]
+ValueError: invalid literal for int() with base 10: '9\xe7\xac\xfbeR\x98\xf1\x98e8v1E\x059\x9d9\xe7\xcc\xf1\x0c3s\xa63\x17\xcd""\x10B(2I0\x03\xc5\xecB\xa9=E=\x14R\xe4\x9bI\xf6\x18]\xa87'",ishtiaqueh,https://github.com/shao-lab/MAnorm/issues/14
+MDU6SXNzdWU1NTc2MjE1NzM=,Error when loading MACS2 output with broad peaks called,CLOSED,2020-01-30T16:49:23Z,2020-05-18T05:36:10Z,2020-05-18T05:36:10Z,"If MACS2 was run in a broad peak mode, the output XLS file cannot be properly loaded in  Manorm as macs2 format.
+
+Header of the input XLS file
+```
+chr start end length pileup -log10(pvalue) fold_enrichment -log10(qvalue) name
+```
+Log
+```
+Running MAnorm v1.2.0
+Command-line arguments: --p1 /var/lib/cwl/stg65a0e4e7-d015-4ba8-a376-3f79467be976/b4f87789-e866-11e3-9546-ac162d784858_macs_peaks.xls --p2 /var/lib/cwl/stga5270828-57b3-438c-b224-9def060ef2da/
+==== INFO ====
+Sample 1 name = sample_1
+Sample 1 peak file = /var/lib/cwl/stg65a0e4e7-d015-4ba8-a376-3f79467be976/b4f87789-e866-11e3-9546-ac162d784858_macs_peaks.xls [macs2]
+Sample 1 read file = /var/lib/cwl/stgf1876471-b04e-46fb-a876-216313d998cb/b4f87789-e866-11e3-9546-ac162d784858.bam [bam]
+Sample 1 read shift size = 100
+Sample 2 name = sample_2
+Sample 2 peak file = /var/lib/cwl/stga5270828-57b3-438c-b224-9def060ef2da/b4f88c4d-e866-11e3-9546-ac162d784858_macs_peaks.xls [macs2]
+Sample 2 read file = /var/lib/cwl/stg9d33e667-16a4-47c2-80d0-16885c4063aa/b4f88c4d-e866-11e3-9546-ac162d784858.bam [bam]
+Sample 2 read shift size = 100
+Paired-end mode: off
+Window size = 2000
+Summit distance cutoff = 500
+Number of random simulation = 10
+M-value cutoff = 1.0
+P-value cutoff = 0.01
+Output directory = /bkUINY
+==== Running ====
+Step 1: Loading input data
+Loading peaks of sample 1
+Traceback (most recent call last):
+  File ""/usr/local/bin/manorm"", line 11, in <module>
+    load_entry_point('MAnorm==1.2.0', 'console_scripts', 'manorm')()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/cli.py"", line 125, in main
+    app.run()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/application.py"", line 155, in run
+    peaks1, peaks2, reads1, reads2 = self.load_input_data()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/application.py"", line 120, in load_input_data
+    peaks1 = peak.load_peaks(path=self.peak_file1, format=self.peak_format, name=self.name1)
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/peak/__init__.py"", line 200, in load_peaks
+    for chrom, start, end, summit in peak_parser.parse():
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/peak/parsers.py"", line 81, in parse
+    raise InvalidFormatError(format=self.format, line=line, line_num=line_num)
+manorm.exceptions.InvalidFormatError: Invalid MACS2 format at line 27: u'chr1\t3003568\t3003935\t368\t5.57\t3.68364\t3.26515\t1.72100\tb4f87789-e866-11e3-9546-ac162d784858_macs_peak_1'
+```",michael-kotliar,https://github.com/shao-lab/MAnorm/issues/15
+MDU6SXNzdWU1NTc2ODQyNjM=,Broad peak format is not supported,CLOSED,2020-01-30T18:51:55Z,2020-05-18T05:37:08Z,2020-05-18T05:37:08Z,"Log with errors
+```
+Running MAnorm v1.2.0
+Command-line arguments: --p1 /var/lib/cwl/stg86a89bb4-d11d-43c4-811d-d94f3648c581/b4f87789-e866-11e3-9546-ac162d784858_macs_peaks.broadPeak --p2 /var/lib/cwl/stgd4adfb7c-8939-4d52-816a-6ba7049
+==== INFO ====
+Sample 1 name = sample_1
+Sample 1 peak file = /var/lib/cwl/stg86a89bb4-d11d-43c4-811d-d94f3648c581/b4f87789-e866-11e3-9546-ac162d784858_macs_peaks.broadPeak [broadpeak]
+Sample 1 read file = /var/lib/cwl/stg8fd74aad-004f-411b-a36e-135cd608b7c4/b4f87789-e866-11e3-9546-ac162d784858.bam [bam]
+Sample 1 read shift size = 100
+Sample 2 name = sample_2
+Sample 2 peak file = /var/lib/cwl/stgd4adfb7c-8939-4d52-816a-6ba70498673b/b4f88c4d-e866-11e3-9546-ac162d784858_macs_peaks.broadPeak [broadpeak]
+Sample 2 read file = /var/lib/cwl/stg80d8b425-db19-469d-aafe-9e547b03c113/b4f88c4d-e866-11e3-9546-ac162d784858.bam [bam]
+Sample 2 read shift size = 100
+Paired-end mode: off
+Window size = 2000
+Summit distance cutoff = 500
+Number of random simulation = 10
+M-value cutoff = 1.0
+P-value cutoff = 0.01
+Output directory = /jUbyWb
+==== Running ====
+Step 1: Loading input data
+Loading peaks of sample 1
+Traceback (most recent call last):
+  File ""/usr/local/bin/manorm"", line 11, in <module>
+    load_entry_point('MAnorm==1.2.0', 'console_scripts', 'manorm')()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/cli.py"", line 125, in main
+    app.run()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/application.py"", line 155, in run
+    peaks1, peaks2, reads1, reads2 = self.load_input_data()
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/application.py"", line 120, in load_input_data
+    peaks1 = peak.load_peaks(path=self.peak_file1, format=self.peak_format, name=self.name1)
+  File ""/usr/local/lib/python2.7/dist-packages/manorm/peak/__init__.py"", line 199, in load_peaks
+    raise UnsupportedFormatError(format=format)
+manorm.exceptions.UnsupportedFormatError: Unsupported format: 'broadpeak'
+```",michael-kotliar,https://github.com/shao-lab/MAnorm/issues/16
+MDU6SXNzdWU2NTAwNDIzMTI=,index error ,CLOSED,2020-07-02T15:56:30Z,2020-07-08T03:02:03Z,2020-07-08T03:02:03Z,"Hi dear MAnorm author:
+
+I have run the Manorm based on the output from ENCODE-atac pipeline. And it shows the index error. Thanks for checking this for me...
+INFO     07/02/2020 08:53: # MAnorm Arguments:
+INFO     07/02/2020 08:53: # Peaks file of sample1 = 2A.narrowPeak
+INFO     07/02/2020 08:53: # Peaks file of sample2 = 2B.narrowPeak
+INFO     07/02/2020 08:53: # Reads file of sample1 = 2A_R1_paired.bam
+INFO     07/02/2020 08:53: # Reads file of sample2 = 2B_R1_paired.bam
+INFO     07/02/2020 08:53: # Reads shift size of sample1 = 100
+INFO     07/02/2020 08:53: # Reads shift size of sample2 = 100
+INFO     07/02/2020 08:53: # Peak width to extend from summit = 1000
+INFO     07/02/2020 08:53: # Summit-to-summit distance cutoff = 500
+INFO     07/02/2020 08:53: # Output directory = output_dir
+INFO     07/02/2020 08:53: Step1: Loading input data
+INFO     07/02/2020 08:53: 38225 peaks are loaded from 2A.narrowPeak
+INFO     07/02/2020 08:53: 28199 peaks are loaded from 2B.narrowPeak
+Traceback (most recent call last):
+  File ""/scg/apps/software/manorm/1.1.4/bin/manorm"", line 11, in <module>
+    load_entry_point('MAnorm==1.1.4', 'console_scripts', 'manorm')()
+  File ""/scg/apps/software/manorm/1.1.4/manorm/cmdline.py"", line 95, in main
+    full_output=full_output, name1=name1, name2=name2, output_name=output_name)
+  File ""/scg/apps/software/manorm/1.1.4/manorm/workflow.py"", line 36, in main
+    ma.load_reads(reads_file1, reads_file2, shift_size1, shift_size2)
+  File ""/scg/apps/software/manorm/1.1.4/manorm/core.py"", line 32, in load_reads
+    self.reads1 = Reads(reads_file1, self.name1, shift_size1)
+  File ""/scg/apps/software/manorm/1.1.4/manorm/lib/read.py"", line 22, in __init__
+    self.load_reads(path, shift)
+  File ""/scg/apps/software/manorm/1.1.4/manorm/lib/read.py"", line 30, in load_reads
+    chrom, start, end, strand = fields[0], int(fields[1]), int(fields[2]), fields[5]
+IndexError: list index out of range",yysheep2020,https://github.com/shao-lab/MAnorm/issues/17
+MDU6SXNzdWU2NjUwODA1NDQ=,Different results with different input type but same macs2 peak calls,CLOSED,2020-07-24T10:37:07Z,2020-07-28T06:40:50Z,2020-07-28T06:40:50Z,"Dear MAnorm team,
+
+ I tried to use both the MACS file and the summits. I used the summits file and macs2 file from the same peak call but it seems they produce different results and when I adjust the window it also changes. I adjust the window as a way to make it more stringent but I guess this is not the best way to do so. 
+
+Why does it produce different peak numbers and why does window size affect this? 
+
+Sample1| Sample2|Shared
+For summits at w=1000
+1098 | 790 | 8278
+For summits at w=50
+1928 | 2338 | 6075
+
+For xls at w=1000
+3680 | 235 | 5105
+For xls at w=50
+3279 | 1006 | 4874
+
+Best,
+Daisy
+
+",dsytan,https://github.com/shao-lab/MAnorm/issues/18
+MDU6SXNzdWU2Nzk4Mzk3OTA=,MAnorm 1.3,CLOSED,2020-08-16T22:32:41Z,2021-11-01T07:21:00Z,2020-08-17T05:09:24Z,"Hello, 
+
+I am testing out MAnorm 1.3 and I am getting this error: **manorm: error: the following arguments are required: --p1/--peak1, --p2/--peak2, --r1/--read1, --r2/--read2**
+
+I tested this out with the test data files in MAnorm/tests/data using the code: 
+manorm –-p1 H1hescH3k4me3Rep1_peaks.xls –-p2 K562H3k4me3Rep1_peaks.xls –-r1 H1hescH3k4me3Rep1_reads.bed –-r2 K562H3k4me3Rep1_reads.bed -o output_file
+
+I was wondering if this is a bug or my own error? 
+
+kind regards,
+Antonio 
+",AntonioAhn,https://github.com/shao-lab/MAnorm/issues/19
+MDU6SXNzdWU3MDYwODU2NzM=,Question regarding window size,CLOSED,2020-09-22T05:21:56Z,2020-10-04T01:06:58Z,2020-09-23T19:20:56Z,"Dear MAnorm team, 
+
+Thank you for MAnorm. Its been really helpful for looking at differential peaks. 
+Could i please ask a question regarding selecting the correct window size for my H3K27ac ChIPseq data? 
+
+In the manual, it says ""Window size to count reads and calculate read densities. 2000 is recommended for sharp histone marks like H3K4me3 and H3K27ac, and 1000 for TFs or DNase-seq. Default: 2000"" and in the paper it also says ""Here the window size should be comparable to the median length of ChIP-enriched regions"". The average fragment length for my H3K27ac ChIP-seq data is 350 bps (calculated using cross-correlation analysis). Would this suggest I should use a window size of 500? 
+
+I have tried three windows: 1) -w 2000, 2) -w 1000 and 3) -w 500. The number of differential peaks significantly increases with dropping the window size from 1) 22458 peaks, 2) 29500 peaks and 3) 35242 peaks, respectively. With this in view, I thought a window of 500 is better however I have found that many of the peaks found with -w 2000 and -w 1000 are not found with -w 500. 
+
+For instance, in this first IGV screenshot shows a differential peak only with **-w 2000**. The order the of track is:
+1) treatment sample (bigwig)(blue)
+2) treatment sample (macs2 peaks) (blue)
+3) control sample (bigwig) (red)
+4) control sample (macs2 peaks) (red)
+5) manorm window 2000
+6) manorm window 1000
+7) manorm window 500
+<img width=""1150"" alt=""window2000_only"" src=""https://user-images.githubusercontent.com/18894867/93845973-bfe79100-fcf6-11ea-9995-458480e39ae5.png"">
+
+In this second IGV screenshot, a differential peak is only found with **-w 1000**
+<img width=""1149"" alt=""window1000_only"" src=""https://user-images.githubusercontent.com/18894867/93846240-97ac6200-fcf7-11ea-8a6d-19d45f432ef4.png"">
+
+And in this third IGV screenshot, a differential peak only found with **-w 500**
+<img width=""1146"" alt=""window500_only"" src=""https://user-images.githubusercontent.com/18894867/93846286-b4489a00-fcf7-11ea-8982-34a2b9eaba8d.png"">
+
+Would you recommend using all three window parameters separately and finding the common/consensus peaks? 
+
+",AntonioAhn,https://github.com/shao-lab/MAnorm/issues/20
+MDU6SXNzdWU3MzgxMzIyODI=,Spike-in normalisation,OPEN,2020-11-07T01:46:30Z,2020-11-07T01:46:30Z,,"Hi,
+
+Thanks for developing MAnorm. 
+I have a question regarding normalisation. 
+Is it possible to normalise by spike-in or using in such way that doesn't correct the library size in each condition?
+
+The way I normalised was by inserting 10% of spike-in mice control with my human cells samples. 
+I mapped each to its genome, creating a factor between the number of mapped mice reads and human ones and correcting the library size of each sample by the factor.  In such a way, I can assume that the quantitative difference I'm observing is biological..  
+If I understood right, MAnorm ignores that. So it would be great if I could skip any lib size correction.
+
+Hope to hear from you.  
+
+many thanks  ",Rseq,https://github.com/shao-lab/MAnorm/issues/21
+MDU6SXNzdWU3NDgzNzQwMTE=,issue with down regulated peaks ,OPEN,2020-11-22T23:12:46Z,2020-11-22T23:12:46Z,,"Hi Hayden! :) 
+
+Could I please ask a question regarding an issue I am having with down peaks that do not look reduced in IGV. 
+
+I have run MAnorm using: 
+
+`manorm --p1 treatment.narrowPeak --p2 DMSO.narrowPeak --r1 $bam_bed/treatment_bam.bed --r2 $bam_bed/DMSO_bam.bed -w 500 -o ER_LYday7vsDMSO -m 1 -p 0.05 --wa`
+
+The ChIPseq data is for the ER transcription factor and the median peak size is around 500. 
+
+This generates 6851 treatment unique peaks, 91 DMSO unique peaks and 1247 common peaks. The up peaks (M_value > 1) look great on IGV (looks like an obvious increase from DMSO to treatment). However, the down peaks (M_value < -1) do not look real. Would you be able to understand this matter ? 
+
+Here are some examples:
+
+Example 1 (M_value = -1.00171)
+![example1_manorm_down](https://user-images.githubusercontent.com/18894867/99919325-8debbd00-2d81-11eb-9cc8-74c65653fdc2.png)
+Example 2 (M_value = -1.16)
+![minus1 16](https://user-images.githubusercontent.com/18894867/99919810-8a0d6a00-2d84-11eb-9b9b-cf8938becd2a.png)
+Example 3 (M_value = -1.178)
+![Example_minus1 178](https://user-images.githubusercontent.com/18894867/99919819-94c7ff00-2d84-11eb-9110-e92598c9a426.png)
+Example 4
+ (M_value = -1.02662)
+![example_3](https://user-images.githubusercontent.com/18894867/99919368-d73c0c80-2d81-11eb-87d4-2853ac277f49.png)
+
+<img width=""982"" alt=""Screen Shot 2020-11-23 at 11 57 15 AM"" src=""https://user-images.githubusercontent.com/18894867/99919652-9b09ab80-2d83-11eb-9510-b2249892172b.png"">
+
+<img width=""981"" alt=""Screen Shot 2020-11-23 at 11 57 21 AM"" src=""https://user-images.githubusercontent.com/18894867/99919657-9f35c900-2d83-11eb-8910-f45346e3072d.png"">
+
+<img width=""706"" alt=""Screen Shot 2020-11-23 at 11 57 40 AM"" src=""https://user-images.githubusercontent.com/18894867/99919659-a361e680-2d83-11eb-9cf7-d61a3d504412.png"">
+
+
+",AntonioAhn,https://github.com/shao-lab/MAnorm/issues/22
+I_kwDOBm2HxM48C9RA,Is it appropriate for ATAC-seq data?,CLOSED,2021-09-26T14:31:55Z,2021-11-07T07:42:39Z,2021-11-07T07:42:39Z,"Hi!
+     Could I ues MANorm to call different intensity peaks for ATAC-seq data?
+
+
+Looking forward to your reply, Thanks!",yx-xu,https://github.com/shao-lab/MAnorm/issues/23
+I_kwDOBm2HxM48itGj,Job running for ever on cluster,CLOSED,2021-10-04T23:33:52Z,2021-11-07T07:42:34Z,2021-11-07T07:42:34Z,"Hi,
+
+It has been now few days that manorm is stuck on the cluster at this step (processing peaks), has anyone got this issue? It doesn't seem to run out of memory or crash, it just keeps running:
+![image](https://user-images.githubusercontent.com/69206510/135938069-6ef0ff4c-45e7-4e62-8850-6858a4a1b80e.png)
+
+Thanks",YannVRB,https://github.com/shao-lab/MAnorm/issues/24

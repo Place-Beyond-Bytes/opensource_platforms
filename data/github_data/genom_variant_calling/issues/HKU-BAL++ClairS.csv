@@ -1,0 +1,440 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOF0iGSs5eqrT3,Interpreting the QUAL column ,CLOSED,2023-02-16T19:27:44Z,2023-03-24T02:36:54Z,2023-03-24T02:36:54Z,"Hi @aquaskyline and @zhengzhenxian,
+
+Thank you for releasing an early access version of ClairS. Just playing around with this, I had a quick clarification question:
+
+I was wondering what the QUAL column value signifies. Broadly, I believe the ""QUAL value reflects how confident we are that a site displays some kind of variation considering the amount of data available"", in this case, is it the confidence that a call is somatic? And how do you generate this QUAL score? 
+
+Thanks. 
+",zhemingfan,https://github.com/HKU-BAL/ClairS/issues/1
+I_kwDOF0iGSs5ewOIs,Empty VCF produced by ClairS,CLOSED,2023-02-17T17:10:20Z,2023-02-21T09:55:49Z,2023-02-21T09:55:48Z,"Hi,
+
+I ran a set of 21 tumour-normal pairs. All jobs completed successfully but 5 runs returned empty VCFs. Looking into the log file I found the following:
+
+![image](https://user-images.githubusercontent.com/108926253/219718265-29754859-2ed5-49ef-a6aa-fd73380b13b2.png)
+
+I am running ClairS v0.0.1 from dockerhub, accessed on January 23rd. 
+
+Thanks,
+Rowan",rowanhowellGE,https://github.com/HKU-BAL/ClairS/issues/2
+I_kwDOF0iGSs5ey38A,Running with singularity,CLOSED,2023-02-18T16:29:08Z,2023-02-23T13:11:09Z,2023-02-23T13:11:09Z,"Hi,
+I am trying to run ClairS with singularity, but it keeps looking for a model and an executable in my ${CONDA_PREFIX} . First I had to tweak a bit the command from the README, since -v is docker syntax, not singularity, the SIF file goes after the options and you are specifying it twice. This is my first command:
+```
+singularity exec \
+-B ${TUM_INPUT}:${TUM_INPUT},${GL_INPUT}:${GL_INPUT},${REF_DIR}:${REF_DIR},${OUT}:${OUT} \ 
+clairs_latest.sif \
+/opt/bin/run_clairs \
+--tumor_bam_fn ${TUM_INPUT}/test.sorted.bam \
+--normal_bam_fn ${GL_INPUT}/test.gl.sorted.bam \
+--ref_fn ${REF_DIR}/Homo_sapiens_assembly38.fasta \
+--threads 32 \
+--platform ont_r9 \
+--output_dir ${OUT}
+```
+After which I get an error:
+`[ERROR] file ${CONDA_PREFIX}/bin/clairs_models/ont_r9 not found
+`
+I then unpacked the models in the folder where ClairS is looking for them but I still get an error:
+`[ERROR] Cannot find clair3 main entry in ${CONDA_PREFIX}/bin
+`
+So is the docker/singularity image self contained? I also tried installing through conda but the environment does not solve with incompatible specifications. 
+I am not an advanced user of singularity, so might be doing something wrong.
+
+",jaesvi,https://github.com/HKU-BAL/ClairS/issues/3
+I_kwDOF0iGSs5fzs06,Bam files for SEQC2 samples,CLOSED,2023-03-02T19:43:24Z,2023-09-05T13:47:10Z,2023-09-05T13:47:10Z,"Hello,
+
+Could you make it available SEQC2 ONT v10.4.1 full bams (or even fastq) for both Tumor and Normal samples available to run ClairS?
+
+Keyur",KeyTals,https://github.com/HKU-BAL/ClairS/issues/4
+I_kwDOF0iGSs5hOU7W,select_hetero_snp_for_phasing breaks for contigs where no variants are found,CLOSED,2023-03-19T22:41:20Z,2023-03-24T02:36:03Z,2023-03-24T02:36:03Z,"VCFs are not generated for contigs where no variants are found,  which breaks `select_hetero_snp_for_phasing`. 
+clairs_output/vcf contains these files:
+> chr1.vcf  chr16.vcf  chr21.vcf  chr22.vcf  chr4.vcf  chr5.vcf
+
+Errors pasted from some of `1_select_hetero_snp_for_phasing.log`:
+> [INFO] Total HET SNP calls selected: chr22: 119, not found:27, not match:0, low_qual_count:0. Total normal:57 Total tumor:146, pro: 0.815068493150685
+Traceback (most recent call last):
+  File ""/opt/bin/clairs.py"", line 120, in <module>
+    main()
+  File ""/opt/bin/clairs.py"", line 114, in main
+    submodule.main()
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 157, in main
+    select_hetero_snp_for_phasing(args)
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 118, in select_hetero_snp_for_phasing
+    pro = len(pass_variant_dict) / len(tumor_qual_dict)
+ZeroDivisionError: division by zero
+Traceback (most recent call last):
+  File ""/opt/bin/clairs.py"", line 120, in <module>
+    main()
+  File ""/opt/bin/clairs.py"", line 114, in main
+    submodule.main()
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 157, in main
+    select_hetero_snp_for_phasing(args)
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 118, in select_hetero_snp_for_phasing
+    pro = len(pass_variant_dict) / len(tumor_qual_dict)
+ZeroDivisionError: division by zero
+[INFO] Total HET SNP calls selected: chr1: 220, not found:66, not match:0, low_qual_count:0. Total normal:73 Total tumor:286, pro: 0.7692307692307693
+[INFO] Total HET SNP calls selected: chr21: 1, not found:1, not match:0, low_qual_count:0. Total normal:31 Total tumor:2, pro: 0.5
+Traceback (most recent call last):
+  File ""/opt/bin/clairs.py"", line 120, in <module>
+    main()
+  File ""/opt/bin/clairs.py"", line 114, in main
+    submodule.main()
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 157, in main
+    select_hetero_snp_for_phasing(args)
+  File ""/opt/bin/src/select_hetero_snp_for_phasing.py"", line 118, in select_hetero_snp_for_phasing
+    pro = len(pass_variant_dict) / len(tumor_qual_dict)
+ZeroDivisionError: division by zero
+",xingyaoc,https://github.com/HKU-BAL/ClairS/issues/5
+I_kwDOF0iGSs5hU0PD,Option to call SNPs only,CLOSED,2023-03-20T20:56:02Z,2023-03-27T10:21:22Z,2023-03-27T10:21:22Z,"Similar to Clair3 (issue #[40](https://github.com/HKU-BAL/Clair3/issues/40)), is it possible to add an option to only call SNPs and ignore indels?
+Thanks!",xingyaoc,https://github.com/HKU-BAL/ClairS/issues/6
+I_kwDOF0iGSs5hjFHy,Haplotype filtering step keep stuck,CLOSED,2023-03-22T22:31:06Z,2023-04-11T04:52:03Z,2023-04-11T04:52:03Z,"Hi,
+ClairS keep stuck at this command after completing phasing for hours on ONT data. No output in `4_HAP_FILTER.log` log file either.
+I am running second time, and seeing same issue. 
+```
+[INFO] STEP 4: Haplotype filtering
+[INFO] RUN THE FOLLOWING COMMAND:
+( pypy3 /opt/bin/clairs.py haplotype_filtering --tumor_bam_fn /data/tahmad/devel/ClairS_HCC1437/tmp/clair3_output/phased_output/tumor_ --ref_fn /data/tahmad/alignment/grch38_chr.fasta --germline_vcf_fn /data/tahmad/devel/ClairS_HCC1437/tmp/clair3_output/clair3_tumor_output/merge_output.vcf.gz --pileup_vcf_fn /data/tahmad/devel/ClairS_HCC1437/tmp/vcf_output/pileup.vcf --full_alignment_vcf_fn /data/tahmad/devel/ClairS_HCC1437/tmp/vcf_output/full_alignment.vcf --output_dir /data/tahmad/devel/ClairS_HCC1437/tmp/vcf_output --samtools samtools --threads 56 ) 2>&1 | tee /data/tahmad/devel/ClairS_HCC1437/logs/4_HAP_FILTER.log
+
+```
+My clairS run command:
+```
+singularity run -B /data/tahmad /data/tahmad/images/clairs_latest.sif /opt/bin/run_clairs --threads 56 --phase_tumor True --longphase True --tumor_bam_fn /data/tahmad/devel/bams_haplotagged/HCC1437_ONT.bam --normal_bam_fn /data/tahmad/devel/bams_haplotagged/HCC1437BL_ONT.bam --ref /data/tahmad/alignment/grch38_chr.fasta --output_dir /data/tahmad/devel/ClairS_HCC1437 --platform ont_r10
+```
+
+I see following BAMs and phased VCFs:
+```
+ls -lh /data/tahmad/devel/ClairS_HCC1437/tmp/clair3_output/phased_output/tumor_
+tumor_chr10.bam                tumor_chr17.bam.bai            tumor_chr3.bam                 tumor_phased_chr10.vcf.gz.tbi  tumor_phased_chr18.vcf.gz      tumor_phased_chr3.vcf.gz.tbi
+tumor_chr10.bam.bai            tumor_chr18.bam                tumor_chr3.bam.bai             tumor_phased_chr11.vcf.gz      tumor_phased_chr18.vcf.gz.tbi  tumor_phased_chr4.vcf.gz
+tumor_chr11.bam                tumor_chr18.bam.bai            tumor_chr4.bam                 tumor_phased_chr11.vcf.gz.tbi  tumor_phased_chr19.vcf.gz      tumor_phased_chr4.vcf.gz.tbi
+tumor_chr11.bam.bai            tumor_chr19.bam                tumor_chr4.bam.bai             tumor_phased_chr12.vcf.gz      tumor_phased_chr19.vcf.gz.tbi  tumor_phased_chr5.vcf.gz
+tumor_chr12.bam                tumor_chr19.bam.bai            tumor_chr5.bam                 tumor_phased_chr12.vcf.gz.tbi  tumor_phased_chr1.vcf.gz       tumor_phased_chr5.vcf.gz.tbi
+tumor_chr12.bam.bai            tumor_chr1.bam                 tumor_chr5.bam.bai             tumor_phased_chr13.vcf.gz      tumor_phased_chr1.vcf.gz.tbi   tumor_phased_chr6.vcf.gz
+tumor_chr13.bam                tumor_chr1.bam.bai             tumor_chr6.bam                 tumor_phased_chr13.vcf.gz.tbi  tumor_phased_chr20.vcf.gz      tumor_phased_chr6.vcf.gz.tbi
+tumor_chr13.bam.bai            tumor_chr20.bam                tumor_chr6.bam.bai             tumor_phased_chr14.vcf.gz      tumor_phased_chr20.vcf.gz.tbi  tumor_phased_chr7.vcf.gz
+tumor_chr14.bam                tumor_chr20.bam.bai            tumor_chr7.bam                 tumor_phased_chr14.vcf.gz.tbi  tumor_phased_chr21.vcf.gz      tumor_phased_chr7.vcf.gz.tbi
+tumor_chr14.bam.bai            tumor_chr21.bam                tumor_chr7.bam.bai             tumor_phased_chr15.vcf.gz      tumor_phased_chr21.vcf.gz.tbi  tumor_phased_chr8.vcf.gz
+tumor_chr15.bam                tumor_chr21.bam.bai            tumor_chr8.bam                 tumor_phased_chr15.vcf.gz.tbi  tumor_phased_chr22.vcf.gz      tumor_phased_chr8.vcf.gz.tbi
+tumor_chr15.bam.bai            tumor_chr22.bam                tumor_chr8.bam.bai             tumor_phased_chr16.vcf.gz      tumor_phased_chr22.vcf.gz.tbi  tumor_phased_chr9.vcf.gz
+tumor_chr16.bam                tumor_chr22.bam.bai            tumor_chr9.bam                 tumor_phased_chr16.vcf.gz.tbi  tumor_phased_chr2.vcf.gz       tumor_phased_chr9.vcf.gz.tbi
+tumor_chr16.bam.bai            tumor_chr2.bam                 tumor_chr9.bam.bai             tumor_phased_chr17.vcf.gz      tumor_phased_chr2.vcf.gz.tbi   
+tumor_chr17.bam                tumor_chr2.bam.bai             tumor_phased_chr10.vcf.gz      tumor_phased_chr17.vcf.gz.tbi  tumor_phased_chr3.vcf.gz  
+```",tahashmi,https://github.com/HKU-BAL/ClairS/issues/8
+I_kwDOF0iGSs5jaLTW,Training for PacBio HiFi indel calling,CLOSED,2023-04-14T08:45:06Z,2023-05-18T14:46:35Z,2023-05-18T14:46:35Z,"Hi, may I know if you're planning to enable somatic indel calls with PacBio HiFi? If not, would you be able to provide an instruction on how to train our own model for ClairS with the latest GIAB data from Revio? They're available here: https://downloads.pacbcloud.com/public/revio/2022Q4/ 
+
+Thank you.",proteinosome,https://github.com/HKU-BAL/ClairS/issues/9
+I_kwDOF0iGSs5qNPzi,question: model for 5khz data,CLOSED,2023-06-30T04:20:04Z,2023-07-05T09:59:36Z,2023-07-05T02:15:06Z,"Hi Ruibang,
+
+Since nanopore sequencing software updated to 5kHz sampling mode, I am wondering if there will be a pre-trained model for 5kHz data. Can I still use --platform ont_r10 (ont_r104_e81_sup_g5015) for now? Thank you.
+
+Cheers
+Jia
+",bakeronit,https://github.com/HKU-BAL/ClairS/issues/10
+I_kwDOF0iGSs5rncab,Nondeterminism in ClairS output,CLOSED,2023-07-14T20:11:10Z,2023-07-21T15:10:35Z,2023-07-21T15:10:34Z,"This has already been resolved by I am sharing the email thread with @zhengzhenxian about this issue here. 
+
+ClairS returns slightly different results depending on the order in which bam files are being merged with `samtools merge`. While samtools merge does return merged bams with dissimilar ordering, I do not think it should affect variant calling. Could you help me understand a). how these functionally identical bam files are causing differences in ClairS output, and b). how significant are these differences?
+
+> Reply: Thank you for providing us with the data. Based on the data you provided, we believe that the issue is due to some of the merged BAMs sharing the same read names(read name and count are shown in the figure). We used ""samtools mpileup"" to parse all input alignments, and samtools gave different pileup results for different merged ordering, resulting in different variant calling results in Clair3 and ClairS.
+
+> Unfortunately, we are unable to fix the issue as it falls under the logic of samtools. However, we have two suggestions that may be helpful. The first is to add a unique prefix for each BAM that needs to be merged. The second is to sort the BAM file names in a specific order, such as alphabetical order, before merging. In our testing, if all read names are unique, the calling gave the same result in multiple runs.
+> 
+> Based on your benchmarking data, nearly 50% of the read names have more than one read support, which has contributed to 34 different calls. We suggest implementing one of the suggestions above to ensure that the merged BAMs have unique read names and therefore produce consistent variant calling results.
+> 
+> Please let us know if you have any further questions or concerns.
+
+Thanks for your quick response to my issue. My team and I are taking your advice to try to force deterministic ClairS outputs in our pipeline. Taking your first suggestion, my team has filtered out non-unique reads and verified with BamUtil diff that two separate bam files are functionally identical -- multiple reads mapped to the same position are still ordered differently. However, calling ClairS on these two bam files again returned different results. Also, I was not able to detect any differences between the pileup files from either the output temp files or my own mpileup outputs. Can you please advise us on the source of the nondeterminism? We do believe that sorting the bam files before merging would work and we are in the process of implementing it in our pipeline, but my team would like to understand the root cause so that we can properly assess the validity of our results.
+
+> Regarding the issue of nondeterminism, I would like to clarify that it stems from samtools itself. Even after removing duplicated reads, we still observe differences in the read disorder. To investigate this further, I examined the Clair3 results in ${OUTPUT_DIR}/tmp/clair3_output/clair3_tumor_output/merge_output.vcf.gz and compared them with the samtools mplieup result of the first different record (chr1:143185622). Unfortunately, I found that the output is still different due to the different read order(figure 1 and figure2).
+
+> The issue with the read order affects the ClairS VCF result because we encode the alignment into a spatial read-level representation in our full-alignment model. Different read orders lead to different input arrangements and thus giving different outputs for some variants.
+> 
+> To address this issue, I would still recommend fixing the BAM order in the merging step to avoid distinct read orders. Please feel free to let us know if you have any further questions.
+",xingyaoc,https://github.com/HKU-BAL/ClairS/issues/11
+I_kwDOF0iGSs5r78zU,Germline variants present in output.vcf,CLOSED,2023-07-18T23:47:15Z,2023-07-21T15:10:39Z,2023-07-21T15:10:39Z,"According to the ClairS documentation in the README, I expect the germline variants to be eliminated in the somatic vcf, and this is consistent with the demo outputs. However, running ClairS on my own data, I see overlaps between the clair3 germline callsets (both normal and tumor) and the final somatic callset. Is this behavior expected? If so, can you provide guidance on how to handle the overlapping calls? ",xingyaoc,https://github.com/HKU-BAL/ClairS/issues/12
+I_kwDOF0iGSs5u-NF9,Question: comparison with DRAGEN Somatic,CLOSED,2023-08-22T16:18:59Z,2023-09-05T13:47:24Z,2023-09-05T13:47:24Z,Have you done any comparison with the latest Dragen Somatic https://www.biorxiv.org/content/10.1101/2023.03.23.534011v1.full.pdf ?,husamia,https://github.com/HKU-BAL/ClairS/issues/13
+I_kwDOF0iGSs5u_vBX,Docker latest version ,CLOSED,2023-08-22T20:59:51Z,2023-09-05T13:47:58Z,2023-09-05T13:47:58Z,"The command docker pull hkubal/clairs:latest was pulling the 1.4 version I had to use specific tag docker pull hkubal/clairs:v0.1.5 
+to get the latest version after I checked the release number",husamia,https://github.com/HKU-BAL/ClairS/issues/14
+I_kwDOF0iGSs5z6zZR,[Ask for insights on Illumina results regarding ClairS workflow/design choices],CLOSED,2023-10-16T09:38:38Z,2023-10-19T08:12:52Z,2023-10-19T08:12:51Z,"Hello ClairS Team,
+
+Firstly, I'd like to express my gratitude for your outstanding research and for making the code available to the community.
+
+In Illumina dataset, I am curious on what point ClairS provides advantage over other baselines such as VarNet and NeuSomatic.  (workflow/design or synthetic dataset construction or larger or better model architecture)
+
+1. Have you compared SNP/INDEL calling performance between ClairS and (VarNet or Neusomatic) when they are trained on identical datasets? I am curious whether the amount and quality of the training dataset have impacted the performance the most or not. (I saw the ablation study on your supplementary material regarding Nanopore dataset)
+
+
+2. What is the key factor that improved the performance over Neusomatic and VarNet? 
+
+Thank you for your time and insights.
+
+Best regards,
+Quito418
+
+ ",quito418,https://github.com/HKU-BAL/ClairS/issues/15
+I_kwDOF0iGSs52_AST,[Inquiry for train dataset generation procedure],CLOSED,2023-11-16T07:23:49Z,2023-11-27T14:39:40Z,2023-11-27T14:39:39Z,"Hi ClairS team, 
+
+Do you have plan for providing document for training dataset generation? (like in [Clair3](https://github.com/HKU-BAL/Clair3/blob/main/docs/full_alignment_training_r1.md))
+
+Thanks!",quito418,https://github.com/HKU-BAL/ClairS/issues/17
+I_kwDOF0iGSs58AMtB,"Questions Regarding Heterozygous Variants, Somatic Mutations, and Phasing in ClairS Usage",CLOSED,2024-01-13T18:30:41Z,2024-07-20T00:49:39Z,2024-07-20T00:49:39Z,"Dear Clair Team,
+
+I am a member of the longphase development team. Recently, while using ClairS and studying related literature, I have observed some results that raised a few questions I'd like to inquire about.
+
+1. During the use of [ont_quick_demo.sh,](https://github.com/HKU-BAL/ClairS/blob/main/demo/ont_quick_demo.sh) I used IGV to observe the vcf in [Figure 1] process.After organizing the data, I noticed that only the tumor samples were heterozygous (as shown in Figure 2). My question is, during the Germline variant calling step, are only the tumor cells identified as confident heterozygous?
+
+2. From Figure 2, I observed that the SNPs used for longphase actually include some somatic mutations. I would like to confirm if the SNPs used for phasing are indeed a mix of somatic mutations and Germline variants.
+
+3. In Figure 3, the number of SNPs used for phasing seems insufficient to cover the entire range. Attempting other variant calling software, I found that Clair3 (v1.0.5) results could cover a broader range. After phasing and haplotagging with Clair3 and longphase (v1.6), I obtained the results as shown in Figure 4 (B) (only displaying SNPs that were phased). I noticed that different haplotypes could still be distinguished in ClairS's output (as seen in Figure 5). Have you considered using this method?
+
+4. For ClairS, tagging appears to be a crucial step. The ideal output would include H1/H2 and H2 (carrying somatic mutations), or H1, H2, H3 (tumor-specific), etc. Would such an approach be beneficial for the training or detection of the ClairS model? If you think it would be helpful, we are considering developing a new version focused on somatic mutations.
+
+  Figure 1
+    ![f1](https://github.com/HKU-BAL/ClairS/assets/58475895/7eed6988-c85d-4a60-9beb-8994de4f4766)
+
+  Figure 2
+    ![f2](https://github.com/HKU-BAL/ClairS/assets/58475895/3efc6787-d7d2-4ccd-a007-69867c1ef2ee)
+
+  Figure 3
+    ![f3](https://github.com/HKU-BAL/ClairS/assets/58475895/ca4d8660-bd87-4ff9-8930-4456a87ed4aa)
+
+  Figure 4
+    ![f4](https://github.com/HKU-BAL/ClairS/assets/58475895/b874b253-214f-4c7e-a964-3ef3d4ba76ca)
+
+  Figure 5
+    ![f5](https://github.com/HKU-BAL/ClairS/assets/58475895/99809116-9c73-41f0-ba5a-d54064c8446f)
+
+Thank you for your time and assistance!",sloth-eat-pudding,https://github.com/HKU-BAL/ClairS/issues/18
+I_kwDOF0iGSs58ucKc,add v4.3.0 model for clair3 params,CLOSED,2024-01-21T11:44:59Z,2024-04-11T01:20:24Z,2024-04-11T01:20:24Z,"
+Hi, can you add the option to use the latest clair3 model for germline variant elimination? Thank you.
+",bakeronit,https://github.com/HKU-BAL/ClairS/issues/19
+I_kwDOF0iGSs6AMOIQ,sh files for data preprocessing,CLOSED,2024-02-23T09:20:25Z,2024-04-11T01:19:36Z,2024-04-11T01:19:36Z,"Can you share the sh files for data preprocessing and model training? Like Clair3.
+
+Thank you!",shiying-sxu,https://github.com/HKU-BAL/ClairS/issues/20
+I_kwDOF0iGSs6BXght,Question in training data label generation code - get_candidates.py,CLOSED,2024-03-06T00:58:13Z,2024-03-07T04:02:16Z,2024-03-07T04:02:05Z,"Dear ClairS Team,
+
+While reviewing the code at the following link: https://github.com/HKU-BAL/ClairS/blob/c464c98c61f594489e385b8bb67c32518dce59f8/src/get_candidates.py#L348 
+I noticed a potential issue related to the `find_candidate_match` function. 
+It appears that the function may be utilizing the tumor alt_dict instead of the normal alt_dict.
+Could you please take a moment to verify this?
+
+Thank you for your time and support!
+
+Best regards,",quito418,https://github.com/HKU-BAL/ClairS/issues/21
+I_kwDOF0iGSs6EGv_7,Enhancing somatic variant calling and execution speed,CLOSED,2024-03-30T09:49:13Z,2024-07-20T00:49:53Z,2024-07-20T00:49:53Z,"Hello,
+
+I am working with HCC1395 data, analyzing tumor samples at 75x coverage and normal samples at 45x coverage. I utilized Clair3 to process the normal.bam file, generating a normal.vcf. This file was then employed for phasing and haplotagging the tumor.bam, followed by using a somatic mutation caller. The results showed a notable decrease in false positives.
+
+phase   and haplotag | Precision | Recall | F1-score | TP | FP | FN
+-- | -- | -- | -- | -- | -- | --
+ClairS   germline.vcf | 67.12% | 77.64% | 72.00% | 30626 | 15001 | 8821
+Clair3   normal.vcf | 72.50% | 77.46% | 74.90% | 30556 | 11593 | 8891
+
+In an instance where false positives were converted to true negatives, it was observed that the mutations in the normal sample were heterozygous, whereas in the tumor sample, they were homozygous. This suggests a loss of heterozygosity (LOH) event, making the strategy of phasing and tagging most reads into the same haplotype seem correct. Have you considered this method?
+
+![image](https://github.com/HKU-BAL/ClairS/assets/58475895/21b9d9c1-aa5b-4dab-995e-066963a13420)
+
+
+Moreover, I noted in literature that the primary reason for choosing Longphase for phasing is its speed. We still have a speed advantage in haplotagging. ClairS employs parallel acceleration at the chromosome level and we can introduce a feature to specify a range. Could this reduce the training costs for you? I also conducted a haplotag test, and the results do not seem to show any significant differences.
+
+haplotag | Precision | Recall | F1-score | TP | FP | FN
+-- | -- | -- | -- | -- | -- | --
+whatshap v1.7 | 67.12% | 77.64% | 72.00% | 30626 | 15001 | 8821
+longphase   v1.3 | 67.27% | 77.62% | 72.07% | 30617 | 14897 | 8830
+",sloth-eat-pudding,https://github.com/HKU-BAL/ClairS/issues/22
+I_kwDOF0iGSs6ExPDK,ClairS crashing with spaces in input file name,CLOSED,2024-04-05T09:28:04Z,2024-07-20T00:50:26Z,2024-07-20T00:50:26Z,"Hello,
+I come across an issue when the software is provided input files with spaces in their path.
+```
+$ ~/Software/ClairS/run_clairs --tumor_bam_fn Test\ data/demo_tumor.remap.bam --normal_bam_fn Test\ data/demo_tumor.remap.bam --bed_fn Test\ data/demo.bed --ref_fn Test\ data/GCA_000001405.15_GRCh38_no_alt_analysis_set_chr20.fna --threads 4 -o Test\ data/TESTING_BREAK/ClairS_test -p ont_r10_guppy
+
+[INFO] Create folder Test data/TESTING_BREAK/ClairS_test
+
+[COMMAND] /home/talentia/Software/ClairS/run_clairs --tumor_bam_fn Test data/demo_tumor.remap.bam --normal_bam_fn Test data/demo_tumor.remap.bam --ref_fn Test data/GCA_000001405.15_GRCh38_no_alt_analysis_set_chr20.fna --threads 4 --platform ont_r10_guppy --output_dir Test data/TESTING_BREAK/ClairS_test --bed_fn Test data/demo.bed
+
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/logs
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/split_beds
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/candidates
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/pileup_tensor_can
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/fa_tensor_can
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/vcf_output
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/tmp_vcf_output
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/logs/clair3_log
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/clair3_output/phased_output
+[INFO] Create folder /home/UID name/Test/Test data/TESTING_BREAK/ClairS_test/tmp/clair3_output/vcf
+gzip: /home/UID.gz: No such file or directory
+gzip: name/Test/Test.gz: No such file or directory
+gzip: data/demo.bed.gz: No such file or directory
+[INFO] --include_all_ctgs not enabled, use chr{1..22,X,Y} and {1..22,X,Y} by default
+[WARNING] No contig in --bed_fn was found in the reference, contigs in BED /home/UID name/Test/Test data/demo.bed:
+```
+
+This seems to be related to how the workflow decompresses the input files, particularly the input BED and genotyping VCF [here](https://github.com/HKU-BAL/ClairS/blob/main/run_clairs#L294) and [here](https://github.com/HKU-BAL/ClairS/blob/main/run_clairs#L257).
+This is particularly relevant when the space is within the user name, making it impossible to run the software.
+
+Thanks
+Andrea",RenzoTale88,https://github.com/HKU-BAL/ClairS/issues/23
+I_kwDOF0iGSs6GTwCM,tmp folders not being deleted after calling,CLOSED,2024-04-19T15:45:53Z,2024-04-22T03:20:21Z,2024-04-22T03:20:21Z,"The `tmp` folders created by ClairS are not deleted after the run is finished, or if they are, it is not consistent. They take up a significant amount of space and can unexpectedly fill up workspaces.",A-Goretsky,https://github.com/HKU-BAL/ClairS/issues/24
+I_kwDOF0iGSs6HF8U6,"ClairS quits with exit code 0 but no output, no error logged",CLOSED,2024-04-26T20:47:41Z,2024-07-20T00:51:11Z,2024-07-20T00:51:11Z,"I'm using ClairS on three samples right now. Two have been running since last night, no issue yet. The third quits within seconds of launching the job with exit code 0 but no output is written. The directory structure is created in the output file. No errors are written in the log. This job is using a custom reference but I get the same behavior with these files if I substitute hg38 as the reference. Is there a debug flag or something I can use to tell me what is going wrong? This is the code I'm running. Any help would be greatly appreciated.
+
+./run_clairs \
+  -T /home/nparma/eee_bams_dsa/DSA_hifiasm_60x/ONT/COLO829-T_PS00361.all.sorted.bam \
+  -N /home/nparma/eee_bams_dsa/DSA_hifiasm_60x/ONT/COLO829-BL_PS00342.all.sorted.bam \
+  -R /home/nparma/eee_bams_dsa/references/dsa60/COLO829-BL_60X_hifisam_merged_haplotypes.fasta \
+  -t 4 \
+  -p ont_r10_dorado_sup_5khz \
+  -o /home/nparma/eee_bams_dsa/myanalysis/clairs/T/dsa/clairsout",nparmalee,https://github.com/HKU-BAL/ClairS/issues/25
+I_kwDOF0iGSs6ISX0d,Adding Normal Sample GT to the VCF file,CLOSED,2024-05-08T21:38:52Z,2024-07-20T00:51:40Z,2024-07-20T00:51:40Z,"Would it be possible to add the Normal sample GT/DP/AO to the somatic vcf just for comparison -- for example you can imagine that you have a few ""alt reads"" in the normal sample compared to 5% or 10% in the tumor which might be much more...  we use this to filter out possible FPs.  Alternately could you spit out a normal VCF with the ref calls for the same positions in the somatic file.  Those could be merged with BCFtools.
+
+Thanks!",bcantarel,https://github.com/HKU-BAL/ClairS/issues/27
+I_kwDOF0iGSs6JrSZv,samtools index: failed to open error,CLOSED,2024-05-22T07:48:52Z,2024-07-20T00:52:12Z,2024-07-20T00:52:12Z,"Good day,
+I am using ClairS-TO using the following command:
+
+singularity exec /apps/chpc/bio/clairs_to/clairs-to_latest.sif run_clairs_to -T BC1.sorted.bam -R GCF_000001405.40_GRCh38.p14_genomic.fna -t 8 -p ont_r10_dorado_hac_4khz --include_all_ctgs --output_dir output-BC1
+
+I however get the following error (I don't get a final .vcf file but I do get many vcf files in the tmp folder):
+
+samtools index: failed to open ""/mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/phasing_output/phased_bam_output/tumor_NT_187421.1.bam"": No such file or directory
+ERROR in STEP 11, THE FOLLOWING COMMAND FAILED: ( parallel --joblog /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/logs/phasing_log/parallel_3_haplotag_tumor.log -j 8 /opt/micromamba/envs/clairs-to/bin/longphase haplotag -o /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/phasing_output/phased_bam_output/tumor_{1}.bam --reference /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/GCF_000001405.40_GRCh38.p14_genomic.fna --region {1}  -s /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/phasing_output/phased_vcf_output/tumor_phased_{1}.vcf.gz -b /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/BC1.sorted.bam :::: /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/CONTIGS ) 2>&1 | tee /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/logs/phasing_log/3_tumor_haplotag.log && parallel -j 8 samtools index  -@8 /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/phasing_output/phased_bam_output/tumor_{1}.bam :::: /mnt/lustre/groups/CBBI1617/BreastCancer-fastq/SNV-analysis/input/output-BC1/tmp/CONTIGS
+
+
+Could I please get some assistance on this. ",DIPLOMICS-SA,https://github.com/HKU-BAL/ClairS/issues/28
+I_kwDOF0iGSs6RJTut,Loci file /opt/conda/envs/clairs/bin/cnv_data/reference_files/loci_files/G1000_loci_hg38_chr1.txt does not appear to exist.,CLOSED,2024-07-29T11:12:58Z,2024-10-12T02:40:13Z,2024-10-12T02:40:13Z,"I got this error when I run the following commands;
+
+```
+singularity pull clairs.sif docker://hkubal/clairs:latest
+singularity exec --bind /truba/home/erdikilic/pacbio_nd_t:/data clairs.sif /opt/bin/run_clairs \
+    --platform hifi_revio \
+    --ref_fn /data/hg38.fa \
+    --tumor_bam_fn /data/hg008-t/HG008-T.bam \
+    --normal_bam_fn /data/hg008-n-d/hg008-N-D.bam \
+    --sample_name HG008_T \
+    --remove_intermediate_dir \
+    --include_all_ctgs \
+    --enable_indel_calling \
+    --enable_clair3_germline_output \
+    --enable_verdict \
+    --output_dir /data/analysis/clairs \
+    --conda_prefix /opt/conda/envs/clairs \
+    --threads 2
+```
+It is still running and din't stop the variant calling. Also, when I check the folder, the loci files exist. 
+
+[7_CGT.log](https://github.com/user-attachments/files/16411672/7_CGT.log)
+[run.log](https://github.com/user-attachments/files/16411760/run.log)
+",erdikilic,https://github.com/HKU-BAL/ClairS/issues/32
+I_kwDOF0iGSs6UTdHm,Question: Timeline for releasing new models,CLOSED,2024-08-27T02:30:34Z,2024-10-12T02:40:35Z,2024-10-12T02:40:35Z,"Hi team, I was wondering if you had a rough timeline/estimates for when new ClairS models are released following new ONT basecalling models? 
+Specifically, I've basecalled a lot of data using `dna_r10.4.1_e8.2_400bps_sup@v4.3.0` and then discovered it's not yet supported by the ClairS version (at least the current one being used in dorado v1.3.1, and I can't figure out how to confirm which version of ClairS it uses).
+I'm wondering whether it's worth rebasecalling all my pod5s with an older model that's supported by ClairS.
+Thanks!
+",lucy924,https://github.com/HKU-BAL/ClairS/issues/33
+I_kwDOF0iGSs6XCHIN,Only 1 somatic variant returned,CLOSED,2024-09-18T14:29:49Z,2024-10-12T02:41:03Z,2024-10-12T02:41:03Z,"Hi Thanks for the great work! 
+I tried to call somatic variant using clairS, but the output vcf only returned 1 variant on Y chromosome..
+My datasets are PacBio long-read scRNA-seq with a bit low coverage ~10x. However, I still expect much more than 1 somatic variants, because I already observed some using IGV. And clair3_output returns more variants in tumor than normal.
+
+This is the command I used:
+`singularity exec   -B ${INPUT_DIR},${OUTPUT_DIR}   clairs-latest.simg   /opt/bin/run_clairs   --tumor_bam_fn ${INPUT_DIR}/tumor1.aligned.sorted.bam   --normal_bam_fn ${INPUT_DIR}/normal1.aligned.sorted.bam   --ref_fn ~/pacbio/data/genome/GRCh38.primary_assembly.genome.fa   --threads 10   --platform hifi_revio   --output_dir ${OUTPUT_DIR} --conda_prefix /opt/conda/envs/clairs --use_heterozygous_snp_in_tumor_sample_for_intermediate_phasing TRUE -q 8 --snv_min_af 0.01
+`
+
+In the log file, I found several errors like:
+```
+[INFO] chr1 chunk 26/50: Total candidates found: 0
+Traceback (most recent call last):
+  File ""/opt/bin/clairs.py"", line 123, in <module>
+    main()
+  File ""/opt/bin/clairs.py"", line 117, in main
+    submodule.main()
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 705, in main
+    extract_pair_candidates(args)
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 346, in extract_pair_candidates
+    select_indel_candidates=select_indel_candidates
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 91, in decode_pileup_bases
+    base_list[-1][1] = base + pileup_bases[base_idx: base_idx + advance]  # add indel seq
+IndexError: list index out of range
+Traceback (most recent call last):
+  File ""/opt/bin/clairs.py"", line 123, in <module>
+    main()
+  File ""/opt/bin/clairs.py"", line 117, in main
+    submodule.main()
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 705, in main
+    extract_pair_candidates(args)
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 346, in extract_pair_candidates
+    select_indel_candidates=select_indel_candidates
+  File ""/opt/bin/src/extract_pair_candidates.py"", line 91, in decode_pileup_bases
+    base_list[-1][1] = base + pileup_bases[base_idx: base_idx + advance]  # add indel seq
+IndexError: list index out of range
+```
+
+Thanks in advance for any help!
+
+
+",Jiayi-Wang-Joey,https://github.com/HKU-BAL/ClairS/issues/34
+I_kwDOF0iGSs6Xk4vX,NumPY error when installed thru singularity and conda,OPEN,2024-09-23T15:37:35Z,2024-09-24T16:12:58Z,,"Hi,
+
+I've run ClairS and ClairS-TO previously (they are great!), and installed the current versions of both last week. Now I get the same NumPY error when I try to run the previous version, the current version, and when I install using conda or singularity. 
+
+Thanks in advance for any insight you can provide!
+
+The main issue seems to be:
+
+=====
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.0.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+=====
+
+",ccbruels,https://github.com/HKU-BAL/ClairS/issues/35
+I_kwDOF0iGSs6XwapW,Very few somatic variants in output VCF,CLOSED,2024-09-24T18:13:22Z,2024-09-24T19:25:37Z,2024-09-24T19:25:36Z,"Hello,
+The outputs from running ClairS on PacBio (hifi_revio platform) are providing less than 5 somatic SNVs.  We identified multiple high-confidence somatic variants from short-read sequencing on same set of samples, so we are expecting more than the observed somatic hits from corresponding PacBio sequencing. 
+
+On troubleshooting, log file 3-1_CPT.log for creating pair tensor show zero tensors generated for all chunks across all chromosomes, and 3-2_PREDICT.log similarly show zero processed positions across all chunks. Logs 1_EC.log, 2-1_CPT.log and 2-2_PREDICT.log show there are positions being processed until step 2 but being filtered in step 3. Log file 5_MV.log shows more than 100k full-alignment variants filtered by pileup . 
+
+I'm wondering what might be causing most variants to be filtered, and if there were specific parameter values that need tweaking for this set of samples. Any hints/resources will be helpful, thank you.",mdehankar3,https://github.com/HKU-BAL/ClairS/issues/36
+I_kwDOF0iGSs6Z8Qjr,about v0.4.0 for calling indel,CLOSED,2024-10-12T09:03:07Z,2024-11-07T02:44:34Z,2024-11-07T02:44:34Z,"Hi,
+
+Thank you for providing this tool.
+
+I noticed that you have updated to a new version (0.4.0). I would like to ask if it supports Indel calling for PacBio Revio.
+
+Additionally, for HiFi data, which do you recommend: minimap2 or pbmm2? I am also using deepsomatic to call SNP/Indel variants, and this tool suggests using pbmm2. 
+
+I want to integrate the results from these two tools and wonder if the choice of alignment software needs to be consistent.
+
+Best regards.",DayTimeMouse,https://github.com/HKU-BAL/ClairS/issues/39
+I_kwDOF0iGSs6dVipj,somatic SNV/InDel number is too many,OPEN,2024-11-07T02:34:22Z,2024-11-15T01:57:05Z,,"Hi,
+
+I used clairs(v0.4) to call somatic SNV/InDel(tumor/normal paired), but the PASS variants number is ~6w. Is it normal?
+Compare to deepsomatic, the somatic SNV/InDel number is ~1.7w.
+
+Do you have recommend the cutoff of  QUAL value for SNV and InDel, seperately?
+
+`ClairS-0.4.0/run_clairs --tumor_bam_fn hifi_tumor_pbmm2.bam --normal_bam_fn hifi_normal_pbmm2.bam --ref_fn chm13v2.0.fa --threads 30 --platform hifi_revio --output_dir clairs_out --enable_indel_calling --enable_clair3_germline_output`
+
+Should I set a higher number for `--min_coverage` ? I'm confused about it.
+
+Best regards.
+",DayTimeMouse,https://github.com/HKU-BAL/ClairS/issues/40
+I_kwDOF0iGSs6eRBHy,Benchmarks for compute resources,OPEN,2024-11-13T12:01:24Z,2024-11-15T01:48:13Z,,"Hi I have looked through the documentation but I can't see any indication of speed benchmarks or recommended compute to achieve a given throughput?
+
+Given that we run jobs through a scheduler that requires setting resource requests I am wondering if you are able to shed any light on what you might consider to be sensible defaults to provide a process for:
+ - `--threads` argument 
+ - `cpus/cores` to give a job
+ - memory (overall or per-thread) to give a job
+ - what sort of runtime you might expect for a typical sample with these settings",awgymer,https://github.com/HKU-BAL/ClairS/issues/41
+I_kwDOF0iGSs6ekIcw,Question: Distributing ClairS,CLOSED,2024-11-14T22:46:36Z,2024-11-15T17:36:57Z,2024-11-15T17:36:57Z,"Hello,
+
+Thank you so much for implementing ClairS! :) 
+
+I have a question about running ClairS on WGS data. To reduce runtime, I’d like to run ClairS independently on each genomic interval and then merge the results into a single VCF file. Would this approach impact the final variant set, or is there another way to optimize runtime?
+
+Thank you again,
+Dominika",dmaziec,https://github.com/HKU-BAL/ClairS/issues/43
+I_kwDOF0iGSs6iqVv3,validate called SNP/InDel,OPEN,2024-12-10T04:57:50Z,2024-12-10T04:57:50Z,,"Hi,
+
+How can I further validate called SNP/InDel besides using IGV, especially when the number of SNP variants may be in the thousands? Could you give me some ideas?
+
+Best regards.",DayTimeMouse,https://github.com/HKU-BAL/ClairS/issues/44

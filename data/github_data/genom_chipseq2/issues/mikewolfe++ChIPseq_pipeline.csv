@@ -1,0 +1,205 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3OTAzNzIzMjA=,Make clean commands also clear dependent downstream calculations,OPEN,2021-01-20T22:08:29Z,2021-01-21T18:05:28Z,,"Right now each module only deletes files within a module, however, some modules use input from previous modules. Any file dependent on an upstream module should also be deleted when the upstream module is deleted.",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/1
+MDU6SXNzdWU3OTAzNzQxNTQ=,Add bre-seq to automatically run on input samples,CLOSED,2021-01-20T22:10:57Z,2021-10-12T20:14:39Z,2021-10-12T20:14:38Z,"This should be added to quality control to detect changes in the sequence compared to the reference for each sample.
+
+https://barricklab.org/twiki/bin/view/Lab/ToolsBacterialGenomeResequencing
+
+",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/2
+MDU6SXNzdWU3OTEyMjk0MTg=,Bug in running coverage and norm post-cleaning coverage and norm core,CLOSED,2021-01-21T15:33:59Z,2021-01-21T18:05:53Z,2021-01-21T17:48:51Z,"Attempting to run a CPM normalization after completing the entire pipeline (with a median normalization). 
+
+`snakemake clean_coverage_and_norm --use-conda --cores 1`
+`snakemake clean_peak_calling --use-conda --cores 1`
+`snakemake clean_quality_control --use-conda --cores 1`
+`snakemake run_coverage_and_norm --use-conda --cores 1`
+
+Error immediately: 
+Building DAG of jobs...
+MissingInputException in line 18 of /mnt/scratch/hustmyer/ChIPseq_pipeline/workflow/rules/coverage_and_norm.smk:
+Missing input files for rule run_coverage_and_norm:
+Then it lists all of the files I'm trying to make with the CPM notation. 
+
+I was expecting a new coverage_and_norm directory to be created with the CPM normalized .bw files (similar to what occurred with the median normalization step, but this would be CPM normalized). 
+
+
+[config.txt](https://github.com/mikewolfe/ChIPseq_pipeline/files/5850333/config.txt)
+
+",cmhustmyer,https://github.com/mikewolfe/ChIPseq_pipeline/issues/3
+MDU6SXNzdWU3OTEzNzQ5ODI=,Allow for the pipeline to run on reference genomes with more than one contig,CLOSED,2021-01-21T17:58:52Z,2021-02-01T22:47:43Z,2021-02-01T22:46:37Z,"Currently the pipeline is focused on running on a organisms with a single chromosome and no additional plasmids. In order to support multiple contigs a substantial overhaul will be needed. However, this is the highest priority feature needed to be implemented.
+
+Some things that need to be reworked to make this possible:
+
+- [x] Custom python code dealing with median normalization
+- [x] CMARRT algorithm for peak calling
+- [x] Updating all deeptools calls to allow for multiple contigs 
+- [x] Interface for specifying the reference genome in the `config/config.yaml` file",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/5
+MDU6SXNzdWU3OTEzNzcyOTc=,Allow for normalization based on a specified known background area of the chromosome,CLOSED,2021-01-21T18:02:16Z,2021-05-26T15:25:30Z,2021-05-26T15:25:30Z,Similar to the approach taken in 10.1016/j.molcel.2008.12.021,mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/6
+MDU6SXNzdWU3OTEzODQzNzY=,add MOSAiCs peak calling algorithm option ,OPEN,2021-01-21T18:13:13Z,2021-01-21T19:25:39Z,,,cmhustmyer,https://github.com/mikewolfe/ChIPseq_pipeline/issues/7
+MDU6SXNzdWU3OTE0ODM0MDY=,Automatically parse genbanks for features and output into a .gff,CLOSED,2021-01-21T20:50:14Z,2021-09-23T00:29:05Z,2021-09-23T00:29:05Z,"Need to update the `parse_genbank.py` script to enable .gff parsing.
+
+Add or update a rule in the `alignment.smk` module to keep it consistent with the `parse_genbank` rule.",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/8
+MDU6SXNzdWU3OTYxNjQ2ODI=,Not urgent: New error in quality_control ,CLOSED,2021-01-28T16:33:45Z,2021-01-30T19:24:33Z,2021-01-30T19:24:33Z,"160 of 162 steps (99%) done
+[INFO   ]          fastqc : Found 70 reports
+[INFO   ]         multiqc : Compressing plot data
+[WARNING]         multiqc : Previous MultiQC output found! Adjusting filenames..
+[WARNING]         multiqc : Use -f or --force to overwrite existing reports instead
+[INFO   ]         multiqc : Report      : results/quality_control/multiqc_report_1.html
+[INFO   ]         multiqc : Data        : results/quality_control/multiqc_data_1
+[INFO   ]         multiqc : MultiQC complete
+Waiting at most 5 seconds for missing files.
+MissingOutputException in line 11 of /mnt/scratch/hustmyer/ChIPseq_pipeline/workflow/rules/quality_control.smk:
+Job completed successfully, but some output files are missing. Missing files after 5 seconds:
+results/quality_control/multiqc_report.html
+This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait.
+  File ""/home/hustmyer@ad.wisc.edu/miniconda3/envs/ChIPseq_pipeline/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 544, in handle_job_succes
+  File ""/home/hustmyer@ad.wisc.edu/miniconda3/envs/ChIPseq_pipeline/lib/python3.7/site-packages/snakemake/executors/__init__.py"", line 231, in handle_job_succes
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+
+Complete log: /mnt/scratch/hustmyer/ChIPseq_pipeline/.snakemake/log/2021-01-28T082431.269746.snakemake.log
+
+I haven't gotten this error before: all of the relevant files are in the QC folder? So unsure what this is. 
+
+
+
+[config - Copy.txt](https://github.com/mikewolfe/ChIPseq_pipeline/files/5888641/config.-.Copy.txt)
+[config.txt](https://github.com/mikewolfe/ChIPseq_pipeline/files/5888646/config.txt)
+
+",cmhustmyer,https://github.com/mikewolfe/ChIPseq_pipeline/issues/9
+MDU6SXNzdWU3OTg1NjU3OTE=,Multiqc report is not linking files for each sample together very well,CLOSED,2021-02-01T17:36:44Z,2021-09-23T00:28:57Z,2021-09-23T00:28:57Z,"Warning messages:
+```
+Activating conda environment: /mnt/scratch/hustmyer/ChIPseq_pipeline/.snakemake/conda/31d4d5e3
+[INFO   ]         multiqc : This is MultiQC v1.9 (7e91591)
+[INFO   ]         multiqc : Template    : default
+[INFO   ]         multiqc : Searching   : /mnt/scratch/hustmyer/ChIPseq_pipeline/results
+Searching 855 files..  [####################################]  100%
+[INFO   ]         bowtie2 : Found 20 reports
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_hns.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_sigma.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_hns.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_sigma.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_sigma.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_wt_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_hns.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_dr_sigma.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_inputA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_hns.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_stpA.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_rfaH.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_2x_sigma.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_inputG.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_beta.
+[WARNING]    plotCoverage : Replacing duplicate sample r2_3x_sigma.
+[INFO   ]       deeptools : Found 160 total deepTools samples
+[INFO   ]           macs2 : Found 14 logs
+[INFO   ]          fastqc : Found 40 reports
+[INFO   ]     trimmomatic : Found 20 logs
+[INFO   ]        cutadapt : Found 20 reports
+[INFO   ]          fastqc : Found 40 reports
+[INFO   ]         multiqc : Compressing plot data
+[INFO   ]         multiqc : Report      : results/quality_control/multiqc_report.html
+[INFO   ]         multiqc : Data        : results/quality_control/multiqc_data
+[INFO   ]         multiqc : MultiQC complete
+```
+
+Reworking of config files will be needed to clean up report output.",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/10
+MDU6SXNzdWU3OTg5Mzc1NTg=,"Allow for a ""masked"" region of the genome when performing alignments/coverage calculations",CLOSED,2021-02-02T05:17:51Z,2021-05-26T15:25:18Z,2021-05-26T15:25:18Z,"# Motivation
+Want to be able to mask repetitive regions of genome from analysis by preventing reads from being able to map there without disrupting coordinate locations. Additionally, masked regions should not be included in coverage and normalization calculations.  An motivating example in bacterial data would be to exclude ribosomal RNA operons from analysis due to their high similarity.
+
+# Roadmap
+Input will be a `.bed` file of locations to exclude.
+- [x] Change config file to accept a masking file
+
+Final output reference fasta will replace locations with Ns at the given locations.
+- [x] change `combine_fasta.py` script to allow for editing of final fasta
+- [x] make sure effective genome size is calculated after edits
+
+All deeptools calls can exclude locations using the `--blackListFileName` option.
+- [x] update all deeptools calls to take `--blackListFileName` argument",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/11
+MDU6SXNzdWU4MzY1MjMwMjY=,Add ability to do summaries over regions or at specified locations,CLOSED,2021-03-20T00:25:37Z,2021-05-26T15:25:07Z,2021-05-26T15:25:07Z,"Need ability to get gene-wise averages of ChIP signal or correctly oriented profiles at a given location +/- a specified number of bps. Could rely on `deeptools` functions to start:
+
+https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+Should compile these rules into a new `workflow/postprocessing.smk` module.",mikewolfe,https://github.com/mikewolfe/ChIPseq_pipeline/issues/14
+MDU6SXNzdWU4NDg1MzM1NDE=,Error in macs2_peakcalling on test,CLOSED,2021-04-01T14:45:24Z,2021-04-09T04:35:59Z,2021-04-09T04:35:59Z,"Hi Mike--
+
+We are running the test data of the ChIPseq_pipeline and we keep getting an error in the macs2 peak calling. When I check the error log this is what we find:
+
+/results/peak_calling/logs/macs2/
+Traceback (most recent call last):
+  File ""/mnt/scratch/colton/ChIPseq_pipeline/.snakemake/conda/1acff218/bin/macs2"", line 653, in <module>
+    main()
+  File ""/mnt/scratch/colton/ChIPseq_pipeline/.snakemake/conda/1acff218/bin/macs2"", line 49, in main
+    from MACS2.callpeak_cmd import run
+  File ""/mnt/scratch/colton/ChIPseq_pipeline/.snakemake/conda/1acff218/lib/python3.8/site-packages/MACS2/callpeak_cmd.py"", line 23, in <module>
+    from MACS2.OptValidator import opt_validate
+  File ""/mnt/scratch/colton/ChIPseq_pipeline/.snakemake/conda/1acff218/lib/python3.8/site-packages/MACS2/OptValidator.py"", line 20, in <module>
+    from MACS2.IO.Parser import BEDParser, ELANDResultParser, ELANDMultiParser, \
+  File ""__init__.pxd"", line 242, in init MACS2.IO.Parser
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 88 from C header, got 80 from PyObject
+
+I do not get this error on my PC, but Colton is on a mac, not sure if that's why? We have bioconda installed, I also updated Bowtie and macs_2 just in case but that doesn't seem to help. Attached is a pic of the error in the pipeline 
+<img width=""1440"" alt=""macs2_error"" src=""https://user-images.githubusercontent.com/77794675/113311353-d6d2f580-92ce-11eb-9ad9-b9743eb3250b.png"">
+
+The config and pep files are all the test files: we did not make any changes. Thanks.
+
+",cmhustmyer,https://github.com/mikewolfe/ChIPseq_pipeline/issues/16
+MDU6SXNzdWU5MDEwNDcwMDE=,"Issue with development pipeline branch, cmartt peak calling",CLOSED,2021-05-25T16:18:08Z,2021-05-26T15:06:14Z,2021-05-26T15:06:14Z,"Hi Mike, 
+
+Just re-downloaded the pipeline and ran the test on the master branch, it works great. I cleaned all cores, then I switched to the development side of the pipeline, ran the test again, and got this error towards the end. Seems similar to the error a few months ago and I think might have to do with bowtie? Or I typed something incorrectly, thanks. 
+
+`
+91 of 119 steps (76%) done
+[Tue May 25 11:10:38 2021]
+Error in rule cmarrt_call_peaks:
+    jobid: 2
+    output: results/peak_calling/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ.narrowPeak
+    log: results/peak_calling/logs/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ_cmarrt.log, results/peak_calling/logs/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ_cmarrt.err (check log file(s) for error message)
+    conda-env: /mnt/scratch/hustmyer/ChIPseq_pipeline/.snakemake/conda/b58f5225
+    shell:
+        python3 workflow/CMARRT_python/run_cmarrt_bigwig.py  results/coverage_and_norm/deeptools_log2ratio/genotypeA_rep1_ext_median_log2ratioRZ.bw 25 -                                o results/peak_calling/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ --resolution 5 --consolidate 10 --plots > results/peak_calling/logs/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ_cmarrt.log 2> results/peak_calling/logs/cmarrt/genotypeA_rep1_ext_median_log2ratioRZ_cmarrt.err
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue May 25 11:10:38 2021]
+Error in rule cmarrt_call_peaks:
+    jobid: 3
+    output: results/peak_calling/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ.narrowPeak
+    log: results/peak_calling/logs/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ_cmarrt.log, results/peak_calling/logs/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ_cmarrt.err (check log file(s) for error message)
+    conda-env: /mnt/scratch/hustmyer/ChIPseq_pipeline/.snakemake/conda/b58f5225
+    shell:
+        python3 workflow/CMARRT_python/run_cmarrt_bigwig.py  results/coverage_and_norm/deeptools_log2ratio/genotypeA_rep2_ext_median_log2ratioRZ.bw 25 -                                o results/peak_calling/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ --resolution 5 --consolidate 10 --plots > results/peak_calling/logs/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ_cmarrt.log 2> results/peak_calling/logs/cmarrt/genotypeA_rep2_ext_median_log2ratioRZ_cmarrt.err
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue May 25 11:10:38 2021]
+Finished job 75.
+92 of 119 steps (77%) done
+[Tue May 25 11:10:40 2021]
+Finished job 8.
+93 of 119 steps (78%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /mnt/scratch/hustmyer/ChIPseq_pipeline/.snakemake/log/2021-05-25T110829.598144.snakemake.log
+`",cmhustmyer,https://github.com/mikewolfe/ChIPseq_pipeline/issues/18

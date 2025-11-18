@@ -1,0 +1,218 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzOTgxNDkwMDc=,Functions needed for package,CLOSED,2019-01-11T06:29:48Z,2020-10-17T20:31:46Z,2020-10-17T20:31:46Z,"Total library analysis
+1. Read in data and generate complete alignment table with: cell, virus, time, and reads for each RNA subtype, and replicate
+2. Calculate percent total umi-reads for each RNA subtype and add to alignments table
+3. Plot percent total reads for each RNA type for exploratory analysis and figure generation
+4. Plot percent total reads for each cell type across all RNA types for exploratory analysis and figure generation 
+
+U6 analysis
+1. Read in data and generate table with the following information: chrom, start, count, normalized count, dinuc, cell, virus, time, replicate
+2. Identify positions across all libraries with 0 counts and add a ""pseudo-count, re-calculate normalized counts, regenerate table with new normalized counts and all data identified in function above
+3. Plot coverage across the U6 RNA at each single-base position for exploratory analysis and figure generation
+
+MHV analysis
+1. Read in data and generate table with the following information: chrom, start, count, normalized count, dinuc, cell, virus, time, replicate
+2. Identify positions across all libraries with 0 counts and add a ""pseudo-count, re-calculate normalized counts, regenerate table with new normalized counts and all data identified in function above
+3. Plot coverage across the viral genome at each single-base position for exploratory analysis and figure generation
+    -include option to plot specific regions for zoomed-in plots
+4. RNaseL subtractive analysis to identify RNaseL-dependnent sites
+5. Plot coverage across viral genome of RNaseL-dependent sites for exploratory analysis and figure generation 
+6. EndoU subtractive analysis to identify EndoU-dependnent sites 
+7. Plot coverage across viral genome of EndoU-dependent sites for exploratory analysis and figure generation 
+8. Identify top cleavage sites by normalized count for cell type and virus infection
+9. Fold change analysis for RNaseL activity 
+10. Plot fold change analysis for RNaseL activity 
+11. Fold change analysis for EndoU activity 
+12. Plot fold change for EndoU activity 
+13. Calculating dinucelotide frequencies for all cell types by infection status
+14. Plots of dinucleotide frequencies for all cell types by type of viral infection
+
+rRNA analysis
+
+I think that the same functions for MHV analysis should be applicable to all the rRNA species analysis 
+
+mRNA analysis 
+1. Read in data and generate table with the following information: mRNA, count, normalized count, cell, virus, time, replicate
+2. Generate table of mRNAs with more than 100 total counts include associated total normalized counts and annotate with ORF_collection data 
+3. Plot the normalized counts for interesting mRNAs by virus and cell type 
+",ancarr,https://github.com/hesselberthlab/endoU/issues/2
+MDU6SXNzdWUzOTg0ODQ2ODI=,help with coverage function and generalization ,CLOSED,2019-01-11T23:09:35Z,2020-10-17T20:31:46Z,2020-10-17T20:31:46Z,"I'm a little confused on a couple things:
+
+1) Can params include other functions?
+2) Can the example be provided functions vs. data files?
+3) How would you make the coverage table function generalizable to different data files since I have to identify the specific naming structure at the end of the file name?",ancarr,https://github.com/hesselberthlab/endoU/issues/3
+MDU6SXNzdWUzOTkyMDc1MjI=,adding pseudo-counts and normalization,CLOSED,2019-01-15T06:39:02Z,2020-10-17T20:31:46Z,2020-10-17T20:31:46Z,"So, I have just realized that because of the way I analyze my data in the pipeline that the strategy for adding psedo-counts in R and then normalizing won't work. 
+
+This is because in my pipeline I normalize the counts at each position by the total aligned reads in the entire library. But, in the pipeline I also split up the final bedgraph files by reference type so that I can work with the RNA types individually in R because the files are smaller. Also, I need to do this because the MHV bed graph files have to be analyzed for the sense and antisense strand, while this is not true for the other RNA types. 
+
+So, I can't just load the bed data for each library by RNA type and then add 1's for 0's and normalize because that denominator is only the sum of the reads aligning to that type of RNA. 
+
+So, its seems like the only other option hard-coding the values or writing a function to parse the bed files that contain all the aligned reads for each RNA before I separate them out and have R use those numbers as the denominator? 
+
+Additionally, using the sum of the reads after adding the pseudo count also seems wrong, because this is artificially increasing the total numbers of reads? So, it seems like either way I would need to use a number generated prior to adding the pseudo-count?
+
+",ancarr,https://github.com/hesselberthlab/endoU/issues/4
+MDU6SXNzdWU0MDE1NDcxNzA=,complete example,CLOSED,2019-01-21T23:54:15Z,2020-10-17T20:31:45Z,2020-10-17T20:31:45Z,"``` r
+library(tidyverse)
+#> Warning: package 'tibble' was built under R version 3.5.2
+
+x <- tibble::tribble(
+  ~cell,     ~virus, ~pos, ~count,
+  ""B6"",      ""ns2"",  1,    100,
+  ""RNaseL"",  ""ns2"",  1,    100,
+  ""RNaseL"",  ""nsp15"",1,    100,
+  ""B6"",      ""ns2"",  2,    100
+)
+
+complete(x, cell, virus, pos, fill = list(count = 0))  
+#> # A tibble: 8 x 4
+#>   cell   virus   pos count
+#>   <chr>  <chr> <dbl> <dbl>
+#> 1 B6     ns2       1   100
+#> 2 B6     ns2       2   100
+#> 3 B6     nsp15     1     0
+#> 4 B6     nsp15     2     0
+#> 5 RNaseL ns2       1   100
+#> 6 RNaseL ns2       2     0
+#> 7 RNaseL nsp15     1   100
+#> 8 RNaseL nsp15     2     0
+```
+
+<sup>Created on 2019-01-21 by the [reprex package](https://reprex.tidyverse.org) (v0.2.1)</sup>",jayhesselberth,https://github.com/hesselberthlab/endoU/issues/5
+MDU6SXNzdWU0MTEyMjkwODc=,plot grids,CLOSED,2019-02-17T20:08:45Z,2020-10-17T20:31:45Z,2020-10-17T20:31:45Z,"@ancarr is this what you were thinking? `out` contains a list of all combinations of panels.
+
+``` r
+library(endoU)
+library(tidyverse)
+#> Warning: package 'tibble' was built under R version 3.5.2
+library(cowplot)
+#> 
+#> 
+#> *******************************************************
+#> Note: cowplot does not change the default ggplot2 theme
+#> anymore. To recover the previous behavior, execute:
+#>   theme_set(theme_cowplot())
+#> *******************************************************
+
+cell <- c(""B6"", ""IFNAR"")
+virus <- c(""MHVV"", ""ns2"")
+
+combos <- transpose(crossing(cell, virus))
+
+out <- list()
+for (i in seq_along(combos)) {
+  out[[i]] <- plot_coverage(
+    viral_cov_small,
+    start,
+    norm_count,
+    combos[[i]]$cell,
+    combos[[i]]$virus)  
+}
+
+cowplot::plot_grid(plotlist = out)
+```
+
+![](https://i.imgur.com/SD66O8R.png)
+
+<sup>Created on 2019-02-17 by the [reprex package](https://reprex.tidyverse.org) (v0.2.1)</sup>",jayhesselberth,https://github.com/hesselberthlab/endoU/issues/6
+MDU6SXNzdWU0MTcwMTI5NDU=,help calculating p-values for frequency enrichment,CLOSED,2019-03-04T22:02:11Z,2019-03-05T23:02:05Z,2019-03-05T23:02:05Z,"I calculated log2 enrichment values comparing the frequency of capture for each dinucleotide in each 23cp library to the natural frequency of dinucleotides in the MHV genome. I would like to now calculate an p-value and an q-value for the enrichments using fisher exact test...I think. I could some help with this if you are able to. Thanks! 
+
+
+``` r
+library(tidyverse)
+#> Warning: package 'tibble' was built under R version 3.5.2
+#> Warning: package 'stringr' was built under R version 3.5.2
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(endoU)
+
+frequencies <- function(x) {
+  
+  ## make df of dinucleotides
+  dinuc <- c(""AA"",""GA"", ""CA"", ""UA"",""AC"", ""CC"", ""GC"", ""UC"", ""AG"", ""CG"", ""GG"", ""UG"", ""AU"", ""CU"", ""GU"", ""UU"")
+  df_dinuc <- data_frame(dinuc)
+  
+  
+  ## summarize the data by dinuc
+  df <- aggregate(cbind(count) ~ dinuc, data = x, sum)
+  df <- left_join(df_dinuc, df) %>%
+    mutate(frequency = count/sum(count))
+}
+
+
+calc_freqs <- function(x) {
+  
+  ## add group ID for each library
+  df1 <- x %>%
+    mutate(Group = group_indices(., cell, virus, time))
+  
+  ## map frequencies function to the df by group
+  res <- df1 %>%
+    split(.$Group) %>%
+    map_dfr(frequencies, .id = ""Group"")
+  
+  df2 <- df1 %>%
+    select(cell, virus, time, Group)
+  
+  ## join with original table to regain library type information
+  res <- res %>%
+    mutate(Group = as.character(Group)) %>%
+    left_join(
+      df2 %>%
+        mutate(Group = as.character(Group)) %>%
+        unique(.), by = ""Group""
+    )
+  
+  res
+}
+
+exp_freqs <- suppressMessages(calc_freqs(viral_cov_tbl))
+#> Warning: `data_frame()` is deprecated, use `tibble()`.
+#> This warning is displayed once per session.
+head(exp_freqs)
+#> # A tibble: 6 x 7
+#>   Group dinuc count frequency cell  virus time 
+#>   <chr> <chr> <dbl>     <dbl> <chr> <chr> <chr>
+#> 1 1     AA    16547    0.0605 B6    MHVS  12   
+#> 2 1     GA    11455    0.0419 B6    MHVS  12   
+#> 3 1     CA    10114    0.0370 B6    MHVS  12   
+#> 4 1     UA    20119    0.0735 B6    MHVS  12   
+#> 5 1     AC    11280    0.0412 B6    MHVS  12   
+#> 6 1     CC     7670    0.0280 B6    MHVS  12
+
+
+calc_freq_enrichment <- function(observed_freq, experimental_freq) {
+  
+  #remove count column from observed frequencies table
+  obs_freqs <- observed_freq %>%
+    select(-count)
+  
+  #calculate frequency enrichment comparing experimental to observed
+  combined_freqs <- experimental_freq %>%
+    left_join(obs_freqs, by = ""dinuc"") %>%
+    mutate(log2_enrichment = log2(frequency.x/frequency.y))
+  
+  combined_freqs
+  
+}
+
+combined_freqs <- calc_freq_enrichment(endoU::mhv_freq, exp_freqs)
+head(combined_freqs)
+#> # A tibble: 6 x 9
+#>   Group dinuc count frequency.x cell  virus time  frequency.y
+#>   <chr> <chr> <dbl>       <dbl> <chr> <chr> <chr>       <dbl>
+#> 1 1     AA    16547      0.0605 B6    MHVS  12         0.0604
+#> 2 1     GA    11455      0.0419 B6    MHVS  12         0.0589
+#> 3 1     CA    10114      0.0370 B6    MHVS  12         0.0575
+#> 4 1     UA    20119      0.0735 B6    MHVS  12         0.0811
+#> 5 1     AC    11280      0.0412 B6    MHVS  12         0.0468
+#> 6 1     CC     7670      0.0280 B6    MHVS  12         0.0345
+#> # … with 1 more variable: log2_enrichment <dbl>
+```
+
+<sup>Created on 2019-03-04 by the [reprex package](https://reprex.tidyverse.org) (v0.2.1)</sup>",ancarr,https://github.com/hesselberthlab/endoU/issues/7
+MDU6SXNzdWU2MTk1MjEzMTk=,Make repo and GEO record public,CLOSED,2020-05-16T17:34:14Z,2020-10-17T20:31:45Z,2020-10-17T20:31:45Z,"@ancarr Can we make this public? It would be good to add a README.
+
+I'll also make the GEO record public when we submit to bioRxiv.",jayhesselberth,https://github.com/hesselberthlab/endoU/issues/8

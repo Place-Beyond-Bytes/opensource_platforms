@@ -1,0 +1,237 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1ODkyNDI2MA==,Multiple sequences for ComBaR:Mapper,CLOSED,2015-02-25T16:07:19Z,2015-02-26T14:20:14Z,2015-02-26T14:20:14Z,"Allocation of memory sometimes fails when fasta file contains more than 1 sequence (for --program==mapper only!)
+",swarris,https://github.com/swarris/pyPaSWAS/issues/1
+MDU6SXNzdWU1ODkyNTE2NQ==,DNA scoring for ambiguous letters,CLOSED,2015-02-25T16:13:05Z,2018-11-05T13:50:02Z,2018-11-05T13:50:02Z,"Create complete matrix for other scoring in DNA sequences (ambiguous): http://www.boekhoff.info/?pid=data&dat=fasta-codes. Should be default?
+",swarris,https://github.com/swarris/pyPaSWAS/issues/2
+MDU6SXNzdWUzMTAzNDQzNjE=,"Make a program asks for a sequence and detects if it is a sequence of DNA, RNA or a protein.",CLOSED,2018-04-01T18:39:41Z,2018-04-02T21:05:26Z,2018-04-02T21:05:26Z,"Hi, i'm trying to make a program that reciving a sequence can say if that is from DNA, RNA or Protein.
+I tried this:
+`seq = input('Enter a seq')`
+`DNA=['A','C','G','T']`
+`RNA=['A','C','G','U']`
+`AA=['Q','W','E','R','Y','I','P','S','D','F','H','K','L','V','N','M']`
+`for item in seq:`
+`    if item in DNA: `
+      
+![sin titulo](https://user-images.githubusercontent.com/34608189/38176365-bdb49aae-35ed-11e8-90b6-2baeae0c47b0.png)
+ ` print('DNA')`
+   ` elif 'U' in seq:`
+       ` print('RNA')`
+  `  elif item in AA:`
+       ` print('aminoacid')`
+    `else:`
+        `print('no idea')`
+        `print('no idea')`
+
+However it print for each position if it belongs to dna, rna or protein but i only want that this programe evaluate every position and then print the result.",FRedMCR,https://github.com/swarris/pyPaSWAS/issues/5
+MDU6SXNzdWUzNDYyOTcxMTY=,cuModuleGetFunction failed,CLOSED,2018-07-31T18:00:02Z,2018-08-20T11:22:31Z,2018-08-20T11:22:31Z,"I'm running PyPaSWAS as follows:
+```
+python3 ./implementations/warris2018/pypaswas.py -o zout --loglevel=DEBUG --outputformat=TXT -p aligner --filetype1=fasta --filetype2=fasta -O OVERRIDE_OUTPUT -M DNA-RNA --device=$device --recompile=T --short_sequences=F --framework=CUDA $queryfile $databasefile
+```
+
+I get several error messages:
+```
+INFO - Initializing application...
+DEBUG - Initializing Score...
+DEBUG - Initializing score finished.
+DEBUG - Initializing DnaRnaScore...
+DEBUG - Creating matrix with parameters:
+		match_score: 5,
+		mismatch_score: -3,
+		gap_score: -5.0,
+		other_score: -1,
+		any_score: 0
+DEBUG - Initializing DnaRnaScore finished.
+INFO - Application initialized.
+INFO - Setting program...
+DEBUG - Initializing aligner...
+DEBUG - Initializing hitlist...
+DEBUG - Initializing hitlist OK.
+DEBUG - Setting SW...
+DEBUG - Using CUDA implementation
+DEBUG - Initializing SmithWaterman.
+INFO - No gap extension penalty detected: using original PaSWAS scoring algorithm
+DEBUG - Going to initialize device... with number 0
+DEBUG - Initializing device 0
+DEBUG - Aligner initialized.
+INFO - Program set.
+DEBUG - Initializing hitlist...
+DEBUG - Initializing hitlist OK.
+INFO - Reading query sequences 0 1000000...
+DEBUG - Initializing reader
+	path = /autofs/nccs-svm1_home1/spinyfan/crd-swgpu/data/ant-500.fasta
+	limitlength = 100000...
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fasta file...
+DEBUG - 	250 sequences read.
+DEBUG - Sorting records on length...
+INFO - Query sequences OK.
+INFO - Reading target sequences 0, 100000000...
+DEBUG - Initializing reader
+	path = /autofs/nccs-svm1_home1/spinyfan/crd-swgpu/data/ant-500.fasta
+	limitlength = 100000...
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fasta file...
+DEBUG - 	250 sequences read.
+DEBUG - Sorting records on length...
+INFO - Target sequences OK.
+INFO - Processing 250- vs 500-sequences
+DEBUG - Aligner processing...
+DEBUG - At target: 0 of 500
+DEBUG - Total memory on Device: 15983.75
+DEBUG - Total memory on Device: 15983.75
+DEBUG - Initializing hitlist...
+DEBUG - Initializing hitlist OK.
+DEBUG - Clearing device memory.
+DEBUG - Total memory on Device: 15983.75
+DEBUG - Compiling cuda code.
+DEBUG - Converting score to string...
+DEBUG - Allocated: 15215.931701660156MB of memory
+DEBUG - At sequence: 0 of 250, length = 28
+DEBUG - Calculating scores.
+
+WARNING - Warning: cuCtxSynchronize failed: an illegal memory access was encountered
+Continuing calculation...
+WARNING - Warning: cuModuleGetFunction failed: an illegal memory access was encountered
+Continuing calculation...
+[In total, there are 456 cuModuleGetFunction warnings...]
+DEBUG - Performing back trace.
+ERROR - Something went wrong during traceback: cuModuleGetFunction failed: an illegal memory access was encountered...
+ERROR - cuModuleGetFunction failed: an illegal memory access was encountered
+Traceback (most recent call last):
+  File ""./implementations/warris2018/pypaswas.py"", line 11, in <module>
+    ppw.run()
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/pypaswasall.py"", line 235, in run
+    results.extend(self.program.process(query_sequences, target_sequences, self))
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/Core/Programs.py"", line 82, in process
+    results = self.smith_waterman.align_sequences(records_seqs, targets, target_index)
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/Core/SmithWaterman.py"", line 534, in align_sequences
+    self._traceback_host()
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/Core/SmithWaterman.py"", line 640, in _traceback_host
+    self._execute_traceback_kernel(number_of_blocks, idx, idy)
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/Core/SmithWatermanCuda.py"", line 266, in _execute_traceback_kernel
+    raise exception
+  File ""/autofs/nccs-svm1_home1/spinyfan/crd-swgpu/implementations/warris2018/pyPaSWAS/Core/SmithWatermanCuda.py"", line 249, in _execute_traceback_kernel
+    traceback_function = self.module.get_function(""traceback"")
+  File ""/ccs/home/spinyfan/os/anaconda3/lib/python3.5/site-packages/pycuda/compiler.py"", line 278, in get_function
+    return self.module.get_function(name)
+pycuda._driver.LogicError: cuModuleGetFunction failed: an illegal memory access was encountered
+ERROR - Something went wrong during traceback: cuModuleGetFunction failed: an illegal memory access was encountered...
+Program ended. The message was:  cuModuleGetFunction failed: an illegal memory access was encountered
+Please use the option --help for information on command line arguments.
+PyCUDA WARNING: a clean-up operation failed (dead context maybe?)
+cuMemFree failed: an illegal memory access was encountered
+[Several more of the cuMemFree warnings...]
+```
+
+I'm running with CUDA 9.0.69, Anaconda Python 3.5.5, numpy 1.14.3, biopython 1.71. The system has a Tesla P100 and 15215.931701660156MB of 15983.75MB are being allocated (maybe there's an issue with trying to allocate a millionth of a byte? ;-) )
+
+Any thoughts as to what might be going on?",r-barnes,https://github.com/swarris/pyPaSWAS/issues/6
+MDU6SXNzdWU1MTY4NDA3OTA=,Line by Line processing? ,OPEN,2019-11-03T15:02:48Z,2019-11-07T16:16:07Z,,"Hi there, 
+
+Great work! I just wonder: What would be necessary to change in the code to let it process the lines in file1 and file2 one on one instead of all against all? 
+So like: line1 is compared with line1 in the other file, line2 with line2 in the other file and so on.
+That would be really helpful! 
+",sebastian-nehrdich,https://github.com/swarris/pyPaSWAS/issues/7
+MDU6SXNzdWU1NzAyNjMwNTQ=,Is multi GPU setup possible?,OPEN,2020-02-25T02:11:49Z,2020-02-28T08:19:40Z,,"My current machine has two RTX 2080 Ti in SLI.
+When I run the command --device_type=GPU --platform_name=NVIDIA --framework=CUDA --device=1, will it only use the 2nd GPU or both?
+Is there any way to indicate in the command line for pyPaSWAS to utilize both GPUs?",JSLJ23,https://github.com/swarris/pyPaSWAS/issues/8
+I_kwDOAbUkE85G73wd,Sequence processing throws error on latest BioPython version,CLOSED,2022-04-01T17:44:37Z,2023-06-23T19:43:47Z,2023-06-23T19:43:47Z,"I was attempting to perform a pairwise alignment of a test sequence with a large dataset of FASTQ sequences when I received this error:
+
+```
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fastq file...
+ERROR - 'Seq' object has no attribute 'alphabet'
+Traceback (most recent call last):
+  File ""pyPaSWAS/pypaswas.py"", line 11, in <module>
+    ppw.run()
+  File ""/cluster/2022nkalidas/pyPaSWAS/pyPaSWAS/pypaswasall.py"", line 207, in run
+    query_sequences = self._get_query_sequences(self.arguments[0], start=query_start, end=query_end)
+  File ""/cluster/2022nkalidas/pyPaSWAS/pyPaSWAS/pypaswasall.py"", line 104, in _get_query_sequences
+    reader.read_records(start,end)
+  File ""/cluster/2022nkalidas/pyPaSWAS/pyPaSWAS/Core/Readers.py"", line 105, in read_records
+    self.records = [SWSeqRecord(Seq(str(record.seq), record.seq.alphabet),
+  File ""/cluster/2022nkalidas/pyPaSWAS/pyPaSWAS/Core/Readers.py"", line 105, in <listcomp>
+    self.records = [SWSeqRecord(Seq(str(record.seq), record.seq.alphabet),
+AttributeError: 'Seq' object has no attribute 'alphabet'
+```
+
+Here is the command I ran to produce this: ```python pyPaSWAS/pypaswas.py --filetype1=""fastq"" --filetype2=""fastq"" --device_type=GPU --platform_name=NVIDIA --framework=CUDA --device=0 temp.fq Data/converted_data/IonXpress_018_rawlib.basecaller.fq```. It seems to be an IO-related error. If I remember correctly, sequence alphabets were deprecated on BioPython, so that may be the source of the problem. Would it be possible to update the tool to function on the latest BioPython version? Or add a new requirements.txt file or a section of the README detailing which BioPython version is required for the tool to function correctly?",nik875,https://github.com/swarris/pyPaSWAS/issues/9
+I_kwDOAbUkE85fRQ_r,Error in script: 'Seq' object has no attribute 'alphabet',CLOSED,2023-02-24T10:37:14Z,2023-06-23T07:16:02Z,2023-06-23T07:16:02Z,"I ran this command after installing Biopython.
+Since the pypaswas.py was not executable, this is the command I ran:
+
+python3 pyPaSWAS/pypaswas.py SO_11372_E13_NPC_UT_6_hr_070922_R1.fastq SO_11372_E13_NPC_UT_6_hr_070922_R2.fastq -1 fastq -2 fastq
+
+Error:
+
+Traceback (most recent call last):
+  File ""/home/ctprouser/aligner_tool/pyPaSWAS/pypaswas.py"", line 11, in <module>
+    ppw.run()
+  File ""/home/ctprouser/aligner_tool/pyPaSWAS/pyPaSWAS/pypaswasall.py"", line 207, in run
+    query_sequences = self._get_query_sequences(self.arguments[0], start=query_start, end=query_end)
+  File ""/home/ctprouser/aligner_tool/pyPaSWAS/pyPaSWAS/pypaswasall.py"", line 104, in _get_query_sequences
+    reader.read_records(start,end)
+  File ""/home/ctprouser/aligner_tool/pyPaSWAS/pyPaSWAS/Core/Readers.py"", line 105, in read_records
+    self.records = [SWSeqRecord(Seq(str(record.seq), record.seq.alphabet),
+  File ""/home/ctprouser/aligner_tool/pyPaSWAS/pyPaSWAS/Core/Readers.py"", line 105, in <listcomp>
+    self.records = [SWSeqRecord(Seq(str(record.seq), record.seq.alphabet),
+AttributeError: 'Seq' object has no attribute 'alphabet'
+
+
+I am not much of a programmer. Please debug and tell me what needs to be done to fix it?",chan-98,https://github.com/swarris/pyPaSWAS/issues/11
+I_kwDOAbUkE85141Ph,Warning: No Suitable hits produced,CLOSED,2023-11-05T15:15:46Z,2023-11-07T08:48:39Z,2023-11-07T08:48:38Z,"Hi, I am trying to run this with this command:
+`python pypaswas.py fasta1.fastq fasta1.fastq -1 fastq -o out.txt --loglevel=DEBUG`
+
+and I just got this debug. what it means by that warning?
+
+```
+INFO - Initializing application...                                                                 
+DEBUG - Initializing Score...
+DEBUG - Initializing score finished.
+DEBUG - Initializing DnaRnaScore...
+DEBUG - Creating matrix with parameters:
+                match_score: 5,
+                mismatch_score: -3,
+                gap_score: -5.0,
+                other_score: -1,
+                any_score: 0
+DEBUG - Initializing DnaRnaScore finished.
+INFO - Application initialized.
+INFO - Setting program...
+DEBUG - Initializing aligner...
+DEBUG - Initializing hitlist...
+DEBUG - Initializing hitlist OK.
+DEBUG - Setting SW...
+DEBUG - Using CUDA implementation
+DEBUG - Initializing SmithWaterman.
+INFO - No gap extension penalty detected: using original PaSWAS scoring algorithm
+DEBUG - Going to initialize device... with number 0
+DEBUG - Initializing device 0
+DEBUG - Aligner initialized.
+INFO - Program set.
+DEBUG - Initializing hitlist...
+DEBUG - Initializing hitlist OK.
+INFO - Reading query sequences 0 1000000...
+DEBUG - Initializing reader
+        path = C:\Users\ASUS\Desktop\pyPaSWAS\fasta1.fastq
+        limitlength = 100000...
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fastq file...
+DEBUG -         1 sequences read.
+DEBUG - Sorting records on length...
+INFO - Query sequences OK.
+INFO - Reading target sequences 0, 100000000...
+DEBUG - Initializing reader
+        path = C:\Users\ASUS\Desktop\pyPaSWAS\fasta1.fastq
+        limitlength = 100000...
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fasta file...
+INFO - Processing done
+INFO - Reading query sequences 1000000 2000000...
+DEBUG - Initializing reader
+        path = C:\Users\ASUS\Desktop\pyPaSWAS\fasta1.fastq
+        limitlength = 100000...
+DEBUG - Initializing reader finished.
+DEBUG - Reading from fastq file...
+INFO - Processing OK (0 hits found).
+WARNING - No suitable hits produced, exiting...
+```",lixx21,https://github.com/swarris/pyPaSWAS/issues/12

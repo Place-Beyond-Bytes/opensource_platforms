@@ -1,0 +1,492 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMTY1NTk2NDc=,Datatable cell formatting,CLOSED,2015-11-12T14:34:33Z,2015-11-26T12:33:34Z,2015-11-26T12:33:34Z,"- `1234567` should be displayed as `1,234,567`
+- `34.753257` should be displayed as `34.75`
+- there should be a function that inserts a link
+- bonus points: highlight the cell depending on whether a number is in/outside given ranges
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/1
+MDU6SXNzdWUxMTczOTQ2MTk=,Aggregation,CLOSED,2015-11-17T16:38:57Z,2015-11-26T12:35:43Z,2015-11-26T12:35:43Z,"In the long term, we should find a way to do this through the Rest API. For now, pass a list from Flask via PyMongo to the template.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/2
+MDU6SXNzdWUxMTg2NjU2MjM=,Logging,CLOSED,2015-11-24T17:41:24Z,2016-01-29T15:00:04Z,2016-01-29T15:00:04Z,"We should be able to log to a specified file, and turn stdout logging on/off. The reporting_app and rest_api should be able to log independently.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/3
+MDU6SXNzdWUxMTk1MDk3MTA=,Filtered tables,CLOSED,2015-11-30T15:01:51Z,2017-10-10T15:14:02Z,2017-10-10T15:14:01Z,"For demultiplexing, for example, we should have a summary table of all run elements that fail to meet certain thresholds.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/5
+MDU6SXNzdWUxMjE2NzQ1Mzk=,Sort the unexpected barcode table by number of read pass filter by default,CLOSED,2015-12-11T09:53:28Z,2016-01-07T15:14:06Z,2016-01-07T15:14:06Z,,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/7
+MDU6SXNzdWUxMjIwNjk4MDY=,Sorting by % mapped read or %duplicate reads stall the app,CLOSED,2015-12-14T15:49:43Z,2016-01-07T17:43:19Z,2016-01-07T17:43:19Z,,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/8
+MDU6SXNzdWUxMjI2OTU1Nzc=,Lane aggregation has inaccurate pass filter rate or coeff of variation,CLOSED,2015-12-17T09:32:22Z,2016-03-03T10:57:48Z,2016-03-03T10:57:48Z,"The pass filter rate and most other lane metrics should take all the run elements of that lane including the unknown. These  values are inaccurate because the upload omitted the unknown barcode when doing the upload.
+This has been fix in EdinburghGenomics/Analysis-Driver@6c39298a57bd29581c486662f2fde2b612b99b33
+
+However the Coeff of variation should only be calculated on the real sample ignoring the unknown barcodes. The aggregation needs a way of filtering a run element when making the calculation.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/9
+MDU6SXNzdWUxMjU0MDgzNTU=,Aggregating and dispatching post push,CLOSED,2016-01-07T14:51:33Z,2016-04-26T13:53:05Z,2016-04-26T13:53:05Z,"When data get pushed to the run_elements end point we should update the other field directly to garantee the consistency of the data across the other end points.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/11
+MDU6SXNzdWUxMjY2NTk1NDU=,Add success/failure and useable/not useable fields to run_element,CLOSED,2016-01-14T13:58:44Z,2016-01-29T15:00:04Z,2016-01-29T15:00:04Z,"Each run will be reviewed and be marked for success/failure on the LIMS.
+We need to store this state at the run_element level to allow for granular annotation.
+We need to create specific queries for sample with embedded to ignore the non useable/failed run_elements.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/12
+MDU6SXNzdWUxMzM3MzY1OTY=,Analysis-Driver 0.9.2 features,CLOSED,2016-02-15T15:08:45Z,2016-02-24T11:34:17Z,2016-02-24T11:34:17Z,"We should now add views for all the new data we're pushing from the pipeline. This includes:
+- cleaned bases
+  - we should still be able to view uncleaned bases
+- analysis driver processes
+- reviewed/useable fields in runs and samples
+- qc information
+  - freemix (from intraspecies contamination check)
+  - called vs provided gender
+  - genotype validation
+    - we'll need to do some aggregation to be compatible with datatables
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/16
+MDU6SXNzdWUxMzQxMDkzMTk=,Basic authentication,CLOSED,2016-02-16T22:04:21Z,2016-08-22T14:39:09Z,2016-08-22T14:39:09Z,"We need to implement a basic authentication method to protect our prod server, even if it mean storing authentication credential localy
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/17
+MDU6SXNzdWUxMzc2MTc0NzQ=,Reimplement aggregation,CLOSED,2016-03-01T16:16:04Z,2016-04-14T13:41:34Z,2016-04-14T13:41:34Z,"Aggregating in pure Python after filtering is starting to limit our ability to create new views. We should implement a system that is:
+1. able to filter based on aggregated values
+2. quicker than aggregating exclusively in Python
+
+Possible implementations:
+- Returning to database-side aggregation with MongoDB aggregation pipelines
+  - this would bypass most of Eve's functionality, though
+- Moving to a SQL/SQLAlchemy back end
+  - we'd need to make sure Eve-SQLAlchemy is capable of doing everything we need
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/20
+MDU6SXNzdWUxMzgxNTA3NzU=,analysis_driver_proc stage updates fail in concurrent threads,CLOSED,2016-03-03T11:23:18Z,2017-02-13T11:03:16Z,2017-02-13T11:03:16Z,"In, e.g, genotype validation (which runs in another thread), the `patch` on the proc fails with a mismatching `_etag`.
+
+Instead of having an embedded list, we should have a separate `stages` endpoint. This way, different stages can be modified concurrently.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/21
+MDU6SXNzdWUxNDQ4NzEwNTc=,Add page to show AnalysisDriver processes,CLOSED,2016-03-31T11:43:46Z,2016-05-16T15:41:04Z,2016-05-16T15:41:04Z,"Create a new page to show the AnalysisDriver processes.
+I imagine two pages: one for runs and one for samples
+Several tables per page with in order:
+- currently running
+- failed
+- finished
+- aborted
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/24
+MDU6SXNzdWUxNDc2ODU0MjE=,Remove pagination from database-side aggregation,CLOSED,2016-04-12T09:09:15Z,2016-04-29T13:31:32Z,2016-04-29T13:31:32Z,"Whenever a new page is selected in the datatable, two queries are sent to the database - one for the actual data and another to get the total document count for pagination.
+- [x] Do a single query returning unpaginated data, and let datatables use its own default pagination.
+- [x] bonus point: add an animated 'loading' icon to datatables
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/26
+MDU6SXNzdWUxNDg2OTM5OTA=,Pull and cache information from the LIMS directly,CLOSED,2016-04-15T15:38:05Z,2017-02-06T12:26:06Z,2017-02-06T12:26:05Z,"Grabbing information from the LIMS directly would be a great advantage as it would allow us to query it quickly from the REST API.
+To be fast the info will have to be cached in the database with an option to refresh the information.
+
+Example info would be:
+- the user sample id
+- the species
+- the Yield for quoted coverage
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/29
+MDU6SXNzdWUxNTUwNTU4NDY=,Event log,CLOSED,2016-05-16T15:36:22Z,2017-10-10T15:11:51Z,2017-10-10T15:11:51Z,"We are already storing the starts and ends of pipeline stages, but we should expand on this.
+
+For samples, run elements, etc., we should store review/comment dates. For this, we should have an `events` endpoint. Suggested schema:
+
+``` yaml
+events:
+    event_id: {type: 'string', unique: true}  # e.g. run_review_2016-04-14_12:00:00
+    event_type: {type: 'string'}  # e.g. 'stage start', 'run_review'
+    payload: {type: 'string'}  # e.g. 'pass'
+```
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/35
+MDU6SXNzdWUxNTYyMzAyOTQ=,display processes and stage as timeline,CLOSED,2016-05-23T08:54:32Z,2016-06-12T21:07:22Z,2016-06-12T21:07:22Z,"The template for analysis dirver process (proc_report.html) is a bit dry and would benefit from a nicer javascript display.
+Example of timeline library:
+http://visjs.org/timeline_examples.html
+nice review:
+http://okfnlabs.org/blog/2012/12/04/javascript-timeline-libaries-a-review.html
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/36
+MDU6SXNzdWUxNjM4Mjg5Mzc=,Apache support,CLOSED,2016-07-05T11:27:06Z,2016-08-22T14:39:09Z,2016-08-22T14:39:09Z,"This will make it possible to run the app through `mod_wsgi` on Apache, allowing us to run it on a default port (without :5000) and through https.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/41
+MDU6SXNzdWUxNjQwNzgyODk=,sqlite3.ProgrammingError when running reporting app and rest api on Werkzeug,CLOSED,2016-07-06T13:42:10Z,2017-11-22T16:34:49Z,2017-11-22T16:34:49Z,"The error is to do with different threads trying to use the same sqlite3 objects. This does not occur when using Tornado.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/44
+MDU6SXNzdWUxNjU3NTYzMDc=,migrate some of the aggregation to the cell formatting,CLOSED,2016-07-15T10:25:05Z,2017-11-22T16:34:49Z,2017-11-22T16:34:49Z,"The mongodb pipelines are getting quite complicated and are difficult to read.
+some of this aggregation is only done for the reporting-app's benefit.
+It would make sense to move some of this aggregation to specific column formatter.
+
+It might also be a good idea to pass a specific formatter to datatables column renderer to avoid going through every the generic formatter's if statement for every cells.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/48
+MDU6SXNzdWUxNjgyNzc3OTM=,Add fastqc to the run_element and sample end point,CLOSED,2016-07-29T08:42:48Z,2017-10-10T15:15:39Z,2017-10-10T15:15:39Z,"We need to start providing fastqc report on both the run elements and the sample end points.
+there are two options: 
+- store a link in the database and a file on the filesystem
+- store the file as a binary blob in the database
+  Once the fastq files are stored they should be added to the web app's reports.
+
+:warning: We need check how much space this will use. An early estimate tell me that it could us up to 50G per year
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/50
+MDU6SXNzdWUxNjkxODQ4OTE=,Misleading genotype/gender call comparisons,CLOSED,2016-08-03T17:15:06Z,2016-09-05T10:22:31Z,2016-09-05T10:22:31Z,"In comparison columns like gender_match and genotype_match, evaluations of `null` columns still get displayed, so genotypes are marked as matching when there's no data. It could be that things like mismatching snps are checked for thresholds even when null.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/51
+MDU6SXNzdWUxNzQ3NjIwNTk=,Move data formatting for charts from util.py to charts.js,CLOSED,2016-09-02T13:39:28Z,2016-09-23T19:58:35Z,2016-09-23T19:58:35Z,"The 'chart variables', 'run_name_to_date', 'yield_by_date' and 'sample_sequencing_metrics' functions in util.py ought to be moved to charts.js to make it possible to pass data straight to js to be parsed there.
+",katieemelianova,https://github.com/EdinburghGenomics/Reporting-App/issues/55
+MDU6SXNzdWUxNzYzMzMwMjk=,Login errors,CLOSED,2016-09-12T09:36:48Z,2016-09-13T09:19:39Z,2016-09-13T09:19:39Z,"If a user tries to revisit since the app has been restarted and has old cookies saved a `binascii.Error` ('Incorrect padding') is raised. We should add this to the caught exceptions in `check_login_token`. For the moment, clearing browser cookies for the app fixes the problem.
+
+Also if a user visits /login without any `redirect` query, a `TypeError` ('quote_from_bytes() expected bytes') is raised.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/57
+MDU6SXNzdWUxNzkxODg5MzM=,TypeError from charts.js on Safari,CLOSED,2016-09-26T10:12:38Z,2016-11-10T10:32:51Z,2016-11-10T10:32:51Z,"When navigating to the Charts page on Safari, the following Javascript error occurs:
+`TypeError: undefined is not a function (evaluating 'Array.from(new Set(runs))')`
+
+There is also no tab title or version number on the charts page - this would be fixed by going through the template rendering function defined in `reporting_app.__init__`, rather than `fl.render_template`.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/59
+MDU6SXNzdWUxNzk0MzAwMTA=,Yield Graph split  ,CLOSED,2016-09-27T08:38:28Z,2017-12-03T22:19:47Z,2017-12-03T22:19:47Z,"We would like to have the graph showing the yield  split per machine and per pooling/non pooling.
+The machine name can be extracted from the run name and the pooling/non pooling can be approximated by checking for the presence of a barcode.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/60
+MDU6SXNzdWUxODg3ODE2NjQ=,Lazy-load rest_api.limsdb,CLOSED,2016-11-11T15:16:30Z,2016-11-17T22:38:04Z,2016-11-17T22:38:04Z,"At the moment to run the Rest API even for testing, we need genologics_sql (which is a pain to install) and a valid connection to a Clarity Postgres database.
+
+Apart from being inconvenient, this is also preventing us from setting up automated integration tests for [Analysis-Driver](https://github.com/EdinburghGenomics/Analysis-Driver). We should lazy-load the Postgres connection, and possibly the `limsdb` module itself.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/65
+MDU6SXNzdWUxOTM2MzQwNTE=,New page showing the Runs in the sequencers,CLOSED,2016-12-05T22:53:58Z,2017-09-06T14:18:32Z,2017-09-06T14:18:32Z,"We will add a new page showing the runs that are currently going in the sequencers.
+The first pass solution will be to create a page  that queries the LIMS for all non completed AUTOMATED-Sequence and show the samples that are running in each ones
+To complement this we can also parse/display some information from the interop.
+This could be done by parsing the interop in python using [illuminate](https://pypi.python.org/pypi/illuminate/), wrapping around the [c++ library from illumina](https://github.com/Illumina/interop) or a [java framework](https://github.com/NKI-GCF/Metrix)
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/69
+MDU6SXNzdWUxOTQ5NTE0NDk=,New charts,CLOSED,2016-12-12T11:30:37Z,2017-12-03T22:19:29Z,2017-12-03T22:19:29Z,"Email from Javier:
+> - First graph at the top should be samples. Can you change the colours? read kind of means no good and there are repeats. Maybe instead of blue/red you can put green/orange (or any other colour combination - I'm not good at colour schemes!)
+> 
+> - Can you create a second graph with Flow cells, similar to the one you have now for samples and put in blue successful flowcells and red failed flowcells
+> 
+> - Third graph should be yield. I imagine that by usable is the amount of yield that is assigned to runs that have not failed or is this the yield associated to samples that have been reviewed and marked as usable? In any case I would suggest to make the graph stackable columns applying the percentage of usability. E.g. if in a week there is a yield of 10 Gb and useable is 80%, then in blue will be 8Gb and 2 Gb will be in red (or any other colour scheme). %Q30 it will be OK as a line as it is, but no red colour (that's good data) and make sure that the scale on the right is 100%
+> 
+> - The fourth graph will be half of the size, and in the space to the right I'll put another graph (two graphs in the same row, because there are accumulative both they lines will look better). The new graph will be accumulative number of samples - total and sequenced for the first time, so two lines. When you scroll the time bar at the bottom, can you make that both accumulative graphs are for that period only. E.g. if I select two months, the accumulative graph will show from 0 till the number of samples sequenced in those two months.
+> 
+> - What is the line that is displayed on the sliding window of the dates? ( n of samples or yield?)
+> 
+> - The table. Can this have an option that shows all the rows (i.e. <> 1 2 3 4 ... ALL)?
+> 
+> - Can be an option to export all the graphs as a single jpg or png (or one per each graph whatever is easier)? Otherwise I'll need to do screenshots. Also for the table, similarly at what you have in reports, is it possible to have an option to copy all the content of the table (which correspond to the selected days) to the clipboard?
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/71
+MDU6SXNzdWUyMDAwNTQ2Mzc=,Stages endpoint,CLOSED,2017-01-11T10:23:38Z,2017-01-19T11:47:35Z,2017-01-19T11:47:35Z,"At the moment, stages are a nested array in `analysis_driver_procs`. As we are intending to segment the pipeline, we will be making much more use of stages in the future. It would make more sense to have stages in their own endpoint so we can select and update them independently (this might also fix #21).",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/72
+MDU6SXNzdWUyMDYxOTM2NzM=,Dockerisation,CLOSED,2017-02-08T13:09:49Z,2017-02-28T11:44:53Z,2017-02-28T11:44:53Z,"With the new Lims querying and subsequent C library dependencies, installation of the app (esp. when setting up dev environments) is getting  complicated. We should allow the app to be built as a Docker image. This will include:
+
+- Dockerfile
+- entrypoint script (?)
+- reporting.yaml - supplied by the user at build time
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/82
+MDU6SXNzdWUyMDg0NTA4MjU=,Runs from LIMS not showing in page because Process's UDF are not set,CLOSED,2017-02-17T14:03:19Z,2017-03-07T10:27:18Z,2017-03-07T10:27:18Z,"The page should show the run Processes but the database query is not returning anything because the Process do not have their UDF set in the ProcessUdfView.
+I do not know if we can do much about this but am recording it here anyway.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/83
+MDU6SXNzdWUyMDk0MzAzODY=,Trending graphs,CLOSED,2017-02-22T11:45:20Z,2019-06-24T13:18:15Z,2019-06-24T13:18:15Z,"The trending graphs shown during the trending meeting should be implemented in the reporting app. (see trending meeting minutes for detail)
+### scatter plot of lanes through time
+Showing metrics such as Q30/pc pass filter/duplicate rate
+Each dot is a lane, the x axis is the date of the run and the y is a metric associated.
+Data could be filtered to show a single sequencer, multiple sequencers, single library type, multiple library types
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/85
+MDU6SXNzdWUyMTEwNDgwMjQ=,Requeue page on the reporting app,CLOSED,2017-03-01T11:04:10Z,2017-10-10T15:16:42Z,2017-10-10T15:16:42Z,Need to meet with the lab to define further that would contains,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/88
+MDU6SXNzdWUyMTYwNDUxNzI=,Stage timeline improvements,CLOSED,2017-03-22T12:28:15Z,2017-04-17T09:19:26Z,2017-04-17T09:19:26Z,"- the timeline resizes annoyingly when zooming
+- we should display the stage names all the time, not just on mouse-over
+- we should indicate when the exit status is not zero
+- a tooltip showing start/end times, exit status, etc. would be useful
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/93
+MDU6SXNzdWUyMTk4MzkwMzI=,Aggregation optimisation,CLOSED,2017-04-06T09:32:57Z,2017-10-10T15:09:07Z,2017-10-10T15:09:07Z,"Some of the aggregation endpoints are very slow, possibly due to any of:
+- lookups across different endpoints
+- not applying filters early enough
+- performing many calculations for all fields present, regardless of whether they're used
+
+This could be addressed by having a larger number of more specialised aggregation pipelines with simpler parameters, like the Lims endpoints. This way, we can perform only the calculations we need at the time.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/95
+MDU6SXNzdWUyMjE1MDc4OTg=,Javascript testing,CLOSED,2017-04-13T09:30:28Z,2017-05-03T09:48:04Z,2017-05-03T09:48:04Z,"We have a lot of Javascript here now, and none of it is tested.
+
+Node.js has a library called nodeunit, which should allow us to have automated unit tests that we can run with Travis CI:
+
+```javascript
+// test_column_formatter.js
+var nodeunit = require('nodeunit');
+var column_formatter = require('path/to/column_formatter');
+
+var test_string_formatter = function(test) {
+    test.equals(
+        column_formatter.string_formatter(13.37, {'type': 'percentage'}),
+        '<div class=""dt_cell"">13.4%</div>'
+    );
+    test.done();
+};
+nodeunit.reporters.default.run(['.']);
+```
+However, column_formatter requires humanize. This works in a web browser because two `<script>` elements source column_formatter and humanize, and they both get loaded into Javascript. In Node.js, however, we need column_formatter to import humanize itself via `require`. This doesn't work in a web browser 'as is', however it could work if we use something like Browserify. This would add a 'build' stage when deploying the app, but would help us both test and clean up our Javascript.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/97
+MDU6SXNzdWUyMjcyOTAyMjI=,Sample Processes from lims duplicated and support for in progress,CLOSED,2017-05-09T08:37:52Z,2018-02-07T14:47:37Z,2018-02-07T14:47:37Z,"The sample processes reported by the lims end point include queued processes but when they are reported they often are duplicated with 2-5 entries.
+Also at the moment when a process is in progress it is reported as queued (and duplicated many time)",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/103
+MDU6SXNzdWUyMjc2NTE0MzE=,Upgrade EGCG-Core,CLOSED,2017-05-10T11:40:10Z,2017-09-06T14:17:41Z,2017-09-06T14:17:40Z,"Reporting app uses an old version of EGCG-Core which still serialise the url manually.
+The new versions have few incompatible changes that needs to be update in Reporting App
+ - Configuration objects has `env_var` parameter
+ - api_url take only one endpoint parameter. Serialisation of parameter will be done by the ajax call directly",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/104
+MDU6SXNzdWUyMjgwMTQ2NjY=,Split web app and Rest API,OPEN,2017-05-11T14:39:04Z,2017-11-17T15:09:52Z,,"If we do this, it should be easier to update each component independently, and also version the Rest API domain for when we want to make major changes (e.g. #95). We will, however, need to find a way of sharing the functionality in `auth`.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/105
+MDU6SXNzdWUyMjk2NDQzNjk=,Docker file is not updating the Reporting app,CLOSED,2017-05-18T11:55:20Z,2017-09-06T14:13:35Z,2017-09-06T14:13:35Z,"When running reporting_app.sh, the script will fetch the latest from origin but won't actually update the code.
+We should run `git pull` instead",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/107
+MDU6SXNzdWUyNDU2Njc4Njg=,Aggregate data from used run elements,OPEN,2017-07-26T09:55:10Z,2017-08-02T15:42:54Z,,"In the sample report, there is a discrepancy between yield (calculated dynamically from usable run elements) and coverage, duplicates, etc. (calculated upon sample processing). The dynamic yield calculation is only needed for the DatasetScanner in the pipeline and is done in the run element endpoint anyway.
+
+We should have the sample report aggregate data only from the run elements in `data_source`, rather than all run elements marked usable at the time.
+
+Edit: instead of this, we should highlight instances of run element mismatching as mentioned below.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/111
+MDU6SXNzdWUyNDc0MTczMzE=,Make the Run/Sample/Project keep historical data ,OPEN,2017-08-02T14:52:19Z,2017-08-02T14:52:19Z,,"At the moment Run/Sample/Project are storing information associated with the last time they were processed.
+We should change this to make them store the metrics associated with each of their processing.
+We would merge them with Analysis driver proc and give them a uniq id.
+This is a backward incompatible change so we will have to be careful about how it is implemented and deployed.
+  ",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/112
+MDU6SXNzdWUyNDk2MDA0ODQ=,Update Eve,CLOSED,2017-08-11T10:51:29Z,2018-02-22T10:06:43Z,2017-11-22T16:34:49Z,"Eve 0.7.4 is out, and it's got a lot of cool new stuff. We should use it.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/115
+MDU6SXNzdWUyNTIyOTA0OTM=,Docker image entrypoint doesn't update the virtualenv,CLOSED,2017-08-23T13:50:35Z,2017-08-24T09:19:10Z,2017-08-24T09:19:10Z,"reporting_app.sh does a `git pull` to update the reporting app, but not a `pip install -r` to update the dependencies, resulting in an old version of egcg_core being used. This had no effect until a breaking change was introduced in #114.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/119
+MDU6SXNzdWUyNTY3ODcwMjY=,Review thresholds are not accurate,CLOSED,2017-09-11T17:45:12Z,2017-10-31T22:32:16Z,2017-10-31T22:32:16Z,"Some of our auto-review thresholds configured here are not what we have documented, e.g. Yield.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/125
+MDU6SXNzdWUyNjc2MTI1MTM=,Add schema entries for mapping stats in run elements,CLOSED,2017-10-23T10:12:29Z,2018-02-22T10:02:46Z,2017-11-06T13:27:34Z,CR359 needs new Schema entries to be added to the run element endpoint to host the metrics.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/127
+MDU6SXNzdWUyNzAxNDA5NTk=,Ignore unknown barcode when aggregating useable,CLOSED,2017-10-31T22:37:47Z,2017-11-22T16:34:49Z,2017-11-22T16:34:49Z,"When running pools in a lane some reads ends up in an pile associated with no known barcode.
+These unknown barcode cannot be used and therefore should be marked as unusable.
+When aggregating run elements containing unknown barcode we should ignore the unknown one when looking at the usable flag.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/129
+MDU6SXNzdWUyNzA0NTUxNjQ=,Add Process timeline in project page,CLOSED,2017-11-01T21:15:11Z,2018-01-17T16:20:51Z,2018-01-17T16:20:51Z,Project process should be displayed on the project page as a timeline the same way it is showed in the sample and the run.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/130
+MDU6SXNzdWUyNzE0NzcxNjY=,Expected yield in schema should be renamed,CLOSED,2017-11-06T13:36:02Z,2018-02-22T10:07:34Z,2017-11-23T14:42:24Z,"in the Schema expected_yield is actually containing the expected yield q30 from the LIMS.
+This causes confusion in other places and prevent us from adding the actual expected yield to the schema.
+We will rename
+-  `expected_yield` to `required_yield_q30`
+-  `expected_coverage` to`required_coverage`
+and add
+- `required_yield`
+
+`expected_yield` and `expected_coverage` will then be removed from the schema",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/133
+MDU6SXNzdWUyNzI0OTc5NjY=,Sample status detailed flag not working correctly,CLOSED,2017-11-09T09:43:07Z,2017-11-09T12:15:32Z,2017-11-09T12:15:32Z,"In [sample_status.py](https://github.com/EdinburghGenomics/Reporting-App/blob/master/rest_api/limsdb/queries/sample_status.py) the way the 'detailed' flag is selected does not work properly:
+
+```python
+detailed = bool(request.args.get('detailed', False))
+```
+If 'true' or 'false' is set as the detailed arg, it will always return true due to the conversion into boolean.",katieemelianova,https://github.com/EdinburghGenomics/Reporting-App/issues/136
+MDU6SXNzdWUyNzI1MDA2Nzg=,Detailed flag in sample status gives inconsistent results in some fields,CLOSED,2017-11-09T09:52:02Z,2017-11-13T09:52:51Z,2017-11-13T09:52:51Z,"In [sample_status.py](https://github.com/EdinburghGenomics/Reporting-App/blob/master/rest_api/limsdb/queries/sample_status.py) selecting (True) or deselecting (False, default) uses differing numbers of steps that have completed.
+
+The steps retrieved when the detailed option is used include steps that precede 'Receive Sample', whereas when detailed=False, Recieve Sample is the first step.
+
+Started_date uses the first step to calculate when a sample was started, wrongly assuming that sample receipt is always the first step, therefore when detailed is set to True, the started date is set to a date before sample receipt, and is therefore not accurate.
+
+This should be fixed to accurately calculate the date a sample was started on.",katieemelianova,https://github.com/EdinburghGenomics/Reporting-App/issues/137
+MDU6SXNzdWUyNzcwNjI4ODk=,Disable server side aggregation on get,CLOSED,2017-11-27T15:41:31Z,2019-03-08T14:32:42Z,2019-03-01T23:06:28Z,"Now that aggregation is triggered by database hooks, the server side aggregation post get is bringing some confusion especially in run_elements where it is enabled by default.
+Unless it is needed elsewhere,  it should be disable completely or at least not enabled by default.
+
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/142
+MDU6SXNzdWUyODI4MTg5MTA=,Speed up page load by using aggregated fields,CLOSED,2017-12-18T09:49:08Z,2018-02-22T09:56:47Z,2018-01-17T15:46:37Z,"The reporting app web pages can be quite slow to respond because of the use of the aggregation pipeline endpoints. We can now use the embedded aggregated field in each enpoint and retrieve the data we need a lot faster. 
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/144
+MDU6SXNzdWUyODU2MzY1NzQ=,New page showing multiple projects ,CLOSED,2018-01-03T09:37:39Z,2018-04-27T14:33:07Z,2018-04-27T14:33:07Z,"This new page will have the same tables as the project page but the content of the table will have multiple projects.
+
+This will probably involve changing the lims endpoints to support multiple projects in one query.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/146
+MDU6SXNzdWUyODg1NjEzMzI=,Add schema for multiple insert size type,CLOSED,2018-01-15T11:22:06Z,2018-02-12T22:46:30Z,2018-02-12T22:46:30Z,"Although we expect all the read to describe and insert by pointing toward each other it is possible that some will be oriented differently, here are the three possible categories:
+ 1. FR: (forward reverse) the reads point toward each other
+ 2. RF: (reverse forward) the reads turn their back on each other.
+ 3. TANDEM: the read faces the same direction.
+When a high enough number of read show up in category 2 or 3, the corresponding insert size is reported and will be stored.
+
+We need to add facility to store them in the schema.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/147
+MDU6SXNzdWUyOTA0NTE5ODU=,Add interop metric to lanes' schema ,CLOSED,2018-01-22T12:40:41Z,2018-02-22T14:54:21Z,2018-02-22T14:54:21Z,"The list of interop metric is stored in CR628.
+It will be stored in the lanes endpoint as follow:
+```yaml
+lanes:
+    interop:
+        metric1: float
+        metric2: float
+        metric3: float
+````",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/149
+MDU6SXNzdWUyOTMxMzcwMTI=,Split project status page,CLOSED,2018-01-31T12:17:12Z,2018-04-27T13:08:26Z,2018-04-27T13:08:26Z,"Split per 
+- project open date per year 
+- project first 3 letters
+- closed project
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/150
+MDU6SXNzdWUyOTUyODk2ODM=,fix support for resume page,CLOSED,2018-02-07T20:56:22Z,2018-02-22T10:01:01Z,2018-02-12T11:35:05Z,,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/154
+MDU6SXNzdWUyOTY2ODUzMTg=,Add bioinfo review to sample status from LIMS,CLOSED,2018-02-13T10:26:15Z,2018-08-20T19:04:09Z,2018-08-20T19:04:09Z,This new status will rely on completion for Sample review step in the LIMS,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/157
+MDU6SXNzdWUzMDE0NzU5OTM=,Cryptic error messages in actions,CLOSED,2018-03-01T16:43:08Z,2018-09-12T14:35:19Z,2018-09-12T14:35:19Z,"At the moment, if automatic sample review gets triggered with a sample ID that doesn't exist, a `500 Internal Server Error` is returned, with the logs showing something like:
+
+```
+File ""rest_api/actions/automatic_review.py"", line 172,
+    return self.reviewable_data.get('species_name')
+AttributeError: 'NoneType' object has no attribute 'get'
+```
+
+We should make the actions handle errors like this a bit more clearly, in this case returning a `400 Bad Request` with a 'missing sample ID' message.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/158
+MDU6SXNzdWUzMDU1MjExODY=,Enable datatables state save on project status page,CLOSED,2018-03-15T11:53:58Z,2018-04-19T15:20:24Z,2018-04-19T15:20:20Z,"We can enable state saving on a per data table basis using 
+https://datatables.net/examples/basic_init/state_save.html
+ ",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/159
+MDU6SXNzdWUzMDU1MjQ4MzY=,Remove samples from Invoicing column when they are in removed status,CLOSED,2018-03-15T12:05:55Z,2019-03-18T12:22:45Z,2019-03-18T12:22:45Z,"In the project status page we would like the samples that have been removed from workflow to not show up in the invoicing column.
+This sounds simple in theory but might need a bit of work on how the `project_status_definitions.yaml` file or is organised.
+We probably will need to separate the GENOTYPING status from the INVOICED so they can have slightly different behaviour.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/160
+MDU6SXNzdWUzMDcyOTUxNTE=,Review initiation in run view doesn't work,CLOSED,2018-03-21T15:30:20Z,2018-04-16T07:48:20Z,2018-04-16T07:48:19Z,"When selecting lanes to review in the single run view, the error below gets displayed. No matter how many table rows are selected, the number of samples is always reported as 1.
+
+![review_fail](https://user-images.githubusercontent.com/12951686/37719436-e94528fc-2d1c-11e8-9df9-1a54c67fd155.png)
+
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/161
+MDU6SXNzdWUzMDkyODU3NjU=,Show the pipeline instructions for the samples in project pages,CLOSED,2018-03-28T09:22:09Z,2019-03-05T11:41:45Z,2019-03-05T11:41:45Z,"The pipeline instruction is stored in the projects endpoint and specify the processing pipeline that all sample should used.
+It is set by the first sample processing in the project and ensure that all sample of a project are following the same instructions.
+We will add the pipeline name, toolset type and version from sample_pipeline in projects endpoint.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/162
+MDU6SXNzdWUzMTA3NzEwNjE=,Automatic run review reviews lanes but not run,CLOSED,2018-04-03T10:01:00Z,2018-09-12T14:35:19Z,2018-09-12T14:35:19Z,The automatic run review that is kicked off after a run finishes looks at run element metrics and reviews those. This does not tally with review procedure when individual lanes pass/fail but the entire run fails on e.g. total run yield.,katieemelianova,https://github.com/EdinburghGenomics/Reporting-App/issues/164
+MDU6SXNzdWUzMTE5NTIzMTk=,Closed projects in LIMS are missing,CLOSED,2018-04-06T12:11:44Z,2018-04-19T15:20:24Z,2018-04-19T15:20:19Z,"When projects are closed in the LIMS they are missing information on the reporting app project and sample pages.
+The project status pages is not showing the entry anymore either (this relates to #150)
+That needs to be address in the lims endoints to enable showing the closed projects with a parameter
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/165
+MDU6SXNzdWUzMTgzNjk1MzM=,Add expected yield and coverage in the project status page,CLOSED,2018-04-27T11:10:50Z,2018-08-20T19:03:57Z,2018-08-20T19:03:57Z,"Hidden by default and showing aggregated in the plate and project status
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/169
+MDU6SXNzdWUzMTg4MzIyNjM=,open project status url has changed,CLOSED,2018-04-30T09:31:45Z,2018-04-30T09:50:20Z,2018-04-30T09:50:20Z,"The url for open project status page has changed from 
+`path/project_status/` to `path/project_status`. Despite the internal consistency of the links some browsers are remembering the old path which is causing confusion.
+Changing it back should solve the issue.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/170
+MDU6SXNzdWUzMjA5Mzg1Mjg=,Add new genotyping import step as marker of genotyping,CLOSED,2018-05-07T20:08:10Z,2018-05-16T18:59:39Z,2018-05-16T18:59:39Z,"Update of the genotyping in the LIMS changed the name of the relevant step.
+Add ""QuantStudio Data Import EG 2.0"" to project_status_definitions.yaml to fix this.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/172
+MDU6SXNzdWUzMjM3NDY5NTY=,Add new data release import step as marker of project finished,CLOSED,2018-05-16T19:02:23Z,2018-05-30T19:53:43Z,2018-05-30T19:53:43Z,"Update of the genotyping in the LIMS changed the name of the relevant step.
+Add ""Data Release EG 2.0 ST"" to project_status_definitions.yaml to fix this.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/174
+MDU6SXNzdWUzMjY5NjkxMjY=,Add Phix field in schema ,CLOSED,2018-05-28T09:56:48Z,2018-05-30T19:57:25Z,2018-05-30T19:57:25Z,"And update aggregation in database hooks
+CR840
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/178
+MDU6SXNzdWUzMzI0MTUyMDQ=,Add parameter for Automatic run review,CLOSED,2018-06-14T13:57:46Z,2018-07-12T11:39:34Z,2018-07-12T11:39:33Z,"- Adapter limit at 10%
+- Change from using estimated duplicate 20% to optical duplicate 30%.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/181
+MDU6SXNzdWUzMzMwODkyODQ=,Patching a dictionary within a json update the dictionary,OPEN,2018-06-17T20:11:05Z,2018-06-17T20:11:05Z,,"When we update the results of fastqscreen from
+```json
+uniq hits: { 
+    ""Homo sapiens"": 300,
+    ""Mus musculus"": 200
+}
+```
+and the PATCH is 
+```json
+uniq hits: { 
+    ""Homo sapiens"": 400,
+    ""Canis familiaris"": 50
+}
+```
+then the results is:
+```json
+uniq hits: { 
+    ""Homo sapiens"": 400,
+    ""Canis familiaris"": 50,
+    ""Mus musculus"": 200
+}
+```
+Which seems wrong.
+We could PATCH with
+```json
+uniq hits: { 
+    ""Homo sapiens"": 400,
+    ""Canis familiaris"": 50,
+    ""Mus musculus"": 0
+}
+```
+in analysis driver to avoid the issue but that means we will have to add all the species ",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/182
+MDU6SXNzdWUzNDA1NzkzNzI=,Automatic run review metrics,CLOSED,2018-07-12T10:26:58Z,2018-09-12T14:35:19Z,2018-09-12T14:35:19Z,"Automatic run review metrics update: fail when any is true
+ - Optical duplicate > 30%
+ - Adapter content > 10%
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/183
+MDU6SXNzdWUzNDY5NDc5Njg=,Add genome end point,CLOSED,2018-08-02T10:14:26Z,2018-11-30T14:41:11Z,2018-11-30T14:41:11Z,"It should contain the following information:
+- assembly name
+- date downloaded
+- link
+- organism
+- species taxid
+- analysis supported
+- comment",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/184
+MDU6SXNzdWUzNTAzNjMwMzI=,Add new column with genome version used in Sample view,CLOSED,2018-08-14T10:09:09Z,2019-03-28T15:49:25Z,2019-03-05T11:41:45Z,genome version used should be stored in Analysis_driver process alongside the rest of the pipeline information.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/185
+MDU6SXNzdWUzNTM4NDAzOTY=,Check sample processing source with current useable run element,CLOSED,2018-08-24T15:59:23Z,2018-09-18T13:13:05Z,2018-09-18T13:13:05Z,Highlight the sample where the data source is different from the currently useable samples.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/187
+MDU6SXNzdWUzNjAwMTc5MTE=,All samples pages has a max number of sample of 15000,OPEN,2018-09-13T18:42:28Z,2018-09-13T18:42:28Z,,"When the database will have more than 15000 samples, we will have to increase the `max_results` parameter again.
+We could either enable pagination again of limit the samples to specify time period (per year for example).",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/189
+MDU6SXNzdWUzNjEzMDAxNDI=,Sample Automatic review is comparing bases with Gbases,CLOSED,2018-09-18T13:17:58Z,2018-09-18T13:58:52Z,2018-09-18T13:58:52Z,"The usage of the `eve` endpoint in place of the `aggregate` endpoint for sample made available to the 
+[required_yield](https://github.com/EdinburghGenomics/Reporting-App/blob/master/rest_api/actions/automatic_review.py#L239) and [required_yield_q30](https://github.com/EdinburghGenomics/Reporting-App/blob/d0b88f95cb314d857c3934d39598d59613ffa391/rest_api/actions/automatic_review.py#L233)
+That were not available before.
+Theses values are provided in bases and the values they're compared to are provided in Gbases making all samples fail review.
+
+
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/190
+MDU6SXNzdWUzNjMxMzc0MzU=,Sample status removed after Awaiting User Response EG 2.0,CLOSED,2018-09-24T13:05:06Z,2018-11-19T10:09:36Z,2018-10-24T15:39:45Z,"completion of Awaiting User Response EG 2.0 --> status removed
+
+
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/192
+MDU6SXNzdWUzNjQ5MTkxMDE=,Add genome version used in the sample view,CLOSED,2018-09-28T14:42:02Z,2018-10-24T15:58:55Z,2018-10-24T15:58:55Z,"Genome version used needs to be stored in the analysis_driver_procs.
+The genome version will be displayed in the sample view.
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/193
+MDU6SXNzdWUzNjc3MDUzOTk=,Automatic lane review change threshold ,CLOSED,2018-10-08T09:29:08Z,2018-11-15T13:42:24Z,2018-11-15T13:42:24Z,The compound formula `compound_yield_adapter_duplicates` should use the real duplicate rather than only the optical duplicates and set the threshold at 96 instead of 95.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/194
+MDU6SXNzdWUzNjkxNDE1MTE=,LIMS Steps in progress are not considered for the sample status,CLOSED,2018-10-11T14:12:29Z,2019-03-01T11:04:42Z,2019-02-06T14:54:57Z,When constructing the sample status the LIMS step in progress should  be considered the same way as the queued one.,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/195
+MDU6SXNzdWUzNzA1Njc0NTI=,Required yield calculations,CLOSED,2018-10-16T11:33:28Z,2018-11-30T14:41:12Z,2018-11-30T14:41:12Z,"We should add yield calculations in either the species table, a single separate table, or one per species.
+
+At the moment, we have a document where exact required yield is calculated from the required coverage and genome size. This is then rounded up to the nearest available yield we can provide on the HiSeqX. If required, we can then go to yield for quoted coverage using a set of documented figures.
+
+The logic could be in server side aggregation or client-side datatable calculations.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/196
+MDU6SXNzdWUzNzA2NDA4NDI=,picard Markduplicate reports inacurate optical duplicate,CLOSED,2018-10-16T14:27:53Z,2018-10-16T15:30:58Z,2018-10-16T15:30:58Z,We need to update to the newer version of Picard as it seems a lot more accurate especially when the PCR duplicate rate is high. ,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/197
+MDU6SXNzdWUzNzE5NDQxODE=,Change definition of sample finished date,CLOSED,2018-10-19T12:51:17Z,2018-11-19T09:56:36Z,2018-11-19T09:56:35Z,"Finished date is the date of the status if the current status is finished.
+We should change this definition to the first time a sample gets the finished status. ",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/198
+MDU6SXNzdWUzNzM4NjA4MTA=,Remove active_runs from the column_mappings.yaml,CLOSED,2018-10-25T09:43:06Z,2019-01-11T11:29:53Z,2019-01-11T11:29:53Z,,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/202
+MDU6SXNzdWUzNzU1ODY4MzU=,Nb Sample received is not showing in the project status,CLOSED,2018-10-30T16:42:01Z,2018-11-20T16:35:24Z,2018-11-20T16:35:24Z,"The number of sample received from the LIMS is not showing on the project status
+That is due to the column mappings 
+https://github.com/EdinburghGenomics/Reporting-App/blob/68abdb8627df34af30fdcc1b746499de059adfde/etc/column_mappings.yaml#L44
+
+
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/203
+MDU6SXNzdWUzODQyOTI4MDg=,Rename 'gender validation' to 'sex validation',CLOSED,2018-11-26T11:42:34Z,2019-06-24T13:18:02Z,2019-06-24T13:18:01Z,"Because gender != sex. See also:
+
+- EdinburghGenomics/EGCG-Core#104
+- EdinburghGenomics/Analysis-Driver#398
+- EdinburghGenomics/clarity_scripts#96
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/205
+MDU6SXNzdWUzODYyMzcwMDc=,Single item in project status page are not showing as number.,CLOSED,2018-11-30T15:36:39Z,2018-11-30T16:20:53Z,2018-11-30T16:20:53Z,In the project status lines the cell where only one sample appears show the sample name where they should show a 1 with a box and a link. ,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/206
+MDU6SXNzdWUzODY3NzgzNTc=,JS link formatter returns undefined,CLOSED,2018-12-03T11:38:00Z,2019-01-23T11:29:26Z,2019-01-23T11:29:26Z,"Run ids in sample page shows undefined in some case.
+I suspect that the string formatter with a link format can't process empty arrays.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/208
+MDU6SXNzdWUzOTg4NjIxOTQ=,Remove automatic run review thresholds,CLOSED,2019-01-14T12:13:15Z,2019-03-28T11:52:47Z,2019-03-28T11:52:47Z,"The automatic run review (as opposed to lane review) is causing more grief than it help.
+We should remove the threshold and associated code.
+Lane review should be unchanged",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/210
+MDU6SXNzdWUzOTkyOTc5MzE=,Get historical status based on provided date,CLOSED,2019-01-15T11:14:57Z,2019-03-19T10:09:26Z,2019-03-19T10:09:26Z,"The sample/project status relies on the set of LIMS steps finished at the time of the query.
+It should be possible to calculate the status at previous time points by limiting the steps finished to before this time.
+Aggregation would work exactly the same.
+Display of the project status in the reporting app could be:
+ - as a separate project status page.
+ - as coloring for the cells that have not changed since the last time point.
+
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/211
+MDU6SXNzdWU0MTAyNTk0MDA=,New page for samples that have not started processing,CLOSED,2019-02-14T11:40:54Z,2019-05-23T13:46:43Z,2019-05-23T13:46:43Z,"Occasionally, run elements might be marked as useable but sample processing does not start, as the combination of run elements for that sample do not exceed quality thresholds. A new page would list samples which are not being processed for this reason.",lukbut,https://github.com/EdinburghGenomics/Reporting-App/issues/213
+MDU6SXNzdWU0MTI0NzE5MDg=,require Yield q30  is not being populated in the LIMS ,CLOSED,2019-02-20T15:03:08Z,2019-02-20T15:42:39Z,2019-02-20T15:42:39Z,This means we can't rely on it in the automatic review or elsewhere in the code,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/215
+MDU6SXNzdWU0MjQ4MDQwMDA=,Library prep table and graph,CLOSED,2019-03-25T09:39:11Z,2019-06-24T13:17:50Z,2019-06-24T13:17:50Z,"We'd like to be able to display the library preparation performed in the lab and get some meaningful information about them.
+The would be:
+ - list the library preparation with some metadata associated (date, type, nb of sample, projects)
+ - have a page per library prep with list of sample and their position
+ - plate view (heatmap) of the library prep with possibility of displaying specific QC metric such as adapter rate, duplicate rate, insert size, etc
+
+couple of points:
+ - Define a library prep between its start point (Create CFP Batch) to finish (Eval qPCR Quant)
+ - multiple instances of start or finish step for the same plate name should be reduced to single instance
+ - association between library and QC is done via sample name (no explicit support for library repeat)
+ - possible to segregate sequencing QC data associated with multiple library per date (assumes that only the newest library has been sequenced)
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/222
+MDU6SXNzdWU0MjYzOTQxNTY=,Rename 'Gender' to 'Sex' in UI columns,CLOSED,2019-03-28T09:45:56Z,2019-03-28T09:59:48Z,2019-03-28T09:46:00Z,This was closed in #220.,mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/223
+MDU6SXNzdWU0MjgxODE0Mzg=,Project status last updated,CLOSED,2019-04-02T11:49:55Z,2019-06-10T15:11:25Z,2019-06-10T15:11:25Z,"Add in the project/plate status a `last_update_date` field which will be the most recent change to the sample with this status.
+In the project status web page background colour the cells where the `last_update_date` field is more than 1, 2  and 4 weeks.
+this will not apply to the finished and removed status.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/225
+MDU6SXNzdWU0MzYyMTIwNzk=,Optimise the inclusion of JavaScript files,OPEN,2019-04-23T14:14:20Z,2019-04-23T14:14:20Z,,"Establish a best practice for including JavaScript files, and convert existing uses of such files to this new best practice.",lukbut,https://github.com/EdinburghGenomics/Reporting-App/issues/228
+MDU6SXNzdWU0MzY1Njc1MTU=,Update schema for rapid processing,CLOSED,2019-04-24T08:37:55Z,2019-05-23T09:07:42Z,2019-05-23T09:07:42Z,Add field required for EdinburghGenomics/Analysis-Driver#372,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/229
+MDU6SXNzdWU0MzY1NjgzODA=,Update schema for GATK4 pipelines ,CLOSED,2019-04-24T08:39:51Z,2019-05-13T13:23:53Z,2019-05-13T13:23:53Z,the genomes endpoint needs new entries to support the new GATK4 pipeline. Add fields required by https://github.com/EdinburghGenomics/Analysis-Driver/issues/377,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/230
+MDU6SXNzdWU0MzcyMTA2OTk=,project_status_definitions.yaml should be renamed ,OPEN,2019-04-25T13:50:09Z,2019-04-25T13:50:09Z,,project_status_definitions.yaml contains definition from multiple places in the LIMS and should be renamed accordingly,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/232
+MDU6SXNzdWU0NDM4MzI4Njk=,Library summary table,CLOSED,2019-05-14T10:21:34Z,2019-09-30T07:34:03Z,2019-09-30T07:34:03Z,"We want to add a datatable to the library view (#231), summarising all metrics.
+
+Ideally this would be done using the data already loaded, but at the moment datatables are built server/template side and are hard-coded to load from a new Ajax query. There are some cleanup tasks on the back of this:
+
+- Allow the table to load from Ajax or a JS object
+- Probably look at updating Datatables
+- I'm fed up of defining columns in the template - we should do it in JS
+- There's probably a better way of passing the auth token to the client
+",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/234
+MDU6SXNzdWU0NDQwMDc2Mzk=,Samples without a qualifying status appear as submitted today,OPEN,2019-05-14T16:19:55Z,2019-05-14T16:19:55Z,,"When a sample does not yet have a status which allows it to be classified in a status category, the default status is ""sample submitted"", with today's date. This is inaccurate, and should instead be the sample created date. This creation date needs to be loaded from the database as an additional field, and then loaded in SampleInfo. It should replace the datetime.now() present in data_models.py line 134.",lukbut,https://github.com/EdinburghGenomics/Reporting-App/issues/235
+MDU6SXNzdWU0NDU0MTA5MzM=,"Change Lims status ""repeat"" to ""replace""",CLOSED,2019-05-17T12:09:37Z,2019-09-30T07:33:48Z,2019-09-30T07:33:48Z,"Change the Lims status ""repeat"" to ""replace"". This means it is easier to copy and paste a list of sample statuses into a communication with a customer.",EGCGDanForth,https://github.com/EdinburghGenomics/Reporting-App/issues/236
+MDU6SXNzdWU0NDgxMTQzODU=,Add steps to transition to Sample QC/Library Prep/Library Queue,CLOSED,2019-05-24T11:12:11Z,2019-05-31T11:46:37Z,2019-05-31T11:46:37Z,"`Manifest Parsing EG 1.0 ST` should be added to transition to sample QC
+`KAPA Make Normalised CFP EG 1.0 ST`  should be added to transition to Library prep
+`KAPA QC Review EG 1.0 ST`  should be added to transition to Sequencing queue
+",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/238
+MDU6SXNzdWU0NDkyMDg4OTY=,Identify usage instances of legacy project_status endpoint format and upgrade them ,OPEN,2019-05-28T11:11:59Z,2019-05-28T11:13:23Z,,"A newer project_status endpoint format section was introduced in #225 which contains the status and associated last modified date and samples. The new format section is defined below:
+
+```
+...
+""status"": {
+            ""<status_name>"": {  ""samples"": [<list of sample names>],
+                                              ""last_modified_date"": <date>
+                                            }
+            ...
+}
+...
+```
+
+All existing uses of the previous format, defined below, need to be changed to use the newer format section. The legacy API endpoint format can then be retired.
+
+`...
+""<status_name>"": [<list of sample names>]
+...
+`",lukbut,https://github.com/EdinburghGenomics/Reporting-App/issues/240
+MDU6SXNzdWU0NDkyMTA4MzU=,Refactor string_formatter(),OPEN,2019-05-28T11:16:29Z,2019-05-28T11:16:50Z,,"The string formatter function in `column_formatter.js` is currently considerably long and performs multiple tasks. The function can be refactored to made it more cohesive and focused, with a clearer scope. The existing functionality can be split into separate functions. ",lukbut,https://github.com/EdinburghGenomics/Reporting-App/issues/241
+MDU6SXNzdWU0Nzk1NjY2ODM=,Genotyping view,CLOSED,2019-08-12T10:13:04Z,2019-09-30T07:34:00Z,2019-09-30T07:34:00Z,Similar to Library view we want a genotyping view to be available to the reporting app,tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/246
+MDU6SXNzdWU0ODg1MTQ2ODE=,Pipeline trending,OPEN,2019-09-03T10:11:45Z,2019-09-03T10:11:45Z,,"How busy was our bioinformatics processing on a particular day? Let's find out! See EdinburghGenomics/Analysis-Driver#395
+
+Possible implementations:
+- Vis.js timeline - would need to be careful to avoid exploding the page
+- Line graph of number of pipelines/stages against time - doesn't say exactly what was running
+- Some kind of combination of both
+
+Our vis timelines also don't currently load AJAX data - we can fix this while we're at it.",mwhamgenomics,https://github.com/EdinburghGenomics/Reporting-App/issues/250
+MDU6SXNzdWU0OTAyODM4ODU=,Add samplesheet information to run_status endpoint ,CLOSED,2019-09-06T11:47:18Z,2019-09-30T13:37:36Z,2019-09-30T13:37:36Z,"The samplesheet information can be found in the LIMS REST API but it could also be provided on the run status.
+Add information to the `lims/run_status` end point so it can be queries from our REST API.",tcezard,https://github.com/EdinburghGenomics/Reporting-App/issues/251

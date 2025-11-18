@@ -1,0 +1,22 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2MjAyNDk0NTE=,FH and TSC pipelines have diverged,CLOSED,2020-05-18T14:20:06Z,2020-06-12T14:08:01Z,2020-06-12T14:08:00Z,"*Copy of issue 16 from original GermlineEnrichment pipeline - https://github.com/AWGL/GermlineEnrichment/issues/16*
+
+FH is running v2.5.6, TSC on v2.5.3
+(TSO is no longer run on GE, it runs on DragenGE instead)
+
+Short term solution:
+GermlineEnrichment pipelines to be split, one for TSC and one for FH.
+
+This isn't ideal due to replication of code, but it is unlikely that there will need to be changes to the main pipeline, and it is only until the long term solution is in place
+
+Long term solution
+Dragen and GATK are soon releasing an open-source update to the GATK pipeline, which will be functionally equivelent to the Dragen pipeline - https://gatk.broadinstitute.org/hc/en-us/articles/360039984151-DRAGEN-GATK-Update-Let-s-get-more-specific.
+
+We will adopt the Dragen-GATK pipeline when it is released and turn the FH and TSC specific parts of this pipeline into a preprocessing script that runs after the Dragen-GATK pipeline.
+
+That way, all panels will initially go through the same pipeline, on either the Dragen or the cluster, but split into seperate proprocessing scripts for panel specific analysis afterwards (in the same way DragenGE is set up now)",erikwaskiewicz,https://github.com/AWGL/GermlineEnrichment_TSC/issues/1
+MDU6SXNzdWU2NDQ2OTY5MjU=,Bug when labeling CNVs with gene name,OPEN,2020-06-24T15:13:06Z,2020-06-24T15:13:06Z,,"When the CNV report is being generated, `generateCnvReport.R` looks up each CNV and any genes from the `hotspot_coverage` folder which overlap with the CNV are labelled in a new column.
+
+It look like there is a bug in here that overwrites the last entry if there are more than one genes within the CNV, so only the last gene hit is kept, somewhere around this region of the code - https://github.com/AWGL/GermlineEnrichment_TSC/blob/6cdeaab0b2819f6fb00315117969689b4b2661c7/generateCnvReport.R#L139
+
+This script has been replaced with a Python version in GE v2.5.6, so it might already be fixed in that",erikwaskiewicz,https://github.com/AWGL/GermlineEnrichment_TSC/issues/3

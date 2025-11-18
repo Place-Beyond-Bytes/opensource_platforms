@@ -1,0 +1,126 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1MTg2MDgxMjM=,Typo in line 156,CLOSED,2019-11-06T17:06:14Z,2019-11-18T03:04:34Z,2019-11-18T03:04:34Z,"Hi Dylan,
+
+I'm here to inform you there is a typo in the `sgRNA_design()`. On line 156, it reads `Efficency_score`, but this should read `Efficiency_score`. There were some other minor quirks that I had to manually change in the function, but that might as well have been product of my own tinkering around with the code.",mroorda,https://github.com/dylanbeeber/crispRdesignR/issues/1
+MDU6SXNzdWU1MTg2MTA1NTA=,Names attribute not as long as names vector,CLOSED,2019-11-06T17:10:35Z,2019-11-18T03:05:31Z,2019-11-18T03:05:31Z,"Hi Dylan,
+
+Again here to point out that in `getsgRNAdata`, the frame you make has 14 columns, but the vector with column names contains 15 strings. ",mroorda,https://github.com/dylanbeeber/crispRdesignR/issues/2
+MDU6SXNzdWU2MjIzNjY1MTM=,sgRNA design for Campylobacter genome,OPEN,2020-05-21T09:16:18Z,2021-12-21T22:20:16Z,,"Hi,
+
+  I am trying to design sgRNA for campylobacter, but realised the campylobacter genome sequence is not available in the shiny app. Is there a way to upload my own genome sequence into the app? 
+
+  best wishes,
+
+  Stephen ",StephenLi55,https://github.com/dylanbeeber/crispRdesignR/issues/3
+I_kwDOCA9BI84850Ly,Calculating on- and off-target scores of my own sgRNA,CLOSED,2021-10-09T19:37:59Z,2021-10-15T22:54:22Z,2021-10-15T22:54:22Z,"Hello,
+
+I was wondering if I can use your tool to calculate the on- and off-target scores of sgRNAs that I have instead of those that are selected by this tool. For example, I have a screen that used the Gecko V2 sgRNA library, and I would like to know which guides might have lower efficiency scores (as determined by the on- & off- target scores). 
+
+Thank you,
+Yuka",ytakemon,https://github.com/dylanbeeber/crispRdesignR/issues/4
+I_kwDOCA9BI84-9ns9,No sgRNA were generated from sequence,CLOSED,2021-11-17T16:37:40Z,2021-12-09T15:50:56Z,2021-12-09T15:50:56Z,"I have tried and tested multiple different sequences, all of which give me this error ""No sgRNA were generated from sequence"".
+
+Is this a user error? or some thing I missed in setup?",JAMKuttan,https://github.com/dylanbeeber/crispRdesignR/issues/5
+I_kwDOCA9BI85AHlUr," Error in fromXStringViewsToStringSet(x, out.of.limits = out.of.limits,  :     'x' has ""out of limits"" views   Calls: sgRNA_design ... as.character -> .local -> fromXStringViewsToStringSet   Execution halted",CLOSED,2021-12-09T15:54:00Z,2022-07-14T14:25:32Z,2022-07-14T14:25:32Z,"Is there a way to set the set check.limits=FALSE when you call this function from BioStrings....
+
+Method(""as.character"", ""XStringViews"",
+    function(x, use.names=TRUE, check.limits=TRUE)
+    {
+        if (!isTRUEorFALSE(check.limits))
+            stop(""'check.limits' must be TRUE or FALSE"")
+        if (check.limits)
+            out.of.limits <- ""error""
+        else
+            out.of.limits <- ""warning""
+        y <- fromXStringViewsToStringSet(x, out.of.limits=out.of.limits,
+                                         use.names=use.names)
+        as.character(y)
+    }
+)
+
+
+I believe this will allow for automatic trimming if desired.
+""as.character(x, use.names=TRUE, check.limits=TRUE): Converts x to a character vector of the same length as x. The use.names argument controls whether or not names(x) should be propagated to the names of the returned vector. The check.limits argument controls whether or not an error should be raised if x has ""out of limit"" views. If check.limits is FALSE then ""out of limit"" views are trimmed with a warning.""
+Right now it just errors out with this statement....
+"""""" Error in fromXStringViewsToStringSet(x, out.of.limits = out.of.limits,  :
+    'x' has ""out of limits"" views
+  Calls: sgRNA_design ... as.character -> .local -> fromXStringViewsToStringSet
+  Execution halted""""""",JAMKuttan,https://github.com/dylanbeeber/crispRdesignR/issues/6
+I_kwDOCA9BI85QjS6Q,Version Testing,OPEN,2022-08-25T20:43:29Z,2022-08-25T20:43:29Z,,Really love the tool. I can confirm that it works on R 4.2.1. ,JAMKuttan,https://github.com/dylanbeeber/crispRdesignR/issues/7
+I_kwDOCA9BI85RTLMs,Scoring and MM calculation error,OPEN,2022-09-07T01:43:35Z,2022-09-07T02:15:55Z,,"Hi,
+
+When I do the gRNA design for short sequence where only 2-3 gRNA exist, it worked very well. However, when I increased the input sequence length and there were 19 gRNA, the scores and the number of MM 0-4 all become abnormal. May I know how should I fix it? 
+
+Below is the code:
+
+input_seq1<-""GTACAAGAACTCGGATAATGATAAAGTCCAGAAGTGCAGCCACTATCTATTCTCTGAAGAAATCACTTCTGGCTGTCAGTTGCAAAAAAAGGAGATCCACCTCTACCAAACATTTGTTGTTCAGCTCCAGGACCCACGGGAACCCAGGAGACAGGCCACACAGATGCTAAAACTGCAGAATCTGG""
+
+input_genome<-BSgenome.Hsapiens.UCSC.hg19
+input_gtf<-""hg19.refGene.gtf""
+
+test_gRNA_search<-sgRNA_design(input_seq1, input_genome, 
+                               input_gtf, ""NGG"", calloffs = TRUE, annotateoffs = TRUE)
+
+",lzcode1991,https://github.com/dylanbeeber/crispRdesignR/issues/8
+I_kwDOCA9BI85SdeE3,How to use a custom de novo assembled transcriptome for guid RNA design ,OPEN,2022-09-23T08:22:17Z,2022-09-23T08:22:17Z,,"Hi there, 
+I only have a de novo assembled transcriptome of a plant species, and that is the only information is available.
+I have identified the target gene from the transcriptome, and now I would like to design guide RNA for editing. Wounding if I could still use crispRdesign for designing guide RNA? If yes, could you please explain how.
+
+Thanks ",Ram-Nagar,https://github.com/dylanbeeber/crispRdesignR/issues/9
+I_kwDOCA9BI85UVTJi,Failure with dev stringr,CLOSED,2022-10-19T12:17:56Z,2023-03-31T14:57:30Z,2023-03-31T14:57:29Z,"In my checks, I see:
+
+```
+> ## Quick example without off-target searching or annotation
+> ## First generate data with the sgRNA_Design Function
+> testseq <- ""GGCAGAGCTTCGTATGTCGGCGATTCATCTCAAGTAGAAGATCCTGGTGCAGTAGG""
+> usergenome <- ""placeholder""
+> gtfname <- ""placeholder""
+> alldata <- sgRNA_design(testseq, usergenome, gtfname, calloffs = FALSE)
+Searching sequence for possible target sites
+Error in `stringr::str_replace_all()`:
+! `string` must be a vector, not a <DNAString> object.
+```
+
+Because stringr now requires vector inputs. You can fix this problem by calling `as.character()` on the DNAString object.",hadley,https://github.com/dylanbeeber/crispRdesignR/issues/10
+I_kwDOCA9BI85VZk8p,GUI is disappearing ,OPEN,2022-11-02T09:14:36Z,2022-11-02T09:14:36Z,,"Sir, 
+I am using CrispRdesignR for Cicer arietinum (Chickpea) and i have prepared genome and GTF file and forged using Bsgenome forge.
+
+I have given 250 nt long sequence as input and ran the tool. GUI is disappearing in less than a minute without displaying the output. 
+
+I could get out in R as follows
+
+Warning in if ((installed_genomes == ""no_genomes_installed"") & (callofftargets ==  :
+  the condition has length > 1 and only the first element will be used
+Warning in readGFF(filepath, version = version, filter = filter) :
+  the value part of some of the tag value pairs contains embedded double-quotes
+Warning: Error in +: non-numeric argument to binary operator
+  2: shiny::runApp
+  1: crispRdesignRUI
+
+where the problem lies?.",shanmugavadivelps,https://github.com/dylanbeeber/crispRdesignR/issues/11
+I_kwDOCA9BI85WjZ_T,Question regarding Off target searching ,CLOSED,2022-11-16T19:01:02Z,2022-11-16T20:03:01Z,2022-11-16T20:03:01Z,,michaelcvermeulen,https://github.com/dylanbeeber/crispRdesignR/issues/12
+I_kwDOCA9BI85ZQRqB,Stringr Error,CLOSED,2022-12-14T21:37:53Z,2023-03-31T14:55:11Z,2023-03-31T14:55:11Z,"I am running in to this error while testing with provided data and conditions.
+
+Error in stringr::str_replace_all: `string` must be a vector, not a <DNAString> object.",pablasimarjot,https://github.com/dylanbeeber/crispRdesignR/issues/13
+I_kwDOCA9BI851qQXp,Error in .replace_seqlevels_style,OPEN,2023-11-02T11:05:45Z,2024-02-09T09:18:34Z,,"Hello, 
+
+First of all, thank you for your tool it is very usefull. I am trying to use it for a custom genome. I build the necessary BSgenome library and install my genome successfully. 
+
+I success also to install and launch crispRdesignR GUI Shiny app and launch the sgRNA desing and off-target assessment. Unfortunatly at the and of the computing the app become grey and it blocked without producing the off-target output file. 
+
+Below you have the terminal showed error: 
+
+```bash
+> crispRdesignRUI()
+Le chargement a nécessité le package : shiny
+
+Listening on http://127.0.0.1:3591
+
+Avis : Error in .replace_seqlevels_style: found no sequence renaming map compatible with seqname style ""UCSC"" for this object
+  2: shiny::runApp
+  1: crispRdesignRUI
+```
+
+Do you have any idea what I am doing wrong ? Tell me if you need more specific informations.
+
+Thank in advance for your help",El-Castor,https://github.com/dylanbeeber/crispRdesignR/issues/14

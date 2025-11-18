@@ -1,0 +1,48 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3OTE5Njk5NzU=,python: can't open file 'update_rsID_bim_ega.py': [Errno 2] No such file or directory,OPEN,2021-01-22T12:33:40Z,2021-01-22T12:33:40Z,,"Dear Dr Atkinson,
+
+Thank you for providing the code to execute LAI prior to Tractor. 
+
+When exectuing the CohortDataQC_final.sh script I've this error :
+
+`python: can't open file 'update_rsID_bim_ega.py': [Errno 2] No such file or directory`
+
+In the files listed on the github there is no `update_rsID_bim_ega.py` file. There is `update_rsID_bim_arg.py` instead.
+
+Also it seems to be python2 and not python3.
+
+After updating the path to the python script in CohortDataQC_final.sh and forcing the script to use python2, the script is now working well ;)",nrosewick,https://github.com/Atkinson-Lab/Post-QC/issues/1
+I_kwDOB2YEiM5C1IVs,Reference Files / Memory Intensive Processes,CLOSED,2022-02-01T21:35:53Z,2022-02-22T08:54:11Z,2022-02-22T08:54:11Z,"It is unclear exactly what exact reference file one should use when running this process. For that reason, I have obtained reference files as follows:
+1. dbSNP144 bed file (doesn't exist on NCBI's site, had to make my own):
+```
+# Get dbSNP 144
+cd ${RF}/dbSNP144
+wget  'https://ftp.ncbi.nlm.nih.gov/snp/organisms/archive/human_9606_b144_GRCh37p13/VCF/00-All.vcf.gz' \
+    --output-document=dbSNP144.vcf.gz 
+gzip -d dbSNP144.vcf.gz
+
+# using bedops/2.4.30
+vcf2bed < dbSNP144.vcf > dbSNP144.bed
+```
+2. 1000Gp3hg37 Legend file (had to generate my own):
+```
+# Get 1000Gp3hg37
+cd ${RF}/1000Gp3hg37
+wget  'https://mathgen.stats.ox.ac.uk/impute/1000GP_Phase3.tgz' \
+    --output-document=1000GP_Phase3_hg19.tgz
+
+gunzip -c 1000GP_Phase3_hg19.tgz | tar xvf -
+
+gunzip -d 1000GP_Phase3/*.legend.gz
+
+awk 'FNR==1 && NR!=1{next;}{print}' \
+    1000GP_Phase3/1000GP_Phase3_*.legend > \
+    1000GP_Phase3_Combined.legend
+```
+However, the resulting files are pretty massive:
+**dbSNP144.bed**: 148,280,377 lines; 26GB
+**1000GP_Phase3_Combined.legend**: 81,706,023 lines; 9GB
+
+This gets script killed with out-of-memory error, even when ran on cluster with 90GB memory allocation. 
+
+Is there a better source for reference files, or a way these could be processed to reduce their size and memory requirements?",FranjoIM,https://github.com/Atkinson-Lab/Post-QC/issues/2

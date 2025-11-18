@@ -1,0 +1,92 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4NTI0OTU2OTI=,MultiGPS is freezing,OPEN,2021-04-07T14:54:14Z,2021-04-08T17:33:30Z,,"Hi, 
+
+I am trying to use MultiGPS to analyze ChIPseq data, 3 replicates and 2 conditions. It loads the pair-end bam files well, but keep freezing for ever at Round 0.
+
+Input:
+-Pair-end bam file (bowtie2 aligned on Drosophila dm6 reference)
+
+Software:
+-multigps_v0.75.jar
+-R version 3.6.1 (2019-07-05)
+-Java version ""1.8.0_192""
+-MacOS v10.13.6 (High Sierra)
+
+Hardware:
+-Intel Core i5, 3.4 GHz, 4 cores
+-Memory: 32 GB
+
+Command line:
+java -Xmx20G -jar /Applications/bio_info_tools/multigps_v0.75.jar -out MultiGPS_DamID_ --geninfo /Users/tlucas/Desktop/MULTIGPS/dm6.chrom_Edited.size.genome.sizes --design /Users/tlucas/Desktop/MULTIGPS/Design.txt --nomotifs
+MultiGPS version 0.75
+
+
+_No genome sequence data was provided with --seq, so motif-finding and the motif prior are switched off.
+Processing HitLoaders for:	EARLY	1
+Processing HitLoaders for:	EARLY	2
+Processing HitLoaders for:	EARLY	3
+Processing HitLoaders for:	EARLY	1
+Processing HitLoaders for:	EARLY	2
+Processing HitLoaders for:	EARLY	3
+Processing HitLoaders for:	LATE	1
+Processing HitLoaders for:	LATE	2
+Processing HitLoaders for:	LATE	3
+Processing HitLoaders for:	LATE	1
+Processing HitLoaders for:	LATE	2
+Processing HitLoaders for:	LATE	3
+Loading data from EARLY:1:control	Loaded.
+Loading data from EARLY:2:control	Loaded.
+Loading data from EARLY:3:control	Loaded.
+Loading data from EARLY:1:signal	Loaded.
+Loading data from EARLY:2:signal	Loaded.
+Loading data from EARLY:3:signal	Loaded.
+Loading data from LATE:1:control	Loaded.
+Loading data from LATE:2:control	Loaded.
+Loading data from LATE:3:control	Loaded.
+Loading data from LATE:1:signal	Loaded.
+Loading data from LATE:2:signal	Loaded.
+Loading data from LATE:3:signal	Loaded.
+Calculating scaling factors for condition:	EARLY	Complete.
+Calculating scaling factors for condition:	LATE	Complete.
+Loaded all experiments:
+ Condition EARLY:	#Replicates:	3
+	Replicate:	EARLY:1
+		Signal:	11754764.0	Control:	22351332.0	ScalingFactor:	0.644
+	Replicate:	EARLY:2
+		Signal:	12428313.0	Control:	32652716.0	ScalingFactor:	0.470
+	Replicate:	EARLY:3
+		Signal:	15635568.0	Control:	16897252.0	ScalingFactor:	0.943
+	Pooled replicates for condition:	EARLY
+		Signal:	39818645.0	Control:71901300.0	ScalingFactor:0.648
+ Condition LATE:	#Replicates:	3
+	Replicate:	LATE:1
+		Signal:	6541607.0	Control:	15878219.0	ScalingFactor:	0.594
+	Replicate:	LATE:2
+		Signal:	2377084.0	Control:	25501429.0	ScalingFactor:	0.121
+	Replicate:	LATE:3
+		Signal:	25964005.0	Control:	15175740.0	ScalingFactor:	1.486
+	Pooled replicates for condition:	LATE
+		Signal:	34882696.0	Control:56555388.0	ScalingFactor:0.674
+Finding potential binding regions.
+PotentialRegionFilter: genomic threshold for EARLY with bin width 368.0 = 185.0
+PotentialRegionFilter: genomic threshold for LATE with bin width 368.0 = 165.0
+22453 potential regions found.
+Initialzing mixture model
+Alpha EARLY	Range=368	70.0
+Alpha LATE	Range=368	58.0
+Global noise per base initialization for EARLY = 0.1067
+Global noise per base initialization for LATE = 0.0823
+Multi-condition positional priors:	A given B:-0.1520	A given notB:-15.9658
+
+============================ Round 0 ============================_
+
+
+
+Thanks a lot for your help, 
+Best, 
+Tanguy",Lucas446,https://github.com/seqcode/multigps/issues/2
+I_kwDOBHLiBM4-wVgn,differential point output,OPEN,2021-11-14T06:17:45Z,2021-11-14T06:17:45Z,,"Thanks for your tools, it really helps.
+However, I realized the output is just a differential point, not peak region, is it correct?
+I'm more interested in peak regions, so how to identify differential peaks and then annotate them?
+Please advise if possible.
+Thanks.",pastaxingxin,https://github.com/seqcode/multigps/issues/3

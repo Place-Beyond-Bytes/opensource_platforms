@@ -1,0 +1,1353 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNTExNzEyOQ==,"ctx63 clean can't read ""magic word""",CLOSED,2014-06-06T03:49:34Z,2014-06-06T05:51:22Z,2014-06-06T05:51:22Z,"I am trying to clean a joined graph containing three colors as follows:
+
+ctx63 clean ${GRAPH_DIR} -o /refAndSamples.basalAndropogonae.clean.ctx ${GRAPH_DIR}/refAndSamples.basalAndropogonae.ctx
+
+I get the following output:
+
+[05 Jun 2014 23:46:12-Wij][cmd] /programs/mccortex/bin/ctx63 clean /workdir/er432/andropogonae/mccortex_out -o /refAndSamples.basalAndropogonae.clean.ctx /workdir/er432/andropogonae/mccortex_out/refAndSamples.basalAndropogonae.ctx
+[05 Jun 2014 23:46:12-Wij][cwd] /local/workdir/er432/andropogonae/mccortex_out
+[05 Jun 2014 23:46:12-Wij][version] ctx=470b4ca zlib=1.2.3 htslib=0.2.0-rc8-6-gd49dfa6 ASSERTS=ON CHECKS=ON k=33..63
+[src/kmer/graph_reader.c:101] Error graph_file_read_header(): Couldn't read 'Magic word': expected 6; recieved: 0; [file: /workdir/er432/andropogonae/mccortex_out]
+[05 Jun 2014 23:46:12-Wij] Fatal Error
+",er432,https://github.com/mcveanlab/mccortex/issues/1
+MDU6SXNzdWUzNTgyNjM5Mg==,Contig failing on ctx63 when path colors above 0 used,CLOSED,2014-06-16T19:08:17Z,2014-07-07T14:53:57Z,2014-07-07T14:53:57Z,"I try running the following:
+$MCCORTEX contigs -m 490G -n 12G --colour 1 -p 0:Coelorachis.clean.ctp -p 1:Vossia.k63.clean.ctp refAndSamples.basalAndropogonae.inferredEdges.clean.ctx > Vossia.clean.k63.fa
+
+And I get this:
+[16 Jun 2014 13:01:26-cEm][cmd] /programs/mccortex_5_30_14/bin/ctx63 contigs -m 490G -n 12G --colour 1 -p 0:Coelorachis.clean.ctp -p 1:Vossia.k63.clean.ctp refAndSamples.basalAndropogonae.inferredEdges.clean.ctx
+[16 Jun 2014 13:01:26-cEm][cwd] /local/workdir/er432/andropogonae/mccortex_out
+[16 Jun 2014 13:01:26-cEm][version] ctx=v0.0.3 zlib=1.2.3 htslib=0.2.0-rc8-6-gd49dfa6-dirty ASSERTS=ON CHECKS=ON k=33..63
+[16 Jun 2014 13:01:26-cEm][memory] graph: 305GB
+[16 Jun 2014 13:01:26-cEm][memory] paths: 49.6GB
+[16 Jun 2014 13:01:26-cEm][memory] total: 354.6GB of 504.8GB RAM
+[16 Jun 2014 13:01:26-cEm][hashtable] Allocating table with 12,884,901,888 entries, using 192.5GB
+[16 Jun 2014 13:01:26-cEm][hashtable]  number of buckets: 268,435,456, bucket size: 48
+[16 Jun 2014 13:02:50-cEm][graph] kmer-size: 63; colours: 3; capacity: 12,884,901,888
+[16 Jun 2014 13:04:27-cEm][paths] Setting up path store to use 49.6GB main
+[16 Jun 2014 13:04:27-cEm] Loading file refAndSamples.basalAndropogonae.inferredEdges.clean.ctx [3 colours] into colours 0-2
+[16 Jun 2014 13:04:27-cEm]  2,223,283,362 kmers, 64.2GB filesize
+[16 Jun 2014 13:04:27-cEm][CtxLoad] First col 0, into cols 0..2, file has 3 cols: refAndSamples.basalAndropogonae.inferredEdges.clean.ctx
+[16 Jun 2014 13:14:42-cEm] Loaded 2,223,283,362 / 2,223,283,362 (100.00%) of kmers parsed
+[16 Jun 2014 13:14:42-cEm][hash] buckets: 268,435,456 [2^28]; bucket size: 48; memory: 192.5GB; occupancy: 2,223,283,362 / 12,884,901,888 (17.25%)
+[16 Jun 2014 13:14:42-cEm]  collisions  0: 2223283362
+[16 Jun 2014 13:14:42-cEm][PathFormat] With 2 files, require 11859397612 tmp memory [0 extra bytes]
+[16 Jun 2014 13:14:42-cEm] Loading file Coelorachis.clean.ctp [1 colour] into colour 0
+[16 Jun 2014 13:14:42-cEm]  2,039,725,230 paths, 38.6GB path-bytes, 27,492,743 kmers, 39.2GB filesize
+[16 Jun 2014 13:16:45-cEm][paths] Setup tmp path memory to use 11GB [remaining 38.6GB]
+[16 Jun 2014 13:16:45-cEm] Loading file Vossia.k63.clean.ctp [1 colour] with colour filter: 0 into colour 1
+[16 Jun 2014 13:16:45-cEm]  633,841,256 paths, 11GB path-bytes, 25,553,986 kmers, 11.6GB filesize
+[src/kmer/path_store.c:186] Error path_store_add_packed(): Out of memory for paths
+[16 Jun 2014 13:18:45-cEm] Fatal Error
+
+Running only with the path for Vossia as follows: $MCCORTEX contigs -m 490G -n 12G --ncontigs 1000000 --print --colour 1 -p 1:Vossia.k63.clean.ctp refAndSampl
+es.basalAndropogonae.inferredEdges.clean.ctx > Vossia.clean.k63.fa
+
+Gives this:
+[16 Jun 2014 12:43:19-cEm][cmd] /programs/mccortex_5_30_14/bin/ctx63 contigs -m 490G -n 12G --ncontigs 1000000 --colour 1 -p 1:Vossia.k63.clean.ctp refAndSamples.basalAndropogonae.inferredEdges.clean.ctx
+[16 Jun 2014 12:43:19-cEm][cwd] /local/workdir/er432/andropogonae/mccortex_out
+[16 Jun 2014 12:43:19-cEm][version] ctx=v0.0.3 zlib=1.2.3 htslib=0.2.0-rc8-6-gd49dfa6-dirty ASSERTS=ON CHECKS=ON k=33..63
+[16 Jun 2014 12:43:19-cEm][memory] graph: 305GB
+[16 Jun 2014 12:43:19-cEm][memory] paths: 11GB
+[16 Jun 2014 12:43:19-cEm][memory] total: 316GB of 504.8GB RAM
+[16 Jun 2014 12:43:19-cEm][hashtable] Allocating table with 12,884,901,888 entries, using 192.5GB
+[16 Jun 2014 12:43:19-cEm][hashtable]  number of buckets: 268,435,456, bucket size: 48
+[16 Jun 2014 12:44:45-cEm][graph] kmer-size: 63; colours: 3; capacity: 12,884,901,888
+[16 Jun 2014 12:46:28-cEm][paths] Setting up path store to use 11GB main
+[16 Jun 2014 12:46:28-cEm] Loading file refAndSamples.basalAndropogonae.inferredEdges.clean.ctx [3 colours] into colours 0-2
+[16 Jun 2014 12:46:28-cEm]  2,223,283,362 kmers, 64.2GB filesize
+[16 Jun 2014 12:46:28-cEm][CtxLoad] First col 0, into cols 0..2, file has 3 cols: refAndSamples.basalAndropogonae.inferredEdges.clean.ctx
+[16 Jun 2014 12:57:16-cEm] Loaded 2,223,283,362 / 2,223,283,362 (100.00%) of kmers parsed
+[16 Jun 2014 12:57:16-cEm][hash] buckets: 268,435,456 [2^28]; bucket size: 48; memory: 192.5GB; occupancy: 2,223,283,362 / 12,884,901,888 (17.25%)
+[16 Jun 2014 12:57:16-cEm]  collisions  0: 2223283362
+[16 Jun 2014 12:57:16-cEm][PathFormat] With 1 files, require 0 tmp memory [0 extra bytes]
+[16 Jun 2014 12:57:16-cEm] Loading file Vossia.k63.clean.ctp [1 colour] with colour filter: 0 into colour 1
+[16 Jun 2014 12:57:16-cEm]  633,841,256 paths, 11GB path-bytes, 25,553,986 kmers, 11.6GB filesize
+[src/kmer/path_format.c:476] Assert Failed paths_format_merge(): hdr->num_path_bytes == 0 || pstore->tmpstore != ((void *)0)
+[16 Jun 2014 12:57:16-cEm] Assert Error
+
+However, I can successfully run when I only try to get contigs for color 0, as follows:
+$MCCORTEX contigs -m 490G -n 12G --ncontigs 1000000 --print --colour 0 -p 0:Coelorachis.clean.ctp refAndSamples.basalAndropogonae.inferredEdges.clean.ctx > Coelorachis.clean.k63.fa
+",er432,https://github.com/mcveanlab/mccortex/issues/2
+MDU6SXNzdWUzNzI2NDE5Mg==,Feature request: add verbosity control,CLOSED,2014-07-07T12:31:20Z,2014-07-07T17:42:19Z,2014-07-07T17:42:19Z,"mccortex is quite chatty, which is useful to give users information about what is going on. However, in general, a user should be able to control the amount of information printed out.
+
+One option is to provide a -v option, which turns up verbosity. Multiple -v options provided increase the verbosity. This usually implies that the program is silent by default. Another alternative is to provide a -q --quiet option to allow a user to silence the program.
+",jeromekelleher,https://github.com/mcveanlab/mccortex/issues/3
+MDU6SXNzdWUzNzI2NDU2OA==,Bug: input file names containing colons not accepted,CLOSED,2014-07-07T12:37:42Z,2014-07-07T16:08:29Z,2014-07-07T16:08:29Z,"Using a filename that contains a colon as input results in an error:
+
+$ ./ctx31 build  -k 31 -sA -1 A:2.fasta out
+[07 Jul 2014 13:34:59-Zid][cmd] ./ctx31 build -k 31 -sA -1 A:2.fasta out
+[07 Jul 2014 13:34:59-Zid][cwd] /home/jk/work/wt/prg/hla_graph
+[07 Jul 2014 13:34:59-Zid][version] ctx=v0.0.3-29-gf1407a7 zlib=1.2.7 htslib=0.2.0-rc8-6-gd49dfa6 ASSERTS=ON CHECKS=ON k=3..31
+[src/basic/async_read_io.c:51] Error asyncio_task_parse(): Expected -1 <in>
+[07 Jul 2014 13:34:59-Zid] Fatal Error
+",jeromekelleher,https://github.com/mcveanlab/mccortex/issues/4
+MDU6SXNzdWU0MDQ2ODczMA==,Variant calling with paired-end reads fails,CLOSED,2014-08-18T09:18:20Z,2014-09-02T17:46:05Z,2014-09-02T17:46:05Z,"Hello
+
+I tried to follow the ""Workflow Examples"" in the wiki to do variant calling with two plant genotypes based on paired end reads. Here is the sequence of commands I used:
+
+```
+ctx63 build -m 150G -t 10 -k 61 --sample genotype1 --seq2 genotype1_r1.fastq:genotype1_r2.fastq genotype1.ctx
+
+ctx63 build -m 150G -t 10 -k 61 --sample genotype2 --seq2 genotype2_r1.fastq:genotype2_r2.fastq genotype2.ctx
+
+ctx63 build -m 150G -t 10 -k 61 --sample reference --seq reference.fa reference.ctx
+
+ctx63 clean -m 150G -t 10 --out genotype1.clean.ctx genotype1.ctx
+ctx63 clean -m 150G -t 10 --out genotype2.clean.ctx genotype2.ctx
+
+ctx63 join -m 150G --out refAndSamples.clean.ctx reference.ctx genotype1.clean.ctx genotype2.clean.ctx
+
+ctx63 inferedges -m 150G -t 10 refAndSamples.clean.ctx
+
+ctx63 thread -m 150G -t 10 --seq2 genotype1_r1.fastq:genotype1_r2.fastq --out genotype1.ctp.gz refAndSamples.clean.ctx:1
+ctx63 thread -m 150G -t 10 --seq2 genotype2_r1.fastq:genotype2_r2.fastq --out genotype2.ctp.gz refAndSamples.clean.ctx:2
+```
+
+Unfortunately, both read threading steps failed with this error:
+
+```
+[src/alignment/correct_aln_stats.c:137] Assert Failed correct_aln_stats_print_summary(): num_reads > 0
+[15 Aug 2014 16:22:40-keZ] Assert Error
+```
+
+I tried to ""fix"" this by adding this code above line 135 in alignment/correct_aln_stats.c:
+
+```
+if(num_reads == 0)
+{
+status(""[CorrectAln] Didn't see any SE reads"");
+}
+```
+
+After recompiling the threading runs smooth. However, now I am stuck at the contigs command
+
+```
+ctx63 contigs -m 150G -t 10 -p 1:genotype1.ctp.gz -p 2:genotype2.ctp.gz refAndSamples.clean.ctx
+```
+
+which yields:
+
+```
+[src/graph_paths/gpath_checks.c:143] Error gpath_load_sample_pop(): No point loading paths for colours other than --colour 0
+[18 Aug 2014 09:42:17-gOC] Fatal Error
+```
+
+Any clues what went wrong?
+",rene-rex,https://github.com/mcveanlab/mccortex/issues/5
+MDU6SXNzdWU5OTI1NDQ5Ng==,Fatal error in pipeline,CLOSED,2015-08-05T17:14:15Z,2015-08-06T11:21:32Z,2015-08-05T17:27:37Z,"Hi Mac
+
+```
+/home/mgonnet/Soft/mccortex//bin/mccortex31 build  -m 1G -t 2 -k 27 --sample 74_373 --seq2 74_373_1.fastq:74_373_2.fastq out/k27/graphs/74_373.raw.ctx >& out/k27/graphs/74_373.raw.ctx.log
+my_job_script.mk:329: recipe for target 'out/k27/graphs/74_373.raw.ctx' failed
+make: *** [out/k27/graphs/74_373.raw.ctx] Error 1
+make: *** Deleting file 'out/k27/graphs/74_373.raw.ctx'
+```
+
+The end of the corresponding log file that produce the issue is 
+
+```
+05 Aug 2015 19:05:07-vab][hasht]  collisions 15: 10
+[05 Aug 2015 19:05:07-vab][hasht]  collisions 16: 6
+[05 Aug 2015 19:05:07-vab][hasht]  collisions 17: 6
+[src/graph/hash_table.c:311] Error hash_table_find_or_insert_mt(): Hash table is full
+[05 Aug 2015 19:05:07-vab] Fatal Error
+```
+
+any idea?
+Best regards
+",MathGon,https://github.com/mcveanlab/mccortex/issues/7
+MDU6SXNzdWU5OTkzMDk5Mg==,Link files should use bgzf block compression,OPEN,2015-08-09T21:35:25Z,2015-08-09T21:35:25Z,,"When threading reads, a large amount of time is spent writing the link files (.ctp.gz) to disk. Currently the compression is single threaded. If many threads simultaneously compressed blocks in parallel, a single lock could be used to write one compressed block to disk at a time. 
+
+Not sure if we should use bgzf block compression in htslib or roll our own block headers.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/8
+MDU6SXNzdWU5OTk0MzUyOQ==,"Add common arg to configure walking: -a,--assembly",OPEN,2015-08-10T00:30:19Z,2015-08-10T17:15:13Z,,"Configure graph walking with a common argument across commands:
+    -a,--assembly [missInfoCheck=T|F,minCumulConf=,minStepConf=]
+
+e.g.
+    mccortex31 contigs --assembly missInfoCheck=F,minStepConf=0.99 graph.ctx > contigs.fa
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/9
+MDU6SXNzdWUxMDAxMTkzNTc=,Bubble caller: don't report serial bubbles,CLOSED,2015-08-10T17:14:40Z,2015-11-09T17:17:12Z,2015-11-09T17:17:12Z,"```
+  _    _    _  
+_/a\__/b\__/c\_
+ \_/  \_/  \_/ 
+  A    B    C
+```
+
+We currently report adjacent bubbles as one big bubble. For the given example we report `abc|ABC`, `bc|BC`, `c|C`, and the reverse calls.
+
+Instead we should only report stand alone bubbles: `a|A`, `b|B`, `c|C`.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/10
+MDU6SXNzdWUxMDAxMjA3NTA=,Reduce peak memory used by `thread`,OPEN,2015-08-10T17:20:27Z,2015-08-10T17:24:48Z,,"Consider writing links to disk to reduce peak memory.
+
+Writing links to ~256 files, which can then be sorting and merged.
+Temporary file will look like:
+
+```
+<kmer><junctions><tab><count>
+```
+
+Sorting can be done with unix `sort` command.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/11
+MDU6SXNzdWUxMDAxMjIwMTU=,Generate links info for reference sequence,OPEN,2015-08-10T17:24:30Z,2015-08-10T17:24:37Z,,"The bubble caller has less power to assemble the reference allele vs sample allele since the reference colour is just a bag of kmers without link information. Reference sequences can provide reasonable link info if we break at repetitive kmers.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/12
+MDU6SXNzdWUxMDAxMjcwNjM=,Breakpoint caller should use novel kmers,OPEN,2015-08-10T17:44:08Z,2015-08-10T17:46:57Z,,"The breakpoint caller should mark kmers if they are used in a call. Unused kmers that are in a sample and not the referece (""novel kmers"") should be used to seed a second breakpoint caller. 
+
+The novel kmer breakpoint caller should perform a breadth-first search (BFS) to find the nearest kmer that occurs in the reference either side. The shortest path between these kmers should be reported as a putative breakpoint call. This caller will have a high false positive rate, but may catch a few reasonable SNPs / indels.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/13
+MDU6SXNzdWUxMDAxMjc1MDM=,Loading interleaved files assumes first read is first,CLOSED,2015-08-10T17:46:41Z,2015-08-10T19:51:14Z,2015-08-10T19:51:14Z,"Interleaved files may not be sorted with first mate then second mate. If reads get swapped this will cause issues when creating links and removing PCR duplicates. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/14
+MDU6SXNzdWUxMDUwNTQwNzA=,Genotype a VCF,CLOSED,2015-09-05T22:41:10Z,2015-11-09T17:16:54Z,2015-11-09T17:16:54Z,"Genotype a VCF against a multicolour graph. Much of the work has already been done in `ctx_geno.c`.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/15
+MDU6SXNzdWUxMDUwNTQxOTU=,Write a server,CLOSED,2015-09-05T22:45:24Z,2015-09-08T20:52:58Z,2015-09-08T20:52:58Z,"Write a server command to respond to queries about kmers and links. Requests would be HTTP and responses in JSON. At first the server would hold the graph and links in memory and the data would be read only. Javascript apps could then be written to visualise and interact with the graph. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/16
+MDU6SXNzdWUxMDUzNjA5Mzg=,mmap failing for large populations,CLOSED,2015-09-08T11:41:21Z,2015-09-14T15:45:23Z,2015-09-14T15:45:23Z,"mmap() failing for very large files:
+
+```
+[src/graph/graph_reader.c:690] Error graph_files_merge(): Cannot memory map file: graph.ctx [Cannot allocate memory]
+```
+
+Should try using fseek / fread / fwrite in blocks of ~10,000 kmers. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/17
+MDU6SXNzdWUxMDYzNzE4Nzg=,Pipeline test occasionally fails,CLOSED,2015-09-14T15:53:13Z,2015-09-17T23:23:48Z,2015-09-17T23:23:38Z,"`tests/pipeline` test sometimes fails. Could be due to unlucky coverage but seems too common with coverage 50X.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/18
+MDU6SXNzdWUxMDY1NjQ4MjY=,VCF annotation/filtering,CLOSED,2015-09-15T14:11:48Z,2015-09-29T14:43:16Z,2015-09-29T14:43:16Z,"It would be good to integrate VCF annotation/filtering with the variant calling pipeline. Would be good to flag/remove homopolymer variants etc.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/19
+MDU6SXNzdWUxMDY5NjA2OTk=,GFA output should include links as paths,OPEN,2015-09-17T11:07:26Z,2016-01-20T15:20:31Z,,,noporpoise,https://github.com/mcveanlab/mccortex/issues/20
+MDU6SXNzdWUxMDcyNDA4MzI=,pipeline should have option to leave out inferedges,CLOSED,2015-09-18T17:08:25Z,2015-09-20T22:25:56Z,2015-09-20T22:25:56Z,"Inferring edges is only required with multiple samples AND links. If not required, we can miss it out and improve performance. This is risky, so not a suggested setting. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/21
+MDU6SXNzdWUxMDcyNDI0NDk=,Buffered graph loading,CLOSED,2015-09-18T17:18:50Z,2015-09-20T22:25:56Z,2015-09-20T22:25:56Z,"Use a buffer to read a block of a file, then decompose it. `stream_buffer.h` already supports buffered reading, so should be pretty simple. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/22
+MDU6SXNzdWUxMDc2OTU4NzE=,Graph format should use JSON header,OPEN,2015-09-22T11:27:39Z,2015-09-22T11:27:39Z,,"Next version of the graph format should use a json header.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/23
+MDU6SXNzdWUxMDc2OTY0MDI=,New command: query,OPEN,2015-09-22T11:31:13Z,2015-09-22T11:31:13Z,,"Add new command `query` to query sorted and indexed graphs on disk:
+
+```
+mccortex31 query [-k <kmer>|-1 <kmers.fa>|-o out.ctx] <graph.ctx> <graph.ctx.idx>
+```
+
+Output is either in the same format as `view` command or in graph format, written to disk. 
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/24
+MDU6SXNzdWUxMDg4ODA5NTE=,Generate plots and a report from pipeline,CLOSED,2015-09-29T14:24:34Z,2015-11-15T19:07:52Z,2015-11-15T19:07:52Z,"Would be nice if the McCortex pipeline could automatically generate a report with plots and figures on the processing that has been done, summary of the results, QA etc.
+
+Would require R and Latex as dependencies.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/25
+MDU6SXNzdWUxMTY2NjI1OTI=,missing tab means Bandage can't read mccortex GFA,CLOSED,2015-11-12T23:08:58Z,2015-11-15T19:07:51Z,2015-11-15T19:07:51Z,"Not sure what the spec says, but Bandage expects a tab, not a space, after the initial H on line 1.
+Currently Mccortex outputs a space.
+",iqbal-lab,https://github.com/mcveanlab/mccortex/issues/26
+MDU6SXNzdWUxMTcwNzgxMjI=,Output contigs in GFA format?,OPEN,2015-11-16T08:59:14Z,2016-01-20T15:20:22Z,,"Any plans to output your actual contigs in GFA?
+",iqbal-lab,https://github.com/mcveanlab/mccortex/issues/27
+MDU6SXNzdWUxMjczMDAwODM=,server occasionally returns invalid JSON,CLOSED,2016-01-18T20:00:34Z,2016-01-20T17:49:43Z,2016-01-20T15:17:12Z,"E.g.
+
+TGCCGGCGCGGGTGGCCGCCG
+{
+  ""key"": ""CGGCGGCCACCCGCGCCGGCA"", ""colours"": [1],
+"", ""right"": ""C"",
+  ""edges"": ""02"",
+  ""links"": []
+}
+
+Looks like it's missing the ""left"" entry partially. 
+",Phelimb,https://github.com/mcveanlab/mccortex/issues/28
+MDU6SXNzdWUxMjczMDAzNDc=,server occasionally returns edges that aren't valid ints,CLOSED,2016-01-18T20:01:55Z,2016-01-20T14:46:47Z,2016-01-20T14:46:47Z,"e.g. 
+
+ATGCGTTATATTCGCCTGTGT
+{
+  ""key"": ""ACACAGGCGAATATAACGCAT"", ""colours"": [1],
+  ""left"": ""AT"", ""right"": ""A"",
+  ""edges"": ""a3"",
+  ""links"": []
+}
+
+I'm not sure if this is intended behaviour though? 
+",Phelimb,https://github.com/mcveanlab/mccortex/issues/29
+MDU6SXNzdWUxNDA3MzQ2MDE=,bcftools doesn't compile with gcc 4.9 on MacOSX,CLOSED,2016-03-14T17:02:59Z,2017-03-16T05:56:26Z,2017-03-16T05:56:26Z,"a la https://stackoverflow.com/questions/29534519/why-gcc-doesnt-recognize-rdynamic-option
+
+```
+make all | grep bcftools
+
+cd bcftools && /Applications/Xcode.app/Contents/Developer/usr/bin/make
+gcc -rdynamic  -o bcftools main.o vcfindex.o tabix.o vcfstats.o vcfisec.o vcfmerge.o vcfquery.o vcffilter.o filter.o vcfsom.o vcfnorm.o vcfgtcheck.o vcfview.o vcfannotate.o vcfroh.o vcfconcat.o vcfcall.o mcall.o vcmp.o gvcf.o reheader.o convert.o vcfconvert.o tsv2vcf.o vcfcnv.o HMM.o vcfplugin.o consensus.o ploidy.o version.o ccall.o em.o prob1.o kmin.o  ../htslib/libhts.a -lpthread -lz -lm -ldl  
+gcc: error: unrecognized command line option '-rdynamic'
+make[2]: *** [bcftools] Error 1
+make[1]: *** [bcftools] Error 2
+make: *** [libs-other] Error 2
+
+gcc -v
+
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/opt/local/libexec/gcc/x86_64-apple-darwin13/4.9.3/lto-wrapper
+Target: x86_64-apple-darwin13
+Configured with: /opt/local/var/macports/build/_opt_mports_dports_lang_gcc49/gcc49/work/gcc-4.9.3/configure --prefix=/opt/local --build=x86_64-apple-darwin13 --enable-languages=c,c++,objc,obj-c++,lto,fortran,java --libdir=/opt/local/lib/gcc49 --includedir=/opt/local/include/gcc49 --infodir=/opt/local/share/info --mandir=/opt/local/share/man --datarootdir=/opt/local/share/gcc-4.9 --with-local-prefix=/opt/local --with-system-zlib --disable-nls --program-suffix=-mp-4.9 --with-gxx-include-dir=/opt/local/include/gcc49/c++/ --with-gmp=/opt/local --with-mpfr=/opt/local --with-mpc=/opt/local --with-isl=/opt/local --disable-isl-version-check --with-cloog=/opt/local --disable-cloog-version-check --enable-stage1-checking --disable-multilib --enable-lto --enable-libstdcxx-time --with-as=/opt/local/bin/as --with-ld=/opt/local/bin/ld --with-ar=/opt/local/bin/ar --with-bugurl=https://trac.macports.org/newticket --with-pkgversion='MacPorts gcc49 4.9.3_0'
+Thread model: posix
+gcc version 4.9.3 (MacPorts gcc49 4.9.3_0) 
+
+```
+",rec3141,https://github.com/mcveanlab/mccortex/issues/31
+MDU6SXNzdWUxNDg2MjQ1NTg=,Make a new pre-release,CLOSED,2016-04-15T10:36:03Z,2016-04-15T14:28:49Z,2016-04-15T14:28:49Z,"The last release is quite old:  `414 commits to master since this release`
+
+Can you make a new pre-release? 
+
+Will help me package it.
+",tseemann,https://github.com/mcveanlab/mccortex/issues/32
+MDU6SXNzdWUxNDg4MDgxMjI=,Overlapping paired-end reads,CLOSED,2016-04-16T02:22:12Z,2017-02-11T01:02:53Z,2016-04-17T09:16:16Z,"I'm impressed by how cleanly `mccortex` installed and runs!
+
+I got these warnings in `thread`
+
+```
+[16 Apr 2016 12:18:33-LOx][generate_paths.c:422] Warn: Reads may overlap in fragment: 151 + 151 > frag len min: 0; max: 1000
+```
+
+We get lots of overlapping PE reads from NextSeq and MiSeq due to suboptimal Nextera XT library prep.
+
+Should I be concerned?
+Will this affect the results?
+",tseemann,https://github.com/mcveanlab/mccortex/issues/33
+MDU6SXNzdWUxNDg4MDgxODc=,Missing colon in --seq2 example in Wiki,CLOSED,2016-04-16T02:23:25Z,2016-04-16T13:01:03Z,2016-04-16T13:01:03Z,"https://github.com/mcveanlab/mccortex/wiki/Workflow-Examples#read-threading
+
+The example for `thread` with `--seq2 R1 R2` should be `--seq2 R1:R2`.
+",tseemann,https://github.com/mcveanlab/mccortex/issues/34
+MDU6SXNzdWUxNTA3MDkzODE=,Add links to papers in CITING section,CLOSED,2016-04-24T22:42:09Z,2016-04-26T15:42:22Z,2016-04-26T15:37:25Z,"Be good if it hyperlinked to the paper or pubmed abstract:
+
+https://github.com/mcveanlab/mccortex#citing
+",tseemann,https://github.com/mcveanlab/mccortex/issues/35
+MDU6SXNzdWUxNTA3MTg2NTQ=,Typo in 'inferedges' --help,CLOSED,2016-04-25T00:53:03Z,2016-04-26T15:37:25Z,2016-04-26T15:37:25Z,"I think `out.ctp` should be `out.ctx` ?
+
+```
+usage: mccortex63 inferedges [options] <pop.ctx>
+  -o, --out <out.ctp>   Save output file
+```
+",tseemann,https://github.com/mcveanlab/mccortex/issues/36
+MDU6SXNzdWUxNTA3MTkyNDQ=,Assert Failed assem2str(): strlen(assem_stop_str[assem]) < size,CLOSED,2016-04-25T01:00:37Z,2016-04-26T15:40:18Z,2016-04-26T15:37:25Z,"Any value for `-C <float>` in `contigs` causes assert error:
+
+```
+% mccortex63 contigs -C 0.5 -f -o foo1.fa -p infer.ctp.gz infer.ctx
+
+[25 Apr 2016 10:59:35-XuR][cmd] mccortex63 contigs -C 0.5 -f -o foo1.fa -p infer.ctp.gz infer.ctx
+[25 Apr 2016 10:59:35-XuR][cwd] /mnt/seq/JOBS/MDU/J2016-06490/nullarbor.ST80/2014-23625
+[25 Apr 2016 10:59:35-XuR][version] mccortex=86b4ffe zlib=1.2.7 htslib=1.3-37-gfc93dfc ASSERTS=ON hash=Lookup3 CHECKS=ON k=33..63
+[25 Apr 2016 10:59:35-XuR] Taking number of kmers as genome size: 2,918,130
+[25 Apr 2016 10:59:35-XuR][memory] 202 bits per kmer
+[25 Apr 2016 10:59:35-XuR][memory] graph: 94.9MB
+[25 Apr 2016 10:59:35-XuR][memory] paths: 30.1MB
+[25 Apr 2016 10:59:35-XuR][memory] total: 95.1MB of 377.6GB RAM
+[25 Apr 2016 10:59:35-XuR][hasht] Allocating table with 3,932,160 entries, using 60.2MB
+[25 Apr 2016 10:59:35-XuR][hasht]  number of buckets: 131,072, bucket size: 30
+[25 Apr 2016 10:59:35-XuR][graph] kmer-size: 63; colours: 1; capacity: 3,932,160
+[25 Apr 2016 10:59:35-XuR][GPathReader] need 7216 paths 16810 bytes
+[25 Apr 2016 10:59:35-XuR][GPathSet] Allocating for 7,216 paths, 7KB colset, 9.4KB seq => 143.3KB total
+[25 Apr 2016 10:59:35-XuR][FileFilter] Loading file infer.ctx [1 colour]
+[25 Apr 2016 10:59:35-XuR][GReader] 2,918,130 kmers, 58.4MB filesize
+[25 Apr 2016 10:59:35-XuR][GReader] Loaded 2,918,130 / 2,918,130 (100.00%) of kmers parsed
+[25 Apr 2016 10:59:35-XuR][hasht] buckets: 131,072 [2^17]; bucket size: 30; memory: 60.2MB; occupancy: 2,918,130 / 3,932,160 (74.21%)
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  0: 2901076
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  1: 16416
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  2: 609
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  3: 25
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  4: 3
+[25 Apr 2016 10:59:35-XuR][hasht]  collisions  5: 1
+[25 Apr 2016 10:59:35-XuR][FileFilter] Loading file infer.ctp.gz [1 colour]
+[25 Apr 2016 10:59:35-XuR][GPathSet] Allocating for 32,768 paths, 32KB colset, 384KB seq => 1MB total
+[25 Apr 2016 10:59:35-XuR] Loaded 7,216 paths from 1,688 kmers
+[25 Apr 2016 10:59:35-XuR][Assemble] Assembling contigs with 2 threads, walking colour 0
+[25 Apr 2016 10:59:35-XuR][Assemble] Using missing info check: yes
+[25 Apr 2016 10:59:35-XuR][Assemble] Stop traversal if step cummulative confidence < 0.500000
+[25 Apr 2016 10:59:35-XuR][Assemble]   Writing contigs to foo1.fa
+[25 Apr 2016 10:59:35-XuR][Assemble] Seeding with random kmers...
+[src/tools/assemble_stats.c:43] Assert Failed assem2str(): strlen(assem_stop_str[assem]) < size
+[25 Apr 2016 10:59:35-XuR] Assert Error
+Aborted (core dumped)
+```
+",tseemann,https://github.com/mcveanlab/mccortex/issues/37
+MDU6SXNzdWUxNTA3MTk2MTU=,"No ""-s"" option cf. ""If neither -t or -s specified, just saves output statistics"" ",CLOSED,2016-04-25T01:05:25Z,2016-04-26T15:38:47Z,2016-04-26T15:37:25Z,"Says ""If neither -t or -s specified, just saves output statistics."" but `-t` is threads and `-s` doesn't exist?
+
+```
+usage: mccortex63 clean [options] <in.ctx> [in2.ctx ...]
+
+  Clean a cortex graph. Joins graphs first, if multiple inputs given.
+  If neither -t or -s specified, just saves output statistics.
+
+  -h, --help               This help message
+  -q, --quiet              Silence status output normally printed to STDERR
+  -f, --force              Overwrite output files
+  -o, --out <out.ctx>      Save output graph file [required]
+  -m, --memory <mem>       Memory to use
+  -n, --nkmers <kmers>     Number of hash table entries (e.g. 1G ~ 1 billion)
+  -t, --threads <T>        Number of threads to use [default: 2]
+  -N, --ncols <N>          Number of graph colours to use
+
+  Cleaning:
+  -T[L], --tips[=L]        Clip tips shorter than <L> kmers [default: auto]
+  -U[X], --unitigs[=X]     Remove low coverage unitigs with median cov < X [default: auto]
+  -B, --fallback <T>       Fall back threshold if we can't pick
+
+  Statistics:
+  -c, --covg-before <out.csv> Save kmer coverage histogram before cleaning
+  -C, --covg-after <out.csv>  Save kmer coverage histogram after cleaning
+  -l, --len-before <out.csv>  Save unitig length histogram before cleaning
+  -L, --len-after <out.csv>   Save unitig length histogram after cleaning
+
+  --unitigs without a threshold, causes a calculated threshold to be used
+  Default: --tips 2*kmer_size --unitigs
+  Set thresholds to zero to turn-off cleaning
+```
+",tseemann,https://github.com/mcveanlab/mccortex/issues/38
+MDU6SXNzdWUxNTA3MjA3Mzk=,Typo in wiki Graph-Construction,CLOSED,2016-04-25T01:15:15Z,2016-04-26T13:29:38Z,2016-04-26T13:29:38Z,"https://github.com/mcveanlab/mccortex/wiki/Graph-Construction
+
+`--fq_threshold 5` => `--fq-cutoff 5` ?
+",tseemann,https://github.com/mcveanlab/mccortex/issues/39
+MDU6SXNzdWUxNzQ5NzgwMDA=, Fatal Error: Hash table is full,CLOSED,2016-09-05T00:31:11Z,2020-04-17T04:45:32Z,2016-09-06T11:48:23Z,"I run into the following error on a very small sample dataset:
+
+[05 Sep 2016 02:26:45-HUD][version] mccortex=v0.0.3-503-gf025dbf zlib=1.2.7 htslib=1.3.1-61-ge87ae87 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[05 Sep 2016 02:26:45-HUD][memory] 179 bits per kmer
+[05 Sep 2016 02:26:45-HUD][memory] graph: 3.6GB
+[05 Sep 2016 02:26:45-HUD][memory](of which threads: 20 x 42991616 = 820MB)
+[05 Sep 2016 02:26:45-HUD][memory] paths: 1.4GB
+[05 Sep 2016 02:26:45-HUD][memory] total: 3.7GB of 377.6GB RAM
+[05 Sep 2016 02:26:45-HUD][hasht] Allocating table with 171,966,464 entries, using 1.3GB
+[05 Sep 2016 02:26:45-HUD][hasht]  number of buckets: 4,194,304, bucket size: 41
+[05 Sep 2016 02:26:45-HUD][graph] kmer-size: 31; colours: 3; capacity: 171,966,464
+[05 Sep 2016 02:26:45-HUD][GPathReader] need 3589273 paths 21033608 bytes
+[05 Sep 2016 02:26:45-HUD][GPathSet] Allocating for 3,589,273 paths, 3.4MB colset, 17.5MB seq => 82.5MB total
+[05 Sep 2016 02:26:45-HUD][FileFilter] Reading file ./inb1_pl/k31/graphs/MA-ES-3.clean.ctx [1 src colour]
+[05 Sep 2016 02:26:45-HUD][GReader] 121,137,470 kmers, 1.5GB filesize
+[05 Sep 2016 02:27:15-HUD][GReader] Loaded 121,137,470 / 121,137,470 (100.00%) of kmers parsed
+[05 Sep 2016 02:27:15-HUD][FileFilter] Reading file ./inb1_pl/k31/graphs/MN-DM-1.clean.ctx [1 src colour] with filter: 0->1
+[05 Sep 2016 02:27:15-HUD][GReader] 127,420,164 kmers, 1.5GB filesize
+[05 Sep 2016 02:27:40-HUD][hasht] buckets: 4,194,304 [2^22]; bucket size: 41; memory: 1.3GB; occupancy: 161,890,833 / 171,966,464 (94.14%)
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  0: 154224356
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  1: 5397571
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  2: 1426637
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  3: 495114
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  4: 195947
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  5: 82824
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  6: 36706
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  7: 16913
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  8: 7662
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions  9: 3639
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 10: 1772
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 11: 834
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 12: 426
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 13: 219
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 14: 113
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 15: 52
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 16: 24
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 17: 12
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 18: 6
+[05 Sep 2016 02:27:40-HUD][hasht]  collisions 19: 6
+[05 Sep 2016 02:27:40-HUD][hash_table.c:293] Fatal Error: Hash table is full
+
+The error arises during the mccortex bubbles  step of the pipeline. 
+",peterdfields,https://github.com/mcveanlab/mccortex/issues/40
+MDU6SXNzdWUxNzgyMTM2NzQ=,Breakpoint ref filter,CLOSED,2016-09-21T00:17:08Z,2016-09-28T18:02:26Z,2016-09-28T18:02:26Z,"Add breakpoint ref filter similar to `--haploid <col>` filter for the bubble caller, to filter out calls where the non-ref path has ref coverage. Suggest `-H,--haploid-ref`.
+",noporpoise,https://github.com/mcveanlab/mccortex/issues/41
+MDU6SXNzdWUxODQ0NDk2OTQ=,2-color cortex?,OPEN,2016-10-21T10:14:06Z,2017-10-23T13:31:07Z,,"Hello,
+as discussed briefly with Zam, it would be pretty neat if cortex could handle two layers of colors:
+- one to identify sample as already exists
+- and one for 10x genomics chromium-like information (about linkage between molecules: with their tech, molecules of ~150kb are tagged with individual barcodes and sequenced at low-ish coverage to provide linkage and phase information over greater distances than normally possible). 
+  This should reduce ambiguity (bubbles) in assembly, and allow phase-resolved assembly and genotyping in multi-ploid species. 
+",yannickwurm,https://github.com/mcveanlab/mccortex/issues/43
+MDU6SXNzdWUxODQ0NTAxMjA=,Add FAQ,CLOSED,2016-10-21T10:16:13Z,2017-09-10T00:15:21Z,2017-09-10T00:15:21Z,"Hello, does current McCortex perform more reliably than stable cortex release? Or might there be major undiscovered problems?
+Thanks,
+Yannick
+",yannickwurm,https://github.com/mcveanlab/mccortex/issues/44
+MDU6SXNzdWUxODYxNjEwODI=,vcfcov and --nkmers,CLOSED,2016-10-30T20:32:04Z,2016-10-31T11:50:36Z,2016-10-31T11:10:03Z,"When running the standard pipeline the vcfcov step doesn't seem to include the additional NKMERS argument. This is a problem for larger graphs I've found. 
+",peterdfields,https://github.com/mcveanlab/mccortex/issues/45
+MDU6SXNzdWUxOTQ2Njc1OTA=,Use of -G option of contigs command.,CLOSED,2016-12-09T18:42:42Z,2016-12-13T11:36:31Z,2016-12-13T11:36:31Z,What is the `-G` option of `contigs` command used for? Does it impact assembly quality?,yeban,https://github.com/mcveanlab/mccortex/issues/46
+MDU6SXNzdWUxOTgwNDg4OTU=,Cleaning failing with Assert Failed db_graph_alloc(): num_of_cols > 0,CLOSED,2016-12-29T18:28:03Z,2017-02-05T23:22:57Z,2017-02-05T23:22:57Z,"Hi @noporpoise, 
+
+I'm running mccortex building and cleaning on a bunch of samples from the ENA and a small percentage are failing on the cleaning step without much information as to why. 
+
+Here's a dump of the log. Building works fine but then cleaning dies with `Assert Failed db_graph_alloc(): num_of_cols > 0`
+
+Any ideas? 
+
+```
+[29 Dec 2016 11:12:04-QaP][cmd] /users/iqbal/phelimb/apps/mccortex/bin/mccortex31 build -t 1 -m 7G -k 31 -s ERR233401 --seq /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz --seq /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx
+[29 Dec 2016 11:12:04-QaP][cwd] /gpfs2/well/iqbal/people/phelim
+[29 Dec 2016 11:12:04-QaP][version] mccortex=v0.0.3-539-g22e27b7 zlib=1.2.8 htslib=1.3.2-134-g1bc5c56 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[29 Dec 2016 11:12:04-QaP] Saving graph to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx
+[29 Dec 2016 11:12:04-QaP][sample] 0: ERR233401
+[29 Dec 2016 11:12:04-QaP][task] /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz; FASTQ offset: auto-detect, threshold: off; cut homopolymers: off; remove PCR duplicates: no; colour: 0
+[29 Dec 2016 11:12:04-QaP][task] /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz; FASTQ offset: auto-detect, threshold: off; cut homopolymers: off; remove PCR duplicates: no; colour: 0
+[29 Dec 2016 11:12:04-QaP][memory] 104 bits per kmer
+[29 Dec 2016 11:12:04-QaP][memory] graph: 6.9GB
+[29 Dec 2016 11:12:04-QaP][memory] total: 6.9GB of 94.6GB RAM
+[29 Dec 2016 11:12:04-QaP] Writing 1 colour graph to /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx
+[29 Dec 2016 11:12:04-QaP][hasht] Allocating table with 570,425,344 entries, using 4.3GB
+[29 Dec 2016 11:12:04-QaP][hasht]  number of buckets: 16,777,216, bucket size: 34
+[29 Dec 2016 11:12:04-QaP][graph] kmer-size: 31; colours: 1; capacity: 570,425,344
+[29 Dec 2016 11:12:04-QaP][hasht] buckets: 16,777,216 [2^24]; bucket size: 34;
+[29 Dec 2016 11:12:04-QaP][hasht] memory: 4.3GB; filled: 0 / 570,425,344 (0.00%)
+[29 Dec 2016 11:12:04-QaP][asyncio] Inputs: 2; Threads: 1
+[29 Dec 2016 11:12:04-QaP][seq] Parsing sequence file /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz
+[29 Dec 2016 11:12:04-QaP][seq] Parsing sequence file /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz
+[29 Dec 2016 11:12:04-QaP] /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz: Qual scores: Sanger (Phred+33) [offset: 33, range: [33,73], sample: [33,69]]
+[29 Dec 2016 11:12:04-QaP] /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz: Qual scores: Sanger (Phred+33) [offset: 33, range: [33,73], sample: [33,73]]
+[29 Dec 2016 11:17:05-QaP][BuildGraph] Read 5,000,000 entries (reads / read pairs)
+[29 Dec 2016 11:20:57-QaP][BuildGraph] Read 10,000,000 entries (reads / read pairs)
+[29 Dec 2016 11:21:02-QaP][seq] Loaded 5,082,194 reads and 0 reads pairs (file: /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz)
+[29 Dec 2016 11:21:04-QaP][seq] Loaded 5,082,194 reads and 0 reads pairs (file: /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz)
+[29 Dec 2016 11:21:04-QaP][hasht] buckets: 16,777,216 [2^24]; bucket size: 34;
+[29 Dec 2016 11:21:04-QaP][hasht] memory: 4.3GB; filled: 488,170,572 / 570,425,344 (85.58%)
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  0: 477616581
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  1: 9132135
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  2: 1181354
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  3: 195799
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  4: 35793
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  5: 7104
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  6: 1436
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  7: 297
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  8: 60
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions  9: 11
+[29 Dec 2016 11:21:04-QaP][hasht]  collisions 11: 2
+[29 Dec 2016 11:21:04-QaP][task] input: /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_1.fastq.gz colour: 0
+[29 Dec 2016 11:21:04-QaP]  SE reads: 10,164,388  PE reads: 0
+[29 Dec 2016 11:21:04-QaP]  good reads: 10,163,375  bad reads: 1,013
+[29 Dec 2016 11:21:04-QaP]  dup SE reads: 0  dup PE pairs: 0
+[29 Dec 2016 11:21:04-QaP]  bases read: 1,524,658,200  bases loaded: 1,520,553,440
+[29 Dec 2016 11:21:04-QaP]  num contigs: 10,186,918  num kmers: 1,214,945,900 novel kmers: 488,170,572
+[29 Dec 2016 11:21:04-QaP][task] input: /well/iqbal/projects/atlas/fastq/ERR233/ERR233401/ERR233401_2.fastq.gz colour: 0
+[29 Dec 2016 11:21:04-QaP]  SE reads: 0  PE reads: 0
+[29 Dec 2016 11:21:04-QaP]  good reads: 0  bad reads: 0
+[29 Dec 2016 11:21:04-QaP]  dup SE reads: 0  dup PE pairs: 0
+[29 Dec 2016 11:21:04-QaP]  bases read: 0  bases loaded: 0
+[29 Dec 2016 11:21:04-QaP]  num contigs: 0  num kmers: 0 novel kmers: 0
+[29 Dec 2016 11:21:04-QaP] Dumping graph...
+[29 Dec 2016 11:21:04-QaP][graphwriter] Saving file to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx
+[29 Dec 2016 11:21:04-QaP][FileFilter] Writing graph  [1 src colour]
+[29 Dec 2016 11:21:47-QaP][graphwriter] Dumped 488,170,572 kmers in 1 colour into: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx (ver: 6)
+[29 Dec 2016 11:21:47-QaP][memory] We made 19 allocs
+[29 Dec 2016 11:21:47-QaP] Done.
+[29 Dec 2016 11:21:47-QaP][time] 583.00 seconds (9 mins 43 secs)
+[29 Dec 2016 11:21:47-mIT][cmd] /users/iqbal/phelimb/apps/mccortex/bin/mccortex31 clean -m 6GB -B 2 -U -T -o /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/ERR233401.ctx -c /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_before.csv -C /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_after.csv -l /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_lbefore.csv -L /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_lafter.csv /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/uncleaned/ERR233401.ctx
+[29 Dec 2016 11:21:47-mIT][cwd] /gpfs2/well/iqbal/people/phelim
+[29 Dec 2016 11:21:47-mIT][version] mccortex=v0.0.3-539-g22e27b7 zlib=1.2.8 htslib=1.3.2-134-g1bc5c56 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[29 Dec 2016 11:21:47-mIT] Actions:
+[29 Dec 2016 11:21:47-mIT] 0. Saving kmer coverage distribution to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_before.csv
+[29 Dec 2016 11:21:47-mIT] 1. Saving unitig length distribution to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_lbefore.csv
+[29 Dec 2016 11:21:47-mIT] 2. Cleaning tips shorter than 62 nodes
+[29 Dec 2016 11:21:47-mIT] 3. Cleaning unitigs with auto-detected threshold
+[29 Dec 2016 11:21:47-mIT] 4. Saving kmer coverage distribution to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_after.csv
+[29 Dec 2016 11:21:47-mIT] 5. Saving unitig length distribution to: /well/iqbal/people/phelim/bins/k31/ERR233/ERR233401/cleaned/stats/ERR233401_lafter.csv
+[29 Dec 2016 11:21:47-mIT][memory] 72 bits per kmer
+[29 Dec 2016 11:21:47-mIT][memory] graph: 5.5GB
+[29 Dec 2016 11:21:47-mIT][cleaning] 1 input graph, max kmers: 488,170,572, using 0 colours
+[29 Dec 2016 11:21:47-mIT][memory] total: 5.5GB of 94.6GB RAM
+[src/graph/db_graph.c:39] Assert Failed db_graph_alloc(): num_of_cols > 0
+[29 Dec 2016 11:21:47-mIT] Assert Error
+```
+
+",Phelimb,https://github.com/mcveanlab/mccortex/issues/47
+MDU6SXNzdWUxOTk1Mjk3Njc=,mccortex clean's help output,CLOSED,2017-01-09T11:24:56Z,2017-02-05T23:27:50Z,2017-02-05T23:25:11Z,"Running `mccortex clean` without any option prints help output, which says `If neither -T or -U specified, just saves output statistics.` However, the default behaviour seems to be to automatically apply `-T` and `-U` options with computed values.",yeban,https://github.com/mcveanlab/mccortex/issues/48
+MDU6SXNzdWUyMDAzNTIzMDg=,Behaviour of popbubbles command.,CLOSED,2017-01-12T12:15:40Z,2017-01-12T16:32:04Z,2017-01-12T16:32:04Z,"One can pass multiple graphs to `popbubbles` command at once. Will it join multiple graphs first, or pop bubbles in each graph and then join? I am assuming it's the former like it is for `clean` command. Would be helpful to clarify this in the help output (like for `clean` command) or at least on the wiki for now.",yeban,https://github.com/mcveanlab/mccortex/issues/49
+MDU6SXNzdWUyMDE2NDE2NTk=,Help output shows version 0.0.3.,CLOSED,2017-01-18T17:35:32Z,2017-02-05T23:10:02Z,2017-02-05T23:10:02Z, I am using mccortex compiled from git (SHA: 22e27b730d316c148c537e1f81753bad43cd0cc8) using `make all`.,yeban,https://github.com/mcveanlab/mccortex/issues/50
+MDU6SXNzdWUyMDIzNjc4NDE=,reads command produces an additional bogus file.,CLOSED,2017-01-22T07:58:24Z,2017-02-05T23:18:20Z,2017-02-05T23:18:20Z,"Using reads command to obtain the subset of read-pairs represented in the population graph, e.g., using the command below:
+
+    $ mccortex31 reads -m 460G -n 6G -t 52 -2 R1.fastq.gz:R2.fastq.gz:pg pg.ctx
+
+ produces three output files:
+
+    pg.1.fq.gz
+    pg.2.fq.gz
+    pg.fq.gz
+
+The last file is empty. And not expected, right?",yeban,https://github.com/mcveanlab/mccortex/issues/51
+MDU6SXNzdWUyMTM5NTMxNjE=,What does mccortex build do if it encounters Ns in the read?,CLOSED,2017-03-14T02:41:30Z,2017-03-14T13:39:30Z,2017-03-14T03:33:18Z,Are k-mers containing N automatically ignored?,yeban,https://github.com/mcveanlab/mccortex/issues/52
+MDU6SXNzdWUyMTQyNjk1NDc=,Error message during installation,CLOSED,2017-03-15T03:08:19Z,2018-03-12T12:44:28Z,2017-03-16T02:22:23Z,"We are getting this error message during installation. Any ideas on how to resolve this? Thanks.
+
+make all
+cd libs; make
+make[1]: Entering directory '/home/microstaff/Software/mccortex/libs'
+make[1]: *** No rule to make target 'xxHash/Makefile', needed by 'xxHash'.  Stop.
+make[1]: Leaving directory '/home/microstaff/Software/mccortex/libs'
+Makefile:324: recipe for target 'libs/string_buffer/string_buffer.h' failed
+make: *** [libs/string_buffer/string_buffer.h] Error 2
+",abeu9727,https://github.com/mcveanlab/mccortex/issues/53
+MDU6SXNzdWUyMTQ3ODkxMzI=,Fix README,CLOSED,2017-03-16T17:57:16Z,2017-08-09T08:55:37Z,2017-08-09T08:55:37Z,"Hey Isaac
+Your readme says this is all experimental and liable to fall apart, dated 2015 - I think you can remove that!",iqbal-lab,https://github.com/mcveanlab/mccortex/issues/54
+MDU6SXNzdWUyMTUzMzcyODg=,Output interpretation,OPEN,2017-03-20T06:14:11Z,2017-05-09T02:14:06Z,,"Thankyou for providing this software. Sorry if this is a simple question but we are hoping you could provide some clarity and explanation of the output results. We would like to use this software for our analysis. We have run the pipeline on a few samples and have discovered a few different outputs and would like confirmation that we are interpreting the data correctly. The output below is from the bubble.joint.plain.k31.k61.geno.vcf files.
+
+Our first set of output displays this. Would this be interpreted as Ck01 and Ck02 having the same base as the reference whilst Ck03 and Ck04 have the same base as the ALT?
+
+#CHROM     POS     ID     REF     ALT     QUAL     FILTER     INFO     FORMAT     Ck01     Ck02     Ck03     Ck04
+
+NC_020260.1 220     .     G     C     .     PASS     BUBBLE=41257;K31     GT:K61R:K61A:GQ     1:57:0:.     1:72:0:.     1:0:31:.     1:0:230:.
+
+NC_020260.1 839     .     T     C     .     PASS     BUBBLE=15255;K31     GT:K61R:K61A:GQ     1:66:0:.     1:57:0:.     1:0:21:.     1:0:181:.
+
+The second lot of output we are getting is this. What does it mean if there is only dots rather than coverage values?
+ 
+#CHROM     POS     ID     REF     ALT     QUAL     FILTER     INFO     FORMAT     Ck01     Ck02     Ck03     Ck04
+
+NC_020260.1     14366     .     T     C     .     PASS     BUBBLE=2393;K31     GT:K61R:K61A:GQ     .:.:.:.     .:.:.:.     .:.:.:.     .:.:.:.
+
+NC_020260.1     14385     .     T     G     .     PASS     BUBBLE=2393;K31     GT:K61R:K61A:GQ     .:.:.:.     .:.:.:.     .:.:.:.     .:.:.:.
+
+And finally we have some output where the GT is 0. How would this be interpreted? Also why is a GQ value provided when there is one isolate analysed but not when there are multiple isolates?
+
+#CHROM     POS     ID     REF     ALT     QUAL     FILTER     INFO     FORMAT     Ck01
+
+NC_020260.1     1103701     .     A     C     .     PASS     BRKPNT=1507;K31;AC=1;AN=1     GT:K61R:K61A:GQ     0:51:10:20
+
+NC_020260.1     1152696     .     T     G     .     PASS     BRKPNT=1323;K31;AC=1;AN=1     GT:K61R:K61A:GQ     0:32:8:15
+
+Would you also be able to provide an explanation for the difference between the breakpoints and bubble vcf files? We have noticed that some sites occur in one file type whilst in the other they are absent. Why does this occur? Also, is the main difference between the breakpoints.joint.plain.k31.k61.geno.vcf and breakpoints.join.plain.k31.k61.vcf is that the coverage is shown in the geno.vcf and only the GT values displayed in the other? Does the same apply to the bubble.joint vcf files?
+
+Any help would be greatly appreciated.
+
+Regards,
+
+Alicia ",abeu9727,https://github.com/mcveanlab/mccortex/issues/55
+MDU6SXNzdWUyMjE4Mjc4Mjc=,make-pipeline.pl error,CLOSED,2017-04-14T15:11:12Z,2017-05-05T11:02:09Z,2017-05-05T11:02:09Z,"Please could you advice how to get around this error I get when trying to run `make-pipeline.pl`:
+
+```
+Can't locate UsefulModule.pm in @INC (@INC contains: /data/SBCS-WurmLab/software/mccortex-0.2/scripts/../libs/bioinf-perl/lib /data/SBCS-WurmLab/software/mccortex-0.2/scripts/perl /data/home/btw675/tools/mccortex-0.2/scripts/perl /data/home/btw675/perl5/lib/perl5/x86_64-linux-thread-multi /data/home/btw675/perl5/lib/perl5 /usr/local/lib64/perl5 /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at ./make-pipeline.pl line 14.
+```",yeban,https://github.com/mcveanlab/mccortex/issues/56
+MDU6SXNzdWUyMjMxODE0ODI=,zero coverage genotyping,CLOSED,2017-04-20T19:58:11Z,2017-05-27T00:43:36Z,2017-05-27T00:43:36Z,"I was looking into vcf-genotyping and introduced a zero coverage locus:
+
+`CP006053.1      4399342 .       A       C       .       PASS    BUBBLE=204;K33  K33R:K33A       .:.     0:0`
+
+only to find it was called as the alternative allele when genotyped:
+
+`CP006053.1      4399342 .       A       C       .       PASS    BUBBLE=204;K33  GT:K33R:K33A:GQ ./.:.:.:.       1/1:0:0:0`
+
+I used this command:
+
+`./mccortex63 vcfgeno --out out.vcf.gz --kcov 30 --ploidy 2 myvcf.cov.vcf`",hcdenbakker,https://github.com/mcveanlab/mccortex/issues/57
+MDU6SXNzdWUyMjgzMDMyNDY=,interpretation of graph build log,CLOSED,2017-05-12T14:08:37Z,2017-09-12T12:48:48Z,2017-09-10T00:07:40Z,"Hi,
+
+I'm running mccortex using make-pipeline.pl.
+
+I have an example where I have three batches of paired-end sequences for the same individual. I've noticed that the log file for the initial graph building says that all reads are read as single-ended reads. @yeban has seen the same issue in his runs of mccortex as well.
+
+Is this correct?
+
+Best wishes,
+
+Roddy
+
+```
+[12 May 2017 12:06:53-JaC][seq] Loaded 5,082,951 reads and 0 reads pairs (file: input/batch1/run3/WTCHG_295747_705501_1.fastq.gz)
+[12 May 2017 12:06:58-JaC][seq] Loaded 5,082,951 reads and 0 reads pairs (file: input/batch1/run3/WTCHG_295747_705501_2.fastq.gz)
+[12 May 2017 12:07:37-JaC][seq] Loaded 5,680,996 reads and 0 reads pairs (file: input/batch1/run2/WTCHG_297318_705501_1.fastq.gz)
+[12 May 2017 12:07:42-JaC][seq] Loaded 5,680,996 reads and 0 reads pairs (file: input/batch1/run2/WTCHG_297318_705501_2.fastq.gz)
+[12 May 2017 12:07:44-JaC][seq] Loaded 5,806,822 reads and 0 reads pairs (file: input/batch1/run1/WTCHG_283923_705501_1.fastq.gz)
+[12 May 2017 12:07:46-JaC][seq] Loaded 5,806,822 reads and 0 reads pairs (file: input/batch1/run1/WTCHG_283923_705501_2.fastq.gz)
+[12 May 2017 12:07:46-JaC][hasht] buckets: 67,108,864 [2^26]; bucket size: 48;
+[12 May 2017 12:07:46-JaC][hasht] memory: 24.1GB; filled: 615,427,529 / 3,221,225,472 (19.11%)
+[12 May 2017 12:07:46-JaC][hasht]  collisions  0: 615427529
+[12 May 2017 12:07:46-JaC][task] input: input/batch1/run1/WTCHG_283923_705501_1.fastq.gz colour: 0
+[12 May 2017 12:07:46-JaC]  SE reads: 33,141,538  PE reads: 0
+[12 May 2017 12:07:46-JaC]  good reads: 33,139,955  bad reads: 1,583
+[12 May 2017 12:07:46-JaC]  dup SE reads: 0  dup PE pairs: 0
+[12 May 2017 12:07:46-JaC]  bases read: 4,971,230,700  bases loaded: 4,730,385,634
+[12 May 2017 12:07:46-JaC]  num contigs: 34,917,549  num kmers: 3,682,859,164 novel kmers: 615,427,529
+[12 May 2017 12:07:46-JaC][task] input: input/batch1/run1/WTCHG_283923_705501_2.fastq.gz colour: 0
+[12 May 2017 12:07:46-JaC]  SE reads: 0  PE reads: 0
+[12 May 2017 12:07:46-JaC]  good reads: 0  bad reads: 0
+[12 May 2017 12:07:46-JaC]  dup SE reads: 0  dup PE pairs: 0
+[12 May 2017 12:07:46-JaC]  bases read: 0  bases loaded: 0
+[12 May 2017 12:07:46-JaC]  num contigs: 0  num kmers: 0 novel kmers: 0
+```
+
+The entries for the remaining input files all say `SE reads: 0  PE reads: 0`.
+",roddypr,https://github.com/mcveanlab/mccortex/issues/58
+MDU6SXNzdWUyMjg5MzQ4ODE=,No output in vcfs directory.,CLOSED,2017-05-16T07:09:02Z,2017-09-10T00:14:37Z,2017-09-10T00:14:37Z,"Hi
+
+I am trying to use McCortex to find variant between two strains of yeast.
+I have tried running it both with a reference and without using make-pipeline.pl and then make, but I don't get any output in the vcfs dir.
+
+What I have done is:
+With reference:
+make-pipeline.pl -r ref.fa '31,41,51,61,71' output_dir V1vsV4_colour_list.tsv > my_job_script.mk
+make -f my_job_script.mk CTXDIR=<mccortex_dir> MEM=40G NTHREADS=20
+
+Without reference:
+make-pipeline.pl '31,41,51,61,71' output_dir V1vsV4_colour_list.tsv > my_job_script.mk
+make -f my_job_script.mk CTXDIR=<mccortex_dir> MEM=40G NTHREADS=20
+
+The V1vsV4_colour_list.tsv file looks like:
+V1      ../../trimmed/V1_S66_single.fastq.gz    ../../trimmed/V1_S66_R1_paired.fastq.gz:../../trimmed/V1_S66_R2_paired.fastq.gz .
+V4      ../../trimmed/V4_S69_single.fastq.gz    ../../trimmed/V4_S69_R1_paired.fastq.gz:../../trimmed/V4_S69_R2_paired.fastq.gz .
+
+When running with the reference I get output in the bubbles_links, graphs, links and ref directories for each of the kmers. Running without reference I get output in bubbles_links, bubbles_plain, graphs and links.
+Looking at the log files I don't see any errors.
+Do you have any idea where I could have gone wrong?
+
+Best,
+Ida",IdaBonde,https://github.com/mcveanlab/mccortex/issues/59
+MDU6SXNzdWUyNDQ5NTAyMDE=,long reads,CLOSED,2017-07-24T01:12:30Z,2017-09-09T23:56:02Z,2017-09-09T23:56:02Z,"Hi, does the mccortex graph allows the generation of links using corrected long reads (like PacBio or minion) instead of the short reads? I do not see why not, unless there is something obvious that I am forgetting. The real question would be if it would be able to build a graph from the long reads and if it can handle raw long reads.
+
+Regards,
+
+Juan Montenegro",jdmontenegro,https://github.com/mcveanlab/mccortex/issues/60
+MDU6SXNzdWUyNDU2Nzg5Mjg=,Cygwin make fails due to missing _O_BINARY error in xxHash,CLOSED,2017-07-26T10:38:25Z,2017-08-09T08:55:16Z,2017-08-09T08:55:16Z,"This issue effects mccortex because of it's dependency on xxHash (https://github.com/Cyan4973/xxHash/tree/88c6ee1e4db6155dbe7047fed793cb8406b56086).
+
+Original issue in xxHash repo (opened 16th of March 2017): https://github.com/Cyan4973/xxHash/issues/100",ffranr,https://github.com/mcveanlab/mccortex/issues/61
+MDU6SXNzdWUyNDg3OTEwMDM=,Pjoin memory allocation error,CLOSED,2017-08-08T17:36:13Z,2017-08-28T20:59:43Z,2017-08-28T20:59:43Z,"When attempting to merge link files with the pjoin command I receive a 'Fatal Error: Out of memory'. I have tried to allocate as much as 522G using the -m (--memory) flag to no avail. It appears that, for the instance shown below, I am only being allocated 28.9M which is utilized before any merging can be done. This error has occurred regardless of the number of input files. 
+Attached is the error file which contains my script:
+
+[mccortex-pjoin-errorfile.txt](https://github.com/mcveanlab/mccortex/files/1209042/mccortex-pjoin-errorfile.txt)
+
+",carlyprior,https://github.com/mcveanlab/mccortex/issues/62
+MDU6SXNzdWUyNTM4MDgyMzk=,No reference option for bubbles/calls2vcf,CLOSED,2017-08-29T21:20:04Z,2017-09-09T23:55:12Z,2017-09-09T23:55:12Z,"I'm struggling to figure out how to run the calls2vcf command without a reference. I see that you need a 5' flank file in SAM or BAM format, but it is unclear how I am to achieve this without a reference as both BWA and Stampy require references. ",carlyprior,https://github.com/mcveanlab/mccortex/issues/63
+MDU6SXNzdWUyNTY0MjkxNjY=,Links files are really big,CLOSED,2017-09-09T10:03:42Z,2017-09-10T23:35:10Z,2017-09-10T23:35:10Z,"My links files are as big as my input fastq files.
+
+I took a look at one of my links files and I saw this:
+
+```
+#   written by Isaac Turner <turner.isaac@gmail.com>
+#   url: https://github.com/mcveanlab/mccortex
+# 
+# Comment lines begin with a # and are ignored, but must come after the header
+# Format is:
+#   [kmer] [num_paths] ...(ignored)
+#   [FR] [num_juncs] [counts0,counts1,...] [juncs:ACAGT] [seq=... juncpos=... ...]
+#
+# Columns are separated by a single space.
+# Columns 1-4 are required ([FR],..,[juncs]) everything after than is optional
+
+CAAAGCAGCCTTTGCTGAACCTTCATATTGTAGCCCTATTCTTAAGC 87
+R 1 4 A seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAAA juncpos=5
+R 1 42 T seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAAT juncpos=5
+R 2 30 TG seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAG juncpos=5,14
+R 3 2 TGA seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGA juncpos=5,14,15
+R 4 14 TGAA seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAA juncpos=5,14,15,16
+R 5 12 TGAAC seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACAC juncpos=5,14,15,16,19
+R 6 30 TGAACT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACT juncpos=5,14,15,16,19,20
+R 7 39 TGAACTT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCT juncpos=5,14,15,16,19,20,23
+R 8 41 TGAACTTT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTT juncpos=5,14,15,16,19,20,23,29
+R 9 22 TGAACTTTT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTTCTGTGT juncpos=5,14,15,16,19,20,23,29,35
+R 10 8 TGAACTTTTT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTTCTGTGTTT juncpos=5,14,15,16,19,20,23,29,35,37
+R 11 5 TGAACTTTTTA seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTTCTGTGTTTAA juncpos=5,14,15,16,19,20,23,29,35,37,39
+R 12 22 TGAACTTTTTAT seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTTCTGTGTTTAAT juncpos=5,14,15,16,19,20,23,29,35,37,39,40
+R 14 4 TGAACTTTTTATAG seq=GCTTAAGAATAGGGCTACAATATGAAGGTTCAGCAAAGGCTGCTTTGTATAATGTATCTGAGAACACTTCTGGTGTTCTGTGTTTAATAG juncpos=5,14,15,16,19,20,23,29,35,37,39,40,41,42
+```
+
+Kiran tells me `seq` and `juncpos` are not strictly necessary.  Would it be possible to add an argument to `thread` to suppress the output of these annotations?",winni2k,https://github.com/mcveanlab/mccortex/issues/64
+MDU6SXNzdWUyODU1MjAzMTM=,Creating cortex graph from more than two FASTQ files,CLOSED,2018-01-02T19:47:56Z,2018-01-10T10:19:17Z,2018-01-09T18:43:50Z,"I have two paired-end FASTQ files and two unpaired FASTQ files from the same sequencing run (output from trimmomatic). I would like to create a single graph from all of these files.  So far I have tried to create three separate graphs (one for the paired-end reads, and two for the single end reads), but I can't figure out how to merge the three graphs into one using only one color.  Using the join command gives me one graph with three colors, but I want all data to be merged into one color.
+
+Is this possible with mccortex?",winni2k,https://github.com/mcveanlab/mccortex/issues/65
+MDU6SXNzdWUyOTQ0NjYyNzg=,Tackle too much variation in a region,OPEN,2018-02-05T16:57:01Z,2018-02-05T16:57:01Z,,"Hi,
+
+I have an issue similar to this: https://github.com/mcveanlab/mccortex/issues/55
+
+I am trying two different mapping strategies. On the first one, there are 4 flanks and 2 of them map, resulting in a variant to be called. On the second one, all of the 4 flanks map. There are two bubbles and the bubble that is being defined by the 2 flanks from the 1st mapping strategy, is being found nested in a bigger bubble on the 2nd mapping strategy.
+
+On the second time, there are too many variants, and although the variant from the 1st time is being found, it gets this output from vcfcov:
+NC_000962.3    916     .       A       G       .       PASS    BUBBLE=0;K21    K21R:K21A       .:.
+
+So it is not being called. It obviously is present since it is found the first time, but when I managed to map all the flanks, I loose this variant.
+
+As has been mentioned on the linked issue 55, it most probably is due to too much variation in the region, but how does this work and is there a way to circumvent this?
+
+Thank you in advance,
+Dimitris",dimitrisarnellos,https://github.com/mcveanlab/mccortex/issues/66
+MDU6SXNzdWUzMDY2ODQ0ODA=,out of memory,CLOSED,2018-03-20T00:21:03Z,2018-05-28T01:52:14Z,2018-05-28T01:47:15Z,"Hi guys,
+First of all, thank you for this great software it looks really impressive.
+I would like to know if there is any workaround to an out of memory Fatal Error while threading the DBG. 
+I have a 1.7Gbp genome sequenced to a coverage of ~60X. I am using the largest node I have available which has 1.5Tb of RAM, but still get the following error (I've removed full paths to make it simpler to read):
+```
+./mccortex 47 thread -m 1450G -t 128 -1 merged_ec.1.fastq -1 merged_ec.2.fastq -o nigel_links.se.ctp.gz nigel_dbg.popped.ctx
+[19 Mar 2018 21:59:28-qak][cmd] /data/Bioinfo/bioinfo-proj-jmontenegro/Programs/mccortex/bin/mccortex63 thread -m 1450G -t 128 -1 merged_ec.1.fastq -1 merged_ec.2.fastq -o nigel_links.se.ctp.gz nigel_dbg.popped.ctx
+[19 Mar 2018 21:59:28-qak][cwd] /data/Bioinfo/bioinfo-proj-jmontenegro/Programs/mccortex/bin
+[19 Mar 2018 21:59:28-qak][version] mccortex=v0.0.3-554-ga7d6f3b zlib=1.2.3 htslib=1.3.2-208-gd8d0323 ASSERTS=ON hash=Lookup3 CHECKS=ON k=33..63
+[19 Mar 2018 21:59:28-qak] Reading graph: nigel_dbg.popped.ctx
+[19 Mar 2018 21:59:28-qak][task] input: merged_ec.1.fastq
+[19 Mar 2018 21:59:28-qak]  FASTQ offset: auto-detect, threshold: off; cut homopolymers: off
+[19 Mar 2018 21:59:28-qak]  one-way gap traversal [no edge check]
+[19 Mar 2018 21:59:28-qak][task] input: merged_ec.2.fastq
+[19 Mar 2018 21:59:28-qak]  FASTQ offset: auto-detect, threshold: off; cut homopolymers: off
+[19 Mar 2018 21:59:28-qak]  one-way gap traversal [no edge check]
+[19 Mar 2018 21:59:28-qak][memory] 456 bits per kmer
+[19 Mar 2018 21:59:28-qak][memory] graph: 85.6GB
+[19 Mar 2018 21:59:28-qak][memory] paths hash: 415.3GB
+[19 Mar 2018 21:59:28-qak][memory] paths store: 949.2GB
+[19 Mar 2018 21:59:28-qak][memory] total: 1.4TB of 1.5TB RAM
+[19 Mar 2018 21:59:28-qak] Creating paths file: nigel_links.se.ctp.gz
+[19 Mar 2018 21:59:28-qak][hasht] Allocating table with 1,610,612,736 entries, using 24.1GB
+[19 Mar 2018 21:59:28-qak][hasht]  number of buckets: 33,554,432, bucket size: 48
+[19 Mar 2018 21:59:28-qak][graph] kmer-size: 47; colours: 1; capacity: 1,610,612,736
+[19 Mar 2018 21:59:28-qak][GPathSet] Allocating for 31,446,338,337 paths, 29.3GB colset, 351.4GB seq => 937.2GB total
+[19 Mar 2018 21:59:28-qak][GPathHash] Allocating table with 45,097,156,608 entries, using 420.1GB
+[19 Mar 2018 21:59:28-qak][GPathHash]  number of buckets: 1,073,741,824, bucket size: 42
+[19 Mar 2018 22:02:47-qak] Not using new paths as they are added (safe)
+[19 Mar 2018 22:02:47-qak][FileFilter] Reading file nigel_dbg.popped.ctx [1 src colour]
+[19 Mar 2018 22:02:47-qak][GReader] 1,199,356,668 kmers, 23.5GB filesize
+[19 Mar 2018 22:12:06-qak][GReader] Loaded 1,199,356,668 / 1,199,356,668 (100.00%) of kmers parsed
+[19 Mar 2018 22:12:06-qak][hasht] buckets: 33,554,432 [2^25]; bucket size: 48;
+[19 Mar 2018 22:12:06-qak][hasht] memory: 24.1GB; filled: 1,199,356,668 / 1,610,612,736 (74.47%)
+[19 Mar 2018 22:12:06-qak][GPathStore] Creating separate read/write GraphPath linked lists
+[19 Mar 2018 22:12:06-qak][asyncio] Inputs: 2; Threads: 128
+[19 Mar 2018 22:12:06-qak][seq] Parsing sequence file merged_ec.1.fastq
+[19 Mar 2018 22:12:06-qak][seq] Parsing sequence file merged_ec.2.fastq
+[19 Mar 2018 22:12:06-qak] merged_ec.2.fastq: Qual scores: Sanger (Phred+33) [offset: 33, range: [33,73], sample: [43,73]]
+[19 Mar 2018 22:12:07-qak] merged_ec.1.fastq: Qual scores: Sanger (Phred+33) [offset: 33, range: [33,73], sample: [44,73]]
+[19 Mar 2018 22:18:46-qak][GenPaths] Read 5,000,000 entries (reads / read pairs)
+(...)
+[20 Mar 2018 03:14:35-qak][GenPaths] Read 395,000,000 entries (reads / read pairs)
+[20 Mar 2018 03:16:33-qak][GPathSet] Paths: 19,725,722,745 / 31,446,338,337 [62.73%], seqs: 380.7GB / 380.7GB [100.00%] (408802399165 / 408802398397)
+[20 Mar 2018 03:16:33-qak] 19725722744 >= 31446338337; 408802398561 > 408802398397 nbytes: 17
+[20 Mar 2018 03:16:33-qak][gpath_set.c:203] Fatal Error: Out of memory
+
+```
+From the log, it looks like it should fit in memory, but it doesn't. Would it help if I reduced the number of reads to half (~30X) to reduce memory usage? Or if I split the fastq in two chunks and do a two step threading of SE information to reduce peak memory? Orthe only solution would be to ask for a larger node (more memory)?
+
+I look forward to any suggestion.
+
+Kind regards,
+",jdmontenegro,https://github.com/mcveanlab/mccortex/issues/67
+MDU6SXNzdWUzMjYxODAwNzk=,Mysterious parameters for plot-covg-hist.R script,CLOSED,2018-05-24T15:41:28Z,2018-05-28T01:46:16Z,2018-05-28T01:46:16Z,"In the [workflow examples for plotting coverage distribution](https://github.com/mcveanlab/mccortex/wiki/Workflow-Examples#plot-coverage-distribution) you give an example of running this plot with 
+
+```sh
+scripts/plot-covg-hist.R covg.before_cleaning.csv covg.before_cleaning.pdf
+```
+
+However, when I do this I get an error saying I am missing two parameters `[<cutoff> [<kcov>]]`. What do these mean/do? Would be great if you could add a passage about this in the wiki.
+",mbhall88,https://github.com/mcveanlab/mccortex/issues/68
+MDU6SXNzdWUzMzg2MDAyNTc=,Finding sequences not in the reference genome ,OPEN,2018-07-05T14:31:38Z,2018-07-05T14:31:38Z,,"Hi,
+What is the best way to find sequences that are present in resequenced individuals but are missing from the reference genome? 
+I have a reference renome for a plant specie and a few tens of 5-10x coverage sequence individuals and I want to find DNA sequence present on the individuals that is missing from the reference. 
+I have seen this is possible to do with cortex_var but I am unsure how it could be done with mccortex.
+
+Thanks in advance",inti,https://github.com/mcveanlab/mccortex/issues/69
+MDU6SXNzdWUzMzk1MzU2MDY=,Build without sudo apt install,CLOSED,2018-07-09T17:13:26Z,2018-12-07T00:56:28Z,2018-12-07T00:56:28Z,"Apologies in advance if this is not the right place to ask this question.
+
+During the build process, it is stated that on linux:
+`sudo apt install liblzma-dev libbz2-dev`
+should be done for htslib dependency purposes.
+
+However, in our local system, only the admin has the ability to use this command. Is there any alternative to this?
+
+What has been done:
+- Manually downloading both liblzma-dev and libbz2-dev using wget
+- Installing both liblzma-dev and libbz2-dev
+- Add both paths to $LD_LIBRARY_PATH variable
+
+After these, running make all within cloned mccortex folder still results in error. Attached is the stderr/stdout of the make all command.
+
+[McCortex Stdout and Stderr.txt](https://github.com/mcveanlab/mccortex/files/2177258/McCortex.Stdout.and.Stderr.txt)
+
+Thank you very much",ShawnCone,https://github.com/mcveanlab/mccortex/issues/70
+MDU6SXNzdWUzNDc5MjYzNDI=,Release tar does not compile,CLOSED,2018-08-06T13:34:43Z,2018-08-20T13:59:02Z,2018-08-20T13:59:02Z,"It appears that the most recent [v0.2](https://github.com/mcveanlab/mccortex/releases/tag/v0.2) release tar-ball does not contain the code in submodules. That makes it practically impossible to compile just from the tar-ball.  Being able to compile from the tar-ball would make packaging in conda easier, as I don't think the `--recursive` keyword has been [implemented in conda yet](https://github.com/conda/conda-build/pull/753).",winni2k,https://github.com/mcveanlab/mccortex/issues/71
+MDU6SXNzdWUzNDgyMDg5MDU=,Release as conda package,CLOSED,2018-08-07T07:57:24Z,2018-09-07T19:34:31Z,2018-09-07T19:34:31Z,"I had a go at packaging mccortex for conda, but I've run out of time.  It would be really nice to have a conda package of mccortex to make it easier for downstream projects to include.",winni2k,https://github.com/mcveanlab/mccortex/issues/72
+MDU6SXNzdWUzNTIxNDkxOTk=,Release `1.0` tar compiles as version `v0.0.3-610-g400c0e3`,CLOSED,2018-08-20T14:01:40Z,2018-12-07T00:53:10Z,2018-12-07T00:52:54Z,"Not sure this is a problem, but I could not help but notice that the mccortex version string reported by the compiled binary of the 1.0 release returns the version string `mccortex=v0.0.3-610-g400c0e3`.  I would expect the version string to contain `1.0.0`?",winni2k,https://github.com/mcveanlab/mccortex/issues/73
+MDU6SXNzdWUzNjc4MzkwMDM=,Link creation fails on minimal example?,CLOSED,2018-10-08T15:18:23Z,2018-10-16T16:23:29Z,2018-10-16T16:23:29Z,"I have created a [gist](https://gist.github.com/winni2k/fdbd7a61beec7a9471d7bda7791300cf) with the relevant input and log files.
+
+When I run mccortex with kmer size 3 with an input fasta containing two reads of length 4, and I then thread the same reads through the resulting graph, I do not get any links in the links file. Is this a bug, or am I doing something wrong?",winni2k,https://github.com/mcveanlab/mccortex/issues/74
+MDU6SXNzdWUzNzgyNDE0Mjg=,Problem during installation,CLOSED,2018-11-07T11:05:27Z,2018-12-07T01:01:31Z,2018-11-07T13:20:56Z,"I am encountering an issue during build on Ubuntu 18.04
+
+```sh
+apt install -y liblzma-dev libbz2-dev libz-dev libncurses5-dev zlib1g-dev
+COMMIT=""400c0e322aae2d3563b4f1fad270fd95a878ba15""
+git clone --recursive https://github.com/mcveanlab/mccortex
+cd mccortex
+git checkout ""$COMMIT""
+make all MAXK=31
+```
+
+And I get the following error
+
+```
+../htslib/libhts.a(cram_io.o): In function `lzma_mem_deflate':
+/root/mccortex/libs/htslib/cram/cram_io.c:678: undefined reference to `lzma_stream_buffer_bound'
+/root/mccortex/libs/htslib/cram/cram_io.c:684: undefined reference to `lzma_easy_buffer_encode'
+../htslib/libhts.a(cram_io.o): In function `cram_compress_by_method':
+/root/mccortex/libs/htslib/cram/cram_io.c:1040: undefined reference to `BZ2_bzBuffToBuffCompress'
+../htslib/libhts.a(cram_io.o): In function `cram_uncompress_block':
+/root/mccortex/libs/htslib/cram/cram_io.c:966: undefined reference to `BZ2_bzBuffToBuffDecompress'
+../htslib/libhts.a(cram_io.o): In function `lzma_mem_inflate':
+/root/mccortex/libs/htslib/cram/cram_io.c:700: undefined reference to `lzma_easy_decoder_memusage'
+/root/mccortex/libs/htslib/cram/cram_io.c:700: undefined reference to `lzma_stream_decoder'
+/root/mccortex/libs/htslib/cram/cram_io.c:715: undefined reference to `lzma_code'
+/root/mccortex/libs/htslib/cram/cram_io.c:728: undefined reference to `lzma_code'
+/root/mccortex/libs/htslib/cram/cram_io.c:737: undefined reference to `lzma_end'
+collect2: error: ld returned 1 exit status
+Makefile:32: recipe for target 'bin/dnacat' failed
+make[2]: *** [bin/dnacat] Error 1
+make[2]: Leaving directory '/root/mccortex/libs/seq_file'
+Makefile:49: recipe for target 'seq_file' failed
+make[1]: *** [seq_file] Error 2
+make[1]: Leaving directory '/root/mccortex/libs'
+Makefile:238: recipe for target 'libs-core' failed
+make: *** [libs-core] Error 2
+```",mbhall88,https://github.com/mcveanlab/mccortex/issues/75
+MDU6SXNzdWUzODQyMTQyNDg=,"Compilations fails: ""city.c:405:10: fatal error: 'citycrc.h' file not found""",OPEN,2018-11-26T08:04:44Z,2018-12-07T00:55:48Z,,"`city.c` conditionally includes `citycrc.h` if the macro `__SSE_4_2__` is defined, which it is on all processors sold in the last decade. However, this file is not checked into git and the `make all` step fails.
+
+Steps to reproduce:
+
+* `git clone --recursive https://github.com/mcveanlab/mccortex`
+* edit `mccortex/libs/misc` and add `-march=native` to the `OPT` variable
+* `make`
+
+Expected behavior:
+
+No errors.
+
+Actual behavior:
+
+```
+cc -Wall -Wextra -O3 -march=native -c city.c -o city.o
+city.c:405:10: fatal error: 'citycrc.h' file not found
+#include ""citycrc.h""
+         ^~~~~~~~~~~
+1 error generated.
+make: *** [city.o] Error 1
+```",jonchang,https://github.com/mcveanlab/mccortex/issues/76
+MDU6SXNzdWUzOTgzNTIwNTI=,Build log - identifying how many kmers were added from different files,OPEN,2019-01-11T16:07:28Z,2019-01-11T16:07:28Z,,"Hi there, 
+
+First off thank you for the amazing software and excellent documentation! 
+To give you some background to my project I am trying to identify variants from a multi-sample ldbg from a human chromosome. I have included ""decontaminated"" unmapped reads as well as reads that previously aligned to the chromosome, so that I can use McCortex to de novo assemble this multi-sample graph. I'd like to know to what extent the previously unmapped reads were incorporated into the graph.   
+
+Per sample, I have 7 sequence files that I am using to build the graph, 2 of which contain unmapped reads. In the output it seems as though all reads came from the first file, however I know that the SE read count shown for the first file is actually the sum of the reads in all the files (see full output attached).
+
+Why does it appear this way? Is there something I could do so that I get this output split by the input file?
+
+Kind regards and many thanks in advance, 
+Alexa
+
+[build_SAHGP034.txt](https://github.com/mcveanlab/mccortex/files/2750298/build_SAHGP034.txt)
+
+mccortex63 build -m 32G -k 51 --sample Xhosa_SAHGP034_SAHGP --seq2 SAHGP034.notCombined_1.fastq.gz:SAHGP034.notCombined_2.fastq.gz --seq SAHGP034_R1_se.fq.gz --seq SAHGP034_R2_se.fq.gz --seq SAHGP034.extendedFrags.fastq.gz --seq LP6005857-DNA_H03-R1_cont.fq.gz --seq LP6005857-DNA_H03-R2_cont.fq.gz Xhosa_SAHGP034_SAHGP.ctx
+
+[05 Jan 2019 15:45:08-New][task] input: SAHGP034.notCombined_1.fastq.gz colour: 0
+[05 Jan 2019 15:45:08-New]  SE reads: 124,936,653  PE reads: 0
+[05 Jan 2019 15:45:08-New]  good reads: 124,927,096  bad reads: 9,557
+[05 Jan 2019 15:45:08-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:08-New]  bases read: 12,599,990,753  bases loaded: 12,598,372,994
+[05 Jan 2019 15:45:08-New]  num contigs: 124,927,214  num kmers: 6,352,012,294 novel kmers: 780,695,391
+[05 Jan 2019 15:45:08-New][task] input: SAHGP034.notCombined_2.fastq.gz colour: 0
+[05 Jan 2019 15:45:08-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:08-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:08-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:08-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:08-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+[05 Jan 2019 15:45:08-New][task] input: SAHGP034_R1_se.fq.gz colour: 0
+[05 Jan 2019 15:45:08-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:08-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:08-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:08-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:08-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+[05 Jan 2019 15:45:09-New][task] input: SAHGP034_R2_se.fq.gz colour: 0
+[05 Jan 2019 15:45:09-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:09-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:09-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:09-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:09-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+[05 Jan 2019 15:45:09-New][task] input: SAHGP034.extendedFrags.fastq.gz colour: 0
+[05 Jan 2019 15:45:09-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:09-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:09-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:09-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:09-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+[05 Jan 2019 15:45:09-New][task] input: LP6005857-DNA_H03-R1_cont.fq.gz colour: 0
+[05 Jan 2019 15:45:09-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:09-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:09-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:09-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:09-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+[05 Jan 2019 15:45:09-New][task] input: LP6005857-DNA_H03-R2_cont.fq.gz colour: 0
+[05 Jan 2019 15:45:09-New]  SE reads: 0  PE reads: 0
+[05 Jan 2019 15:45:09-New]  good reads: 0  bad reads: 0
+[05 Jan 2019 15:45:09-New]  dup SE reads: 0  dup PE pairs: 0
+[05 Jan 2019 15:45:09-New]  bases read: 0  bases loaded: 0
+[05 Jan 2019 15:45:09-New]  num contigs: 0  num kmers: 0 novel kmers: 0
+ ",alexa-hks,https://github.com/mcveanlab/mccortex/issues/78
+MDU6SXNzdWUzOTg1ODUyMjA=,Assert error during graph cleaning,OPEN,2019-01-12T19:38:18Z,2019-01-12T19:38:18Z,,"I’m getting a puzzling “assert error” when using the “clean” function to first merge then clean multiple sample graphs and am looking for help with troubleshooting. For context, the inputs are 8 raw graphs (~60GB), run on a 1.5TB machine with 1.4TB allocated to the computation.
+
+From the log file it doesn’t look to my naive eyes like McCortex doesn’t have sufficient memory. Can the issue be that the hash table is not large enough? Any tips are greatly appreciated!
+
+Here is the log file:
+[12 Jan 2019 00:36:15-jUF][cmd] /home/ltran20/mccortex/bin/mccortex63 clean -f -m 1400G -n 13G -t 16 --fallback 8 -T -U --covg-before /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.raw.cov.csv --covg-after /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.clean.cov.csv --len-before /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.raw.len.csv --len-after /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.clean.len.csv -o /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.clean.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR13_S4.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR15_S5.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR16_S6.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR17_S7.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR19_S8.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR6_S3.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/S_JAR50_S9.raw.ctx /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/S_JAR53_S13.raw.ctx
+[12 Jan 2019 00:36:15-jUF][cwd] /home/ltran20/lizards
+[12 Jan 2019 00:36:15-jUF][version] mccortex= zlib=1.2.3 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=33..63
+[12 Jan 2019 00:36:15-jUF] Actions:
+[12 Jan 2019 00:36:15-jUF] 0. Saving kmer coverage distribution to: /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.raw.cov.csv
+[12 Jan 2019 00:36:15-jUF] 1. Saving unitig length distribution to: /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.raw.len.csv
+[12 Jan 2019 00:36:15-jUF] 2. Cleaning tips shorter than 126 nodes
+[12 Jan 2019 00:36:15-jUF] 3. Cleaning unitigs with auto-detected threshold
+[12 Jan 2019 00:36:15-jUF] 4. Saving kmer coverage distribution to: /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.clean.cov.csv
+[12 Jan 2019 00:36:15-jUF] 5. Saving unitig length distribution to: /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR.pop.clean.len.csv
+[12 Jan 2019 00:36:15-jUF][memory] 448 bits per kmer
+[12 Jan 2019 00:36:15-jUF] Note: Using less memory than requested (729GB < 1.4TB); allows for 13,958,643,712 kmers
+[12 Jan 2019 00:36:15-jUF][memory] graph: 729GB
+[12 Jan 2019 00:36:15-jUF][cleaning] 8 input graphs, max kmers: 3,140,896,287, using 8 colours
+[12 Jan 2019 00:36:15-jUF][memory] total: 729GB of 1.5TB RAM
+[12 Jan 2019 00:36:15-jUF][hasht] Allocating table with 13,958,643,712 entries, using 209GB
+[12 Jan 2019 00:36:15-jUF][hasht]  number of buckets: 536,870,912, bucket size: 26
+[12 Jan 2019 00:36:15-jUF][graph] kmer-size: 63; colours: 8; capacity: 13,958,643,712
+[12 Jan 2019 00:36:15-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR13_S4.raw.ctx [1 src colour]
+[12 Jan 2019 00:36:15-jUF][GReader] 2,958,587,869 kmers, 57.9GB filesize
+[12 Jan 2019 01:47:14-jUF][GReader] Loaded 2,958,587,869 / 2,958,587,869 (100.00%) of kmers parsed
+[12 Jan 2019 01:47:14-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR15_S5.raw.ctx [1 src colour] with filter: 0->1
+[12 Jan 2019 01:47:14-jUF][GReader] 2,952,133,198 kmers, 57.7GB filesize
+[12 Jan 2019 02:51:21-jUF][GReader] Loaded 2,952,133,198 / 2,952,133,198 (100.00%) of kmers parsed
+[12 Jan 2019 02:51:21-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR16_S6.raw.ctx [1 src colour] with filter: 0->2
+[12 Jan 2019 02:51:21-jUF][GReader] 2,919,980,595 kmers, 57.1GB filesize
+[12 Jan 2019 03:56:29-jUF][GReader] Loaded 2,919,980,595 / 2,919,980,595 (100.00%) of kmers parsed
+[12 Jan 2019 03:56:29-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR17_S7.raw.ctx [1 src colour] with filter: 0->3
+[12 Jan 2019 03:56:29-jUF][GReader] 2,886,256,646 kmers, 56.4GB filesize
+[12 Jan 2019 05:07:03-jUF][GReader] Loaded 2,886,256,646 / 2,886,256,646 (100.00%) of kmers parsed
+[12 Jan 2019 05:07:03-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR19_S8.raw.ctx [1 src colour] with filter: 0->4
+[12 Jan 2019 05:07:03-jUF][GReader] 2,958,893,598 kmers, 57.9GB filesize
+[12 Jan 2019 06:23:01-jUF][GReader] Loaded 2,958,893,598 / 2,958,893,598 (100.00%) of kmers parsed
+[12 Jan 2019 06:23:01-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/JAR6_S3.raw.ctx [1 src colour] with filter: 0->5
+[12 Jan 2019 06:23:01-jUF][GReader] 2,886,705,907 kmers, 56.5GB filesize
+[12 Jan 2019 07:40:05-jUF][GReader] Loaded 2,886,705,907 / 2,886,705,907 (100.00%) of kmers parsed
+[12 Jan 2019 07:40:05-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/S_JAR50_S9.raw.ctx [1 src colour] with filter: 0->6
+[12 Jan 2019 07:40:05-jUF][GReader] 3,140,896,287 kmers, 61.4GB filesize
+[12 Jan 2019 09:05:35-jUF][GReader] Loaded 3,140,896,287 / 3,140,896,287 (100.00%) of kmers parsed
+[12 Jan 2019 09:05:35-jUF][FileFilter] Reading file /scratch/ltran20/lizards/mccortex_full_uncorr_JAR/k63/graphs/S_JAR53_S13.raw.ctx [1 src colour] with filter: 0->7
+[12 Jan 2019 09:05:35-jUF][GReader] 3,074,158,683 kmers, 60.1GB filesize
+[12 Jan 2019 10:31:24-jUF][GReader] Loaded 3,074,158,683 / 3,074,158,683 (100.00%) of kmers parsed
+[12 Jan 2019 10:31:24-jUF][cleaning] Total kmers loaded: 11,230,083,705
+[12 Jan 2019 10:31:24-jUF][hasht] buckets: 536,870,912 [2^29]; bucket size: 26; 
+[12 Jan 2019 10:31:24-jUF][hasht] memory: 209GB; filled: 11,230,083,705 / 13,958,643,712 (80.45%)
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  0: 11031800044
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  1: 178522995
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  2: 17286272
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  3: 2132402
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  4: 291855
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  5: 42497
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  6: 6465
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  7: 994
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  8: 153
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions  9: 22
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions 10: 5
+[12 Jan 2019 10:31:24-jUF][hasht]  collisions 11: 1
+[12 Jan 2019 10:31:24-jUF][cleaning] Calculating unitig stats with 16 threads...
+[12 Jan 2019 10:31:24-jUF][cleaning]   Using kmer gamma method
+[src/graph/db_unitig.c:107] Assert Failed db_unitig_extend(): node.key != ((18446744073709551615UL)>>1)
+[12 Jan 2019 10:31:24-jUF] Assert Error
+[src/graph/db_unitig.c:107] Assert Failed db_unitig_extend(): node.key != ((18446744073709551615UL)>>1)
+[12 Jan 2019 10:31:24-jUF] Assert Error",lucaptra,https://github.com/mcveanlab/mccortex/issues/79
+MDU6SXNzdWU0MjIyNzMxMzE=,Bug in `mccortex join` with --sort option,OPEN,2019-03-18T15:11:50Z,2019-03-18T15:11:50Z,,"I think I have encountered a bug in `mccortex join` when I use it with the `--sort` output option. Here is what I mean:
+
+```bash
+echo -e '>1\nCCCGGG' > 1.fa
+echo -e '>1\nCCCAAA' > 2.fa
+
+mccortex 3 build -k 3 -s 1 -1 1.fa 1.ctx
+mccortex 3 build -k 3 -s 2 -1 2.fa 2.ctx
+
+## This works OK
+mccortex 3 join -o isec.ctx -i 2.ctx 1.ctx
+
+mccortex 3 view --kmers isec.ctx 2>/dev/null
+# returns correct value:
+# CCC 2 ........
+
+rm isec.ctx
+
+## This does not 
+mccortex 3 join --sort -o isec.ctx -i 2.ctx 1.ctx 2>/dev/null
+
+mccortex 3 view --kmers isec.ctx
+# returns all kmers in 2.ctx with zero coverage and edges removed???:
+# AAA 0 ........
+# CAA 0 ........
+# CCA 0 ........
+# CCC 0 ........
+```",winni2k,https://github.com/mcveanlab/mccortex/issues/80
+MDU6SXNzdWU0Mjk0NTE1NzM=,Is it possible to extract kmers in bubbles?,OPEN,2019-04-04T19:44:57Z,2019-04-06T20:06:41Z,,"Greetings,
+
+I was wondering is it possible to extract kmers that are in bubbles? I see the `bubbles` command generates only the variable bases, not fixed width kmers. In otherwords, I want all kmers that, lead into and out of a bubble, for both paths. I should mention this is a diploid. 
+
+I was also wondering about the `view` command. I couldn't find documentation about the format. I'm guessing it's kmer,count,???
+
+```
+GAGCTGCCAACAGCAGAGGTAAA 24 a....C..
+AAATCACCGTGAAAATATAATTC 35 a......T
+ATCATTATGTATTTAATTACACA 22 ...t...T
+```",zeeev,https://github.com/mcveanlab/mccortex/issues/82
+MDU6SXNzdWU0Mzc2NjgzNTQ=,Is there a way to rename colors?,OPEN,2019-04-26T13:16:29Z,2019-04-26T13:16:29Z,,I would like to change the header entry for the color name in a Cortex file. Is there a way to do this with Mccortex?,winni2k,https://github.com/mcveanlab/mccortex/issues/83
+MDU6SXNzdWU0NjkyODY4NDM=,mccortex31 check: report error if records incomplete. ,CLOSED,2019-07-17T15:26:14Z,2019-07-17T20:57:40Z,2019-07-17T20:57:40Z, I just wanted a sanity check - because i'm running on an unstable cluster that kills processes randomly - will `mccortex31 check` test a .ctx to see whether some preceding `mccortex31` command successfully wrote all kmer records it intended to write to the .ctx? Or will it just check header corruption.  I can see how corruption in the head could be tested (there are two CORTEX tags bounding the head). But is there a similar structure to check all intended kmer records were written?,izaak-coleman,https://github.com/mcveanlab/mccortex/issues/84
+MDU6SXNzdWU0NzExMTI3OTQ=,Sorted flag in .ctx header,CLOSED,2019-07-22T14:00:31Z,2019-07-22T18:13:50Z,2019-07-22T18:13:50Z,"Is there a byte flag in the .ctx header to specify whether the .ctx has been sorted, 
+if so, which (nth) byte?
+
+Many thanks!
+Izaak ",izaak-coleman,https://github.com/mcveanlab/mccortex/issues/85
+MDU6SXNzdWU0NzQ1MjAzMjY=,Problem running make,OPEN,2019-07-30T11:05:59Z,2019-08-29T09:22:12Z,,"When I run make I get this error:
+`user@servername:~/mccortex$ make all
+cd libs && make core
+make[1]: Entering directory '/home/ambarnilg/mccortex/libs'
+# Run configure if config makefile not created
+cd htslib && ( if ! [ -f config.mk ]; then autoreconf && ./configure --disable-lzma --disable-bz2 --disable-libcurl; fi; make -e )
+/bin/bash: autoreconf: command not found
+make[2]: Entering directory '/home/ambarnilg/mccortex/libs/htslib'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/ambarnilg/mccortex/libs/htslib'
+cd string_buffer && make all
+make[2]: Entering directory '/home/ambarnilg/mccortex/libs/string_buffer'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/ambarnilg/mccortex/libs/string_buffer'
+cd bit_array && make all
+make[2]: Entering directory '/home/ambarnilg/mccortex/libs/bit_array'
+cd dev && make
+make[3]: Entering directory '/home/ambarnilg/mccortex/libs/bit_array/dev'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/ambarnilg/mccortex/libs/bit_array/dev'
+cd examples && make
+make[3]: Entering directory '/home/ambarnilg/mccortex/libs/bit_array/examples'
+make[3]: Nothing to be done for 'all'.
+make[3]: Leaving directory '/home/ambarnilg/mccortex/libs/bit_array/examples'
+make[2]: Leaving directory '/home/ambarnilg/mccortex/libs/bit_array'
+cd seq_file && make HTSLIB=../htslib all
+make[2]: Entering directory '/home/ambarnilg/mccortex/libs/seq_file'
+mkdir -p bin
+cc -Wall -Wextra -std=c99 -pedantic -I. -O3 -o bin/dnacat tools/dna_cat.c -I ../htslib -D_USESAM=1 ../htslib/libhts.a -lm -lpthread -lz -lm
+In file included from /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:33:0,
+                 from /usr/include/stdlib.h:25,
+                 from tools/dna_cat.c:11:
+/usr/include/features.h:184:3: warning: #warning ""_BSD_SOURCE and _SVID_SOURCE are deprecated, use _DEFAULT_SOURCE"" [-Wcpp]
+ # warning ""_BSD_SOURCE and _SVID_SOURCE are deprecated, use _DEFAULT_SOURCE""
+   ^~~~~~~
+In file included from ./seq_file.h:27:0,
+                 from tools/dna_cat.c:23:
+../htslib/htslib/hfile.h: In function ‘hwrite’:
+../htslib/htslib/hfile.h:261:35: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+         if (fp->limit - fp->begin < nbytes){
+                                   ^
+../htslib/libhts.a(cram_io.o): In function `lzma_mem_deflate':
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:678: undefined reference to `lzma_stream_buffer_bound'
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:684: undefined reference to `lzma_easy_buffer_encode'
+../htslib/libhts.a(cram_io.o): In function `cram_compress_by_method':
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:1040: undefined reference to `BZ2_bzBuffToBuffCompress'
+../htslib/libhts.a(cram_io.o): In function `cram_uncompress_block':
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:966: undefined reference to `BZ2_bzBuffToBuffDecompress'
+../htslib/libhts.a(cram_io.o): In function `lzma_mem_inflate':
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:700: undefined reference to `lzma_easy_decoder_memusage'
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:700: undefined reference to `lzma_stream_decoder'
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:715: undefined reference to `lzma_code'
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:728: undefined reference to `lzma_code'
+/home/ambarnilg/mccortex/libs/htslib/cram/cram_io.c:737: undefined reference to `lzma_end'
+collect2: error: ld returned 1 exit status
+Makefile:32: recipe for target 'bin/dnacat' failed
+make[2]: *** [bin/dnacat] Error 1
+make[2]: Leaving directory '/home/ambarnilg/mccortex/libs/seq_file'
+Makefile:49: recipe for target 'seq_file' failed
+make[1]: *** [seq_file] Error 2
+make[1]: Leaving directory '/home/ambarnilg/mccortex/libs'
+Makefile:238: recipe for target 'libs-core' failed
+make: *** [libs-core] Error 2`
+
+I tried running `apt install -y r-base-core` but that is also not working.",Tj-Idowu,https://github.com/mcveanlab/mccortex/issues/86
+MDU6SXNzdWU0ODExOTk0MjA=,mccortex subgraph behaviour,OPEN,2019-08-15T15:13:50Z,2019-08-15T15:15:30Z,,"I have a couple of questions about the behaviour of `mccortex31 subgraph`. 
+
+Firstly, does `--dist d` specify the radius or diameter? i.e will `subgraph` extend from the input sequence a distance of `d` to the left and right (`--dist` specifies radius) or a distance of `d/2` to the left and right (`--dist` specifies diameter)?
+
+Secondly, if the sequence passed to `--seq` is a single kmer (of len 31 in this case), and
+distance passed to `--dist` is `d`, if `--dist` specifies radius, is it the case that the maximum number of possible kmers that could be pulled from the original graph is`4^d + 4^d + 1` (one `4^d` term each for left and right extension, `1` for the original seed kmer) assuming each node in the de brujin graph has four edges? 
+
+Finally, if the sequence passed to `--seq` contains multiple uncontiguous kmers, will each of the kmers be extended a distance of `d`?
+
+Kind regards, and thanks for any insight given!
+Izaak Coleman",izaak-coleman,https://github.com/mcveanlab/mccortex/issues/87
+MDU6SXNzdWU2MDA5NDU4MzI=,ld cannot find libcurses.so ,CLOSED,2020-04-16T10:55:56Z,2020-04-17T02:45:08Z,2020-04-17T02:45:07Z,"Apologies in advance for the novice computing skills, but I thought this might be a useful issue to fix or present in the docs for biologists like me!
+
+Just letting you know that if libncurses is installed from source (e.g. if you don't have admin rights on a server), programs that use it should link to libncurses.a.
+
+It seems like the samtools version bundled with mccortex tries to link to libcurses.so, which doesn't come with libncurses by default.
+
+I'm not sure what's happening with APT as mccortex will build fine when libncurses is installed through the APT. I've found a workaround by creating a symlink from libcurses.so to libncurses.a, which I think is the actual file that ld is looking for during compilation.
+
+I've not tested mccortex yet but fingers crossed it works.",markcharder,https://github.com/mcveanlab/mccortex/issues/88
+MDU6SXNzdWU2NDYyODQ0MTM=,Hash table is full,OPEN,2020-06-26T14:01:13Z,2020-06-26T14:01:13Z,,"Hey there.
+
+I have 220 bacterial genomes with around 12Mb genome size on average.
+I am running the following command:
+
+/cluster/apps/gdc/mccortex/1.0.1/bin/mccortex63 vcfcov -m 280GB -n 10G --low-mem --ref ....
+
+After k 31 and 63 have been completed, during the step of creating the vcfs I got the following error message: ""Fatal Error: Hash table is full""
+
+I am aware of the closed report further down this list with the same title (""Hash table is full"").
+
+Following the advice given initially solved the problem for me, during an earlier run in which I only relied  on the default (1M) hash table size and 70GB of RAM.
+
+After adjusting both to -m 280GB -n 10G respectively, the pipeline now git stuck again, increasing the memory or hash table size doesn't work.
+
+HEre's the full output of the log file:
+
+[26 Jun 2020 15:46:48-toj][cmd] /cluster/apps/gdc/mccortex/1.0.1/bin/mccortex63 vcfcov -m 280GB -n 10G --low-mem --ref /cluster/scratch/swielgos/SEB-IND$
+[26 Jun 2020 15:46:48-toj][cwd] /cluster/scratch/swielgos/SEB-INDIANA-TRIMMED
+[26 Jun 2020 15:46:48-toj][version] mccortex=tags/mccortex-1.0.1 zlib=1.2.7 htslib=1.9-66-gbcf9bff-dirty ASSERTS=ON hash=Lookup3 CHECKS=ON k=33..63
+[26 Jun 2020 15:46:48-toj][vcfcov] max allele length: 100; max number of variants: 8
+[26 Jun 2020 15:46:48-toj][memory] 160 bits per kmer
+[26 Jun 2020 15:46:48-toj][memory] graph: 802MB
+[26 Jun 2020 15:46:48-toj][memory] total: 802MB of 755GB RAM
+[26 Jun 2020 15:46:48-toj][vcfcov] Output format: compressed VCF
+[26 Jun 2020 15:46:48-toj][hasht] Allocating table with 41,943,040 entries, using 642MB
+[26 Jun 2020 15:46:48-toj][hasht]  number of buckets: 1,048,576, bucket size: 40
+[26 Jun 2020 15:46:48-toj][graph] kmer-size: 63; colours: 1; capacity: 41,943,040
+[26 Jun 2020 15:46:48-toj][vcfcov] Loading kmers from VCF+ref
+[26 Jun 2020 15:48:09-toj][hasht] buckets: 1,048,576 [2^20]; bucket size: 40;
+[26 Jun 2020 15:48:09-toj][hasht] memory: 642MB; filled: 39,346,704 / 41,943,040 (93.81%)
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  0: 37511945
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  1: 1305068
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  2: 337947
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  3: 114617
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  4: 44132
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  5: 18388
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  6: 8017
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  7: 3539
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  8: 1606
+[26 Jun 2020 15:48:09-toj][hasht]  collisions  9: 757
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 10: 357
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 11: 170
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 12: 90
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 13: 34
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 14: 18
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 15: 6
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 16: 6
+[26 Jun 2020 15:48:09-toj][hasht]  collisions 17: 7
+[26 Jun 2020 15:48:09-toj][hash_table.c:247] Fatal Error: Hash table is full
+Failed to open -: unknown file type
+
+Thanks for your advice.",chatcrawler,https://github.com/mcveanlab/mccortex/issues/89
+MDU6SXNzdWU2OTk1MTEzNTQ=,"mccortex unitigs: ""Fatal Error: Not enough kmers in hash"" or ""Fatal Error: Hash table is full""",OPEN,2020-09-11T16:29:56Z,2020-09-11T16:40:30Z,,"* OS: OS X
+* Version: `mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31`
+
+Preparation:
+```
+$ wget http://ftp.ebi.ac.uk/pub/software/bigsi/nat_biotech_2018/ctx/ERR189/ERR189737/cleaned/ERR189737.ctx.bz2
+
+$ bzip2 -d -k ERR189737.ctx.bz2
+```
+
+Failure mode 1:
+```
+$ mccortex31 unitigs ERR189737.ctx
+[10 Sep 2020 23:21:08-DAF][cmd] mccortex31 unitigs ERR189737.ctx
+[10 Sep 2020 23:21:08-DAF][cwd] /private/tmp/~20200910223252
+[10 Sep 2020 23:21:08-DAF][version] mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[10 Sep 2020 23:21:08-DAF][memory] 73 bits per kmer
+[10 Sep 2020 23:21:08-DAF][cmd_mem.c:98] Fatal Error: Not enough kmers in hash: require at least 70,540,096 kmers (min memory: 624.5MB)
+Karel:~20200910223252 karel$ mccortex31 unitigs ERR189737.ctx
+[10 Sep 2020 23:21:18-fOD][cmd] mccortex31 unitigs ERR189737.ctx
+[10 Sep 2020 23:21:18-fOD][cwd] /private/tmp/~20200910223252
+[10 Sep 2020 23:21:18-fOD][version] mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[10 Sep 2020 23:21:18-fOD][memory] 73 bits per kmer
+[10 Sep 2020 23:21:18-fOD][cmd_mem.c:98] Fatal Error: Not enough kmers in hash: require at least 70,540,096 kmers (min memory: 624.5MB)
+```
+
+Failure mode 2:
+```
+$ bzcat -f ERR189737.ctx.bz2 |  mccortex31 unitigs -
+[11 Sep 2020 12:28:09-fIt][cmd] mccortex31 unitigs -
+[11 Sep 2020 12:28:09-fIt][cwd] /private/tmp/~20200910223252
+[11 Sep 2020 12:28:09-fIt][version] mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[11 Sep 2020 12:28:09-fIt][memory] 73 bits per kmer
+[11 Sep 2020 12:28:09-fIt][memory] graph: 496.8MB
+[11 Sep 2020 12:28:09-fIt][memory] total: 496.8MB of 40GB RAM
+[11 Sep 2020 12:28:09-fIt] Output in FASTA format to STDOUT
+[11 Sep 2020 12:28:09-fIt][hasht] Allocating table with 56,623,104 entries, using 436MB
+[11 Sep 2020 12:28:09-fIt][hasht]  number of buckets: 2,097,152, bucket size: 27
+[11 Sep 2020 12:28:09-fIt][graph] kmer-size: 31; colours: 1; capacity: 56,623,104
+[11 Sep 2020 12:28:09-fIt][FileFilter] Reading file - [1 src colour]
+[11 Sep 2020 12:28:09-fIt][GReader] 18,446,744,073,709,551,615 kmers, 16EB filesize
+^[[B^[[B^[[B^[[B^[[B^[[B[11 Sep 2020 12:28:50-fIt][hasht] buckets: 2,097,152 [2^21]; bucket size: 27; 
+[11 Sep 2020 12:28:50-fIt][hasht] memory: 436MB; filled: 51,626,922 / 56,623,104 (91.18%)
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  0: 49009867
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  1: 1927184
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  2: 462390
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  3: 144851
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  4: 50724
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  5: 19183
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  6: 7551
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  7: 2960
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  8: 1266
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions  9: 497
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 10: 276
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 11: 102
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 12: 38
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 13: 21
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 14: 9
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 15: 2
+[11 Sep 2020 12:28:50-fIt][hasht]  collisions 16: 1
+[11 Sep 2020 12:28:50-fIt][hash_table.c:247] Fatal Error: Hash table is full
+```",karel-brinda,https://github.com/mcveanlab/mccortex/issues/90
+MDU6SXNzdWU2OTk1NzA1Mzk=,"mccortex unitigs: ""Fatal Error: Couldn't read 'Coverages': expected 4; recieved: 0""",OPEN,2020-09-11T17:34:55Z,2020-09-11T17:34:55Z,,"* OS: OS X
+* Version: `mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31`
+
+Preparation:
+```
+wget http://ftp.ebi.ac.uk/pub/software/bigsi/nat_biotech_2018/ctx/ERR145/ERR1458685/cleaned/ERR1458685.ctx.bz2
+```
+
+Error:
+```
+$ bzcat -f ERR1458685.ctx.bz2 | mccortex31 unitigs -m 3G -
+[11 Sep 2020 13:34:00-ves][cmd] mccortex31 unitigs -m 3G -
+[11 Sep 2020 13:34:00-ves][cwd] /private/tmp/~20200911133112
+[11 Sep 2020 13:34:00-ves][version] mccortex=v0.0.3-610-g400c0e3 zlib=1.2.11 htslib=1.8-17-g699ed53 ASSERTS=ON hash=Lookup3 CHECKS=ON k=3..31
+[11 Sep 2020 13:34:00-ves][memory] 73 bits per kmer
+[11 Sep 2020 13:34:00-ves][memory] graph: 2.9GB
+[11 Sep 2020 13:34:00-ves][memory] total: 2.9GB of 16GB RAM
+[11 Sep 2020 13:34:00-ves] Output in FASTA format to STDOUT
+[11 Sep 2020 13:34:00-ves][hasht] Allocating table with 343,932,928 entries, using 2.6GB
+[11 Sep 2020 13:34:00-ves][hasht]  number of buckets: 8,388,608, bucket size: 41
+[11 Sep 2020 13:34:00-ves][graph] kmer-size: 31; colours: 1; capacity: 343,932,928
+[11 Sep 2020 13:34:00-ves][FileFilter] Reading file - [1 src colour]
+[11 Sep 2020 13:34:00-ves][GReader] 18,446,744,073,709,551,615 kmers, 16EB filesize
+[11 Sep 2020 13:34:02-ves][graph_file_reader.c:364] Fatal Error: Couldn't read 'Coverages': expected 4; recieved: 0; [file: -]
+```",karel-brinda,https://github.com/mcveanlab/mccortex/issues/91
+MDU6SXNzdWU4MDE2MjU5NjQ=,Best practice for large datasets?,OPEN,2021-02-04T20:51:19Z,2021-02-16T22:03:24Z,,"Dear Isaac,
+
+I would like to apply mccortex on a large scale resequencing project. (~400 individuals, 1GB genome size),
+I read through the wiki, and here is what I think a possible workflow might look like
+
+1. Build graphs for each sample and reference with one chosen kmer size
+2. Clean each of the graphs
+3. Merge the clean graphs
+4. Read threading to produce link files
+5. Clean link files
+6. Merge the clean link files
+7. Call the variants
+
+Do you have any suggestion about the workflow or is there any pitfall I need to be aware of?
+Thank you so much.",BaiweiLo,https://github.com/mcveanlab/mccortex/issues/92
+MDU6SXNzdWU5MzcyMzk4MTY=,How to build a graph from input file?,CLOSED,2021-07-05T16:35:36Z,2021-07-05T17:11:27Z,2021-07-05T17:11:27Z,"Hi,
+I would like to do something trivial:
+build a graph from an input file (.fastq format).
+Yet, I haven't figured out how to do it
+nor I have found instructions in the readme.
+
+Note that it should be a trivial thing to do...
+
+I would like to run something like:
+
+    ./mccortex31 build -k 31 --input in.fastq --output out.ctx
+
+How can one do it?
+
+Thanks,
+-Giulio",jermp,https://github.com/mcveanlab/mccortex/issues/93
+I_kwDOASpdpc5Co0oD,Script availability in conda recipe,CLOSED,2022-01-29T02:01:40Z,2022-02-01T00:19:22Z,2022-02-01T00:19:22Z,"Hey,
+
+There is a [bioconda package](https://github.com/bioconda/bioconda-recipes/tree/master/recipes/mccortex) for `mccortex`, which is great. But the scripts, such as `make-pipeline.pl` are not on PATH. If I (or yourselves) were to update the bioconda recipe to add these to the package, which scripts do you think would be necessary?",mbhall88,https://github.com/mcveanlab/mccortex/issues/94
+I_kwDOASpdpc5TvNGz,Make *** Error 255,OPEN,2022-10-11T15:58:28Z,2022-10-11T15:58:28Z,,"I have been trying to run the mccortex quickstart pipeline. The first time I tried, it worked. Afterwards, the pipeline returned make *** error 255 when the run is almost completed. Someone should please help ",ycode-sh,https://github.com/mcveanlab/mccortex/issues/95
+I_kwDOASpdpc5XgaCZ,clang: error: linker command failed with exit code 1 (use -v to see invocation),OPEN,2022-11-29T13:59:24Z,2022-11-29T13:59:24Z,,"Hi,
+
+I am on my macOS ventura 13.0.1.
+
+Followed the instructions and got:
+
+```
+make all
+
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[2]: *** [bin/dnacat] Error 1
+make[1]: *** [seq_file] Error 2
+make: *** [libs-core] Error 2
+```
+
+xz installed through brew.
+
+Any hint?
+
+Much appreciated,
+-A",abrozzi,https://github.com/mcveanlab/mccortex/issues/96

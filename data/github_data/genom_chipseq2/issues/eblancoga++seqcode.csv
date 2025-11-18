@@ -1,0 +1,54 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFldf4M5DCDjD,matchpeaks.pl unable to request sufficient memory,CLOSED,2022-02-04T21:00:24Z,2022-02-05T22:59:44Z,2022-02-05T22:59:44Z,"When attempting to run even the `test_matchpeaks.pl` script, `matchpeaks` is unable to request sufficient memory (even when run on a server with 1000GB of available RAM: 
+```
+grep MemTotal /proc/meminfo
+MemTotal:       1056755972 kB
+```
+
+Example output from the test (the `test_1A_test_1B_matchpeaks` file):
+```
+
+
+			***** Running matchpeaks (SeqCode_v1.0) by Enrique Blanco (2020) *****
+			***** GitHub  source code: https://github.com/eblancoga/seqcode   *****
+			***** SeqCode homepage at: http://ldicrocelab.crg.es             *****
+
+
+> 0. Running on Fri Feb  4 15:54:00 2022
+> 1. Request Memory to Operating System
+ERROR
+	Not enough memory: Peaks matrix (MAXPEAKS)
+SEE ALSO
+	SeqCode homepage: http://ldicrocelab.crg.es
+	GitHub source code: https://github.com/eblancoga/seqcode
+
+AUTHORS
+	Written by Enrique Blanco
+
+SeqCode_v1.0						User commands						SeqCode_v1.0
+
+	__________________________________________________________________________
+
+	Memory usage: 	0.00 Megabytes
+	CPU time: 	0.00 secs
+	Total time: 	0 secs (0.00 mins)
+
+```
+
+Any suggestions or thoughts for where this issue is stemming from?",jpsmith5,https://github.com/eblancoga/seqcode/issues/2
+I_kwDOFldf4M5HEkPI,ReadPeaksFile.c Segmentation Fault Error,CLOSED,2022-04-04T22:27:04Z,2022-05-02T16:58:36Z,2022-05-02T16:58:36Z,"When running ""matchpeaks"" on BED files, a segmentation fault occurred in the ""ReadPeaksFile.c"" code without any further error message. It seems that the cause was that the ""MAXCHRS"" macro was too low to account for all the unique chromosome names in the BED file. Increasing this value and recompiling solved the issue. As the code already checks if the chromosome key is new, adding a count of unique chromosomes in each BED file when reading, and checking to see if the max is exceeded to produce an error message would make identifying this issue and its solution easier.",pql9132,https://github.com/eblancoga/seqcode/issues/3
+I_kwDOFldf4M5ST-Va,issues on length parameter,OPEN,2022-09-21T13:48:56Z,2022-09-21T13:48:56Z,,"Hi there,
+
+I am using the command-line produceGENEplots to plot ChIP-seq signal around some genes of interest.
+
+I have noticed that when setting the ```length``` parameter to *X*, all the genes shorter than *X* are discarded from the analysis and the *X* nucleotides upstream the TSS and downstream the TTS are plotted.
+
+I guess the ```length``` parameter is used to define the bins in which the genes are subdivided as well as the bins of the up and downstream intervals.
+
+Let's say I would like to retain all the genes longer then *Y* and to plot the *Z* nucleotides up/downstream the genes. How can I do this?
+
+
+Thanks.
+Federico
+
+",fansalon,https://github.com/eblancoga/seqcode/issues/4

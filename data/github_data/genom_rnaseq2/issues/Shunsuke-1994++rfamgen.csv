@@ -1,0 +1,63 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOKwbVD86BX5M_,README is missing the build process for *_notrunc.sto,CLOSED,2024-03-06T02:55:52Z,2024-03-06T12:42:55Z,2024-03-06T03:13:55Z,"Here is my running log, thanks for you reply
+
+```bash
+ python scripts/get_tidy_sequences_from_fasta_rfam.py --seed_file ./datasets/Rfam.seed --rfam RF00167 --output_dir datasets/RF00167 --cpu 1
+```
+```
+Total number            :  2660
+After uniquenize        :  2603
+created datasets/RF00167/RF00167_unique.fa
+seed_seq                : 133
+all_seq                 : 2571
+full_seq - seed_seq     : 2436
+```
+```bash
+ python scripts/make_onehot_from_traceback.py --fasta datasets/RF00167/RF00167_unique_seed_removed.fa --cmfile ./datasets/RF00234/RF00167.cm --cpu 1
+```
+```
+cmalign --cpu 1   --notrunc  --sfile datasets/RF00167/RF00167_unique_seed_removed_notrunc_score.txt --tfile datasets/RF00167/RF00167_unique_seed_removed_notrunc_traceback.txt --ifile datasets/RF00167/RF00167_unique_seed_removed_notrunc_insertion.txt --elfile datasets/RF00167/RF00167_unique_seed_removed_notrunc_ELstate.txt ./datasets/RF00234/RF00167.cm datasets/RF00167/RF00167_unique_seed_removed.fa > datasets/RF00167/RF00167_unique_seed_removed_notrunc_tmp.sto
+gzip datasets/RF00167/RF00167_unique_seed_removed_notrunc_traceback.txt
+gzip: datasets/RF00167/RF00167_unique_seed_removed_notrunc_traceback.txt: No such file or directory
+esl-reformat --informat stockholm -o datasets/RF00167/RF00167_unique_seed_removed_notrunc.sto stockholm datasets/RF00167/RF00167_unique_seed_removed_notrunc_tmp.sto
+/bin/sh: 1: esl-reformat: not found
+Traceback (most recent call last):
+  File ""/home/letgao/RNAdesign/rfamgen/scripts/make_onehot_from_traceback.py"", line 72, in <module>
+    preprocess.cmalign(
+  File ""/home/letgao/RNAdesign/rfamgen/src/preprocess.py"", line 79, in cmalign
+    alignment = AlignIO.read(outstk, ""stockholm"")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/letgao/miniconda3/envs/rfamgen/lib/python3.11/site-packages/Bio/AlignIO/__init__.py"", line 440, in read
+    alignment = next(iterator)
+                ^^^^^^^^^^^^^^
+  File ""/home/letgao/miniconda3/envs/rfamgen/lib/python3.11/site-packages/Bio/AlignIO/__init__.py"", line 366, in parse
+    with as_handle(handle) as fp:
+  File ""/home/letgao/miniconda3/envs/rfamgen/lib/python3.11/contextlib.py"", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File ""/home/letgao/miniconda3/envs/rfamgen/lib/python3.11/site-packages/Bio/File.py"", line 71, in as_handle
+    with open(handleish, mode, **kwargs) as fp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'datasets/RF00167/RF00167_unique_seed_removed_notrunc.sto'
+```",Gallo13th,https://github.com/Shunsuke-1994/rfamgen/issues/1
+I_kwDOKwbVD86HOA17,DMS metric reproduction,CLOSED,2024-04-29T09:53:45Z,2024-07-15T14:10:42Z,2024-07-15T14:10:42Z,"Hi, can you share the models and data labels used for making predictions of DMS datasets?",JinyuanSun,https://github.com/Shunsuke-1994/rfamgen/issues/2
+I_kwDOKwbVD86Pj_zu,sigma vs variance,CLOSED,2024-07-15T12:09:14Z,2024-07-16T05:29:03Z,2024-07-15T14:09:09Z,"In this line:
+
+https://github.com/Shunsuke-1994/rfamgen/blob/b3717ff287e6da46d4167633dd40af07c3caca26/src/models/CMVAE.py#L90
+
+shouldn't it just be `eps * sigma` ? ",3f6a,https://github.com/Shunsuke-1994/rfamgen/issues/3
+I_kwDOKwbVD86PnpBk,Bio.Alphabet is deprecated,OPEN,2024-07-15T20:09:04Z,2024-07-16T22:33:57Z,,"https://github.com/Shunsuke-1994/rfamgen/blob/dad47656c3047bc845a352ba5315555aaf73fc7c/scripts/get_tidy_sequences_from_fasta_rfam.py#L5
+
+It seems safe to simply remove all references to alphabet. E.g., `alphabet = generic_rna` can be removed everywhere.",3f6a,https://github.com/Shunsuke-1994/rfamgen/issues/4
+I_kwDOKwbVD86Px3P4,Training produces weird results,CLOSED,2024-07-16T23:31:27Z,2024-07-19T05:14:57Z,2024-07-17T15:06:33Z,"I'm trying to follow the instructions in the readme to train a CMVAE model on a different family. I wrote the following script following the instructions in the readme:
+
+https://gist.github.com/3f6a/7c8e844293bf5be4ce51971905ce0cd5
+
+However after running that, I tried to evaluate the sampled sequences with Infernal, and it seems they are very bad. Computing the scores of the sampled sequences with `cmalign` gives very poor scores (worse than random).
+
+Am I doing something wrong with the linked script?",3f6a,https://github.com/Shunsuke-1994/rfamgen/issues/5
+I_kwDOKwbVD86WkZl1,Checkpoint Sharing for Embedding Research,OPEN,2024-09-14T09:03:54Z,2024-09-14T09:03:54Z,,"Hello,
+
+I’ve been working on benchmarking biological foundation models, and I’m exploring which embeddings are most suitable for my study. Can you share RfamGen's model weights?
+
+Thank you for your time and insights. I’m looking forward to your thoughts!",shiyegao,https://github.com/Shunsuke-1994/rfamgen/issues/6

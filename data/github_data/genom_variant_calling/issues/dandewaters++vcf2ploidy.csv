@@ -1,0 +1,162 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2OTA3MjQxMjE=,Error in if (locus[2] == 0) { : missing value where TRUE/FALSE needed,CLOSED,2020-09-02T05:19:25Z,2020-11-06T00:11:05Z,2020-11-05T23:52:52Z,"Hi Daniel,
+
+Thank you so much for the software. I was having trouble using BGI2ploidy and this would make it so much easier to estimate the ploidy of the samples. I ran it with my vcf file from STACKS, but it gives me an error message:
+
+Error in if (locus[2] == 0) { : missing value where TRUE/FALSE needed
+
+Is there a parameter I need to feed it to the method for missing value? Because I couldn't see any in the document.
+Could you please help me with this problem?
+
+Kind regards,
+Shane
+
+",sstwins21,https://github.com/dandewaters/vcf2ploidy/issues/1
+I_kwDODep8j85SJN-r,duplicated sample generation,OPEN,2022-09-19T15:34:21Z,2022-09-28T02:19:16Z,,"Hi Daniel,
+Thank you so much for making this package! I have run into an unexpected result after generating a HAD file with remove_double_hets=FALSE (I have not tested it with = TRUE yet). 1) I am not sure if the result I got was what was expected and I am just misunderstanding:
+I started 118 unique samples and the resulting HAD dataframe has 280 samples. This is because while some samples just have reference and non reference pairs eg. sample X1 and sample X1.1, others have up to 8 alleles, eg AE1, AE1.1, AE1.2,....AE1.7. Thus, when I convert the matrix into the cov1 and cov2 reference/nonreference matrices, polyallelic samples are duplicated i.e  AE1, AE1.1, and AE1.2, AE1.3, and .... AE1.6, AE1.7 are treated as independent sample reference/nonreference pairs. This is what my ids variable going into props looks like: 
+[1] ""A1""    ""A2""    ""A3""    ""A4""    ""A5""    ""A6""    ""A8""    ""A9""    ""AA9""   ""AB2""   ""AB4""   ""AC1""   ""AC2""   ""AC4""   ""AC6""   ""AD1""   ""AD4""   ""AD7""   ""AD9""  
+ [20] ""AE1""   ""AE2""   ""AE4""   ""AE8""   ""AF2""   ""AF3""   ""AF4""   ""AF5""   ""AF6""   ""AG1""   ""AG8""   ""AH3""   ""AH7""   ""A6.2""  ""AH9""   ""AG8.2"" ""B1""    ""AF5.2"" ""B2""   
+ [39] ""AD4.2"" ""B4""    ""AE2.2"" ""B8""    ""AF3.2"" ""B9""    ""AE8.2"" ""C1""    ""AE4.2"" ""C3""    ""AF4.2"" ""C5""    ""AA9.2"" ""C6""    ""AE1.2"" ""C7""    ""AF6.2"" ""C8""    ""A2.2"" 
+ [58] ""D1""    ""A9.2""  ""D5""    ""AH3.2"" ""D6""    ""AF2.2"" ""D8""    ""AD9.2"" ""E1""    ""AC4.2"" ""E2""    ""AG1.2"" ""E5""    ""AD7.2"" ""E6""    ""A3.2""  ""E8""    ""AB2.2"" ""E9""   
+ [77] ""A5.2""  ""F2""    ""A1.2""  ""F4""    ""AB4.2"" ""G2""    ""AC1.2"" ""G4""    ""AC2.2"" ""G6""    ""A8.2""  ""G8""    ""AH7.2"" ""G9""    ""AC6.2"" ""H2""    ""A4.2""  ""H3""    ""AD1.2""
+ [96] ""H4""    ""A2.4""  ""D1.2""  ""H5""    ""A8.4""  ""G8.2""  ""H6""    ""AC1.4"" ""G4.2""  ""H9""    ""A6.4""  ""AH9.2"" ""I4""    ""A5.4""  ""F2.2""  ""I5""    ""A9.4""  ""D5.2""  ""I6""   
+[115] ""A4.4""  ""H3.2""  ""I7""    ""AA9.4"" ""C6.2""  ""I8""    ""AF3.4"" ""B9.2""  ""J1""    ""AE8.4"" ""C1.2""  ""J2""    ""A1.4""  ""F4.2""  ""J3""    ""AG8.4"" ""B1.2""  ""J5""    ""AC4.4""
+[134] ""E2.2""  ""J6""    ""AF5.4"" ""B2.2""  ""K1""    ""AE4.4"" ""C3.2""  ""K2""    ""AD4.4"" ""B4.2""  ""K4""    ""A3.4""  ""E8.2""  ""K5""    ""AH7.4"" ""G9.2""  ""K8""    ""AG1.4"" ""E5.2"" 
+[153] ""L3""    ""AH3.4"" ""D6.2""  ""M1""    ""AB2.4"" ""E9.2""  ""M4""    ""AE2.4"" ""B8.2""  ""M6""    ""AC2.4"" ""G6.2""  ""M9""    ""AD7.4"" ""E6.2""  ""N1""    ""AF2.4"" ""D8.2""  ""N2""   
+[172] ""AF4.4"" ""C5.2""  ""N3""    ""AD1.4"" ""H4.2""  ""N5""    ""AF6.4"" ""C8.2""  ""N9""    ""AE1.4"" ""C7.2""  ""O1""    ""AB4.4"" ""G2.2""  ""O4""    ""AC6.4"" ""H2.2""  ""P2""    ""AD9.4""
+[191] ""E1.2""  ""P4""    ""A2.6""  ""D1.4""  ""H5.2""  ""P5""    ""A8.6""  ""G8.4""  ""H6.2""  ""P6""    ""AC1.6"" ""G4.4""  ""H9.2""  ""P7""    ""A6.6""  ""AH9.4"" ""I4.2""  ""PF7""   ""A4.6"" 
+[210] ""H3.4""  ""I7.2""  ""R1""    ""A1.6""  ""F4.4""  ""J3.2""  ""R3""    ""A9.6""  ""D5.4""  ""I6.2""  ""R4""    ""AA9.6"" ""C6.4""  ""I8.2""  ""R5""    ""AE8.6"" ""C1.4""  ""J2.2""  ""R7""   
+[229] ""A5.6""  ""F2.4""  ""I5.2""  ""S3""    ""AF3.6"" ""B9.4""  ""J1.2""  ""S5""    ""AD4.6"" ""B4.4""  ""K4.2""  ""S6""    ""A3.6""  ""E8.4""  ""K5.2""  ""S9""    ""AC4.6"" ""E2.4""  ""J6.2"" 
+[248] ""U3""    ""AD7.6"" ""E6.4""  ""N1.2""  ""U4""    ""AE4.6"" ""C3.4""  ""K2.2""  ""U5""    ""AB2.6"" ""E9.4""  ""M4.2""  ""U7""    ""AE2.6"" ""B8.4""  ""M6.2""  ""V1""    ""AG8.6"" ""B1.4"" 
+[267] ""J5.2""  ""V5""    ""AF5.6"" ""B2.4""  ""K1.2""  ""W6""    ""AD1.6"" ""H4.4""  ""N5.2""  ""W7""    ""AC2.6"" ""G6.4""  ""M9.2""  ""X9""  
+
+Is this what is supposed to happen? 
+2) CAVEOT: If this is not what is supposed to happen, it is possible that there there is no bug in your code but there is an issue with a modification I implemented. My VCF file has 118 columns x 50,000+ rows so it takes one CPU 2 hours+ to loop through one column. Me not wanting to wait over >200 hours decided to try parsing 32 columns at the same time using a foreach loop. I included this code below (note that I changed the name of the had_df variable to manz_df so that is what manz_df is). 
+
+Kindly,
+Tito
+```{
+library(vcf2ploidy)
+library(doParallel)
+library(foreach)
+registerDoParallel(cl <- makeCluster(32))
+manz_vcf <-read_vcf(""branch_07_2022.vcf"", skip_lines = 10)
+
+analyze_locus <- function(locus, remove_double_hets=FALSE){
+  # If locus is heterozygous, extract the number of reads from
+  if(startsWith(locus, ""0/1"") | startsWith(locus, ""1/0"")){
+    ## Isolate number of reads from locus data string
+    # Split string by colon character
+    locus <- strsplit(locus, "":"")[[1]]
+    # Get the index of the last element in the split locus vector,
+    # which holds the number of nucleotide reads
+    locus_length <- length(locus)
+    locus <- locus[locus_length]
+    # split up read numbers
+    locus <- strsplit(locus, "","")[[1]]
+    # Cast to numeric vector
+    locus <- as.numeric(locus)
+    # Keep only nonzero numbers of reads and sort remaining reads
+    locus <- locus[locus != 0]
+    locus <- locus[ordered(-locus)]
+    
+    
+    # Return NA if there are no reads for any allele or there are only reads for one allele
+    # (iPyrad falsely labeling a homozygote or missing locus as a heterozygote)
+    if(length(locus) < 2){return(c(NA, NA))}
+    
+    # Return number of reads if there were exactly 2
+    else if(length(locus) == 2){return(locus)}
+    
+    
+    # Checks for double heterozygotes by looking for more than 2 nonzero reads
+    else if((length(locus) > 2) & (remove_double_hets == TRUE))
+    {return(c(NA, NA))}
+    
+    # Return the 2 highest number of reads otherwise
+    else{return(locus[1:2])}
+  }
+  # Return NA if locus is not heterozygous
+  else{return(c(NA, NA))}
+}
+
+
+
+
+
+manz_df <- data.frame()
+# Get the number of rows and columns
+num_rows    <- dim(manz_vcf)[1]
+num_columns <- dim(manz_vcf)[2]
+
+manz_df <- foreach(i=1:num_columns) %dopar% {
+  # Grab column from VCF data frame
+  col <- manz_vcf[[i]]
+  col_name <- colnames(manz_vcf)[i]
+  
+  # Initialize an empty data frame
+  new_col <- data.frame()
+  
+  # Loop through column and extract heterozygote information
+  for(j in 1:num_rows){
+    # Grab locus information from column
+    locus <- col[j]
+    # Analyze locus information and get numbers of reads for each allele to add to column
+    locus <- analyze_locus(locus, remove_double_hets=FALSE)
+    # Add locus data to new column
+    new_col <- rbind(new_col, locus)
+  }
+  
+  # Get correct column names for new columns
+  colnames(new_col) <- c(col_name, col_name)
+  # Add new columns to final data frame
+  if(dim(manz_df)[1] == 0 & dim(manz_df)[2] == 0){manz_df = new_col}
+  else{manz_df <- cbind(manz_df, new_col)}
+}
+
+
+# Write the converted data to a text file
+write.table(manz_df, file=""branch_07_2022_had.tsv"",
+     quote=FALSE, sep=""\t"",
+     row.names=FALSE, col.names=TRUE)
+message(paste(""Saved to text file:"", ""branch_07_2022_had.tsv""))
+                      
+                      # RDS file
+                     
+saveRDS(manz_df, ""branch_07_2022_had.RDS"")
+message(paste(""Saved to RDS file:"", ""branch_07_2022_had.RDS""))
+}
+",tito-abbo,https://github.com/dandewaters/vcf2ploidy/issues/2
+I_kwDODep8j86Cf5Fu,Program does not run because the maximum upload size has been exceeded,CLOSED,2024-03-15T20:13:49Z,2024-03-20T16:13:17Z,2024-03-20T16:13:17Z,"Hello Daniel,
+
+I am new to your program and I am trying to convert a vcf file into a HAD data frame using the program but it fails to run, showing the warning message ""maximum upload size has been exceeded"" underneath the upload box. Is there a preprocessing stage of the data I missed or is there a way to help reduce the size of the vcf file before uploading it. My vcf file is currently 5.59GB in size. I appreciate your help in solving this issue.
+
+Thank you! ",ikb001,https://github.com/dandewaters/vcf2ploidy/issues/3
+I_kwDODep8j86E4rdY,Failed check for discrete-valued parameters in distribution dbin,OPEN,2024-04-06T22:49:20Z,2024-11-18T15:22:51Z,,"I am trying to run the vcf2ploidy command with a filtered SNP dataset, and keep getting the following error.
+
+Compiling model graph                                                                                                           
+   Resolving undeclared variables
+   Allocating nodes
+Deleting model
+
+Error in jags.model(model, data = list(y = rdDepthList[[i]][, 1], n = apply(rdDepthList[[i]],  : 
+  RUNTIME ERROR:
+Failed check for discrete-valued parameters in distribution dbin
+
+Using the following code:
+vcf2ploidy(
+  ""./KB_GBS/VCF/merged.snps.filtered.vcf"",
+  skip_lines = NULL,
+  remove_double_hets = FALSE,
+  props = c(0.25, 0.33, 0.5, 0.66, 0.75),
+  mcmc.nchain = 2,
+  mcmc.steps = 10000,
+  mcmc.burnin = 1000,
+  mcmc.thin = 2,
+  train = FALSE,
+  pl = NA,
+  set = NA,
+  nclasses = 2,
+  pcs = 1:2
+)",ryan-earp,https://github.com/dandewaters/vcf2ploidy/issues/4

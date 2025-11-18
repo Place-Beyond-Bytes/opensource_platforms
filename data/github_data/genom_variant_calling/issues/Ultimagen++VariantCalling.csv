@@ -1,0 +1,85 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIp5jUM5xiH7O,Question about Variant calling solutions,OPEN,2023-09-20T11:18:49Z,2023-09-20T11:18:49Z,,"Hello, 
+
+I have a question about Ultima sequencing analysis.
+I understand that Ultima sequencing data is operating variant call through three analyses: GATK, sentioen, and deep variant.
+I'd like to know the gatk version that you use when conducting the analysis from Ultima to the GATK analysis pipeline and what options do you use in markDuplicates and haplotypeCallers.
+
+In the data that I provided through the link below. It is difficult to check because there is no GitHub repository for the route.
+https://github.com/Ultimagen/UltimaGenomicsApplications/blob/main/Documents/run_pipelines.md
+
+Can I check the information mentioned above?",u1200538,https://github.com/Ultimagen/VariantCalling/issues/85
+I_kwDOIp5jUM6IOpR-,Broken link to best practices,OPEN,2024-05-08T12:59:13Z,2024-05-08T12:59:13Z,,"There is a broken link to the best practices document on https://github.com/Ultimagen/VariantCalling/blob/master/README.md
+Please can this be fixed?",RuthEberhardt,https://github.com/Ultimagen/VariantCalling/issues/159
+I_kwDOIp5jUM6RmUtY,intersect_featuremap_with_signature fails if output file extension not .gz,OPEN,2024-08-01T15:18:38Z,2024-08-01T15:18:38Z,,"Hi, just a heads up that the intersect_featuremap_with_signature module fails with exit code 255 if the specified output file doesn't have a .gz extension. Specifically, the bcftools index step fails for the system call in line 607 in `ugvc/mrd/mrd_utils.py` because the VCF isn't bgzipped. From a toy example, it seems like `bcftools view` ignores the `-Oz` flag and just outputs plaintext if the output file path is missing .gz
+
+It's an easy fix on the user's end, but the error output isn't a great hint as to what the problem actually is: 
+```
+Traceback (most recent call last):
+  File ""/gpfs/commons/home/whooper/micromamba/envs/genomics.py3/lib/python3.10/runpy.py"", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File ""/gpfs/commons/home/whooper/micromamba/envs/genomics.py3/lib/python3.10/runpy.py"", line 86, in _run_code
+    exec(code, run_globals)
+  File ""/gpfs/commons/home/whooper/software/VariantCalling/ugvc/__main__.py"", line 145, in <module>
+    ugvc_cli.run(sys.argv)
+  File ""/gpfs/commons/home/whooper/micromamba/envs/genomics.py3/lib/python3.10/site-packages/simppl/cli.py"", line 93, in run
+    exit_code = self.__run_tool(tool_name, package, argv[1:])
+  File ""/gpfs/commons/home/whooper/micromamba/envs/genomics.py3/lib/python3.10/site-packages/simppl/cli.py"", line 107, in __run_tool
+    exit_code = package[tool_name](argv)
+  File ""/gpfs/commons/home/whooper/software/VariantCalling/ugvc/pipelines/mrd/intersect_featuremap_with_signature.py"", line 63, in run
+    intersect_featuremap_with_signature(
+  File ""/gpfs/commons/home/whooper/software/VariantCalling/ugvc/mrd/mrd_utils.py"", line 607, in intersect_featuremap_with_signature
+    subprocess.check_call(cmd, shell=True)
+  File ""/gpfs/commons/home/whooper/micromamba/envs/genomics.py3/lib/python3.10/subprocess.py"", line 369, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command 'bcftools view tmpzz_7n9r9/isec.vcf.gz | awk 'NR==FNR{a[$1,$2,$4,$5];next} ($1,$2,$4,$5) in a' - tmpzz_7n9r9/headerless_featuremap.vcf.gz | cat tmpzz_7n9r9/header.txt - | bcftools view - -Oz -o plasma.featuremap.tumor_intersection.vcf && bcftools index -t plasma.featuremap.tumor_intersection.vcf' returned non-zero exit status 255.
+```",willhooper,https://github.com/Ultimagen/VariantCalling/issues/191
+I_kwDOIp5jUM6aP69o,[MRD automatic analysis notebook] Duplicate Records Issue During norm_coverage Building Step,OPEN,2024-10-15T07:15:30Z,2024-10-16T01:05:26Z,,"Hi Ultima Genomics Team,
+
+I’ve encountered an issue in the norm_coverage building step of the VariantCalling pipeline. 
+When multiple signatures share the same chrom and pos (happens when setting higher number of synthetic signatures), the norm_coverage DataFrame includes duplicate records. 
+This duplication results in inflated coverage values for those signatures with intersecting vcf records.
+
+Steps to Reproduce
+
+	1.	Run MRD analysis pipeline. Set high number of synthetic signatures (e.g. 50-100). 
+	2.	See the coverage values in the result from jupyter notebook . The synthetic signatures will have higher coverage compared to matched signature.
+	3.	Observe that duplicate records exist when multiple signatures have the same `chrom` and `pos` in `norm_covearge` variable in the notebook..
+
+Expected Behavior
+
+Each combination of chrom and pos should have a unique norm_coverage value, ensuring accurate coverage without inflation.
+
+Actual Behavior
+
+Duplicate records for the same chrom and pos lead to inflated norm_coverage values, affecting the accuracy of background error produced by synthetic signatures.
+
+Proposed Solution
+
+To eliminate duplicate records, I suggest modifying the code to drop duplicates based on chrom and pos before setting the index (assuming cfDNA is shared, the coverage chrom pos should be unique). 
+Below is the proposed code change:
+
+Original Code:
+```python
+norm_coverage = (x / x.median()).rename(""norm_coverage"")
+```
+
+Proposed Code:
+```python
+norm_coverage = (x / x.median()).rename(""norm_coverage"")
+norm_coverage_df = norm_coverage.reset_index()
+# Drop duplicates based on 'chrom' and 'pos'
+norm_coverage_df_unique = norm_coverage_df.drop_duplicates(subset=['chrom', 'pos'], keep='first')
+# Set index back to ['chrom', 'pos']
+norm_coverage = norm_coverage_df_unique.set_index(['chrom', 'pos'])['norm_coverage']
+```
+Reference
+
+You can view the specific lines in the notebook [here](https://github.com/Ultimagen/VariantCalling/blob/31c65bcee82da8c994741178905ce927fe50719e/ugvc/reports/mrd_automatic_data_analysis.ipynb#L175C1-L176C1).
+
+Impact
+
+Implementing this change will ensure that norm_coverage accurately reflects the coverage without being artificially inflated due to duplicate records.
+
+Thank you for addressing this issue!
+",quito418,https://github.com/Ultimagen/VariantCalling/issues/219

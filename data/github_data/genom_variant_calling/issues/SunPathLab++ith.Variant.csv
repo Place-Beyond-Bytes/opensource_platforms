@@ -1,0 +1,43 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHAjFa86AULZE,The Makefile should be modified,OPEN,2024-02-25T13:45:56Z,2024-02-25T13:45:56Z,,"There should be `$(BAMTOOLS_ROOT)/include/bamtools` instead of `$(BAMTOOLS_ROOT)/include`:
+```
+Rseq_bam_stats:
+	@mkdir -p $(PREFIX)/$(BIN)
+	@echo ""* compiling"" $(SOURCE_STA)
+	@$(CXX) $(SRC)/$(SOURCE_STA) -o $(PREFIX)/$(BIN)/$(STA) $(BAMFLAGS) $(CXXFLAGS) $(LBFLAGS) $(BOOSTFLAGS) -I $(BAMTOOLS_ROOT)/include/bamtools -I $(ZLIB_ROOT)/include/ -I $(BOOST_ROOT)/include/ -L $(BAMTOOLS_ROOT)/lib/ -L $(ZLIB_ROOT)/lib/ -L $(BOOST_ROOT)/lib/
+
+mappingFlankingVariants:
+	@echo ""* compiling"" $(SOURCE_MFV)
+	@$(CXX) $(SRC)/$(SOURCE_MFV) -o $(PREFIX)/$(BIN)/$(MFV) $(BAMFLAGS) $(CXXFLAGS) $(LBFLAGS) $(BOOSTFLAGS) -I $(BAMTOOLS_ROOT)/include/bamtools -I $(ZLIB_ROOT)/include/ -I $(BOOST_ROOT)/include/ -L $(BAMTOOLS_ROOT)/lib/ -L $(ZLIB_ROOT)/lib/ -L $(BOOST_ROOT)/lib/
+
+novelSnvFilter_ACGT:
+	@echo ""* compiling"" $(SOURCE_REC)
+	@$(CXX) $(SRC)/$(SOURCE_REC) -o $(PREFIX)/$(BIN)/$(REC) $(BAMFLAGS) $(CXXFLAGS) $(LBFLAGS) $(BOOSTFLAGS) -I $(BAMTOOLS_ROOT)/include/bamtools -I $(ZLIB_ROOT)/include/ -I $(BOOST_ROOT)/include/ -L $(BAMTOOLS_ROOT)/lib/ -L $(ZLIB_ROOT)/lib/ -L $(BOOST_ROOT)/lib/
+
+grep_starts:
+	@echo ""* compiling"" $(SOURCE_GS)
+	@$(CXX) $(SRC)/$(SOURCE_GS) -o $(PREFIX)/$(BIN)/$(GS) $(BAMFLAGS) $(CXXFLAGS) $(LBFLAGS) $(BOOSTFLAGS) -I $(BAMTOOLS_ROOT)/include/bamtools -I $(ZLIB_ROOT)/include/ -I $(BOOST_ROOT)/include/ -L $(BAMTOOLS_ROOT)/lib/ -L $(ZLIB_ROOT)/lib/ -L $(BOOST_ROOT)/lib/
+```
+If not, it will report error:
+```
+novelSnvFilter_ACGT.cpp:14:10: fatal error: api/BamReader.h: No such file or directory
+   14 | #include <api/BamReader.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:37: novelSnvFilter_ACGT] Error 1
+```
+
+
+Best,
+Duo",xieduo7,https://github.com/SunPathLab/ith.Variant/issues/5
+I_kwDOHAjFa86BJHyi,Use the protocol for mouse genome,OPEN,2024-03-04T11:48:17Z,2024-03-04T11:48:17Z,,"Hi all, 
+
+So is there any precompiled annotation file four mouse genome mm10? If not, is there a clear protocol how to adapt mouse genome to your pipeline? 
+
+Thanks alot,",MoustafaAbohawya,https://github.com/SunPathLab/ith.Variant/issues/6
+I_kwDOHAjFa86Ck3P5,How to perform WGS data analysis instead of WES data?,OPEN,2024-03-17T14:37:09Z,2024-03-17T14:37:09Z,,"I see the config files for [WES](https://github.com/SunPathLab/ith.Variant/tree/main/confs/exome) but didn't see the config files for WGS.
+
+Thank you!
+
+Best,
+Duo",xieduo7,https://github.com/SunPathLab/ith.Variant/issues/7

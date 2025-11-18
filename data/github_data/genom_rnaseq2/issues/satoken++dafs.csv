@@ -1,0 +1,83 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMDI4NDUyNzg=,Add support for ViennaRNA 2.1.x,CLOSED,2015-08-24T17:06:04Z,2015-08-27T13:44:17Z,2015-08-27T13:44:17Z,"I recently tried compiling dafs on Arch Linux, but ran into issues during compilation. The issues appear to be caused by missing variables, etc. that are no longer defined in ViennaRNA 2.1.x.
+
+Is there any possibility of updating dafs to support more recent versions of ViennaRNA?
+
+**commands**:
+
+```
+./configure --prefix=/usr --with-vienna-rna=/usr/include/ViennaRNA --with-glpk
+
+# https://github.com/SIPp/sipp/issues/61
+touch configure.ac aclocal.m4 configure Makefile.am Makefile.in
+
+make CXXFLAGS=""-Wall -O2 -fpermissive"" CFLAGS=""$CFLAGS -I/usr/include/ViennaRNA"" PREFIX=/usr
+```
+
+**output**:
+
+```
+...
+alifold.cpp: In member function ‘float Alifold::energy_of_struct(const ALN&, const std::vector<Fasta>&, const string&, float&) const’:
+alifold.cpp:140:79: warning: invalid conversion from ‘char**’ to ‘const char**’ [-fpermissive]
+   float min_en = Vienna::energy_of_alistruct(seqs, str.c_str(), N, &cv_temp[0]);
+                                                                               ^
+In file included from alifold.cpp:30:0:
+/usr/include/ViennaRNA/alifold.h:148:9: note:   initializing argument 1 of ‘float Vienna::energy_of_alistruct(const char**, const char*, int, float*)’
+ float   energy_of_alistruct(const char **sequences,
+         ^
+mv -f .deps/alifold.Tpo .deps/alifold.Po
+gcc -DHAVE_CONFIG_H -I. -I..   -I/usr/include/ViennaRNA/include -DWITH_GLPK -D_FORTIFY_SOURCE=2 -I/usr/include  -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -I/usr/include/ViennaRNA -MT boltzmann_param.o -MD -MP -MF .deps/boltzmann_param.Tpo -c -o boltzmann_param.o boltzmann_param.c
+boltzmann_param.c: In function ‘copy_MLparams’:
+boltzmann_param.c:5981:3: error: ‘TerminalAU’ undeclared (first use in this function)
+   TerminalAU = values[3];
+   ^
+boltzmann_param.c:5981:3: note: each undeclared identifier is reported only once for each function it appears in
+boltzmann_param.c: In function ‘copy_ninio’:
+boltzmann_param.c:5990:3: error: ‘F_ninio37’ undeclared (first use in this function)
+   F_ninio37[2] = values[0];
+   ^
+boltzmann_param.c: In function ‘copy_Tetra_loop’:
+boltzmann_param.c:6004:5: error: ‘TETRA_ENERGY37’ undeclared (first use in this function)
+     TETRA_ENERGY37[i] = tl[i].e;
+     ^
+Makefile:419: recipe for target 'boltzmann_param.o' failed
+make[3]: *** [boltzmann_param.o] Error 1
+make[3]: Leaving directory '/home/keith/Dropbox/linux/AUR/dafs-git/src/dafs/src'
+Makefile:453: recipe for target 'all-recursive' failed
+make[2]: *** [all-recursive] Error 1
+make[2]: Leaving directory '/home/keith/Dropbox/linux/AUR/dafs-git/src/dafs/src'
+Makefile:355: recipe for target 'all-recursive' failed
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory '/home/keith/Dropbox/linux/AUR/dafs-git/src/dafs'
+Makefile:295: recipe for target 'all' failed
+make: *** [all] Error 2
+```
+## System information
+- Linux 4.1.5 64-bit
+- gcc 5.2.0
+- glpk 4.55
+- ViennaRNA 2.1.9
+",khughitt,https://github.com/satoken/dafs/issues/1
+MDU6SXNzdWUzODg2NTkxMTA=,dafscnn error,CLOSED,2018-12-07T13:40:11Z,2021-05-10T13:53:30Z,2021-05-10T13:53:30Z,"facing dafscnn error
+![screenshot from 2018-12-07 18-11-17](https://user-images.githubusercontent.com/45158270/49650859-a149d480-fa53-11e8-8385-0a9e51cfd120.png)
+![screenshot from 2018-12-07 18-42-05](https://user-images.githubusercontent.com/45158270/49650861-a149d480-fa53-11e8-86be-8ffbe0ff4190.png)
+
+tried running on different machine, but same error coming of dafscnn not found
+
+",jasmit64,https://github.com/satoken/dafs/issues/2
+MDU6SXNzdWUzOTA2MTU5Mzk=,Error in making the dafs file,CLOSED,2018-12-13T10:34:54Z,2022-02-18T03:38:23Z,2022-02-18T03:38:23Z,"there is error when i am trying to configure and make,
+Can you tell what is the configuration of the computer needed to run the make file of dafs",jasmit64,https://github.com/satoken/dafs/issues/3
+I_kwDOAUzcYs56OHmY,Failed to build Docker image out of the Dockerfile in the repository,CLOSED,2023-12-20T13:09:32Z,2023-12-20T15:19:00Z,2023-12-20T15:18:59Z,"I tried to build a Docker image (`docker build -t dafs .`) from the _master_ branch, but there is an error during DAFS compilation:
+
+```
+(...)
+[ 65%] Building CXX object src/CMakeFiles/dafs.dir/dafs.cpp.o
+/workspaces/src/dafs.cpp:59:10: fatal error: cxxopts.hpp: No such file or directory
+   59 | #include ""cxxopts.hpp""
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [src/CMakeFiles/dafs.dir/build.make:121: src/CMakeFiles/dafs.dir/dafs.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:177: src/CMakeFiles/dafs.dir/all] Error 2
+make: *** [Makefile:149: all] Error 2
+```",tzok,https://github.com/satoken/dafs/issues/5

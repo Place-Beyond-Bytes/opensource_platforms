@@ -1,0 +1,203 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU4MTYxOTc1MjQ=,Does not calculate Nonatypes,CLOSED,2021-02-25T08:13:36Z,2021-02-26T11:19:25Z,2021-02-26T11:19:25Z,"Does not calculate Nonatypes . This information is needed for generating Figure 4 and 5 of VADA.
+
+Reported by: Eyub Selim",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/1
+MDU6SXNzdWU4MjA5MTgwOTU=,ModuleNotFoundError: No module named 'window',CLOSED,2021-03-03T09:21:46Z,2021-03-03T13:05:58Z,2021-03-03T13:05:58Z,"![WhatsApp Image 2021-03-03 at 3 28 38 PM](https://user-images.githubusercontent.com/63629580/109783363-e108c200-7c44-11eb-8afa-89b49b5903ec.jpeg)
+
+Reported by: @macelik ",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/4
+MDU6SXNzdWU4MzA5MDYxMjI=,"Renaming the term ""Conservation"" to ""Incidence""",CLOSED,2021-03-13T14:05:19Z,2021-03-15T06:41:57Z,2021-03-15T06:41:57Z,"**Conservation** can be summarized as:
+
+> For a given kmer position, the number of a particular variant _**divided by**_ the total number of variants, multiplied to 100.
+
+The definition refers to incidence of variants for a given position. Thus, it would be preferred that renaming the term as ""**Incidence**"".",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/6
+MDU6SXNzdWU4MzA5Mzg0NDU=,Calculation of kmer_types,CLOSED,2021-03-13T16:47:23Z,2021-03-14T08:47:10Z,2021-03-14T08:47:10Z,"kmer_types defined as: A measure of distinct variant sequences. Currently HUNANA does not provide kmer_types (e.g. nonatypes) incidence but total number of distinct variant sequences.
+
+It would be useful if HUNANA calculates the incidence of kmer_types for a given position as follows:
+
+For a given position calculation can easily made by:
+
+[total number of distinct variant sequences] - 1 (index is not count as distinct) _divided by_ [total number of variants (supports)], [multiply to 100]",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/7
+MDU6SXNzdWU4MzEzNDY2MzM=,seq_path is not longer exist?,CLOSED,2021-03-15T02:14:34Z,2021-03-15T06:41:57Z,2021-03-15T06:41:57Z,"│ vada-worker   alternative='Please use RPC backend or a persistent backend.')                                                                                                                                                                                                                                                                                           │
+│ vada-worker [2021-03-15 02:11:16,337: ERROR/ForkPoolWorker-3] Task __init__.postJob[447d1b15-cdac-40a9-a109-a167277e0733] raised unexpected: TypeError(""__init__() got an unexpected keyword argument 'seq_path'"",)                                                                                                                                                    │
+│ vada-worker Traceback (most recent call last):                                                                                                                                                                                                                                                                                                                         │
+│ vada-worker   File ""/usr/local/lib/python3.6/site-packages/celery/app/trace.py"", line 385, in trace_task                                                                                                                                                                                                                                                               │
+│ vada-worker     R = retval = fun(*args, **kwargs)                                                                                                                                                                                                                                                                                                                      │
+│ vada-worker   File ""/app/flask_celery.py"", line 14, in __call__                                                                                                                                                                                                                                                                                                        │
+│ vada-worker     return self.run(*args, **kwargs)                                                                                                                                                                                                                                                                                                                       │
+│ vada-worker   File ""/app/app/__init__.py"", line 103, in postJob                                                                                                                                                                                                                                                                                                        │
+│ vada-worker     inputHunanaResult=Hunana(seq_path=app.config['UPLOADS_DEFAULT_DEST']+analysisId+""_aligned.fasta"").run()                                                                                                                                                                                                                                                │
+│ vada-worker TypeError: __init__() got an unexpected keyword argument 'seq_path' ",farhansj,https://github.com/BVU-BILSAB/DiMA/issues/8
+MDU6SXNzdWU4MzEzNzg4NjA=,"Changing ""sequences"" to ""variants""",CLOSED,2021-03-15T03:42:55Z,2021-03-15T06:41:57Z,2021-03-15T06:41:57Z,"```
+[
+  {
+    ""position"": 1,
+    ""entropy"": 0.0,
+    ""supports"": 2,
+    ""sequences"": [
+      {
+        ""position"": 1,
+        ""sequence"": ""MASPGLHLL"",
+        ""count"": 2,
+        ""conservation"": 100.0,
+        ""motif_short"": ""I"",
+        ""motif_long"": ""Index""
+      }
+    ],
+    ""variants"": 1,
+    ""kmertypes: [
+      'MASPGLHLL'
+    ]
+  }
+]
+```
+""Sequences"" does not represent the data stored within. What is stored are the variants for a particular k-mer position.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/10
+MDU6SXNzdWU4Mzk0MjQzMzk=,Validate the Kmers value,CLOSED,2021-03-24T07:10:08Z,2021-04-07T18:43:08Z,2021-04-07T18:43:08Z,"Hi,
+
+HUNANA shall validate the Kmers value set by the user. The minimum is 3, maximum is the longest alignment length.
+
+Regards",farhansj,https://github.com/BVU-BILSAB/DiMA/issues/13
+MDU6SXNzdWU4Mzk0NDU3NTE=,Motif classification for Major,CLOSED,2021-03-24T07:42:44Z,2021-04-07T18:43:08Z,2021-04-07T18:43:08Z,"Hello, 
+
+There are some motifs classfied as `Major` although frequency is `1`. I believe this happens when the second highest frequency is `1` and Hunana classify these kinda motifs as Major where it should be classified as `Unique` by the definition.
+
+Kind regards",macelik,https://github.com/BVU-BILSAB/DiMA/issues/14
+MDU6SXNzdWU4NTIyMDYxMTY=,Variant data algorithm fails when missing data in the FASTA header,CLOSED,2021-04-07T09:21:02Z,2021-04-07T18:43:08Z,2021-04-07T18:43:08Z,"In cases where one, or more sequences in the MSA has missing metadata in the header as specified by using the flag `-he`, the program crashes.
+
+Example: `>AIE52501.1 |Influenza A virus|Homo sapiens|`
+Explanation: In the FASTA MSA, all sequences have valid headers, except the one sequence above.  This causes the entire program to crash.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/15
+MDU6SXNzdWU4NjM1MjA3MTk=,Entropy Calculation Accuracy,CLOSED,2021-04-21T07:07:49Z,2021-09-01T10:28:11Z,2021-08-29T18:47:48Z,"
+The current entropy calculation is not accurate.
+
+**For a kmer position x:**
+```
+M   E   K   I   V   L   L   A   --   16
+.   .   R   .   .   .   .   .   --   1
+.   .   K   .   .   .   .   .   --   1
+.   .   I   .   .   .   .   .   --   1
+.   .   K   .   .   .   F   T   --   1
+```
+**The entropy calculation should be:**
+$$H(x) = -(4\times \frac{1}{20}log_{2}\frac{1}{20}) + (\frac{16}{20}log_{2}\frac{16}{20})
+H(x) = 0.606843$$
+
+**Correction for Alignment Bias:**
+$$
+iterations\leftarrow 10\\samples\leftarrow 10000
+$$
+1) Generate a list (*x*) that contains the flattened kmer position. This list would contain 16 occurrences of MEKIVLLA, and one occurrence of each of the other variants.
+2) Shuffle the list.
+3) Generate a random number (*i*) between 1 and `samples`.
+4) Pick *i* random samples from list *x*.
+5) Calculate Shannon's Entropy for each randomly picked samples.
+6) Adjust for alignment bias by plotting entropy  against 1/N and getting the y-intercept. This will be the current sampling round's entropy.
+7) Repeat process `iteration`  number of times. The final entropy value will be the average of all the entropy values calculated during sampling.
+",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/18
+MDU6SXNzdWU4OTI5NjE4NzQ=,Default format for the -f arguments,CLOSED,2021-05-17T06:31:00Z,2021-09-01T10:28:04Z,2021-08-29T18:47:48Z,"Hi,
+
+Can you implement a default format for the -f arguments?
+
+So, if the user provides the -he arguments but didn't provide the -f arguments, then the software shall assume
+
+the metadata/header order in the input file is following the default format.
+
+Thank you",farhansj,https://github.com/BVU-BILSAB/DiMA/issues/24
+MDU6SXNzdWU5MTEyNDQzOTg=,"Better description for what ""samples"" and ""iterations"" is",CLOSED,2021-06-04T08:04:42Z,2021-09-01T10:27:51Z,2021-08-29T18:47:48Z,"We need better description about what the terms ""samples"" and ""iterations"" mean within the context of DiMA. What is the significance of these?",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/25
+MDU6SXNzdWU5MTE0MTA4OTU=,"Suggestion to remove parameter ""header_decode""",CLOSED,2021-06-04T11:34:24Z,2021-09-01T10:26:52Z,2021-08-29T19:19:48Z,"From the discussion in ViVA meeting (04 June), it is recommended to remove ""header_decode"" as it can be complicated from user's perspective. User need to set ""header_decode"" to True and set ""header_format"" in order to enable header decoding as they are interdependent. By removing ""header_decode"", user can just request for header decoding by filling in parameter ""header_format"".
+
+The requested FASTA is attached below. Header format: (accession)|(strain)|(country)|(host)
+[dimatestheader_HIV_NCBIVirus.zip](https://github.com/PU-SDS/DiMA/files/6598113/dimatestheader_HIV_NCBIVirus.zip)
+
+
+
+",pf0418,https://github.com/BVU-BILSAB/DiMA/issues/26
+MDU6SXNzdWU5MjAzNzIzMjM=,Positions with 0 support being dropped in the results,CLOSED,2021-06-14T12:40:34Z,2021-09-01T10:28:43Z,2021-08-29T18:47:48Z,"Positions with zero support are being dropped from the results. The below line is what causes the issue.
+https://github.com/PU-SDS/DiMA/blob/8826da5dba529e1d61311557d1cace033287a4e9/src/dima/entropy.py#L35",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/27
+MDU6SXNzdWU5MjY5Mzc2NDQ=,Remove the requirement for brackets for the header format,CLOSED,2021-06-22T07:50:14Z,2021-09-01T10:27:23Z,2021-08-29T18:47:48Z,"The current header format is required to be: (accession)|(strain)
+
+The brackets are cumbersome and should e removed.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/28
+MDU6SXNzdWU5ODI3MDI0ODY=,Blank FASTA Headers  ,CLOSED,2021-08-30T11:45:25Z,2021-09-02T12:52:07Z,2021-09-02T12:52:06Z,"The databases such as NCBI Virus may provides sequences which have not complete metadata. In this case, DiMA header decoding should fill the gaps with ""Unknown"" and keep the process going. 
+
+Here is an example below: 
+![image](https://user-images.githubusercontent.com/63191434/131333520-dabcd0a4-d5ac-40ab-98f3-7cd006d56cb9.png)
+",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/35
+MDU6SXNzdWU5ODQ2MTcxNzQ=,"Better alternative to ""sequences_source""",CLOSED,2021-09-01T04:56:12Z,2021-09-02T12:52:07Z,2021-09-02T12:52:07Z,"Having to provide the source of the sequences (""file"" or ""string"") is inconvenient and dirty. Below would be a better alternative
+
+```python
+from io import StringIO
+from dima import Dima
+
+sequence = StringIO("">Header\nFDAHSRDHFDS"")
+Dima(sequence).run()
+```
+
+This would allow for distinguishing the source by use of `isinstance`",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/36
+MDU6SXNzdWU5ODQ3NDM5OTg=,Support for Python 3.9,CLOSED,2021-09-01T06:33:34Z,2021-09-02T12:52:07Z,2021-09-02T12:52:07Z,Python 3.10 is already in pre-release. Time to support at least 3.9.,ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/37
+MDU6SXNzdWU5ODcwOTYzMTA=,Statements can be joined,CLOSED,2021-09-02T19:42:00Z,2021-10-20T11:59:15Z,2021-10-20T11:59:15Z,"The two statements here can be joined to be more concise.
+https://github.com/PU-SDS/DiMA/blob/36978c166255cfcb67befffa02bc1178136cb784/src/lib.rs#L107-L126",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/40
+I_kwDOFCQ2g848ZcIl,Low Support positions ,CLOSED,2021-10-01T12:45:30Z,2021-10-07T15:17:02Z,2021-10-07T15:17:02Z,"We need to add ""low_support_positions"" field in the DIMA output result.  It is counted as the result of the total of True ""low_support"" in the result field of DIMA output. ",Stone58,https://github.com/BVU-BILSAB/DiMA/issues/41
+I_kwDOFCQ2g848ldfs,"Change ""variants"" to ""diversity_motifs""",CLOSED,2021-10-05T15:14:08Z,2022-03-09T11:12:08Z,2022-03-09T11:12:08Z,"The term `variants` does not accurately represent the data under it. For instance, Index is NOT considered a variant. Diversity motifs is a more fitting term.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/42
+I_kwDOFCQ2g849Zv42,Large filesize when using header decoding,CLOSED,2021-10-19T10:57:23Z,2021-10-20T11:59:15Z,2021-10-20T11:59:15Z,"The results file size is far too large when using header decoding. A simple 1MB file can turn into >100MB JSON file that is hard to deal with, and store.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/45
+I_kwDOFCQ2g85AOa-3,Date graph for visualization,OPEN,2021-12-11T12:21:42Z,2022-01-01T11:00:50Z,,"As it is suggested for ATAT, it would be also useful for users to see a number of reported sequences over time for the DiMA web server. 
+
+Find details on here: https://github.com/PU-SDS/atat_frontend/issues/6",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/47
+I_kwDOFCQ2g85AWh3M,Load Sample Data on Web Server,CLOSED,2021-12-14T11:34:12Z,2021-12-28T11:04:09Z,2021-12-28T11:04:09Z,"We need to allow users to do an analysis on DiMA with a sample dataset.
+
+On the front page, once the user clicks on the ""Load Sample Data"" button, all the input parameters should be auto-filled and the data should be uploaded.
+
+HCV NS3 (Sample 1):
+
+Protein name: HCV NS3
+Kmer: 9
+Low support: 30
+Data: will send privately
+
+CHKIV nsP1 (Sample 2):
+
+Protein name: CHIKV nsP1
+Kmer: 9
+Low support: 30
+Data: will send privately",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/48
+I_kwDOFCQ2g85BE4Ju,Move HCS generation to DiMA,CLOSED,2022-01-01T11:17:55Z,2022-03-22T14:05:18Z,2022-03-22T14:05:18Z,"Majority of modules require HCS to carry out their analysis, and journals such as NAR require that a standalone version be available prior to publication.
+
+Currently, HCS generation is part of VIM which is not accessible through any potential standalone versions (not without some trouble and potentially making the codebases more brittle). A solution to this problem is to move the HCS generation to DiMA, and use DiMA as a dependency in the standalone versions of the modules.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/49
+I_kwDOFCQ2g85CW9Fe,Issues with the consistency of entropy calculation,CLOSED,2022-01-25T01:16:39Z,2022-02-01T12:02:14Z,2022-02-01T12:02:14Z,,ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/50
+I_kwDOFCQ2g85CoyXZ,Support for nucleotides,CLOSED,2022-01-29T01:21:33Z,2022-03-09T11:12:08Z,2022-03-09T11:12:08Z,"The diagnostics module will be focusing on nucleotides and DiMA will need to support nucleotides as well. The current algorithm is agnostic, but the ambiguous characters will need to be defined separately for nucleotides and proteins as there is some overlap between the two.
+
+The ambiguous characters for proteins is a list of characters that should be considered invalid, but for NT a better approach is to label everything other than A, T, G, C, U as ambiguous.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/55
+I_kwDOFCQ2g85Cy5Hk,Nucleotides require kmer lengths of 20-22,CLOSED,2022-02-01T12:56:01Z,2022-02-01T12:58:41Z,2022-02-01T12:58:41Z,For nucleotide sequences length must be 20-22. Currently limited to 1-14.,ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/59
+I_kwDOFCQ2g85FKS4r,Export Raw Data on Web Service ,CLOSED,2022-03-05T11:54:11Z,2022-03-21T06:05:24Z,2022-03-21T06:05:24Z,It is required to allow users to export processed data in a JSON and CSV format on the web service. ,eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/63
+I_kwDOFCQ2g85FW7Ca,"Relaying the reason for ""low support""",CLOSED,2022-03-09T08:31:36Z,2022-03-09T11:12:08Z,2022-03-09T11:12:08Z,"There should be an intuitive way to relay to the user why a position might be considered ""low support"". A position can have 0 support, and also support < threshold. In this case, we need a way to distinguish the two.
+
+Currently ""low support"" is a boolean field, this can be changed into an optional string field such that.
+
+- Support = 0 -> low_support = ""NS""
+- Support < threshold -> low_support = ""LS""
+- Support > threshold -> None/Null",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/64
+I_kwDOFCQ2g85FgWV9,Summary Statistics on Web Service,OPEN,2022-03-11T07:51:11Z,2022-03-11T07:51:47Z,,"Here is my suggestion on this: 
+Alignment Summary
+============
+ALIGNMENT LENGTH
+PROTEIN NAME
+SUPPORT THRESHOLD
+NUMBER OF LOW SUPPORT POSITIONS
+NUMBER OF NO SUPPORT POSITIONS
+
+Position Summary (dynamic part)
+=============
+SELECTED POSITION
+POSITION ENTROPY
+POSITION SUPPORT
+DISTINCT PEPTIDES
+POSITON SUPPORT CONDITION (high/low/no)",eselimnl,https://github.com/BVU-BILSAB/DiMA/issues/66
+I_kwDOFCQ2g85VknqK,variants should be distinct kmers,OPEN,2022-11-04T07:19:49Z,2022-11-04T07:19:49Z,,"In the Excel file the Diversity Motifs column should say ""Distinct K-mers"" for all rows.",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/74
+I_kwDOFCQ2g85Vkn4x,avoid negative entropies,CLOSED,2022-11-04T07:20:57Z,2023-01-10T11:14:18Z,2023-01-10T11:14:18Z,"https://github.com/PU-SDS/DiMA/blob/abd6495879a9bd4aba718a68ed61fb28f3eb7f26/src/lib.rs#L777
+If this is negative, just use the total entropy (for N) calculated above:
+https://github.com/PU-SDS/DiMA/blob/abd6495879a9bd4aba718a68ed61fb28f3eb7f26/src/lib.rs#L732",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/75
+I_kwDOFCQ2g85Vkpn2,change low_support to support tag,OPEN,2022-11-04T07:28:55Z,2022-11-04T07:28:55Z,,"low_support and Low Support in JSON and XLSX respectively should be changed to support_tag, Support Tag",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/76
+I_kwDOFCQ2g85VkqV8,index major minor and unique variance,OPEN,2022-11-04T07:32:35Z,2022-11-04T07:47:59Z,,"![image](https://user-images.githubusercontent.com/63629580/199917561-b2d01a11-b8b2-4311-b6ef-572a3c6a4c54.png)
+Index, Major, Minor and unique variance needed for excel file and json",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/77
+I_kwDOFCQ2g85bCLoy,dima loading error,OPEN,2023-01-10T12:20:51Z,2023-01-10T12:26:48Z,,"![image](https://user-images.githubusercontent.com/63629580/211550256-6f05af46-bf6f-427d-a6c0-870782fe11f4.png)
+",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/79
+I_kwDOFCQ2g85dPJ_B,HCS should exclude low support positions,OPEN,2023-01-31T12:52:19Z,2023-01-31T12:52:19Z,,,ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/80
+I_kwDOFCQ2g85eahvN,round off the decimal values,OPEN,2023-02-14T11:41:41Z,2023-02-14T11:41:41Z,,"For JSON file, round off to 4d.p.
+For webservice, round off to 2d.p",ShanWeera,https://github.com/BVU-BILSAB/DiMA/issues/81

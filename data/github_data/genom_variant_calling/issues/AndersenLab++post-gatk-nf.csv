@@ -1,0 +1,48 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOEnxYX85PgEvW,Smart PCA Error when running with full species after singleton filtering commit,CLOSED,2022-08-09T21:30:12Z,2022-09-30T16:54:11Z,2022-09-30T16:54:11Z,"I didn't get any errors when running the test dataset. Likely because it wasn't performing any filtering of SNPs. 
+
+We got this error from smartPCA
+```bash
+fatalx:
+XTX has zero trace (perhaps no data)
+/projects/b1042/AndersenLab/work/1f/f0c54eae420ffcbc79eaf547058bf3/.command.sh: line 2:  1441 Aborted                 (core dumped) smartpca -p eigpar_no_removal > logfile_no_removal.txt
+```
+The log file reported:
+```bash
+number of samples used: 0 number of snps used: 0
+Using 1 thread, and partial sum lookup algorithm.
+total number of snps killed in pass: 0  used: 0
+```
+This was occurring across all LD filtering thresholds. My initial thought was that it was due to filtering too many variants but since LD of 0.6 has been run successfully I didn't think this was the issue.
+
+I checked all the filtering steps and it did look like we should have ~ 160,000 variants remaining (For Ct) after all filtering steps.
+
+At first glance all input files appear to be in the correct format. 
+
+ped 
+```
+strain strain 0 0 0 phenotype GT_SNP1, GT_SNP2 .... GT_SNPn
+CB4856 CB4856 0 0 0 -9 1 2 1 1 ....
+```
+.pedIND (Just the first 6 cols) but we just add 1 in for a few data fields since they are unimportant for us
+
+```
+strain strain 0 0 0 phenotype GT_SNP1, GT_SNP2 .... GT_SNPn
+1 CB4856 0 0 0 1 
+```
+.pedSNP (A list of snp IDs). I didn't realize that the **SNPs MUST BE IN THE SAME ORDER as the .PED file**. 
+```
+chrom snpID ? POS A1 A2 
+1 I:202 A T
+```
+
+
+
+
+
+
+
+
+
+
+",mckeowr1,https://github.com/AndersenLab/post-gatk-nf/issues/12

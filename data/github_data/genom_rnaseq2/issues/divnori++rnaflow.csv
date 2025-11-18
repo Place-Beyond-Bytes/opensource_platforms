@@ -1,0 +1,24 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOMAiK_86LlvMN,Issues installing requirements and some more,CLOSED,2024-06-09T00:25:12Z,2024-06-09T15:57:22Z,2024-06-09T15:57:22Z,"For the pip dependencies, `dlllogger`, `openmm`==0.2 and the specific version for `torch-cluster` all throw errors.
+
+`dlllogger` can be installed by `pip install 'git+https://github.com/NVIDIA/dllogger.git'` (the SE3 transformer installer installs this, I think removing` dlllogger` entirely from the `environment.yml` file will fix this). 
+
+`torch-scatter` and `torch-cluster` throw CUDA mismatch errors if the local CUDA is not 11.7. To save myself the trouble of downloading and setting up CUDA 11.7, I just installed these through conda-forge instead of Pypi. 
+
+`python rnaflow/data/process_data.py` this command fails to download any PDBs, adding the following to the `load_and_filter` function fixed it.
+
+```Python
+if not os.path.exists(pdb_out_dir):
+        os.makedirs(pdb_out_dir)
+```
+
+The code seems to work other than this, really loved reading the paper! For PDB IDs that don't have `.PDB` available, is something else done to get them in `CIF` or some other format? Or are they not included in the dataset?
+ 
+",DhruvaRajwade,https://github.com/divnori/rnaflow/issues/1
+I_kwDOMAiK_86NSb58,How do I inference my own files?,CLOSED,2024-06-24T14:34:59Z,2024-08-11T15:24:40Z,2024-08-11T15:24:40Z,"Hi, supposed I have my own pdb file which contains my own rna and peptides interaction prediction, how do I that this pipeline to inference? thanks.",wenhuihuang19791109,https://github.com/divnori/rnaflow/issues/2
+I_kwDOMAiK_86S6FCS, failed to load mode,OPEN,2024-08-14T01:25:42Z,2024-09-17T01:47:01Z,,"![image](https://github.com/user-attachments/assets/86891efa-f145-4d8f-aab6-2fc9186b9b4d)
+when I run loadfromcheckpoint
+I got failed to load model error",wenhuihuang19791109,https://github.com/divnori/rnaflow/issues/3
+I_kwDOMAiK_86abvX6,MSA during RF2NA,OPEN,2024-10-16T07:44:17Z,2024-10-16T07:44:17Z,,"In tutorial.ipynb, there's no code for creating MSA for protein.
+
+Does RNAFlow doesn't need MSA during inference stage?",ChoJH98,https://github.com/divnori/rnaflow/issues/4

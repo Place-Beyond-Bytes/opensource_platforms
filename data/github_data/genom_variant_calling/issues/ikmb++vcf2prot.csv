@@ -1,0 +1,169 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFoolGM5Pn4LJ,error in generating protein sequence,CLOSED,2022-08-11T11:54:11Z,2022-08-16T09:58:30Z,2022-08-16T09:53:46Z,"dear @HeshamElAbd,
+thank you very much for developing this very promising tool.
+I successfully ran it on my infrastructure, but faced some problem for one case. It seems to complain about difficult cases with small indels. Please find attached the files. Would you be able to run it and check whether there is room for improvement regarding such case?
+The program returns me this error `Critical error was encountered: for transcript: Solyc02g062560 the following mutations were observed` with a list of positions and instructions.
+
+Thanks a lot!
+
+Best regards,
+
+Thomas
+
+[test.zip](https://github.com/ikmb/vcf2prot/files/9308324/test.zip)
+",TDDB-limagrain,https://github.com/ikmb/vcf2prot/issues/1
+I_kwDOFoolGM5P4Iub,Problem with protein/transcript identifiers,OPEN,2022-08-16T10:05:58Z,2022-08-16T10:37:50Z,,"Hi Hesham,
+
+this is not a real problem but solving it would make life easier :-D
+I successfully ran VCF2PROT v0.1.4 but I add to correct the transcript identifier in the VCF file as well as in the reference fasta file.
+
+My bcftools-annotated VCF file has `Solyc02g062560.3|Solyc02g062560.3.1` identifiers in the BCSQ fields and my protein file header is `Solyc02g062560.3.1`.
+It seems that the `.` in the sequence name is causing some problem and in this case, the output `.fasta` file was empty. After removing the end of the sequence name (moving to  `Solyc02g062560.3|Solyc02g062560` in the VCF and to  `Solyc02g062560` in the reference fasta), vcf2prot finally succeeded in writing the proper corrected sequences.
+
+Hope it will help for the future!
+
+Best regards,
+
+Thomas
+",TDDB-limagrain,https://github.com/ikmb/vcf2prot/issues/2
+I_kwDOFoolGM5QoKDA,rust or library version?,OPEN,2022-08-26T20:27:14Z,2022-08-29T16:27:49Z,,"I am trying to install this software for one of our researchers, and have run into a failure in the compilation, using several versions of rust (1.63 at the moment). Unfortunately, I'm not at all familiar with rust. Does this error suggest a versioning problem?
+
+   Compiling clap v3.0.0-beta.2
+   Compiling jfs v0.6.2
+   Compiling ppgg v0.1.5 (/misc/s/pkg/linux64/vcf2prot/vcf2prot)
+error[E0599]: no method named `help` found for struct `Arg` in the current scope
+   --> src/parts/cli.rs:201:10
+    |
+201 |         .help(""A VCF File containing the consequences calling for each sample."")
+    |          ^^^^ method not found in `Arg<'_>`
+
+error[E0599]: no method named `help` found for struct `Arg` in the current scope
+   --> src/parts/cli.rs:207:10
+    |
+207 |         .help(""A VCF File containing the reference proteome with transcript id as identifiers and protein sequences as the body."")
+    |          ^^^^ method not found in `Arg<'_>`
+
+error[E0599]: no method named `help` found for struct `Arg` in the current scope
+   --> src/parts/cli.rs:213:10
+    |
+213 |         .help(""The path to a directory where fasta files will be written."")
+    |          ^^^^ method not found in `Arg<'_>`
+",wmannis,https://github.com/ikmb/vcf2prot/issues/3
+I_kwDOFoolGM5m6QT8,Start-lost mutations not incorporated,OPEN,2023-05-25T22:07:20Z,2023-05-26T16:29:28Z,,"First: Very cool tool.  I'm glad it exists.
+
+I just wanted to bring up the issue that some variants are overlooked into incorporation into the protein.  Specifically I have seen that start-lost mutations annotated by bcftools are ignored and the protein is produced with all other mutations as normal.
+",em255,https://github.com/ikmb/vcf2prot/issues/4
+I_kwDOFoolGM5pgrow,Slice Index Issue,OPEN,2023-06-22T18:13:43Z,2023-06-22T18:14:05Z,,"Hello, I hope you are still active and can take a look at this issue. 
+
+I really appreciate this tool and it's exactly what I need for this analysis I want to do. I got it to run successfully for one gene I am targeting, but subsequent runs produce this error below. Any idea of how to fix it? 
+
+State of the environmental variables is: 
+Reading and loading the VCF file, starting time is: 2023-06-22 18:10:54.331633410 UTC
+VCF file have been parsed and encoded into a vector of intermediate representations, finished at: 2023-06-22 18:10:54.460827388 UTC
+Loading the Reference file, starting time is: 2023-06-22 18:10:54.460852699 UTC
+Computing and writing the stats, starting at: 2023-06-22 18:10:54.584141699 UTC
+Computing and writing the stats, finished at: 2023-06-22 18:10:54.595452264 UTC
+Generating personalized genomes: starting at: 2023-06-22 18:10:54.595485265 UTC
+thread 'main' panicked at 'slice index starts at 472 but ends at 470', src/data_structures/InternalRep/task.rs:44:13
+stack backtrace:
+   0:     0x55a25e03898d - <std::sys_common::backtrace::_print::DisplayBacktrace as core::fmt::Display>::fmt::h921cf086d0ef20b8
+   1:     0x55a25e05db9c - core::fmt::write::hf0aa30ff334a9235
+   2:     0x55a25e029605 - std::io::Write::write_fmt::h902734c65e10d510
+   3:     0x55a25e02b3bb - std::panicking::default_hook::{{closure}}::h86354e502aca82ae
+   4:     0x55a25e02af14 - std::panicking::default_hook::ha18b4592ba9082c9
+   5:     0x55a25e02b983 - std::panicking::rust_panic_with_hook::h9e34f5b5abdfbd04
+   6:     0x55a25e038e97 - std::panicking::begin_panic_handler::{{closure}}::h93c670e762f8fadf
+   7:     0x55a25e038acc - std::sys_common::backtrace::__rust_end_short_backtrace::ha4e10635ecbaeddf
+   8:     0x55a25e02b4c2 - rust_begin_unwind
+   9:     0x55a25df493b1 - core::panicking::panic_fmt::hf95d9be5b00d03d0
+  10:     0x55a25df49532 - core::slice::index::slice_index_order_fail::h9da2087726676b15
+  11:     0x55a25df8d40a - ppgg::data_structures::InternalRep::task::Task::execute::hfeaf576032bd08ea
+  12:     0x55a25df57a4f - ppgg::data_structures::InternalRep::gir::GIR::execute::ha33c0f25eaca0609
+  13:     0x55a25df954c7 - ppgg::data_structures::InternalRep::personalized_genome::PersonalizedGenome::from_proband_instruction::h903b555b04f03d51
+  14:     0x55a25df8dbfe - <core::iter::adapters::map::Map<I,F> as core::iter::traits::iterator::Iterator>::fold::h6f00db3e3500e287
+  15:     0x55a25df676f0 - alloc::vec::source_iter_marker::<impl alloc::vec::spec_from_iter::SpecFromIter<T,I> for alloc::vec::Vec<T>>::from_iter::h9d59386bd01e46ec
+  16:     0x55a25df584b8 - ppgg::parts::exec::execute::h457c745f66534687
+  17:     0x55a25df4a365 - vcf2prot::main::h5768d3693f2e71bc
+  18:     0x55a25df4a9f3 - std::sys_common::backtrace::__rust_begin_short_backtrace::h868a9627fbe84de0
+  19:     0x55a25df4aa09 - std::rt::lang_start::{{closure}}::h7f1bf298e9017141
+  20:     0x55a25e02e9c1 - std::rt::lang_start_internal::he96cac7542744f48
+  21:     0x55a25df4a782 - main
+  22:     0x2b68d861c555 - __libc_start_main
+  23:     0x55a25df49b0e - <unknown>
+  24:                0x0 - <unknown>",bahodge11,https://github.com/ikmb/vcf2prot/issues/5
+I_kwDOFoolGM5rGRR-,Could not extract records from VCF file,OPEN,2023-07-10T13:38:07Z,2023-07-10T13:38:19Z,,"I get the following error upon execution of the program on my vcf file generated on mm10 genome:
+
+**Reading and loading the VCF file, starting time is: 2023-07-10 13:34:23.802924909 UTC
+thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: "" reading the file failed: \n Could not extract any records from the provided file!! \n, formatting the string failed""', src/main.rs:13:83
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace**
+
+This is the code i am running with:
+
+**./bins/Linux/vcf2prot -f ~/Freebayes.vcf -r ~/mm10.fa -v -g st -o results**
+
+Can you please specify the reason for this and how can i solve it? Thank you so much in advance.
+
+
+",esraaelmligy,https://github.com/ikmb/vcf2prot/issues/6
+I_kwDOFoolGM6iWi7f,Errors running example,OPEN,2024-12-06T20:00:19Z,2024-12-06T20:00:19Z,,"Hi, 
+I am testing vcf2prot since the description seems like an ideal tool for what I'm looking for. I am trying to run the example with the MacOS binary and I get the following error:
+
+`./bins/MacOS/vcf2prot -f examples/example.vcf -r examples/reference_sequences.fasta -v -g st -o results `
+
+`Checking the test state ...
+...
+Checking for indexing errors ....
+thread 'main' panicked at 'Critical error was encountered: for transcript: ENST00000295051 the following mutations were observed, [
+    Mutation {
+        transcript_name: ""ENST00000295051"",
+        mut_type: MisSense,
+        mut_info: MutationInfo {
+            ref_aa_position: 263,
+            mut_aa_position: 263,
+            ref_aa: Sequence(
+                ""R"",
+            ),
+            mut_aa: Sequence(
+                ""Q"",
+            ),
+        },
+    },
+    Mutation {
+        transcript_name: ""ENST00000295051"",
+        mut_type: MisSense,
+        mut_info: MutationInfo {
+            ref_aa_position: 263,
+            mut_aa_position: 263,
+            ref_aa: Sequence(
+                ""R"",
+            ),
+            mut_aa: Sequence(
+                ""Q"",
+            ),
+        },
+    },
+] which translate to the following instructions: [
+    Instruction {
+        code: 'M',
+        s_state: false,
+        pos_ref: 263,
+        pos_res: 263,
+        len: 1,
+        data: [
+            'Q',
+        ],
+    },
+    Instruction {
+        code: 'M',
+        s_state: false,
+        pos_ref: 263,
+        pos_res: 263,
+        len: 1,
+        data: [
+            'Q',
+        ],
+    },
+]Nevertheless, some mutations at the same position were observed, skipping this mutations ...
+                            ', src/data_structures/InternalRep/transcript_instructions.rs:80:29
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+`",robolivares,https://github.com/ikmb/vcf2prot/issues/7

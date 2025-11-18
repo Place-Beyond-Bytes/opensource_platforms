@@ -1,0 +1,155 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMTIwNTU0OA==,Fix the stop condition of scaffolding,CLOSED,2013-10-18T08:06:37Z,2013-12-08T01:41:38Z,2013-12-08T01:41:38Z,"Instead of running until no more paths are valid (which will take many iterations), we can aggregate a boolean and then read it from all the active path nodes.  A boolean should be cheap to access and perhaps we could even put it in the distributed cache, essentially pushing it out to all the machines.
+",anbangx,https://github.com/uci-cbcl/genomix/issues/1
+MDU6SXNzdWUyMTIzNjM4Ng==,test issue,CLOSED,2013-10-18T18:25:07Z,2013-10-19T02:27:48Z,2013-10-19T02:27:48Z,"anbang, did you get this?
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/3
+MDU6SXNzdWUyMTIzNjQwMA==,test issue 2,CLOSED,2013-10-18T18:25:24Z,2013-10-19T02:27:48Z,2013-10-19T02:27:48Z,"@anbangx I'm mentioning you now
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/4
+MDU6SXNzdWUyMTI1MjAxOA==,Automate genomix-hadoop/hyracks test compare code.,CLOSED,2013-10-18T23:55:37Z,2013-10-31T19:48:59Z,2013-10-22T22:26:50Z,"The hyracks automate test code is done. 
+The hadoop automate test code is half done. The comparison between two is run under genomix-hadoop.
+
+This task is to move the test code of comparison into genomix-driver. And make the it automatically. 
+",JavierJia,https://github.com/uci-cbcl/genomix/issues/6
+MDU6SXNzdWUyMTI1NjQ4Mg==,Vertex size spill problem,OPEN,2013-10-19T04:44:58Z,2013-10-21T18:22:47Z,,"The Hyracks frame size should be smaller that 128K, otherwise it will have some  unknown problem. 
+
+Our EdgeSet will grow bigger and bigger in path merge phase. If we use 100K to store the EdgeSet, it can only contains 12800 readid. 
+
+The first plan is to store the sorted id set into the HDFS, and only store the filename inside the node. And the sorted order will also benefit the union/intersect operation afterward.
+",JavierJia,https://github.com/uci-cbcl/genomix/issues/7
+MDU6SXNzdWUyMTI2ODk0NQ==,Write-space optimization for pregelix messages and genomix-data structures.,CLOSED,2013-10-19T21:06:43Z,2013-12-08T01:41:12Z,2013-12-08T01:41:12Z,"@anbangx 
+
+The messages we send are pretty big and sometimes they are larger than they need to be.  For example, KILL_SELF messages don't need to carry an entire node with them, nor a srcVertexId. Same goes for our Node class-- we often write len=0 for edges that don't exist.
+
+One solution is to use either boolean values or a flag representing what data values are present in the stream.  We write the header to the stream.  When we read, we only call the readFields functions on the values that are actually present.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/10
+MDU6SXNzdWUyMTI2ODk1Nw==,BUILD_HYRACKS still failing?,CLOSED,2013-10-19T21:07:51Z,2013-11-05T04:08:13Z,2013-10-21T18:00:04Z,"Hi @Nan-Zhang @JavierJia 
+
+It seems the graphbuild using hyracks is still failing after our recent refactor? There is no output data when I run from the cmdline.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/11
+MDU6SXNzdWUyMTM0NDMzMg==,Graphbuild could use optimized representation,OPEN,2013-10-21T21:06:30Z,2013-10-31T22:42:04Z,,"@JavierJia @Nan-Zhang 
+Currently, graphbuild uses and outputs VKmer keys and VKmer edges.  They could instead use Kmer keys and a single letter for each neighbor.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/16
+MDU6SXNzdWUyMTM1Mjg3MQ==,get travis to complete all test successfully,CLOSED,2013-10-21T23:52:14Z,2013-11-05T04:08:13Z,2013-10-22T18:34:25Z,,Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/17
+MDU6SXNzdWUyMTM1MjkxNQ==,Generate simulated data,OPEN,2013-10-21T23:53:23Z,2013-10-26T21:33:31Z,,"- [x] Maybe chr19 or 1/10th of it?  100x coverage
+- [ ] generate statistics for our pipleline
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/18
+MDU6SXNzdWUyMTM1Mjk0Mw==,rerun with lower hadoop max tasks,CLOSED,2013-10-21T23:54:07Z,2013-11-05T04:08:13Z,2013-10-31T22:18:27Z,"- [ ] update hadoop job conf's to use the driver-set values (should be equal to the length of IO_DIRS in the conf)
+- [x] rerun hadoop graphbuild to use this many map tasks.
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/19
+MDU6SXNzdWUyMTM1MzAyMw==,Profile patterns,OPEN,2013-10-21T23:56:01Z,2013-11-12T19:48:48Z,,"- [ ] Hadoop graphbuild
+- [x] hyracks graphbuild
+- [x] pathmerge
+- [ ] bubble merge
+- [ ] scaffolding
+
+@anbangx to help.
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/20
+MDU6SXNzdWUyMTM1MzA3Mw==,Fix bubblemerge,CLOSED,2013-10-21T23:57:20Z,2013-11-05T04:08:13Z,2013-10-29T18:14:10Z,"Bubble merge doesn't seem to affect the graph... Is it doing anything or are we too strict in our filtering?
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/21
+MDU6SXNzdWUyMTM1MzExNA==,Fix remove low coverage,CLOSED,2013-10-21T23:58:35Z,2013-11-05T04:08:13Z,2013-10-29T18:13:24Z,"Jake has details.
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/22
+MDU6SXNzdWUyMTM1MzE4Ng==,Fix split repeats,CLOSED,2013-10-22T00:00:40Z,2013-11-05T04:08:13Z,2013-10-23T20:56:38Z,"failing on large data on the first iteration (trying to remove an edge that doesn't exist).
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/23
+MDU6SXNzdWUyMTM1MzMyOA==,Implement Ray's scaffolding,OPEN,2013-10-22T00:05:02Z,2013-11-04T23:38:10Z,,"@jakebiesinger 
+- [ ] Talk about how exactly
+- [ ] meet with others and explain 
+- [ ] write up test cases
+- [ ] implement
+",Nan-Zhang,https://github.com/uci-cbcl/genomix/issues/24
+MDU6SXNzdWUyMTM1NTI2Mg==,optimize genomix-data to use only start- and end- letters,OPEN,2013-10-22T01:03:30Z,2013-10-22T01:04:02Z,,"@anbangx @JavierJia @Nan-Zhang @Elmira88 
+
+A while back, Nan pointed out that we actually don't need to store most of the kmer within a node-- we need only the last/first letter(s).  That would be substantial space savings for us (hundreds of MB out of a few GB of data).
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/25
+MDU6SXNzdWUyMTQwMTExMA==,Use script to run graphviz and text file generator instead of automatically generating files under source control,CLOSED,2013-10-22T17:35:41Z,2013-11-05T04:08:13Z,2013-10-28T18:31:20Z,"you shouldn't include automatically generated files under source control (rather, use a We shouldn't include automatically generated files under source control (rather,script to generate them). Since these aren't really needed as input or as expected, maybe we want to remove them?
+
+Then again, they do kind of help with debugging-- we can see what the output should be by having a graphical representation of the input.But I think they should be removed from source control and we should just add a little script that generates the graphs from the binary files.
+
+Same goes for text files, actually. Binary files are fine-- they just show up on github as ""binary files not shown"". But both text and binary can be generated using a script and would help us keep these code reviews clean.
+",anbangx,https://github.com/uci-cbcl/genomix/issues/27
+MDU6SXNzdWUyMTQzNDQ5OQ==,`getip.sh` isn't reliable enough,OPEN,2013-10-23T05:33:22Z,2013-10-23T06:33:30Z,,"@JavierJia @Nan-Zhang 
+
+We've seen from #29 and #26 that java returns a different value than `getip.sh`.  `getip.sh` is just a hack that reads out the IP address from `ifconfig` for `eth0`.
+
+In other words, it's a hack.  Users may not have their setup on `eth0`-- I imagine that's the error you saw, @JavierJia ? your laptop is probably connecting over wifi and therefore doesn't use eth0? We're seeing this on travis, where some machines [aren't connected on eth0](https://travis-ci.org/uci-cbcl/genomix/jobs/12915715) and others are...
+
+I think the solution is probably a very small java program that uses the java API rather than parsing from eth0.
+
+Any volunteers to implement such a program?
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/31
+MDU6SXNzdWUyMTQzNTYyNg==,Think about how to do split repeat on tandem repeat,OPEN,2013-10-23T06:22:08Z,2013-10-24T20:09:31Z,,"The current bug of split repeat is caused by trying to split tandem repeat node. 
+
+ I leave them off for now. 
+
+But let's think a better way to solve it.
+",anbangx,https://github.com/uci-cbcl/genomix/issues/32
+MDU6SXNzdWUyMTQ5MjU0Ng==,Improve the usage message,OPEN,2013-10-23T23:42:25Z,2013-10-24T20:09:32Z,,"The genomix driver prints a usage message... We'll want to hide some of those options, provide defaults in the usage string, and provide a high-level description of the program.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/37
+MDU6SXNzdWUyMTQ5NTgyMw==,Change name of start and end readids,CLOSED,2013-10-24T01:21:47Z,2013-11-05T04:08:14Z,2013-10-31T22:15:16Z,"Let's name them unflippedReadIds and flippedReadIds.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/39
+MDU6SXNzdWUyMTcyODYyMA==,We need a comparison with existing methods,OPEN,2013-10-28T23:32:28Z,2013-12-10T05:12:57Z,,"Take a small, synthetic genome with single-end reads and compare our results with:
+- [ ] velvet
+- [ ] contrail
+- [ ] ray
+",anbangx,https://github.com/uci-cbcl/genomix/issues/43
+MDU6SXNzdWUyMjEwNjk3MQ==,`-runLocal` doesn't shut down properly,CLOSED,2013-11-05T09:06:08Z,2013-11-18T23:49:37Z,2013-11-18T23:49:37Z,"It seems that since we started to use the miniMR or miniDFS clusters, you have to interrupt any `-runLocal` runs yourself via `ctrl+c`.  As a result, our builds have started timing out (see https://travis-ci.org/uci-cbcl/genomix/jobs/13513861 for an example).
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/54
+MDU6SXNzdWUyMzA5MDExMw==,Handling `N`'s in the input files,OPEN,2013-11-21T19:18:38Z,2013-11-22T19:25:45Z,,"There are going to be `N` characters in the input file.  I think the proper way to handle these would be NOT to include any kmers containing `N`.  As it is now, we throw away the entire _read_ if any of the characters are `N`.
+
+When we store the read, we could store the entire sequence, N and all, but that would mess up our 4-letter, 2-bit representation.  For simplicity, I guess we could throw those reads away from the the ReadHead.  But I still think the other non-`N` kmers should be included in the graph.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/69
+MDU6SXNzdWUyMzg3ODQ3Mg==,Support for variable length reads and variable insert sizes,OPEN,2013-12-06T19:11:31Z,2013-12-06T20:14:23Z,,"For the scaffolding steps, we need to know how long each read is and its ""outer distance"", that is, the total distance between the two outside tips of the fragment.  We currently don't have any mechanism for recording this.
+
+Reads belong to different ""libraries"", all of whose reads will have the same length and that will have the same insert size.  We currently don't have any way of indicating the library of a given read.
+
+We need to record the _library-id_ in each read and then have _lookup tables_ that map library-id to read length and library-id to outer-distance.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/88
+MDU6SXNzdWUyMzkxNTY1NA==,Travis has been failing for a while,OPEN,2013-12-08T00:18:15Z,2013-12-08T00:18:18Z,,"We need to regenerate the expected outputs and fix the step names
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/93
+MDU6SXNzdWUyMzkxNjU1Ng==,Need to standardize Counters usage in pregelix,OPEN,2013-12-08T01:36:03Z,2013-12-18T02:32:15Z,,"Only a few jobs use Counters right now but it would be awesome to report them between jobs.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/95
+MDU6SXNzdWUyMzk5MDM5OA==,Determine parameters automatically,OPEN,2013-12-09T20:24:51Z,2013-12-09T20:24:51Z,,"It would be slick if we could build the coverage graph automatically and determine optimal parameters if they're not given on the cmdline.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/98
+MDU6SXNzdWUyNDAwMDAxOQ==,Hyracks Graph build exceptions aren't propagated to the Driver,OPEN,2013-12-09T22:57:45Z,2013-12-09T23:11:35Z,,"See https://s3.amazonaws.com/archive.travis-ci.org/jobs/15107105/log.txt at the end.  BUILD_HYRACKS failed and threw an exception but it isn't being passed up to the Hyracks Driver (or we're catching it somewhere?).
+
+@Nan-Zhang do you want to look into it?
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/99
+MDU6SXNzdWUyNDIyMDU1Mw==,Need read length for each library,OPEN,2013-12-13T00:55:18Z,2013-12-13T00:55:18Z,,"We could detect this automatically, either when converting the fasta file or when running graph build, but it will need to be specified on the command-line if we aren't running those steps.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/104
+MDU6SXNzdWUyNDQ3MzYxMg==,concatenated jobs save state,OPEN,2013-12-18T07:20:20Z,2013-12-18T18:36:38Z,,"@anbangx @Elmira88 @JavierJia @Nan-Zhang 
+
+Elmira found a pretty major problem when running without `-saveIntermediateResults` recently:  the vertex value is unchanged between iterations.  I had thought that the entire dataset would be scrubbed by going through the Input/OutputFormat adapters between jobs (Node -> P4VertexValue -> Node -> RayVertexValue -> Node -> ...).  
+
+Turns out that's false and the only reason we haven't noticed before is because of a bug in pregelix by which concatenated jobs all use the generic base class `VertexValue`.  I've submitted the bug report to @sigmod and there's a temporary solution: we manually scrub the data on the first iteration.
+
+In the meantime, I recommend using `-saveIntermediateResults` to make sure that the state gets wiped between jobs. Specifying this flag will force an HDFS write and therefore a trip through the Input/OutputFormat adapters.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/110
+MDU6SXNzdWUyNDUwNzkxMw==,scaffolding ideas,OPEN,2013-12-18T18:12:35Z,2013-12-18T18:12:35Z,,"@anbangx @Elmira88 @JavierJia @Nan-Zhang 
+
+I was thinking about scaffolding last night.  I mentioned in #101 some ideas and future optimizations but thought I'd do a brain dump here as well.
+
+Here's an idea for a ""SplitRepeat"" job:  take the current framework but for each walk node that has 2+ back- or incoming-edges, we can request the candidate's score according to the read sequences in those back edges.  When two candidates seem to have nearly equal scores, we can turn turn to the backedge scores to try to split the repeated frontier node (or some portion of the walk).
+
+In ascii art:
+
+```
+         b1
+           \  ----c1
+w1--w2--w3--f<
+              ----c2
+```
+
+in the simple version of this algorithm, we request scores of the subkmers `f--c1` and `f--c2` from b1 which aggregates the score to `f`, just like the walk nodes `w1`-`w3` do.  If we get a ""strong"" signal from b1 about one of the paths (say, `b1--f--c1`) and it's not the same as the path that's strong in the walk (say, `w1--w2--w3--f--c2`), then we could assume that `f` is a repeat node, shared by the two different paths.  We could the split `f` into `f1` and `f2`, resulting in the paths `b1--f1--c1` and `w1--w2--w3--f--c2`.
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/112
+MDU6SXNzdWUyNDcyNjg4OQ==,hadoop /user/tmp is cleared automatically; the readid list disappears!,CLOSED,2013-12-23T22:24:47Z,2014-01-07T00:09:31Z,2014-01-07T00:09:31Z,"Hey @JavierJia we just tried to rerun some previous results on ipubmed2 and had a glaring realization... the filemanager dumps the readidset to disk under /user/tmp which (apparently) gets cleaned out automatically.  We tried to run some pipeline steps using data that was dumped on Thursday as input... there are many missing directories (though some are still intact).
+
+With your #108, we gain the option to store the node in the local fs.  I think what we now need is a way to store the full set in the write() and read() calls.  Pregelix uses an adapter to dump from the vertex to an HDFS-based `Node`. I think in our output format,
+we can explicitly set the readheadset to be dumped inside the node.  You should be able to add it somewhere aroung https://github.com/uci-cbcl/genomix/blob/genomix/fullstack_genomix/genomix/genomix-pregelix/src/main/java/edu/uci/ics/genomix/pregelix/base/GenericVertexToNodeOutputFormat.java#L34
+
+I think this needs to be fixed ASAP...
+
+cc @anbangx 
+",jakebiesinger,https://github.com/uci-cbcl/genomix/issues/117
+MDU6SXNzdWUyNTE0MTYxOA==,Recover genomix-pregelix test cases.,OPEN,2014-01-07T01:00:09Z,2014-01-07T01:00:09Z,,,JavierJia,https://github.com/uci-cbcl/genomix/issues/122
+MDU6SXNzdWUyNTE0MTYyMw==,create Ray scaffolding test cases ,OPEN,2014-01-07T01:00:32Z,2014-01-07T01:00:32Z,,,JavierJia,https://github.com/uci-cbcl/genomix/issues/123
+MDU6SXNzdWUyNTE0MTYzMg==,recover ,CLOSED,2014-01-07T01:00:39Z,2014-01-07T05:07:42Z,2014-01-07T05:07:42Z,,JavierJia,https://github.com/uci-cbcl/genomix/issues/124
+MDU6SXNzdWUyNTE0MTY2MA==,Recover genomix-driver test cases,OPEN,2014-01-07T01:01:25Z,2014-01-07T01:01:25Z,,,JavierJia,https://github.com/uci-cbcl/genomix/issues/125

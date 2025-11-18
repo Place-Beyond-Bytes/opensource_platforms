@@ -1,0 +1,233 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MzkzOTM5NDI=,Hardcoded publish topics,CLOSED,2019-05-02T01:04:49Z,2020-01-13T22:44:17Z,2020-01-13T22:44:17Z,Publish topics should not be hardcoded in functions/check-triggers modules,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/1
+MDU6SXNzdWU0ODU0NzI1MDc=,TypeError: string indices must be integers,CLOSED,2019-08-26T21:55:18Z,2019-08-26T21:55:30Z,2019-08-26T21:55:30Z,"When db-query re-queues jobs, it was adding ""\"" characters that was leading to dictionary parsing failures.
+
+Resolved in [31f015](https://github.com/pbilling/trellis-mvp-wgs-35000/commit/31f01582052bcea1134f980601477cb337b1d363).",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/2
+MDU6SXNzdWU0ODcxMTk2MzE=,0.5.2: GATK job launched in duplicate,CLOSED,2019-08-29T18:48:55Z,2019-08-29T18:49:10Z,2019-08-29T18:49:10Z,"Issue was that the initiating GATK query was triggered by any Ubam node. With 0.5.2, all relationships are added via triggers, and the OUTPUT relationship (i.e. (fastq-to-ubam)-[OUTPUT]->(Ubam)) returns the Ubam node and sends it to be checked for triggers. This means that the ubam is sent to the trigger function twice; 1) when the node is created and 2) when the OUTPUT relationship is added. Hence, job queries were being triggered twice.
+
+Current fix is to add required header labels to the trigger, so that it is only activated after the relationship has been added, as opposed to after the node is created.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/3
+MDU6SXNzdWU0ODcxOTM2MDI=,Dsub jobs fail with no output,CLOSED,2019-08-29T21:55:29Z,2020-01-13T22:57:30Z,2020-01-13T22:57:30Z,"DVALABP000456/SHIP5169550/fastq-to-ubam
+
+1 job succeeded, 3 failed. 
+2 failures generated no logs, 1 generated 4 lines.
+3 failed jobs ran for 10 minutes.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/5
+MDU6SXNzdWU0ODc3MDQ2Njk=,db-query is not perpetuating retry-count,CLOSED,2019-08-30T23:43:58Z,2020-01-13T22:46:47Z,2020-01-13T22:46:47Z,"The retry-count property stored in header is not being perpetuated by db-query, causing retry-count to always max out at 1 and leading to infinite loops.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/6
+MDU6SXNzdWU1NDc3MzkzMjk=,Cromwell docker pull failed,CLOSED,2020-01-09T21:40:58Z,2020-01-13T22:54:39Z,2020-01-13T22:54:39Z,"From log file:
+
+
+> [2020-01-09 08:55:32,01] [info] WorkflowManagerActor Workflow 6a278540-661c-4330-be81-93c3ebc12e51 failed (during ExecutingWorkflowState): java.lang.Exception: Task germline_single_sample_workflow.MarkDuplicates:NA:2 failed. The job was stopped before the command finished. PAPI error code 2. Execution failed: pulling image: docker pull: generic::unknown: retry budget exhausted (10 attempts): running [""docker"" ""pull"" ""google/cloud-sdk:251.0.0-slim""]: exit status 1 (standard error: ""Error response from daemon: Get https://registry-1.docker.io/v2/: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)\n"")
+
+
+Seems to be related to this issue: https://github.com/broadinstitute/cromwell/issues/4640
+
+This is where the docker image seems to be defined. I think this is the not image to run the job, but instead to run data transfer operations: https://github.com/broadinstitute/cromwell/blob/6108b0e261386fbbfc8300b11eab4520616ab455/supportedBackends/google/pipelines/v2alpha1/src/main/scala/cromwell/backend/google/pipelines/v2alpha1/GenomicsFactory.scala",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/7
+MDU6SXNzdWU1NDgzMzYyNzI=,Gsutil parallel composite upload temp files being written to GCS,OPEN,2020-01-10T23:19:50Z,2020-01-10T23:28:03Z,,"After switching from Cromwell:46 to 47, observed that temp files are being written to cloud storage. This has had the side effect of generating errors when Trellis tries to add these files to the database, because it looks for  a ""Blob"" label that does not exist, because these filenames don't match the pattern for adding the ""Blob"" label.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/8
+MDU6SXNzdWU1NDkxNDY1NzE=,Launching high frequency of duplicate GATK workflows,CLOSED,2020-01-13T19:54:17Z,2020-04-19T17:34:15Z,2020-04-19T17:34:14Z,"With v0.5.4-2, 36 (23%) duplicate GATK variant calling workflows were launched for processing data from 155 samples. Runtime for duplicate GATK VMs ranged from 0-4 minutes.
+
+![Trellis v0 5 4 Test #2 Duplicate GATK runtimes](https://user-images.githubusercontent.com/14796101/72287130-5e194800-35fb-11ea-8aac-321be222db31.png)
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/9
+MDU6SXNzdWU1NDkyMzI4OTk=,db-query messages routinely getting stuck in Pub/Sub query for 10 minutes,OPEN,2020-01-13T23:03:31Z,2020-01-13T23:03:37Z,,"Started observing this issue at the beginning of 2020 when testing Trellis v0.5.4; despite low message load, routinely observe db-query messages going unacknowledged for up to 10 minutes, according to Stackdriver.
+
+![Trellis v0 5 4-2 db-query messages stuck in queue](https://user-images.githubusercontent.com/14796101/72299474-d0972180-3615-11ea-9410-0a440a35bc9d.png)
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/10
+MDU6SXNzdWU1NDkyNjAzMjA=,Database queries taking longer than 1s to complete,OPEN,2020-01-14T00:26:17Z,2020-01-14T00:26:17Z,,"With v0.5.4 and introduction of new extended database model to track Cromwell GATK metadata, we see that a small but significant percentage of queries are requiring db-query function execution times of over 1s. 
+
+![Execution times for wgs35-db-query  SUM  (1)](https://user-images.githubusercontent.com/14796101/72303179-3b9a2580-3621-11ea-98f0-4a0dadbf1814.png)
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/11
+MDU6SXNzdWU1NjcyMjU2OTY=,log-delete-instance sink catches non-Trellis VM metadata,OPEN,2020-02-18T23:40:04Z,2020-02-18T23:40:14Z,,"Issue is that it is seemingly impossible to distinguish Trellis VMs from other VMs in the project via compute engine API metadata. In order to avoid creating nodes for every project VM, I recommend changing from a MERGE to a MATCH/SET database operation",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/12
+MDU6SXNzdWU2MDI3Nzk5Nzg=,Relationship queries have to be routinely retried,OPEN,2020-04-19T17:54:50Z,2020-04-19T18:00:04Z,,"Relationship queries currently follows this pattern:
+
+```
+MATCH (j:Job {trellisTaskId: 123}),
+              (n:Blob {trellisTaskId: 123, id: 123})
+WHERE NOT EXISTS(j.duplicate)
+OR NOT j.duplicate=True
+MERGE (j)-[:OUTPUT]->(n)
+```
+The problem with this is that requires that job and output nodes be added to the database in a synchronous fashion. In cases where the output is added before the job, the current solution is to wait a few seconds and then retry the relationship query (n) amount of times.
+
+This is bad design because 1) it violates the asynchronous nature of the system and 2) even after multiple retries there are cases where the conditions for adding the relationship (i.e. job node is present) are still not met. Additionally, the retry queries increase the load on the database.
+
+Solution to this should be straightforward; instead of matching the job node, just merge it. For example:
+
+```
+MATCH (n:Blob {trellisTaskId: 123, id: 123})
+MERGE (j {trellisTaskId: 123})-[:OUTPUT]->(n)
+```
+
+The trade-off is that we lose the MATCH pattern that ensures that duplicate jobs are not related to outputs, but it's not clear how valuable this was in the first place. And now that duplication rates have been reduced, it's even less useful.
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/16
+MDU6SXNzdWU2MTQ5NjMwMDc=,Add VM disk size(s) to Neo4j database,CLOSED,2020-05-08T20:15:34Z,2020-06-09T17:55:53Z,2020-06-09T17:55:53Z,"When logging VM insertions, also include disk size information.
+
+Right now we are not tracking boot disk size even though we've run into multiple issue caused by insufficient boot disk space.
+
+Disk parameters can be found in the Compute Engine insert request audit logs via the following Stackdriver query:
+```
+resource.type=""gce_instance""
+resource.labels.instance_id=""1431379762862362955""
+protoPayload.serviceName=""compute.googleapis.com""
+protoPayload.methodName=""v1.compute.instances.insert""
+```
+
+Disk size is specified by the following parameter:
+```
+protoPayload.request.disks.initializeParams.diskSizeGb
+```",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/17
+I_kwDOCti7uM5CNMCY,Ubam nodes not related to FastqToUbam jobs,CLOSED,2022-01-21T18:10:41Z,2022-01-21T18:47:59Z,2022-01-21T18:39:22Z,"Some Ubam nodes (n=4,719) are not related to the FastqToUbam jobs that generated them.
+
+```
+// Cypher query to count disconnected Ubams
+MATCH (u:Ubam)
+WHERE NOT (u)<-[:GENERATED]-(:FastqToUbam:Job)
+RETURN COUNT(u)
+```
+
+```
+COUNT(u)
+4,719
+```",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/26
+I_kwDOCti7uM5CNUEP,Ubam nodes were not added to the database,CLOSED,2022-01-21T18:54:57Z,2022-01-21T20:20:42Z,2022-01-21T20:20:42Z,"**The problem**
+
+```
+// Cypher query to categorize FastqToUbam jobs without Ubam outputs
+MATCH (job:Job:FastqToUbam)-[:STATUS]->(d:Dstat)
+WHERE NOT (job)-[:GENERATED]->(:Ubam)
+RETURN COUNT(DISTINCT job), d.status
+```
+
+```
+COUNT(DISTINCT job)    d.status
+625    ""FAILURE""
+733    ""RUNNING""
+19673    ""SUCCESS""
+```
+
+We can see three different cases here. For ""FAILURE"", we don't expect an output. For ""SUCCESS"" we do expect an output and for ""RUNNING"" we maybe expect an output. Those jobs are not running but the end result was not recorded in the database so we don't know whether they succeeded or failed.
+
+Right now, I am going to focus on finding and adding Ubams to the database for successful jobs since those are the majority of cases.
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/27
+I_kwDOCti7uM5Cwkhn,Query to relate JobRequest to Job failing,OPEN,2022-01-31T23:07:19Z,2022-01-31T23:16:26Z,,"I am seeing that the query to relate (:JobRequest)-[:TRIGGERED]-(:Job) is routinely not succeeding on the first try and being requeued. Looking at the query it seems inefficient and in need of refactoring.
+
+Query from ""RelateJobToJobRequest"" trigger with an example trellisTaskId:
+
+```
+1 MATCH (b:Blob)-[:WAS_USED_BY]->(j:Job { trellisTaskId: ""220128-172700-948-23484cbb"" }), 
+2    (b)-[:WAS_USED_BY]->(jr:JobRequest {name: j.name}) 
+3 MATCH (b2:Blob)-[:WAS_USED_BY]->(jr) 
+4 WHERE NOT (jr)-[:TRIGGERED]->(:Job) 
+5 WITH j, jr, COLLECT(DISTINCT b) AS jobInputs, COLLECT(DISTINCT b2) AS requestInputs 
+6 WITH j, jr, jobInputs, requestInputs, [b in jobInputs WHERE NOT b in requestInputs] AS mismatches, [b in requestInputs WHERE NOT b in jobInputs] AS mismatches2 
+7 WHERE size(mismatches) = size(mismatches2) = 0 MERGE (jr)-[:TRIGGERED]->(j)
+```
+
+I've added line numbers to the query to make it easier to talk about. It looks like my goal in writing this query was to match job requests to jobs by identifying those with the same input nodes and then connecting them. First, using the identity of input sets to map requests to jobs seems like a needlessly complex way to implement this. We can see that this also led to an ugly and difficult to _decipher_ cypher query (sorry). 
+
+Things I hate about this query in order from most to least egregious:
+1. Back-to-back WITH statements on line 5 and 6.
+2. (2) list creation statements in the WITH statement on line 6.
+3. Math on line 7. Math isn't always bad, but in general it seems to slow down queries.
+
+I should have looked at this query, seen how convoluted it was, and realized I needed to rethink my approach. But sometimes I get so caught up in figuring out how to do something that I forget to ask: should I be doing this?",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/28
+I_kwDOCti7uM5MBN2o,MergeVCFs generated GVCFs without indexes,OPEN,2022-06-17T19:28:24Z,2022-06-17T19:28:24Z,,Investigation of issue: https://github.com/StanfordBioinformatics/trellis-mvp-functions/blob/release-1.3.0/notebooks/issue-gvcfs-missing-indexes.ipynb,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/29
+I_kwDOCti7uM5WjoK3,Add HAS_MATE_PAIR relationship between paired end fastqs,CLOSED,2022-11-16T19:45:48Z,2022-11-17T19:28:58Z,2022-11-17T19:28:58Z,Make it easier to find fastqs that are part of the same read group and provide as input to fastq-to-ubam job.,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/30
+I_kwDOCti7uM5Wp5pD,Add flag to db-query to always reload queries in dev env,OPEN,2022-11-17T18:54:38Z,2022-11-28T23:39:54Z,,"Right now the list of predefined database queries is stored in cloud storage and loaded into global variables at cold start of a function instance. Subsequent function calls reuse the same global variables, saving time when executing the function. Global variables can persist on an instance for about 10 minutes after the last function invocation. More info: https://cloud.google.com/functions/docs/bestpractices/tips#functions-tips-scopes-python.
+
+This can be confusing if a developer is changing the database query object and then running live tests, as the new queries will not be ingested until the current instance shuts down and a new one starts. My current solution to this issue is to delete and rebuild the db-query function every time I upload new queries. A less cumbersome solution might be to add a flag so that the queries are always reloaded on function invocation, when in a development environment.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/31
+I_kwDOCti7uM5WrF0J,Refactor fastq-to-ubam to use new trellisdata message classes,CLOSED,2022-11-17T23:06:23Z,2022-11-29T22:04:21Z,2022-11-29T22:04:21Z,,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/32
+I_kwDOCti7uM5WxLB-,"Cloud Build is failing but build details show ""Successful""",CLOSED,2022-11-18T20:08:29Z,2022-11-29T01:59:51Z,2022-11-29T01:59:51Z,"From the Build log:
+
+```
+ERROR: (gcloud.beta.functions.deploy) OperationError: code=3, message=Function failed on loading user code. This is likely due to a bug in the user code. Error message: Error: please examine your function logs to see the error cause
+```
+
+But when I click on the link to the Cloud Build logs it shows Successful.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/33
+I_kwDOCti7uM5XdbWN,Write tests for launch-fastq-to-ubam,CLOSED,2022-11-29T02:01:06Z,2022-11-29T22:01:07Z,2022-11-29T22:01:07Z,,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/34
+I_kwDOCti7uM5Xdb_6,Should I refactor launch functions into single function?,CLOSED,2022-11-29T02:04:14Z,2022-11-29T22:00:11Z,2022-11-29T21:59:51Z,"Current method for adding new bioinformatics (or other) tasks to Trellis is to create a new Cloud Function specifically tailored to launch jobs of that type of task (e.g. ""samtools flagstat""). Limitations of generating separate functions for each task include:
+  
+  * Copying of a lot of boilerplate code across functions
+  * Potential to differences in boilerplate code across functions
+  * Changing mechanisms for launching jobs requires changing every launcher function
+  * Creating a new launcher function is kind of an obtuse process, requiring knowledge of Python and the 'trellisdata' package. If you didn't have an example to look at it, it would be a huge pain.
+
+Can I create a standard function that launches all types of (dsub) jobs, based on a YAML configuration file?
+",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/35
+I_kwDOCti7uM5Xi361,Write standard job launcher function,OPEN,2022-11-29T22:01:59Z,2022-12-16T00:21:26Z,,"Current method for adding new bioinformatics (or other) tasks to Trellis is to create a new Cloud Function specifically tailored to launch jobs of that type of task (e.g. ""samtools flagstat""). Limitations of generating separate functions for each task include:
+  
+  * Copying of a lot of boilerplate code across functions
+  * Potential to differences in boilerplate code across functions
+  * Changing mechanisms for launching jobs requires changing every launcher function
+  * Creating a new launcher function is kind of an obtuse process, requiring knowledge of Python and the 'trellisdata' package. If you didn't have an example to look at it, it would be a huge pain.
+
+A better approach could be to write a single job launcher function and use a YAML configuration file to define the parameters of all the supported tasks. Benefits:
+
+* Eliminate the need for copy boilerplate code
+* Does not require Python/Trellis knowledge to implement new tasks
+* YAML configuration definition is consistent with method for defining Trellis database queries and triggers
+* Easier to update and maintain code for launching jobs",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/36
+I_kwDOCti7uM5YZsU-,Add version visibility for config files,OPEN,2022-12-07T23:46:26Z,2022-12-16T01:05:08Z,,"When a function such as db-query is invoked, it's unclear if it's using the most recent version of the database-queries.yaml file or an old cached version. If I added a version number or something to the config file it would be easier to tell.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/37
+I_kwDOCti7uM5ZXeN1,Investigating using Batch to perform virtual machine jobs instead of Dsub,OPEN,2022-12-16T00:17:10Z,2022-12-16T01:07:32Z,,"Looks like Batch is designed for clients to interface with it through Python, whereas I had to sort of pull apart the dsub package to launch jobs from Python, and when I do the stdout gets registered as errors in Cloud Logging, which is not ideal.
+
+Batch docs: https://cloud.google.com/batch/docs/create-run-job#create-basic-script",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/38
+I_kwDOCti7uM5ZXkb4,Trellis v1.3 status overview,OPEN,2022-12-16T00:36:12Z,2022-12-16T00:57:16Z,,"# Trellis architecture
+
+```mermaid
+  flowchart TD
+      blob[create-blob-node] -- QUERY_REQUEST --> db[db-query] 
+      db -- QUERY_RESPONSE --> triggers[check-triggers]
+      triggers -- QUERY_REQUEST --> db
+      db <--> neo4j[(Neo4j DB)]
+      db -- QUERY_RESPONSE --> jobs[job-launcher]
+      jobs -- JOB_RESPONSE --> jobnode[create-job-node]
+      jobnode -- QUERY_REQUEST --> db
+```",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/39
+I_kwDOCti7uM5ZXw3A,Overhaul the process of creating job nodes,OPEN,2022-12-16T01:08:13Z,2023-02-11T19:38:11Z,,"Current method is to use the `create-job-node` function. At the very least, I want to convert to using a parameterized query to add jobs to the database. I'm also wondering if we can forego this function entirely and send Job node creation requests directly from the `job-launcher` function.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/40
+I_kwDOCti7uM5btDTH,Newly delivered samples are not being added to database,CLOSED,2023-01-18T19:04:03Z,2023-02-09T22:11:21Z,2023-02-09T22:08:54Z,Last sample added to database was created in June 2022,pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/41
+I_kwDOCti7uM5d_kJv,Cannot install urllib3 because of conflicting dependencies,CLOSED,2023-02-08T23:22:48Z,2023-02-08T23:29:47Z,2023-02-08T23:29:41Z,"When trying to redeploy db-query with the same code/configuration currently in production I got this error:
+
+```
+ERROR: Cannot install -r requirements.txt (line 2) and urllib3==1.26.5 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    The user requested urllib3==1.26.5
+    py2neo 4.3.0 depends on urllib3<1.25 and >=1.23
+```
+
+I don't understand why this is failing now and didn't previously.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/42
+I_kwDOCti7uM5d_s7R,Error 403 when trying to add Personalis Sequencing JSON to database,CLOSED,2023-02-09T00:02:56Z,2023-02-09T01:17:11Z,2023-02-09T01:16:21Z,"From `trellis-create-blob-node-from-personalis-meta` logs: 
+
+```
+google.resumable_media.common.InvalidResponse: ('Request failed with status code', 403, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.PARTIAL_CONTENT: 206>)
+```
+
+I'm guessing this is because I changed bucket permissions to be more restrictive.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/45
+I_kwDOCti7uM5gTuDE,Represent data stores in metadata store,OPEN,2023-03-08T19:11:13Z,2023-03-08T20:21:51Z,,"Trellis uses a Neo4j database to store metadata related to data objects and jobs. Data generated from quality control procedures such as FastQC, Flagstat, and Vcfstats are stored in a Postgres relational database. Right now, the process of loading data from these CSV result files into the relational database is not tracked in Neo4j. Downsides of this include:
+
+* It's not clear where/if quality control data has been loaded into a queryable database.
+* It's not clear where that database is, which table the data is stored in, or the schema of the tables
+
+This is a particular issue since we have observed that _not_ all results are being successfully loaded into the database and the lack of visibility makes it harder to resolve this issue.",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/46
+I_kwDOCti7uM5gh5H2,Quality control data is missing from CloudSQL database,OPEN,2023-03-10T19:17:18Z,2023-03-10T20:24:27Z,,"From the Quarto ""Selecting GVCFs for Aggregation"" page of the MVP Whole Genome Sequencing Data Release 2 book:
+
+```
+Metric: Average per base sequence quality
+Has value: 118711
+Passed: 118531
+Failed: 180
+Missing: 9707
+```
+
+```
+Metric: Properly paired mapped reads percentage
+Has value: 118350
+Passed: 115339
+Failed: 3011
+Missing: 10068
+```
+
+```
+Metric: Contamination rate
+Has value: 128187
+Passed: 126882
+Failed: 1305
+Missing: 231
+```",pbilling,https://github.com/va-big-data-genomics/trellis-mvp-functions/issues/47

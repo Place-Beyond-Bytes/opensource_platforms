@@ -1,0 +1,51 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOCf0H8s6PoqdF,fileparser does not handle multisequence fastas,CLOSED,2024-07-15T23:19:25Z,2024-08-27T19:04:00Z,2024-08-27T19:03:59Z,The file parser does not currently handle multi sequence fastas. Returning a list of all poi objects based on all sequences would be a trivial feature to add.,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/12
+I_kwDOCf0H8s6PorS8,fileparser does not parse .dna (snapgene) files as of 2024,CLOSED,2024-07-15T23:23:20Z,2024-08-26T18:12:06Z,2024-08-26T18:10:03Z,"BioPython updated and broke snapgenereader, the package used to get sequence information from .dna files, we should write our own .dna format reader for us to maintain.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/13
+I_kwDOCf0H8s6Pvi77,Extend the rSNAPsim fileparser and default dictionaries for common nucleotide modifications,OPEN,2024-07-16T16:38:02Z,2024-07-17T03:08:06Z,,"The rSNAPsim does not currently support common nucleotide modifications such as m6a or pseudouridine; Instead, these are parsed out to A, U, G, or C. Support for these modifications could be added, however many functions check the length of the sequence so a small function would be needed to convert multicharacter modifications to a single character to work with the code as is.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/14
+I_kwDOCf0H8s6PzD0B,Update the provided example notebooks,OPEN,2024-07-17T03:01:41Z,2024-07-17T03:01:42Z,,"The current notebooks on the repository are out of date for the newer versions of rSNAPsim and need to be redone.
+
+We need the following notebooks:
+
+* Sequence manipulation
+Guides the user through manipulating a sequence and creating a POI object or mRNA object and all its features. Should show them the options such as codon optimization routines.
+
+* Propensity calculation
+Show the user how to convert codons to stepping rates for a TASEP or ODE model. Shows various options for calculating these rates as well as how to overwrite or access specific rates.
+
+* Model Solving
+Show the user how to solve the various models: ODE, TASEP, custom TASEP and their outputs
+
+* Analyses
+Show the user what options there are to do with a solved model such as calculate correlations and ribosomal occupancy
+
+* Model fitting
+Provide an example to the user of how to use the rSNAPsim to perform model fitting and selection using the optimization module.
+
+* Experiment Design using rSNAPsim and rSNAPed
+Simulate multiple models to differentiate with different experiment types
+
+* FSS model refit
+Provide and example of using rSNAPsim from start to beginning to fully fit a model and how the pipeline works
+
+",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/15
+I_kwDOCf0H8s6P4N01,Add new typing hints to all modules,OPEN,2024-07-17T15:07:42Z,2024-07-17T15:07:50Z,,"New typing hints are only on the FileParser and SequenceManip modules, typing hints should be added to all modules.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/16
+I_kwDOCf0H8s6P4P-Z,Consolidate SSA solvers and create a consistent solution object for all model solves,CLOSED,2024-07-17T15:11:22Z,2024-12-06T17:05:37Z,2024-12-06T17:05:37Z,"Currently there are multiple SSA solvers that have been collected over the years: GenericSSA, TranslationalSolvers,  specific python ssa solvers, and the precompiled c++ base TASEP. These can be consolidated and redundant code removed.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/17
+I_kwDOCf0H8s6P4Sjm,Additional options for built in Optimization routines,OPEN,2024-07-17T15:15:25Z,2024-07-17T15:15:25Z,,"Currently the Optimization module is a single threaded Metropolis Hastings algorithm, this could be multithreaded for multiple independent chains. Other Optimizations such as Simulated Annealing or Swarm searching could easily be implemented. ",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/18
+I_kwDOCf0H8s6P4Tc7,Multithread the model solvers,OPEN,2024-07-17T15:17:00Z,2024-07-17T15:17:07Z,,"Currently model solvers are single thread and single solve, this should be updated to be multiprocessed at some point for faster solving, Python and C++ versions.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/19
+I_kwDOCf0H8s6P4Ubq,Rewrite the documentation pages ,OPEN,2024-07-17T15:18:56Z,2024-07-17T15:19:05Z,,The Sphinx documentation pages should be rewritten before release of the 2.0 to reflect the changes to the package,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/20
+I_kwDOCf0H8s6P4Zlt,Consolidate the pypi packages,OPEN,2024-07-17T15:29:17Z,2024-07-17T15:29:25Z,,"Currently the c++ default TASEP models are stored as a seperate pypi package: rsnapsim-ssa-cpp, for clarity this should be depreciated and whls should be built for each platform of just ""rsnapsim.""",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/21
+I_kwDOCf0H8s6P4ahr,Diffusion calculation needs citations for the viscosity estimations,OPEN,2024-07-17T15:30:57Z,2024-07-17T15:30:58Z,,,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/22
+I_kwDOCf0H8s6P4cE4,export to json of POI and mRNA objects for ease of reloading,OPEN,2024-07-17T15:34:07Z,2024-07-17T15:34:07Z,,There should be a built in save (probably export to .json) for the POI and mRNA objects. ,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/23
+I_kwDOCf0H8s6P4cz-,Update construct displays with dna-features-viewer or remove and write our own,OPEN,2024-07-17T15:35:37Z,2024-07-17T15:35:38Z,,"Visualizations of mRNA constructs and models are out of date and need to be updated -- This could be done with dna-features-viewer, however, we could write our own to remove this dependency.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/24
+I_kwDOCf0H8s6P5P45,Provide a set of instructions for maintaining the PyPi package for future python versions,OPEN,2024-07-17T17:24:35Z,2024-07-17T17:24:35Z,,List of instructions on how to update the PyPi and provide credentials to future students,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/25
+I_kwDOCf0H8s6iOFez,Change all references to POI to CDS instead for consistency and clarity,OPEN,2024-12-05T22:50:19Z,2024-12-05T22:50:19Z,,"Previous iterations of the code use the POI object (Protein of interest) with the advent of our model maker, it is more accurate to use the term CDS (coding sequence) since our models can span multiple protein outputs, frames, and errors.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/26
+I_kwDOCf0H8s6iOGjj,Add capability / conversion of lattice array in solution objects directly to amino acid outputs.,OPEN,2024-12-05T22:52:48Z,2024-12-05T22:52:48Z,,"Add a function to solution objects that directly converts the ribosomal movements to amino acid outputs. This is useful for sequences that span multiple frames or have error potentials. However, with the current model maker, sequences that allow crossing ribosomal shunts will not have resolvable amino acid outputs. This should be included as a warning to the user if these types of reactions are detected.",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/27
+I_kwDOCf0H8s6iVZgt,Function that condenses solution arrays,CLOSED,2024-12-06T16:58:39Z,2024-12-12T23:21:28Z,2024-12-12T23:21:28Z,"SSA solution arrays currently save the particle/agent array in the shape N_traj, N_times, Max_ribs, array size (4 + ncolors + nrxns). Max ribosome count is calculated based on the size of the lattice divided by the particle size. This corresponds to the maximum amount of ribosomes that can occupy a given mRNA, however almost all simulations will never result in a fully collided and occupied mRNA. Hence the agent array is mostly sparse and empty. 
+
+Should there be a function to trim these zeros off? 
+Pros: saves memory and saving size 
+Cons: separate simulation runs will not concatenate nicely due to stochastic nature of the maximum ribosomes that appeared in a given run. ",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/28
+I_kwDOCf0H8s6iVb9q,Automatic kymograph call on the solution obj,OPEN,2024-12-06T17:03:05Z,2024-12-06T17:03:05Z,,"kymograph generation should be automated from the ribosome array for user convenience, this can be done by adding a new property to the solution object that slices the particle array correctly and returns it for plotting.
+
+",Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/29
+I_kwDOCf0H8s6iWdYW,Allow propensities to be a string input in the custom model,OPEN,2024-12-06T19:45:12Z,2024-12-06T19:45:12Z,,,Will-Raymond,https://github.com/MunskyGroup/rSNAPsim/issues/30

@@ -1,0 +1,272 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMjE4ODYwMA==,Pda Contract,CLOSED,2013-11-06T11:33:45Z,2013-11-14T09:33:08Z,2013-11-14T09:33:08Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/1
+MDU6SXNzdWUyMjE4ODY1OQ==,CFG Contract,CLOSED,2013-11-06T11:35:11Z,2013-11-14T09:32:56Z,2013-11-14T09:32:56Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/2
+MDU6SXNzdWUyMjE4ODY3MQ==,Turing Machine Contract,CLOSED,2013-11-06T11:35:29Z,2013-11-14T09:34:16Z,2013-11-14T09:34:16Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/3
+MDU6SXNzdWUyMjE4ODY4Mw==,CYK Algo Contract,CLOSED,2013-11-06T11:35:46Z,2013-11-14T09:34:16Z,2013-11-14T09:34:16Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/4
+MDU6SXNzdWUyMjE4ODY5Ng==,Grammer <-> Pda Contract,CLOSED,2013-11-06T11:36:10Z,2013-11-27T22:14:54Z,2013-11-27T22:14:54Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/5
+MDU6SXNzdWUyMjE4ODcwOA==,Parser(LL or LR) Contract,CLOSED,2013-11-06T11:36:34Z,2013-12-11T18:41:49Z,2013-12-11T18:41:49Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/6
+MDU6SXNzdWUyMjE4ODczMA==,CFG -> CNF Contract,CLOSED,2013-11-06T11:37:00Z,2013-11-16T19:59:27Z,2013-11-16T19:59:27Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/7
+MDU6SXNzdWUyMjczODc1OQ==,"Base class for Turing Machine, LL Parser, PDA?",CLOSED,2013-11-15T15:32:02Z,2014-01-16T16:12:59Z,2014-01-16T16:12:59Z,"Misschien is het handig om een base class te maken voor de Turing Machine, LL Parser en PDA die een virtual function 'bool process()' heeft. Dan kunnen we achteraf eenvoudig wisselen tussen deze 3?
+",LauwersP,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/9
+MDU6SXNzdWUyMjc5NjQ0Nw==,SymbolString is std::string,CLOSED,2013-11-17T13:22:26Z,2013-11-18T20:26:36Z,2013-11-18T20:26:36Z,"I've removed the class `SymbolString` and change that to `typedef std::string SymbolString` instead. Because for my CNF, I **really** need string iterators. 
+
+Additionally, it's pointless to create an apart class `SymbolString` since it's just really an ordinary string consisting of symbols that is either in the set of the variables and/or in the set of terminals.
+
+You can check it out there:
+https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/blob/master/src/CFG.h#L33
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/10
+MDU6SXNzdWUyMjgwNDU2Mw==,Code clean up,CLOSED,2013-11-17T20:46:36Z,2013-11-19T14:47:49Z,2013-11-19T14:47:49Z,"I've implemented the following stuffs, but needs to be cleaned up (refactorizing) and deeply tested: the tests are too weak to guarantee that it works as the way as we expect, but _on the top_ it seems they are working. **But there's no guarantee (yet) they actually works. Use it at your own risk.**
+- [x] `std::set<SymbolString> CFG::productions(const char& v) const;`
+- [x] `std::set<char> CFG::nullable() const;`
+- [x] `void CFG::eleminateEpsilonProductions();`
+- [x] `std::set< std::pair<char, char> > CFG::units() const;`
+- [x] `void CFG::eleminateUnitProductions();`
+- [x] `std::set<char> CFG::generating() const;`
+- [x] `std::set<char> CFG::reachable() const;`
+- [x] `void CFG::eleminateUselessSymbols();`
+- [x] `void CFG::cleanUp();`
+
+They are currently available in the `master` branch, but remember: **in Bèta mode** until I've closed this issue. The contracts however, remains the same.
+
+Now let's enjoy of my fresh :beer: first, before I'll do this!
+
+Also: please report bugs if there are some failures in your tests and you think it comes from one of the methods from the list above.
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/11
+MDU6SXNzdWUyMjg2NDY0OQ==,Detecting cyclic unit pairs,CLOSED,2013-11-18T20:26:09Z,2013-12-11T18:41:38Z,2013-12-11T18:41:38Z,"Well.. not really a bug, but is quit painful to fix this:
+
+remark on: https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/blob/master/src/CFG.cpp#L288
+
+This should throw an `std::logic_error` in case there appears any cyclic unit pairs in the set of unit pairs of the CFG, because the `eleminateUnitProductions()` will then not work. I haven't checked it (yet) what should happen if I put a CFG with cyclic unit pairs in it. I guess this will result in unpredictable behavior. I'll ask Prof. Laenens or Tom what will happen if I do so.
+
+The algorithm for checking whether there's a cyclic unit pairs in it, is quite painful I think, I've posted this question in [stackoverflow](http://stackoverflow.com/questions/20054637/detecting-cyclic-pairs)
+
+I'll get on this when enough time is left. (or if somebody else could solve it, should be great too :-) )
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/12
+MDU6SXNzdWUyMjk5MDAyNw==,Converting CFG to CNF,CLOSED,2013-11-20T13:06:05Z,2013-11-27T21:03:59Z,2013-11-27T21:03:59Z,"Need to think about a GOOD way to do so...
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/13
+MDU6SXNzdWUyMjk5MDA1Nw==,CYK algorithm,CLOSED,2013-11-20T13:06:47Z,2013-11-27T21:03:59Z,2013-11-27T21:03:59Z,"Will be implemented in Fase I.
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/14
+MDU6SXNzdWUyMzAwODY3MA==,std::set instead of std::multimap for CFG,CLOSED,2013-11-20T17:51:34Z,2013-11-27T21:04:20Z,2013-11-27T21:04:20Z,"For CFG's, I want to change the `std::multimap<char, SymbolString> fProductions` into the `std::map<char, std::set<SymbolString> > fProductions`. The reason I want to do this is 
+1. I often need the whole set of bodies from a certain variable in a certain production instead of just one.
+2. The `std::multimap` allows to have duplicate key-value pairs, (e.g. the key-value pair (A, BC) appears multiple times in the `std::multimap`) leaving my CNF with an exponential blow-up size, (some of my tests indicated that, a simple set of production rules resulted in 25% original key-value pairs and the other 75% were just duplicates of other keys!) which doesn't really make sense. It will just slowdown the CNF-constructing and the CYK-algorithm.
+3. The `std::map<char, std::set<SymbolString>>` will make the implementation (of CNF and CYK + CFG) much simplier and more efficient
+
+The `std::map<char, std::set<SymbolString>>` will solve both issues.
+
+I hope everyone aggrees? If not, please reply and I'll rewind it back :wink: 
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/15
+MDU6SXNzdWUyMzM4NjQ0MA==,Optimizing flags for G++,CLOSED,2013-11-27T13:24:53Z,2013-11-27T22:12:38Z,2013-11-27T22:12:38Z,"Using one of the optimizing flags for G++ (-O1, -O2, -O3) makes some of my tests fail, though all succeed without optimizing flags. Does anyone know why those flags might cause that?
+",JakobStruye,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/17
+MDU6SXNzdWUyMzQ0MDUwNw==,Mac OSx segmentation fault,CLOSED,2013-11-28T10:07:42Z,2013-11-28T12:22:23Z,2013-11-28T12:22:23Z,"``` c++
+for (char v : fVariables) {
+    if ((this->bodies(v)).empty()) 
+        fVariables.erase(v);
+} // end for
+```
+
+This will cause segementation faults in  Mac OSx
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/19
+MDU6SXNzdWUyMzk3NDUyNQ==,Workshops,CLOSED,2013-12-09T16:42:27Z,2013-12-11T10:25:15Z,2013-12-11T10:25:15Z,"For the workshops in two days, the other teams have to be able to test our Phase I. I guess we should each add a separate executable (and thus main()) to provide easy testing for our own implementation.
+Mine would be something like this: a ManualTuringTest executable, which takes the name of a Turing Machine in .xml form as a command line argument. Then the executable asks the user for a string, and prints whether the string was accepted by the Turing Machine.
+
+If you support input files containing your CFG/PDA/Parser in XML format (or whatever format you prefer), you should probably do something similar to my executable. However, if you do not support this and do not feel like adding it either, the best thing would be to write an example CFG/PDA/Parser in your main(), so that the other teams can edit it and recompile to test.
+
+I think this was due last Friday, so you should do this ASAP
+
+However none of the other teams have uploaded anything, so we're not totally fucked ;)
+(And maybe don't go asking the other teams just yet, if they forget, we don't have to prepare anything for their implementations! :D )
+",JakobStruye,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/20
+MDU6SXNzdWUyMzk3OTgxOA==,Contract RNASLV,CLOSED,2013-12-09T17:57:26Z,2014-01-16T16:12:56Z,2014-01-16T16:12:56Z,"``` c++
+#include <vector>
+#include <tupple>
+
+/**
+ * @enum ENucleotideType
+ * @brief The different types of the nucleotides.
+ */
+enum ENucleotideType {
+    kADENINE,
+    kCYTOSINE,
+    kGUANINE,
+    kURACIL
+};
+
+/**
+ * @class Nucleotide
+ * @brief The nucleotide
+ */
+class Nucleotide {
+public:
+    /**
+     * @brief Constructor.
+     *
+     * @param type Which type of nucleotide we are talking about.
+     */
+    Nucleotide(const ENucleotideType& type);
+
+    /**
+     * @brief Check whether this nucleotide match with another nucleotide.
+     * @details Cytosine match with Guanine and Adenine with Uracil.
+     *
+     * @param that The other nucleotide you want to compare.
+     *
+     * @return True if they match, false otherwise.
+     */
+    bool match(const Nucleotide& that) const;
+
+private:
+    /**
+     * @var fType
+     * @brief The type of the nucleotide.
+     */
+    ENucleotideType fType;
+};
+
+/**
+ * @typedef RNAString
+ * @brief Represents an RNA sequence of nucleotides.
+ */
+typedef std::vector<Nucleotide*> RNAString;
+
+/**
+ * @class RNAParser
+ * @brief The RNA sequence parser.
+ * @details This is an ordinary RNA sequence parser. This does not do
+ * additionally stuffs such as recognizing stem loops or something like that.
+ * It just check whether the sequence of RNA is a valid one (i.e. there are
+ * no wrong symbols in the sequence).
+ */
+class RNAParser {
+public:
+    /**
+     * @brief Constructor.
+     *
+     * @param filename The name of the file to read from it.
+     */
+    RNAParser(const char* filename[]);
+
+    /**
+     * @brief Parse the sequence.
+     * @details Since this is an ordinary RNA sequence parser, this does only
+     * checking whether all symbols in the RNA sequence is valid (i.e. either
+     * one of the A, C, G or U).
+     *
+     * @throws std::runtime_error When there's something wrong with parsing
+     * or the RNA sequence in the file is not valid.
+     *
+     * @note If you call this method more than once, it will forgot the last
+     * parsed RNA sequence and do it over again.
+     */
+    virtual void parse();
+
+    /**
+     * @brief Get the RNA string after parsing the sequence.
+     *
+     * @return The parsed RNA string.
+     *
+     * @note If you've parsed nothing you'll get an empty RNA string.
+     */
+    RNAString getRNAString() const;
+
+    /**
+     * @brief Get the configuration for the visualizer.
+     *
+     * @return TODO
+     */
+    virtual TODO getConfiguration() const;
+
+private:
+    /**
+     * @var fRNASequence
+     * @brief The parsed RNA string.
+     */
+    RNAString fRNASequence;
+};
+
+/**
+ * @class RNAOneStemLoop
+ * @brief Class responsible for parsing a basic stem loop.
+ * @details A basic stem loop is something as:
+ * @code
+ *  G == C
+ *  G == C
+ *  C == G
+ *  A == U
+ * x      x
+ *  x    x
+ *   x  x
+ *    xx
+ * @endcode
+ */
+class RNAOneStemLoop : public RNAParser {
+public:
+    /**
+     * @brief Constructor.
+     *
+     * @param filename The name of the file to read from it.
+     */
+    RNAOneStemLoop(const char* filename[]);
+
+    /**
+     * @brief Parse the sequence.
+     * @details Since this is an ordinary RNA sequence parser, this does only
+     * checking whether all symbols in the RNA sequence is valid (i.e. either
+     * one of the A, C, G or U).
+     *
+     * @throws std::runtime_error When there's something wrong with parsing
+     * or the RNA sequence in the file is not valid.
+     *
+     * @note If you call this method more than once, it will forgot the last
+     * parsed RNA sequence and do it over again.
+     */
+    void parse();
+
+    /**
+     * @brief Get the indexes of the RNA string where the loop starts and
+     * end respectively.
+     */
+    std::tuple<unsigned int, unsigned int> getLoopIndexes() const;
+
+    /**
+     * @brief Get the configuration for the visualizer.
+     *
+     * @return TODO
+     */
+    TODO getConfiguration() const;
+
+private:
+    /**
+     * @var fBegin
+     * @brief The index of the RNA string where the loop starts.
+     */
+    unsigned int fBegin;
+
+    /**
+     * @var fEnd
+     * @brief The index of the RNA string where the loop ends.
+     */
+    unsigned int fEnd;
+};
+
+/**
+ * @class RNAVisualizer
+ * @brief Just a class that will visualize the RNA.
+ */
+class RNAVisualizer {
+public:
+    /**
+     * @brief Just visualize the RNA sequence without any specials stuffs.
+     *
+     * @param TODO (see above)
+     */
+    void visualize(const RNAParser& p);
+};
+```
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/21
+MDU6SXNzdWUyNDAxMjQwNA==,"PDA bug when converting from CFG, system ends correctly only it doesn't know",CLOSED,2013-12-10T04:04:51Z,2013-12-11T10:24:48Z,2013-12-11T10:24:48Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/23
+MDU6SXNzdWUyNDAxMjQxMg==,Some cleaning in PDA,CLOSED,2013-12-10T04:05:11Z,2013-12-11T10:24:41Z,2013-12-11T10:24:41Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/24
+MDU6SXNzdWUyNDAzMzM2Mg==,Memory leak in runPDA.cpp,CLOSED,2013-12-10T13:02:18Z,2013-12-10T16:15:21Z,2013-12-10T16:15:21Z,,STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/25
+MDU6SXNzdWUyNDEwMTE3MQ==,Unit pairs,CLOSED,2013-12-11T11:31:18Z,2013-12-11T18:41:30Z,2013-12-11T18:41:30Z,"Doesn't go deep enough.
+",STOWouters,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/28
+MDU6SXNzdWUyNDEzMTYxNw==,Bug in PDA with CFG's,CLOSED,2013-12-11T19:35:47Z,2014-01-17T00:09:06Z,2014-01-17T00:09:06Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/29
+MDU6SXNzdWUyNTM4NjE3Ng==,Making portfolio,CLOSED,2014-01-10T10:22:08Z,2014-01-17T00:09:06Z,2014-01-17T00:09:06Z,,rubenvanassche,https://github.com/rubenvanassche/RNA-Stem-Loop-Visualizer/issues/31

@@ -1,0 +1,141 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNTY3NzY0NTA=,Optimalizing batching for diagnostics,CLOSED,2016-05-25T15:13:32Z,2016-05-31T10:55:11Z,2016-05-31T10:55:11Z,"MiSeq samples are often very small, per chromosome batching is more time consuming than running the complete sample.
+
+Solution:
+before creating generate_template decide which data it is (based on bedfile in the samplesheet) and then select generate script with correct batching. 
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/5
+MDU6SXNzdWUxNTY3NzcxNDQ=,samplesheet should say which bed files to use for coverage calculations,CLOSED,2016-05-25T15:17:19Z,2016-05-31T10:55:21Z,2016-05-31T10:55:21Z,"A column (e.g. dataTypeRun) should say SSID, MiSeq, Exoom. This column will be read by the pipeline and step CoverageCalculations will only run the subset bedfiles based on the dataType
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/6
+MDU6SXNzdWUxNjQyOTYyNDY=,Quality by cycle metrics calculation needed?,OPEN,2016-07-07T12:21:17Z,2016-07-07T12:21:17Z,,"CollectMultipleMetrics step is running for > 3 hours for WGS sample (but limited on a bedfile), maybe reducing walltime by removing unnecessary metrics calculations.
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/23
+MDU6SXNzdWUxNjQyOTYzNDY=,Store g.vcf as g.vcf.gz,CLOSED,2016-07-07T12:21:55Z,2016-09-12T15:05:59Z,2016-09-12T15:05:59Z,"To decrease storage we should store all .g.vcf in gzip format
+Question is if we should do it before the genotyping or after, depending on:
+
+can g.vcf.gz be used by GATK GenotypeVariants
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/24
+MDU6SXNzdWUxNjQyOTY2Mjc=,Use Cram conversion for storing bam files,CLOSED,2016-07-07T12:23:41Z,2016-10-17T07:12:08Z,2016-10-17T07:12:08Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/25
+MDU6SXNzdWUxNjkzMDI5MjI=,autotest: add check when error in pipeline,CLOSED,2016-08-04T06:48:30Z,2016-08-19T07:55:26Z,2016-08-19T07:55:26Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/40
+MDU6SXNzdWUxNzI5NDE5OTQ=,fq.gz files are overwritten from symlink to real file..,CLOSED,2016-08-24T12:45:47Z,2016-09-06T12:34:36Z,2016-09-06T12:34:36Z,"due to pihX spike in.. 
+Things get big when you have e.g. all 5GPM projects.. 
+- Should remove fq.gz files after bwa align? --> shoud we keep the original symlinks and make fq.gz other name
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/63
+MDU6SXNzdWUxNzMxNTE2OTQ=,md5sum of second read is not in correct name format ,CLOSED,2016-08-25T09:12:39Z,2017-03-27T13:31:46Z,2017-03-27T13:31:46Z,"Naming should be fq.gz.md5 instead of fq.md5
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/64
+MDU6SXNzdWUxNzY0MDA3MDM=,fix g.vcf.gz when there are more than 200 samples,CLOSED,2016-09-12T15:07:52Z,2016-10-17T07:09:18Z,2016-10-17T07:09:18Z,"in genotyping we want to have g.vcf.gz files instead of g.vcf, but with batches with a variable pasted too it, it can be maybe a little difficult
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/70
+MDU6SXNzdWUxODA4MjM4MTQ=,moving emit_conf and call_conf to VariantGenotyping ,CLOSED,2016-10-04T07:34:08Z,2017-03-27T13:31:45Z,2017-03-27T13:31:45Z,"removing unused parameters in VariantCalling protocol
+ -stand_call_conf 10.0 
+ -stand_emit_conf 20.0 
+
+Add to VariantGenotyping
+ -stand_call_conf 10 
+ -stand_emit_conf 30 
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/74
+MDU6SXNzdWUxODEzMjk2OTM=,include snpEff back in the pipeline,CLOSED,2016-10-06T05:47:23Z,2016-10-17T07:12:23Z,2016-10-17T07:12:23Z,"possibly the latest release of snpEff can handle the correct format of a spanning deletion
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/75
+MDU6SXNzdWUxOTU1NDQ3MTU=,gavin.sh type relacements,CLOSED,2016-12-14T14:28:02Z,2016-12-16T16:09:24Z,2016-12-16T16:09:24Z,"'s|INFO=<ID=EXAC_AF,Number=.,Type=String|INFO=<ID=EXAC_AF,Number=.,Type=Float|'
+'s|INFO=ID=EXAC_AC_HOM,Number=.,Type=String|INFO=ID=EXAC_AC_HOM,Number=.,Type=Integer|'
+'s|INFO=<ID=EXAC_AC_HET,Number=.,Type=String|INFO=<ID=EXAC_AC_HET,Number=.,Type=Integer|'",Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/86
+MDU6SXNzdWUyMTA0OTYwMDA=,GAVIN output vcf naam aanpassen.,CLOSED,2017-02-27T14:16:16Z,2017-03-27T13:31:46Z,2017-03-27T13:31:46Z,"Is het ook mogelijk om de naam van de VCF files waarbij de GAVIN annotatie aanwezig is aan te passen van:
+ 
+-          *.GAVIN.RVCF.final.mergedWithOriginal.rlv.vcf
+naar
+-          *.GAVIN.rlv.vcf",Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/104
+MDU6SXNzdWUyMTE2MDIxMjg=,No gender --> let XHMM step finish,CLOSED,2017-03-03T05:56:06Z,2017-03-27T13:31:46Z,2017-03-27T13:31:46Z,"Now a trap - Exit is done, but it will never create .finished file so the pipeline will stop also",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/105
+MDU6SXNzdWUyMTMwNTgwOTI=,smMIP runs let convading crash,CLOSED,2017-03-09T14:45:57Z,2017-03-27T13:31:46Z,2017-03-27T13:31:46Z,since there is only a small part of the target covered the convading step is crashing due to division by 0.,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/106
+MDU6SXNzdWUyMTg0MDAyNDQ=,include CalculateGenotypePosteriors step,OPEN,2017-03-31T05:16:24Z,2017-03-31T05:16:24Z,,"https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_variantutils_CalculateGenotypePosteriors.php
+
+",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/113
+MDU6SXNzdWUyMTg0MDI3Nzc=,use GATK 3.7,CLOSED,2017-03-31T05:37:05Z,2017-04-11T07:41:45Z,2017-04-11T07:41:34Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/114
+MDU6SXNzdWUyMTg0MDcxNTc=,use newQuals in VariantCalling/Genotyping,CLOSED,2017-03-31T06:10:16Z,2018-04-09T07:50:48Z,2018-04-09T07:50:48Z,http://gatkforums.broadinstitute.org/gatk/discussion/8692/version-highlights-for-gatk-version-3-7,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/115
+MDU6SXNzdWUyMjYyNDg3MDY=,Bug: coping Manta file diploidSV.vcf.gz to resultsfolder,CLOSED,2017-05-04T11:15:56Z,2017-05-05T11:45:28Z,2017-05-05T11:45:28Z,"In step: CopyToResultsDir_0.sh, diploidSV.vcf.gz(per sample) is copied to results//variants/cnv/.
+
+But the filename is the same foreach sample, resulting in overwriting each file.",Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/130
+MDU6SXNzdWUyMjYzNzQ4MDQ=,extend testpipeline with more tests,OPEN,2017-05-04T18:51:09Z,2017-05-05T08:15:01Z,,"- with a Gavin test 
+- CoverageCalculations test
+- Convading/XHMM test",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/131
+MDU6SXNzdWUyMjY1MDc0ODQ=,QC_Report adding Concordance Result,OPEN,2017-05-05T08:38:25Z,2017-05-05T10:19:37Z,,"In QC report only the header of the concordance output is shown.
+So you don't get the actual information you need to check if nothing has been swapped.
+
+Maybe it would be better to show the entire table of the concordance output in the QC Report?",BenjaminsM,https://github.com/molgenis/NGS_DNA/issues/132
+MDU6SXNzdWUyMzQ3OTkzNzk=,Remove empty spaces in collumnNames in the QC tables,OPEN,2017-06-09T11:30:17Z,2017-06-09T11:30:17Z,,"${EBROOTNGS_DNA}/report/pull_DNA_Seq_Stats.py: 
+Maybe change collumnNames in the QC tables from ""Fraction target covered >= 10x"" back to ""PCT_TARGET_BASES_20X"" for easier parsing later on.",Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/140
+MDU6SXNzdWUyNjU3NTczODg=,Use VEP instead of CmdLineAnnotator and SnpEff,CLOSED,2017-10-16T12:47:21Z,2018-04-09T07:50:25Z,2018-04-09T07:50:25Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/164
+MDU6SXNzdWUyNjU3NTc1OTE=,Use MultiQC for making QC report,CLOSED,2017-10-16T12:48:01Z,2018-04-09T07:48:36Z,2018-04-09T07:48:29Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/165
+MDU6SXNzdWUzMDM0ODU4OTg=,Issue old illumina encoding in s01_PrepareFastQ protocol,CLOSED,2018-03-08T13:50:55Z,2018-04-09T07:50:38Z,2018-04-09T07:50:38Z,"When Illumina encoding ==1.9 there is an issue with zipping the fastq file:
+This is caused by the mkfifo command, this can be solved by not using this command but to do the encoding and zipping seperatly
+
+example:
+else
+                #make fastQ out of the fq.gz file
+                #mkfifo ""${barcodeFqGz}.encoded.fq""
+                echo ""converting Illumina encoding""
+                seqtk seq ""${barcodeFqGz}"" -Q 64 -V > ""${barcodeFqGz}"".encoded.fq
+
+                echo -e ""done..\nNow gzipping ${barcodeFqGz}.encoded.fq > ${barcodeFinalFqGz}""
+                pigz -c ""${barcodeFqGz}.encoded.fq"" > ""${barcodeFinalFqGz}""
+",BenjaminsM,https://github.com/molgenis/NGS_DNA/issues/187
+MDU6SXNzdWUzMTI0Mjg0Mzc=,Multiqc_data directory to prm storage.,OPEN,2018-04-09T07:50:22Z,2018-04-09T07:50:22Z,,MultiQC output directory 'multiqc_data' has to be copied to prm storage for ChronQC.,Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/194
+MDU6SXNzdWUzMTI0NDY0MjA=,add check if all chromosomes are in the output,CLOSED,2018-04-09T08:53:43Z,2019-05-01T12:12:09Z,2019-05-01T12:12:09Z,maybe a simple awk command that checks if all the chromosomes are in,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/195
+MDU6SXNzdWUzMTMxNzk2NDA=,make a folder that will be parsed by MultiQC instead of all the files from the intermediate folder and copy to resultsfolder,CLOSED,2018-04-11T05:35:45Z,2018-08-30T06:33:10Z,2018-08-30T06:33:10Z,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/196
+MDU6SXNzdWUzMTUwMjQ1OTU=,change library prep from fileprefix_Lane to externalSampleID,CLOSED,2018-04-17T11:49:30Z,2018-08-30T06:32:56Z,2018-08-30T06:32:56Z,,BenjaminsM,https://github.com/molgenis/NGS_DNA/issues/197
+MDU6SXNzdWUzMTk0MzE3ODI=,fixing issue with symlinks in coveragecalculations,OPEN,2018-05-02T07:00:32Z,2018-05-02T07:00:32Z,,"trying to resolve the problem when there are multiple variants of the panels (QXT and XT), when in UMCG/Diagnostics folder the QXT and XT are symlinked this will cause an error in the CoverageCalculations step, because the intervallist is not found",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/200
+MDU6SXNzdWUzMjAyMDI2ODQ=,missing curlybracket in PrepareVcf.sh,CLOSED,2018-05-04T09:10:46Z,2018-08-30T06:32:32Z,2018-08-30T06:32:32Z,missing curlybracket in PrepareVcf.sh in line 17,Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/201
+MDU6SXNzdWUzNjY3NzM4MTU=,"removing _batch=""small"" in generate_template ",OPEN,2018-10-04T12:49:44Z,2018-10-04T12:49:44Z,,"This is just a placeholder (it is not doing anything), it is automatically determined in the CreateInhouseProjects step",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/207
+MDU6SXNzdWUzNzM5MDU4Njc=,CopyPrmToTmp should do same procedure checksum as CopyRawToPrm (NGS_Automated),OPEN,2018-10-25T11:43:06Z,2018-10-25T11:43:06Z,,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/214
+MDU6SXNzdWUzNzk1NTk2MzY=,make dependency on every side step of the pipeline when counting finished files,OPEN,2018-11-11T20:26:29Z,2018-11-11T20:26:29Z,,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/217
+MDU6SXNzdWUzOTQ2MjMzNjQ=,Some protocols are missing module list after a module load.,OPEN,2018-12-28T12:11:28Z,2018-12-28T12:11:37Z,,"For example s20_SplitIndelsAndSNPs misses a ```module list``` after ```module load ""GATK/3.7-Java-1.8.0_74""```. This makes it hard to debug issues as you don't know exactly which (versions of ) dependencies got loaded in the environment.",pneerincx,https://github.com/molgenis/NGS_DNA/issues/233
+MDU6SXNzdWU0MDM3MDExMzE=,zipping of gVCF files is not necessary,CLOSED,2019-01-28T08:38:13Z,2019-04-02T13:41:14Z,2019-04-02T13:41:14Z,"code below should be more specific instead of complete variants directory (skipping gVCF)
+zip -gr ""${projectResultsDir}/${project}.zip"" variants",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/238
+MDU6SXNzdWU0MjgyNTU0NTE=,"GAVIN, the ""BOTH"" option should do the separator automatically",OPEN,2019-04-02T14:17:51Z,2019-04-02T14:17:51Z,,it is now done manually with an ordinairy perl replace command,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/247
+MDU6SXNzdWU0NDkxNDY3NTY=,add rejectedbarcodes,OPEN,2019-05-28T08:58:26Z,2019-05-28T08:58:26Z,,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/252
+MDU6SXNzdWU0NjE4OTc3Mzk=,"protocol:s16b_GenotypeVariants,  batching for more that 200 sample fails",OPEN,2019-06-28T07:28:01Z,2020-08-12T14:57:40Z,,"1) number of samples is counted incorrect. It count the number of rows in the samplesheet instead of uniq sampleIds.
+2) And when going in samplesize > 200 loop, it give an exit 1 error. 
+3) line 'numberofbatches=$((""${SAMPLESIZE}"" / 200))' gives always a syntax error.",Gerbenvandervries,https://github.com/molgenis/NGS_DNA/issues/254
+MDU6SXNzdWU0NzIyOTkxNjk=,Rejected barcodes for all projects instead of one,CLOSED,2019-07-24T13:57:09Z,2019-07-31T08:00:07Z,2019-07-31T08:00:07Z,"* If a samplesheet contains multiple projects and one of these projects contains a rejected barcode(s), all projects in this samplesheet get this rejectedBarcodes.txt file.",marieke-bijlsma,https://github.com/molgenis/NGS_DNA/issues/255
+MDU6SXNzdWU0Nzc3ODU3NjM=,ANN info contains info for other ALT values,OPEN,2019-08-07T08:37:09Z,2019-08-07T08:37:09Z,,"ANN info contains info for other ALT values which makes interpretation of ANN values difficult and tricky.
+
+Probable cause:
+- SnpEff is run before splitting VCF per sample/alt
+- ANN is copied for each splitted VCF
+
+Solution:
+Either copy only the relevant ANN part to the splitted files or run SnpEff on the splitted files.",dennishendriksen,https://github.com/molgenis/NGS_DNA/issues/258
+MDU6SXNzdWU1MTcwNTAyMjM=,"CGD, only one inheritance per position possible",OPEN,2019-11-04T10:02:34Z,2019-11-04T10:02:34Z,,"a region can contain multiple genes, but there is only one value possible for the CGD fields",RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/266
+MDU6SXNzdWU1NDgwODQ2MjU=,Style errors in string definitions,OPEN,2020-01-10T13:38:35Z,2020-01-10T14:37:43Z,,"Style errors in `#string parameter` definitions (probably all tabs):
+
+```
+umcg-mterpstra:NGS_DNA grep '^#string\|^#list' protocols/MarkDuplicates.sh| grep -vP '\#string |\#list '
+#string	project
+```",mmterpstra,https://github.com/molgenis/NGS_DNA/issues/268
+MDU6SXNzdWU5MjEyMTYyMzM=,Adding more/better decomposition,OPEN,2021-06-15T09:51:04Z,2021-06-15T11:28:12Z,,"This code splits multiallelics:
+
+https://github.com/molgenis/NGS_DNA/blob/5decff4a8334c3d81c41fbdeeb9f402dff861291/protocols/AnnotateVcf.sh#L47
+
+aka
+```
+1 100 A C,T 
+```
+to
+```
+1 100 A C
+1 100 A T
+```
+It doesn't split:
+
+https://genome.sph.umich.edu/wiki/Vt#Decompose_biallelic_block_substitutions
+
+aka
+```
+1 100 AT CG 
+```
+to
+```
+1 100 A C
+1 101 T G
+```
+
+This causes a lot of problems for variant annotation/interpretation and to a degree affects comparing different variantcallers to eachother. There is no clear solution for this I just want to leave this here as a open end to improve the pipeline close it of you want.
+
+also reading up to the current standard bcftools norm 1.12 has the --atomize flag maybe update bcftools version?",mmterpstra,https://github.com/molgenis/NGS_DNA/issues/280
+MDU6SXNzdWU5NzQ0NTI5Nzk=,drop email when coverage data is too low ,OPEN,2021-08-19T09:17:56Z,2021-08-19T09:17:56Z,,,RoanKanninga,https://github.com/molgenis/NGS_DNA/issues/281

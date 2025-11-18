@@ -1,0 +1,44 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIIKMPc5obV2B,Test run,OPEN,2023-06-12T06:29:13Z,2023-06-13T10:19:04Z,,"Hi,
+
+Thanks for putting this together.
+I'm following your example to do a test run, with one of my own genomes. I got the following error:
+
+```
+mamba activate genomeAnnotationPipeline
+
+OUT_DIR=""/home/gnii0001/07_dsm/result/euk_annotation""
+cd /home/gnii0001/tools/genomeAnnotationPipeline
+
+snakemake -p -n -j 20 \
+    --config sample_sheet=/home/gnii0001/07_dsm/074_merged/script/metadata/sample_sheet.txt \
+             genemark_tar_gz=/home/gnii0001/tools/gmes/gmes_linux_64_4.tar.gz \
+    -d $OUT_DIR
+   
+Building DAG of jobs...
+MissingInputException in rule galba_run in file /fs04/rp24/gaofeng/tools/genomeAnnotationPipeline/workflows/galba.smk, line 36:
+Missing input files for rule galba_run:
+    output: Ophryoscolex caudatus/galba/augustus.hints.gff3, Ophryoscolex caudatus/galba/augustus.hints.aa
+    wildcards: genome_id=Ophryoscolex caudatus
+    affected files:
+        /fs04/pc77/scratch_nobackup/gaofeng/07_dsm/result/euk_annotation/""""
+```
+
+I think I'm not fully understanding how the `sample_sheet.txt` file should be formatted. In my case, I have the genomic sequence, and species name being `Ophryoscolex caudatus`, and I don't have a reference proteome. Could you suggest how to proceed?
+Attaching my sample_sheet
+[sample_sheet.txt](https://github.com/glaParaBio/genomeAnnotationPipeline/files/11718724/sample_sheet.txt)
+
+Many thanks!
+
+Ps. previously I filled reference_proteome as NA, but it ran into the following issue, and therefore I used `""""` to circumvent that.
+```
+Building DAG of jobs...
+InputFunctionException in rule galba_run in file /fs04/rp24/gaofeng/tools/genomeAnnotationPipeline/workflows/galba.smk, line 36:
+Error:
+  TypeError: expected str, bytes or os.PathLike object, not float64
+Wildcards:
+  genome_id=Ophryoscolex caudatus
+Traceback:
+  File ""/fs04/rp24/gaofeng/tools/genomeAnnotationPipeline/workflows/galba.smk"", line 41, in <lambda>
+  File ""<frozen posixpath>"", line 398, in abspath
+```",ganiatgithub,https://github.com/glaParaBio/genomeAnnotationPipeline/issues/2

@@ -1,0 +1,206 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1OTk2OTIzODA=,Reading BLAST-formatted databases,CLOSED,2020-04-14T16:14:37Z,2020-06-28T18:10:02Z,2020-06-28T18:10:02Z,"Since the old NCBI C-toolkit has been deprecated, we need to include the new NCBI C++  toolkit to enable reading modern BLAST-formatted databases.",jgans,https://github.com/jgans/thermonucleotideBLAST/issues/1
+MDU6SXNzdWU1OTk2OTMxMzc=,Reading compressed sequence files,CLOSED,2020-04-14T16:15:49Z,2021-10-23T18:54:51Z,2021-10-23T18:54:51Z,"As many sequence files are stored with compression, we need to add support for direct reading of gzip/bzip compressed sequence files.",jgans,https://github.com/jgans/thermonucleotideBLAST/issues/2
+MDU6SXNzdWU1OTk2OTQzNjM=,Merge OpenMP and MPI branches,OPEN,2020-04-14T16:17:44Z,2020-04-14T16:17:44Z,,The code would be cleaner if there was a single execution branch that seamlessly combine both OpenMP and MPI for running on all cores of multiple compute nodes.,jgans,https://github.com/jgans/thermonucleotideBLAST/issues/3
+MDU6SXNzdWU2MDA0NzE2MDM=,Add coverage plots,OPEN,2020-04-15T17:34:18Z,2020-04-15T17:34:18Z,,"To help screen PCR enrichment assays, provide an option to output the amplicon coverage for each target sequence.",jgans,https://github.com/jgans/thermonucleotideBLAST/issues/4
+MDU6SXNzdWU2MDE1NjA3OTU=,Undeclared Identifer prevents make,CLOSED,2020-04-16T22:45:07Z,2020-05-03T23:39:24Z,2020-05-03T23:39:24Z,"**Bug?**
+Make fails due to undeclared identifiers: VERSION_MAJOR and VERSION_MINOR
+
+**Platform Tested**
+My mac laptop 
+
+**Affected Files**
+options.h
+options.cpp
+
+**Error messages during make**
+options.cpp:437:41: error: use of undeclared identifier 'VERSION_MAJOR'
+                cerr << ""thermonucleotideBLAST v."" << VERSION_MAJOR 
+                                                     
+options.cpp:438:14: error: use of undeclared identifier 'VERSION_MINOR'
+                        << '.' << VERSION_MINOR << endl;
+
+**Temporary solution**
+Make succeeds if lines 437 and 438 are commented out in options.cpp",omphalobear,https://github.com/jgans/thermonucleotideBLAST/issues/5
+MDU6SXNzdWU3NTE2MTM1OTM=,confusing makefile/install instructions,CLOSED,2020-11-26T13:59:26Z,2020-11-30T16:08:35Z,2020-11-30T16:08:34Z,"Hi, apologies but I'm definitely missing something. 
+
+The makefile expects that $(BLAST_DB) should be at least ncbi-blast-2.10.0+-src (2.11 is out now). It also expects that a directory called include should be present (ncbi-blast-2.10.0+-src/include) though this is actually present at ncbi-blast-2.10.0+-src/c++/include. Further it expects ncbi-tools++ directory within include which is not present. It also expects an ncbi-blast-2.10.0+-src/lib directory of which there is no equivalent inside ncbi-blast-2.10.0+-src/c++.
+
+I cannot make heads or tails of how to fix this as lib is not present. If I change everything but lib I get a compile error that ncbiconf_linux.h is missing, I found a copy of this at  ncbi-blast-2.10.0+-src/c++/ReleaseMT/inc/ so I added this path to the include, but obviously compilation still fails.
+
+Finally I cannot see how the NCBI C++ toolkit factors into this makefile as the code all reference the blast directory.
+
+Here is my current makefile:
+
+```
+OBJS = tntblast.o degenerate_na.o primer.o input.o nuc_cruc_anchor.o \
+        nuc_cruc.o nuc_cruc_output.o nuc_cruc_santa_lucia.o bind_oligo.o \
+        amplicon_search.o probe_search.o padlock_search.o tntblast_master.o \
+        tntblast_worker.o tntblast_util.o options.o tntblast_local.o bitmask.o \
+        sequence_data.o sequence_data_annot.o annotation.o annotation_embl.o \
+        annotation_gbk.o annotation_ptt.o annotation_util.o annotation_gff3.o gff3.o \
+        sequence_data_fastx.o tntblast_timer.o
+
+CC = g++
+
+PROFILE = #-pg
+OPENMP = -Xpreprocessor -fopenmp
+
+# Define USE_MPI to enable MPI
+FLAGS = $(PROFILE) -O3 -Wall $(OPENMP) -std=c++11
+
+# The BLAST_DIR variable should only be defined if you wish to be able to
+# read NCBI BLAST-formatted database files. This functionality is optional, and
+# can be disabled by commenting out the BLAST_DIR variable by adding the '#' symbol
+# to the start of the line below (i.e. ""#BLAST_DIR"").
+BLAST_DIR = /home/vscode/ncbi-blast-2.11.0+-src/c++
+
+ifdef BLAST_DIR
+
+FLAGS += -DUSE_BLAST_DB
+
+# Compile with the NCBI C++ toolkit (tntblast will be able to read BLAST-formatted databases)
+BLAST_INC = $(BLAST_DIR)/include
+BLAST_LIBS = -L $(BLAST_DIR)/lib \
+        -ldl -lseqdb -lxobjmgr -lblastdb -lgeneral -lgenome_collection -llmdb \
+        -lseq -lpub -lmedline -lseqcode -lseqset -lsequtil -lxser -lxutil -lxncbi -lsubmit -lbiblio
+
+INC = -I. -I$(BLAST_INC) -I$(BLAST_DIR)/ReleaseMT/inc
+LIBS = -lm $(BLAST_LIBS)
+else
+
+# Compile without the NCBI C++ toolkit (tntblast will not read BLAST-formatted databases)
+BLAST_INC =
+BLAST_LIBS =
+INC = -I.
+LIBS = -lm
+endif
+
+.SUFFIXES : .o .cpp .c
+.cpp.o:
+        $(CC) $(FLAGS) $(INC) -c $<
+
+all: tntblast
+
+tntblast : $(OBJS)
+        $(CC) $(PROFILE) -o tntblast $(OBJS) $(LIBS) $(OPENMP)
+
+clean:
+        -rm -f *.o
+```
+
+Any clarity would be much appreciated!",maxhargrea,https://github.com/jgans/thermonucleotideBLAST/issues/6
+MDU6SXNzdWU3NTYzNTk5MDg=,How to point to BLAST v5 DB,CLOSED,2020-12-03T16:35:27Z,2020-12-03T16:55:24Z,2020-12-03T16:55:24Z,"Hi,
+
+I have downloaded the NCBI BLAST+ nt database from ftp.ncbi.nlm.nih.gov/blast/db and extracted its component archives. What do I need to do on the command line to get tntblast to accept this database? The nt database does not have a fasta, gbk, ptt, or embl format file.
+
+Thanks,
+
+Max.",maxhargrea,https://github.com/jgans/thermonucleotideBLAST/issues/7
+MDU6SXNzdWU4NDg3NDEzOTE=,Builds with OpenMP but without MPI always report 1 thread to stdout even when OMP_NUM_THREADS > 1,CLOSED,2021-04-01T19:46:15Z,2021-04-26T15:38:46Z,2021-04-26T15:38:46Z,"Executing `tntblast` built with OpenMP but no MPI always gives:
+`Running on local machine [1 thread(s)]` for the first line of output, no matter what the value of OMP_NUM_THREADS.
+
+It appears that only 1 thread is active when printing the usage message so the call to `omp_get_num_threads()` returns 1.
+https://github.com/jgans/thermonucleotideBLAST/blob/c5fd6b533cfe1dba332985d30127d08045b01b0f/tntblast.cpp#L94
+Shouldn't this be a call to `omp_get_max_threads()` instead as when MPI is included?
+https://github.com/jgans/thermonucleotideBLAST/blob/56f83c30f7a126fac062e4e6810b5ecd2b15b041/tntblast.cpp#L75
+
+Changing the call in line 94 to `omp_get_max_threads()` causes the number of threads specified in OMP_NUM_THREADS to be correctly reported.",dskola,https://github.com/jgans/thermonucleotideBLAST/issues/8
+I_kwDODw4CHc6L_aRN,Error when compiling without mpic++,CLOSED,2024-06-12T12:31:22Z,2024-07-17T04:04:36Z,2024-07-17T04:04:36Z,"When I try to compile using OpenMP instead of mpic++, I am getting an error from make:
+````
+gcc  -O3 -Wall -fopenmp -std=c++14  -DUSE_BLAST_DB -I.  -I/mnt/Storage/genomics/tools/ncbi-blast-2.12.0+-src/c++/include -c tntblast_local.cpp
+tntblast_local.cpp: In function ‘int local_main(int, char**)’:
+tntblast_local.cpp:783:17: error: ‘synchronize_keys’ was not declared in this scope
+   index_table = synchronize_keys(str_table);
+                 ^~~~~~~~~~~~~~~~
+Makefile:65: recipe for target 'tntblast_local.o' failed
+make: *** [tntblast_local.o] Error 1
+````
+
+I have traced this back to the definition of synchronize_keys being nested under an a conditional in tntblast_local.h, and tntblast_utils.cpp. 
+
+The instructions didn't mention removing objs from OBJs in the makefile, so I am wondering if I have set it up incorrectly in some way for it to be calling functions which appear to require -USE_MPI.
+
+I have included my Makefile here:
+
+```
+> OBJS` = tntblast.o degenerate_na.o primer.o input.o nuc_cruc_anchor.o \
+> 
+> 	nuc_cruc.o nuc_cruc_output.o nuc_cruc_santa_lucia.o bind_oligo.o \
+> 	amplicon_search.o probe_search.o padlock_search.o tntblast_master.o \
+> 	tntblast_worker.o tntblast_util.o options.o tntblast_local.o bitmask.o \
+> 	sequence_data.o sequence_data_annot.o annotation.o annotation_embl.o \
+> 	annotation_gbk.o annotation_util.o \
+> 	sequence_data_fastx.o tntblast_timer.o mpi_util.o
+> 
+> #CC = mpic++
+> CC = gcc
+> 
+> PROFILE = #-g -pg
+> 
+> # If you're using gcc and would like to enable single computer multi-threading,
+> # uncomment this OPENMP variable
+> OPENMP = -fopenmp
+> 
+> # If you're using the clang C++ compiler on OS X and would like to enable single 
+> # computer multi-threading, please uncomment this CLANG_OPENMP variable.
+> #	- Before attemping to compile tntblast, please read the very helpfull
+> # 		blog post at https://iscinumpy.gitlab.io/post/omp-on-high-sierra/
+> # 	- Follow the process documented in the above blog post to install the required
+> #		OpenMP libraries that are needed by the Clang compiler.
+> #	- When running tntblast on OS X, please note that DYLD_LIBRARY_PATH must be set 
+> #		to the directory that contains the OpenMP libomp.dylib file, i.e., :
+> #	
+> #		export DYLD_LIBRARY_PATH=/$HOME/llvm-project/build-openmp/runtime/src
+> # With the introduction of ncbi-blast-2.11, we must specify -std=c++14 (as opposed to the
+> # -std=c++11 that was used for ncbi-blast-2.10
+> 
+> #CLANG_OPENMP = -Xpreprocessor -fopenmp
+> 
+> # Define USE_MPI to enable MPI
+> FLAGS = $(PROFILE) -O3 -Wall $(OPENMP) -std=c++14
+> 
+> INC = -I. 
+> LIBS = -lm -lz
+> 
+> ifdef CLANG_OPENMP
+> 	OPENMP = $(CLANG_OPENMP)
+> 	INC += -I$(HOME)/llvm-project/build-openmp/runtime/src
+> 	LIBS += -L$(HOME)/llvm-project/build-openmp/runtime/src -lomp
+> endif
+> 
+> # The BLAST_DIR variable should only be defined if you wish to be able to
+> # read NCBI BLAST-formatted database files. This functionality is optional, and
+> # can be disabled by commenting out the BLAST_DIR variable by adding the '#' symbol
+> # to the start of the line below (i.e. ""#BLAST_DIR"").
+> BLAST_DIR = /mnt/Storage/genomics/tools/ncbi-blast-2.12.0+-src/c++
+> 
+> ifdef BLAST_DIR
+> 
+> 	FLAGS += -DUSE_BLAST_DB
+> 
+> 	# Compile with the NCBI C++ toolkit (tntblast will be able to read BLAST-formatted databases)
+> 	INC += -I$(BLAST_DIR)/include
+> 	LIBS += -L $(BLAST_DIR)/lib \
+> 		-lseqdb -lxobjmgr -lblastdb -lgeneral -lgenome_collection -llmdb \
+> 		-lseq -lpub -lmedline -lseqcode -lseqset -lsequtil -lxser -lxutil -lxncbi -lsubmit -lbiblio -ldl
+> 
+> endif
+> 
+> .SUFFIXES : .o .cpp .c
+> .cpp.o:	
+> 	$(CC) $(FLAGS) $(INC) -c $<
+> 
+> all: tntblast
+> 
+> tntblast : $(OBJS)
+> 	$(CC) $(PROFILE) -o tntblast $(OBJS) $(LIBS) $(OPENMP)
+> 
+> clean:
+> 	-rm -f *.o
+> 
+```
+
+/
+
+Thanks! ",SRooke,https://github.com/jgans/thermonucleotideBLAST/issues/9

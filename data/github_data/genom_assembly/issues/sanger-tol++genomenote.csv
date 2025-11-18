@@ -1,0 +1,609 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHN-IIM5IxQ4x,Nf-core module: bamtools/bamtobed,CLOSED,2022-04-29T13:50:05Z,2024-06-18T13:19:06Z,2022-06-22T11:56:52Z,"### Description of feature
+
+Software/tool: bedtools/bamtobed
+
+Function: Convert Aligned BAM to BED
+
+",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/1
+I_kwDOHN-IIM5IxR6G,Nf-core module: samtools/view,CLOSED,2022-04-29T13:51:58Z,2024-06-18T13:19:06Z,2022-06-22T11:54:47Z,"### Description of feature
+
+Software/tool: samtools/view
+
+Function: Convert aligned CRAM file to BAM with flag `-F0x400`",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/2
+I_kwDOHN-IIM5IyA6L,Local module: bed_filter,CLOSED,2022-04-29T15:20:02Z,2024-06-18T13:19:07Z,2022-06-30T10:37:35Z,"### Description of feature
+
+Software tool: `sort, paste, sed, awk, tr, sort`
+
+Function: Filter the bed file
+
+Current commands:
+```
+$$self{bamToBed} | sort -k4 --parallel=8 -S50G > $outfile.part])
+
+cmd(qq[paste -d '\\t' - - < $bed | sed 's/-/_/g' | awk 'BEGIN {FS=""\\t""; OFS=""\\t""} {if (\$1 > \$7) {print substr(\$4,1,length(\$4)-2),\$12,\$7,\$8,""16"",\$6,\$1,\$2,""8"",\$11,\$5} else { print substr(\$4,1,length(\$4)-2),\$6,\$1,\$2,""8"",\$12,\$7,\$8,""16"",\$5,\$11} }' | tr '\\-+' '01'  | sort --parallel=8 -S10G -k3,3d -k7,7d > $outfile.part])
+```",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/3
+I_kwDOHN-IIM5IyDMF,Local module: genome_filter,CLOSED,2022-04-29T15:24:21Z,2024-06-18T13:19:08Z,2022-10-05T17:11:51Z,"### Description of feature
+
+Software/tool: `cut, sed`
+
+Function: Filter the genome index file 
+
+Current command:
+```
+cmd(qq[cut -f1,2 $ref_index | sed 's/-/_/g'|sort -k2,2 -nr > $$self{outdir}/$$self{hname}.genome])
+```",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/4
+I_kwDOHN-IIM5IyFPe,Nf-core module: samtools/faidx,CLOSED,2022-04-29T15:28:30Z,2024-06-18T13:19:09Z,2022-06-22T11:55:28Z,"### Description of feature
+
+Software/tool: samtools/faidx
+
+Function: Index the genome fasta",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/5
+I_kwDOHN-IIM5I2ktR,Nf-core module: cooler/zoomify,CLOSED,2022-05-01T19:46:57Z,2024-06-18T13:19:10Z,2022-10-05T17:11:37Z,"### Description of feature
+
+Software/tool: cooler/zoomify
+
+Function: create `mcool` from `cool` file",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/6
+I_kwDOHN-IIM5I2k4t,Local module: cooler/cload_pairs,CLOSED,2022-05-01T19:50:46Z,2024-06-18T13:19:10Z,2022-07-01T06:35:27Z,"### Description of feature
+
+Software/tool: cooler/cload_pairs
+
+Function: Create the `.cool` file from filtered genome index and BED files",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/7
+I_kwDOHN-IIM5I2leG,Local module: pretext,CLOSED,2022-05-01T20:01:13Z,2024-06-18T13:19:11Z,2022-05-09T14:27:29Z,"### Description of feature
+
+Software/tool: pretext
+
+Function: Create `pretext` contact maps from BAM",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/8
+I_kwDOHN-IIM5I2swG,Subworkflow: contact_maps,CLOSED,2022-05-01T21:48:12Z,2024-06-18T13:19:12Z,2022-10-05T17:12:12Z,"### Description of feature
+
+This subworkflow takes aligned CRAM files and creates contact maps using `cooler` and `pretext`.
+
+**Step 1.**
+Index the genome #5
+Convert from BAM to BED #1
+
+**Step 2.**
+Filter the genome #4 
+Filter the BED #3
+
+**Step 3.**
+Create `.cool` #7
+Create pretext contact map #8 
+
+**Step 4.**
+Create cooler contact map #6
+
+**Output**
+`.pretext`
+`.cool`
+`.mcool`",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/9
+I_kwDOHN-IIM5I2tvc,NG50,CLOSED,2022-05-01T22:03:12Z,2024-06-18T13:19:13Z,2022-10-05T17:10:32Z,"### Description of feature
+
+For NG50, the details are in [Supplementary Note 4: Assessing overall assembly quality](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03451-0/MediaObjects/41586_2021_3451_MOESM1_ESM.pdf) but there is not enough information that I can calculate on my own.
+
+This needs to be calculated for both contig and scaffold.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/10
+I_kwDOHN-IIM5I2y5Y,Base pair QV,CLOSED,2022-05-01T23:14:00Z,2024-06-18T13:19:14Z,2022-10-05T17:10:39Z,"### Description of feature
+
+For Base QV, the information is under [Base pair accuracy (QV) estimate](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03451-0/MediaObjects/41586_2021_3451_MOESM1_ESM.pdf). There are two methods: mapping based using longranger and kmer based using Merqury. As long as we have the [meryl](https://quay.io/repository/biocontainers/merqury) database, the kmer method is straight forward. There are also instructions to create meryl dbs: https://github.com/marbl/merqury/wiki/1.-Prepare-meryl-dbs",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/11
+I_kwDOHN-IIM5I2zU8,Kmer completeness,CLOSED,2022-05-01T23:19:05Z,2024-06-18T13:19:14Z,2022-10-05T17:10:48Z,"### Description of feature
+
+They did Kmer completeness with Merqury as well, details under [Quantifying false duplications with k-mers](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03451-0/MediaObjects/41586_2021_3451_MOESM1_ESM.pdf). We can use FastK if needed.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/12
+I_kwDOHN-IIM5I4wjT,Transcript mappability,OPEN,2022-05-02T12:40:01Z,2024-10-01T10:55:39Z,,"### Description of feature
+
+This is ideally done with RNA-seq data. It is equal to percentage of reads mapped to the genome.
+Possible software: [WGSIM](https://github.com/lh3/wgsim)
+
+ ",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/13
+I_kwDOHN-IIM5I5Mmw,Small test dataset,CLOSED,2022-05-02T14:22:59Z,2024-06-18T13:19:15Z,2022-06-22T10:19:06Z,"### Description of feature
+
+Create a small test dataset for unit testing.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/14
+I_kwDOHN-IIM5I5N6g,Small test ,CLOSED,2022-05-02T14:27:45Z,2024-06-18T13:18:04Z,2023-05-18T23:13:22Z,"### Description of feature
+
+Organism: Chicken of the woods, Laetiporus sulphureus (gfLaeSulp1)
+
+",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/15
+I_kwDOHN-IIM5I5OVl,Small test,CLOSED,2022-05-02T14:29:18Z,2024-06-18T13:18:05Z,2023-12-08T13:55:50Z,"### Description of feature
+
+Organism: Chicken of the woods, Laetiporus sulphureus (gfLaeSulp1)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/16
+I_kwDOHN-IIM5I5PXD,Medium test,CLOSED,2022-05-02T14:32:59Z,2024-06-18T13:18:05Z,2023-05-18T23:23:57Z,"### Description of feature
+
+Organism: Mottled umber, Erannis defoliaria (ilEraDefo1)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/17
+I_kwDOHN-IIM5I5Pyn,Medium test,CLOSED,2022-05-02T14:34:30Z,2024-06-18T13:18:06Z,2023-12-08T13:55:56Z,"### Description of feature
+
+Organism: Mottled umber, Erannis defoliaria (ilEraDefo1)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/18
+I_kwDOHN-IIM5I5QMw,Large test,CLOSED,2022-05-02T14:35:52Z,2024-06-18T13:18:07Z,2023-05-18T23:35:58Z,"### Description of feature
+
+Organism: Red deer, Cervus elaphus (mCerEla1)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/19
+I_kwDOHN-IIM5I5Qek,Large test,CLOSED,2022-05-02T14:36:54Z,2024-06-18T13:18:07Z,2023-12-08T13:56:01Z,"### Description of feature
+
+Organism: Red deer, Cervus elaphus (mCerEla1)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/20
+I_kwDOHN-IIM5I5VVk,Local module: input_check,CLOSED,2022-05-02T14:54:56Z,2022-10-05T17:11:00Z,2022-10-05T17:10:59Z,"### Description of feature
+
+For the first milestone, the module checks the CRAM and genome file paths. If the file exists, it passes them downstream.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/21
+I_kwDOHN-IIM5I5VfQ,Subworkflow: check_input,CLOSED,2022-05-02T14:55:31Z,2022-10-05T17:11:14Z,2022-10-05T17:11:14Z,"### Description of feature
+
+This subworkflow takes the aligned CRAM file location and estimates the location of all the other required files. If not ToL file structure, than the input file is needed.
+
+For the first milestone, it requires the genome and CRAM aligned file, which can both be provided as params. 
+
+**Step 1.**
+Check file paths #21",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/22
+I_kwDOHN-IIM5I5gAm,Genome mappability,OPEN,2022-05-02T15:34:48Z,2024-09-09T13:55:39Z,,"### Description of feature
+
+It is equal to percentage of reads mapped to the genome.
+Possible software: [WGSIM](https://github.com/lh3/wgsim)",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/23
+I_kwDOHN-IIM5I5isJ,Sex chromosomes,OPEN,2022-05-02T15:45:38Z,2024-06-02T09:18:19Z,,"### Description of feature
+
+Are sex chromosomes localised homologous pairs?",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/24
+I_kwDOHN-IIM5I5jaZ,Organelles,CLOSED,2022-05-02T15:48:14Z,2024-06-18T13:17:35Z,2022-11-30T16:58:31Z,"### Description of feature
+
+Should be one complete allele?",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/25
+I_kwDOHN-IIM5I5kdx,BUSCO,CLOSED,2022-05-02T15:52:54Z,2024-06-18T13:17:24Z,2022-10-05T17:09:53Z,"### Description of feature
+
+Calculate BUSCO scores from the genome",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/26
+I_kwDOHN-IIM5I5mAe,Subworkflow: table_statistics,CLOSED,2022-05-02T15:59:55Z,2024-06-18T13:17:19Z,2022-11-30T16:58:32Z,"### Description of feature
+
+This needs to be further defined.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/27
+I_kwDOHN-IIM5I5p2a,README,CLOSED,2022-05-02T16:14:35Z,2023-05-18T13:21:29Z,2023-05-18T13:21:28Z,"### Description of feature
+
+1. Introduction
+2. Pipeline Summary
+3. Quick Start
+4. Documentation
+5. Credits
+6. Contributions and Support
+7. Citations",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/28
+I_kwDOHN-IIM5I5qO0,docs/README,CLOSED,2022-05-02T16:16:03Z,2023-05-18T13:21:30Z,2023-05-18T13:21:29Z,"### Description of feature
+
+Details of pipeline documentation.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/29
+I_kwDOHN-IIM5I5qbj,docs/usage,CLOSED,2022-05-02T16:16:48Z,2023-05-18T13:21:30Z,2023-05-18T13:21:30Z,"### Description of feature
+
+An overview of how the pipeline works, how to run it and a description of all of the different command-line flags.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/30
+I_kwDOHN-IIM5I5qwR,docs/output,CLOSED,2022-05-02T16:18:04Z,2023-05-18T13:21:31Z,2023-05-18T13:21:31Z,"### Description of feature
+
+An overview of the different results produced by the pipeline and how to interpret them.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/31
+I_kwDOHN-IIM5I5q-k,docs/parameter,CLOSED,2022-05-02T16:18:54Z,2023-05-18T13:21:32Z,2023-05-18T13:21:31Z,"### Description of feature
+
+An overview of the different parameters used by the pipeline and how to interpret them.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/32
+I_kwDOHN-IIM5I5v8A,CITATIONS,CLOSED,2022-05-02T16:38:20Z,2024-06-18T13:16:57Z,2023-05-18T13:21:32Z,"### Description of feature
+
+An extensive list of references for the tools used by the pipeline.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/33
+I_kwDOHN-IIM5I5wQ6,JSON files,CLOSED,2022-05-02T16:39:48Z,2024-06-18T13:16:58Z,2023-05-18T13:21:33Z,"### Description of feature
+
+Update the following 3 files:
+1. `modules.json`
+2. `modules_local.json`
+3. `subworkflows_local.json`",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/34
+I_kwDOHN-IIM5I5xJl,CHANGELOG,CLOSED,2022-05-02T16:44:06Z,2024-06-18T13:16:58Z,2023-05-18T13:21:33Z,"### Description of feature
+
+All notable changes added and fixed. Also all dependencies and the deprecated features.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/35
+I_kwDOHN-IIM5I5zDt,Update documentation,CLOSED,2022-05-02T16:52:40Z,2023-05-18T13:21:34Z,2023-05-18T13:21:34Z,"### Description of feature
+
+1. README - Pipeline summary
+2. docs/usage - Samplesheet input
+3. docs/parameters
+4. docs/output
+5. CITATIONS
+6. JSON files
+7. CHANGELOG",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/36
+I_kwDOHN-IIM5TfZ5x,Unnecessary sort,CLOSED,2022-10-07T07:25:06Z,2022-11-30T16:58:33Z,2022-11-30T16:58:33Z,"### Description of the bug
+
+Found whilst reviewing #44 
+
+In the contact_maps subworkflow, bedtools/bamtobed already sorts the bed file, cf https://github.com/sanger-tol/nf-core-modules/blob/main/modules/bedtools/bamtobed/main.nf#L28
+There is no need to sort it again at https://github.com/sanger-tol/genomenote/blob/dev/subworkflows/local/contact_maps.nf#L41
+
+(noticed that because bedtools/bamtobed takes a ton of memory)
+
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",muffato,https://github.com/sanger-tol/genomenote/issues/45
+I_kwDOHN-IIM5Vvfs6,Update bed_filter,CLOSED,2022-11-07T15:04:42Z,2024-06-18T13:16:19Z,2022-11-30T16:58:33Z,"### Description of the bug
+
+The current version of the `bed_filter.sh` does not filter out truncated rows, so I want to add that functionality, with an additional pipe: ` | awk 'NF==11'` ",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/47
+I_kwDOHN-IIM5VvhZL,update `bedtools_bamtobed` config settings,CLOSED,2022-11-07T15:08:09Z,2022-11-30T16:58:33Z,2022-11-30T16:58:33Z,"### Description of the bug
+
+For `bedtools_bamtobed` update config settings to start with the following settings
+```
+    withName: ""BEDTOOLS_BAMTOBED"" {
+        cpus   = { 2                    }
+        memory = { 48.GB * task.attempt }
+        time   = { 4.h   * task.attempt }
+    }
+```
+",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/48
+I_kwDOHN-IIM5VvklV,N50 from GoaT not always available,CLOSED,2022-11-07T15:16:27Z,2022-11-30T16:58:34Z,2022-11-30T16:58:34Z,"### Description of the bug
+
+N50 values from GoaT are not always available, this means either that statistic calculation is skipped or it might be useful to implement this functionality using a stand alone tool. Examples: `Malus domestica` genomes `GCA_916050505.1` and `GCA_916615275.2`.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/49
+I_kwDOHN-IIM5VvmlS,Update `create_table` to deal with optional inputs,CLOSED,2022-11-07T15:22:10Z,2022-11-30T16:58:34Z,2022-11-30T16:58:34Z,"### Description of the bug
+
+It is not possible to always run `merquryfk` for genome notes. Currently, this means that `create_table` is not run as well, as all inputs are required. The module needs update to accommodate optional inputs. Alternatively, the other results files can be published and processed separately.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/50
+I_kwDOHN-IIM5Vv5qp,Remove `bedtools_sort`,CLOSED,2022-11-07T16:14:14Z,2022-11-30T16:58:35Z,2022-11-30T16:58:35Z,"### Description of the bug
+
+Currently the `bedtools_bamtobed` module includes `bedtools_sort`, which consumes a lot of memory. Considering removing the `sort` step and implementing with the basic linux `sort`
+[Bedtools](https://bedtools.readthedocs.io/en/latest/content/tools/sort.html) recommends `sort -k 1,1 -k2,2n a.bed` 
+Currently the `bed_sort` step after `bedtools_bamtobed` run `sort -k4`, so these need to be combined, before filtering.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/51
+I_kwDOHN-IIM5XoPoU,Headers created without content,CLOSED,2022-11-30T20:14:38Z,2022-12-03T23:50:03Z,2022-12-03T23:50:03Z,"### Description of the bug
+
+In the `create_table.py` script, even when certain data is missing, headers may be created. See `Organelle` in example:
+```
+##Assembly_Information
+Accession,GCA_943735745.1
+Organism_Name,Anopheles bellator
+ToL_ID,idAnoBell3
+Taxon_ID,139047
+Assembly_Name,idAnoBellAS_SP24_06
+Assembly_Level,Chromosome
+Life_Stage,adult
+Tissue,WHOLE ORGANISM
+Sex,NOT PROVIDED
+##Assembly_Statistics
+Total_Sequence,169575294
+Chromosomes,3
+Scaffolds,2985
+Scaffold_N50,85293694
+Contigs,5058
+Contig_N50,196687
+GC_Percent,48.5
+##Chromosome,Length,GC_Percent
+1,85293694,48.5
+2,60404489,49
+X,12334942,48
+##Organelle,Length,GC_Percent
+##BUSCO
+Lineage,diptera_odb10
+Summary,""C:97.2%[S:96.3%,D:0.9%],F:0.6%,M:2.2%,n:3285""
+```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/52
+I_kwDOHN-IIM5Xqc7z,Get HiC Mapping result in summary table,CLOSED,2022-12-01T06:14:42Z,2022-12-03T23:49:51Z,2022-12-03T23:49:51Z,"### Description of feature
+
+`create_table` should take `hic.flagstat` file and add the `primary mapped` statistic to the summary table.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/53
+I_kwDOHN-IIM5XsH39,FastK optional module,CLOSED,2022-12-01T11:57:04Z,2024-06-18T13:16:08Z,2023-02-24T09:02:04Z,"### Description of feature
+
+Add the fastk module but make it optional, only run if read files are provided instead of the kmer database.",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/54
+I_kwDOHN-IIM5XtZ61,Add support for multiple PacBio kmer databases,CLOSED,2022-12-01T15:32:08Z,2023-05-18T13:21:35Z,2023-05-18T13:21:35Z,"### Description of the bug
+
+Currently if multiple kmer databases are provided, only one is run and does not always get copied to create table accurately. Feature with multiple kmer databases and how it will be integrated into the final table needs work.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/55
+I_kwDOHN-IIM5X6lNb,Make chromosomes optional,CLOSED,2022-12-04T16:35:48Z,2022-12-04T23:55:39Z,2022-12-04T23:55:39Z,"### Description of the bug
+
+Not also assemblies are chromosome level, for these assemblies the current script throws an error as it is missing field `total_number_of_chromosomes`.
+1. Make `Chromosomes` optional
+2. Move the `chromosome` header inside loop similar to `organelle`",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/58
+I_kwDOHN-IIM5p8tCJ,Genome metadata,CLOSED,2023-06-27T18:29:20Z,2024-04-27T19:55:19Z,2024-04-27T19:55:19Z,"### Description of feature
+
+Improve genome metadata fetching and processing",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/71
+I_kwDOHN-IIM5p9Xwx,Optional readmapping subworkflow,OPEN,2023-06-27T20:21:54Z,2024-06-17T12:58:14Z,,"### Description of feature
+Create optional subworkflow to map HiC reads before creating contact maps",priyanka-surana,https://github.com/sanger-tol/genomenote/issues/72
+I_kwDOHN-IIM5u7cQ9,meta.id confusion,CLOSED,2023-08-22T09:46:47Z,2024-10-11T15:02:28Z,2024-10-11T15:02:28Z,"### Description of the bug
+
+On the public_dev branch, the input fasta is called `GCA_946965045.1.fasta.gz` and the Hi-C CRAM file `GCA_946965045.1.unmasked.hic.uoEpiScrs1.subsampled.cram`, but the assembly parameter is set to `GCA_946965045.2`. After a run of the `test` profile, 1) I get these two files in the `genome_note/` directory:
+- `GCA_946965045.1.csv`
+- `GCA_946965045.2.docx`
+
+2), `GCA_946965045.1.csv` contains:
+```csv
+Accession,GCA_946965045.1
+```
+3), and many more intermediate files are also named `GCA_946965045.1.*`, indicating that the pipeline is confused about what is `meta.id`.
+
+The input file names can be different from the accession number etc, but I'd expect the outputs of the pipeline to be consistently named.
+
+
+### Command used and terminal output
+
+```console
+nextflow run sanger-tol/genomenote/ -profile test,singularity -r public_dev
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+Nextflow 23.04.1-5866 from our central installation",muffato,https://github.com/sanger-tol/genomenote/issues/79
+I_kwDOHN-IIM5u7pGh,Inconsistent variable names in the DOCX template,CLOSED,2023-08-22T10:09:48Z,2024-06-13T15:37:47Z,2024-06-13T15:37:47Z,"### Description of the bug
+
+The `genome_note_template.docx` provided in the pipeline has inconsistent naming of some variables. For instance, the scaffold N50 is indicated with both `SCAFF_N50` (in the text) and `scaffold_N50` (in the table). The pipeline uses `SCAFF_N50` as the variable, leaving the field in the table empty.
+The contig N50 is indicated as `contig_N50` in the table but the pipeline provides `CONTIG_N50` so the table is still empty.
+The title of the table 2 refers to a variable named `species` but `SPECIES_GENUS` is defined by the pipeline so it remains empty.
+There are probably more examples like this.
+
+Something to pass on to Karen ?
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",muffato,https://github.com/sanger-tol/genomenote/issues/80
+I_kwDOHN-IIM51B5tg,ERROR ~ toIndex = 2 -- Check script 'genomenote/./workflows/genomenote.nf' at line: 98,CLOSED,2023-10-26T12:17:16Z,2024-10-03T13:21:29Z,2024-10-03T13:21:29Z,"### Description of the bug
+
+Hi. I'm interested in trying this pipeline, but running into issues. The main one is the error immediately after running:
+```{bash}
+ERROR ~ toIndex = 2
+
+ -- Check script 'genomenote/./workflows/genomenote.nf' at line: 98 or see '.nextflow.log' file for more details
+```
+My commands and the sample sheet are below. Thanks!
+
+
+### Command used and terminal output
+
+```console
+DIRIN=/mount/home/user/data/WorkData/proj1/2023-08.HiC_test
+INPUT=${DIRIN}/samplesheet_genomenote.csv
+DIROUT=${DIRIN}/OUT_genomenote
+GENOME=/mount/home/user/data/ExtData/UCSC/hg38/hg38.fa
+nextflow run sanger-tol/genomenote --input ${INPUT} \
+  --outdir ${DIROUT} \
+  --fasta ${GENOME} \
+  -profile singularity
+```
+
+
+### Relevant files
+
+sample,datatype,datafile
+sample1,hic,/mount/home/user/data/WorkData/proj1/2023-08.HiC_test/sample1/data/aligned/merged_dedup.bam
+sample2,hic,/mount/home/user/data/WorkData/proj1/2023-08.HiC_test/sample2/data/aligned/merged_dedup.bam
+
+### System information
+
+Nextflow version 23.04.3 build 5875
+HPC
+local
+singularity
+CentOS
+latest cloned sanger-tol/genomenote",mdozmorov,https://github.com/sanger-tol/genomenote/issues/87
+I_kwDOHN-IIM51Yn3q,Order the contact map like the karyotype,CLOSED,2023-10-30T23:38:37Z,2024-05-01T21:15:24Z,2024-05-01T21:15:24Z,"### Description of feature
+
+Currently, the pipeline orders the sequences in the contact map by decreasing size (`FILTER_GENOME` process). Whilst it is reasonable for many species, there are cases where it's not the best choice:
+
+- Some species have chromosome names that predate genome sequencing and don't follow the sizes in base-pairs. This is the case of many primates, starting with human, chimpanzee, gibbon, etc.
+- Traditionally, sex chromosomes are placed after the autosomes.
+- Very large genomes like [Meconema thalassinum](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_946902985.2/) have sequences too large to be in INSDC as one piece (the limit is 2^31-1 bp) and are split into chromosome 1_1, chromsome 1_2, etc. On the map, the fragments have to be put right next to each other in the right order.
+
+To overcome this, I propose reading the sequence report from NCBI datasets, which is already pulled by the pipeline and is ordered correctly, and copy the order into the contact map.",muffato,https://github.com/sanger-tol/genomenote/issues/88
+I_kwDOHN-IIM51Yoyc,Deprecate generating the `.genome` file,CLOSED,2023-10-30T23:43:06Z,2023-11-20T16:19:29Z,2023-11-20T16:19:29Z,"### Description of feature
+
+We found out today that the `.genome` file is superfluous. HiGlass has an option to draw the chromosome grid from the cool file directly.
+
+We can therefore consider not generating the file at all in this pipeline, which makes things a bit simpler.",muffato,https://github.com/sanger-tol/genomenote/issues/89
+I_kwDOHN-IIM52_uUI,Leftover files in /tmp from the `sort` commands,CLOSED,2023-11-16T09:18:57Z,2023-12-08T13:58:30Z,2023-12-08T13:58:30Z,"### Description of the bug
+
+We've been regularly hit issues in production: no more space in `/var/tmp` and then farm nodes closed.
+
+The problems come from the `sort` commands leaving files in their `/tmp`.
+
+First, the biocontainer isn't mounting `/tmp` properly and instead uses `/var/tmp`, which only has 40 GB. Our workaround is to explicitly mount `/tmp`.
+
+The second issue comes from LSF killing the `sort` commands because of MEMLIMIT.
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",muffato,https://github.com/sanger-tol/genomenote/issues/91
+I_kwDOHN-IIM55KN4G,Agree on which Busco lineage to use for which species,OPEN,2023-12-08T14:07:51Z,2024-06-17T20:16:02Z,,"### Description of feature
+
+We use Busco to assess the completeness & fragmentation of an assembly. The main parameter is a lineage name, that needs to be phylogenetically relevant to the species being tested. Our implementations are inconsistent:
+
+- BlobToolKit computes Busco against all lineages that are parent of the species, and Rich provides the closest one to Karen.
+- Here, @muffato suggested that _all_ mammals should be evaluated against `eutheria_odb10` rather than the more specific ones (rodents, primates, etc): https://github.com/sanger-tol/genomenote/blob/1.0.0/bin/get_odb.py#L35-L36
+- When assessing an assembly, ToLA follow these rules: https://github.com/sanger-tol/tol-workflows/blob/360c14086a5eab3804a5c35bedff0aa47fd6c7f1/wr/wr-asm-analysis#L31-L58
+
+We need to agree on one rule and use it throughout all pipelines.",muffato,https://github.com/sanger-tol/genomenote/issues/100
+I_kwDOHN-IIM56J7LZ,Report all samples in the statistics CSV,CLOSED,2023-12-19T20:57:08Z,2024-06-18T13:15:35Z,2024-05-01T21:15:24Z,"### Description of feature
+
+Currently, the statistics CSV file is generated from the first PacBio specimen and the first Hi-C specimen that reach its module. If there is more than one specimen, the other ones are computed/analysed but _not_ included in the CSV.
+",muffato,https://github.com/sanger-tol/genomenote/issues/104
+I_kwDOHN-IIM6BESX8,Error executing process GENOME_STATISTICS:SUMMARYSEQUENCE with invalid assembly accession,CLOSED,2024-03-03T14:27:24Z,2024-10-11T15:01:53Z,2024-10-11T15:01:53Z,"### Description of the bug
+
+I encountered an error while executing the SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYSEQUENCE process in the sanger-tol/genomenote pipeline. The process fails with an ""invalid or unsupported assembly accession"" error message when attempting to generate a sequence summary JSON file using the datasets command. This issue arises despite following the pipeline's usage instructions and providing valid input parameters.
+
+```console
+-[sanger-tol/genomenote] Pipeline completed with errors-
+[0b/de2c7e] Submitted process > SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYSEQUENCE (genome.1)
+[f9/348360] Submitted process > SANGERTOL_GENOMENOTE:GENOMENOTE:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet.csv)
+[81/f56f5d] Submitted process > SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYGENOME (genome.1)
+[9e/883111] Submitted process > SANGERTOL_GENOMENOTE:GENOMENOTE:CONTACT_MAPS:SAMTOOLS_FAIDX (genome.1.fasta)
+ERROR ~ Error executing process > 'SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYSEQUENCE (genome.1)'
+
+Caused by:
+  Process `SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYSEQUENCE (genome.1)` terminated with an error exit status (1)
+
+Command executed:
+
+  datasets \
+      summary \
+      genome \
+      accession \
+      genome.1 \
+      --report sequence \
+      > genome.1_sequence.json
+  
+  validate_datasets_json.py genome.1_sequence.json
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""SANGERTOL_GENOMENOTE:GENOMENOTE:GENOME_STATISTICS:SUMMARYSEQUENCE"":
+      ncbi-datasets-cli: $(datasets --version | sed 's/^.*datasets version: //')
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Error: invalid or unsupported assembly accession: genome.1
+  
+  Use datasets summary genome accession <command> --help for detailed help about a command.
+
+Work dir:
+  /media/la_nube/tools/genomenotes/work/0b/de2c7e9f02030233c72ca802f6d05c
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+ -- Check '.nextflow.log' file for details
+```
+
+### Command used and terminal output
+
+```console
+nextflow run sanger-tol/genomenote \
+   -profile docker \
+   -r 1.1.1 \
+   --input samplesheet.csv \
+   --fasta genome.1.fasta \
+   --outdir genomenote_results \
+   --max_cpus 20 \
+   --max_memory 200GB \
+   --max_time '999h' \
+   -resume
+```
+
+
+### Relevant files
+
+_No response_
+
+### System information
+
+Pipeline Version: 1.1.1
+Nextflow Version: 23.10.1
+Execution Environment: Docker
+Hardware: Workstation
+OS: Linux Ubuntu
+Executor: Local 
+Container engine: Docker, Singularity",mtammami,https://github.com/sanger-tol/genomenote/issues/109
+I_kwDOHN-IIM6MII_Q,Allow running of metatdata subworkflow on multiple specimen IDs,CLOSED,2024-06-13T11:51:21Z,2024-07-30T10:51:27Z,2024-07-30T10:51:27Z,"### Description of feature
+
+A genome note provides meta data related to the specimen used to produce the genome assembly, the specimen used to generate HiC data and the specimen used to produce RNA-Seq data. These may all be different specimens. The genome note pipeline should be able to take in each of these IDs and run the metadata subworkflow on each, recording the relevant data for use in the publication    ",BethYates,https://github.com/sanger-tol/genomenote/issues/114
+I_kwDOHN-IIM6MJAuV,Add COPO to the metadata sources,CLOSED,2024-06-13T13:32:54Z,2024-09-26T16:05:56Z,2024-09-26T16:05:56Z,"### Description of feature
+
+Add COPO to the set of sources queried by the genome metadata subworkflow",BethYates,https://github.com/sanger-tol/genomenote/issues/115
+I_kwDOHN-IIM6MJEWk,Add GFA stats ,OPEN,2024-06-13T13:38:56Z,2024-08-12T15:31:20Z,,"### Description of feature
+
+Add GFA stats https://github.com/vgl-hub/gfastats to the genome statistics subworkflow
+",BethYates,https://github.com/sanger-tol/genomenote/issues/116
+I_kwDOHN-IIM6MKP2I,Merqury and Meryl,OPEN,2024-06-13T15:50:37Z,2024-08-12T15:31:17Z,,"### Description of feature
+
+Allow running of Merqury and Meryl as an alternative to Merqury.FK? As used by CBP and Nor-BP",BethYates,https://github.com/sanger-tol/genomenote/issues/117
+I_kwDOHN-IIM6MKVDB,Set Higlass config default values,CLOSED,2024-06-13T16:00:46Z,2024-10-11T15:02:59Z,2024-10-11T15:02:59Z,"### Description of feature
+
+Evaluate HiC maps of multiple species to try and set some suitable default values to set in the config when uploading HiC data to Higlass",BethYates,https://github.com/sanger-tol/genomenote/issues/118
+I_kwDOHN-IIM6MKpFB,Refine input params,CLOSED,2024-06-13T16:43:46Z,2024-10-11T15:02:13Z,2024-10-11T15:02:13Z,"### Description of feature
+
+Refine input parameters and samplesheet checking ahead of release 2.0",BethYates,https://github.com/sanger-tol/genomenote/issues/119
+I_kwDOHN-IIM6MjHcU,Make BUSCO annotations an optional input,OPEN,2024-06-17T18:47:16Z,2024-09-06T13:45:23Z,,,muffato,https://github.com/sanger-tol/genomenote/issues/120
+I_kwDOHN-IIM6M7Z7c,Sub-workflow for gene statistics,OPEN,2024-06-20T12:57:52Z,2024-08-16T15:22:34Z,,"We want to be able to include some standard basic statistics on the gene/protein annotation set for an assembly in a genome note. This sub workflow should accept an annotation set and calculate some statistics, (exact values still to be determined but will most likely be things like the number of protein coding genes, number of non-coding genes, exons per transcript etc as well as BUSCO scores).
+
+This could be a standalone pipeline or could be added to either the genomenote pipeline or to the ensemblgenedownload pipeline, although it may not always be Ensembl that provides the annotations.
+
+
+- Exon count
+- Exon length
+- Intron length
+- DNA strand bias
+
+",BethYates,https://github.com/sanger-tol/genomenote/issues/121
+I_kwDOHN-IIM6M7aaS,Flagger,OPEN,2024-06-20T12:58:33Z,2024-06-20T13:00:07Z,,Investigate adding Flagger to the genomenote pipeline to evaluate diploid assemblies,BethYates,https://github.com/sanger-tol/genomenote/issues/122
+I_kwDOHN-IIM6M7ac_,GenomeScope,OPEN,2024-06-20T12:58:38Z,2024-06-20T13:00:20Z,,Include GenomeScope profile in genome note?,BethYates,https://github.com/sanger-tol/genomenote/issues/123
+I_kwDOHN-IIM6M7ang,MUMmer,OPEN,2024-06-20T12:58:57Z,2024-06-20T13:00:26Z,,MUMmer used by Nor-BP to evaluate differences between assembly haplotypes. Is this something we want to add as an option to the genomenote pipeline?,BethYates,https://github.com/sanger-tol/genomenote/issues/124
+I_kwDOHN-IIM6NQgD9,Add GBIF to the metadata sources,CLOSED,2024-06-24T10:50:48Z,2024-10-03T16:25:09Z,2024-10-03T16:25:08Z,"### Description of feature
+
+Add GBIF to the set of sources queried by the genome metadata subworkflow
+",BethYates,https://github.com/sanger-tol/genomenote/issues/125
+I_kwDOHN-IIM6Ol9ng,ERROR pipeline failure when fields missing from NCBI genome report [v1.2.0],CLOSED,2024-07-05T10:21:18Z,2024-08-01T13:03:03Z,2024-08-01T13:03:03Z,"### Description of the bug
+
+Key error from `create_table.py`: 
+```
+Command error:
+  Traceback (most recent call last):
+    File ""/lustre/scratch123/tol/teams/tolit/users/tolpipe/registered_workflows/prod/sanger-tol/genomenote-1.2.0/workflow/bin/create_table.py"", line 182, in <module>
+      sys.exit(main())
+    File ""/lustre/scratch123/tol/teams/tolit/users/tolpipe/registered_workflows/prod/sanger-tol/genomenote-1.2.0/workflow/bin/create_table.py"", line 171, in main
+      ncbi_stats(args.genome, args.sequence, writer)
+    File ""/lustre/scratch123/tol/teams/tolit/users/tolpipe/registered_workflows/prod/sanger-tol/genomenote-1.2.0/workflow/bin/create_table.py"", line 81, in ncbi_stats
+      writer.writerow([""Scaffolds"", stats[""number_of_scaffolds""]])
+  KeyError: 'number_of_scaffolds'
+```
+
+Failure is on assembly `GCA_963966575.1` which lacks several expected fields in assembly stats: 
+```
+  ""assemblyStats"": {
+    ""contigL50"": 32,
+    ""contigN50"": 24519,
+    ""gcCount"": ""788905"",
+    ""gcPercent"": 38.0,
+    ""genomeCoverage"": ""46.0x"",
+    ""numberOfComponentSequences"": 87,
+    ""numberOfContigs"": 87,
+    ""totalSequenceLength"": ""2065980"",
+    ""totalUngappedLength"": ""2065980""
+  },
+  ```
+
+### Command used and terminal output
+
+_No response_
+
+### Relevant files
+
+_No response_
+
+### System information
+
+_No response_",tkchafin,https://github.com/sanger-tol/genomenote/issues/126
+I_kwDOHN-IIM6W4ot9,Add BUSCO to the annotation_statistics subworkflow,CLOSED,2024-09-17T15:12:14Z,2024-11-19T09:28:59Z,2024-11-19T09:28:58Z,,BethYates,https://github.com/sanger-tol/genomenote/issues/141
+I_kwDOHN-IIM6aF0JT,Allow inclusion of multiple species in a single genome note,OPEN,2024-10-14T08:25:59Z,2024-10-14T08:26:25Z,,"### Description of feature
+
+A question following the BGA genomenote session:
+
+Stephania Sandoval: I had to leave the session a bit early today but I wanted to ask if the pipeline can be used for more than one species at a time. For example, if you have several species from the same genus and want to put them all in one genome note instead of individual notes, can that be incorporated into this pipeline? thank you!
+",BethYates,https://github.com/sanger-tol/genomenote/issues/148

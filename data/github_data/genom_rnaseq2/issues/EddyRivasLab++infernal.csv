@@ -1,0 +1,573 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMDU4MDE0MjQ=,Developer TODO: Add target accession (and possibly name) as tabular field(s) in cmsearch/cmscan --verbose output.,CLOSED,2015-09-10T13:00:42Z,2019-08-02T16:36:11Z,2019-08-02T16:36:11Z,"Requested by James Allen at EBI via email to infernal@janelia.hhmi.org on Sept 10, 2015.
+",nawrockie,https://github.com/EddyRivasLab/infernal/issues/1
+MDU6SXNzdWUxNzE2NDA4NDA=,"cmscan,cmsearch cpu & mpi option definitions",CLOSED,2016-08-17T12:03:59Z,2016-08-23T10:23:46Z,2016-08-23T10:23:46Z,"@nawrockie 
+
+Hi Eric ,
+
+I was going though cmsearch and cmscan code and noticed that you have the constants `CPUOPTS` and `MPIOPTS` that define `--cpu` and `--mpi` options reversed (cmscan lines: **110-113** and cmsearch lines: **84-87**).  
+
+For convenience I'm copying lines **110-113** from **cmscan** below:
+
+``` c
+#if defined (HMMER_THREADS) && defined (HAVE_MPI)
+#define CPUOPTS     ""--mpi""
+#define MPIOPTS     ""--cpu""
+#else
+```
+
+They are both only used once under `#ifdef HMMER_THREADS` and `#ifdef HAVE_MPI`, lines **170** and **174** respectively. 
+
+I was wondering if these would be troublesome when compiling the code with the `--enable-mpi` option, or whether there's a reason why they are set this way. 
+
+Kind regards,
+Ioanna
+",kalvari,https://github.com/EddyRivasLab/infernal/issues/4
+MDU6SXNzdWUxOTY3MzE1Nzk=,cmalign on 16S sequences generating insertions only,CLOSED,2016-12-20T17:26:09Z,2016-12-20T22:47:46Z,2016-12-20T22:47:46Z,"Dear Eric,
+
+I've been using Infernal and the ssu-align models for 16S-based analyses for a couple of years now, and the tool has simply been working great on all kinds of different datasets I tried. For the first time, however, I have now encountered a problem where an entire dataset of 16S sequences (V2 region, length ~230bp) simply does not align.
+
+Here are the first few lines of an example FASTA file:
+
+```
+>AfElphSD3_1246037
+CTGGACCGTCTCTCAGTTCCAATGTGGCCGTTCAACCTCTCAGTCCGGCTACTGATCGCAGACTTGGTGAGCCGTTACCTCACCAACTATCTAATCAGACGCGAGCCCATCCTTGCGCAATAAATCTTTGATAGCAAAAACATGCGATTTCGCTATATTATGCGGTATTAGCTTCCGTTTCCAGAAGGTATCCCCCACACAAGGGCAGGTTG
+>AfElphSD3_1050060
+CTGGACCGTGTCTCAGTTCCAGTGTGGCCGTTCACCCTCTCAGGTCGGCTACGCATCCTCGCCTTGGTGGGCTATTATCTCACCAACTAGCTAATGCGCCGCAGGTCCATCTTTCAGCGAGGCTTTAAAGGCCCCTTTTAGAGATCGGAGATGCCTCCAATCCAATTATTCGGTATTAGCCAAGGTTTCCCTCGGGTATCCCAAACTGTAAGGCAGGTTACCTACGTGTTA
+>AfElphSD3_1160041
+TTGGGCCGTGTCTCAGTCCCAATGTGGCCGTTCACCCTCTCAGGCCGGCTACTGATCGTCGCCTTGGTGGGCCGTTACCTCACCAACTAGCTAATCAGACGCGGGTCCATCGTATACCACCTCAGTTTTTCACACTAGACCATGCGGTCCTGTGCGCTTATGCGGTATTAGCACCTATTTCTAAGTGTTATCCCCCTGTATACGGCAGGTTACCCACGCGTTACTCACCCG
+>AfElphSD3_1001485
+CTGGACCGTGTCTCAGTTCCAATGTGGCTGATCGTCCTCTCAGACCAGCTATAGATCGTAGGCTTGGTAGGCCTTTACCCCACCAACTACCTAATCTTCCGCGGGCCGATATTATAGCGATAAATCTTTCCCCCTCAGGGATTATGCGGTATTAGCAGAAGTTTCCCTCTGTTGTCCCCCACTACAATGTACGTTCCCACGTGTTACTCACCAGTGCGCTACTCT
+>AfElphSD3_1003807
+CTGGTCCGTGTCTCAGTACCAGTGTGGGGGGTAAGCCTCTCAGCTCCCCTAGGCATCGTAGGCTTGGTGGGCCGTTGCCCCGCCAACTACCTAATGCCACGCATGCCCATCTAAAACCAAGGTTCTTTCCCCGCCCCCTCATGCGGGGGGACGGGAATATGGGGTATTAGTTCGGGTTTCCCCGAGTTATCCCCCGGTTGAAGGTAGGTTGCATACGCGTTACGCACCCGTGCGCCGGTCGCCAGCGGAGCGTTG
+```
+
+I BLASTed these sequences, and they produce hits to the NCBI 16S nr database over the full length. However, when I run the following command in `cmalign` (Infernal v1.1.2) against the `bacteria-0p1.1.cm` model from ssu-align, the alignment fails (almost everything is small letters == insertions in the output):
+
+`cmalign --sub --notrunc --cpu 20 --outformat Pfam -g -o aligned.tmp <bacteria-0p1.1.cm> tmp.fasta`
+
+In fact, the output looks like this (sorry for posting these long lines):
+
+```
+AfElphSD3_1246037         ........................................................cuggaccgucucucaguuccaauguggccguucaaccucucaguccggcuacugaucgcagacuuggugagccguuaccucaccaacuaucuaaucagacgcgagcccauccuugcgcaauaaaucuuugauagcaaaaacaugcgauuucgcuauauuaugcgguauuagcuuccguuuccagaagguaucccccacacaagggcaggUUG------------------.---------------------------.-------------------------------------------------...-------------.--------------------------------.------..-----------------------------------------------------..----------------.----------..----...--------.-...-----------.------------------.--..--------..-------.....----------------.----.-----.--------.---------.-------------------------------------.--------.--------...-..-.----------------------------------------.----------------.----.-----------------------.----..---------------.--------------.-------------.-----------------------------------..------------------------------------.---------------------------------------------------------...---.--------------------------------..------------------........--------------------------------------------------.-----------...-------------------..----------------------------------------.--------------------------------------------------...---------------------------.--.---------------------------------..--------.---...---.-------.----------------.---------------.------------------------------.------------......----.-----..-----------------.----..--.....----....................................................................................................................................................................................................................................-----.......--.-------------.---------------------------.----..------.------------.------------.--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------..----------------.---------------------------------------------------------------------------------------------------------------------------------------------------.-----------------------------------------
+#=GR AfElphSD3_1246037 PP ........................................................********************************************************************************************************************************************************************************************************************.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+AfElphSD3_1050060         .....................................cuggaccgugucucaguuccaguguggccguucacccucucaggucggcuacgcauccucgccuuggugggcuauuaucucaccaacuagcuaaugcgccgcagguccaucuuucagcgaggcuuuaaaggccccuuuuagagaucggagaugccuccaauccaauuauucgguauuagccaagguuucccucggguaucccaaacuguaaggcagguuaccuacgugUUA------------------.---------------------------.-------------------------------------------------...-------------.--------------------------------.------..-----------------------------------------------------..----------------.----------..----...--------.-...-----------.------------------.--..--------..-------.....----------------.----.-----.--------.---------.-------------------------------------.--------.--------...-..-.----------------------------------------.----------------.----.-----------------------.----..---------------.--------------.-------------.-----------------------------------..------------------------------------.---------------------------------------------------------...---.--------------------------------..------------------........--------------------------------------------------.-----------...-------------------..----------------------------------------.--------------------------------------------------...---------------------------.--.---------------------------------..--------.---...---.-------.----------------.---------------.------------------------------.------------......----.-----..-----------------.----..--.....----....................................................................................................................................................................................................................................-----.......--.-------------.---------------------------.----..------.------------.------------.--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------..----------------.---------------------------------------------------------------------------------------------------------------------------------------------------.-----------------------------------------
+#=GR AfElphSD3_1050060 PP .....................................***************************************************************************************************************************************************************************************************************************************.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+```
+
+And the log:
+
+```
+     1  AfElphSD3_1246037     212        1        3     3'    -70.21   1.000       0.00       0.00       0.10      2.77
+     2  AfElphSD3_1050060     231        1        3     3'    -74.94   1.000       0.00       0.00       0.21      3.03
+     3  AfElphSD3_1160041     231        1        8     3'    -76.49   0.999       0.00       0.00       0.13      3.02
+     4  AfElphSD3_1001485     225        1        7     3'    -73.53   1.000       0.00       0.00       0.16      2.93
+     5  AfElphSD3_1003807     255        1        3     3'    -83.91   1.000       0.00       0.00       0.22      3.32
+     6  AfElphSD3_1033555     226        1        7     3'    -73.83   1.000       0.00       0.00       0.16      2.99
+```
+
+I've tried playing with the `-g` option, I've left out the `--sub --notrunc`, I've even tried reversing the sequences (the log I posted is on reversed seqs), but to no avail. I don't see why the alignment would fail in principle, so I suspect that I am doing something wrong.
+
+Best,
+
+
+Sebastian",defleury,https://github.com/EddyRivasLab/infernal/issues/5
+MDU6SXNzdWUyMDA4MDMwMzg=,"readme and packages, containers",CLOSED,2017-01-14T13:20:51Z,2017-01-15T14:10:36Z,2017-01-14T14:53:16Z,"I would love to add the Bioconda packages, the BioContainer and the Galaxy wrapper to the readme, but it looks like it is autogenerated. Any idea where to add it.
+
+https://anaconda.org/bioconda/infernal
+https://quay.io/repository/biocontainers/infernal?tab=tags
+https://toolshed.g2.bx.psu.edu/view/bgruening/infernal/",bgruening,https://github.com/EddyRivasLab/infernal/issues/6
+MDU6SXNzdWUyMDQxNTkxNjc=,Compiling the Entire Source,CLOSED,2017-01-30T23:16:00Z,2018-05-29T23:59:35Z,2018-05-29T23:59:35Z,"Hi,
+I want to make some changes in cmsearch, how could i compile the program as it is giving many errors.
+what are the settings for compilation.
+
+Thanks in advance.",pramodcj,https://github.com/EddyRivasLab/infernal/issues/7
+MDU6SXNzdWUyMzAzMzg3ODE=,while running cmscan i am getting this error ,CLOSED,2017-05-22T09:38:46Z,2017-05-22T13:43:52Z,2017-05-22T13:43:52Z,"Can you please suggest me changes in code 
+
+
+roor4@roor4-HP-Compaq-Elite-8300-MT:~/infernal-1.1.2$ cmscan -Z 5.874406 --cut_ga --rfam --nohmmonly --tblout mrum-genome.tblout --fmt 2 --clanin Rfam12.2.claninfo Rfam.cm mrum-genome.fa mrum-genome.cmscan
+Failed to parse command line: No such option ""--fmt"".
+Usage: cmscan [-options] <cmdb> <seqfile>
+
+where basic options are:
+  -h        : show brief help on version and usage
+  -g        : configure CM for glocal alignment [default: local]
+  -Z <x>    : set search space size in *Mb* to <x> for E-value calculations  (x>0)
+  --devhelp : show list of otherwise hidden developer/expert options
+
+To see more help on available options, do /usr/lib/infernal/cmscan -h
+",deepaksen1996,https://github.com/EddyRivasLab/infernal/issues/8
+MDU6SXNzdWUyNTIzNDI2NjU=,a option to disable the output of unmapped query when --fmt 2,CLOSED,2017-08-23T16:28:07Z,2017-08-24T01:13:33Z,2017-08-24T01:06:52Z,"Hi.
+
+Is there a option to disable the output of unmapped query when --fmt 2?
+
+We need to output all mapped query only.
+
+And a format like blast format 6 will be good too.",wangyugui,https://github.com/EddyRivasLab/infernal/issues/9
+MDU6SXNzdWUyOTk2ODk5Njg=,Cannot install  infernal-1.1.2-linux-intel-gcc on ubuntu 14.04,CLOSED,2018-02-23T12:03:04Z,2018-03-12T10:07:17Z,2018-03-12T10:07:17Z,"Hiiii..
+I am trying to install infernal-1.1.2-linux-intel-gcc on my system. But  after ""make install""  i am getting the following error.
+Please help me.
+
+home@home-Lenovo-H30-50:~/Documents/UN_GEnome/infernal-1.1.2-linux-intel-gcc/src$ make install
+for file in cmalign cmbuild cmcalibrate cmconvert cmemit cmfetch cmpress cmscan cmsearch cmstat; do \
+	   /usr/bin/install -c -m 0755 $file /usr/local/bin/ ;\
+	done
+/usr/bin/install: cannot stat ‘cmalign’: No such file or directory
+/usr/bin/install: cannot stat ‘cmbuild’: No such file or directory
+/usr/bin/install: cannot stat ‘cmcalibrate’: No such file or directory
+/usr/bin/install: cannot stat ‘cmconvert’: No such file or directory
+/usr/bin/install: cannot stat ‘cmemit’: No such file or directory
+/usr/bin/install: cannot stat ‘cmfetch’: No such file or directory
+/usr/bin/install: cannot stat ‘cmpress’: No such file or directory
+/usr/bin/install: cannot stat ‘cmscan’: No such file or directory
+/usr/bin/install: cannot stat ‘cmsearch’: No such file or directory
+/usr/bin/install: cannot stat ‘cmstat’: No such file or directory
+make: *** [install] Error 1
+",ashaneev,https://github.com/EddyRivasLab/infernal/issues/10
+MDU6SXNzdWUzMjQ2NjY3ODk=,Inconsistent results from qsort callback,CLOSED,2018-05-19T23:00:04Z,2018-05-23T10:50:58Z,2018-05-23T10:48:54Z,"Hi,
+
+`qsort` callback `hit_sorter_by_evalue` may return random result when input structs have all compared fields equal. This in turn may causes inconsistent order or even [crashes](https://bugzilla.samba.org/show_bug.cgi?id=3959) in some qsort implementations.
+
+The issue has been detected when running standard testsuite under [SortChecker](https://github.com/yugr/sortcheck):
+```
+cmsearch[23540]: qsort: comparison function is not symmetric (comparison function 0x4ab689 (/home/yugr/build/infernal-1.1.1/src/cmsearch+0x4ab689), called from 0x4abb66 (/home/yugr/build/infernal-1.1.1/src/cmsearch+0x4abb66), cmdline is ""../src/cmsearch -E 0.1 --tblout esltmpaa22822.OUTFILES.tbl esltmpaa22822.OUTFILES.cm esltmpaa22822.OUTFILES.fa"")
+```
+
+Closer examination in debugger reveals that `hit_sorter_by_evalue` returns returns the same value for equal results:
+```
+(gdb) p hit_sorter_by_evalue(&h->hit[2], &h->hit[3])
+$15 = -1
+(gdb) p hit_sorter_by_evalue(&h->hit[3], &h->hit[2])
+$16 = -1
+```
+The fix is simply to replace final comparison
+```
+return  (h1->pass_idx < h2->pass_idx ? 1 : -1 ); /* fourth key, pass_idx, high to low */
+```
+with
+```
+return  (h1->pass_idx < h2->pass_idx ? 1 : h1->pass_idx > h2->pass_idx ? -1 : 0); /* fourth key, pass_idx, high to low */
+```
+
+A similar issue seems to exist in most other `hit_sorter*` callbacks .",yugr,https://github.com/EddyRivasLab/infernal/issues/11
+MDU6SXNzdWUzMjYwMzA4Mzk=,the file configure doesn't exist,CLOSED,2018-05-24T09:10:37Z,2018-05-24T11:30:38Z,2018-05-24T11:30:38Z,"It's not possible to compile this repository, the vile `configure` or `autogen.sh` doesn't exist
+
+when downloading the latest release from your website, then `configure` exists but not on github",fretn,https://github.com/EddyRivasLab/infernal/issues/12
+MDU6SXNzdWUzMzU0MDk2NjM=,annotating a large assembly/scaffolds,CLOSED,2018-06-25T13:34:27Z,2018-06-25T14:37:18Z,2018-06-25T14:37:18Z,"Hello,
+What is the best way to annotate a large genome assembly? 
+My assembly is 4.5 Gb in total, with a scaffold N50 of 3 Mb (80% of the sequence is in scf >1 Mb). 
+After reading here http://rfam.readthedocs.io/en/latest/genome-annotation.html, I thought of splitting the assembly in 20 chunks, but still I would need almost 500 GB of RAM.
+Besides splitting in smaller files, is there a way to run it efficiently (also, controlling the number of cpus that it takes on a local server)?
+With smaller genomes, my command is 
+`cmscan -Z 59.752452 --cut_ga --rfam --nohmmonly --tblout genome12_infernal --fmt 1 --clanin Rfam12.2.claninfo Rfam.desc.cm genome12.fasta > genome12.cmscan`
+thanks,
+
+Dario
+",dcopetti,https://github.com/EddyRivasLab/infernal/issues/13
+MDU6SXNzdWUzNzAzOTI2Nzc=,"Multiple attempts, won't build",CLOSED,2018-10-16T00:24:32Z,2019-06-08T11:00:12Z,2019-06-08T11:00:12Z,"I followed the suggestion:
+```
+$ git clone https://github.com/EddyRivasLab/infernal
+$ git clone https://github.com/EddyRivasLab/infernal
+$ cd infernal
+$ git clone https://github.com/EddyRivasLab/hmmer
+$ git clone https://github.com/EddyRivasLab/easel
+$ autoconf
+```
+..but autoconf (v2.69) fails with the following errors:
+```
+$ autoconf
+configure.ac:100: error: possibly undefined macro: AC_SUBST
+      If this token and others are legitimate, please use m4_pattern_allow.
+      See the Autoconf documentation.
+configure.ac:141: error: possibly undefined macro: AC_DEFINE
+configure.ac:190: error: possibly undefined macro: AC_MSG_ERROR
+configure.ac:301: error: possibly undefined macro: AC_MSG_FAILURE
+```
+```
+$ autoreconf -i 
+autoheader: warning: missing template: EASEL_COPYRIGHT
+autoheader: Use AC_DEFINE([EASEL_COPYRIGHT], [], [Description])
+autoheader: warning: missing template: EASEL_DATE
+autoheader: warning: missing template: EASEL_LICENSE
+autoheader: warning: missing template: EASEL_VERSION
+autoheader: warning: missing template: HAVE_FLUSH_ZERO_MODE
+autoheader: warning: missing template: HAVE_GZIP
+autoheader: warning: missing template: HAVE_SSE2
+autoheader: warning: missing template: HAVE_SSE2_CAST
+autoheader: warning: missing template: HAVE_VMX
+autoheader: warning: missing template: HMMER_COPYRIGHT
+autoheader: warning: missing template: HMMER_DATE
+autoheader: warning: missing template: HMMER_LICENSE
+autoheader: warning: missing template: HMMER_URL
+autoheader: warning: missing template: HMMER_VERSION
+autoheader: warning: missing template: INFERNAL_COPYRIGHT
+autoheader: warning: missing template: INFERNAL_DATE
+autoheader: warning: missing template: INFERNAL_LICENSE
+autoheader: warning: missing template: INFERNAL_URL
+autoheader: warning: missing template: INFERNAL_VERSION
+autoheader: warning: missing template: eslDEBUGLEVEL
+autoheader: warning: missing template: eslLIBRARY
+autoheader: warning: missing template: p7_DEBUGGING
+autoheader: warning: missing template: p7_IMPL_SSE
+autoheader: warning: missing template: p7_IMPL_VMX
+autoreconf: /usr/bin/autoheader failed with exit status: 1
+```
+I tried running the following to make easel:
+```
+cd easel
+automake
+./configure
+make
+```
+But this also fails. 
+```
+/tmp/ccW5NGpr.o: In function `main':
+esl-afetch.c:(.text+0x30b): undefined reference to `esl_msafile_EncodeFormat'
+esl-afetch.c:(.text+0x350): undefined reference to `esl_msafile_EncodeFormat'
+esl-afetch.c:(.text+0x3b9): undefined reference to `esl_msafile_Open'
+esl-afetch.c:(.text+0x3d3): undefined reference to `esl_msafile_OpenFailure'
+esl-afetch.c:(.text+0x715): undefined reference to `esl_msafile_Close'
+/tmp/ccW5NGpr.o: In function `create_ssi_index':
+esl-afetch.c:(.text+0x8a2): undefined reference to `esl_msafile_ReadFailure'
+esl-afetch.c:(.text+0x980): undefined reference to `esl_msafile_Read'
+/tmp/ccW5NGpr.o: In function `multifetch':
+esl-afetch.c:(.text+0xbbb): undefined reference to `esl_msafile_ReadFailure'
+esl-afetch.c:(.text+0xc4b): undefined reference to `esl_msafile_Write'
+esl-afetch.c:(.text+0xc6a): undefined reference to `esl_msafile_Read'
+/tmp/ccW5NGpr.o: In function `onefetch':
+esl-afetch.c:(.text+0xd04): undefined reference to `esl_msafile_PositionByKey'
+esl-afetch.c:(.text+0xdc7): undefined reference to `esl_msafile_Read'
+esl-afetch.c:(.text+0xde1): undefined reference to `esl_msafile_ReadFailure'
+esl-afetch.c:(.text+0xdf7): undefined reference to `esl_msafile_Write'
+esl-afetch.c:(.text+0xe1f): undefined reference to `esl_msafile_ReadFailure'
+esl-afetch.c:(.text+0xea6): undefined reference to `esl_msafile_Read'
+esl-afetch.c:(.text+0xee8): undefined reference to `esl_msafile_Write'
+/tmp/ccW5NGpr.o: In function `regurgitate_one_stockholm_entry':
+esl-afetch.c:(.text+0xf6f): undefined reference to `esl_msafile_GetLine'
+collect2: error: ld returned 1 exit status
+make[1]: *** [esl-afetch] Error 1
+make: *** [all] Error 2
+```
+",etwatson,https://github.com/EddyRivasLab/infernal/issues/14
+MDU6SXNzdWUzOTU4MjIyMzA=,Identifying group II introns in gymnosperm mitochondria,CLOSED,2019-01-04T06:33:20Z,2019-06-08T10:59:56Z,2019-06-08T10:59:56Z,"I'm using Infernal and RFAM to identify group II introns in gymnosperm mitochondria. Using `cmscan --mid --cut_ga --nohmmonly` it identifies 8 out of 16 family Intron_gpII ([RF00029](http://rfam.org/family/RF00029)). Using the Infernal CM for Domain-V ([RM00007](http://rfam.xfam.org/motif/RM00007)) it's able to identify all 16 introns, which is great! Could an RFAM family be constructed from this motif?
+
+I see that no gymnosperm mitochondria are present in sequences of RF00029, which may be the cause of the lack of sensitivity that I observed. Could the mitochondrial genomes of *Cycas taitungensis* NC_010303.1, *Ginkgo biloba* NC_027976.1, *Welwitschia mirabilis* NC_029130.1, and *Picea glauca* LKAM01.1 be added to the Intron_gpII (RF00029) family?
+
+I found no hits at all to clan group-II-D1D4 ([CL00102](http://rfam.xfam.org/clan/CL00102)) in my gymnosperm mitochondrial genomes. Could a new family be added to this clan constructed from plant mitochondrial genomes, including gymnsoperms?
+
+Thank you for Infernal and RFAM! When cmscan is able to find a match to Intron_gpII, it is often is able to identify the exact 3' splice site of the intron, which is not always straight forward by eye.",sjackman,https://github.com/EddyRivasLab/infernal/issues/15
+MDU6SXNzdWU0NTI5MDgxMDc=,Converting cmscan output to GFF3,CLOSED,2019-06-06T08:50:52Z,2024-05-23T09:19:54Z,2024-04-26T14:48:25Z,"Hello,
+
+I came across the infernal_tab2gff.pl script that converts cmsearch tabbed output to gff2 format. Do you have a similar conversion script for cmscan to gff3? If so can you please add the same to infernal?
+
+Thank you
+Abhijit",sanyalab,https://github.com/EddyRivasLab/infernal/issues/16
+MDU6SXNzdWU0NzM1NjQwMTM=,Searching the Rfam CM database with a query sequence fails,CLOSED,2019-07-26T22:59:40Z,2019-08-02T18:31:57Z,2019-08-02T18:28:35Z,"Attempting to run cmscan locally:
+- infernal is already installed by our IT folks as part of https://www.l7informatics.com/resources/biobuilds-2017-11/
+- downloaded ftp://ftp.ebi.ac.uk/pub/databases/Rfam/12.1/Rfam.cm.gz
+- I was unable to find the source code on our local system, so I downloaded https://github.com/EddyRivasLab/infernal/tree/master/testsuite/Rfam.12.1.clanin
+
+Followed instructions as described on p27 of http://eddylab.org/infernal/Userguide.pdf and cmscan fails with error:
+FAIL: Error: unable to find model RyeB listed in Rfam.12.1.clanin in SSI index file
+
+I just deleted RyeB from the Rfam.12.1.clanin file and it appears to run.",bifxcore,https://github.com/EddyRivasLab/infernal/issues/17
+MDU6SXNzdWU1NDYzMjAxMjM=,Report: cmalign --small options error message is truncated ?,CLOSED,2020-01-07T14:39:21Z,2020-02-10T21:01:10Z,2020-02-10T21:01:10Z,"Hello,
+
+When using cmalign with option --small, it looks like several other options are mandatory.
+But the error message is truncated:
+
+> Failed to parse command line: Option --small requires (or has no effect without) option(s) --cyk,--noprob,--nonband
+> Usage: cmalign [-options] <cmfile> <seqfile>
+> 
+> where basic options are:
+>   -h     : show brief help on version and usage
+>   -o <f> : output the alignment to file <f>, not stdout
+>   -g     : configure CM for global alignment [default: local]
+> 
+> To see more help on available options, do cmalign -h
+
+It seems that in addition to the three options mentionned, we need to use --notrunc to correctly launch cmalign. I wish the error message was complete: _Option --small requires (or has no effect without) option(s) --cyk,--noprob,--nonbanded **and --notrunc**_
+
+Steps to reproduce:
+
+- launch cmalign with options --small, --cyk, --noprob and --nonband: `cmalign --small --cyk --noprob --nonband yourfile.cm yourfile.fa`
+
+This was just a small report.
+Thank you,
+
+Louis",persalteas,https://github.com/EddyRivasLab/infernal/issues/20
+MDU6SXNzdWU1NjI3NjM5MzM=,RF annotation can impact model building even when --hand is not used,CLOSED,2020-02-10T19:03:19Z,2020-02-10T19:03:23Z,2020-02-10T19:03:23Z,"Due to how esl_msaweight_PB{_adv}() is implemented, RF annotation can impact MSA weighting if the provided RF annotation is not identical to what esl_msaweight_PB_adv()'s method for determining RF (match/insert) would determine. This means the same input alignment to cmbuild with and without RF annotation can result in different models. RF should be ignored unless --hand is used. Fix is: (EddyRivasLab/infernal@fba203f)",nawrockie,https://github.com/EddyRivasLab/infernal/issues/21
+MDU6SXNzdWU2NTUzMjE2MTE=,make install error 1,CLOSED,2020-07-12T03:15:29Z,2020-11-30T14:42:51Z,2020-11-30T14:42:51Z,"Hi! I am trying to download infernal and am getting the following error during installation. 
+
+mh_user@MicrobiomeHelper:~/metatranscriptomics/infernal-1.1.3$ make install
+/usr/bin/install -c -d /usr/local/bin
+/usr/bin/install -c -d /usr/local/share/man/man1
+/usr/bin/install -c -d /usr/local/share/doc/infernal
+/usr/bin/install: cannot change permissions of ‘/usr/local/share/doc/infernal’: No such file or directory
+Makefile:155: recipe for target 'install' failed
+make: *** [install] Error 1
+
+Thank you for your help!
+
+Nikki
+",NikkiCase,https://github.com/EddyRivasLab/infernal/issues/22
+MDU6SXNzdWU3MzQ4MTg2MTk=,How to hide command line pipeline statistics summaries?,CLOSED,2020-11-02T21:06:12Z,2020-11-05T01:02:39Z,2020-11-05T01:02:38Z,"Hello,
+
+I am running cmscan --rfam against a large dataset and the program itself is very fast, however I am worried the print statements to the command line are creating lag in the wall time of the program. **Is there a flag to hide the Internal CM pipeline statistics summary printout after each sequence?** ```Infernal Version 1.1.3```
+
+Example of command line printout after each sequence I want to remove:
+```
+Query:       B_NZ_CP042170-NZ-CP042170_2305641;aligned_75_F_84_20400_0  [L=20496]
+Hit scores:
+ rank     E-value  score  bias  modelname          start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  ----------------- ------ ------   --- ----- ----  -----------
+  (1) !         0 2766.8  37.1  LSU_rRNA_bacteria  11664  14547 +  cm    no 0.49  Bacterial large subunit ribosomal RNA
+  (2) !         0 1527.8   3.2  SSU_rRNA_bacteria   9586  11099 +  cm    no 0.50  Bacterial small subunit ribosomal RNA
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query sequence(s):                                               1  (40992 residues searched)
+Query sequences re-searched for truncated hits:                  1  (11514.0 residues re-searched, avg per model)
+Target model(s):                                                 2  (4458 consensus positions)
+Windows   passing  local HMM SSV           filter:               4  (0.1216); expected (0.06)
+Windows   passing  local HMM Viterbi       filter:               2  (0.07802); expected (0.02)
+Windows   passing  local HMM Viterbi  bias filter:               2  (0.07802); expected (0.02)
+Windows   passing  local HMM Forward       filter:               2  (0.07802); expected (0.0002)
+Windows   passing  local HMM Forward  bias filter:               2  (0.07802); expected (0.0002)
+Windows   passing glocal HMM Forward       filter:               2  (0.07802); expected (0.0002)
+Windows   passing glocal HMM Forward  bias filter:               2  (0.07802); expected (0.0002)
+Envelopes passing glocal HMM envelope defn filter:               2  (0.0421); expected (0.0002)
+Envelopes passing  local CM  CYK           filter:               2  (0.04203); expected (0.0001)
+Total CM hits reported:                                          2  (0.04188); includes 0 truncated hit(s)
+
+# CPU time: 5.23u 0.49s 00:00:05.72 Elapsed: 00:00:04.48
+```
+My command:
+```cmscan --tblout Output.txt --rfam Models.cm Metag_seqs.fasta```
+
+
+
+",glickmac,https://github.com/EddyRivasLab/infernal/issues/23
+MDU6SXNzdWU3Njk2OTgwMTU=,how to get the ./configure file,CLOSED,2020-12-17T08:36:50Z,2020-12-17T13:35:01Z,2020-12-17T09:20:06Z,"Dear professor，
+I will install this software,but I can find the ./configure file. I have tried the commond ” autoconf ”.It doesn't work. Would you mind give me a help for installing this software?
+The error showing as follow:
+./configure --prefix /backup/liqm/software/infernal-master
+-bash: ./configure: 没有那个文件或目录
+
+autoconf 
+/usr/bin/m4:configure.ac:60: cannot open `easel/m4/ax_check_gnu_make.m4': No such file or directory
+/usr/bin/m4:configure.ac:62: cannot open `easel/m4/ax_compiler_vendor.m4': No such file or directory
+/usr/bin/m4:configure.ac:63: cannot open `easel/m4/ax_check_compile_flag.m4': No such file or directory
+/usr/bin/m4:configure.ac:64: cannot open `easel/m4/ax_gcc_func_attribute.m4': No such file or directory
+/usr/bin/m4:configure.ac:66: cannot open `easel/m4/esl_sse.m4': No such file or directory
+/usr/bin/m4:configure.ac:67: cannot open `easel/m4/esl_vmx.m4': No such file or directory
+/usr/bin/m4:configure.ac:69: cannot open `easel/m4/ax_prog_cc_mpi.m4': No such file or directory
+/usr/bin/m4:configure.ac:70: cannot open `easel/m4/ax_pthread.m4': No such file or directory
+/usr/bin/m4:configure.ac:72: cannot open `easel/m4/esl_pic_flags.m4': No such file or directory
+
+Thanks a lot.
+",li0604,https://github.com/EddyRivasLab/infernal/issues/24
+MDU6SXNzdWU4MDI5OTI0MjA=,time complexity of cmsearch,CLOSED,2021-02-07T16:28:25Z,2021-02-21T21:18:58Z,2021-02-21T21:18:58Z,"I wonder how to calculate the complexity of cmsearch. I originally thought that to search a query covariance model with L1 positions through a database of M sequences, with average length of L2, the time complexity should be around O(L1*M*L2). However, this does not seem to be the case. In the attached example, the query covariance model has 307 positions, and the sequence database is only 32M. cmsearch (INFERNAL 1.1.3, 64 bit Linux) has been running for more than 2 days, but has not yet finished:
+
+```bash
+cmsearch --noali -A cmsearch.a2m --cpu 2 seq.cm seq.db
+```
+
+[input.zip](https://github.com/EddyRivasLab/infernal/files/5939417/input.zip)
+",kad-ecoli,https://github.com/EddyRivasLab/infernal/issues/25
+MDU6SXNzdWU4OTUxMzI4MDU=,Unmasked or masked input genome,CLOSED,2021-05-19T08:12:17Z,2021-05-19T13:08:06Z,2021-05-19T13:08:06Z,"Hello,
+Which kind of genome.fasta could be the input file of cmscan? Unmasked genome, softmasked or hardmasked one?",StevenBai97,https://github.com/EddyRivasLab/infernal/issues/26
+MDU6SXNzdWU5MjkxMTA1NjE=,Please delete this issue,CLOSED,2021-06-24T11:03:58Z,2021-08-02T19:55:55Z,2021-06-24T11:52:32Z,,vragh,https://github.com/EddyRivasLab/infernal/issues/27
+MDU6SXNzdWU5NTY2Mzc3MjE=,"Error: removing/marking overlapping hits, stop posn is inconsistent, hit 33085 during cmsearch run",CLOSED,2021-07-30T10:54:51Z,2021-07-31T12:36:42Z,2021-07-31T06:44:48Z,"Hi,
+
+I was searching a covariance model against NCBI's database using `cmsearch` from `infernal-1.1.4-linux-intel-gcc` package and got the following error:
+
+``
+Error: removing/marking overlapping hits, stop posn is inconsistent, hit 33085
+``
+
+Any response would be greatly appreciated.
+
+Thank you!",jaswindersingh2,https://github.com/EddyRivasLab/infernal/issues/28
+MDU6SXNzdWU5NzQzNTkyNjY=,missing PP line,CLOSED,2021-08-19T07:27:23Z,2022-10-06T15:25:32Z,2022-10-06T15:25:32Z,"Looks like the `PP` line of a `cmsearch` full output is missing under specific circumstances. 
+
+The input sequence is 
+[mininp_subseq.fasta.txt](https://github.com/EddyRivasLab/infernal/files/7012472/mininp_subseq.fasta.txt) (added .txt to be able to upload to here) File was retrieved from [https://www.ncbi.nlm.nih.gov/nuccore/NZ_MJUD01000004.1?report=fasta&from=54694&to=55032](https://www.ncbi.nlm.nih.gov/nuccore/NZ_MJUD01000004.1?report=fasta&from=54694&to=55032)
+
+The covariance model is [rliB_RF01471.cm.txt](https://github.com/EddyRivasLab/infernal/files/7012478/rliB_RF01471.cm.txt) downloaded from [rfam](http://rfam.xfam.org/family/RF01471/cm)
+
+Executed as `cmsearch --cpu 1 rliB_RF01471.cm mininp_subseq.fasta` using the master branch of infernal, hmmer, easel as of today, here is the [config.log](https://github.com/EddyRivasLab/infernal/files/7012491/config.log.txt) of `configure` 
+
+STDOUT is
+```
+# cmsearch :: search CM(s) against a sequence database
+# INFERNAL 1.1.4 (Dec 2020)
+# Copyright (C) 2020 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query CM file:                         ../covariance_rli/rliB_RF01471.cm
+# target sequence database:              mininp_subseq.fasta
+# number of worker threads:              1 [--cpu]
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       rliB  [CLEN=360]
+Accession:   RF01471
+Description: Listeria sRNA rliB
+Hit scores:
+ rank     E-value  score  bias  sequence                       start    end   mdl trunc   gc  description
+ ----   --------- ------ -----  ----------------------------- ------ ------   --- ----- ----  -----------
+  (1) !   1.5e-15   62.2   9.4  NZ_MJUD01000004.1:54694-55032    339    122 -  cm    5' 0.31  Listeria seeligeri strain BCW_4759 PROKKA_contig
+
+
+Hit alignments:
+>> NZ_MJUD01000004.1:54694-55032  Listeria seeligeri strain BCW_4759 PROKKA_contig000004, whole genome shotgun sequence
+ rank     E-value  score  bias mdl mdl from   mdl to       seq from      seq to       cyksc trunc   gc
+ ----   --------- ------ ----- --- -------- --------    ----------- -----------      ------ ----- ----
+  (1) !   1.5e-15   62.2   9.4  cm       16      360 ~]         339         122 - ~.   50.5    5' 0.31
+
+                                                   v         v                                                       NC
+                                    ~~~~~~:::<<<<<<<_________>>>>>>>-----------------------------.------------------ CS
+                           rliB   1 <[15]*ugggUUUuaguUAcuUAuucugAAAuGuAaAUcuagAaaaAAGauAuaAguAAau.uAaaugUuuuUuggUUUU 88 
+                                             GUUUUA UUACUUAUU UGAAAUGUAAAU U +  A+    + +A + A +U U  AUGU +   GGUUUU
+  NZ_MJUD01000004.1:54694-55032 339 <[ 0]*GCAGUUUUAAUUACUUAUUGUGAAAUGUAAAUAUUUUUAUGUUCACAACAAAGUUuUGCAUGUCAAGCGGUUUU 266
+
+                                                  vvvv                                    v    vv                    NC
+                                    -------------((((((,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,<<<<---<<<<<<<<___________>>> CS
+                           rliB  89 AgUUACUUAUUgUGaAAugUAAAUugcUcUcuuUugUguAAaucAuAucaagcaUguAGCGUUUuAGUUACUUAUUaUgA 168
+                                    A  UACUUAUUGUGAAAUGUAAAU+   C  ++U G  U A+U+ U U   :CA  UAG  UUUUA UUACUUAUU+UGA
+  NZ_MJUD01000004.1:54694-55032 265 AACUACUUAUUGUGAAAUGUAAAUAAAGCCGAAUAGGCUUAUUUUUUUACGACAAAUAG--UUUUAAUUACUUAUUGUGA 188
+
+                                      vv   v                           vvvv                       NC
+                                    >>>>>-->>>>,,,~~~~~~~,,,,,,,,,,,,,))))))::::::::::::::::::::: CS
+                           rliB 169 AAUGUAAAugcGaU*[138]*acAUAGgAuUAUccaUUuCcGUUaUAAUUAUUccUUGcAA 360
+                                    AAUGUAA UG:G+U        CA   G U A CC    CCGUU+UAA U  U++U  + A
+  NZ_MJUD01000004.1:54694-55032 187 AAUGUAAAUGUGGU*[ 16]*CCAGCUGGUGAGCC----CCGUUUUAACUGCUUAUCAUGA 122
+
+
+
+Internal CM pipeline statistics summary:
+----------------------------------------
+Query model(s):                                                  1  (360 consensus positions)
+Target sequences:                                                1  (678 residues searched)
+Target sequences re-searched for truncated hits:                 1  (2034 residues re-searched)
+Windows   passing  local HMM SSV           filter:               5  (0.625); expected (0.35)
+Windows   passing  local HMM Viterbi       filter:                  (off)
+Windows   passing  local HMM Viterbi  bias filter:                  (off)
+Windows   passing  local HMM Forward       filter:               5  (0.625); expected (0.02)
+Windows   passing  local HMM Forward  bias filter:               4  (0.5); expected (0.02)
+Windows   passing glocal HMM Forward       filter:               4  (0.5); expected (0.02)
+Windows   passing glocal HMM Forward  bias filter:               4  (0.5); expected (0.02)
+Envelopes passing glocal HMM envelope defn filter:               4  (0.5); expected (0.02)
+Envelopes passing  local CM  CYK           filter:               4  (0.5); expected (0.0001)
+Total CM hits reported:                                          1  (0.1608); includes 1 truncated hit(s)
+
+# CPU time: 5.14u 0.12s 00:00:05.26 Elapsed: 00:00:05.26
+//
+[ok]
+```
+
+My parser expects every alignment block to have the `PP` line, which is missing here. Is that a bug or are there any good reasons why this line is missing?
+
+Switching to global alignments `-g` produces the `PP` line, as well as `--notrunc` or a combination of both flags.",sjanssen2,https://github.com/EddyRivasLab/infernal/issues/29
+I_kwDOAnr_X85CwqJP,arm/aarch64 version of infernal,CLOSED,2022-01-31T23:35:19Z,2023-09-21T15:59:58Z,2023-09-21T15:59:35Z,"Hi，
+I am now working on arm/aarch64 linux server. I'm wordering if there is any arm/aarch64 version of infernal. 
+Or there is a compile guide for this version.
+
+Thanks.",Bicyclecardcn,https://github.com/EddyRivasLab/infernal/issues/30
+I_kwDOAnr_X85FTrAE,Infernal on transcriptomes,CLOSED,2022-03-08T15:19:41Z,2022-03-23T04:15:22Z,2022-03-23T04:15:21Z,"Hi Eric,
+
+I wanted to know if I can use infernal with Rfam to predict ncRNA in transcriptome assemblies. OR is it only for genomes. 
+
+Thanks
+Abhijit",sanyalab,https://github.com/EddyRivasLab/infernal/issues/31
+I_kwDOAnr_X85aLg7A,Conda version 1.1.4 but -h shows 1.1.3,CLOSED,2022-12-28T16:42:44Z,2023-02-23T16:54:58Z,2023-02-23T16:54:58Z,"Hello
+
+I tried installing infernal through conda
+`conda install -c bioconda -c conda-forge infernal`
+
+![Screenshot 2022-12-28 at 10 36 30 AM](https://user-images.githubusercontent.com/98770233/209844098-eace913d-f8a2-41ec-a9f8-a4abc7d18f2b.png)
+
+The installed conda version shows 1.1.4, but the `cmscan -h` command shows the version as 1.1.3
+
+![Screenshot 2022-12-28 at 10 39 12 AM](https://user-images.githubusercontent.com/98770233/209844359-a3c53765-c679-4555-8b6d-f6b558538345.png)
+
+This is creating issues in other tools which use cmscan when the version is checked.
+
+Any ideas on what might be going on?
+
+-Ram",ramanujamr,https://github.com/EddyRivasLab/infernal/issues/32
+I_kwDOAnr_X85fS7x2,Bug allows truncated hits to start/end internally,CLOSED,2023-02-24T15:02:23Z,2023-02-28T18:55:24Z,2023-02-28T18:55:23Z,"The default search/scan pipeline is supposed to enforce that truncated hits include the first/final nucleotide in a sequence (`5'` and `5'&3'` truncated hits must contain nucleotide `1`, and `3'` and `5'&3'` truncated hits must contain nucleotide `L` for a sequence of length `L`).
+
+There's a bug in the pipeline code that prevents this enforcement in rare cases, such that a `5'` truncated hit starts after nucleotide `1` and a `3'` truncated hit ends before nucleotide `L`. I've only seen this with big models (LSU) when a fragment of an LSU sequence exists in the middle of a sequence, presumably due to a misassembly, although certain biologically correct introns might allow this to happen also.
+
+Three example sequences that exhibit this are listed below, using the Rfam 14.1 LSU bacterial model (RF02541), and the command: `cmsearch --rfam --cpu 0 --nohmmonly --cut_ga RF02541.cm in.fa`.
+
+* `QYUU01000014.1, L=1370`: `5'` truncated hit on `+` strand starts at position `2 != 1`
+
+* `PRGG01000010.1, L=1975`: `3'` truncated hit on `+` strand ends at position `1955 != 1975`
+
+* `BMWJ01000078.1, L=804`: `5'&3'` truncated hit on `+` strand starts at position `616 != 1`
+
+I will log/test this with these examples in the testsuite and am working on a fix now.",nawrockie,https://github.com/EddyRivasLab/infernal/issues/33
+I_kwDOAnr_X85gFp2i,"cmbuild with fragmentary sequences, terminal self-inserts can lead to problematically high self-insert probabilities",CLOSED,2023-03-06T19:44:38Z,2023-03-07T16:59:17Z,2023-03-07T16:59:16Z,"For `cmbuild` to more appropriately handle missing data from fragmentary sequences (being implemented in the `buildfrags` feature branch), truncated parsetrees are allowed, but in rare cases if a parsetree ends with self inserts (IL->IL or IR->IR) it may lead to the corresponding self-insert probability that is problematically high. If the only transitions for an insert state implied by the alignment are self inserts, then all other transition counts will be 0, and the self insert can be very close to 1.0. This can be a problem in the QDB calculation engine, which is a step performed by `cmbuild` to determine the model's `W` parameter. If `W` grows larger than 1000 times the model length (`clen`) `cmbuild` fails with an error as this was thought to be an indication that something was wrong. This is undesirable for the impact on W and the expected length distribution from the offending insert, so instead of increasing the `1000*clen` threshold, I want to modify the parsetree somehow to avoid such a high self-insert probability in these cases.",nawrockie,https://github.com/EddyRivasLab/infernal/issues/34
+I_kwDOAnr_X85lVNMB,cmalign core dump,CLOSED,2023-05-08T11:13:27Z,2023-06-07T18:09:32Z,2023-06-07T18:09:32Z,"Dear infernal team. I try to build new CM for mitochondrial 16S. The following command line gives me a core dump:
+
+```
+cmalign --verbose -g --notrunc --cpu 0 --mxsize 65536 --sfile rrnL-bact.score -o rrnL-bact-org.stk --mapali LSU_rRNA_bacteria-RF02541.clean.stk LSU_rRNA_bacteria-RF02541.clean.cm rrnLtmp.fas
+```
+
+I tried with (`--cpu 8, 16, 32`) and without mutithreading (`--cpu 0`), played around with various `-mxsize` settings and I'm also pretty sure that the problem is not a lack of RAM (I have >1TB available and `cmalign` seemed to be quite a bit away from this .. depending on the number of cores I have seen up to ~300GB in the htop output). I'm using the 1.1.4 bioconda package, but also tried a local build.
+
+I deposited the input data over here https://nc.ufz.de/s/tWsyE7dZg58LBaB  (password is `:v;{I8Ozl1`)
+
+Would be grateful for any suggestions or help of any sort. 
+
+
+",bernt-matthias,https://github.com/EddyRivasLab/infernal/issues/35
+I_kwDOAnr_X85q6D1n,Bug: cmbuild --noh3pri results in use of v0.56->v1.0.2 prior instead of default prior,CLOSED,2023-07-07T14:01:02Z,2023-07-07T14:05:41Z,2023-07-07T14:05:41Z,"Looks like this was just a coding mistake, grouping --noh3pri with the other --p56 and --v1p0 prior-related options. Should be a simple fix.",nawrockie,https://github.com/EddyRivasLab/infernal/issues/36
+I_kwDOAnr_X85xpyqR,column offset in `--tblout`?,CLOSED,2023-09-21T11:44:32Z,2023-11-13T20:44:38Z,2023-11-13T20:44:38Z,"I found an offset in the starting positions of columns when using `cmsearch` with the [14.9 Rfam collection](https://ftp.ebi.ac.uk/pub/databases/Rfam/14.9/Rfam.cm.gz) against the [UCSC derived hg19 assembly](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz).
+```
+#target name         accession query name           accession mdl mdl from   mdl to  seq from    seq to strand trunc pass   gc  bias  score   E-value inc description of target
+#------------------- --------- -------------------- --------- --- -------- -------- --------- --------- ------ ----- ---- ---- ----- ------ --------- --- ---------------------
+chr1                 -         5S_rRNA              RF00001    cm        1      119 228746133 228746015      -    no    1 0.61   0.0  118.9   6.6e-24 !   -
+chr1                 -         5S_rRNA              RF00001    cm        1      119 228748374 228748256      -    no    1 0.61   0.0  118.9   6.6e-24 !   -
+.
+.
+.
+chr2                 -         U1                   RF00003    cm        1      166  56274720  56274797      +    no    1 0.33   0.0   20.2       7.4 ?   -
+chr1                 -         U1                   RF00003    cm        1      166 109517705 109517546      -    no    1 0.38   0.0   19.9       9.2 ?   -
+chr11                 -         U2                   RF00004    cm        1      193  62609281  62609091      -    no    1 0.44   0.0  191.2   9.7e-40 !   -
+chr10                 -         U2                   RF00004    cm        1      193 103124792 103124602      -    no    1 0.45   0.0  179.5   6.2e-37 !   -
+.
+.
+.
+chr8                  -         U2                   RF00004    cm        1      193  57741437  57741496      +    no    1 0.28   0.0   24.4       9.9 ?   -
+chr15                 -         U2                   RF00004    cm        1      193  54034824  54035003      +    no    1 0.34   0.5   24.4        10 ?   -
+chr6                 -         tRNA                 RF00005    cm        1       71  28442402  28442329      -    no    1 0.50   0.0   76.8   2.4e-14 !   -
+chr7                 -         tRNA                 RF00005    cm        1       71 149007281 149007352      +    no    1 0.56   0.0   73.9   1.6e-13 !   -
+```
+If you take a look at the second column `accession` the fields are all `-` but this character seems to jump back and forth from position 22 to 23. This breaks my current parser and I wonder if this is intended or not. The above example is produced with version 1.1.3 on `Linux rs500-bcf-10 5.15.0-78-generic #85~20.04.1-Ubuntu SMP Mon Jul 17 09:42:39 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+`
+I am currently running INFERNAL 1.1.5 (Sep 2023) to see if this issue persists ... yes, it does",sjanssen2,https://github.com/EddyRivasLab/infernal/issues/39
+I_kwDOAnr_X852s76E,cmsearch and cmscan --incT only works if -T also used,CLOSED,2023-11-13T21:10:17Z,2023-11-13T21:35:03Z,2023-11-13T21:35:03Z,,nawrockie,https://github.com/EddyRivasLab/infernal/issues/40
+I_kwDOAnr_X855MXb2,does cmsearch result return a single model found per target sequence,CLOSED,2023-12-08T20:37:27Z,2023-12-09T23:32:45Z,2023-12-08T21:11:38Z,"Hello,
+
+I am running cmsearch using some RFAM models. I have read documentation but want to make sure I get this right before going further.
+
+When I use cmsearch, will it try to find all occurences model in target sequence or just the best hit?
+
+How would you proceed to find all occurences of model in a single target sequence? Using cmscan? Based on documentation, it is not clear for me. 
+
+Thank you very much for your help,
+JF",jflucier,https://github.com/EddyRivasLab/infernal/issues/41
+I_kwDOAnr_X86Fbfsc,cmbuild --refine bug related to fragments,CLOSED,2024-04-11T20:48:57Z,2024-04-12T16:22:36Z,2024-04-12T16:22:36Z,"If the input MSA has fragments with missing data characters at the 5' and/or 3' ends and --refine is used with cmbuild, the program with crash with a segmentation fault.",nawrockie,https://github.com/EddyRivasLab/infernal/issues/42
+I_kwDOAnr_X86GYjcT,cmpress fails without useful information when .cm file contains 2 models with identical NAME,CLOSED,2024-04-20T14:45:33Z,2024-04-26T16:19:13Z,2024-04-26T16:19:13Z,"If a `.cm` file contains multiple models, and some of them have identical `NAME`, `cmpress` will fail as:
+```
+Working...     %
+```
+There is no useful information, so it's difficult to address the issue. 
+
+If it could print the model NAME causing the problem, it would be very helpful.
+
+I used version 1.1.4. I have not tried version 1.1.5, but I guess it would be the same, since I see nothing related to `cmpress` in the release note of version 1.1.5",qifei9,https://github.com/EddyRivasLab/infernal/issues/43

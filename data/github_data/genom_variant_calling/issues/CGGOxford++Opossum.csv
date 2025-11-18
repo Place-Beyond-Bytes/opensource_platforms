@@ -1,0 +1,60 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNjk5ODI5NjI=,Opossum does not maintain RG tags,OPEN,2017-10-31T14:37:41Z,2017-11-06T16:11:05Z,,"The bam output from Opossum no longer has read group tags. Is this expected?
+```
+samtools view ./bam_calmd/M-3-r1_S12.bam | head
+
+NS500647:193:H3MYFBGX3:2:11202:5803:18939       419     NC_024459.2     15774   3       150M1S  =       15830   207     TTCTTGGTTAAAAACTCGTACGTGTTAGCCTTCGGTATTATTTAAAATGGTCATTCATGGCCATTTTCGGAAAAATGGGGATTTTGTGGCCATTGATCATCGACCAGAGGCTCGTACATCTCACCCCACATATGTTTCCTTGCCATAGATA AAAAAEEEE6EEEE//EEEEEEEEEEEE///EEEEEEEAEEE6E//EE//EEEE/6EE////EAE/EEAE/EEEEE//EA/E//E/A////EEEEEE<EEE/EEEEEEEE/EEE<EEEEEAA<A/A//E/EEEAA<A</A6AA<///AEE/ NH:i:2  HI:i:2  AS:i:281        nM:i:9  RG:Z:M-3-r1_S12NM:i:6   MD:Z:42g18t8c9g2g34c31
+NS500647:193:H3MYFBGX3:2:11202:5803:18939       339     NC_024459.2     15830   3       151M    =       15774   -207    ATGGCCATTTTCGGCAAAATGGGGGTTTTGTGGCCATTGATCATCGACCAGAGGCTCGTACATCTCACCCCACATATGTTTCCTTGCCATAGATCACATTCTTGGATTTCTGGTGGAGACCATTTCTTGGTTAAAAATCCGTACGTGTTAG AA<EAAEEAEEEEAEEE<<AEE/EE//EAEA/EEEE/EEEEEEEEEEEEE6EA/EEAAEEEEEEAAEAAAEAAEEEAAE/EEEAE6EEAEEEEEEA6EEEAEEE/EEEEAEAE/<EEEA<EEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA NH:i:2  HI:i:2  AS:i:281        nM:i:9  RG:Z:M-3-r1_S12NM:i:3   MD:Z:5t21g34c88
+```
+
+```
+samtools view ./opossum/M-3-r1_S12.bam | head
+NS500647:193:H3MYFBGX3:2:22110:18483:9947_pair  0       NC_024459.2     44395   50      151M    *       0       0       CCGGAAACCTGCAGTCCCACCACTGTACATTCTCCGGCTTCCCACCAAACCCCACTCCAAAACGCACCCTCGTTCTCCCCCCCTCCTCTTCCTCCTCCTGGGCCGCCGCCGGGGAGGCCCCATCGCCGCCGTCCCCAACACCACATCTTCA AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/EEEE/E/AEAEEEEAEAEEE/<AEE/A/<EEEEE//E/////A//E//E//EE/EA/E/AE/EEA//EAEAE/</A/////////EA////6A/A////<//
+NS500647:193:H3MYFBGX3:2:22110:18483:9947_pair  16      NC_024459.2     44583   50      89M     *       0       0       GGGCGGCTGGGGCCGCCGGCGCTTACCCCCCCGGGGGGGGGGGCGCCGCCGCGGACGACGCCGCCTCCATCGCCGCGCGCGCGCCGGCC       A/////////</////////E////////////////EE/AEA/AE//A/E///A/EEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAAA
+NS500647:193:H3MYFBGX3:1:21102:4089:12646_1/2_merged    0       NC_024459.2     44832   50      116M    *       0       0       GCAAGCCTGACCACGGCGTGGTGCCGCTCCTCGAGAGCTTGGGAATGCGTCTCTCCTCGGCCAAACTCATCGCGCCTTACGTCGCGGCTGCGGGCCTTACTGTGCTGATTGATAGG    AAEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+NS500647:193:H3MYFBGX3:1:21102:4089:12646_2/2_merged    0       NC_024459.2     45666   50      37M     *       0       0       GTTAAGTTTTTGAAGGAAATGTTATTTTCAAGCAGTG   EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAAAA
+
+```
+
+",kcamnairb,https://github.com/CGGOxford/Opossum/issues/3
+MDU6SXNzdWUzMDU4Mjk1Mzk=,Better document the requirements for alignment input files,OPEN,2018-03-16T07:39:08Z,2018-04-25T07:25:41Z,,"Hi,
+
+I would appreciate if the documentation would contain some points on how to generate optimal input bam files for opossum, e.g. which STAR/TopHat parameters are generally recommended.
+
+I am writing this because I had to re-do my alignments which were missing the `MD` flag, which I did not see mentioned in the docs.
+
+Thanks,
+Clemens
+
+",messersc,https://github.com/CGGOxford/Opossum/issues/4
+MDU6SXNzdWUzMTcxMjM0MDA=,how to set --SoftClipsExist with bam produced by hisat2?,OPEN,2018-04-24T08:34:12Z,2018-04-24T08:34:12Z,,"hello,
+
+I want to use Opossum with bam produced by histat2, but I don't known how to set paramrter, eg. --SoftClipsExist.
+
+Thanks",KeyingLu,https://github.com/CGGOxford/Opossum/issues/5
+MDU6SXNzdWU0MDAyOTk0MTY=,Opossum parameters for single-end reads?,OPEN,2019-01-17T14:23:07Z,2020-01-24T06:57:28Z,,"Hi,
+
+I was wondering which Opossum parameters I should set for single-end reads.
+
+I think I need to set `--ProperlyPaired ` to false, because it looks like I'm not getting any reads otherwise.
+
+Any other things I should take into account? What would be the recommended way to run opossum and platypus on single-end RNA-seq data?
+
+Thanks,
+Clemens",messersc,https://github.com/CGGOxford/Opossum/issues/7
+MDU6SXNzdWU1NTQ2MTk4NzM=,Create optional CSI index,OPEN,2020-01-24T09:11:30Z,2020-01-24T09:11:55Z,,"We just had a [question on Biostars](https://www.biostars.org/p/418287/#418301) where OP reported an error that was thrown after the resulting BAM file could not be indexed with the default BAI index (wheat genome, too large therefore). For details please see the thread at Biostars. I therefore suggest either an option to use CSI instead or an automated check for genome size and then using CSI instead.",ATpoint,https://github.com/CGGOxford/Opossum/issues/8
+MDU6SXNzdWU3MDYzOTU2NTQ=,Opossum hanging on chromosome 11?,OPEN,2020-09-22T13:41:16Z,2020-09-22T13:44:51Z,,"Hi,
+I'm running Opossum on Python 2.7.17  under Ubuntu 18.04.3 LTS Release  18.04
+I'm using Opossum to preprocess  RNA-Seq samples (Illumina 75bp paired-ends) obtained from human blood.
+The files are *bam aligned by Hisat2, thus I understood that --SoftClipsExist=True   is OK.
+Out of 41 samples in total, things went fine for 37 samples , but for 4 of them the analysis seems to last forever, more precisely it seems that at Chromosome 11 something is making the process very very slow, or maybe entering a kind of neverending loop,  though the CPUs are working at almost 100%, thus the computer is apparently carrying out some calculation. 
+These 4 remaining samples seem all be ""waiting"" exactly on Chr11, since many hours, the third chromosome in alphabetical order to be analyzed 1,10,11
+
+$ python Opossum.py  --SoftClipsExist=True  --BamFile=/home/NGS/PSPData/PSP014.bam   --OutFile=PSP014_Oposs.bam
+1
+10
+11
+
+Any suggestion?  thanks
+
+",IvanArisi,https://github.com/CGGOxford/Opossum/issues/9

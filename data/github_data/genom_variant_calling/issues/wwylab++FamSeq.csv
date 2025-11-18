@@ -1,0 +1,10 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOBxSE9c5Hp8Nz,FPP Values Not Identical Upon Using Different Input File Types,CLOSED,2022-04-12T17:30:15Z,2024-10-14T20:06:50Z,2024-10-14T20:06:35Z,"Hi Gang Peng,
+ 
+We typically provide an LK input to FamSeq in our de novo variant calling pipeline and we recently changed that to VCF mode and noticed that the FPP values are not identical. Note that only the input file type is different but the joint callset provided to FamSeq is the same. Pasted below is one such site and we are wondering if you've any insight into this issue. Samples in this family are NA12878 and its parents NA12891 and NA12892 and we are seeing different FPP values thereby leading to different FGT's. 
+
+When input is in LK format:
+chr21   6371475          .           A          G         76500.7           PASS            AC=1;AF=0.167;AN=6;BaseQRankSum=0.258;ClippingRankSum=0;DP=52;ExcessHet=2.14748e+09;FS=0.644;InbreedingCoeff=-0.2318;MQ=31.34;MQ0=0;MQRankSum=0.185;QD=4.03;ReadPosRankSum=0.121;SOR=0.611;VQSLOD=-8.116;culprit=MQ            GT:AB:AD:DP:GQ:PL:GPP:FPP:FGT     0/1:0.73:8,3:11:63:63,0,214:33.0087,0.00217282,217.012:9.88272,0.470804,274.223:0/1            0/0:.:20,0:20:25:0,25,544:1.37542e-05,54.9935,577.004:1.7044,4.88649,523.887:0/0     0/0:.:21,0:21:28:0,28,610:6.89344e-06,57.9935,643.004:0.771119,7.88648,589.887:0/0
+ 
+In VCF mode:
+chr21   6371475          .           A          G         76500.7           PASS            AC=1;AF=0.167;AN=6;BaseQRankSum=0.258;ClippingRankSum=0;DP=52;ExcessHet=2.14748e+09;FS=0.644;InbreedingCoeff=-0.2318;MQ=31.34;MQ0=0;MQRankSum=0.185;QD=4.03;ReadPosRankSum=0.121;SOR=0.611;VQSLOD=-8.116;culprit=MQ            GT:AB:AD:DP:GQ:PL:GPP:FPP:FGT     0/1:0.73:8,3:11:63:63,0,214:33.0087,0.00217282,217.012:7.88316,0.771766,277.109:0/1            0/0:.:20,0:20:25:0,25,544:1.37542e-05,54.9935,577.004:3.13727,2.88694,521.887:0/1   0/0:.:21,0:21:28:0,28,610:6.89344e-06,57.9935,643.004:1.29487,5.88693,587.887:0/0  ",knagulapalli,https://github.com/wwylab/FamSeq/issues/1

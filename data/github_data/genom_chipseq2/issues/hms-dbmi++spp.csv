@@ -1,0 +1,701 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNTEwMDc1ODY=,install instructions,CLOSED,2016-04-25T23:41:23Z,2016-05-13T16:54:33Z,2016-05-13T16:54:33Z,"Clear installation instructions would be very helpful. I have boost installed on my system, and it's in my LD_LIBRARY_PATH, but the installation of spp continues to fail for reasons that appear to be boost-related. I'll attach the installation log. I don't know if this is a bug, or whether I've missed an installation step, but judging by my web searches, there are others who are similarly confused.
+Thanks,
+Jeff
+
+[spp_install_log.txt](https://github.com/hms-dbmi/spp/files/235596/spp_install_log.txt)
+",ucsf-jdm,https://github.com/hms-dbmi/spp/issues/1
+MDU6SXNzdWUxNTQxOTYwNzM=,Installation fails on Ubuntu 14.04 with R version 3.3.0,OPEN,2016-05-11T09:15:50Z,2020-11-18T09:39:18Z,,"Installation fails on Ubuntu 14.04 with R version 3.3.0
+
+Here are the errors I get when trying to install:
+
+[spp-error.txt](https://github.com/hms-dbmi/spp/files/258942/spp-error.txt)
+",anthony-aylward,https://github.com/hms-dbmi/spp/issues/2
+MDU6SXNzdWUxNTk2ODEwNTM=,spp doesn't see Rsamtools,CLOSED,2016-06-10T17:14:08Z,2016-08-10T10:14:33Z,2016-06-13T21:00:32Z,"Hello,
+
+I've tried installing spp on the following system:
+
+```
+R version 3.2.3 (2015-12-10)
+Platform: x86_64-redhat-linux-gnu (64-bit)
+Running under: Scientific Linux release 6.5 (Carbon)
+```
+
+The library installs and loads fine (I've tried both R CMD INSTALL and GitHub options). But when I try to run read.bam.tags, it fails with the following error:
+
+```
+Error in read.bam.tags(""batch.download/ENCFF044JXD.bam"") : 
+  Rsamtools Bioconductor package is now required for BAM file support. Please install
+```
+
+But Rsamtools are certainly installed and loaded:
+
+```
+other attached packages:
+ [1] spp_1.14             caTools_1.17.1       Rsamtools_1.22.0    
+ [4] Biostrings_2.38.3    XVector_0.10.0       GenomicRanges_1.22.3
+ [7] GenomeInfoDb_1.6.2   IRanges_2.4.6        S4Vectors_0.8.7     
+[10] BiocGenerics_0.16.1
+```
+
+I wonder if you might have some insight into this issue.
+
+Many thanks!
+
+Aliaksei.
+",ophiothrix,https://github.com/hms-dbmi/spp/issues/3
+MDU6SXNzdWUxNjg1MTAxNTE=,tag.enrichment.clusters: Error in abs(NULL) : non-numeric argument to mathematical function,OPEN,2016-07-31T09:40:43Z,2016-07-31T09:40:43Z,,"Hello,
+
+I have a couple of histone ChIP-seq data sets mapped against  GRCh37. These data contain chromosomes:
+1-22,X,Y,MT,GL000...,hs37d5
+
+I ran the following resulting in an error:
+
+```
+chip.data <- read.bam.tags(sig.file)
+input.data <- read.bam.tags(ctrl.file)
+binding.characteristics <- get.binding.characteristics(chip.data,srange=c(50,500),bin=5, accept.all.tags = T)
+
+broad.clusters <- get.broad.enrichment.clusters(signal.data=chip.data$tags,control.data=input.data$tags,window.size=1e3,z.thr=3,tag.shift=round(binding.characteristics$peak$x/2))
+```
+
+> Calls: get.broad.enrichment.clusters ... find.significantly.enriched.regions -> lapply -> FUN -> tag.enrichment.clusters -> diff
+> Error in abs(signal) : non-numeric argument to mathematical function
+
+The error is related to the function `tag.enrichment.clusters`:
+
+```
+1009 tag.enrichment.clusters <- function(signal,background,wsize=200,thr=3,mcs=1,bg.weight=1,min.tag.count.z=0,tag.av.den=NULL,min.tag.count.thr=0,min.tag.count.ratio=4,either=F,tag.shift=146/2) {
+1010   if(is.null(tag.av.den)) {
+1011     tag.av.den <- length(signal)/diff(range(abs(signal)));
+1012   }
+```
+
+I went back to check `chip.data` and `input.data`. There were some list elements in `chip.data$tags` were `NULL` (no reads mapped to these chromosomes). I removed these and it fixed the issue:
+
+```
+idx.notnull <- !sapply(chip.data$tags, is.null)
+chip.data <- lapply(chip.data, ""["", idx.notnull)
+input.data <- lapply(input.data, ""["", idx.notnull)
+```
+
+Do you think this is an okay workaround? You might wanna check in `tag.enrichment.clusters` for `is.null(signal)`. 
+
+Best,
+Johannes
+",your-highness,https://github.com/hms-dbmi/spp/issues/4
+MDU6SXNzdWUxNzA1MDQ0Mzc=,Installation fails on Mac OS X (even for version 1.14),OPEN,2016-08-10T19:57:11Z,2017-01-10T14:25:35Z,,"I tried to install both within R and by the R CMD instruction, but I got the error below. Likewise, I tried to install it under Ubuntu 14.04.2 LTS, and it fails as well. 
+Could you please help? Thanks
+
+[spp-error.txt](https://github.com/hms-dbmi/spp/files/412009/spp-error.txt)
+",cattapre,https://github.com/hms-dbmi/spp/issues/5
+MDU6SXNzdWUxNzMxMTA5Nzg=,write.narrowpeak.binding / columns,OPEN,2016-08-25T04:19:45Z,2016-08-25T23:10:27Z,,"Hi, 
+
+I'm using version spp_1.14.
+I'm trying to understand the function write.narrowpeak.binding.
+The code is as follows:
+bp <- add.broad.peak.regions(chip.data, input.data, bp, window.size = 1000, z.thr = 3)
+##### Write out determined binding peaks using narrowPeak format
+
+write.narrowpeak.binding(bp, paste0(outfile,"".narrowPeak""))
+
+Does the function write.narrowpeak.binding filters some of the broad peaks? as called from the previous function add.broad.peak.regions? 
+
+Another question is could you please give me the header names of the output file for narrowPeak
+I have 10 columns 
+str(narrowpeaks)
+'data.frame':   123317 obs. of  10 variables:
+ $ V1 : Factor w/ 89 levels ""chr1"",""chr1_gl000191_random"",..: 66 48 66 66 66 48 66 66 66 66 ...
+ $ V2 : int  7 32797 7 7 7 32797 7 7 7 7 ...
+ $ V3 : int  15981 127412 15981 15981 15981 127412 15981 15981 15981 15981 ...
+ $ V4 : Factor w/ 1 level ""."": 1 1 1 1 1 1 1 1 1 1 ...
+ $ V5 : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ V6 : Factor w/ 1 level ""."": 1 1 1 1 1 1 1 1 1 1 ...
+ $ V7 : num  2690 2072 2033 2004 2003 ...
+ $ V8 : int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...
+ $ V9 : num  4.88 4.88 4.88 4.88 4.88 ...
+ $ V10: int  14338 50301 5946 13411 1113 55228 6570 7004 14754 136 ...
+
+in comparison to 9 columns in the broadPeaks (using: write.broadpeak.info(broad.clusters, paste0(outfile,"".broadPeak""))
+
+str(broadpeaks)
+'data.frame':   45304 obs. of  9 variables:
+ $ V1: Factor w/ 80 levels ""chr1"",""chr1_gl000191_random"",..: 18 37 26 79 18 25 22 34 35 33 ...
+ $ V2: int  48109886 3054837 48342560 1709365 289562 184278556 46705634 4101231 1201968 2221121 ...
+ $ V3: int  48114823 3058716 48345231 1712527 292422 184281576 46709671 4104549 1204422 2225464 ...
+ $ V4: Factor w/ 1 level ""."": 1 1 1 1 1 1 1 1 1 1 ...
+ $ V5: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ V6: Factor w/ 1 level ""."": 1 1 1 1 1 1 1 1 1 1 ...
+ $ V7: num  8.49 8.49 8.32 8.31 8.29 ...
+ $ V8: int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...
+ $ V9: int  -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 ...
+
+I'm interested to know which columns correspond to start and end position, I assumed it will be 2 and 3 for both cases, but now I think it is not the case. 
+",orchid00,https://github.com/hms-dbmi/spp/issues/6
+MDU6SXNzdWUxNzM2ODA5ODQ=,get.smoothed.tag.density ,OPEN,2016-08-29T01:38:53Z,2016-12-23T00:31:45Z,,"Hi Peter, 
+
+I am having a problem when using the function get.smoothed.tag.density(). I am not sure what is happening, but I guess is something with the data. Is there a way that I can verify I have the correct data? I have used this method with other bam files, all from the same project and aligned with the same parameters. Some of the files worked without complains, but some of them just failed in with this function. From the error message there might be some NA issue. I have checked both chip.data and input.data and I can't find NA's (is.na test gave all false, I have 93 Chromosomal variables hence I didn't copied the output). Any recommendation will be very useful. Thanks, 
+## Paula
+# environment
+
+attached packages:
+[1] spp_1.14       caTools_1.17.1
+# error message.
+
+```
+smoothed.density <-
++                  get.smoothed.tag.density(chip.data, control.tags = input.data,
++                  bandwidth = 200, tag.shift = tag.shift, step = 100)
+```
+
+Error in if (dlength < 1) { : missing value where TRUE/FALSE needed
+In addition: Warning messages:
+1: In min(x) : no non-missing arguments to min; returning Inf
+2: In max(x) : no non-missing arguments to max; returning -Inf
+3: In qpois(pnorm(min.tag.count.z, lower.tail = F), min.tag.count.ratio \*  :
+  NaNs produced
+4: In min(x) : no non-missing arguments to min; returning Inf
+5: In max(x) : no non-missing arguments to max; returning -Inf
+6: In min(x) : no non-missing arguments to min; returning Inf
+7: In max(x) : no non-missing arguments to max; returning -Inf
+8: In storage.mode(rng) <- storage.mode(bw) <- storage.mode(dw) <- storage.mode(step) <- ""integer"" :
+  NAs introduced by coercion
+",orchid00,https://github.com/hms-dbmi/spp/issues/7
+MDU6SXNzdWUyMDA2MDg3MDU=,Ubuntu installation error with 1.14 as well,CLOSED,2017-01-13T11:29:43Z,2017-08-22T00:10:06Z,2017-08-22T00:10:06Z,"I am trying to install spp-1.14 on ubuntu , but I am facing following error :
+
+R CMD INSTALL spp-1.14.tar.gz 
+Warning in untar2(tarfile, files, list, exdir, restore_times) :
+  skipping pax global extended headers
+* installing to library ‘/home/user/R/x86_64-pc-linux-gnu-library/3.3’
+* installing *source* package ‘spp’ ...
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for BZ2_bzDecompressInit in -lbz2... yes
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for grep that handles long lines and -e... /bin/grep
+checking how to run the C++ preprocessor... g++ -E
+checking for a sed that does not truncate output... /bin/sed
+configure: Detected BOOST_ROOT; continuing with --with-boost=/var/lib/dpkg/info/libboost1.58-dev
+checking for Boost headers version >= 1.41.0... no
+configure: error: cannot find Boost headers version >= 1.41.0
+ERROR: configuration failed for package ‘spp’
+* removing ‘/home/user/R/x86_64-pc-linux-gnu-library/3.3/spp’
+",catch-minie,https://github.com/hms-dbmi/spp/issues/11
+MDU6SXNzdWUyMDU2NzUzMDU=,SPP installation problem in Mac,OPEN,2017-02-06T18:54:46Z,2018-02-26T12:33:32Z,,"```
+$  R CMD INSTALL spp-1.14.tar.gz
+Warning in untar2(tarfile, files, list, exdir, restore_times) :
+  skipping pax global extended headers
+* installing to library ‘/Users/dktanwar/Library/R/3.3/library’
+* installing *source* package ‘spp’ ...
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for BZ2_bzDecompressInit in -lbz2... yes
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking how to run the C++ preprocessor... g++ -E
+checking for a sed that does not truncate output... /usr/bin/sed
+configure: Detected BOOST_ROOT; continuing with --with-boost=/Users/dktanwar/Downloads/boost_1_63_0
+checking for Boost headers version >= 1.41.0... /Users/dktanwar/Downloads/boost_1_63_0
+checking for Boost's header version... 1_63
+configure: creating ./config.status
+config.status: creating src/Makevars
+** libs
+clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I/usr/local/include -I/usr/local/include/freetype2 -I/opt/X11/include   -I./ -D_FASTMAP -DMAQ_LONGREADS	  -I/Users/dktanwar/Downloads/boost_1_63_0 -fPIC  -Wall -mtune=core2 -g -O2  -c bed2vector.cpp -o bed2vector.o
+In file included from bed2vector.cpp:1:
+In file included from ./pc.h:4:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/hash_map:213:5: warning: Use of the header <ext/hash_map> is deprecated. Migrate to
+      <unordered_map> [-W#warnings]
+#   warning Use of the header <ext/hash_map> is deprecated.  Migrate to <unordered_map>
+    ^
+bed2vector.cpp:118:25: error: reference to 'hash' is ambiguous
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                        ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+bed2vector.cpp:118:30: error: unexpected type name 'string': expected expression
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                             ^
+bed2vector.cpp:163:29: error: reference to 'hash' is ambiguous
+      hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+bed2vector.cpp:163:34: error: unexpected type name 'string': expected expression
+      hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                 ^
+bed2vector.cpp:165:10: error: use of undeclared identifier 'li'
+      if(li==cind_map.end()) {
+         ^
+bed2vector.cpp:165:14: error: use of undeclared identifier 'cind_map'
+      if(li==cind_map.end()) {
+             ^
+bed2vector.cpp:169:2: error: use of undeclared identifier 'cind_map'
+        cind_map[chr]=cind;
+        ^
+bed2vector.cpp:176:7: error: use of undeclared identifier 'li'
+        cind=li->second;
+             ^
+bed2vector.cpp:254:25: error: reference to 'hash' is ambiguous
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                        ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+bed2vector.cpp:254:30: error: unexpected type name 'string': expected expression
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                             ^
+bed2vector.cpp:296:29: error: reference to 'hash' is ambiguous
+      hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+bed2vector.cpp:296:34: error: unexpected type name 'string': expected expression
+      hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                 ^
+bed2vector.cpp:298:10: error: use of undeclared identifier 'li'
+      if(li==cind_map.end()) {
+         ^
+bed2vector.cpp:298:14: error: use of undeclared identifier 'cind_map'
+      if(li==cind_map.end()) {
+             ^
+bed2vector.cpp:302:2: error: use of undeclared identifier 'cind_map'
+        cind_map[chr]=cind;
+        ^
+bed2vector.cpp:311:7: error: use of undeclared identifier 'li'
+        cind=li->second;
+             ^
+bed2vector.cpp:432:25: error: reference to 'hash' is ambiguous
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                        ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+bed2vector.cpp:432:30: error: unexpected type name 'string': expected expression
+  hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                             ^
+bed2vector.cpp:476:29: error: reference to 'hash' is ambiguous
+      hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/memory:3159:29: note: candidate found by name lookup is 'std::__1::hash'
+template <class _Tp> struct hash;
+                            ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ext/__hash:22:54: note: candidate found by name lookup is '__gnu_cxx::hash'
+template <typename _Tp> struct _LIBCPP_TYPE_VIS_ONLY hash { };
+                                                     ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+1 warning and 20 errors generated.
+make: *** [bed2vector.o] Error 1
+ERROR: compilation failed for package ‘spp’
+* removing ‘/Users/dktanwar/Library/R/3.3/library/spp’
+```",dktanwar,https://github.com/hms-dbmi/spp/issues/12
+MDU6SXNzdWUyMjczMjQ5NDc=,SPP halting - Calls: find.binding.positions ... calculate.enrichment.estimates -> lapply -> FUN -> cbind -> cbind -> data.frame,CLOSED,2017-05-09T10:47:22Z,2017-08-16T09:13:32Z,2017-08-16T09:13:32Z,"I'm running SPP version 1.14.1 and I'm finding that the analysis is crashing with an error message at the peak calling stage.
+
+I'm running the following command on an SGE cluster:
+```
+Rscript /nobackup/shared/cgebm/phantompeakqualtools_v1.14.1/run_spp.R -p=8 -c=$chip -i=$input -fdr=0.1 -odir=$out -savn -savr -savp -savd -rf -tmpdir=$tmp
+```
+
+And I get the following log messages:
+```
+################
+ChIP data: Alignments/Stage7_sorted_alignment.bam 
+Control data: Alignments/Stage7_Input_sorted_alignment.bam 
+strandshift(min): -500 
+strandshift(step): 5 
+strandshift(max) 1500 
+user-defined peak shift NA 
+exclusion(min): 10 
+exclusion(max): NaN 
+num parallel nodes: 8 
+FDR threshold: 0.1 
+NumPeaks Threshold: NA 
+Output Directory: SPP_Results/Stage7 
+narrowPeak output file name: SPP_Results/Stage7/Stage7_sorted_alignment_VS_Stage7_Input_sorted_alignment.narrowPeak 
+regionPeak output file name: SPP_Results/Stage7/Stage7_sorted_alignment_VS_Stage7_Input_sorted_alignment.regionPeak 
+Rdata filename: SPP_Results/Stage7/Stage7_sorted_alignment.Rdata 
+plot pdf filename: SPP_Results/Stage7/Stage7_sorted_alignment.pdf 
+result filename: NA 
+Overwrite files?: TRUE
+
+[1] TRUE
+[1] TRUE
+Loading required package: caTools
+Reading ChIP tagAlign/BAM file Alignments/Stage7_sorted_alignment.bam 
+opened tmp//Stage7_sorted_alignment.tagAlign1a56ac90a43b
+done. read 37338926 fragments
+ChIP data read length 100 
+[1] TRUE
+Reading Control tagAlign/BAM file Alignments/Stage7_Input_sorted_alignment.bam 
+opened tmp//Stage7_Input_sorted_alignment.tagAlign1a56a5daaac27
+done. read 16004893 fragments
+Control data read length 100 
+Calculating peak characteristics
+Minimum cross-correlation value 0.1011277 
+Minimum cross-correlation shift 1500 
+Top 3 cross-correlation values 0.209278267413669 
+Top 3 estimates for fragment length 215 
+Window half size 390 
+Phantom peak location 100 
+Phantom peak Correlation 0.1723559 
+Normalized Strand cross-correlation coefficient (NSC) 2.069446 
+Relative Strand cross-correlation Coefficient (RSC) 1.518366 
+Phantom Peak Quality Tag 2 
+null device 
+          1 
+Removing read stacks
+Finding peaks
+finding background exclusion regions ... done
+determining peaks on provided 1 control datasets:
+using reversed signal for FDR calculations
+bg.weight= 4.654759  excluding systematic background anomalies ... done
+determining peaks on real data:
+bg.weight= 0.2148339  excluding systematic background anomalies ... done
+calculating statistical thresholds
+FDR 0.1 threshold= 2.04324 
+Error in data.frame(..., check.names = FALSE) : 
+  arguments imply differing number of rows: 1, 0
+Calls: find.binding.positions ... calculate.enrichment.estimates -> lapply -> FUN -> cbind -> cbind -> data.frame
+In addition: There were 50 or more warnings (use warnings() to see the first 50)
+Execution halted
+```
+
+I'm struggling to work out why it's halting as I am also analysing 6 other samples in parallel and these have all worked with no errors. I've also tried increasing the amount of RAM available but this doesn't seem to be a limiting factor. Any suggestions welcome!
+
+Thanks!
+
+Sophie ",SophieS9,https://github.com/hms-dbmi/spp/issues/13
+MDU6SXNzdWUyNDAyNjYyODY=,new release?,CLOSED,2017-07-03T21:16:36Z,2017-08-22T00:09:40Z,2017-08-22T00:09:40Z,@pkharchenko would you mind releasing a new version that has the updates at least in https://github.com/hms-dbmi/spp/commit/b252e090b70e0a2308e6d6829fab6f2f7c041291? The current version 1.14 is still broken for BAM files.,daler,https://github.com/hms-dbmi/spp/issues/15
+MDU6SXNzdWUzMzczODg4Njc=,Getting lots of compilation errors on install: error: call of overloaded 'log(double&)' is ambiguous,CLOSED,2018-07-02T06:46:00Z,2018-10-24T21:38:21Z,2018-10-24T21:38:21Z,"```
+In file included from peaks.cpp:6:0:
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:180:11: error: '::cos' has not been declared
+   using ::cos;
+           ^~~
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:218:11: error: '::exp' has not been declared
+   using ::exp;
+           ^~~
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:334:11: error: '::log' has not been declared
+   using ::log;
+           ^~~
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:384:11: error: '::pow' has not been declared
+   using ::pow;
+           ^~~
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:421:11: error: '::sin' has not been declared
+   using ::sin;
+           ^~~
+peaks.cpp: In function 'SEXPREC* expuni_lr(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP)':
+peaks.cpp:345:41: error: call of overloaded 'log(double&)' is ambiguous
+       d_nv[k]=((double)(1-n))*log(lambda)-lambda*((double)(n*(cpos+1)-sx));
+                                         ^
+In file included from peaks.cpp:6:0:
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:338:3: note: candidate: constexpr float std::log(float)
+   log(float __x)
+   ^~~
+/mnt/work/endrebak/software/anaconda/x86_64-conda_cos6-linux-gnu/include/c++/7.2.0/cmath:342:3: note: candidate: constexpr long double std::log(long double)
+   log(long double __x)
+   ^~~
+/mnt/work/endrebak/software/anaconda/lib/R/etc/Makeconf:167: recipe for target 'peaks.o' failed
+make: *** [peaks.o] Error 1
+ERROR: compilation failed for package 'spp'
+* removing '/mnt/work/endrebak/software/anaconda/lib/R/library/spp'
+```",endrebak,https://github.com/hms-dbmi/spp/issues/29
+MDU6SXNzdWUzNzQ0OTc0NDg=,Unable to use window.tag.count,CLOSED,2018-10-26T18:28:33Z,2018-10-26T18:32:05Z,2018-10-26T18:32:05Z,"Hi,
+I'm trying to call the `window.tag.count` function but I receive the following error:
+
+```R
+> library(spp)
+> window.tag.count
+Error: object 'window.tag.count' not found
+```
+
+Is this function available? I see that it is defined [here](https://github.com/hms-dbmi/spp/blob/master/R/zroutines.R).
+
+Thanks,
+Francesco",fbrundu,https://github.com/hms-dbmi/spp/issues/30
+MDU6SXNzdWUzNzQ1MDM4ODA=,Was peaks.c function renamed and how to call it?,CLOSED,2018-10-26T18:46:57Z,2018-10-28T03:41:39Z,2018-10-28T03:41:39Z,"Hi,
+I'm using a legacy code which contains the call to `peaks.c` in the `spp` package.
+I think the code is pointing to the `find_peaks` function exported by [this cpp file](https://github.com/hms-dbmi/spp/blob/692c0b540a0f6257f901259fbb81dd70cfda6a38/src/peaks.cpp). Is it correct?
+How to call this function? I tried to list all the methods, exported and non-exported, but I could not find it.
+
+Thanks,
+Francesco",fbrundu,https://github.com/hms-dbmi/spp/issues/31
+MDU6SXNzdWU0OTg5MzQzOTg=,libstdc++.so.6: version `GLIBCXX_3.4.21' not found,CLOSED,2019-09-26T14:46:51Z,2019-10-13T08:46:20Z,2019-10-13T08:46:20Z,"I am attempting to install spp on Red Hat Enterprise Linux Server release 7.4 (Maipo)
+R version 3.6.0 (2019-04-26) -- ""Planting of a Tree""
+
+using install.packages
+
+compilation goes fine until:
+
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+Error: package or namespace load failed for ‘spp’ in dyn.load(file, DLLpath = DLLpath, ...):
+ unable to load shared object '/lustre/home/user/R/x86_64-pc-linux-gnu-library/3.6/00LOCK-spp/00new/spp/libs/spp.so':
+  /shared/ucl/apps/gcc/4.9.2/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by /lustre/home/user/R/x86_64-pc-linux-gnu-library/3.6/00LOCK-spp/00new/spp/libs/spp.so)
+Error: loading failed
+Execution halted
+ERROR: loading failed
+* removing ‘/lustre/home/user/R/x86_64-pc-linux-gnu-library/3.6/spp’
+
+I do not have root privileges on this system,
+
+any advice?
+
+Many thanks
+
+
+
+",chelauk,https://github.com/hms-dbmi/spp/issues/35
+MDU6SXNzdWU1MTc1MTk3ODg=,have some problem with runmean,CLOSED,2019-11-05T02:55:54Z,2019-11-07T10:30:20Z,2019-11-07T10:30:20Z,"like this
+
+Loading required package: Rcpp
+Error in runmean(cc$y, sbw, alg = ""fast"") : 
+  could not find function ""runmean""
+Execution halted
+
+i don't know how to solve it",fengchuiguo1994,https://github.com/hms-dbmi/spp/issues/36
+MDU6SXNzdWU1MjEzMDg1Njg=,read.bam.tags cannot identify reads strand ,OPEN,2019-11-12T03:36:15Z,2019-11-12T12:11:44Z,,"I'm using CentOs 7 with gcc version 8.3.0 to install spp version 1.6 package. Even though the packages was installed, it reported some warnings. The installation code is shown below
+`Warning in untar2(tarfile, files, list, exdir, restore_times) :
+  skipping pax global extended headers
+* installing to library ‘/home/hyu/R/lib64/R/library’
+* installing *source* package ‘spp’ ...
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for BZ2_bzDecompressInit in -lbz2... yes
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking how to run the C++ preprocessor... g++ -E
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for Boost headers version >= 1.41.0... yes
+checking for Boost's header version... 1_53
+configure: creating ./config.status
+config.status: creating src/Makevars
+** libs
+g++ -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS -std=c++11    -fpic                       -g -O2  -c bed2vector.cpp -o bed2vector.o
+gcc -std=gnu99 -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS  -fpic                       -g -O2  -c cdensum.c -o cdensum.o
+cdensum.c:7:14: warning: extra tokens at end of #undef directive
+ #undef DEBUG 1
+              ^
+gcc -std=gnu99 -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS  -fpic                       -g -O2  -c maqmap.c -o maqmap.o
+g++ -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS -std=c++11    -fpic                       -g -O2  -c maqread.cpp -o maqread.o
+g++ -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS -std=c++11    -fpic                       -g -O2  -c peaks.cpp -o peaks.o
+g++ -I/home/hyu/R/lib64/R/include -DNDEBUG  -I/usr/local/include   -I./ -D_FASTMAP -DMAQ_LONGREADS -std=c++11    -fpic                       -g -O2  -c wdl.cpp -o wdl.o
+g++ -shared -L/home/hyu/R/lib64/R/lib -L/usr/local/lib64 -o spp.so bed2vector.o cdensum.o maqmap.o maqread.o peaks.o w                     dl.o -lbz2 -lz -L/home/hyu/R/lib64/R/lib -lR
+installing to /home/hyu/R/lib64/R/library/spp/libs
+** R
+** preparing package for lazy loading
+** help
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:100: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:101: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:102: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:103: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:105: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/find.binding.positions.Rd:109: unknown macro '\item'
+Warning: bad markup (extra space?) at get.binding.characteristics.Rd:42:13
+Warning: bad markup (extra space?) at get.binding.characteristics.Rd:44:32
+Warning: bad markup (extra space?) at get.binding.characteristics.Rd:48:28
+Warning: bad markup (extra space?) at get.binding.characteristics.Rd:52:22
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:9: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:10: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:11: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:12: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:13: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:14: unknown macro '\item'
+Warning: /tmp/RtmpZaUhQX/R.INSTALL81ee4f48b99d/spp-1.15.1/man/output.binding.results.Rd:15: unknown macro '\item'
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (spp)`
+
+### And then I use the read.bam.tags function to read a bam file. However, tags of the object from the function were all identify as positive strand. The results was showed below:
+
+`
+> which(chip.data[[""tags""]]$chr01 < 0)
+integer(0)`
+
+so how to solve the problem?
+
+Best Regards!
+
+Liquan",Bumblebee5k8m7,https://github.com/hms-dbmi/spp/issues/37
+MDU6SXNzdWU2NDI4MzUyMjQ=,typo in the Installation section,OPEN,2020-06-22T07:41:00Z,2020-06-22T07:41:00Z,,"in the readme, **Installation** section, to install it is written
+`R
+install.pacakges(""spp"", dependencies=TRUE)
+`
+whereas it should be 
+`R
+install.packages(""spp"", dependencies=TRUE)
+`
+",paulahsan,https://github.com/hms-dbmi/spp/issues/38
+MDU6SXNzdWU3NDMzNzcwODk=,What does signal value mean exactly? ,OPEN,2020-11-15T23:55:48Z,2020-11-15T23:55:48Z,,"Hi,
+
+I'm wondering what the signalValue (7th column) in the narrow peak file means exactly? 
+
+The UCSC format FAQ shows that it is a ""measurement of overall (usually, average) enrichment for the region."" Does it mean it is the tag density normalized by the control? Is this value in log2 scale or linear scale? 
+
+Best,
+Yuncong",gengyuncong,https://github.com/hms-dbmi/spp/issues/40
+MDU6SXNzdWU4MjAwODA2Mjg=,paired end read BAM files,OPEN,2021-03-02T14:39:37Z,2021-03-02T14:39:37Z,,"Hi @pkharchenko, we came across an issue with BAM files containing paired end reads.
+The current read.bam.tags() function has an ""if"" conditional statement checking for paired end reads in the input BAM 
+`if(any(bitwAnd(bam$flag,0x1))) { # paired-end data`
+
+However, there are 2 problems with this
+
+1. the code inside the if statement is taking only reads mapped on the positive strand
+`posvi <- which(strm==1);
+    rl <- list(tags=tapply(posvi,bam$rname[posvi],function(ii) as.numeric(bam$pos[ii])),
+               flen=tapply(posvi,bam$rname[posvi],function(ii) as.numeric(abs(bam$isize[ii]))))`
+ and this will not be compliant with cross-correlation and peak calling algorithms which expect instead reads distributed on both strands
+
+2. the code handling quality scores is outside the if statement
+`rl <- c(rl,list(quality=tapply(1:length(bam$pos),bam$rname,function(ii) bam$mapq[ii])))`
+ thus resulting in an output taglist object with twice as many quality scores as compared to actual reads positions 
+
+I'm proposing an alternative function in a pull request.
+The alternative function will randomly pick only one of the reads in the pair when both are aligned, thus resulting in a taglist object with characteristics similar to a single end BAM file. however, I am not sure this was the intended purpose of the original code handling BAM files with paired end reads.
+",fferrari,https://github.com/hms-dbmi/spp/issues/42
+I_kwDOAqRIrs56thcR,version info on bioconda inconsistent with help text,OPEN,2023-12-28T19:21:47Z,2023-12-28T19:26:37Z,,"I am confused about what version of `spp` I have installed through bioconda.
+
+The [bioconda release page](https://bioconda.github.io/recipes/r-spp/README.html) lists versions through 1.16. When I install the latest, I get the following in the `sessionInfo()`;
+
+```R
+> sessionInfo()
+R version 4.3.1 (2023-06-16)
+Platform: x86_64-conda-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.6 LTS
+
+Matrix products: default
+BLAS/LAPACK: /home/oguzkhan/miniconda3/lib/libopenblasp-r0.3.25.so;  LAPACK version 3.11.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Chicago
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] spp_1.16.0  Rcpp_1.0.11
+
+loaded via a namespace (and not attached):
+[1] compiler_4.3.1 tools_4.3.1    parallel_4.3.1 caTools_1.18.2 bitops_1.0-7 
+```
+
+But when I look at `?spp`, I get this:
+
+```R
+...
+Details:
+
+       Package:   spp                       
+       Type:      Package                   
+       Version:   1.11                      
+       Date:      2012-06-20                
+       License:   What license is it under? 
+       LazyLoad:  yes                       
+      
+     See example below for typical processing sequence.y
+...
+```
+
+The github repo doesn't have any releases past `1.15.2`, and [CRAN seems to think that `spp` was removed from the repo](https://cran.r-project.org/web/packages/spp/index.html):
+
+> Package ‘spp’ was removed from the CRAN repository.
+> 
+> Formerly available versions can be obtained from the [archive](https://cran.r-project.org/src/contrib/Archive/spp).
+> 
+> Archived on 2022-11-20 as issues were not corrected despite reminders.
+> 
+> A summary of the most recent check results can be obtained from the [check results archive](https://cran-archive.r-project.org/web/checks/2022/2022-11-20_check_results_spp.html).
+> 
+> Please use the canonical form https://cran.r-project.org/package=spp to link to this page.
+
+the archive does list version 1.16, with warnings on a build on some OS, which implies that there is a version 1.16 repo somewhere -- possibly this isn't the repository of record anymore?",cmatKhan,https://github.com/hms-dbmi/spp/issues/45
+I_kwDOAqRIrs6KFNYz,`find.binding.positions` return empty results for narrow peak call,OPEN,2024-05-25T02:54:22Z,2024-05-25T02:54:22Z,,"Dear author,
+
+I follow the tutorial (https://hbctraining.github.io/Intro-to-ChIPseq/lessons/peak_calling_spp.html) to call narrow peaks from CUT & TAG data, however, the returned results is always empty (0 peaks detected).
+
+When I call broad peaks, there are lots of results.
+
+Would you guide me how to find the issues?
+
+Here is the codes snippet:
+```
+# determine binding positions
+bp <- find.binding.positions(signal.data = chip_filt,
+							 control.data = input_filt,
+							 fdr = use_fdr,
+							 whs = detection.window.halfsize)
+
+print(paste(""detected"", sum(unlist(lapply(bp$npl, function(d) length(d$x)))), ""peaks""))
+```
+
+Best,
+Yang",liuyang2006,https://github.com/hms-dbmi/spp/issues/46
+I_kwDOAqRIrs6KohCh,error after find.binding.position,CLOSED,2024-05-30T14:53:56Z,2024-05-30T15:25:50Z,2024-05-30T15:25:00Z,"Dear Team
+ After running the following command 
+
+bp <- find.binding.positions(signal.data=chip.data,control.data=input.data,fdr=fdr,whs=detection.window.halfsize)
+
+
+I retrieve this error
+
+finding background exclusion regions ... Error in abs(d1[[chr]]) : non-numeric argument to mathematical function
+
+Please could you provide some tips onwhat could cause it?
+thank you 
+Guido",GuidoLeoni,https://github.com/hms-dbmi/spp/issues/47

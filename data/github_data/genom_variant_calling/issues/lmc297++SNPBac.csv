@@ -1,0 +1,25 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2NTY4NDA4ODU=,"Paired End failure? and other Errors, warnings, and output comparisons.",OPEN,2020-07-14T19:18:36Z,2020-07-14T19:51:56Z,,"I installed SNPBac in a conda environment built in python 2.7 and installed all other dependencies as one conda build. (Gubbins would not install with error stating that I am not using the right conda version, I don't need , so I skipped). I am using your pipeline as an easy way to compare BWA-Samtools, Bowtie2-Samtools, BWA-Freebayes, & Bowtie2-Freebayes to pick up variants.
+
+minor issue
+Can't tell if Paired End reads were used because output files have the ""_R1"" and not the _R2""
+
+they were apparently read-in OK in the log.
+
+not sure if related issues:
+
+many instances in BWA - 
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+
+[warning] samtools mpileup option `u` is functional, but deprecated. Please switch to using bcftools mpileup in future.
+
+Warning: Expected at least 2 parts in INFO entry: ID=AC,Number=A,Type=Integer,Description=""Allele count in genotypes for each ALT allele, in the same order as listed"">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description=""Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases"">
+Warning: Expected at least 2 parts in INFO entry: ID=DP4,Number=4,Type=Integer,Description=""Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases"">
+
+Background for using this pipeline:
+
+I have several very closely related E. coli genomes from a genetic experiment. They were sequenced with Illumina paired end. In the past, I did not use an automated pipeline: processed the reads, then used Bowtie2 and Freebayes to ID variants. That process revealed changes in each mutant. I then assembled contigs de-novo over the the putative mutation sites using an adjacent ""seed"" contig using PRICE. This was critical to identify the sequence of an InDel caused by a migrated Insertion Element. Importantly, known difference between our biological genome and the reference genome were picked up, including an inversion, and several SNP/small indels.
+
+Years later - we randomly discovered that one of the mutant strains has an InDel in a critical part that was not detected by the manual pipelines, using BWA/Samtools or Bowtie/Freebayes. Building a contig de novo over the region clearly identifies it and matches the Sanger sequence. We now have suspicion there are additional changes in the other mutants as well and the mapping/variant calling is not picking them up. So, I wanted to revisit illumina mapping variant calling with any modern updates and I chose your pipeline.",shawndy,https://github.com/lmc297/SNPBac/issues/1

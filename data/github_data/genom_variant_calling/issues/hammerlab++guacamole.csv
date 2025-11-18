@@ -1,0 +1,2132 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzMTc3MTkxNw==,make scaladoc generated html available somewhere automatically,CLOSED,2014-04-17T23:38:34Z,2014-09-02T21:16:13Z,2014-06-23T13:09:06Z,"Maybe a git commit hook? Or a github plugin? Jenkins?
+",timodonnell,https://github.com/hammerlab/guacamole/issues/1
+MDU6SXNzdWUzMTc3MTk0NA==,Add unit tests for Pileup,CLOSED,2014-04-17T23:39:24Z,2014-11-04T15:44:56Z,2014-11-04T15:44:56Z,"Especially important to verify the atGreaterLocus method in Pileup.Element
+",timodonnell,https://github.com/hammerlab/guacamole/issues/2
+MDU6SXNzdWUzMTc3MTk1NA==,Add unit tests for SlidingReadWindow,CLOSED,2014-04-17T23:39:46Z,2014-09-02T21:16:13Z,2014-05-30T14:10:51Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/3
+MDU6SXNzdWUzMTc3MjA3OQ==,put together a small dataset to test guacamole on,CLOSED,2014-04-17T23:42:36Z,2014-11-04T15:45:12Z,2014-11-04T15:45:12Z,"Add scripts to the ""scripts"" directory to download the test dataset
+",timodonnell,https://github.com/hammerlab/guacamole/issues/4
+MDU6SXNzdWUzMTc3MjExOA==,README should contain usage instructions,CLOSED,2014-04-17T23:43:36Z,2014-05-02T18:37:49Z,2014-05-02T18:37:49Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/5
+MDU6SXNzdWUzMTc3MjMwOQ==,specifying contigs or loci that don't exist in your BAMs should be an error,CLOSED,2014-04-17T23:48:03Z,2014-06-16T17:03:09Z,2014-06-16T17:03:09Z,"I was saying '-loci chr20:11200000-11300000', but my contig was actually called ""20"". This should be an error.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/6
+MDU6SXNzdWUzMTc3MjQwMw==,enable proper VCF output,CLOSED,2014-04-17T23:49:59Z,2014-11-04T15:44:42Z,2014-11-04T15:44:42Z,"ADAM's VCF output currently gives a directory of VCF fragments. We should support writing out a proper VCF file. Possibly this belongs in ADAM not guacamole.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/7
+MDU6SXNzdWUzMTc3MjQ5Mw==,buffer overflow when calling variants on wgs_b37_20.bam.adam,CLOSED,2014-04-17T23:52:09Z,2014-05-06T20:50:55Z,2014-05-06T20:50:55Z,"This bam is from the gatk ""mini bundle"" at http://gatkforums.broadinstitute.org/discussion/2936/tutorial-materials-july-2013
+
+Running
+
+```
+tim@peach ~/sinai/git/guacamole]$ scripts/guacamole ~/sinai/data/adam/wgs_b37_20.bam.adam OUT.vcf.adam -loci 20:11200000-11300000
+```
+
+Gives this error:
+
+```
+2014-04-17 19:47:08.516 java[22529:d07] Unable to load realm info from SCDynamicStore
+2014-04-17 19:47:08 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+--> Starting.
+SLF4J: Failed to load class ""org.slf4j.impl.StaticLoggerBinder"".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+--> Loaded 0 reference fragments and 7807420 reads
+
+
+--> Filtered: 7807420 reads total -> 935409 mapped and relevant reads
+2014-04-17 19:50:09 WARN  TaskSetManager:62 - Lost TID 282 (task 7.0:2)
+2014-04-17 19:50:09 ERROR Executor:87 - Exception in task ID 282
+com.esotericsoftware.kryo.KryoException: Buffer overflow. Available: 0, required: 752
+        at com.esotericsoftware.kryo.io.Output.require(Output.java:138)
+        at com.esotericsoftware.kryo.io.Output.writeBytes(Output.java:220)
+        at com.esotericsoftware.kryo.io.Output.write(Output.java:183)
+        at org.bdgenomics.adam.serialization.AvroSerializer.write(ADAMKryoRegistrator.scala:50)
+        at org.bdgenomics.adam.serialization.AvroSerializer.write(ADAMKryoRegistrator.scala:37)
+        at com.esotericsoftware.kryo.Kryo.writeClassAndObject(Kryo.java:568)
+        at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.write(DefaultArraySerializers.java:318)
+        at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.write(DefaultArraySerializers.java:293)
+        at com.esotericsoftware.kryo.Kryo.writeClassAndObject(Kryo.java:568)
+        at org.apache.spark.serializer.KryoSerializerInstance.serialize(KryoSerializer.scala:124)
+        at org.apache.spark.executor.Executor$TaskRunner$$anonfun$run$1.apply$mcV$sp(Executor.scala:221)
+        at org.apache.spark.deploy.SparkHadoopUtil.runAsUser(SparkHadoopUtil.scala:45)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:176)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:744)
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/8
+MDU6SXNzdWUzMTc3MjcxNg==,better tests for LociSet,CLOSED,2014-04-17T23:57:14Z,2014-04-18T18:52:07Z,2014-04-18T18:52:07Z,"There are probably some off by one errors in the all the interval logic
+",timodonnell,https://github.com/hammerlab/guacamole/issues/9
+MDU6SXNzdWUzMTgwMjE5MA==,support parallelism > 0 when calling variants,CLOSED,2014-04-18T14:38:50Z,2014-05-06T20:51:24Z,2014-05-06T20:51:24Z,"Currently we collect the reads to the spark master and call variants locally. We should implement calling variants on the spark workers. For now the distributed implementation doesn't have to be super efficient -- we just need to convince ourselves that it will be possible to do this efficiently later
+",timodonnell,https://github.com/hammerlab/guacamole/issues/10
+MDU6SXNzdWUzMTgwMjMyNg==,support for ADAM format variant output,CLOSED,2014-04-18T14:41:09Z,2014-04-18T20:11:01Z,2014-04-18T20:11:01Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/11
+MDU6SXNzdWUzMjExNTYxNw==,Implement MuTect variant caller,CLOSED,2014-04-24T02:22:48Z,2014-05-30T14:13:31Z,2014-05-30T14:13:31Z,"http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3833702/
+",nealsid,https://github.com/hammerlab/guacamole/issues/13
+MDU6SXNzdWUzMjE5MDg3Nw==,Handle clipped reads,CLOSED,2014-04-24T22:10:26Z,2014-11-04T15:44:15Z,2014-11-04T15:44:15Z,"All the read indexing logic in Pileup and SlidingWindow assume that the read's ""start"" field indicates where in the reference genome the first base of the read's sequence aligns to. It seems this may not be the whole story though: when read's are soft clipped, is the read's start then set to the index of the first non-clipped base? Need to write a Pileup test that includes soft clipped reads and fix the code if necessary.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/14
+MDU6SXNzdWUzMjI2MjI4NQ==,Handle multi-allelic variants in the Threshold Variant Caller,CLOSED,2014-04-25T20:03:27Z,2014-05-08T20:18:39Z,2014-05-08T20:18:39Z,"Now that https://github.com/bigdatagenomics/adam/pull/222 is in ADAM, we have the power.
+",hammer,https://github.com/hammerlab/guacamole/issues/15
+MDU6SXNzdWUzMjMwNDgwMg==,SlidingWindow issue with of takeWhile on sortedReads,CLOSED,2014-04-27T05:25:06Z,2014-04-29T01:52:01Z,2014-04-29T01:52:01Z,"The use of takeWhile on sortedReads iterator seems to cause unexpected behavior. https://github.com/hammerlab/guacamole/blob/master/guacamole-core/src/main/scala/org/bdgenomics/guacamole/SlidingReadWindow.scala#L75
+
+From the scala docs it seems this is not recommended - 
+
+""Reuse: After calling this method, one should discard the iterator it was called on, and use only the iterator that was returned. Using the old iterator is undefined, subject to change, and may result in changes to the new iterator as well.""
+http://www.scala-lang.org/api/2.10.4/index.html#scala.collection.Iterator
+",arahuja,https://github.com/hammerlab/guacamole/issues/19
+MDU6SXNzdWUzMjM5NTg3MQ==,Make ADT for isMatch/isDeletion/isInsertion,CLOSED,2014-04-28T20:32:55Z,2014-05-02T18:37:23Z,2014-05-02T18:37:23Z,"Instead of having boolean flags for the read's classification with separate state, let's combine that into a single datatype IsMatch(seq) | Deletion | Insertion(seq) | etc...
+",iskandr,https://github.com/hammerlab/guacamole/issues/21
+MDU6SXNzdWUzMjQ0MDY1Nw==,add NOTICE file referred to by our header,CLOSED,2014-04-29T12:27:50Z,2014-11-04T23:12:23Z,2014-11-04T23:12:23Z,"Our header on every file mentions a NOTICE file, but we don't have one.
+
+@hammer , if you have one we should use, let us know. thanks!
+",timodonnell,https://github.com/hammerlab/guacamole/issues/22
+MDU6SXNzdWUzMjQ3MzgwNw==,possible off-by-one locus-check (Pileup.Element),CLOSED,2014-04-29T18:49:06Z,2014-04-29T21:55:16Z,2014-04-29T19:55:08Z,"This line
+https://github.com/hammerlab/guacamole/blob/master/guacamole-core/src/main/scala/org/bdgenomics/guacamole/Pileup.scala#L242
+does:
+
+``` scala
+assume(locus <= read.record.end.get)
+```
+
+but RichADAMRecord says that it is “exclusive”
+https://github.com/bigdatagenomics/adam/blob/master/adam-core/src/main/scala/org/bdgenomics/adam/rich/RichADAMRecord.scala#L77
+
+``` scala
+  // Returns the exclusive end position if the read is mapped, None otherwise
+  lazy val end: Option[Long] = {
+```
+
+So I guess, we need strict comparison (or better naming in Adam?)
+",smondet,https://github.com/hammerlab/guacamole/issues/23
+MDU6SXNzdWUzMjU4MDk1NA==,Handle all CIGAR operators,CLOSED,2014-04-30T22:43:05Z,2014-05-08T21:54:15Z,2014-05-08T21:54:15Z,"Right now only M, I, D are supported.
+
+The test at [PileupSuite:170](https://github.com/hammerlab/guacamole/blob/pileup_testing_i2_seb/guacamole-core/src/test/scala/org/bdgenomics/guacamole/PileupSuite.scala#L170) (branch `pileup_testing_i2_seb`)
+fails with:
+
+```
+Not a match, mismatch, deletion, or insertion: =
+```
+
+See also http://picard.sourceforge.net/javadoc/net/sf/samtools/CigarOperator.html
+",smondet,https://github.com/hammerlab/guacamole/issues/30
+MDU6SXNzdWUzMjYzMDIyMA==,add tests for LociMap,CLOSED,2014-05-01T17:19:14Z,2014-05-06T20:51:45Z,2014-05-06T20:51:45Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/32
+MDU6SXNzdWUzMjYzMDI3Mg==,write Kryo serializer for LociMap,CLOSED,2014-05-01T17:20:01Z,2014-05-08T21:11:00Z,2014-05-08T21:11:00Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/33
+MDU6SXNzdWUzMjYzMDMwOA==,test DistributedUtil.partitionLociUniformlyAmongTasks,CLOSED,2014-05-01T17:20:41Z,2014-05-08T21:10:07Z,2014-05-08T21:10:07Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/34
+MDU6SXNzdWUzMjYzMDMzNg==,test DistributedUtil.windowTaskFlatMap,CLOSED,2014-05-01T17:21:03Z,2014-05-06T16:06:57Z,2014-05-02T18:52:33Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/35
+MDU6SXNzdWUzMjcxNTUyOA==,fix hang on chrM bam when parallelism=3,CLOSED,2014-05-02T18:46:38Z,2014-05-06T20:51:09Z,2014-05-06T20:51:09Z,"This invocation hangs: 
+
+```
+scripts/guacamole threshold     -loci chrM:2000-2050     -reads guacamole-core/src/test/resources/chrM.sorted.bam     -threshold 0     -out /tmp/OUT.gt.adam     -spark_kryo_buffer_size 64 -parallelism 3
+```
+
+but parallelism != 3 works (i.e. makes it to the Kryo error)
+",timodonnell,https://github.com/hammerlab/guacamole/issues/39
+MDU6SXNzdWUzMjcxNTY1NQ==,fix hang after Guacamole has run,CLOSED,2014-05-02T18:48:32Z,2014-05-05T20:47:05Z,2014-05-05T20:47:05Z,"With parallelism=0, Guacamole seems to run successfully, but then we have a hang at the end:
+
+```
+threshold     -loci chrM:2000-2050     -reads guacamole-core/src/test/resources/chrM.sorted.bam     -threshold 0     -out /tmp/OUT.gt.adam     -spark_kryo_buffer_size 64 -parallelism 0
+
+--> [Fri May 02 14:46:44 EDT 2014]: Guacamole starting.
+
+2014-05-02 14:46:45.971 java[12456:d07] Unable to load realm info from SCDynamicStore
+
+2014-05-02 14:46:45 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2014-05-02 14:46:46 WARN  ADAMContext:283 - Predicate is ignored when loading a BAM file
+
+--> [3.94 sec. later]: Loaded 38461 reads.
+--> [0.56 sec. later]: Filtered to 38461 mapped non-duplicate reads
+--> [0.05 sec. later]: Considering 50 loci across 1 contig(s): chrM:2000-2050
+--> [0.00 sec. later]: Collecting reads onto spark master.
+--> [2.29 sec. later]: Done collecting reads.
+--> [1.03 sec. later]: Writing 50 genotypes to: /tmp/OUT.gt.adam.
+SLF4J: Failed to load class ""org.slf4j.impl.StaticLoggerBinder"".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+--> [1.70 sec. later]: Done writing.
+
+< ... hangs here ... >
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/40
+MDU6SXNzdWUzMjcxNTk1NQ==,"test DistributedUtil.{pileupFlatMap, windowFlatMap, windowTaskFlatmap}",CLOSED,2014-05-02T18:52:11Z,2014-05-30T14:14:40Z,2014-05-30T14:14:40Z,"Should probably add a DistributedUtilSuite for these.
+
+Should test running on loci with multiple contigs and a wide range of tasks numbers (e.g. more tasks than loci, 1 task total)
+",timodonnell,https://github.com/hammerlab/guacamole/issues/41
+MDU6SXNzdWUzMjkwODg1Mg==,push down filtering by locus into a predicate,OPEN,2014-05-06T16:26:58Z,2015-06-04T13:55:21Z,,"When calling variants at only a subset of loci, it would be great if we could push that into an ADAM predicate to avoid loading the whole dataset. This would mean writing a predicate that takes a LociSet and a window size, and filters overlapping reads. It would also involve some refactoring, including the loadReads() and loci() functions in Common, since right now the filtering is done separately after loading. 
+",timodonnell,https://github.com/hammerlab/guacamole/issues/48
+MDU6SXNzdWUzMzEyNDE1Ng==,load only the ADAMRecord fields actually used for variant calling,CLOSED,2014-05-08T21:08:59Z,2014-11-04T15:43:51Z,2014-11-04T15:43:51Z,"Not urgent. At some point we'll want to stop loading all ADAMRecord fields, and instead use parquet projections to load only the fields we actually need.
+
+I'm guessing the performance advantage of this for file loading IO will be less important than the memory and network usage improvements.
+
+We'll have to think about how to do this. We may want to have a way for things to register what ADAMRecord fields they care about.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/56
+MDU6SXNzdWUzMzE4NTEyOQ==,"Pileup should keep inserts that occur between reference (x, y) at pos x",CLOSED,2014-05-09T16:06:16Z,2014-05-23T03:54:35Z,2014-05-23T03:54:35Z,"To explain further:
+Reference: starting at locus 1
+TCGATCGA
+Read:
+TCGA_CCC_TCGA, 4M3I4M
+
+The 3bp insertion is currently considered to be at reference locus 5 and would be evaluated with the other T's at position 5 as opposed to the A's position 4.  Ideally, we'd like to present the insertion with the previous reference base.
+
+Also, currently we create 3 Pileup.Elements, at locus 5, 6, 7 each with readBase CCC, CC, CT.  Clearly the last one is incorrect (or has some odd interpretation) but in the current variant calling model this should be a single pileup element
+
+However this probably requires some more discussion as there are many tests that explicitly rely on this functionality :https://github.com/hammerlab/guacamole/blob/master/guacamole-core/src/test/scala/org/bdgenomics/guacamole/PileupSuite.scala#L115-L123
+",arahuja,https://github.com/hammerlab/guacamole/issues/58
+MDU6SXNzdWUzMzYwODM1MQ==,partition loci by read depth instead of uniformly to reduce skew,CLOSED,2014-05-15T17:46:37Z,2014-05-16T18:10:11Z,2014-05-16T18:10:11Z,"I'm working on this now
+",timodonnell,https://github.com/hammerlab/guacamole/issues/63
+MDU6SXNzdWUzNDAzNTk3Mg==,Multiple output variants functions,CLOSED,2014-05-21T23:15:38Z,2014-05-30T16:35:35Z,2014-05-30T16:35:35Z,"We have 
+
+``` scala
+def writeVariants(args: Arguments.Output, genotypes: RDD[ADAMGenotype]): Unit = 
+```
+
+and
+
+``` scala
+def writeVariantsToPath(path: String, args: ParquetArgs, genotypes: RDD[ADAMGenotype]): Unit = {
+```
+
+Do we need both?
+",arahuja,https://github.com/hammerlab/guacamole/issues/77
+MDU6SXNzdWUzNDExMjYwNA==,get rid of guacamole-core,CLOSED,2014-05-22T19:13:23Z,2014-05-23T20:38:41Z,2014-05-23T20:38:41Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/78
+MDU6SXNzdWUzNDE4MzAyMA==,support loading Reads in ADAM format,CLOSED,2014-05-23T15:00:53Z,2014-11-25T18:34:07Z,2014-11-25T18:34:07Z,"With the introduction of our own Read class, we lost support for reading adam data. That should be added. We can just load the adam data with ADAM and then have a simple function that converts each adam record to a guacamole Read.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/80
+MDU6SXNzdWUzNDE4MzM3Ng==,time how long it takes to do the actual variant calling in threshold caller,CLOSED,2014-05-23T15:04:29Z,2015-06-04T21:15:51Z,2015-06-04T21:15:51Z,"We need to know how long we're spending doing actual variant calling ( threshold.callVariantsAtLocus) vs. Spark data shuffling, etc. One way to do this would be to log a message in callVariantsAtLocus every X loci, and aggregate those logs. Another way would be to rig up a profiler. 
+",timodonnell,https://github.com/hammerlab/guacamole/issues/81
+MDU6SXNzdWUzNDUxMDQ1Mg==,Deletion variants have blank variant allele,CLOSED,2014-05-28T21:52:26Z,2014-09-17T14:05:59Z,2014-09-17T14:05:59Z,"Because of way deletions are currently handled in pileups they have blank variant allele and appear as below:
+
+variant:
+.contig:
+..contigName = 20
+.position = 16866006
+.referenceAllele = T
+.variantAllele =
+
+This breaks output to VCF as the variantAllele is null and makes it difficult to compute concordance as this is not the usual representation of a deletion.
+",arahuja,https://github.com/hammerlab/guacamole/issues/83
+MDU6SXNzdWUzNDY0ODAzOA==,nicer stdout representation of variants called,CLOSED,2014-05-30T14:09:36Z,2014-06-11T22:57:33Z,2014-06-11T22:57:33Z,"If you omit the -out argument, you currently get a bunch of JSON blobs printed to stdout giving the genotypes called. It'd be nice if that were pretty printed.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/88
+MDU6SXNzdWUzNDg4MTcwNA==,"write Kryo serializer for {Mapped,UnMapped}Read",CLOSED,2014-06-03T16:44:37Z,2014-06-03T20:27:15Z,2014-06-03T20:27:15Z,"This is the first thing Spark folks always suggest doing when hitting issues, so I think we should have it done when Sandy visits.
+
+Working on this now.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/92
+MDU6SXNzdWUzNTYxOTI0MQ==,"SomaticThresholdVariantCallerSuite fails with a ""duplicate allele"" error (in the refactoring-and-optimizations branch)",CLOSED,2014-06-12T20:15:42Z,2014-06-13T13:23:30Z,2014-06-13T13:23:30Z,"java.lang.IllegalArgumentException: Duplicate allele added to VariantContext: A
+    at org.broadinstitute.variant.variantcontext.VariantContext.makeAlleles(VariantContext.java:1391)
+    at org.broadinstitute.variant.variantcontext.VariantContext.<init>(VariantContext.java:356)
+    at org.broadinstitute.variant.variantcontext.VariantContextBuilder.make(VariantContextBuilder.java:493)
+    at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:251)
+    at org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$1.apply(ADAMVariationContext.scala:80)
+    at org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$1.apply(ADAMVariationContext.scala:78)
+    at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+    at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+    at org.apache.spark.rdd.PairRDDFunctions.org$apache$spark$rdd$PairRDDFunctions$$writeShard$1(PairRDDFunctions.scala:632)
+    at org.apache.spark.rdd.PairRDDFunctions$$anonfun$9.apply(PairRDDFunctions.scala:648)
+    at org.apache.spark.rdd.PairRDDFunctions$$anonfun$9.apply(PairRDDFunctions.scala:648)
+...
+",tavinathanson,https://github.com/hammerlab/guacamole/issues/103
+MDU6SXNzdWUzNTgxOTI3MA==,Improve command line argument handling,CLOSED,2014-06-16T17:45:59Z,2016-08-15T22:11:38Z,2016-08-15T22:11:38Z,"The Args4j (inherited from ADAM) library seems pretty clunky. We should figure out how to address some of these annoyances with it or switch to a better library if there is one (needs investigating):
+- The single dash (-) arguments feel ancient. Can it be made to work with GNU style arguments?
+- Args4j sorts all the arguments alphabetically, so we lose the logical grouping of arguments, and end up with e.g. obscure things at the top.
+- Args4j truncates the help message strings for the arguments, so we can't have detailed descriptions.
+- Need to be able to have a general usage statement / example at the top of the help output for a command instead of just the plain Args4j argument summary.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/106
+MDU6SXNzdWUzNzY3Mzg1NQ==,"Guacamole on Demeter omits ""FORMAT"" column name, ""somatic"" column",CLOSED,2014-07-11T16:05:21Z,2014-09-17T14:07:22Z,2014-09-17T14:06:47Z,"When attempting to load a guacamole-generated vcf into IGV, I get this error:
+
+![](http://cl.ly/image/1h0o171z1A1s/Screen%20Shot%202014-06-27%20at%2012.28.48%20PM.png)
+
+@arahuja said: ""For some reason if you run it all locally all the field seems properly filled... but when run on the cluster, the GT and INFO fields come out empty""
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/116
+MDU6SXNzdWUzODg5NTQyMw==,mdTag serialization issue,CLOSED,2014-07-28T14:30:07Z,2014-07-31T15:37:31Z,2014-07-31T15:37:31Z,"Using the windowFlatMap I see the the following error when processing reads:
+
+14/07/28 09:54:26 WARN TaskSetManager: Loss was due to java.lang.UnsupportedOperationException
+java.lang.UnsupportedOperationException: empty.reduceLeft
+        at scala.collection.LinearSeqOptimized$class.reduceLeft(LinearSeqOptimized.scala:124)
+        at scala.collection.immutable.List.reduceLeft(List.scala:84)
+        at scala.collection.TraversableOnce$class.reduce(TraversableOnce.scala:195)
+        at scala.collection.AbstractTraversable.reduce(Traversable.scala:105)
+        at org.bdgenomics.adam.util.MdTag.start(MdTag.scala:292)
+        at org.bdgenomics.adam.util.MdTag.toString(MdTag.scala:392)
+        at org.bdgenomics.guacamole.MappedReadSerializer.write(Read.scala:432)
+        at org.bdgenomics.guacamole.MappedReadSerializer.write(Read.scala:419)
+        at com.esotericsoftware.kryo.Kryo.writeClassAndObject(Kryo.java:568)
+        at com.twitter.chill.Tuple2Serializer.write(TupleSerializers.scala:38)
+        at com.twitter.chill.Tuple2Serializer.write(TupleSerializers.scala:34)
+        at com.esotericsoftware.kryo.Kryo.writeClassAndObject(Kryo.java:568)
+        at org.apache.spark.serializer.KryoSerializationStream.writeObject(KryoSerializer.scala:101)
+        at org.apache.spark.storage.DiskBlockObjectWriter.write(BlockObjectWriter.scala:179)
+        at org.apache.spark.scheduler.ShuffleMapTask$$anonfun$runTask$1.apply(ShuffleMapTask.scala:161)
+        at org.apache.spark.scheduler.ShuffleMapTask$$anonfun$runTask$1.apply(ShuffleMapTask.scala:158)
+        at scala.collection.Iterator$class.foreach(Iterator.scala:727)
+        at scala.collection.AbstractIterator.foreach(Iterator.scala:1157)
+        at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:158)
+        at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+        at org.apache.spark.scheduler.Task.run(Task.scala:51)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:187)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:744)
+",arahuja,https://github.com/hammerlab/guacamole/issues/119
+MDU6SXNzdWUzODkyOTUxNg==,Emit simple INDELs,CLOSED,2014-07-28T20:29:08Z,2014-09-17T14:06:13Z,2014-09-17T14:06:13Z,"Some data model changes to support INDELs:
+- assign locus immediately preceding deletions
+- change data model to support [many reference base pairs] --> [many sample base pairs]
+
+Add calling of INDELs to some guac caller TBD, possibly BayesianLikelihood?
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/120
+MDU6SXNzdWUzODkzMDcwMQ==,Investigate possible microbenchmark utilities,OPEN,2014-07-28T20:40:56Z,2016-08-25T20:04:46Z,,"Possible contenders:
+
+1) Scalameter http://scalameter.github.io/
+Used by: http://scala-miniboxing.org/, but not sure how to connect to maven/build process
+
+2) Google Caliper  https://code.google.com/p/caliper/
+Java, used by: https://github.com/scalanlp/breeze
+",arahuja,https://github.com/hammerlab/guacamole/issues/121
+MDU6SXNzdWUzODkzMTI1NA==,"Make Guac runs hermetic / reproducable, logged in Cycledash",CLOSED,2014-07-28T20:46:19Z,2014-11-17T22:04:56Z,2014-11-17T22:04:56Z,"Guacamole run script should snapshot:
+- everything relevant about local repo:
+  - git SHA
+  - some representation of local/uncommitted changes
+  - better: create a dummy commit that is pushed to origin (not necessarily on any branch, but retrievable later (assuming github doesn't automatically `git prune`))
+  - some representation of host/user the run is occurring on.
+- some or all cmdline args
+  - will probably have to be aware of specific guac params, but that is OK
+  - hashes of input files
+
+All of this should be logged in Cycledash.
+
+Additionally, evaluation script runs should hook into Cycledash and be joinable on the guac-repo-states that generated the data that they're run on.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/122
+MDU6SXNzdWUzODkzMjI0OQ==,"Incorporate ""strand bias"" in SNV calling",CLOSED,2014-07-28T20:55:40Z,2016-04-11T15:02:58Z,2016-04-11T15:02:58Z,"@arahuja is working on being the right amount of suspicious about variants that e.g. only appear on one strand as potentially being caused by errors sequencing that strand.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/123
+MDU6SXNzdWUzODkzMzM4Mw==,Apply assembly algorithms to variant-heavy regions,OPEN,2014-07-28T21:06:40Z,2016-08-25T19:56:12Z,,"(summarizing @arahuja on the subject)
+
+**Simple Version**
+When many SNVs are found close together, consider dropping them under the assumption that something may have been wrong with the reads there. @arahuja has a PoC of this.
+
+**Complex Version**
+In regions where SNVs/SVs are found, run more advanced assembly algorithms, e.g. Heng Li's [fermi](https://github.com/lh3/fermi), [contrail](http://sourceforge.net/projects/contrail-bio/), other de-Bruijn's-based ones.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/124
+MDU6SXNzdWUzODkzNDE1NA==,Emit Structural Variants,CLOSED,2014-07-28T21:14:49Z,2016-08-24T17:06:14Z,2016-08-24T17:06:14Z,"(summary of @arahuja enumerating types of SVs we are interested in, for reference):
+- translocations
+  - should be straightforward using paired reads: if the pair ended up on another chromosome, you almost definitely have a translocation.
+- inversions
+  - paired reads that are both from the same strand?
+  - how can this happen?
+- duplication
+  - @arahuja gave an example of this as being when the positive strand is mapped _after_ the negative strand (and often there being no read depth immediately before the loci where the negative strand is mapped), meaning that the positive-strand-reads were possibly erroneously mapped to the wrong locus.
+- copy-number variants
+  - some confusion on what this means, whether it is an overloaded term:
+    - wrong number of chromosomes?
+    - ""repitition errors"", where a segment is repeated the wrong number of times
+
+@arahuja seemed to think that we might be able to do a first pass of SVs _before_ a [first-pass of simple INDELs](https://github.com/hammerlab/guacamole/issues/120), since the leading submissions seem to be doing complex things for INDELs but there is a fair amount of low-hanging-fruit in SVs.
+
+This is a nice to have for synth4 submit on Saturday, August 2.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/125
+MDU6SXNzdWUzODkzNDY2Nw==,maximum read depth filter,CLOSED,2014-07-28T21:19:02Z,2014-07-31T19:37:39Z,2014-07-31T19:37:39Z,"From [Towards Better Understanding of Artifacts in Variant
+Calling from High-Coverage Samples
+](http://arxiv.org/pdf/1404.0929v1.pdf) 
+
+""On our data with depth d ≈ 50, a maximum depth threshold between d + 3√d and d + 4√d removes many false positives with little effect on the sensitivity. These false positives are mostly caused by copy number variations (CNVs) or paralogous sequences not present in the human reference genome.""
+",arahuja,https://github.com/hammerlab/guacamole/issues/126
+MDU6SXNzdWUzOTIwMDM5Mw==,Structural variant output,CLOSED,2014-07-31T14:36:30Z,2016-08-24T17:06:18Z,2016-08-24T17:06:18Z,"For structural variants as in #130 we need to output the following in the VCF file:
+
+In the alternate field:
+- type of variant: `<DUP>, <INV>, <DEL> or <INS>`
+
+In the info field:
+- CIPOS, confidence interval around start position
+- CIEND, confidence interval around end position
+- SVTYPE, the type in the alternate fields
+- END, end position of the variant
+- SVLEN, length of the variant
+
+See http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/VCF%20(Variant%20Call%20Format)%20version%204.0/encoding-structural-variants for more information
+",arahuja,https://github.com/hammerlab/guacamole/issues/131
+MDU6SXNzdWUzOTUyNjcwMQ==,QualityAlignedReadsFilter is wasteful and hurts read/task distribution,CLOSED,2014-08-05T14:51:30Z,2016-10-06T18:09:34Z,2016-10-06T18:09:34Z,"The current QualityAlignedReadsFilter removes all reads below some alignment quality threshold, but does so on a pileup by pileup basis.  We could remove all of these reads upfront.  This would help avoid pileups we will skip anyways and help with read distribution across tasks (as we would have a more accurate count of reads that will actually be processed)
+
+The caveat is, even if we remove these reads, we use these reads to compute a measure of complexity - % reads below some alignment quality defines complexity currently.  But this filter hasn't proved to be that useful, and can probably be replaced with something else.
+",arahuja,https://github.com/hammerlab/guacamole/issues/135
+MDU6SXNzdWUzOTUzMDc1Mg==,Ensure paired read information in type-safe way,CLOSED,2014-08-05T15:29:25Z,2015-07-22T19:59:50Z,2015-07-22T19:59:50Z,"Many of pair information fields are stored in options or with flags letting us know the read is paired - can we improve that cc @ryan-williams to expand.
+",arahuja,https://github.com/hammerlab/guacamole/issues/136
+MDU6SXNzdWUzOTUzMDg3Ng==,Make test SAM file generation reproducible and document how/why each was created,OPEN,2014-08-05T15:30:46Z,2016-08-25T20:04:35Z,,"We have many SAM files that used as gold sets for variant calling
+1. Document/Log how each SAM file was created
+2. Make this process reproducible
+",arahuja,https://github.com/hammerlab/guacamole/issues/137
+MDU6SXNzdWU0MDMwMzM0NA==,How much of an optimization is filterLociWhoseContigsHaveNoRegions?,CLOSED,2014-08-14T21:49:01Z,2014-09-05T20:56:08Z,2014-09-05T20:56:08Z,"`filterLociWhoseContigsHaveNoRegions` has as its first command 
+
+``` scala
+val contigsAndCounts = regions.map(_.referenceContig).countByValue.toMap.withDefaultValue(0L)
+```
+
+This forces a full pass through the reads it seems and can take 10+ minutes on two large bams files (170 GB each)
+
+It seems at least we would only want to count the contigs specified in the lociSet, something like
+
+``` scala
+    val contigsInLociSet = loci.contigs.toSet
+    val contigsAndCounts = regions.map(_.referenceContig).filter(contigsInLociSet.contains(_)).countByValue.toMap.withDefaultValue(0L)
+```
+
+Thoughts? cc @timodonnell @ryan-williams 
+
+@timodonnell Any background on why this was added or if this wasn't any issue then and is a change in how Spark is processing this?
+",arahuja,https://github.com/hammerlab/guacamole/issues/140
+MDU6SXNzdWU0MDM1NTIwMQ==,Avoid recreating the reference at every pileup,CLOSED,2014-08-15T15:07:43Z,2014-12-21T04:46:36Z,2014-12-21T04:46:36Z,"Currently, for every pileup, we take the first read, recreate the reference the covers that entire read and then take referenceBase at the current read offset
+
+``` scala
+  lazy val referenceBase: Byte = {
+    val reference = head.read.mdTag.get.getReference(Bases.basesToString(head.read.sequence), head.read.cigar, head.read.start)
+    reference.charAt((head.locus - head.read.start).toInt).toByte
+  }
+```
+
+This is performed at every pileup, but the created reference which spans 100+ bases (and pileups) is not reused.
+",arahuja,https://github.com/hammerlab/guacamole/issues/141
+MDU6SXNzdWU0MDUyODA4MA==,Prepare for upgrade to ADAM 0.13 / bdg-formats 0.2.0,CLOSED,2014-08-18T20:28:29Z,2014-09-03T22:51:49Z,2014-09-03T22:51:49Z,"[bdg-formats 0.2.0](https://github.com/bigdatagenomics/bdg-formats/tree/bdg-formats-0.2.0) involves [various ""ADAM"" prefixes getting dropped](https://github.com/bigdatagenomics/bdg-formats/commit/f71ebdd77f98fb32b4736a14cb307fac21c8c85a), among other things, so guac fails to compile with a straight version bump.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/144
+MDU6SXNzdWU0MDc2NDY5Nw==,Make guacamole.jar smaller,CLOSED,2014-08-21T01:31:34Z,2015-05-26T15:56:02Z,2015-05-26T15:56:02Z,,hammer,https://github.com/hammerlab/guacamole/issues/151
+MDU6SXNzdWU0MzEzNTM2OA==,Runs page and Examine page show different precision/recall/f1,CLOSED,2014-09-18T13:56:06Z,2014-09-18T13:56:51Z,2014-09-18T13:56:51Z,"Here is the last result on the runs page:
+![image](https://cloud.githubusercontent.com/assets/455755/4320915/7968446a-3f3b-11e4-8bfd-b7c87e909a7d.png)
+
+Examing the same file shows all false variants:
+![image](https://cloud.githubusercontent.com/assets/455755/4320921/87580f06-3f3b-11e4-929e-bcb941111644.png)
+",arahuja,https://github.com/hammerlab/guacamole/issues/180
+MDU6SXNzdWU0Mzk0NzU0Ng==,SomaticThresholdVariantCallerSuite fails when run after DistributedUtilSuite,CLOSED,2014-09-25T17:55:44Z,2015-10-29T19:01:49Z,2015-10-29T19:01:48Z,"This command passes:
+
+```
+mvn -Dsuites=""*SomaticThresholdVariantCallerSuite,*DistributedUtilSuite"" test
+```
+
+This command sees `SomaticThresholdVariantCallerSuite` fail:
+
+```
+mvn -Dsuites=""*DistributedUtilSuite,*SomaticThresholdVariantCallerSuite"" test
+```
+
+Sample error output for `SomaticThresholdVariantCallerSuite`:
+
+```
+SomaticThresholdVariantCallerSuite:
+--> [2.77 sec. later]: Loaded 56,823 tumor mapped non-duplicate MdTag-containing reads into 1 partitions.
+--> [1.32 sec. later]: Loaded 56,478 normal mapped non-duplicate MdTag-containing reads into 1 partitions.
+--> [0.00 sec. later]: Including 100,000 loci across 1 contig(s): 20:100000-200000
+--> [0.00 sec. later]: Splitting loci by region depth among 20 tasks using 5,000 micro partitions.
+--> [0.00 sec. later]: Splitting loci evenly among 5,000 tasks = ~20 loci per task
+--> [0.02 sec. later]: Done calculating micro partitions.
+--> [0.04 sec. later]: Collecting region counts for RDD 1 of 2.
+--> [0.23 sec. later]: Collecting region counts for RDD 2 of 2.
+--> [0.13 sec. later]: Done collecting region counts. Total regions with micro partition overlaps: 358,360 = ~17,918 regions per task.
+--> [0.00 sec. later]: Regions per micro partition: min=3 mean=72 max=136.
+--> [0.07 sec. later]: Loci partitioning: 20:100000-107140=0,20:107140-111944=1,20:111944-116076=2,20:116076-120921=3,20:120921-126827=4,20:126827-131223=5,20:131223-137430=6,20:137430-142066=7,20:142066-148261=8,20:148261-153334=9,20:153334-157493=10,20:157493-162582=11,20:162582-167239=12,20:167239-171407=13,20:171407-175387=14,20:175387-180092=15,20:180092-184310=16,20:184310-189991=17,20:189991-194456=18,20:194456-200000=19
+--> [0.02 sec. later]: Writing genotypes to VCF file: /tmp/somatic.threshold.chr20.vcf.
+2014-09-25 16:54:04 WARN  ADAMVariationContext:81 - Setting header for partition 0
+2014-09-25 16:54:04 WARN  ADAMVariationContext:87 - Set VCF header for partition 0
+*** Delayed Messages ***
+Region counts: filtered 3 total regions to 3 relevant regions, expanded for overlaps by 300.00% to 12
+Regions per task: min=3 25%=3 median=3 (mean=3) 75%=3 max=3. Max is 0.00% more than mean.
+Region counts: filtered 3 total regions to 3 relevant regions, expanded for overlaps by 400.00% to 15
+Regions per task: min=3 25%=3 median=3 (mean=3) 75%=3 max=3. Max is 0.00% more than mean.
+Region counts: filtered 3 total regions to 3 relevant regions, expanded for overlaps by 0.00% to 3
+Regions per task: min=0 25%=0 median=0 (mean=1) 75%=2 max=3. Max is 400.00% more than mean.
+Region counts: filtered 10 total regions to 10 relevant regions, expanded for overlaps by 0.00% to 10
+Regions per task: min=10 25%=10 median=10 (mean=10) 75%=10 max=10. Max is 0.00% more than mean.
+Region counts: filtered 3 total regions to 3 relevant regions, expanded for overlaps by 400.00% to 15
+Regions per task: min=3 25%=3 median=3 (mean=3) 75%=3 max=3. Max is 0.00% more than mean.
+Region counts: filtered 10 total regions to 10 relevant regions, expanded for overlaps by 650.00% to 75
+- somatic threshold *** FAILED ***
+  java.lang.AssertionError: assertion failed
+  at scala.Predef$.assert(Predef.scala:165)
+  at org.bdgenomics.guacamole.DistributedUtil$$anonfun$windowTaskFlatMapMultipleRDDs$2.apply(DistributedUtil.scala:480)
+  at org.bdgenomics.guacamole.DistributedUtil$$anonfun$windowTaskFlatMapMultipleRDDs$2.apply(DistributedUtil.scala:478)
+  at org.bdgenomics.guacamole.DelayedMessages.print(DelayedMessages.scala:23)
+  at org.bdgenomics.guacamole.callers.SomaticThresholdVariantCaller$.runWrapper(SomaticThresholdVariantCaller.scala:101)
+  at org.bdgenomics.guacamole.callers.SomaticThresholdVariantCallerSuite$$anonfun$1.apply$mcV$sp(SomaticThresholdVariantCallerSuite.scala:13)
+  at org.bdgenomics.guacamole.TestUtil$SparkFunSuite$$anonfun$sparkTest$1.apply$mcV$sp(TestUtil.scala:255)
+  at org.bdgenomics.guacamole.TestUtil$SparkFunSuite$$anonfun$sparkTest$1.apply(TestUtil.scala:251)
+  at org.bdgenomics.guacamole.TestUtil$SparkFunSuite$$anonfun$sparkTest$1.apply(TestUtil.scala:251)
+  at org.scalatest.Transformer$$anonfun$apply$1.apply$mcV$sp(Transformer.scala:22)
+  ...
+```
+
+The crashing line, [`DistributedUtil:480`](https://github.com/hammerlab/guacamole/blob/2f6ad23a6956f5af9143dc4a3303331004ef0fa0/src/main/scala/org/bdgenomics/guacamole/DistributedUtil.scala#L480), is:
+
+```
+assert(regionsByTask.value.size == numTasks)
+```
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/182
+MDU6SXNzdWU0NDU4MTAyMg==,/docs/format possibly out of date,CLOSED,2014-10-01T15:56:36Z,2014-10-01T15:56:53Z,2014-10-01T15:56:53Z,"I think these docs on posts a result are out of date:
+
+http://hammerlab-dev3.hpc.mssm.edu:5000/docs/format
+",arahuja,https://github.com/hammerlab/guacamole/issues/186
+MDU6SXNzdWU0NTQzODQ1NA==,cannot invoke guacamole jar locally anymore? ,CLOSED,2014-10-10T01:53:17Z,2014-10-10T15:29:21Z,2014-10-10T15:29:21Z,"After a clean build, I get:
+
+```
+[tim@peach ~/sinai/git/guacamole]$ java -jar target/guacamole-0.0.1.jar
+Error: Invalid or corrupt jarfile target/guacamole-0.0.1.jar
+```
+
+Do others get this as well?
+",timodonnell,https://github.com/hammerlab/guacamole/issues/190
+MDU6SXNzdWU0NzM0NzAzNw==,threshold caller: java.lang.NumberFormatException when writing variants to stdout (as JSON),CLOSED,2014-10-31T00:03:16Z,2014-11-04T01:28:11Z,2014-11-04T01:28:11Z,"Running guacamole locally on the chrM BAM with the threshold caller and no out vcf specified throws a NumberFormatException:
+
+```
+$ scripts/guacamole threshold -reads ./src/test/resources/chrM.sorted.bam
+
+...
+  ""phaseQuality"" : null
+}Exception in thread ""main"" java.lang.NumberFormatException: For input string: ""
+""
+    at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+    at java.lang.Integer.parseInt(Integer.java:569)
+    at java.lang.Byte.parseByte(Byte.java:149)
+    at java.lang.Byte.parseByte(Byte.java:175)
+    at scala.collection.immutable.StringLike$class.toByte(StringLike.scala:227)
+    at scala.collection.immutable.StringOps.toByte(StringOps.scala:31)
+    at org.bdgenomics.guacamole.Common$.writeVariantsFromArguments(Common.scala:234)
+    at org.bdgenomics.guacamole.callers.ThresholdVariantCaller$.run(ThresholdVariantCaller.scala:83)
+    at org.bdgenomics.guacamole.Guacamole$.main(Guacamole.scala:68)
+    at org.bdgenomics.guacamole.Guacamole.main(Guacamole.scala)
+       10.34 real        20.84 user         0.96 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/197
+MDU6SXNzdWU0NzM0NzE5NA==,threshold caller: duplicate allele error running on chrM,CLOSED,2014-10-31T00:05:40Z,2014-11-05T18:02:04Z,2014-11-05T18:02:04Z,"Our simple threshold caller seems to be violating an invariant that the VCF output code expects:
+
+```
+threshold -reads ./src/test/resources/chrM.sorted.bam -out /tmp/out.vcf
+
+Using most recently modified jar: target/guacamole-0.0.1.jar
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512m; support was removed in 8.0
+--> [Thu Oct 30 20:01:25 EDT 2014]: Guacamole starting.
+2014-10-30 20:01:27 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+--> [3.32 sec. later]: Loaded 38,461 mapped non-duplicate MdTag-containing reads into 1 partitions.
+--> [0.03 sec. later]: Including 16,571 loci across 1 contig(s): chrM:0-16571
+--> [0.01 sec. later]: Splitting loci by region depth among 1 tasks using 250 micro partitions.
+--> [0.00 sec. later]: Splitting loci evenly among 250 tasks = ~66 loci per task
+--> [0.02 sec. later]: Done calculating micro partitions.
+--> [0.01 sec. later]: Collecting region counts for RDD 1 of 1.
+--> [0.45 sec. later]: Done collecting region counts. Total regions with micro partition overlaps: 74,897 = ~74,897 regions per task.
+--> [0.00 sec. later]: Regions per micro partition: min=0 mean=300 max=596.
+--> [0.04 sec. later]: Loci partitioning: chrM:0-16571=0
+--> [0.04 sec. later]: Writing genotypes to VCF file: /tmp/out.vcf.
+2014-10-30 20:01:34 WARN  ADAMVariationContext:81 - Setting header for partition 0
+2014-10-30 20:01:34 WARN  ADAMVariationContext:87 - Set VCF header for partition 0
+2014-10-30 20:01:34 ERROR Executor:96 - Exception in task 0.0 in stage 9.0 (TID 7)
+java.lang.IllegalArgumentException: Duplicate allele added to VariantContext: N
+    at htsjdk.variant.variantcontext.VariantContext.makeAlleles(VariantContext.java:1431)
+    at htsjdk.variant.variantcontext.VariantContext.<init>(VariantContext.java:370)
+    at htsjdk.variant.variantcontext.VariantContextBuilder.make(VariantContextBuilder.java:507)
+    at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:325)
+    at org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:101)
+    at org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:99)
+    at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+    at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+    at org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:921)
+    at org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:903)
+    at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:62)
+    at org.apache.spark.scheduler.Task.run(Task.scala:54)
+    at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:177)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+    at java.lang.Thread.run(Thread.java:745)
+2014-10-30 20:01:34 WARN  TaskSetManager:71 - Lost task 0.0 in stage 9.0 (TID 7, localhost): java.lang.IllegalArgumentException: Duplicate allele added to VariantContext: N
+        htsjdk.variant.variantcontext.VariantContext.makeAlleles(VariantContext.java:1431)
+        htsjdk.variant.variantcontext.VariantContext.<init>(VariantContext.java:370)
+        htsjdk.variant.variantcontext.VariantContextBuilder.make(VariantContextBuilder.java:507)
+        org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:325)
+        org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:101)
+        org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:99)
+        scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:921)
+        org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:903)
+        org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:62)
+        org.apache.spark.scheduler.Task.run(Task.scala:54)
+        org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:177)
+        java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+        java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+        java.lang.Thread.run(Thread.java:745)
+2014-10-30 20:01:34 ERROR TaskSetManager:75 - Task 0 in stage 9.0 failed 1 times; aborting job
+Exception in thread ""main"" org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 9.0 failed 1 times, most recent failure: Lost task 0.0 in stage 9.0 (TID 7, localhost): java.lang.IllegalArgumentException: Duplicate allele added to VariantContext: N
+        htsjdk.variant.variantcontext.VariantContext.makeAlleles(VariantContext.java:1431)
+        htsjdk.variant.variantcontext.VariantContext.<init>(VariantContext.java:370)
+        htsjdk.variant.variantcontext.VariantContextBuilder.make(VariantContextBuilder.java:507)
+        org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:325)
+        org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:101)
+        org.bdgenomics.adam.rdd.variation.ADAMVariationContext$$anonfun$2.apply(ADAMVariationContext.scala:99)
+        scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:921)
+        org.apache.spark.rdd.PairRDDFunctions$$anonfun$12.apply(PairRDDFunctions.scala:903)
+        org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:62)
+        org.apache.spark.scheduler.Task.run(Task.scala:54)
+        org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:177)
+        java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+        java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+        java.lang.Thread.run(Thread.java:745)
+Driver stacktrace:
+    at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1185)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1174)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1173)
+    at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+    at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47)
+    at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1173)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:688)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:688)
+    at scala.Option.foreach(Option.scala:236)
+    at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:688)
+    at org.apache.spark.scheduler.DAGSchedulerEventProcessActor$$anonfun$receive$2.applyOrElse(DAGScheduler.scala:1391)
+    at akka.actor.ActorCell.receiveMessage(ActorCell.scala:498)
+    at akka.actor.ActorCell.invoke(ActorCell.scala:456)
+    at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:237)
+    at akka.dispatch.Mailbox.run(Mailbox.scala:219)
+    at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)
+    at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+    at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+    at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+    at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+        9.93 real        21.20 user         0.93 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/198
+MDU6SXNzdWU0NzM0NzY0MQ==,cmdline help page for a caller should give a description of the algorithm,OPEN,2014-10-31T00:12:58Z,2014-11-06T22:08:01Z,,"When we show help for a caller, we should include a description of the algorithm used instead of just the arguments it takes. We should:
+- add a hook for Guacamole commands to specify help descriptions
+- write descriptions for our callers
+
+Example:
+
+```
+$ scripts/guacamole uniformbayes -h
+Using most recently modified jar: target/guacamole-0.0.1.jar
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512m; support was removed in 8.0
+--> [Thu Oct 30 20:11:04 EDT 2014]: Guacamole starting.
+ -chr VAL                                                        : Chromosome to filter to
+ -debug                                                          : If set, prints a higher level of debug output.
+ -debug-genotype-filters                                         : Print count of genotypes after each filtering step
+ -emit-ref                                                       : Output homozygous reference calls.
+ -exclude-indel                                                  : Exclude indel variants in comparison
+ -exclude-snv                                                    : Exclude SNV variants in comparison
+ -filterMultiAllelic                                             : Filter any pileups > 2 bases considered
+ -h (-help, --help, -?)                                          : Print help
+ -loci VAL                                                       : Loci at which to call variants. Either 'all' or contig:start-end,contig:start-end,.
+                                                                   ..
+ -max-genotypes X                                                : Maximum number of genotypes to output. 0 (default) means output all genotypes.
+ -maxMappingComplexity N                                         : Maximum percent of reads that can be mapped with low quality (indicative of a
+                                                                   complex region
+ -maxPercentAbnormalInsertSize N                                 : Filter pileups where % of reads with abnormal insert size is greater than
+                                                                   specified (default: 100)
+ -maxReadDepth N                                                 : Maximum number of reads for a genotype call
+ -minAlignmentForComplexity N                                    : Minimum read mapping quality for a read (Phred-scaled) that counts towards poorly
+                                                                   mapped for complexity (default: 1)
+ -minAlternateReadDepth N                                        : Minimum number of reads with alternate allele for a genotype call
+ -minEdgeDistance N                                              : Filter reads where the base in the pileup is closer than minEdgeDistance to the
+                                                                   (directional) end of the read
+ -minLikelihood N                                                : Minimum Phred-scaled likelihood. Default: 0 (off)
+ -minMapQ N                                                      : Minimum read mapping quality for a read (Phred-scaled). (default: 1)
+ -minReadDepth N                                                 : Minimum number of reads for a genotype call
+ -no-sequence-dictionary                                         : If set, get contigs and lengths directly from reads instead of from sequence
+                                                                   dictionary.
+ -out VARIANTS_OUT                                               : Variant output path. If not specified, print to screen.
+ -out-chunks X                                                   : When writing out to json format, number of chunks to coalesce the genotypes RDD
+                                                                   into.
+ -parallelism N                                                  : Num variant calling tasks. Set to 0 (default) to use the number of Spark
+                                                                   partitions.
+ -parquet_block_size N                                           : Parquet block size (default = 128mb)
+ -parquet_compression_codec [UNCOMPRESSED | SNAPPY | GZIP | LZO] : Parquet compression codec
+ -parquet_disable_dictionary                                     : Disable dictionary encoding
+ -parquet_logging_level VAL                                      : Parquet logging level (default = severe)
+ -parquet_page_size N                                            : Parquet page size (default = 1mb)
+ -partition-accuracy N                                           : Num micro partitions to use per task in loci partitioning. Set to 0 to partition
+                                                                   loci uniformly. Default: 250.
+ -print_metrics                                                  : Print metrics to the log on completion
+ -reads X                                                        : Aligned reads
+ -truth truth                                                    : The truth ADAM or VCF genotypes file
+        0.43 real         0.67 user         0.06 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/199
+MDU6SXNzdWU0NzM0Nzc3MA==,standardize names for callers so it's obvious which are germline and which are somatic,CLOSED,2014-10-31T00:15:09Z,2014-11-04T17:53:55Z,2014-11-04T17:53:55Z,"One reasonable convention could be ""somatic-XXX"" and ""germline-XXX""
+
+Currently, these are our caller names:
+
+```
+                indel-poc: call simple insertion and deletion variants between a tumor and a normal
+                threshold: call variants using a simple threshold
+        somatic-threshold: call somatic variants using a two-threshold criterion
+             uniformbayes: call variants using a simple quality based probability
+              varianteval: Evaluation script for scoring
+          logodds-somatic: call somatic variants using a two independent caller on tumor and normal
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/200
+MDU6SXNzdWU0NzM0ODEyNQ==,standardize convention for argument naming in callers ,CLOSED,2014-10-31T00:21:36Z,2014-11-24T01:02:22Z,2014-11-24T01:02:22Z,"Minor nit. The commandline arguments in e.g. the logodds-somatic caller use both -camelCase and -dashed-arguments. If we include the parquet args, we also have some -with_underscores_args.
+
+Probably worth standardizing on -dashed-arguments.
+
+```
+ scripts/guacamole logodds-somatic -h
+Using most recently modified jar: target/guacamole-0.0.1.jar
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512m; support was removed in 8.0
+--> [Thu Oct 30 20:17:17 EDT 2014]: Guacamole starting.
+ -debug                                                          : If set, prints a higher level of debug output.
+ -debug-genotype-filters                                         : Print count of genotypes after each filtering step
+ -filterMultiAllelic                                             : Filter any pileups > 2 bases considered
+ -h (-help, --help, -?)                                          : Print help
+ -loci VAL                                                       : Loci at which to call variants. Either 'all' or contig:start-end,contig:start-end,.
+                                                                   ..
+ -max-genotypes X                                                : Maximum number of genotypes to output. 0 (default) means output all genotypes.
+ -maxMappingComplexity N                                         : Maximum percent of reads that can be mapped with low quality (indicative of a
+                                                                   complex region
+ -maxPercentAbnormalInsertSize N                                 : Filter pileups where % of reads with abnormal insert size is greater than
+                                                                   specified (default: 100)
+ -maxTumorReadDepth N                                            : Maximum number of reads in tumor sample for a genotype call
+ -minAlignmentForComplexity N                                    : Minimum read mapping quality for a read (Phred-scaled) that counts towards poorly
+                                                                   mapped for complexity (default: 1)
+ -minAverageBaseQuality X                                        : Make a call average base quality of bases in the pileup is greater than this value
+ -minAverageMappingQuality X                                     : Make a call average mapping quality of reads is greater than this value
+ -minEdgeDistance N                                              : Filter reads where the base in the pileup is closer than minEdgeDistance to the
+                                                                   (directional) end of the read
+ -minLOD X                                                       : Make a call if the log odds of variant is greater than this value (Phred-scaled)
+ -minLikelihood N                                                : Minimum likelihood (Phred-scaled)
+ -minMapQ N                                                      : Minimum read mapping quality for a read (Phred-scaled). (default: 1)
+ -minNormalReadDepth N                                           : Minimum number of reads in normal sample for a genotype call
+ -minTumorAlternateReadDepth N                                   : Minimum number of reads with alternate allele for a genotype call
+ -minTumorReadDepth N                                            : Minimum number of reads in tumor sample for a genotype call
+ -minVAF N                                                       : Minimum variant allele frequency
+ -no-sequence-dictionary                                         : If set, get contigs and lengths directly from reads instead of from sequence
+                                                                   dictionary.
+ -normal-reads X                                                 : Aligned reads: normal
+ -odds N                                                         : Minimum log odds threshold for possible variant candidates
+ -out VARIANTS_OUT                                               : Variant output path. If not specified, print to screen.
+ -out-chunks X                                                   : When writing out to json format, number of chunks to coalesce the genotypes RDD
+                                                                   into.
+ -parallelism N                                                  : Num variant calling tasks. Set to 0 (default) to use the number of Spark
+                                                                   partitions.
+ -parquet_block_size N                                           : Parquet block size (default = 128mb)
+ -parquet_compression_codec [UNCOMPRESSED | SNAPPY | GZIP | LZO] : Parquet compression codec
+ -parquet_disable_dictionary                                     : Disable dictionary encoding
+ -parquet_logging_level VAL                                      : Parquet logging level (default = severe)
+ -parquet_page_size N                                            : Parquet page size (default = 1mb)
+ -partition-accuracy N                                           : Num micro partitions to use per task in loci partitioning. Set to 0 to partition
+                                                                   loci uniformly. Default: 250.
+ -print_metrics                                                  : Print metrics to the log on completion
+ -snvWindowRange N                                               : Number of bases before and after to check for additional matches or deletions
+ -tumor-reads X                                                  : Aligned reads: tumor
+        0.41 real         0.66 user         0.06 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/201
+MDU6SXNzdWU0NzY2NzI3OA==,Add comments and tests for Filters package,OPEN,2014-11-04T01:24:25Z,2016-08-25T20:04:18Z,,"Some classes could use some more explanation:
+- GenotypeFilter.scala - need a file-level header comment describing high-level idea
+- PileupFilter.scala - need file-level header comment. These filters seem to be filtering PileupElements, not Pileups. What is the difference between this and PileupElementsFilter.scala?
+- SomaticGenotypeFilter.scala - need file-level header comment
+- FishersExactTest - comment needed. Maybe move to a math utils file?
+",timodonnell,https://github.com/hammerlab/guacamole/issues/205
+MDU6SXNzdWU0NzY2NzI4NA==,fix deprecatation warnings involving samtools,CLOSED,2014-11-04T01:24:33Z,2014-12-05T19:16:42Z,2014-12-05T19:16:42Z,"When building guacamole:
+
+```
+/Users/tim/sinai/git/guacamole/src/main/scala/org/bdgenomics/guacamole/reads/Read.scala
+Warning:(239, 9) class SAMFileReader in package samtools is deprecated: see corresponding Javadoc for more information.
+    val reader = new SAMFileReader(new java.io.File(filename))
+        ^
+Warning:(239, 22) class SAMFileReader in package samtools is deprecated: see corresponding Javadoc for more information.
+    val reader = new SAMFileReader(new java.io.File(filename))
+                     ^
+                     ^
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/206
+MDU6SXNzdWU0NzY3MDIzMQ==,drop somatic indel PoC caller,CLOSED,2014-11-04T02:12:57Z,2014-11-24T01:02:53Z,2014-11-24T01:02:53Z,"After talking to @arahuja and @ryan-williams : the functionality in the PoC caller is effectively in the somatic log odds (renamed to somatic standard) caller, but some of the tests refer the PoC caller. Those tests should be changed to test the standard caller, and the PoC caller should be dropped.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/207
+MDU6SXNzdWU0NzczNDczNg==,generate html scaladoc,CLOSED,2014-11-04T16:43:02Z,2014-11-04T23:42:02Z,2014-11-04T23:42:02Z,"It would be nice to have html scaladoc available for guacamole.
+
+One way to do this would be to have travis build the scaladoc and push into a gh-pages branch, as described here: http://benlimmer.com/2013/12/26/automatically-publish-javadoc-to-gh-pages-with-travis-ci/
+
+Thoughts?
+",timodonnell,https://github.com/hammerlab/guacamole/issues/210
+MDU6SXNzdWU0Nzc4MDE2Ng==,add a test coverage tool,CLOSED,2014-11-04T23:24:06Z,2014-11-19T16:25:07Z,2014-11-19T16:25:07Z,"This is one option: https://github.com/scoverage/scalac-scoverage-plugin
+
+Could have travis run this and write generated html to the gh-pages branch.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/212
+MDU6SXNzdWU0Nzc4MDMxOQ==,replace boilerplate web page in gh-pages,CLOSED,2014-11-04T23:25:43Z,2014-12-04T19:34:48Z,2014-12-04T19:34:48Z,"For now the guacamole web page could be just links to the github page and the docs.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/213
+MDU6SXNzdWU0Nzc4MTY3NQ==,better docs for LociInWindowsIterator,CLOSED,2014-11-04T23:41:37Z,2014-11-24T21:53:09Z,2014-11-24T21:53:09Z,"We could use a bit more detailed header comment giving what LociInWindowIterator does and what the use case is. The discussion in #189 may be helpful here.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/214
+MDU6SXNzdWU0Nzg4ODgyNQ==,provide a script or instructions to run Guacamole on a cluster,CLOSED,2014-11-05T21:14:21Z,2014-11-17T22:13:03Z,2014-11-17T22:13:03Z,"We should have a convenient way for users to run Guacamole on a cluster.
+
+One option is something like adam-submit: https://github.com/bigdatagenomics/adam/blob/master/bin/adam-submit
+",timodonnell,https://github.com/hammerlab/guacamole/issues/216
+MDU6SXNzdWU0Nzg4OTExOQ==,write out a VCF file instead of a VCF directory with a part-0000 file,OPEN,2014-11-05T21:17:08Z,2016-08-25T20:04:03Z,,,timodonnell,https://github.com/hammerlab/guacamole/issues/217
+MDU6SXNzdWU0ODAwODg3Nw==,add package-level scaladoc with an overview of the code,CLOSED,2014-11-06T20:16:06Z,2014-11-24T21:53:40Z,2014-11-24T21:53:40Z,"We should have an API overview in our guacamole package-level documentation. Currently it is empty:
+
+http://blog.hammerlab.org/guacamole/docs/#org.bdgenomics.guacamole.package
+
+docs on how to do this with scaladoc: http://docs.scala-lang.org/style/scaladoc.html#packages
+",timodonnell,https://github.com/hammerlab/guacamole/issues/221
+MDU6SXNzdWU0ODEyMTU4MQ==,support out of core analysis,CLOSED,2014-11-07T19:36:11Z,2014-11-24T01:52:04Z,2014-11-24T01:52:04Z,"Spark is supposed to handle spilling to disk, but in practice Guacamole does not work on datasets that do not fit in memory. This can be seen by trying to run on a real dataset on a single node. The largest dataset I have been able to analyze on a single node is a 2.5 GB BAM with about 25 million reads, and to get that to run I had to set the java heap size to 32 G.
+
+There's also room for improvement in performance. The amount of computation we do per read is small enough that it's hard to imagine why we can't be closer to IO bound. (GATK is also not IO bound, but generalizing from a single test I did a while ago, it is about 50% faster than Guacamole on a single node.) For a baseline for future comparisons, here are some single-node performance numbers on the current master (bb5699f54169bcf23cd1e90b37d82d47b144d4b0):
+
+![image](https://cloud.githubusercontent.com/assets/467896/4958749/ddebaa92-66b1-11e4-9b10-dd64f3ff857b.png)
+
+For the attempts that failed (the ~12G dataset), here is a typical error:
+
+```
+    322 2014-11-06 23:10:39 ERROR Utils:96 - Uncaught exception in thread Spark Context Cleaner
+    323 java.lang.OutOfMemoryError: Java heap space
+    324 Exception in thread ""Spark Context Cleaner"" java.lang.OutOfMemoryError: Java heap space
+    325 2014-11-06 23:10:47 ERROR ExecutorUncaughtExceptionHandler:96 - Uncaught exception in thread Thread[Executor task launch worker-17,5,main]
+    326 java.lang.OutOfMemoryError: Java heap space
+    327         at org.bdgenomics.guacamole.reads.MappedReadSerializer.read(MappedReadSerializer.scala:65)
+    328         at org.bdgenomics.guacamole.reads.MappedReadSerializer.read(MappedReadSerializer.scala:26)
+    329         at com.esotericsoftware.kryo.Kryo.readClassAndObject(Kryo.java:729)
+    330         at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.read(DefaultArraySerializers.java:338)
+    331         at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.read(DefaultArraySerializers.java:293)
+    332         at com.esotericsoftware.kryo.Kryo.readObject(Kryo.java:648)
+    333         at com.esotericsoftware.kryo.serializers.FieldSerializer$ObjectField.read(FieldSerializer.java:605)
+    334         at com.esotericsoftware.kryo.serializers.FieldSerializer.read(FieldSerializer.java:221)
+    335         at com.esotericsoftware.kryo.Kryo.readClassAndObject(Kryo.java:729)
+    336         at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.read(DefaultArraySerializers.java:338)
+    337         at com.esotericsoftware.kryo.serializers.DefaultArraySerializers$ObjectArraySerializer.read(DefaultArraySerializers.java:293)
+    338         at com.esotericsoftware.kryo.Kryo.readClassAndObject(Kryo.java:729)
+    339         at com.twitter.chill.Tuple2Serializer.read(TupleSerializers.scala:43)
+    340         at com.twitter.chill.Tuple2Serializer.read(TupleSerializers.scala:34)
+    341         at com.esotericsoftware.kryo.Kryo.readClassAndObject(Kryo.java:729)
+    342         at org.apache.spark.serializer.KryoDeserializationStream.readObject(KryoSerializer.scala:133)
+    343         at org.apache.spark.util.collection.ExternalAppendOnlyMap$DiskMapIterator.readNextItem(ExternalAppendOnlyMap.scala:474)
+    344         at org.apache.spark.util.collection.ExternalAppendOnlyMap$DiskMapIterator.hasNext(ExternalAppendOnlyMap.scala:493)
+    345         at scala.collection.Iterator$$anon$1.hasNext(Iterator.scala:847)
+    346         at org.apache.spark.util.collection.ExternalAppendOnlyMap$ExternalIterator.org$apache$spark$util$collection$ExternalAppendOnlyMap$ExternalIterator$$readNextHashCode(ExternalAppendOnlyMap.scala:292)
+    347         at org.apache.spark.util.collection.ExternalAppendOnlyMap$ExternalIterator$$anonfun$4.apply(ExternalAppendOnlyMap.scala:276)
+    348         at org.apache.spark.util.collection.ExternalAppendOnlyMap$ExternalIterator$$anonfun$4.apply(ExternalAppendOnlyMap.scala:274)
+    349         at scala.collection.immutable.List.foreach(List.scala:318)
+    350         at org.apache.spark.util.collection.ExternalAppendOnlyMap$ExternalIterator.<init>(ExternalAppendOnlyMap.scala:274)
+    351         at org.apache.spark.util.collection.ExternalAppendOnlyMap.iterator(ExternalAppendOnlyMap.scala:256)
+    352         at org.apache.spark.rdd.CoGroupedRDD.compute(CoGroupedRDD.scala:164)
+    353         at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:262)
+    354         at org.apache.spark.rdd.RDD.iterator(RDD.scala:229)
+    355         at org.apache.spark.rdd.MappedValuesRDD.compute(MappedValuesRDD.scala:31)
+    356         at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:262)
+    357         at org.apache.spark.rdd.RDD.iterator(RDD.scala:229)
+    358         at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+    359 2014-11-06 23:10:47 ERROR ExecutorUncaughtExceptionHandler:96 - Uncaught exception in thread Thread[Executor task launch worker-5,5,main]
+```
+
+For now, performance is not a priority, but we should figure out how to get Guacamole to run successfully even when the dataset doesn't fit in memory.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/224
+MDU6SXNzdWU0ODIwOTI4Mw==,Alignment and Allele can be combined/replaced,CLOSED,2014-11-09T18:38:52Z,2014-12-05T19:11:28Z,2014-12-05T19:11:28Z,"These two classes for PileupElement both have the same signature - are they redundant?
+
+``` scala
+case class Allele(refBases: Seq[Byte], altBases: Seq[Byte]) extends Ordered[Allele]
+```
+
+``` scala
+private[pileup] sealed abstract class Alignment {
+  def sequencedBases: Seq[Byte] = Seq[Byte]()
+  def referenceBases: Seq[Byte] = Seq[Byte]()
+```
+",arahuja,https://github.com/hammerlab/guacamole/issues/225
+MDU6SXNzdWU0ODU3NTU0Nw==,"pileup.computeLikelihoods ignores ""prior"" argument",CLOSED,2014-11-12T23:04:25Z,2014-11-17T18:03:16Z,2014-11-17T18:03:16Z,"The log-space version of that method does include the prior however.
+
+Possibly we should just drop support for a non-uniform prior until we have a use case for one.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/228
+MDU6SXNzdWU0ODczODI5OA==,Could use repartitionAndSortWithinPartitions in windowTaskFlatMapMultipleRDDs?,CLOSED,2014-11-14T06:17:15Z,2014-12-19T23:29:57Z,2014-12-19T23:29:57Z,"It looks like there's a partitionBy followed by a sortBy within each partition.
+
+In Spark 1.2, the advantage is that the sort can spill to disk and gets to use Spark's super-optimized TimSort.  In Spark 1.3, SPARK-2926 will drastically reduce the number of Java objects that need to be in memory at the same time, meaning less GC pressure and less spilling.
+",sryza,https://github.com/hammerlab/guacamole/issues/230
+MDU6SXNzdWU0OTE0OTI1Mw==,Allow -loci to take configuration file,CLOSED,2014-11-17T21:42:59Z,2014-11-18T18:06:05Z,2014-11-18T18:06:05Z,"I want an easier way to say 'call variants at all usual positions' i.e. skip extra contigs and MT.  My current thinking is to have a config file per reference and the user can specify which one to use:
+
+i.e. 
+
+```
+chr1:0-249250621,chr2:0-243199373,chr3:0-198022430,chr4:0-191154276,chr5:0-180915260,chr6:0-171115067,chr7:0-159138663,chr8:0-146364022,chr9:0-141213431,chr10:0-135534747,chr11:0-135006516,chr12:0-133851895,chr13:0-115169878,chr14:0-107349540,chr15:0-102531392,chr16:0-90354753,chr17:0-81195210,chr18:0-78077248,chr19:0-59128983,chr20:0-63025520,chr21:0-48129895,chr22:0-51304566,chrX:0-155270560
+```
+",arahuja,https://github.com/hammerlab/guacamole/issues/232
+MDU6SXNzdWU0OTE1NjM4Mw==,add a way for comparing somatic-standard calls to gold VCF as part of unit tests,OPEN,2014-11-17T22:48:11Z,2015-06-05T22:13:30Z,,,timodonnell,https://github.com/hammerlab/guacamole/issues/233
+MDU6SXNzdWU0OTE1NjkxNQ==,Drop PartitionByKey,CLOSED,2014-11-17T22:53:25Z,2016-08-15T21:57:44Z,2016-08-15T21:57:44Z,"PartitionByKey is equivalent to HashPartitioner if we set the number of partitions correctly
+",arahuja,https://github.com/hammerlab/guacamole/issues/234
+MDU6SXNzdWU0OTE4NTM4Nw==,Fix Spark history server on Guacamole jobs,CLOSED,2014-11-18T06:14:31Z,2014-12-05T21:30:43Z,2014-12-05T21:30:43Z,"We need to be calling `SparkContext.stop()` when our jobs are done. I will have a PR for this shortly, just verifying that it works.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/236
+MDU6SXNzdWU0OTQ1MTY3MQ==,regionsByTask.value.size may not equal numTasks,CLOSED,2014-11-19T20:52:22Z,2016-08-15T21:53:51Z,2016-08-15T21:53:51Z,"Reported by @ryan-williams and needs investigation
+
+```
+2014-11-18 05:35:17 WARN ADAMVariationContext:81 - Setting header for partition 0 2014-11-18 05:35:17 WARN ADAMVariationContext:87 - Set VCF header for partition 0 *** Delayed Messages *** 
+Region counts: filtered 22,767 total regions to 22,767 relevant regions, expanded for overlaps by 0.00% to 22,767
+Exception in thread ""main"" java.lang.AssertionError: assertion failed: regionsByTask.value.size (1) should equal numTasks (4) at
+org.bdgenomics.guacamole.DistributedUtil$$anonfun$windowTaskFlatMapMultipleRDDs$2.apply(DistributedUtil.scala:530) at
+org.bdgenomics.guacamole.DistributedUtil$$anonfun$windowTaskFlatMapMultipleRDDs$2.apply(DistributedUtil.scala:528) at
+org.bdgenomics.guacamole.DelayedMessages.print(DelayedMessages.scala:41) at
+org.bdgenomics.guacamole.commands.SomaticStandard$Caller$.run(SomaticStandardCaller.scala:147) at
+org.bdgenomics.guacamole.commands.SomaticStandard$Caller$.run(SomaticStandardCaller.scala:57) at org.bdgenomics.guacamole.SparkCommand.run(Command.scala:56) at
+org.bdgenomics.guacamole.Command.run(Command.scala:48) at
+org.bdgenomics.guacamole.Guacamole$.main(Guacamole.scala:65) at 
+org.bdgenomics.guacamole.Guacamole.main(Guacamole.scala)
+```
+",arahuja,https://github.com/hammerlab/guacamole/issues/242
+MDU6SXNzdWU0OTYxNDM5Nw==,add coveralls support ,CLOSED,2014-11-20T20:32:33Z,2016-08-30T23:09:57Z,2016-08-30T23:09:57Z,"@danvk says:
+
+Just chiming in from the sidelines here: You'll probably never look at your coverage data unless you post it to coveralls.io from Travis and stick a badge in the project's README.md. Here's a sample PR from igv-httpfs that does this.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/244
+MDU6SXNzdWU0OTc1Nzk3MA==,Subtract 1 from mateStart,CLOSED,2014-11-21T22:50:52Z,2014-11-25T18:33:46Z,2014-11-25T18:33:46Z,"[We are not subtracting 1 from the mate start](https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/bdgenomics/guacamole/reads/Read.scala#L192) which is in 1-based coordinates.  
+",arahuja,https://github.com/hammerlab/guacamole/issues/246
+MDU6SXNzdWU1MDAzMjE4OA==,assert(result > currentLocus) failing in nextLocusWithRegions,CLOSED,2014-11-25T14:20:59Z,2014-11-25T18:32:55Z,2014-11-25T18:32:55Z,"Seeing this exception now at:
+
+```
+java.lang.AssertionError: assertion failed
+        at scala.Predef$.assert(Predef.scala:165)
+        at org.bdgenomics.guacamole.windowing.SlidingWindow.nextLocusWithRegions(SlidingWindow.scala:121)
+        at org.bdgenomics.guacamole.windowing.SlidingWindow$$anonfun$3.apply(SlidingWindow.scala:151)
+        at org.bdgenomics.guacamole.windowing.SlidingWindow$$anonfun$3.apply(SlidingWindow.scala:151)
+        at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+        at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251)
+        at scala.collection.immutable.List.foreach(List.scala:318)
+        at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251)
+        at scala.collection.AbstractTraversable.flatMap(Traversable.scala:105)
+        at org.bdgenomics.guacamole.windowing.SlidingWindow$.advanceMultipleWindows(SlidingWindow.scala:151)
+```
+
+This is probably due to the external sorting branch, but perhaps not - @timodonnell if you any ideas, let me know otherwise I will investigate
+",arahuja,https://github.com/hammerlab/guacamole/issues/253
+MDU6SXNzdWU1MDAzMzAyMQ==,Investigate size of broadcast variable,OPEN,2014-11-25T14:28:38Z,2016-08-25T19:57:56Z,,"Most job on a full genome print the following warning:
+
+```
+Not enough space to cache broadcast_2 in memory! (computed 488.3 MB so far)
+```
+
+What is the broadcast variable that is nearly 0.5 G?  Most likely the loci map, but why?  Possibly, it is better to just pass a task it's portion of the map rather than broadcasting since the tasks are now broadcast anyways?
+",arahuja,https://github.com/hammerlab/guacamole/issues/254
+MDU6SXNzdWU1MDAzNDEzNQ==,is read.end inclusive or exclusive?,CLOSED,2014-11-25T14:39:01Z,2014-11-25T18:32:41Z,2014-11-25T18:32:41Z,"I can't even remember. We should update HasReferenceRegion docs to make it clear
+",timodonnell,https://github.com/hammerlab/guacamole/issues/255
+MDU6SXNzdWU1MDQ2OTYyOA==,Document how to release,CLOSED,2014-11-30T20:33:26Z,2014-12-21T04:44:41Z,2014-12-21T04:44:41Z,"Cf. ADAM's [release README](https://github.com/bigdatagenomics/adam/tree/master/scripts/release).
+",hammer,https://github.com/hammerlab/guacamole/issues/260
+MDU6SXNzdWU1MDQ2OTYzNg==,Write 0.0.0 release notes,CLOSED,2014-11-30T20:33:33Z,2014-12-21T04:44:30Z,2014-12-21T04:44:30Z,,hammer,https://github.com/hammerlab/guacamole/issues/261
+MDU6SXNzdWU1MDQ2OTY1OA==,Create 0.0.0 release,CLOSED,2014-11-30T20:34:09Z,2014-12-21T04:43:53Z,2014-12-21T04:43:53Z,"https://help.github.com/articles/creating-releases
+",hammer,https://github.com/hammerlab/guacamole/issues/262
+MDU6SXNzdWU1MDQ2OTk5NA==,Create CONTRIBUTING.md,CLOSED,2014-11-30T20:45:03Z,2014-12-10T18:38:20Z,2014-12-10T18:38:20Z,"https://github.com/blog/1184-contributing-guidelines
+",hammer,https://github.com/hammerlab/guacamole/issues/263
+MDU6SXNzdWU1NTEwODAwNQ==,MidDeletion lead to genotypes with a blank allele,CLOSED,2015-01-22T02:47:31Z,2015-07-28T17:15:23Z,2015-07-28T17:15:23Z,"There are two problems with deletions that overlap with SNV, as in the image below
+
+![image](https://cloud.githubusercontent.com/assets/455755/5849674/9c8f14ea-a1b6-11e4-9fc9-47d05a17c8f0.png)
+
+The pileup preceding the SNV will evaluate the deletion and possibly call a deletion, however this leads to two problems in the next position
+1. the next position contains both MidDeletion and Mismatch elements.  MidDeletion elements do not define reference or alternate alleles so both are empty (but equal) but labeled as ""reference""
+2. whether or not we call deletion before should affect whether or not we call the SNV at the next position
+",arahuja,https://github.com/hammerlab/guacamole/issues/275
+MDU6SXNzdWU2MjgwODI1Ng==,Update example README.md,CLOSED,2015-03-18T21:37:43Z,2015-03-19T00:48:14Z,2015-03-19T00:48:14Z,"```
+  germline-threshold \
+        -reads hdfs:///path/to/reads.bam \
+        -out hdfs:///path/to/result.vcf \
+    -spark_master yarn-cluster
+```
+
+now `-reads` and `-out` should have 2 dashes, and `-spark_master` does not seem to exist anymore
+",smondet,https://github.com/hammerlab/guacamole/issues/283
+MDU6SXNzdWU2MzA5NzAyOQ==,Parsing loci from exome file is slow,CLOSED,2015-03-19T21:42:56Z,2015-03-19T22:51:10Z,2015-03-19T22:51:10Z,"I am trying to pass a file with exome capture positions as the `--loci-from-file` argument, but currently it just hangs.
+
+From some profiling, most of this time seems to be spent in joining the individual `LociSet` created from each capture region. 
+
+```
+Common.scala:198 org.hammerlab.guacamole.LociSet$.parse(String) 149869
+LociSet.scala:148 org.hammerlab.guacamole.LociSet$.union(Seq) 146856
+LociSet.scala:153 org.hammerlab.guacamole.LociSet.union(LociSet) 146768
+LociSet.scala:53 org.hammerlab.guacamole.LociMap.union(LociMap) 146752
+LociMap.scala:81 org.hammerlab.guacamole.LociMap$.union(Seq) 146727
+LociMap.scala:255 org.hammerlab.guacamole.LociMap$Builder.result() 139540
+LociMap.scala:214 org.hammerlab.guacamole.LociMap$Builder$$anonfun$result$1$$anonfun$apply$4.apply(Tuple3) 86963
+LociMap.scala:229 com.google.common.collect.TreeRangeMap.put(Range, Object) 61620
+```
+
+@timodonnell do you think this is worth optimizing or just handling this differently?  Does anything pop-out immediately as a way to fix this otherwise I can take it on.  I think we had talked about this earlier on- that it would be difficult to handle many small regions this way?
+",arahuja,https://github.com/hammerlab/guacamole/issues/285
+MDU6SXNzdWU3Mjg2NjA2Nw==,read evidence analysis,CLOSED,2015-05-03T21:08:48Z,2015-05-26T15:55:02Z,2015-05-26T15:55:02Z,"It could be useful to have an analysis that takes in a collection of BAM files and variants (specified in a set of VCF files) and writes out a csv with, for each BAM file, locus, the number of reads with each allele. This would be after applying some configurable read filters.
+
+Currently, I have a Python [script](https://github.com/hammerlab/ovarian-cancer/blob/master/projects/pt189/read_evidence_plot.py) for generating this data for pt189 (something like 23 BAMs and ~1k variants). I ran it on all pt189 datasets like this:
+
+```
+time python read_evidence_plot.py \
+    datasets.json \
+    --evidence-summary-out out_full.csv \
+    --extra-loci-offsets -1 \
+    --sefara-set box_path_prefix=~/Box\ Sync/ \
+```
+
+(the `--extra-loci-offsets` argument tells it to, besides querying each locus with a variant, also query the locus before the variant, so we can plot non-variant loci near each variant).
+
+It took 87 minutes to generate this 143k line output file:
+
+```
+(venv-2.7)[odonnt02@hammerlab-dev3 ~/sinai/git/ovarian-cancer/projects/pt189]$ head /hpc/users/odonnt02/sinai/git/ovarian-cancer/projects/pt189/out_full.csv
+sample,contig,start,end,allele,count
+bam_normal_exome_illumina,2,91673898,91673899,A,19
+bam_normal_exome_illumina,2,91673897,91673898,T,19
+bam_normal_exome_illumina,2,92315419,92315420,A,2
+bam_normal_exome_illumina,2,92315419,92315420,C,4
+bam_normal_exome_illumina,2,92315419,92315420,T,2629
+bam_normal_exome_illumina,2,92315419,92315420,G,72
+bam_normal_exome_illumina,2,92315418,92315419,A,1
+bam_normal_exome_illumina,2,92315418,92315419,C,2
+bam_normal_exome_illumina,2,92315418,92315419,T,92
+(venv-2.7)[odonnt02@hammerlab-dev3 ~/sinai/git/ovarian-cancer/projects/pt189]$
+```
+
+I'd be interested if a Spark analysis for this could be significantly faster than 87 minutes.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/287
+MDU6SXNzdWU3OTU5ODMyMA==,Get structural variant caller from Cornell into master,CLOSED,2015-05-22T20:31:26Z,2016-02-08T05:57:17Z,2015-11-01T23:27:44Z,"Code's at https://github.com/jdkizer9/guacamole/tree/development/structural-variant-caller
+",hammer,https://github.com/hammerlab/guacamole/issues/289
+MDU6SXNzdWU4MTE3NTU5MA==,"Remove SparkFunSuite, use bdg-utils version",CLOSED,2015-05-26T23:03:34Z,2015-05-27T03:23:41Z,2015-05-27T03:23:41Z,"Per [bigdatagenomics/utils#40](https://github.com/bigdatagenomics/utils/issues/40), `SparkFunSuite` **is** published as a `tests.jar` artifact and we can depend on it rather than duplicate it ourselves.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/291
+MDU6SXNzdWU4MzY4OTI5MQ==,"Calculations for ""Regions per task"" seems to be off for the test bam file",CLOSED,2015-06-01T20:55:16Z,2016-08-15T21:51:41Z,2016-08-15T21:51:41Z,"When I do `clean package` and try to run the example from the README file, this is what I get:
+
+```
+$ scripts/guacamole germline-threshold --reads src/test/resources/chrM.sorted.bam --out /tmp/result.vcf
+Using most recently modified jar: target/guacamole-with-dependencies-0.0.1-SNAPSHOT.jar
+--> [Mon Jun 01 16:12:00 EDT 2015]: Guacamole starting.
+2015-06-01 16:12:01 WARN  Utils:71 - Your hostname, LSKI1027 resolves to a loopback address: 127.0.0.1; using 10.20.95.32 instead (on interface en1)
+2015-06-01 16:12:01 WARN  Utils:71 - Set SPARK_LOCAL_IP if you need to bind to another address
+2015-06-01 16:12:01.582 java[89512:907] Unable to load realm mapping info from SCDynamicStore
+2015-06-01 16:12:01 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+--> [8.34 sec. later]: Loaded 38,461 mapped non-duplicate MdTag-containing reads into 1 partitions.
+--> [0.06 sec. later]: Including 16,571 loci across 1 contig(s): chrM:0-16571
+--> [0.01 sec. later]: Splitting loci by region depth among 1 tasks using 250 micro partitions.
+--> [0.00 sec. later]: Splitting loci evenly among 250 tasks = ~66 loci per task
+--> [0.06 sec. later]: Done calculating micro partitions.
+--> [0.09 sec. later]: Collecting region counts for RDD 1 of 1.
+--> [2.79 sec. later]: Done collecting region counts. Total regions with micro partition overlaps: 74,897 = ~74,897 regions per task.
+--> [0.00 sec. later]: Regions per micro partition: min=0 mean=300 max=596.
+--> [0.08 sec. later]: Loci partitioning: chrM:0-16571=0
+--> [0.07 sec. later]: Writing genotypes to VCF file: /tmp/result.vcf.
+2015-06-01 16:12:22 WARN  VariantContextRDDFunctions:81 - Setting header for partition 0
+2015-06-01 16:12:22 WARN  VariantContextRDDFunctions:87 - Set VCF header for partition 0
+*** Delayed Messages ***
+Called 138 genotypes.
+Region counts: filtered 38,461 total regions to 38,461 relevant regions, expanded for overlaps by 0.00% to 38,461
+Regions per task: min=NaN 25%=NaN median=NaN (mean=NaN) 75%=NaN max=NaN. Max is NaN% more than mean.
+       24.06 real        28.65 user         1.62 sys
+```
+
+Note all those `NaN`s within the summary stats for _region per task_. Is this expected behavior?
+",armish,https://github.com/hammerlab/guacamole/issues/294
+MDU6SXNzdWU4NTEyNjc4MA==,Purity estimation for variant calling,OPEN,2015-06-04T14:39:41Z,2016-08-25T19:58:05Z,,"Two issues here:
+1. Estimate expected variant allele frequencies in the tumor sample 
+1. Estimate tumor contamination in normal sample for matched normals
+",arahuja,https://github.com/hammerlab/guacamole/issues/295
+MDU6SXNzdWU4NTI4ODcwNA==,Add ability to filter to PASS variants in ReadEvidence,OPEN,2015-06-04T21:36:55Z,2016-08-25T20:00:20Z,,"Follow on from #288, only retrieve allele counts at passing variants
+",arahuja,https://github.com/hammerlab/guacamole/issues/296
+MDU6SXNzdWU4NTI4OTEzNA==,Remove requirement on MDTag for MappedRead,CLOSED,2015-06-04T21:37:50Z,2016-02-08T05:57:17Z,2015-08-03T21:43:47Z,"We may want to analysis mapped reads without the reference information, so we not care if they are MDTagged - should we remove this requirement? cc @ryan-williams @timodonnell 
+",arahuja,https://github.com/hammerlab/guacamole/issues/297
+MDU6SXNzdWU4NjgzMjk4NQ==,Potential mapping error filter,OPEN,2015-06-10T04:25:35Z,2016-08-25T19:57:26Z,,"From the methods section of [""Recurrent somatic mutations in regulatory regions of human cancer genomes""](http://www.nature.com/ng/journal/vaop/ncurrent/full/ng.3332.html):
+
+> **Filtering out false positives from mapping errors and SNPs.**
+> SNPs from dbSNP Build 141 were downloaded from the UCSC Genome Browser Table Browser. Called mutations that had the same chromosomal position and variant allele as a common SNP were filtered out. Predicted mapping errors were determined by querying BLAT36 with a 201-bp region centered on the genomic position of the variant. Notably, the variant allele was used in place of the reference allele for this analysis. A score between 0 and 100 was given on the basis of the length of the longest aligned region for a given BLAT result that included a match of up to100 bp in length to the reference genome such that the reference allele for the matched genomic region matched the called variant allele. A 201-bp window was chosen because it should be sufficiently long to cover all potential overlapping reads, as mapped read sizes are typically smaller than 100 bp. For the analysis using 10-bp windows, a regional score was generated by averaging the scores of all the mutations contained within the region. Regions with an average score of greater than 50 were filtered out as potential false positives. The 1000 Genomes Project hs37d5 reference was used for BLAT searches. The analysis in Supplementary Figure 1 of overlap between the filtered-out regions and difficult-to-align regions of the genome was performed using 50-mer alignability tracks. Any mutation with a score of 0.5 or less was considered difficult to align.
+",hammer,https://github.com/hammerlab/guacamole/issues/298
+MDU6SXNzdWU5MDQ2Mzk1MQ==,Multiple reference bases found in sample,CLOSED,2015-06-23T18:55:22Z,2015-06-24T18:48:00Z,2015-06-24T18:48:00Z,"When I try to run `germline-threshold` on `brody_307-bcell-tumor-bwa-mem-gap11-gep4-dedup-indelrealigned-bqsr.bam`, I eventually get the following error:
+
+`java.lang.IllegalArgumentException: Multiple reference bases found in sample = SM at (chr, pos) = (17, 4455004)`
+
+Full command line:
+
+```
+spark-submit --master yarn --deploy-mode cluster --driver-java-options -Dlog4j.configuration=scripts/log4j.properties --executor-memory 4g --driver-memory 10g --num-executors 1000 --executor-cores 1 --class org.hammerlab.guacamole.Guacamole --verbose target/guacamole-with-dependencies-0.0.1-SNAPSHOT.jar germline-threshold --reads hdfs:///user/ahujaa01/brody-lymphoma/brody_307/brody_307-bcell-tumor-bwa-mem-gap11-gep4-dedup-indelrealigned-bqsr.bam --out hdfs:///user/vanded03/guac-test.vcf
+```
+
+See http://demeter-mgmt1.demeter.hpc.mssm.edu:8088/cluster/app/application_1432740718700_2196
+
+@arahuja says that this shouldn't be happening.
+",danvk,https://github.com/hammerlab/guacamole/issues/302
+MDU6SXNzdWU5MDQ4OTQ1Ng==,Drop deprecated spark.kryoserializer.buffer.mb config key,CLOSED,2015-06-23T21:00:18Z,2015-07-07T15:04:51Z,2015-07-07T15:04:51Z,"I see this ream of warnings when I start Guacamole:
+
+> 15/06/23 16:58:58 WARN SparkConf: The configuration key 'spark.kryoserializer.buffer.mb' has been deprecated as of Spark 1.4 and may be removed in the future. Please use spark.kryoserializer.buffer instead. The default value for spark.kryoserializer.buffer.mb was previously specified as '0.064'. Fractional values are no longer accepted. To specify the equivalent now, one may use '64k'.
+> 15/06/23 16:58:58 WARN SparkConf: The configuration key 'spark.kryoserializer.buffer.mb' has been deprecated as of Spark 1.4 and and may be removed in the future. Please use the new key 'spark.kryoserializer.buffer' instead.
+> 15/06/23 16:58:59 INFO SparkContext: Running Spark version 1.4.0
+> 15/06/23 16:58:59 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+> 15/06/23 16:59:00 WARN SparkConf: The configuration key 'spark.kryoserializer.buffer.mb' has been deprecated as of Spark 1.4 and may be removed in the future. Please use spark.kryoserializer.buffer instead. The default value for spark.kryoserializer.buffer.mb was previously specified as '0.064'. Fractional values are no longer accepted. To specify the equivalent now, one may use '64k'.
+> 15/06/23 16:59:00 WARN SparkConf: The configuration key 'spark.kryoserializer.buffer.mb' has been deprecated as of Spark 1.4 and and may be removed in the future. Please use the new key 'spark.kryoserializer.buffer' instead.
+
+We should replace `spark.kryoserializer.buffer.mb` with `spark.kryoserializer.buffer`.
+",danvk,https://github.com/hammerlab/guacamole/issues/303
+MDU6SXNzdWU5MDcyMDg1Ng==,Check if output directory exists before running the job,CLOSED,2015-06-24T16:07:37Z,2015-06-24T19:52:54Z,2015-06-24T19:52:54Z,"I ran an entire Guacamole job and had it fail because the output directory (as specified by `--out`) already existed. This happened because a previous invocation left a temporary file there.
+
+It would be better if Guacamole warned about this before kicking off any tasks on the cluster.
+",danvk,https://github.com/hammerlab/guacamole/issues/305
+MDU6SXNzdWU5MDc1OTUwNA==,Standardize on @Opt or @Option,CLOSED,2015-06-24T19:00:49Z,2015-07-17T16:58:48Z,2015-07-17T16:58:48Z,"I ran `git grep @Option` to find all the command line flags. It took me a minute to realize that some classes alias `Option` to `Opt`. Saving three characters doesn't seem particularly useful—we should just use one or the other.
+",danvk,https://github.com/hammerlab/guacamole/issues/306
+MDU6SXNzdWU5MTg3NzUxMQ==,Adam/Guacamole Guava version mismatch,CLOSED,2015-06-29T18:38:00Z,2015-06-30T21:33:29Z,2015-06-30T21:33:29Z,"When I run my Guacamole job on the cluster, I get the [following error](http://demeter-mgmt1.demeter.hpc.mssm.edu:19888/jobhistory/logs/demeter-csmaz10-4.demeter.hpc.mssm.edu:8041/container_1432740718700_2491_01_000009/container_1432740718700_2491_01_000009/vanded03):
+
+```
+15/06/26 18:35:04 ERROR yarn.ApplicationMaster: User class threw exception: java.lang.NoSuchMethodError: com.google.common.base.Equivalence.equals()Lcom/google/common/base/Equivalence;
+java.lang.NoSuchMethodError: com.google.common.base.Equivalence.equals()Lcom/google/common/base/Equivalence;
+    at org.bdgenomics.guavarelocated.collect.Interners$WeakInterner.<init>(Interners.java:68)
+    at org.bdgenomics.guavarelocated.collect.Interners$WeakInterner.<init>(Interners.java:66)
+    at org.bdgenomics.guavarelocated.collect.Interners.newWeakInterner(Interners.java:63)
+    at com.netflix.servo.tag.Tags.<clinit>(Tags.java:26)
+    at org.bdgenomics.utils.instrumentation.Metrics$.<init>(Metrics.scala:81)
+    at org.bdgenomics.utils.instrumentation.Metrics$.<clinit>(Metrics.scala)
+    at org.bdgenomics.adam.rdd.ADAMContext.adamLoad(ADAMContext.scala:171)
+    at org.hammerlab.guacamole.reads.Read$.loadReadRDDAndSequenceDictionaryFromADAM(Read.scala:365)
+    at org.hammerlab.guacamole.reads.Read$.loadReadRDDAndSequenceDictionary(Read.scala:298)
+    at org.hammerlab.guacamole.ReadSet$.apply(ReadSet.scala:96)
+    at org.hammerlab.guacamole.Common$.loadReadsFromArguments(Common.scala:146)
+    at org.hammerlab.guacamole.commands.StructuralVariant$Caller$.run(StructuralVariantCaller.scala:89)
+    at org.hammerlab.guacamole.commands.StructuralVariant$Caller$.run(StructuralVariantCaller.scala:33)
+    at org.hammerlab.guacamole.SparkCommand.run(Command.scala:55)
+    at org.hammerlab.guacamole.Command.run(Command.scala:46)
+    at org.hammerlab.guacamole.Guacamole$.main(Guacamole.scala:68)
+    at org.hammerlab.guacamole.Guacamole.main(Guacamole.scala)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:606)
+    at org.apache.spark.deploy.yarn.ApplicationMaster$$anon$2.run(ApplicationMaster.scala:483)
+```
+
+Some Googling indicates that this is due to a [Guava version mismatch](http://stackoverflow.com/questions/24745349/java-lang-nosuchmethoderror-com-google-common-base-equivalence-equals-excepti).
+
+When I run `mvn dependency:tree` on an unmodified Guacamole, I get this:
+
+```
+[INFO] org.hammerlab.guacamole:guacamole:jar:0.0.1-SNAPSHOT
+[INFO] +- com.google.guava:guava:jar:18.0:compile
+```
+
+If I comment out the direct guava dependency, I see this:
+
+```
+[INFO] org.hammerlab.guacamole:guacamole:jar:0.0.1-SNAPSHOT
+[INFO] +- args4j:args4j:jar:2.32:compile
+[INFO] +- org.bdgenomics.adam:adam-core:jar:0.16.0:compile
+...
+[INFO] |  \- com.google.guava:guava:jar:14.0.1:compile
+```
+
+The tests all pass when I build Guacamole this way, but I still get the same error when I run jobs on the cluster using the resulting JAR.
+",danvk,https://github.com/hammerlab/guacamole/issues/309
+MDU6SXNzdWU5MTg5Nzk3OQ==,Update to Adam 0.17,CLOSED,2015-06-29T20:12:54Z,2015-07-02T15:03:13Z,2015-07-02T15:03:13Z,"A few changes that affect us:
+- Some Adam classes have moved under `bdgenomics.utils`.
+- {Text,Binary}CigarCodec now has static methods, rather than a singleton https://github.com/samtools/htsjdk/commit/14f17f337e073d69722cdfde247544feec5f2443
+- `adamLoad` → `loadParquet` (https://github.com/bigdatagenomics/adam/pull/688/)
+- Adam Concordance code now lives in bigdatagenomics/qc-metrics. Unfortunately, they haven't released this yet https://github.com/bigdatagenomics/adam/pull/596
+",danvk,https://github.com/hammerlab/guacamole/issues/310
+MDU6SXNzdWU5MzM3MDAyMg==,vaf histogram improvements,CLOSED,2015-07-06T20:27:54Z,2015-07-28T20:16:57Z,2015-07-28T20:16:57Z,"Some ideas:
+- output to csv with fields sample, start vaf, end vaf, count e.g. pt189_normal, 0.0, 0.1, 1000
+- accept an argument like --min-depth to control the minimum number of reads that must overlap a locus in order for it to be included
+",timodonnell,https://github.com/hammerlab/guacamole/issues/315
+MDU6SXNzdWU5MzUzMzc5MA==,support any number of RDDs in `windowTaskFlatMapMultipleRDDs`,CLOSED,2015-07-07T13:46:49Z,2015-07-20T19:44:09Z,2015-07-20T19:44:09Z,"see: https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/DistributedUtil.scala#L494
+
+we'll need this for multisample joint somatic calling
+",timodonnell,https://github.com/hammerlab/guacamole/issues/317
+MDU6SXNzdWU5MzUzODMxNA==,port varcode read evidence tests for ReadEvidence command,CLOSED,2015-07-07T14:04:19Z,2015-07-16T03:57:41Z,2015-07-16T03:57:41Z,"The read evidence (aka ""variant-support"" -- we should actually change those two names to agree) command here: https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/commands/ReadEvidence.scala has no tests.
+
+The command itself is trivial, but it would be good to have some tests for it as a proxy for our pileup building infrastructure. Especially for RNA, I wouldn't be surprised if we're missing or messing up some cigar operators.
+
+For the read evidence module in varcode, we put together a test set covering a lot of corner cases based on hand-comparing to IGV: https://github.com/hammerlab/varcode/blob/master/test/test_read_evidence.py
+
+We should port those varcode tests over to Guacamole
+",timodonnell,https://github.com/hammerlab/guacamole/issues/318
+MDU6SXNzdWU5MzU0NjQxNQ==,call CNVs even in exome data by finding change points in tumor/normal depth ratio,OPEN,2015-07-07T14:38:35Z,2016-08-25T20:00:28Z,,"I had mistakenly thought that no one tried calling copy number variants on exome seq due to amplification and capture biases, but apparently the original varscan2 paper found they could get acceptable results if the tumor and normal were prepped in exactly the same way: http://www.ncbi.nlm.nih.gov/pubmed/22300766
+
+The approach is to divide the genome into regions, calculate ratio of tumor / normal depth in each region, and then scan the genome looking for change points in this ratio.
+
+The binning followed by change point detection is similar to the final step for the SV work in https://github.com/hammerlab/guacamole/issues/289 . It may actually be a simpler place to start on that (cc @danvk ).
+
+For validation, the varscan2 paper gives tcga accession IDs where they can compare against copy number arrays in table S1: http://genome.cshlp.org/content/suppl/2012/01/11/gr.129684.111.DC1/Koboldt_SuppTable1.doc
+",timodonnell,https://github.com/hammerlab/guacamole/issues/319
+MDU6SXNzdWU5NDg0MTA3OQ==,incorrect comment / can't run single unit test,CLOSED,2015-07-14T00:30:29Z,2015-07-20T19:44:09Z,2015-07-20T19:44:09Z,"We say:
+
+```
+// You can use a line like the following to turn on only a particular unit test for debugging.
+  // TestUtil.runOnly = ""partitionLociByApproximateReadDepth chr20 synth1 subset""
+```
+
+here:
+https://github.com/hammerlab/guacamole/blob/master/src/test/scala/org/hammerlab/guacamole/DistributedUtilSuite.scala#L35
+and also: https://github.com/hammerlab/guacamole/blob/master/src/test/scala/org/hammerlab/guacamole/util/TestUtil.scala#L46
+
+however, setting neither of these for me limits the tests to a single case.
+
+We should either fix this or delete those lines.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/321
+MDU6SXNzdWU5NTQ0ODg3Nw==,Add dbSNP input to variant callers,CLOSED,2015-07-16T14:43:36Z,2015-07-28T20:52:01Z,2015-07-28T20:52:01Z,"This input can be used to:
+1. Label variants as they are called
+2. Add option to filter out variants
+",arahuja,https://github.com/hammerlab/guacamole/issues/326
+MDU6SXNzdWU5NTQ1NzcxMA==,Compare performance on variant calling with keeping duplicates,OPEN,2015-07-16T15:19:43Z,2015-07-28T15:43:22Z,,"The variant caller in [High burden and pervasive positive selection of somatic mutations in normal human skin](http://www.ncbi.nlm.nih.gov/pubmed/25999502) uses the duplicates for evidence to support variants.  We should examine how this would change performance.
+",arahuja,https://github.com/hammerlab/guacamole/issues/327
+MDU6SXNzdWU5NTUyMjE5Mg==,Move back to multi-module project,OPEN,2015-07-16T20:36:56Z,2016-08-25T19:54:32Z,,"I wanted to discuss moving Guacamole back to a multi-module project. There are two main reasons I'd like to do this
+1. Separate out Spark and non-Spark components, it'd be nice to have the commands and `DistributedUtil` separated from the other more general code, that code can be used in other project then as well.
+2. Setting up some Avro/serialization structures.  It may be nice to have easy Avro/Parquet serialization for some of our outputs as opposed to CSVs.
+
+Interested to hear thoughts before though cc @timodonnell @ryan-williams @danvk 
+
+Also, while doing this, maybe it's worth going to an SBT build, @ryan-williams would you recommend this?
+",arahuja,https://github.com/hammerlab/guacamole/issues/329
+MDU6SXNzdWU5NjExNTcwOQ==,no such method error: closeQuietly,CLOSED,2015-07-20T17:26:38Z,2016-08-20T04:21:03Z,2016-08-20T04:21:03Z,"Sergei Iakhnin (I believe @llevar on github) reports seeing this when running Guacamole:
+
+```
+2015-07-16 16:37:16 ERROR Executor:96 - Exception in task 1.0 in stage 1.0 (TID 5)
+
+java.lang.NoSuchMethodError: org.apache.commons.io.IOUtils.closeQuietly(Ljava/io/Closeable;)V
+
+at org.apache.hadoop.hdfs.DFSInputStream.getBlockReader(DFSInputStream.java:1186)
+
+at org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:575)
+
+at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:792)
+
+at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:839)
+
+at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:644)
+
+at java.io.FilterInputStream.read(FilterInputStream.java:83)
+
+at org.seqdoop.hadoop_bam.SAMFormat.inferFromData(SAMFormat.java:53)
+
+at org.seqdoop.hadoop_bam.AnySAMInputFormat.getFormat(AnySAMInputFormat.java:147)
+
+at org.seqdoop.hadoop_bam.AnySAMInputFormat.createRecordReader(AnySAMInputFormat.java:179)
+
+at org.apache.spark.rdd.NewHadoopRDD$$anon$1.<init>(NewHadoopRDD.scala:131)
+
+at org.apache.spark.rdd.NewHadoopRDD.compute(NewHadoopRDD.scala:104)
+
+at org.apache.spark.rdd.NewHadoopRDD.compute(NewHadoopRDD.scala:66)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.CacheManager.getOrCompute(CacheManager.scala:70)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:242)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.rdd.MapPartitionsRDD.compute(MapPartitionsRDD.scala:35)
+
+at org.apache.spark.rdd.RDD.computeOrReadCheckpoint(RDD.scala:277)
+
+at org.apache.spark.rdd.RDD.iterator(RDD.scala:244)
+
+at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:68)
+
+at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:41)
+
+at org.apache.spark.scheduler.Task.run(Task.scala:64)
+
+at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:203)
+
+at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+
+at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+
+at java.lang.Thread.run(Thread.java:745)
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/330
+MDU6SXNzdWU5NjM5NDU1Ng==,inferredInsertSize is double what it should be,CLOSED,2015-07-21T19:10:41Z,2015-07-21T19:39:10Z,2015-07-21T19:27:19Z,"I looked at `62ca5d58-fe16-4015-9bd1-353b02085553` in synth4 in both IGV and Guacamole.
+
+IGV reports:
+
+```
+ left alignment: location=chr20:8,000,211
+                  start=8,007,974 (+)
+                  insert size = 243
+ right alignment: location=chr20:8,000,211
+                  start=8,008,116 (-)
+                  insert size = -243
+```
+
+For the same read, Guacamole has:
+
+```
+matePropertiesOpt.get().inferredInsertSize = Some(-565)
+```
+
+cc @arahuja
+",danvk,https://github.com/hammerlab/guacamole/issues/331
+MDU6SXNzdWU5NjU5MzM1Mg==,Code is licensed to BDG,CLOSED,2015-07-22T15:21:48Z,2016-08-18T15:24:26Z,2016-08-18T15:24:26Z,"Most of our scala files are [""Licensed to Big Data Genomics (BDG)""](https://github.com/hammerlab/guacamole/blob/b8ac2e564ad1fe0000641314d27a7643d66473b4/src/main/scala/org/hammerlab/guacamole/Guacamole.scala#L2). Is this intentional?
+",danvk,https://github.com/hammerlab/guacamole/issues/332
+MDU6SXNzdWU5NjU5NzY4MA==,support loading the reference from a fasta instead of relying on mdtags,CLOSED,2015-07-22T15:40:58Z,2015-10-29T18:42:17Z,2015-10-29T18:42:17Z,"Guacamole currently expects the reference genome to be encoding in the reads using the mdtag mechanism. Since mdtags are frequently NOT written by aligners, it would be useful to also support loading in the reference from a user-specified fasta file, as most variant callers do.
+
+It would be great to somehow do this at the pileup level, so individual guacamole commands can be oblivious to whether the reference is coming from a fasta or from the mdtags.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/333
+MDU6SXNzdWU5Njg3NjgwMA==,make Pileup.referenceName work even when the pileup is empty,CLOSED,2015-07-23T18:30:45Z,2015-07-24T14:06:42Z,2015-07-24T14:06:42Z,"We currently load the reference name (i.e. the contig) from the first read in the pileup: https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/pileup/Pileup.scala#L43
+
+This makes an assertion error if the pileup is empty. We should carry around the reference name in the pileup so it works in this case.
+
+As a separate issue, `referenceName` is kind of an awkward name for this. Maybe we should rename it to `contig` or `chromosome`?
+",timodonnell,https://github.com/hammerlab/guacamole/issues/335
+MDU6SXNzdWU5ODIxNDg2OQ==,the --parallelism should default to spark.default.parallelism,CLOSED,2015-07-30T16:50:06Z,2015-11-03T12:43:45Z,2015-11-03T12:43:45Z,"Or perhaps we should get rid of this option and just use  `spark.default.parallelism` instead
+",timodonnell,https://github.com/hammerlab/guacamole/issues/344
+MDU6SXNzdWU5ODI4NjA3Mw==,implement an adaptive read partitioning strategy,CLOSED,2015-07-30T23:30:27Z,2016-08-15T21:18:59Z,2016-08-15T21:18:59Z,"In situations with very high read skew, which often happens with RNA, it would be good if `DistributedUtil.partitionLociByApproximateDepth` would adaptively refine the granularity if the read-depth approximation. E.g. if a single micro partitions has > 10% the total number of reads, then calculate another depth histogram just within that micro partition.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/348
+MDU6SXNzdWU5OTkyMTQzNQ==,exclude clipped reads from pileups,OPEN,2015-08-09T19:26:35Z,2016-08-25T19:57:01Z,,"We currently include clipped (either S or N cigar operator) reads in the pleup at a locus. For RNA-seq this is a performance issue (and arguably a programming gotcha) since often the vast majority of pileup elements at a locus will be clipped (with the N=intron CIGAR operator, i.e. the locus is not included in the gapped alignment for that read). I think we should change the semantics of the `Pileup` class to always exclude pileup elements that are clipped, since really they're not properly part of the pileup. Possibly the right way to do this is to modify `MappedRead` so it overrides the `HasReferenceRegion` trait's `overlapsLocus` method to return false if the given locus is in a clipped part of that read.
+
+Additionally, if it's doable, we should modify `pileupFlatmap` and friends to not send reads to tasks if all the loci assigned to that task are clipped in the read.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/352
+MDU6SXNzdWUxMDI4NTU1MzA=,Travis build should fail if scalariform reformats file,CLOSED,2015-08-24T18:04:03Z,2016-04-05T15:08:56Z,2016-04-05T15:08:56Z,,arahuja,https://github.com/hammerlab/guacamole/issues/357
+MDU6SXNzdWUxMTEwNDg3ODA=,don't emit variants with ALT=N,CLOSED,2015-10-12T20:23:19Z,2015-10-19T20:17:35Z,2015-10-19T20:17:35Z,,timodonnell,https://github.com/hammerlab/guacamole/issues/361
+MDU6SXNzdWUxMTQ4MTU0MDY=,Properly handle CIGAR P element,OPEN,2015-11-03T13:27:39Z,2016-08-25T19:56:38Z,,"- Upgrade to ADAM after https://github.com/bigdatagenomics/adam/pull/875
+- Add back in test from https://github.com/hammerlab/guacamole/commit/564a7a4c3c8ee21ff3d56b7f9ec52bab4c875bcf
+- Update comment/functionality at thttps://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/pileup/PileupElement.scala#L132-L133
+",arahuja,https://github.com/hammerlab/guacamole/issues/365
+MDU6SXNzdWUxMTg0MTIwNzg=,make it possible to read a subset of a BAM efficiently (i.e. using the index) when running locally,CLOSED,2015-11-23T15:58:50Z,2015-12-14T16:25:45Z,2015-12-14T16:25:45Z,"This would be helpful for local testing and probably some production uses too
+",timodonnell,https://github.com/hammerlab/guacamole/issues/366
+MDU6SXNzdWUxMTk1MjIyNTQ=,Fix reference loading for masked regions,CLOSED,2015-11-30T16:02:47Z,2015-12-04T23:37:55Z,2015-12-04T23:37:55Z,"When loading the FASTA file, the masked regions of the reference are lower-case with different byte values. We can either ignore the masking or leave this encoding.  
+",arahuja,https://github.com/hammerlab/guacamole/issues/368
+MDU6SXNzdWUxMjU2Mzg3Nzc=,Ensure test BAM files are valid,OPEN,2016-01-08T16:04:11Z,2016-08-25T19:54:21Z,,,hammer,https://github.com/hammerlab/guacamole/issues/370
+MDU6SXNzdWUxMjg5Nzk1NDA=,Some more light on how to use the reference files.,OPEN,2016-01-26T23:48:21Z,2016-01-28T19:12:10Z,,"Hi Team,
+             Am actually using the TCGA data to run on the guacamole. I am confused like where should I pass the human reference hg19 file to variant calling or genotyping. Something like we use it in the avocado. Just want to check with you do we have to pass the reference file or is it going to take case of the reference file internally.
+
+Could you please suggest me some good tools or is there any class in guacamole where we can sort the bam file and get the output as a bam file.
+
+Thanks & Regards,
+Ankush Reddy.
+",ankushreddy,https://github.com/hammerlab/guacamole/issues/374
+MDU6SXNzdWUxMjkzMDE4MjI=,when ever am passing a bam file as input am getting nothing out of this.,OPEN,2016-01-27T23:29:08Z,2016-04-11T19:01:29Z,,"Hi team,
+
+When am submitting the job it is getting executed successfully but it is not calling any genotypes.
+
+could you please help me with this issue.
+
+```
+       spark-submit --master yarn --deploy-mode client --driver-java-options -Dlog4j.configuration=/local/guacamole/scripts/logs4j.properties --executor-memory 4g --driver-memory 10g --num-executors 20 --executor-cores 10 --class org.hammerlab.guacamole.Guacamole --verbose /local/guacamole/target/guacamole-with-dependencies-0.0.1-SNAPSHOT.jar germline-threshold --reads hdfs:///shared/avocado_test/NA06984.454.MOSAIK.SRP000033.2009_11.bam --out hdfs:///user/asugured/guacamole/result.vcf
+```
+
+please see the output of the spark-submit I have used.
+
+16/01/27 16:14:02 INFO YarnScheduler: Adding task set 19.0 with 1 tasks
+16/01/27 16:14:02 INFO TaskSetManager: Starting task 0.0 in stage 19.0 (TID 14, istb1-l2-b12-07.hadoop.priv, PROCESS_LOCAL, 1432 bytes)
+16/01/27 16:14:02 INFO BlockManagerInfo: Added broadcast_15_piece0 in memory on istb1-l2-b12-07.hadoop.priv:38654 (size: 1808.0 B, free: 2.1 GB)
+16/01/27 16:14:02 INFO DAGScheduler: Stage 19 (count at VariationRDDFunctions.scala:144) finished in 0.101 s
+16/01/27 16:14:02 INFO TaskSetManager: Finished task 0.0 in stage 19.0 (TID 14) in 88 ms on istb1-l2-b12-07.hadoop.priv (1/1)
+16/01/27 16:14:02 INFO YarnScheduler: Removed TaskSet 19.0, whose tasks have all completed, from pool
+16/01/27 16:14:02 INFO DAGScheduler: Job 5 finished: count at VariationRDDFunctions.scala:144, took 0.115971 s
+16/01/27 16:14:02 INFO VariantContextRDDFunctions: Write 0 records
+16/01/27 16:14:02 INFO MapPartitionsRDD: Removing RDD 22 from persistence list
+16/01/27 16:14:02 INFO BlockManager: Removing RDD 22
+**\* Delayed Messages ***
+Called 0 genotypes.
+Region counts: filtered 0 total regions to 0 relevant regions, expanded for overlaps by NaN% to 0
+Regions per task: min=NaN 25%=NaN median=NaN (mean=NaN) 75%=NaN max=NaN. Max is NaN% more than mean.
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/metrics/json,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/stages/stage/kill,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/static,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump/json,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/threadDump,null}
+16/01/27 16:14:03 INFO ContextHandler: stopped o.s.j.s.ServletContextHandler{/executors/json,null}
+
+Thanks & Regards,
+Ankush Reddy
+",ankushreddy,https://github.com/hammerlab/guacamole/issues/375
+MDU6SXNzdWUxMjk1MjA1NzI=,Allow specifying of a reference fasta and recomputing mdtags,CLOSED,2016-01-28T17:35:39Z,2016-01-28T18:49:00Z,2016-01-28T18:49:00Z,"Although there is a command-line option to allow the recomputation of mdTags, we never pass along the reference genome for this to happen in `germline-standard` or `germline-threshold`
+
+See #375 
+",arahuja,https://github.com/hammerlab/guacamole/issues/376
+MDU6SXNzdWUxMzExMDE5OTI=,Null alleles error.,OPEN,2016-02-03T17:49:13Z,2016-03-29T22:12:52Z,,"Hi @arahuja @ryan-williams ,
+                     Sorry for deviating you from your work. Could you please look into the issue am facing with.
+
+I looked into htsjdk version 1.118 there are several new releases. I tried to change the artifact ID with new release but the artifact ID or dependencies is only for 1.118 version.
+
+Could you please look into this.
+
+16/02/03 10:37:26 WARN TaskSetManager: Lost task 0.0 in stage 15.0 (TID 1679, istb1-l2-b14-03.hadoop.priv): java.lang.IllegalArgumentException: Null alleles are not supported
+        at htsjdk.variant.variantcontext.Allele.<init>(Allele.java:139)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:234)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:355)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.convertAllele(VariantContextConverter.scala:53)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.org$bdgenomics$adam$converters$VariantContextConverter$$convertAlleles(VariantContextConverter.scala:57)
+        at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:329)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:121)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:119)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply$mcV$sp(PairRDDFunctions.scala:1035)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1285)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1042)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1014)
+        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:63)
+        at org.apache.spark.scheduler.Task.run(Task.scala:70)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:213)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:745)
+
+16/02/03 10:37:26 INFO TaskSetManager: Starting task 0.1 in stage 15.0 (TID 1680, istb1-l2-b13-01.hadoop.priv, PROCESS_LOCAL, 1541 bytes)
+16/02/03 10:37:26 INFO BlockManagerInfo: Added broadcast_14_piece0 in memory on istb1-l2-b13-01.hadoop.priv:56689 (size: 26.4 KB, free: 2.1 GB)
+16/02/03 10:37:26 INFO MapOutputTrackerMasterEndpoint: Asked to send map output locations for shuffle 1 to istb1-l2-b13-01.hadoop.priv:41144
+16/02/03 10:38:01 WARN TaskSetManager: Lost task 0.1 in stage 15.0 (TID 1680, istb1-l2-b13-01.hadoop.priv): java.lang.IllegalArgumentException: Null alleles are not supported
+        at htsjdk.variant.variantcontext.Allele.<init>(Allele.java:139)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:234)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:355)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.convertAllele(VariantContextConverter.scala:53)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.org$bdgenomics$adam$converters$VariantContextConverter$$convertAlleles(VariantContextConverter.scala:57)
+        at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:329)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:121)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:119)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply$mcV$sp(PairRDDFunctions.scala:1035)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1285)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1042)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1014)
+        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:63)
+        at org.apache.spark.scheduler.Task.run(Task.scala:70)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:213)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:745)
+
+16/02/03 10:38:01 INFO TaskSetManager: Starting task 0.2 in stage 15.0 (TID 1681, istb1-l2-b11-07.hadoop.priv, PROCESS_LOCAL, 1541 bytes)
+16/02/03 10:38:01 INFO BlockManagerInfo: Added broadcast_14_piece0 in memory on istb1-l2-b11-07.hadoop.priv:47042 (size: 26.4 KB, free: 2.1 GB)
+16/02/03 10:38:01 INFO MapOutputTrackerMasterEndpoint: Asked to send map output locations for shuffle 1 to istb1-l2-b11-07.hadoop.priv:41636
+16/02/03 10:38:29 WARN TaskSetManager: Lost task 0.2 in stage 15.0 (TID 1681, istb1-l2-b11-07.hadoop.priv): java.lang.IllegalArgumentException: Null alleles are not supported
+        at htsjdk.variant.variantcontext.Allele.<init>(Allele.java:139)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:234)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:355)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.convertAllele(VariantContextConverter.scala:53)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.org$bdgenomics$adam$converters$VariantContextConverter$$convertAlleles(VariantContextConverter.scala:57)
+        at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:329)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:121)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:119)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply$mcV$sp(PairRDDFunctions.scala:1035)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1285)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1042)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1014)
+        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:63)
+        at org.apache.spark.scheduler.Task.run(Task.scala:70)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:213)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:745)
+
+16/02/03 10:38:29 INFO TaskSetManager: Starting task 0.3 in stage 15.0 (TID 1682, istb1-l2-b14-07.hadoop.priv, PROCESS_LOCAL, 1541 bytes)
+16/02/03 10:38:29 INFO BlockManagerInfo: Added broadcast_14_piece0 in memory on istb1-l2-b14-07.hadoop.priv:36525 (size: 26.4 KB, free: 2.1 GB)
+16/02/03 10:38:30 INFO MapOutputTrackerMasterEndpoint: Asked to send map output locations for shuffle 1 to istb1-l2-b14-07.hadoop.priv:58910
+16/02/03 10:38:53 WARN TaskSetManager: Lost task 0.3 in stage 15.0 (TID 1682, istb1-l2-b14-07.hadoop.priv): java.lang.IllegalArgumentException: Null alleles are not supported
+        at htsjdk.variant.variantcontext.Allele.<init>(Allele.java:139)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:234)
+        at htsjdk.variant.variantcontext.Allele.create(Allele.java:355)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.convertAllele(VariantContextConverter.scala:53)
+        at org.bdgenomics.adam.converters.VariantContextConverter$.org$bdgenomics$adam$converters$VariantContextConverter$$convertAlleles(VariantContextConverter.scala:57)
+        at org.bdgenomics.adam.converters.VariantContextConverter.convert(VariantContextConverter.scala:329)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:121)
+        at org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions$$anonfun$4.apply(VariationRDDFunctions.scala:119)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at scala.collection.Iterator$$anon$11.next(Iterator.scala:328)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply$mcV$sp(PairRDDFunctions.scala:1035)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12$$anonfun$apply$4.apply(PairRDDFunctions.scala:1034)
+        at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1285)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1042)
+        at org.apache.spark.rdd.PairRDDFunctions$$anonfun$saveAsNewAPIHadoopDataset$1$$anonfun$12.apply(PairRDDFunctions.scala:1014)
+        at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:63)
+        at org.apache.spark.scheduler.Task.run(Task.scala:70)
+        at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:213)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:745)
+
+16/02/03 10:38:53 ERROR TaskSetManager: Task 0 in stage 15.0 failed 4 times; aborting job
+16/02/03 10:38:53 INFO YarnScheduler: Removed TaskSet 15.0, whose tasks have all completed, from pool
+16/02/03 10:38:53 INFO YarnScheduler: Cancelling stage 15
+16/02/03 10:38:53 INFO DAGScheduler: ResultStage 15 (saveAsNewAPIHadoopFile at VariationRDDFunctions.scala:140) failed in 115.716 s
+16/02/03 10:38:53 INFO DAGScheduler: Job 4 failed: saveAsNewAPIHadoopFile at VariationRDDFunctions.scala:140, took 115.912601 s
+16/02/03 10:38:53 INFO SparkUI: Stopped Spark web UI at http://10.107.18.34:4040
+16/02/03 10:38:53 INFO DAGScheduler: Stopping DAGScheduler
+16/02/03 10:38:53 INFO YarnClientSchedulerBackend: Shutting down all executors
+16/02/03 10:38:53 INFO YarnClientSchedulerBackend: Interrupting monitor thread
+16/02/03 10:38:53 INFO YarnClientSchedulerBackend: Asking each executor to shut down
+16/02/03 10:38:53 INFO YarnClientSchedulerBackend: Stopped
+16/02/03 10:38:53 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+16/02/03 10:38:53 INFO Utils: path = /tmp/spark-a8f2c424-5e2f-40a2-a984-b51d5cf8954d/blockmgr-645bc7be-4363-40e1-b608-002dfb7916ac, already present as root for deletion.
+
+Thanks & Regards,
+Ankush Reddy.
+",ankushreddy,https://github.com/hammerlab/guacamole/issues/379
+MDU6SXNzdWUxMzI0NjkxMDk=,Investigate filtering reads on load using HadoopBAM,CLOSED,2016-02-09T16:43:14Z,2016-10-06T20:42:19Z,2016-10-06T20:42:19Z,"It looks like HadoopBAM will soon directly allow you to filter to a region in the BAM like samtools: https://github.com/HadoopGenomics/Hadoop-BAM/pull/59. It'd be nice to see how this works and hopefully use this to have a single BAM loading path as opposed to the two we have now.
+",arahuja,https://github.com/hammerlab/guacamole/issues/383
+MDU6SXNzdWUxMzQwNzA0ODg=,joint caller: implement filters,OPEN,2016-02-16T19:10:38Z,2016-08-25T19:59:46Z,,"Some filters we should probably have (going by artifacts I've observed in real data)
+- Strand bias
+- Variants reads mostly start or end at the same place
+- Variants toward the end of homopolymers (perhaps take into account strand)
+- SNVs near indels
+- Reads in normal sample have lots of mismatches or poor alignments in the region
+
+Some of these are implemented here https://github.com/hammerlab/guacamole/tree/master/src/main/scala/org/hammerlab/guacamole/filters and can be adapted for the joint caller.
+
+For things directly involving base qualities, mapping qualities, and read depths I'd like to try integrating these directly into the likelihood computation when possible rather than having them as filters. For example, instead of having a threshold filter on read depth, it may be possible to parameterize our prior likelihood on there being a somatic variant in a more intuitive way involving minimum read depth.
+
+Here are (some of) the filters Mutect supports: http://www.nature.com/nbt/journal/v31/n3/fig_tab/nbt.2514_T1.html
+
+Since we're joint calling, one question is what sample should these filters run on. I think the simplest thing to do is run them on the pooled sequencing data, but another option to experiment with may be to run them on the samples that trigger a call, and then only keep the call if there are any samples that trigger the call and aren't filtered out.
+
+Any filtered calls should be written out to a VCF with the FILTER field set to explain why it was filtered.
+
+@e5c is down to take a stab at this once we have #384 merged and running on the cluster, assigning to her
+",timodonnell,https://github.com/hammerlab/guacamole/issues/385
+MDU6SXNzdWUxMzU4NTMzOTY=,avoid reshuffling all reads at startup,CLOSED,2016-02-23T20:22:04Z,2016-08-15T20:29:15Z,2016-08-15T20:29:15Z,"Our BAMs are generally sorted by alignment position, so our current method of doing a full repartition at startup (which I believe more or less sends every read to another node) is very inefficient. Most of the reads could just stay where they are if we partitioned the data more intelligently (e.g. in the best case would only have to move reads that overlap two partitions).
+
+Here's the function where we do this:
+https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/DistributedUtil.scala#L558
+
+We assign reads to arbitrary ""task numbers,"" partition by task number and then map over the partitions. Unless Spark is more clever than I think, this is shuffling more or less every read over the network.
+
+First step here would be to check if what I'm talking about is true by looking at how many reads are getting sent across the network in the above function.
+
+Getting this to work right is going to require more Spark knowledge than I have, so I'm filing this in case @ryan-williams or @e5c are interested in taking a crack at it sometime. I think it could substantially improve Guacamole usability on the cluster. 
+",timodonnell,https://github.com/hammerlab/guacamole/issues/386
+MDU6SXNzdWUxMzY0MzM1OTE=,Potential source of validated somatic mutations,OPEN,2016-02-25T16:13:40Z,2016-04-27T21:23:02Z,,"A recent Nature [article](http://www.nature.com/nature/journal/vaop/ncurrent/full/nature16965.html) on pancreatic cancer sequenced 382 patients from the Australian Pancreatic Cancer Genome Initiative (APGI) and found 23,538 high confidence coding mutations, of which, 7,377 were verified using orthogonal approaches. The data appears to be available from the ICGC data portal at https://dcc.icgc.org/projects/PACA-AU. We should see if we can get BAMs or FASTQs for the patients that have validated mutations!
+",hammer,https://github.com/hammerlab/guacamole/issues/387
+MDU6SXNzdWUxMzczMTQxNDU=,support RNA in joint caller,CLOSED,2016-02-29T17:13:24Z,2016-04-10T14:52:58Z,2016-04-10T14:52:58Z,"Presence of a variant in an RNA sample in addition to DNA should make us more likely to trigger a call. RNA evidence alone shouldn't result in a call.
+
+One simple way to implement this is to have a fixed adjustment to the prior when there is evidence for the variant in any RNA sample.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/388
+MDU6SXNzdWUxMzczMTcwODM=,joint caller: output phasing information,OPEN,2016-02-29T17:25:13Z,2016-08-25T19:59:47Z,,"The joint caller should optionally output a csv file that gives for pairs A, B of variants (both germline and somatic) at each sample:
+- total number of fragments (i.e. reads or mates of reads) overlapping both sites
+- total number of fragments overlapping both and supporting either the variant or reference alleles at both sites (i.e. excluding reads supporting a third alternate)
+- number of fragments supporting:
+  - variant allele for A and reference allele of B
+  - reference allele for A and variant allele of B
+  - variant alleles for both A and B
+
+One possible application for this data is to contrain phylogeny inference: if all the reads supporting variant A also support variant B, then mutation A probably occurred after B
+",timodonnell,https://github.com/hammerlab/guacamole/issues/389
+MDU6SXNzdWUxMzczMTk4ODU=,joint caller: use phasing information for better calls,OPEN,2016-02-29T17:33:31Z,2016-08-25T19:59:34Z,,"Once we have the phasing information collected in #389 , besides just writing it out we can also use it to make better calls
+
+Somatic variants should all be ""consistent"" with germline variants, meaning that reads supporting a somatic variant should either all support the germline variant allele or all support the germline reference allele. Any case where this is not true is a false positive somatic or germline call.
+
+This could be implemented as a filter in #385 , or we could bake it into the likelihood (e.g. give a boost to the prior for variants that overlap a germline variant and are consistent with it, vs. variants that don't overlap a germline variant). [Kind of weird to have a bias toward calling somatic variants in areas near many germline variants, but I guess there's already a lot of bias _against_ calling these regions due to more difficult alignments so maybe it's a good thing.]
+",timodonnell,https://github.com/hammerlab/guacamole/issues/390
+MDU6SXNzdWUxMzczNzkzNTc=,Document test BAMs and VCF files,CLOSED,2016-02-29T21:18:55Z,2016-03-06T21:55:25Z,2016-03-06T21:55:25Z,"@timodonnell Do you have any documentation for how `https://github.com/hammerlab/guacamole/tree/master/src/test/resources/illumina-platinum-na12878` was created? Specifically, the commands for the other VCF files?
+",arahuja,https://github.com/hammerlab/guacamole/issues/391
+MDU6SXNzdWUxNDIzNDk4MTc=,"remove reliance on mdTags, always use an external reference",CLOSED,2016-03-21T13:38:12Z,2016-03-24T22:34:42Z,2016-03-24T22:34:42Z,"Mdtags are convenient but break for RNA and likely also have a negative performance impact on runs where we end up regenerating them from a reference. It's also not obvious to a user which callers need a reference, and there's opportunity for the two code paths to give different results. We should stop relying on MdTags and always use a `ReferenceBroadcast`.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/395
+MDU6SXNzdWUxNDM1NTY4MTY=,Upgrade HadoopBAM to use BAM index,CLOSED,2016-03-25T18:07:02Z,2016-09-16T18:18:23Z,2016-09-16T18:18:23Z,"Right now we use samtools for locally BAM reading since it can use the BAM index and directly access the reads of interest.
+
+Hadoop BAM should support this now as well (https://github.com/HadoopGenomics/Hadoop-BAM/pull/59) and will allow us to only access a subset of the BAM as oppposed to filtering after loading when using the the `--loci` argument.
+",arahuja,https://github.com/hammerlab/guacamole/issues/399
+MDU6SXNzdWUxNDM3MTk3NTM=,Allow for reading in block gzip compressed VCF files.,OPEN,2016-03-26T15:35:59Z,2016-08-25T19:50:57Z,,"Block gzip compressed/indexed VCF files are currently mistaken for Parquet format, and an error like this is thrown:
+
+```
+dbsnp_132_b37.leftAligned.vcf.gz is not a Parquet file. expected magic number at tail [80, 65, 82, 49] but found [0, 0, 0, 0]
+```
+
+@arahuja pointed out that there is a PR to support this input format in Hadoop-BAM that could be merged in once complete on their end: https://github.com/HadoopGenomics/Hadoop-BAM/pull/70
+",jstjohn,https://github.com/hammerlab/guacamole/issues/402
+MDU6SXNzdWUxNDM4Mjc1Mzc=,"After upgrade to adam 0.19, many tests use mostly mismatching read alignments.",CLOSED,2016-03-27T16:52:38Z,2016-03-28T19:45:23Z,2016-03-28T19:45:23Z,"While working on my mutect-like algorithm, and porting tests over from the `SomaticStandardCallerSuite`, I noticed that the [multi-base deletion](https://github.com/hammerlab/guacamole/blob/master/src/test/scala/org/hammerlab/guacamole/commands/SomaticStandardCallerSuite.scala#L178) test was not working, while it seemed to work fine for the `SomaticStandardCaller`. After digging in I noticed that the ""sum of mismatching base quality score filter"" was removing all of the reads from the tumor sample. On digging deeper into the test, I noticed that the test was set up to put the normal/tumor read on a reference sequence that didn't match the normal read sequence. I was able to get that test passing by adding another contig that matched the normal read sequence, and use that instead.
+
+I am a little concerned that this might be a more global problem. Do any other methods in guacamole make use of filters based on mismatching bases? If so any `negative` tests need to be examined carefully to make sure this recent transition away from user defined MD tags is not causing any other unexpected issues.
+
+In the case of the SomaticStandardCaller I think that bogus alignment is no problem. Basically it is an alignment where all bases either mismatch, or based on the cigar are marked as deleted, so I think this test is still doing something useful in that case. 
+
+As a user though it threw me off, and I am not sure that my other passing negative tests in MuTect are because a bogus alignment is getting filtered in my base caller function, or if it is actually negative. I'll have to be careful :)
+",jstjohn,https://github.com/hammerlab/guacamole/issues/403
+MDU6SXNzdWUxNDU2ODMzOTg=,support writing Guacamole commands in separate projects,OPEN,2016-04-04T13:26:55Z,2016-08-25T19:50:57Z,,"Not sure if this is already doable as-is, but I have a case now where I'd like to do this, so it'd be good to figure out what the best approach is and put together an example for others. @jstjohn is also interested in this.
+
+I have a Guacamole command in a branch [here](https://github.com/hammerlab/guacamole/blob/22b0b0fde764a0df17ed78cdf3e0b8b34ff0aba4/src/main/scala/org/hammerlab/guacamole/commands/ExtractSequencingErrorReads.scala) that is an ad-hoc analysis I needed for a separate project.
+
+Since it doesn't really belong in Guacamole master, I'd like that command to live in a separate repo (for hammerlab internal users: this [one](https://github.com/hammerlab/sequencing-error-exploration)), while minimizing the amount of maven boilerplate. It'd be useful to put together some documentation showing the best way to do this.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/424
+MDU6SXNzdWUxNDU2OTQ2Mjg=,Cap the number of reads that are materialized in a Pileup,CLOSED,2016-04-04T14:11:11Z,2016-08-15T19:24:31Z,2016-08-15T19:24:31Z,"Per discussion we had last week, this is the quickest way to work around the most frequent cause of memory pressure that we run in to.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/425
+MDU6SXNzdWUxNDc4MDA5OTQ=,Upgrade to Scala 2.11,OPEN,2016-04-12T16:11:50Z,2016-10-08T07:01:03Z,,"Eventually we should do this; collecting notes about how/when here.
+- should we have a transition period where we support both?
+- or should we switch over in one go (once we're sure things work on 2.11)?
+
+Based on only high-level knowledge of the ramifications, I'm in favor of the latter.
+
+Some context / notes:
+- [2.10 has been EoL'd for ~18mos](http://www.scala-lang.org/news/2.12-roadmap/). 
+- Of our dependencies, ADAM and Spark support Scala 2.11; if any don't that's worth finding out because it also probably means they're unmaintained.
+- Spark currently [debating dropping Java 7 / Scala 2.10 in upcoming Spark 2.0 release](http://mail-archives.apache.org/mod_mbox/incubator-spark-dev/201604.mbox/%3CCAAsvFPmiJxva1UxFpHm9aSGYX4c0K8qByO1gAfv3sKPd8vJWig@mail.gmail.com%3E).
+- @arahuja or @timodonnell mentioned that case-class boxing might be better in 2.11, as well as whatever else was added to scala in the last ~18mos :)
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/438
+MDU6SXNzdWUxNDc4MDM5NDE=,Codify style rules,OPEN,2016-04-12T16:24:15Z,2016-09-18T17:17:22Z,,"I recently removed Scalariform due to conflicts between it, my personal preferences, and (most importantly) IntelliJ that I wasn't able to resolve.
+
+In #435, #436, and #437, some questions have been raised about what styles we should enforce, disallow, allow existing violations of, and even allow new deviations from.
+
+I'm personally fine with a maximally hands-off posture where:
+- we agree on preferred style patterns,
+- changes that improve code according to that hierarchy are welcomed,
+- existing and new deviations are not required to be fixed.
+
+In all cases, the ability of IntelliJ to format code according to a style automatically is a strong argument in favor of a given style.
+
+To seed discussion, here's the ScalaDoc tab of my IntelliJ Code Style > Scala preferences:
+
+![](http://cl.ly/1N3O1F0h363Q/Screen%20Shot%202016-04-12%20at%2012.14.06%20PM.png)
+
+Let me know if you have something different and feel we should standardize on that.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/439
+MDU6SXNzdWUxNDgxMTcwODY=,Ensure VCFs comply with the VCFv4.1 spec,OPEN,2016-04-13T16:42:13Z,2016-08-25T19:50:57Z,,"Spec at https://samtools.github.io/hts-specs/VCFv4.1.pdf 
+
+To avoid downstream parsing errors of loading VCFs with [`varcode`](https://github.com/hammerlab/varcode) or other `pyvcf`-dependent tools.
+",e5c,https://github.com/hammerlab/guacamole/issues/442
+MDU6SXNzdWUxNTAxOTU4OTM=,loci loading from file seems to fail when running given a `file:///` path while running on yarn,CLOSED,2016-04-21T21:29:47Z,2016-05-06T19:03:37Z,2016-05-06T19:03:37Z,"Getting this exception
+
+> java.lang.IllegalArgumentException: Wrong FS: file:/hpc/users/odonnt02/sinai/git/projects/guacamole-validation/joint-caller-runs/aocs/runs/aocs-034-wgs/aocs_034_called_loci.txt, expected: hdfs://demeter-nn1.demeter.hpc.mssm.edu:8020
+>     at org.apache.hadoop.fs.FileSystem.checkPath(FileSystem.java:645)
+>     at org.apache.hadoop.hdfs.DistributedFileSystem.getPathName(DistributedFileSystem.java:193)
+>     at org.apache.hadoop.hdfs.DistributedFileSystem.access$000(DistributedFileSystem.java:105)
+>     at org.apache.hadoop.hdfs.DistributedFileSystem$3.doCall(DistributedFileSystem.java:302)
+>     at org.apache.hadoop.hdfs.DistributedFileSystem$3.doCall(DistributedFileSystem.java:298)
+>     at org.apache.hadoop.fs.FileSystemLinkResolver.resolve(FileSystemLinkResolver.java:81)
+>     at org.apache.hadoop.hdfs.DistributedFileSystem.open(DistributedFileSystem.java:298)
+>     at org.apache.hadoop.fs.FileSystem.open(FileSystem.java:766)
+>     at org.hammerlab.guacamole.Common$.lociFromFile(Common.scala:244)
+>     at org.hammerlab.guacamole.Common$.loci(Common.scala:269)
+>     at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:86)
+>     at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:62)
+>     at org.hammerlab.guacamole.SparkCommand.run(Command.scala:55)
+>     at org.hammerlab.guacamole.Command.run(Command.scala:46)
+>     at org.hammerlab.guacamole.Guacamole$.main(Guacamole.scala:70)
+>     at org.hammerlab.guacamole.Guacamole.main(Guacamole.scala)
+>     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+>     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+>     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+>     at java.lang.reflect.Method.invoke(Method.java:606)
+>     at org.apache.spark.deploy.yarn.ApplicationMaster$$anon$2.run(ApplicationMaster.scala:542)
+
+https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/Common.scala#L244
+
+coming from this argument
+
+`--force-call-loci-from-file file:///hpc/users/odonnt02/sinai/git/projects/guacamole-validation/joint-caller-runs/aocs/runs/aocs-034-wgs/aocs_034_called_loci.txt`
+",timodonnell,https://github.com/hammerlab/guacamole/issues/446
+MDU6SXNzdWUxNTA0ODgxMTQ=,"consider supporting other output formats (csv, json, arrow?) in joint caller",OPEN,2016-04-22T22:42:45Z,2016-08-25T19:59:07Z,,"There's quite a lot of business logic in `VCFOutput` around [here](https://github.com/hammerlab/guacamole/blob/master/src/main/scala/org/hammerlab/guacamole/commands/jointcaller/VCFOutput.scala#L135) where we take `MultiSampleMultiAlleleEvidence` instances and make them into `htsjdk.VariantContext` instances.
+
+This makes it non-trivial to support other output formats like csv since that logic would have to get reproduced there.
+
+It may make sense to make an intermediate representation for joint caller calls, which can then can converted either to htsjdk variant contexts for vcf output or other formats like csv. 
+",timodonnell,https://github.com/hammerlab/guacamole/issues/447
+MDU6SXNzdWUxNTA3MzYyNzg=,Update description to account for dropped caller,CLOSED,2016-04-25T03:23:46Z,2016-08-24T16:46:13Z,2016-08-24T16:46:13Z,"A Maven install gives the warning:
+
+```
+/.../guacamole/package.scala:3: warning: Could not find any member to link for ""org.hammerlab.guacamole.commands.GermlineThreshold"".
+/**
+^
+```
+
+from the now-outdated description:
+
+> To get started, take a look at the code for [[org.hammerlab.guacamole.commands.GermlineThreshold]] for a pedagogical example of a variant caller
+",e5c,https://github.com/hammerlab/guacamole/issues/450
+MDU6SXNzdWUxNTIwNTQyMTA=,Move `Common` functionality to more specific locations,CLOSED,2016-04-30T21:35:49Z,2016-07-15T17:13:12Z,2016-07-15T17:13:12Z,"Outstanding PRs already move everything out of `Common` piecemeal, and delete it:
+- #461: `createSparkContext`
+- #464: `validateArguments`, `parseEnvVariables`
+- #459: loci-parsing functions
+
+This issue just notes the above and the high-level goal of putting `Common` things in modules and removing it, to better organize the codebase.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/465
+MDU6SXNzdWUxNTIwNTQ3ODM=,Move files out of root packages,CLOSED,2016-04-30T21:49:22Z,2016-07-15T17:31:05Z,2016-07-15T17:31:04Z,"Similar to #465, this issue is just to note that the following PRs/commits move everything from the root `org.hammerlab.guacamole` package (both `src/` and `test/`) and in to more specific sub-packages with like functionality:
+- #463: `HasReferenceRegion` → `reference.Region`
+- #462: `Bases`, `CigarUtils` → `util` pkg
+- #461: `Command`, `SparkCommand` → `commands` pkg
+- #464 (specifically https://github.com/hammerlab/guacamole/pull/464/commits/11b66bdbc38f89a987d4fe1706e6762c2d5aa20d): `test/…/{NA12878TestUtils,CancerWGSTestUtils}` → `test/…/data/{NA12878,CancerWGS}`
+
+The end result of this and #465, with all my outstanding PRs rebased on one another, can be seen at https://github.com/ryan-williams/guacamole/tree/tot; one commit, https://github.com/ryan-williams/guacamole/commit/7daf23ec092ad11d2d9ca2c3aee9f4d5d106c72a, is not in any PR yet, but I'll add it to one or make it its own soon.
+
+File hierarchy, as viewed in IntelliJ, before these changes:
+
+![](http://cl.ly/2j3L3k032q3H/Screen%20Shot%202016-04-30%20at%205.42.47%20PM.png)
+
+and after:
+
+![](http://f.cl.ly/items/2K2p2C370m0T3s2v0v2r/Screen%20Shot%202016-04-30%20at%205.42.11%20PM.png)
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/466
+MDU6SXNzdWUxNTI2NTI2MTg=,Is there any way we can get the quali and filter information in the vcf file.,OPEN,2016-05-02T21:44:09Z,2016-05-02T21:44:09Z,,"Hi team am looking is there any parameter or any configuration we have to set to get the qual and filter information in the VCF file.
+",ankushreddy,https://github.com/hammerlab/guacamole/issues/470
+MDU6SXNzdWUxNTI2NTY3NTE=,failed to register classes with Kryo,CLOSED,2016-05-02T22:05:12Z,2016-05-03T03:42:04Z,2016-05-03T01:15:22Z,"Hi @ryan-williams @arahuja 
+
+```
+                      please find the error when am trying to run the spark-submit.
+```
+
+16/05/02 14:59:37 INFO BlockManager: BlockManager stopped
+16/05/02 14:59:37 INFO BlockManagerMaster: BlockManagerMaster stopped
+16/05/02 14:59:37 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+16/05/02 14:59:37 INFO SparkContext: Successfully stopped SparkContext
+**Exception in thread ""main"" org.apache.spark.SparkException: Failed to register classes with Kryo**
+        at org.apache.spark.serializer.KryoSerializer.newKryo(KryoSerializer.scala:128)
+        at org.apache.spark.serializer.KryoSerializerInstance.borrowKryo(KryoSerializer.scala:273)
+        at org.apache.spark.serializer.KryoSerializerInstance.<init>(KryoSerializer.scala:258)
+        at org.apache.spark.serializer.KryoSerializer.newInstance(KryoSerializer.scala:174)
+        at org.apache.spark.broadcast.TorrentBroadcast$.blockifyObject(TorrentBroadcast.scala:201)
+        at org.apache.spark.broadcast.TorrentBroadcast.writeBlocks(TorrentBroadcast.scala:102)
+        at org.apache.spark.broadcast.TorrentBroadcast.<init>(TorrentBroadcast.scala:85)
+        at org.apache.spark.broadcast.TorrentBroadcastFactory.newBroadcast(TorrentBroadcastFactory.scala:34)
+        at org.apache.spark.broadcast.BroadcastManager.newBroadcast(BroadcastManager.scala:63)
+        at org.apache.spark.SparkContext.broadcast(SparkContext.scala:1326)
+        at org.hammerlab.guacamole.reference.ReferenceBroadcast$.readFasta(ReferenceBroadcast.scala:73)
+        at org.hammerlab.guacamole.reference.ReferenceBroadcast$.apply(ReferenceBroadcast.scala:154)
+        at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:92)
+        at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:80)
+        at org.hammerlab.guacamole.commands.SparkCommand.run(SparkCommand.scala:10)
+        at org.hammerlab.guacamole.commands.Command.run(Command.scala:46)
+        at org.hammerlab.guacamole.Main$.main(Main.scala:68)
+        at org.hammerlab.guacamole.Main.main(Main.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:606)
+        at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+        at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+        at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+        at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+        at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+**Caused by: java.lang.ClassNotFoundException: org.hammerlab.guacamole.kryo.GuacamoleKryoRegistrar**
+
+Hi could you please let me know if there is any way to filter the variants based on quality or is  there any way to get the qual filter and other missing information in the vcf files.
+
+Thanks & Regards,
+Ankush Reddy.
+",ankushreddy,https://github.com/hammerlab/guacamole/issues/471
+MDU6SXNzdWUxNTI4Mzk0MDM=,Use git lfs for large files,CLOSED,2016-05-03T18:13:00Z,2016-06-30T21:25:44Z,2016-06-30T21:25:44Z,"@arahuja made an attempt in #467 but couldn't get Travis to work. It would be good to get our BAMs out of the repo. 
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/473
+MDU6SXNzdWUxNTI4NDAyMzc=,Audit/Reduce repo size,CLOSED,2016-05-03T18:17:01Z,2016-12-08T21:33:30Z,2016-12-08T21:33:30Z,"A fresh clone of the repo is 556MB with a 309MB `.git` directory.
+
+It would be good if there were ways to:
+1. note the increase in sizes on PRs
+2. purge some large files from history (esp. in conjunction with #473).
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/474
+MDU6SXNzdWUxNTM1MTEyMzc=,Save loci partitioning to a file instead of printing to screen,CLOSED,2016-05-06T18:30:16Z,2016-08-24T16:48:48Z,2016-08-24T16:48:48Z,"After #460 the full loci partitioning prints to scree
+
+``````
+Loci partitioning: chr20:0-65901=0,chr20:65901-71548=1,chr20:71548-77516=2,chr20:77516-83336=3,chr20:83336-89136=4,chr20:89136-94844=5,chr20:94844-100670=6,c
+hr20:100670-105973=7,chr20:105973-111573=8,chr20:111573-117090=9,chr20:117090-122717=10,chr20:122717-128207=11,chr20:128207-133751=12,chr20:133751-139407=13,chr20:139407-145141=14,c
+hr20:145141-150743=15,chr20:150743-156645=16,chr20:156645-162474=17,chr20:162474-167875=18,chr20:167875-173725=19,chr20:173725-179273=20,chr20:179273-185261=21,chr20:185261-190619=2
+2,chr20:190619-196255=23,chr20:196255-202131=24,chr20:202131-207690=25,chr20:207690-213447=26,chr20:213447-218952=27,chr20:218952-224605=28,chr20:224605-230443=29,chr20:230443-23652
+8=30,chr20:236528-242347=31,chr20:242347-248481=32,chr20:248481-254954=33,chr20:254954-261201=34,chr20:261201-267002=35,chr20:267002-273209=36,chr20:273209-279121=37,chr20:279121-28
+4755=38,chr20:284755-290755=39,chr20:290755-296686=40,chr20:296686-302781=41,chr20:302781-309476=42,chr20:309476-315357=43,chr20:315357-321829=44,chr20:321829-328159=45,chr20:328159
+-334064=46,chr20:334064-340345=47```
+
+I assume this has some debugging purpose @ryan-williams? If so I'd be up for saving it to a file or making this output optional. I can implement this if there is agreement
+``````
+",arahuja,https://github.com/hammerlab/guacamole/issues/476
+MDU6SXNzdWUxNjQ2MjU2NzM=,SomaticJointCallerIntegrationTests are broken,CLOSED,2016-07-08T22:09:27Z,2016-07-11T18:44:07Z,2016-07-11T18:44:07Z,"The SomaticJointCallerIntegrationTests (which have been refactored to be a standalone entry point instead of a test since since the last time I used them), give these instructions for how to run them:
+
+```
+ * To run:
+ *
+ *   mvn package
+ *   mvn test-compile
+ *   java \
+ *     -cp target/guacamole-with-dependencies-0.0.1-SNAPSHOT.jar:target/scala-2.10.5/test-classes \
+ *     org.hammerlab.guacamole.main.SomaticJointCallerIntegrationTests
+```
+
+However, when I do that, I get this usage error followed by the joint caller help message:
+
+```
+[tim@Tims-MacBook ~/sinai/git/guacamole]$  java \
+>       -cp target/guacamole-with-dependencies-0.0.1-SNAPSHOT.jar:target/scala-2.10.5/test-classes \
+>       org.hammerlab.guacamole.main.SomaticJointCallerIntegrationTests
+Option ""--reference-fasta"" is required
+```
+
+Also, it's unclear to me how to run these from IntelliJ.
+
+I'm thinking we should probably roll back the change that made these non-tests. Even though they don't assert anything, by the fact that they run successfully they effectively test a number of things. Having them as tests also makes sure we don't end up in the current situation where they bit rot.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/483
+MDU6SXNzdWUxNjQ5MTkzODM=,Use Maven dependency plugin to generate classpath of transitive dependencies,CLOSED,2016-07-11T19:51:26Z,2016-08-24T17:02:46Z,2016-08-24T17:02:46Z,"cf. discussion on https://github.com/hammerlab/guacamole/pull/482
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/494
+MDU6SXNzdWUxNjc2Mjk3MDA=,run joint caller integration tests in travis,CLOSED,2016-07-26T15:00:27Z,2016-07-26T22:12:42Z,2016-07-26T22:12:42Z,"It would be useful to continuously verify that we can run the joint caller and get reasonable output. That test is currently quite slow though so it has been removed from the unit tests. It would be great to have it run as part of travis though. Some profiling and performance optimization of it might be useful too. 
+
+See discussion at https://github.com/hammerlab/guacamole/issues/483#issuecomment-231597188
+",timodonnell,https://github.com/hammerlab/guacamole/issues/507
+MDU6SXNzdWUxNjc2NzQ3NTI=,local invocation in README is broken,CLOSED,2016-07-26T18:14:44Z,2016-07-26T20:41:48Z,2016-07-26T20:41:48Z,"Running the command in the README:
+
+```
+$ scripts/guacamole somatic-joint     \
+  src/test/resources/synth1.normal.100k-200k.withmd.bam \     
+  src/test/resources/synth1.tumor.100k-200k.withmd.bam    \
+   --reference-fasta ~/sinai/data/b37.fasta    \
+   --out /tmp/out.vcf
+```
+
+Gives me:
+
+```
+Found guac jar: target/guacamole-0.0.1-SNAPSHOT.jar
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512m; support was removed in 8.0
+--> [Tue Jul 26 14:13:15 EDT 2016]: Guacamole starting.
+2016-07-26 14:13:16 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2016-07-26 14:13:16 ERROR SparkContext:95 - Error initializing SparkContext.
+com.typesafe.config.ConfigException$Missing: No configuration setting found for key 'akka.version'
+    at com.typesafe.config.impl.SimpleConfig.findKey(SimpleConfig.java:124)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:145)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:151)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:159)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:164)
+    at com.typesafe.config.impl.SimpleConfig.getString(SimpleConfig.java:206)
+    at akka.actor.ActorSystem$Settings.<init>(ActorSystem.scala:169)
+    at akka.actor.ActorSystemImpl.<init>(ActorSystem.scala:505)
+    at akka.actor.ActorSystem$.apply(ActorSystem.scala:142)
+    at akka.actor.ActorSystem$.apply(ActorSystem.scala:119)
+    at org.apache.spark.util.AkkaUtils$.org$apache$spark$util$AkkaUtils$$doCreateActorSystem(AkkaUtils.scala:121)
+    at org.apache.spark.util.AkkaUtils$$anonfun$1.apply(AkkaUtils.scala:53)
+    at org.apache.spark.util.AkkaUtils$$anonfun$1.apply(AkkaUtils.scala:52)
+    at org.apache.spark.util.Utils$$anonfun$startServiceOnPort$1.apply$mcVI$sp(Utils.scala:1988)
+    at scala.collection.immutable.Range.foreach$mVc$sp(Range.scala:141)
+    at org.apache.spark.util.Utils$.startServiceOnPort(Utils.scala:1979)
+    at org.apache.spark.util.AkkaUtils$.createActorSystem(AkkaUtils.scala:55)
+    at org.apache.spark.SparkEnv$.create(SparkEnv.scala:266)
+    at org.apache.spark.SparkEnv$.createDriverEnv(SparkEnv.scala:193)
+    at org.apache.spark.SparkContext.createSparkEnv(SparkContext.scala:288)
+    at org.apache.spark.SparkContext.<init>(SparkContext.scala:457)
+    at org.hammerlab.guacamole.commands.SparkCommand.createSparkContext(SparkCommand.scala:65)
+    at org.hammerlab.guacamole.commands.SparkCommand.run(SparkCommand.scala:10)
+    at org.hammerlab.guacamole.commands.Command.run(Command.scala:46)
+    at org.hammerlab.guacamole.Main$.main(Main.scala:68)
+    at org.hammerlab.guacamole.Main.main(Main.scala)
+Exception in thread ""main"" com.typesafe.config.ConfigException$Missing: No configuration setting found for key 'akka.version'
+    at com.typesafe.config.impl.SimpleConfig.findKey(SimpleConfig.java:124)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:145)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:151)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:159)
+    at com.typesafe.config.impl.SimpleConfig.find(SimpleConfig.java:164)
+    at com.typesafe.config.impl.SimpleConfig.getString(SimpleConfig.java:206)
+    at akka.actor.ActorSystem$Settings.<init>(ActorSystem.scala:169)
+    at akka.actor.ActorSystemImpl.<init>(ActorSystem.scala:505)
+    at akka.actor.ActorSystem$.apply(ActorSystem.scala:142)
+    at akka.actor.ActorSystem$.apply(ActorSystem.scala:119)
+    at org.apache.spark.util.AkkaUtils$.org$apache$spark$util$AkkaUtils$$doCreateActorSystem(AkkaUtils.scala:121)
+    at org.apache.spark.util.AkkaUtils$$anonfun$1.apply(AkkaUtils.scala:53)
+    at org.apache.spark.util.AkkaUtils$$anonfun$1.apply(AkkaUtils.scala:52)
+    at org.apache.spark.util.Utils$$anonfun$startServiceOnPort$1.apply$mcVI$sp(Utils.scala:1988)
+    at scala.collection.immutable.Range.foreach$mVc$sp(Range.scala:141)
+    at org.apache.spark.util.Utils$.startServiceOnPort(Utils.scala:1979)
+    at org.apache.spark.util.AkkaUtils$.createActorSystem(AkkaUtils.scala:55)
+    at org.apache.spark.SparkEnv$.create(SparkEnv.scala:266)
+    at org.apache.spark.SparkEnv$.createDriverEnv(SparkEnv.scala:193)
+    at org.apache.spark.SparkContext.createSparkEnv(SparkContext.scala:288)
+    at org.apache.spark.SparkContext.<init>(SparkContext.scala:457)
+    at org.hammerlab.guacamole.commands.SparkCommand.createSparkContext(SparkCommand.scala:65)
+    at org.hammerlab.guacamole.commands.SparkCommand.run(SparkCommand.scala:10)
+    at org.hammerlab.guacamole.commands.Command.run(Command.scala:46)
+    at org.hammerlab.guacamole.Main$.main(Main.scala:68)
+    at org.hammerlab.guacamole.Main.main(Main.scala)
+        2.09 real         2.46 user         0.23 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/509
+MDU6SXNzdWUxNjc2ODQyMDk=,local invocation in README is broken problem 2: BAM loading?,CLOSED,2016-07-26T18:58:44Z,2016-07-27T20:29:46Z,2016-07-27T20:29:46Z,"This is with the fix in #510 
+
+Can't load local bams anymore?
+
+```
+[tim@Tims-MacBook ~/sinai/git/guacamole]$ scripts/guacamole somatic-joint     src/test/resources/synth1.normal.100k-200k.withmd.bam     src/test/resources/synth1.tumor.100k-200k.withmd.bam     --reference-fasta ~/sinai/data/b37.fasta     --out /tmp/out.vcf
+Found guac jar: target/guacamole-0.0.1-SNAPSHOT.jar
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512m; support was removed in 8.0
+--> [Tue Jul 26 14:54:02 EDT 2016]: Guacamole starting.
+2016-07-26 14:54:03 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Running on 2 inputs:
+<Input #0 'synth1.normal.100k-200k.withmd' of normal dna at src/test/resources/synth1.normal.100k-200k.withmd.bam >
+<Input #1 'synth1.tumor.100k-200k.withmd' of tumor dna at src/test/resources/synth1.tumor.100k-200k.withmd.bam >
+Exception in thread ""main"" java.io.IOException: No FileSystem for scheme: file
+    at org.apache.hadoop.fs.FileSystem.getFileSystemClass(FileSystem.java:2644)
+    at org.apache.hadoop.fs.FileSystem.createFileSystem(FileSystem.java:2651)
+    at org.apache.hadoop.fs.FileSystem.access$200(FileSystem.java:92)
+    at org.apache.hadoop.fs.FileSystem$Cache.getInternal(FileSystem.java:2687)
+    at org.apache.hadoop.fs.FileSystem$Cache.get(FileSystem.java:2669)
+    at org.apache.hadoop.fs.FileSystem.get(FileSystem.java:371)
+    at org.apache.hadoop.fs.FileSystem.get(FileSystem.java:170)
+    at org.apache.hadoop.fs.FileSystem.get(FileSystem.java:355)
+    at org.apache.hadoop.fs.Path.getFileSystem(Path.java:295)
+    at org.hammerlab.guacamole.readsets.ReadSets$.loadFromBAM(ReadSets.scala:173)
+    at org.hammerlab.guacamole.readsets.ReadSets$.load(ReadSets.scala:157)
+    at org.hammerlab.guacamole.readsets.ReadSets$$anonfun$4.apply(ReadSets.scala:113)
+    at org.hammerlab.guacamole.readsets.ReadSets$$anonfun$4.apply(ReadSets.scala:111)
+    at scala.collection.TraversableLike$WithFilter$$anonfun$map$2.apply(TraversableLike.scala:722)
+    at scala.collection.Iterator$class.foreach(Iterator.scala:727)
+    at scala.collection.AbstractIterator.foreach(Iterator.scala:1157)
+    at scala.collection.IterableLike$class.foreach(IterableLike.scala:72)
+    at scala.collection.AbstractIterable.foreach(Iterable.scala:54)
+    at scala.collection.TraversableLike$WithFilter.map(TraversableLike.scala:721)
+    at org.hammerlab.guacamole.readsets.ReadSets$.apply(ReadSets.scala:111)
+    at org.hammerlab.guacamole.readsets.ReadSets$.apply(ReadSets.scala:96)
+    at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$.inputsToReadSets(SomaticJointCaller.scala:69)
+    at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:93)
+    at org.hammerlab.guacamole.commands.jointcaller.SomaticJoint$Caller$.run(SomaticJointCaller.scala:77)
+    at org.hammerlab.guacamole.commands.SparkCommand.run(SparkCommand.scala:12)
+    at org.hammerlab.guacamole.commands.Command.run(Command.scala:46)
+    at org.hammerlab.guacamole.Main$.main(Main.scala:68)
+    at org.hammerlab.guacamole.Main.main(Main.scala)
+       63.70 real        62.58 user         6.56 sys
+```
+",timodonnell,https://github.com/hammerlab/guacamole/issues/511
+MDU6SXNzdWUxNjgwMDQxMjM=,Allow reference file to be loaded from HDFS or GS,OPEN,2016-07-28T03:03:35Z,2016-08-25T19:50:57Z,,"Currently `--reference-fasta gs://genomics-public-data/references/b37/Homo_sapiens_assembly19.fasta.gz`
+
+gives
+
+```
+Exception in thread ""main"" htsjdk.samtools.SAMException: Error opening file: Homo_sapiens_assembly19.fasta.gz
+        at htsjdk.samtools.util.IOUtil.openGzipFileForReading(IOUtil.java:518)
+        at htsjdk.samtools.util.IOUtil.openFileForReading(IOUtil.java:494)
+        at htsjdk.samtools.reference.FastaSequenceFile.<init>(FastaSequenceFile.java:53)
+```
+
+It is possible this failure is due to gzip, but that should work as well.
+",arahuja,https://github.com/hammerlab/guacamole/issues/512
+MDU6SXNzdWUxNzAxNzI3Mjc=,minor thing: consider changing `--quiet` to indicate performance implications,CLOSED,2016-08-09T13:56:22Z,2016-08-15T21:35:41Z,2016-08-15T21:35:41Z,"```
+  @Args4JOption(
+    name = ""--quiet"",
+    aliases = Array(""-q""),
+    usage = ""Whether to compute additional statistics about the partitioned reads (default: false)."",
+    handler = classOf[BooleanOptionHandler]
+  )
+  var quiet: Boolean = false
+```
+
+If seems to be a substantial performance difference so may want to make the default not to do that computation and then have an arg like `--partitioning-debug-info` to turn it on. `--quiet` to me implies it just affects what gets printed not what gets computed.
+",timodonnell,https://github.com/hammerlab/guacamole/issues/544
+MDU6SXNzdWUxNzEyNTQ4MjU=,"Test running on Baylor ""case 2"" dataset",OPEN,2016-08-15T20:31:08Z,2016-12-17T18:46:30Z,,"@jstjohn [discussed hitting some issues](https://github.com/hammerlab/guacamole/issues/386#issuecomment-198755271) running on the ""case 2"" data [here](http://txcrb.org/data.html#registration).
+
+I'm downloading the data now to attempt to reproduce.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/548
+MDU6SXNzdWUxNzEyNjI5NTc=,"Remove `progress` helper, use Spark/log4j",OPEN,2016-08-15T21:11:38Z,2016-08-25T19:50:57Z,,"Spark's log4j wrapper is already used in a few places for e.g. logging warnings, and we should fold our logging into that infrastructure, where we currently have [a tiny homegrown `progress` helper](https://github.com/hammerlab/guacamole/blob/b638a11561686162245779673900c19e8f11fb63/src/main/scala/org/hammerlab/guacamole/logging/LoggingUtils.scala#L13).
+
+The former supports a lot more customizability (setting levels per package/class-name, lazily evaluating expressions iff they are being logged at a level that is displayable, etc.).
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/551
+MDU6SXNzdWUxNzEyNzM5MzY=,Allow receiving inputs from config files,OPEN,2016-08-15T22:10:39Z,2016-08-25T19:50:57Z,,"As we run guacamole on more inputs, we have config blocks like [this](https://github.com/hammerlab/variant-calling-benchmarks/blob/07c8f43c5536a8d8dc2534f0fa871f64243912e0/benchmarks/pt189/benchmark.json) in [variant-calling-benchmarks](https://github.com/hammerlab/variant-calling-benchmarks) (VCB).
+
+Some of those JSON blocks correspond directly to structures that exist in Guacamole, e.g. [`jointcaller.Input`](https://github.com/hammerlab/guacamole/blob/9a2f8580c6c134d50922688aa9efff96c691607b/src/main/scala/org/hammerlab/guacamole/jointcaller/Input.scala#L19-L23).
+
+In VCB, they're unrolled into unwieldy column-oriented command-line lists, e.g. 
+
+```
+--tissue-types tumor tumor tumor tumor tumor tumor tumor normal tumor tumor tumor tumor tumor tumor tumor tumor normal tumor tumor tumor tumor tumor
+--analytes rna dna dna rna rna dna dna dna rna dna rna rna dna dna dna dna dna rna dna dna rna rna
+```
+
+which are then parsed back into their rightful structures in Guacamole.
+
+These structures should be parseable by Guacamole directly from a config file into the structures that they ultimately become inside Guacamole and various VCB scripts; this will also allow VCB to be more focused on specific benchmark-config-blobs and less on the plumbing to support them and keep in sync with Guacamole.
+
+Note: having Guacamole read from config files was discussed long ago at https://github.com/hammerlab/guacamole/issues/106#issuecomment-46460800.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/553
+MDU6SXNzdWUxNzIyNTAyNzg=,Send relevant reference sequences to executors in more fine-grained ways than via a Broadcast,OPEN,2016-08-20T03:10:28Z,2016-08-25T19:50:58Z,,"I typically see more than a minute of reference-broadcasting at the beginning of apps before the first stage starts; we should be able to do something more efficient there.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/560
+MDU6SXNzdWUxNzQ1OTA2NjY=,Move to Spark 2.0,OPEN,2016-09-01T18:16:57Z,2016-09-01T18:27:32Z,,"It seems like this will involve:
+- removing/moving references `org.apache.spark.logging`
+- upgrading ADAM 
+- upgrading `spark-testing-base` to `2.0.0_0.4.4`
+
+@ryan-williams have you tried this out already, I remember you were looking at the ADAM upgrade
+",arahuja,https://github.com/hammerlab/guacamole/issues/566
+MDU6SXNzdWUxNzU5NjEwMzA=, throwed exception: ./scripts/guacamole: line 39 :exec: time: not found ,OPEN,2016-09-09T09:00:27Z,2016-10-09T08:42:39Z,,"Hi , my command is `./scripts/guacamole somatic-joint /home/zhipeng/soft/guacamole/src/test/resources/synth1.normal.100k-200k.withmd.bam /home/zhipeng/soft/guacamole/src/test/resources/synth1.tumor.100k-200k.withmd.bam --reference-fasta /home/zhipengcheng/file/ucsc.hg19.fasta --out /home/zhipengcheng/file/result/out.vcf`
+but it throwed exception :
+
+> ./scripts/guacamole: line 39 :exec: time: not found 
+
+I don't know how to resole it?
+",car2008,https://github.com/hammerlab/guacamole/issues/572
+MDU6SXNzdWUxNzg2ODg1MDY=,Error when packaging uber jar ,CLOSED,2016-09-22T18:41:02Z,2016-09-22T20:31:20Z,2016-09-22T20:31:20Z,"Running `mvn package -Puber -DskipTests` on `master` at [head](https://github.com/hammerlab/guacamole/tree/f052ce3909cfe2a0670a627b4b5d55e98ae22305)  yields,
+
+```
+$ mvn package -Puber -DskipTests
+
+...
+
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-shade-plugin:2.1:shade (deps) on project guacamole: Error creating shaded jar: Error in ASM processing class htsjdk/samtools/BAMIndexer.class: 2560 -> [Help 1]
+```
+
+Full stack trace: [gist](https://gist.github.com/e5c/94dd6a5b84a85a2f751b7e314c01ec49)
+
+Maven version info:
+
+```
+$ mvn -V
+
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T11:41:47-05:00)
+Maven home: /hpc/users/change07/apache-maven-3.3.9
+Java version: 1.8.0_91, vendor: Oracle Corporation
+Java home: /demeter/users/change07/bin/jdk1.8.0_91/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: ""linux"", version: ""3.10.0-327.4.5.el7.x86_64"", arch: ""amd64"", family: ""unix""
+```
+
+However `mvn package -Pguac,deps -DskipTests` works.
+",e5c,https://github.com/hammerlab/guacamole/issues/583
+MDU6SXNzdWUxNzg3ODYwNTU=,Breeze NoSuchMethodError,CLOSED,2016-09-23T05:08:26Z,2016-09-23T16:59:53Z,2016-09-23T16:59:53Z,"Some parts of Breeze need to be shaded in order for Guacamole to run via `spark-submit`; mllib depends on breeze 0.11.2 and I think that ends up on the classpath ahead of our 0.12 dependency when we use `spark-{submit,shell}`.
+
+Example crash, from just after #571 was merged:
+
+```
+git checkout b97411d
+mvp -Pguac,deps
+spark-submit --driver-memory 10g --jars target/guacamole-deps-only-0.0.1-SNAPSHOT.jar target/guacamole-0.0.1-SNAPSHOT.jar somatic-standard --normal-reads src/test/resources/synth1.normal.100k-200k.withmd.bam --tumor-reads src/test/resources/synth1.tumor.100k-200k.withmd.bam --reference-fasta $ref --out /tmp/foo.vcf
+…
+Exception in thread ""main"" org.apache.spark.SparkException: Job aborted due to stage failure: Task 2 in stage 6.0 failed 1 times, most recent failure: Lost task 2.0 in stage 6.0 (TID 42, localhost): java.lang.NoSuchMethodError: breeze.linalg.sum$.sumSummableThings(Lscala/Predef$$less$colon$less;Lbreeze/generic/UFunc$UImpl2;)Lbreeze/generic/UFunc$UImpl;
+    at org.hammerlab.guacamole.likelihood.Likelihood$$anonfun$4.apply(Likelihood.scala:161)
+    at org.hammerlab.guacamole.likelihood.Likelihood$$anonfun$4.apply(Likelihood.scala:156)
+    at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+    at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+    at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+    at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:108)
+    at scala.collection.TraversableLike$class.map(TraversableLike.scala:244)
+    at scala.collection.mutable.ArrayOps$ofRef.map(ArrayOps.scala:108)
+    at org.hammerlab.guacamole.likelihood.Likelihood$.likelihoodsOfGenotypes(Likelihood.scala:156)
+    at org.hammerlab.guacamole.likelihood.Likelihood$.likelihoodsOfAllPossibleGenotypesFromPileup(Likelihood.scala:78)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$.findPotentialVariantAtLocus(SomaticStandardCaller.scala:182)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$$anonfun$1.apply(SomaticStandardCaller.scala:95)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$$anonfun$1.apply(SomaticStandardCaller.scala:94)
+    at org.hammerlab.guacamole.distributed.PileupFlatMapUtils$$anonfun$pileupFlatMapTwoSamples$1.apply(PileupFlatMapUtils.scala:84)
+    at org.hammerlab.guacamole.distributed.PileupFlatMapUtils$$anonfun$pileupFlatMapTwoSamples$1.apply(PileupFlatMapUtils.scala:79)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$windowFlatMapWithState$1$$anonfun$apply$1.apply(WindowFlatMapUtils.scala:65)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$windowFlatMapWithState$1$$anonfun$apply$1.apply(WindowFlatMapUtils.scala:55)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$splitPartitionByContigAndMap$2.apply(WindowFlatMapUtils.scala:141)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$splitPartitionByContigAndMap$2.apply(WindowFlatMapUtils.scala:131)
+    at scala.collection.Iterator$$anon$13.hasNext(Iterator.scala:371)
+    at org.apache.spark.storage.MemoryStore.unrollSafely(MemoryStore.scala:284)
+    at org.apache.spark.CacheManager.putInBlockManager(CacheManager.scala:171)
+    at org.apache.spark.CacheManager.getOrCompute(CacheManager.scala:78)
+    at org.apache.spark.rdd.RDD.iterator(RDD.scala:268)
+    at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:66)
+    at org.apache.spark.scheduler.Task.run(Task.scala:89)
+    at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:214)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+    at java.lang.Thread.run(Thread.java:745)
+
+Driver stacktrace:
+    at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1431)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1419)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1418)
+    at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+    at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47)
+    at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1418)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)
+    at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)
+    at scala.Option.foreach(Option.scala:236)
+    at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:799)
+    at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:1640)
+    at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1599)
+    at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1588)
+    at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:48)
+    at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:620)
+    at org.apache.spark.SparkContext.runJob(SparkContext.scala:1832)
+    at org.apache.spark.SparkContext.runJob(SparkContext.scala:1845)
+    at org.apache.spark.SparkContext.runJob(SparkContext.scala:1858)
+    at org.apache.spark.SparkContext.runJob(SparkContext.scala:1929)
+    at org.apache.spark.rdd.RDD.count(RDD.scala:1157)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$.run(SomaticStandardCaller.scala:107)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$.run(SomaticStandardCaller.scala:53)
+    at org.hammerlab.guacamole.commands.SparkCommand.run(SparkCommand.scala:12)
+    at org.hammerlab.guacamole.commands.Command.run(Command.scala:27)
+    at org.hammerlab.guacamole.Main$.main(Main.scala:49)
+    at org.hammerlab.guacamole.Main.main(Main.scala)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:483)
+    at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:731)
+    at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:181)
+    at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:206)
+    at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:121)
+    at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Caused by: java.lang.NoSuchMethodError: breeze.linalg.sum$.sumSummableThings(Lscala/Predef$$less$colon$less;Lbreeze/generic/UFunc$UImpl2;)Lbreeze/generic/UFunc$UImpl;
+    at org.hammerlab.guacamole.likelihood.Likelihood$$anonfun$4.apply(Likelihood.scala:161)
+    at org.hammerlab.guacamole.likelihood.Likelihood$$anonfun$4.apply(Likelihood.scala:156)
+    at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+    at scala.collection.TraversableLike$$anonfun$map$1.apply(TraversableLike.scala:244)
+    at scala.collection.IndexedSeqOptimized$class.foreach(IndexedSeqOptimized.scala:33)
+    at scala.collection.mutable.ArrayOps$ofRef.foreach(ArrayOps.scala:108)
+    at scala.collection.TraversableLike$class.map(TraversableLike.scala:244)
+    at scala.collection.mutable.ArrayOps$ofRef.map(ArrayOps.scala:108)
+    at org.hammerlab.guacamole.likelihood.Likelihood$.likelihoodsOfGenotypes(Likelihood.scala:156)
+    at org.hammerlab.guacamole.likelihood.Likelihood$.likelihoodsOfAllPossibleGenotypesFromPileup(Likelihood.scala:78)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$.findPotentialVariantAtLocus(SomaticStandardCaller.scala:182)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$$anonfun$1.apply(SomaticStandardCaller.scala:95)
+    at org.hammerlab.guacamole.commands.SomaticStandard$Caller$$anonfun$1.apply(SomaticStandardCaller.scala:94)
+    at org.hammerlab.guacamole.distributed.PileupFlatMapUtils$$anonfun$pileupFlatMapTwoSamples$1.apply(PileupFlatMapUtils.scala:84)
+    at org.hammerlab.guacamole.distributed.PileupFlatMapUtils$$anonfun$pileupFlatMapTwoSamples$1.apply(PileupFlatMapUtils.scala:79)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$windowFlatMapWithState$1$$anonfun$apply$1.apply(WindowFlatMapUtils.scala:65)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$windowFlatMapWithState$1$$anonfun$apply$1.apply(WindowFlatMapUtils.scala:55)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$splitPartitionByContigAndMap$2.apply(WindowFlatMapUtils.scala:141)
+    at org.hammerlab.guacamole.distributed.WindowFlatMapUtils$$anonfun$splitPartitionByContigAndMap$2.apply(WindowFlatMapUtils.scala:131)
+    at scala.collection.Iterator$$anon$13.hasNext(Iterator.scala:371)
+    at org.apache.spark.storage.MemoryStore.unrollSafely(MemoryStore.scala:284)
+    at org.apache.spark.CacheManager.putInBlockManager(CacheManager.scala:171)
+    at org.apache.spark.CacheManager.getOrCompute(CacheManager.scala:78)
+    at org.apache.spark.rdd.RDD.iterator(RDD.scala:268)
+    at org.apache.spark.scheduler.ResultTask.runTask(ResultTask.scala:66)
+    at org.apache.spark.scheduler.Task.run(Task.scala:89)
+    at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:214)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+    at java.lang.Thread.run(Thread.java:745)
+```
+
+I poked at how to do the shading a bit just now but couldn't get it working.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/585
+MDU6SXNzdWUxNzk1ODQ5MTg=,Can't use guacamole in spark-shell due to guava-shading nuances,CLOSED,2016-09-27T19:08:05Z,2016-09-29T02:24:32Z,2016-09-29T02:24:32Z,"[`Interval` exposes `com.google.common.collect.Range` in its public API](https://github.com/hammerlab/guacamole/blob/5fff3ea1bfbe877870a87d68d49b5b09c0a8a7ef/src/main/scala/org/hammerlab/guacamole/reference/Interval.scala#L37), which in some way means that that reference doesn't get [relocated by the shade plugin](https://github.com/hammerlab/guacamole/blob/5fff3ea1bfbe877870a87d68d49b5b09c0a8a7ef/pom.xml#L209-L215).
+
+I don't fully understand why; when I package an assembly (or guac) JAR with `-Puber` (resp. `-Pguac`), and extract the class files from it, I see an `org/hammerlab/guacamole/reference/Interval.class` that contains, in ASCII, `toJavaRange.()Lorg/hammerlab/guavarelocated/collect/Range`, and no instances of `google`, which I'd have thought meant that the shading was proceeding correctly / as intended.
+
+Yet, when I run:
+
+``` bash
+spark-shell --jars target/guacamole-with-deps-0.0.1-SNAPSHOT.jar
+```
+
+then in the shell I get this error:
+
+```
+scala> org.hammerlab.guacamole.reference.Interval(10, 20)
+error: bad symbolic reference. A signature in Interval.class refers to term collect
+in package com.google.common which is not available.
+It may be completely missing from the current classpath, or the version on
+the classpath might be incompatible with the version used when compiling Interval.class.
+```
+
+I think this has to do with the ""classes exposed in public API can't be shaded"" issue that [I've heard tell of around Spark](https://issues.apache.org/jira/browse/SPARK-4809?focusedCommentId=14578457&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14578457). I've tried addressing it by _not_ shading `Range`, or by shading but not relocating it, and in both cases doing the same to a various groups of classes around it, but in the end it seems that [our use of `Range.closedOpen`](https://github.com/hammerlab/guacamole/blob/58ac26f8477b1cce1b608732f7d5eaa456922faf/src/main/scala/org/hammerlab/guacamole/loci/set/Contig.scala#L27) (which only showed up in Guava 14.0.1, while Hadoop 2.\* pins us with an un-shaded Guava 11.0.2), means that it's impossible to make this work.
+
+One possible escape-hatch is [the ""user classpath first"" Spark configs](http://spark.apache.org/docs/latest/configuration.html#runtime-environment), but even in the latest Spark release they are deemed experimental, and IME they've accordingly introduced other problems when I've tried to use them in similar situations in the past, so I'm not eager to hitch ourselves to them.
+
+My only other idea for proceeding is to remove that `Range` reference from `Interval`'s public API, further characterizing what kinds of things we can and can't shade.
+
+I'd love to get to the bottom of how the shell is even seeing a reference to `com.google.common.collect`, allegedly in a `.class` file that doesn't seem to contain any such references, but that's further in the weeds so not my first plan of attack.
+",ryan-williams,https://github.com/hammerlab/guacamole/issues/588
+MDU6SXNzdWUxODU0NjYxMDI=,--loci argument conflicts with TakeLociIterator,OPEN,2016-10-26T17:59:45Z,2016-10-26T19:00:51Z,,"The assumption for things like `SomaticStandardCaller` (or others that use `pileupFlatMap`) is that `--loci` controls the loci at which to examine pileups.  However, when using `CappedRegionsPartitioner` this is not the case.
+
+For example, if I pass `--loci 20:362209-362212,20:362213-362214,20:362215-362216,20:362217-362618` where I skip loci `362212`,  `362214` and `362216`
+
+I get the following partitioning:
+
+```
+20:362209-362226=0,20:362226-362239=1,20:362239-362252=2,20:362252-362265=3,20:362265-362278=4,...
+```
+
+The first, `20:362209-362226=0`, covers the loci that were explicitly excluded in the `--loci` argument and will then run `pilupFlatMap` at those positions.
+",arahuja,https://github.com/hammerlab/guacamole/issues/611
+MDU6SXNzdWUxOTQzOTAwOTI=,Make indel realignment splice aware,OPEN,2016-12-08T17:02:06Z,2016-12-08T17:15:01Z,,,hammer,https://github.com/hammerlab/guacamole/issues/615
+MDU6SXNzdWUxOTYyMzcwMDI=,Get guacamole and friends building on newest batch of shared libraries,OPEN,2016-12-17T18:54:51Z,2017-01-02T18:25:15Z,,Porting this from @ryan-williams's 12/12 status report so that we can start tracking our work accurately on GitHub!,hammer,https://github.com/hammerlab/guacamole/issues/616

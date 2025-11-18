@@ -1,0 +1,378 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NTkzNDgzOTQ=,LICENSE missing from PyPi source archive,CLOSED,2019-06-21T19:49:37Z,2019-06-25T19:17:33Z,2019-06-25T19:17:33Z,"Could you add the `LICENSE` file to the source archive uploaded to PyPI with the next release? You probably just need to create a `MANIFEST.in`.
+
+The license you chose (GPL) requires distributing that exact file with every distribution of your code.
+
+Thanks!",epruesse,https://github.com/apcamargo/RNAsamba/issues/2
+MDU6SXNzdWU3OTI0MDA0MzY=,Add an option to evaluate the coding potential of the reverse strand,OPEN,2021-01-23T01:20:21Z,2021-01-23T01:20:21Z,,"Currently, RNAsamba only evaluates the transcript sequences that are given as input. But in some cases the user may not know the true orientation of the transcript, so a `--check_reverse_complement` option would be useful.",apcamargo,https://github.com/apcamargo/RNAsamba/issues/8
+MDU6SXNzdWU3OTI0MDExMzI=,Package the model files in the library,OPEN,2021-01-23T01:23:47Z,2021-01-23T01:23:47Z,,"Currently, users need to download one of the two model files (or train their own) before executing RNAsamba. Packaging pre-trained models in the library would spare users from downloading external files and make RNAsambe more user-friendly.",apcamargo,https://github.com/apcamargo/RNAsamba/issues/9
+MDU6SXNzdWU3OTI0MDE4MDU=,Release Python 3.9 builds,CLOSED,2021-01-23T01:27:00Z,2021-04-13T23:59:43Z,2021-04-13T23:59:43Z,"Now that Python 3.9 is out, RNAsamba should have a build for it. We should probably transition the CI to GitHub Actions in the meanwhile.",apcamargo,https://github.com/apcamargo/RNAsamba/issues/10
+MDU6SXNzdWU4MzA5NDg3NzQ=,"Incompatibility with tensorflow version in rnasamba (1,5-2) and keras (2.2<)",CLOSED,2021-03-13T17:39:16Z,2021-03-14T00:30:00Z,2021-03-13T23:04:46Z,"Hello, im trying to use RNAsamba but i have a few issues. Im ussing ubuntu 20.10 (groovy) where the default version of python is 3.8 and tensorflow is 2.3. So i proced to install RNAsamba  but it throws me the following error : 
+![Screenshot from 2021-03-13 14-16-31](https://user-images.githubusercontent.com/80530322/111038255-c71a6c80-8406-11eb-9d81-6be07ac726c5.png)
+So i tried to downgrade the version of my tensorflow but:
+![Screenshot from 2021-03-13 14-17-14](https://user-images.githubusercontent.com/80530322/111038271-d7cae280-8406-11eb-9e83-a5c2f77410d2.png)
+![Screenshot from 2021-03-13 14-17-36](https://user-images.githubusercontent.com/80530322/111038284-e1544a80-8406-11eb-9d65-6281b171bb81.png)
+So i created a environment with python 3.5 and:
+![Screenshot from 2021-03-13 14-21-41](https://user-images.githubusercontent.com/80530322/111038419-840cc900-8407-11eb-8e8c-f4a64f158462.png)
+then i found out that biopython version 1.76 supports python 3.5 and installed it and finally was able to install RNAsamba. I tried to execute and: 
+![Screenshot from 2021-03-13 14-26-48](https://user-images.githubusercontent.com/80530322/111038516-32187300-8408-11eb-9294-57ab05a3341d.png)
+So i forced the upgrade of tensorflow to v 2.2 with pip install tensorflow==2.2 and in the end gives me this error and when i tried to execute RNAsamba it cant execute because it need tensorflow v 1.5-2:
+![Screenshot from 2021-03-13 14-36-09](https://user-images.githubusercontent.com/80530322/111038787-87a14f80-8409-11eb-8c4f-238f6827d275.png)
+After this is a chain of errors in a circle given the incompatibility between the version of tensorflow that keras occupies and RNAsamba .
+Any help on this error is welcome :(
+",lucianofrancoo,https://github.com/apcamargo/RNAsamba/issues/11
+MDU6SXNzdWU5MjAxMTY4Mjc=,AttributeError: module 'tensorflow._api.v1.compat.v2' has no attribute '__internal__',CLOSED,2021-06-14T07:35:33Z,2021-06-15T08:09:32Z,2021-06-14T17:18:19Z,"Hi! 
+
+I'm trying to use RNASamba for predicting the coding potential of an example sequence. 
+
+I got an error using the [online version](https://rnasamba.lge.ibi.unicamp.br/): 
+```
+Internal Server Error
+The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+```
+
+Then I tried the pip install [in this colab notebook](https://colab.research.google.com/drive/1msoxRZJCgDnpHD-lZ8nMt4h-Cbb590bg?usp=sharing).  I run into this error:
+
+```
+Using TensorFlow backend.
+Traceback (most recent call last):
+  File ""/usr/local/bin/rnasamba"", line 5, in <module>
+    from rnasamba.cli import cli
+  File ""/usr/local/lib/python3.7/dist-packages/rnasamba/__init__.py"", line 21, in <module>
+    from rnasamba.core.model import RNAsambaClassificationModel, RNAsambaTrainModel
+  File ""/usr/local/lib/python3.7/dist-packages/rnasamba/core/model.py"", line 26, in <module>
+    from keras import optimizers
+  File ""/usr/local/lib/python3.7/dist-packages/keras/__init__.py"", line 3, in <module>
+    from . import utils
+  File ""/usr/local/lib/python3.7/dist-packages/keras/utils/__init__.py"", line 24, in <module>
+    from .vis_utils import model_to_dot
+  File ""/usr/local/lib/python3.7/dist-packages/keras/utils/vis_utils.py"", line 7, in <module>
+    from ..models import Model
+  File ""/usr/local/lib/python3.7/dist-packages/keras/models.py"", line 10, in <module>
+    from .engine.input_layer import Input
+  File ""/usr/local/lib/python3.7/dist-packages/keras/engine/__init__.py"", line 3, in <module>
+    from .input_layer import Input
+  File ""/usr/local/lib/python3.7/dist-packages/keras/engine/input_layer.py"", line 7, in <module>
+    from .base_layer import Layer
+  File ""/usr/local/lib/python3.7/dist-packages/keras/engine/base_layer.py"", line 11, in <module>
+    from .. import initializers
+  File ""/usr/local/lib/python3.7/dist-packages/keras/initializers/__init__.py"", line 124, in <module>
+    populate_deserializable_objects()
+  File ""/usr/local/lib/python3.7/dist-packages/keras/initializers/__init__.py"", line 49, in populate_deserializable_objects
+    LOCAL.GENERATED_WITH_V2 = tf.__internal__.tf2.enabled()
+  File ""/usr/local/lib/python3.7/dist-packages/tensorflow_core/python/util/module_wrapper.py"", line 193, in __getattr__
+    attr = getattr(self._tfmw_wrapped_module, name)
+AttributeError: module 'tensorflow._api.v1.compat.v2' has no attribute '__internal__'
+```
+
+Could you help me resolve this?
+
+Thanks!",nabiafshan,https://github.com/apcamargo/RNAsamba/issues/12
+MDU6SXNzdWU5MjUzNTkxNDA=,Using as a beginner,CLOSED,2021-06-19T09:47:29Z,2021-06-22T15:07:29Z,2021-06-22T15:07:29Z,"Hello there!
+
+I have found this useful tool recently and I'm not good at with bioinformatics. So I made differential gene expression by Hisat2 and assemled all the transcript with stringtie. I want to calculate my transcrips' coding potential but I don't know how to change my gtf file to fasta file including the transcrips' sequences. Can you help me for this instance?
+
+Best Regards..",resulkiymaz1,https://github.com/apcamargo/RNAsamba/issues/13
+I_kwDOCmWr185HHQvv,Pip install not working,CLOSED,2022-04-05T12:32:16Z,2022-04-07T19:40:09Z,2022-04-06T04:37:09Z,"Not able to install RNAsamba with pip install due to conflicting dependencies. The error is provided below: 
+
+
+`ERROR: Cannot install rnasamba==0.1.0, rnasamba==0.1.1, rnasamba==0.1.2, rnasamba==0.1.3, rnasamba==0.1.4, rnasamba==0.1.5, rnasamba==0.1.6, rnasamba==0.2.0, rnasamba==0.2.1, rnasamba==0.2.2, rnasamba==0.2.3, rnasamba==0.2.4 and rnasamba==0.2.5 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    rnasamba 0.2.5 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.2.4 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.2.3 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.2.2 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.2.1 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.2.0 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.6 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.5 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.4 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.3 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.2 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.1 depends on tensorflow<2.0 and >=1.5.0
+    rnasamba 0.1.0 depends on tensorflow<2.0 and >=1.5.0
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip attempt to solve the dependency conflict
+
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+`",jaiganeshjg,https://github.com/apcamargo/RNAsamba/issues/14
+I_kwDOCmWr185KmhIT,AtrributeError,OPEN,2022-05-28T11:56:52Z,2022-06-03T01:35:32Z,,"Hi, I'm trying to run ""rnasamba classify"" and I got the following error:
+`original_keras_version = f.attrs['keras_version'].decode('utf8')`
+`AtrributeError: 'str' object has no attribute 'decode'`
+
+Could this error be related to the version of h5py I'm using (3.3.0)?",amaque,https://github.com/apcamargo/RNAsamba/issues/15
+I_kwDOCmWr185MjpHL,Stack error,CLOSED,2022-06-25T02:25:51Z,2022-06-25T02:31:48Z,2022-06-25T02:31:48Z,"Hello, I am attempting to use `rnasamba classify` with the provided human training data as
+
+```
+rnasamba classify \
+    -v 1 \
+    class_m029.human_train.tsv \
+    td_non_code_sized.gff \
+    full_length_weights.hdf5
+```
+
+which returns the following error
+
+```
+Using TensorFlow backend.
+[1/4] Computing network inputs.
+Traceback (most recent call last):
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/bin/rnasamba"", line 11, in <module>
+    sys.exit(cli())
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/cli.py"", line 158, in cli
+    args.func(args)
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/cli.py"", line 30, in classify
+    args.fasta_file, args.weights, verbose=args.verbose
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/core/model.py"", line 48, in __init__
+    self.input = RNAsambaInput(fasta_file)
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/core/inputs.py"", line 59, in __init__
+    self.orf_indicator_input = self.get_orf_indicator_input()
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/core/inputs.py"", line 75, in get_orf_indicator_input
+    return sequences.orf_indicator(self._orfs, self.maxlen)
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/rnasamba/core/sequences.py"", line 60, in orf_indicator
+    orf_indicator = np.stack(orf_indicator)
+  File ""<__array_function__ internals>"", line 6, in stack
+  File ""/home/fried255/shared/.local/conda/envs/rnasamba/lib/python3.7/site-packages/numpy/core/shape_base.py"", line 422, in stack
+    raise ValueError('need at least one array to stack')
+ValueError: need at least one array to stack
+```
+
+I have the most recent version of rnasamba (0.2.4), with TensorFlow (1.15.0), and h5py (2.10.0).
+
+Thank you very much for your time and providing this most excellent resource!",jonahcullen,https://github.com/apcamargo/RNAsamba/issues/16
+I_kwDOCmWr185h-qUo,Sequence number limit,CLOSED,2023-03-28T12:10:23Z,2023-04-05T14:55:14Z,2023-04-05T14:55:14Z,"Many thanks for developing RNAsamba.
+Is it possible that the classification step has a limitation regarding the number of sequences in the input file?
+If I split up the file into smaller chunks no issue arises.
+However, no indications are given in the manual and no error message appears when the run is killed.
+Many thanks in advance",mwylerCH,https://github.com/apcamargo/RNAsamba/issues/17
+I_kwDOCmWr185iQj4p,Training,OPEN,2023-03-31T00:55:35Z,2023-03-31T02:10:16Z,,"Hello,
+I am trying to train plant specific model. The coding file includes 7.5Gb and lncrna is 322Mb.
+They were killed due to memory issue and I wonder that I could get any advice.
+Thanks.
+``
+rnasamba train -v 2 plant_model.hdf5 all.fasta allncrna.fasta
+``
+``
+Using TensorFlow backend.
+[1/3] Computing network inputs.
+/cm/local/apps/slurm/var/spool/job4501031/slurm_script: line 4: 30641 Killed       
+``",wyim-pgl,https://github.com/apcamargo/RNAsamba/issues/18
+I_kwDOCmWr186AR_9m,Research objectives,CLOSED,2024-02-24T08:10:08Z,2024-02-25T08:22:25Z,2024-02-25T08:22:25Z,"Can this human training set be directly used on plants, such as cotton?",Tang-pro,https://github.com/apcamargo/RNAsamba/issues/19
+I_kwDOCmWr186An8xp,Coding score,CLOSED,2024-02-28T02:32:48Z,2024-02-28T04:14:31Z,2024-02-28T04:14:31Z,"Hi, @apcamargo 
+I would like to ask if a coding score greater than 0.5 indicates coding, and a coding score less than 0.5 indicates non-coding. Why is this value used?
+Best！",Tang-pro,https://github.com/apcamargo/RNAsamba/issues/20
+I_kwDOCmWr186CcaPE,Is it possible to obtain the cds sequence?,OPEN,2024-03-15T13:11:19Z,2024-03-18T07:09:50Z,,"Hi, @apcamargo 
+
+Hello, the results I ran here only have protein sequences and no cds sequences. Can this software get the corresponding cds sequence codes?",Tang-pro,https://github.com/apcamargo/RNAsamba/issues/21
+I_kwDOCmWr186VGFVq,Issue with various installation methods on apple silicon,CLOSED,2024-09-02T17:54:35Z,2024-09-05T16:29:47Z,2024-09-05T16:29:47Z,"**With conda** 
+I am installing it within a conda environment using Python 3.6. When I try to install rnasamba with conda it tells me there is an illegal hardware operation. 
+
+`CONDA_SUBDIR=osx-64 conda create -n rnasamba python=3.6`
+
+`conda activate rnasamba`
+
+`conda install -c conda-forge -c bioconda rnasamba`
+
+Error:
+```
+The following NEW packages will be INSTALLED:
+
+  absl-py            conda-forge/noarch::absl-py-2.0.0-pyhd8ed1ab_0 
+  astor              conda-forge/noarch::astor-0.8.1-pyh9f0ad1d_0 
+  biopython          conda-forge/osx-64::biopython-1.79-py36hfa26744_0 
+  c-ares             conda-forge/osx-64::c-ares-1.33.1-h44e7173_0 
+  cctools_osx-64     conda-forge/osx-64::cctools_osx-64-973.0.1-hcc6d90d_12 
+  clang              conda-forge/osx-64::clang-11.1.0-h694c41f_1 
+  clang-11           conda-forge/osx-64::clang-11-11.1.0-default_he082bbe_1 
+  clang_osx-64       conda-forge/osx-64::clang_osx-64-11.1.0-hc8532ff_7 
+  clangxx            conda-forge/osx-64::clangxx-11.1.0-default_he082bbe_1 
+  clangxx_osx-64     conda-forge/osx-64::clangxx_osx-64-11.1.0-h2c55bc3_7 
+  compiler-rt        conda-forge/osx-64::compiler-rt-11.1.0-h654b07c_0 
+  compiler-rt_osx-64 conda-forge/noarch::compiler-rt_osx-64-11.1.0-h8c5fa43_0 
+  dataclasses        conda-forge/noarch::dataclasses-0.8-pyh787bdff_2 
+  gast               conda-forge/noarch::gast-0.5.5-pyhd8ed1ab_0 
+  google-pasta       conda-forge/noarch::google-pasta-0.2.0-pyh8c360ce_0 
+  grpcio             conda-forge/osx-64::grpcio-1.38.1-py36h8d587b5_0 
+  h5py               conda-forge/osx-64::h5py-2.10.0-nompi_py36h11635bf_105 
+  hdf5               conda-forge/osx-64::hdf5-1.10.6-nompi_hc5d9132_1114 
+  importlib-metadata conda-forge/osx-64::importlib-metadata-4.8.1-py36h79c6626_0 
+  keras              conda-forge/osx-64::keras-2.2.5-py36_1 
+  keras-applications conda-forge/noarch::keras-applications-1.0.8-py_1 
+  keras-preprocessi~ conda-forge/noarch::keras-preprocessing-1.1.2-pyhd8ed1ab_0 
+  krb5               conda-forge/osx-64::krb5-1.20.1-h0165f36_0 
+  ld64_osx-64        conda-forge/osx-64::ld64_osx-64-609-h6adca69_10 
+  libblas            conda-forge/osx-64::libblas-3.9.0-20_osx64_openblas 
+  libcblas           conda-forge/osx-64::libcblas-3.9.0-20_osx64_openblas 
+  libclang-cpp11.1   conda-forge/osx-64::libclang-cpp11.1-11.1.0-default_he082bbe_1 
+  libcurl            conda-forge/osx-64::libcurl-7.87.0-haf73cf8_0 
+  libedit            conda-forge/osx-64::libedit-3.1.20191231-h0678c8f_2 
+  libev              conda-forge/osx-64::libev-4.33-h10d778d_2 
+  libgfortran        conda-forge/osx-64::libgfortran-5.0.0-13_2_0_h97931a8_3 
+  libgfortran5       conda-forge/osx-64::libgfortran5-13.2.0-h2873a65_3 
+  libgpuarray        conda-forge/osx-64::libgpuarray-0.7.6-h0d85af4_1003 
+  liblapack          conda-forge/osx-64::liblapack-3.9.0-20_osx64_openblas 
+  libllvm11          conda-forge/osx-64::libllvm11-11.1.0-h8fb7429_5 
+  libllvm14          conda-forge/osx-64::libllvm14-14.0.6-hc8e404f_4 
+  libnghttp2         conda-forge/osx-64::libnghttp2-1.51.0-h0dd9d14_0 
+  libopenblas        conda-forge/osx-64::libopenblas-0.3.25-openmp_hfef2a42_0 
+  libprotobuf        conda-forge/osx-64::libprotobuf-3.18.0-hcf210ce_1 
+  libssh2            conda-forge/osx-64::libssh2-1.10.0-h7535e13_3 
+  llvm-openmp        conda-forge/osx-64::llvm-openmp-18.1.8-h15ab845_1 
+  llvm-tools         conda-forge/osx-64::llvm-tools-11.1.0-h8fb7429_5 
+  mako               conda-forge/noarch::mako-1.3.5-pyhd8ed1ab_0 
+  markdown           conda-forge/noarch::markdown-3.6-pyhd8ed1ab_0 
+  markupsafe         conda-forge/osx-64::markupsafe-2.0.1-py36hfa26744_0 
+  numpy              conda-forge/osx-64::numpy-1.16.6-py36h08dc641_0 
+  protobuf           conda-forge/osx-64::protobuf-3.18.0-py36hefe7e0e_0 
+  pygpu              conda-forge/osx-64::pygpu-0.7.6-py36h962fabe_1002 
+  pyyaml             conda-forge/osx-64::pyyaml-5.4.1-py36hfa26744_1 
+  rnasamba           bioconda/osx-64::rnasamba-0.2.5-py36hb5a9481_1 
+  scipy              conda-forge/osx-64::scipy-1.5.3-py36h04de62b_0 
+  sigtool            conda-forge/osx-64::sigtool-0.1.3-h57ddcff_0 
+  six                conda-forge/noarch::six-1.16.0-pyh6c4a22f_0 
+  tapi               conda-forge/osx-64::tapi-1100.0.11-h9ce4665_0 
+  tensorboard        conda-forge/osx-64::tensorboard-1.14.0-py36_0 
+  tensorflow         conda-forge/osx-64::tensorflow-1.14.0-hcba10bf_0 
+  tensorflow-base    conda-forge/osx-64::tensorflow-base-1.14.0-py36h9f0ad1d_0 
+  tensorflow-estima~ conda-forge/osx-64::tensorflow-estimator-1.14.0-py36h5ca1d4c_0 
+  termcolor          conda-forge/noarch::termcolor-1.1.0-pyhd8ed1ab_3 
+  theano             conda-forge/osx-64::theano-1.0.5-py36hefe7e0e_1 
+  typing_extensions  conda-forge/noarch::typing_extensions-4.1.1-pyha770c72_0 
+  werkzeug           conda-forge/noarch::werkzeug-2.0.2-pyhd8ed1ab_0 
+  wrapt              conda-forge/osx-64::wrapt-1.13.1-py36hfa26744_0 
+  yaml               conda-forge/osx-64::yaml-0.2.5-h0d85af4_2 
+  zipp               conda-forge/noarch::zipp-3.6.0-pyhd8ed1ab_0 
+
+
+Proceed ([y]/n)? y
+
+
+Downloading and Extracting Packages:
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+[5]    4415 illegal hardware instruction
+
+```
+
+**pip**
+
+Within same ""rosetta"" environment
+
+```
+pip install rnasamba
+Collecting rnasamba
+  Downloading rnasamba-0.2.5-cp36-cp36m-macosx_10_9_x86_64.whl (1.3 MB)
+     |████████████████████████████████| 1.3 MB 8.8 MB/s            
+Collecting tensorflow<2.0,>=1.5.0
+  Downloading tensorflow-1.15.5-cp36-cp36m-macosx_10_9_x86_64.whl (123.3 MB)
+     |████████████████████████████████| 123.3 MB 3.1 MB/s            
+Collecting keras<2.3.0,>=2.1.0
+  Downloading Keras-2.2.5-py2.py3-none-any.whl (336 kB)
+     |████████████████████████████████| 336 kB 3.1 MB/s            
+Collecting numpy<=1.16.5
+  Downloading numpy-1.16.5-cp36-cp36m-macosx_10_9_x86_64.whl (13.9 MB)
+     |████████████████████████████████| 13.9 MB 3.7 MB/s            
+Collecting h5py<3.0.0
+  Downloading h5py-2.10.0-cp36-cp36m-macosx_10_6_intel.whl (3.0 MB)
+     |████████████████████████████████| 3.0 MB 4.2 MB/s            
+Collecting biopython
+  Downloading biopython-1.79-cp36-cp36m-macosx_10_9_x86_64.whl (2.3 MB)
+     |████████████████████████████████| 2.3 MB 1.9 MB/s            
+Collecting six
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Collecting pyyaml
+  Downloading PyYAML-6.0.1-cp36-cp36m-macosx_10_9_x86_64.whl (189 kB)
+     |████████████████████████████████| 189 kB 4.7 MB/s            
+Collecting keras-preprocessing>=1.1.0
+  Downloading Keras_Preprocessing-1.1.2-py2.py3-none-any.whl (42 kB)
+     |████████████████████████████████| 42 kB 5.0 MB/s            
+Collecting scipy>=0.14
+  Downloading scipy-1.5.4-cp36-cp36m-macosx_10_9_x86_64.whl (28.8 MB)
+     |████████████████████████████████| 28.8 MB 4.3 MB/s            
+Collecting keras-applications>=1.0.8
+  Downloading Keras_Applications-1.0.8-py3-none-any.whl (50 kB)
+     |████████████████████████████████| 50 kB 6.1 MB/s            
+Collecting opt-einsum>=2.3.2
+  Downloading opt_einsum-3.3.0-py3-none-any.whl (65 kB)
+     |████████████████████████████████| 65 kB 5.2 MB/s             
+Requirement already satisfied: wheel>=0.26 in ./mambaforge/envs/rnasamba/lib/python3.6/site-packages (from tensorflow<2.0,>=1.5.0->rnasamba) (0.37.1)
+Collecting gast==0.2.2
+  Downloading gast-0.2.2.tar.gz (10 kB)
+  Preparing metadata (setup.py) ... done
+Collecting google-pasta>=0.1.6
+  Downloading google_pasta-0.2.0-py3-none-any.whl (57 kB)
+     |████████████████████████████████| 57 kB 4.3 MB/s            
+Collecting grpcio>=1.8.6
+  Downloading grpcio-1.48.2-cp36-cp36m-macosx_10_10_x86_64.whl (4.4 MB)
+     |████████████████████████████████| 4.4 MB 3.5 MB/s            
+Collecting tensorflow-estimator==1.15.1
+  Downloading tensorflow_estimator-1.15.1-py2.py3-none-any.whl (503 kB)
+     |████████████████████████████████| 503 kB 2.5 MB/s            
+Collecting astor>=0.6.0
+  Downloading astor-0.8.1-py2.py3-none-any.whl (27 kB)
+Collecting absl-py>=0.7.0
+  Downloading absl_py-1.4.0-py3-none-any.whl (126 kB)
+     |████████████████████████████████| 126 kB 2.5 MB/s            
+Collecting termcolor>=1.1.0
+  Downloading termcolor-1.1.0.tar.gz (3.9 kB)
+  Preparing metadata (setup.py) ... done
+Collecting wrapt>=1.11.1
+  Downloading wrapt-1.16.0-cp36-cp36m-macosx_10_9_x86_64.whl (36 kB)
+Collecting tensorboard<1.16.0,>=1.15.0
+  Downloading tensorboard-1.15.0-py3-none-any.whl (3.8 MB)
+     |████████████████████████████████| 3.8 MB 3.2 MB/s            
+Collecting protobuf>=3.6.1
+  Downloading protobuf-3.19.6-cp36-cp36m-macosx_10_9_x86_64.whl (979 kB)
+     |████████████████████████████████| 979 kB 3.0 MB/s            
+Collecting markdown>=2.6.8
+  Downloading Markdown-3.3.7-py3-none-any.whl (97 kB)
+     |████████████████████████████████| 97 kB 4.1 MB/s            
+Collecting werkzeug>=0.11.15
+  Downloading Werkzeug-2.0.3-py3-none-any.whl (289 kB)
+     |████████████████████████████████| 289 kB 4.5 MB/s            
+Requirement already satisfied: setuptools>=41.0.0 in ./mambaforge/envs/rnasamba/lib/python3.6/site-packages (from tensorboard<1.16.0,>=1.15.0->tensorflow<2.0,>=1.5.0->rnasamba) (58.0.4)
+Collecting importlib-metadata>=4.4
+  Downloading importlib_metadata-4.8.3-py3-none-any.whl (17 kB)
+Collecting dataclasses
+  Downloading dataclasses-0.8-py3-none-any.whl (19 kB)
+Collecting zipp>=0.5
+  Downloading zipp-3.6.0-py3-none-any.whl (5.3 kB)
+Collecting typing-extensions>=3.6.4
+  Downloading typing_extensions-4.1.1-py3-none-any.whl (26 kB)
+Building wheels for collected packages: gast, termcolor
+  Building wheel for gast (setup.py) ... done
+  Created wheel for gast: filename=gast-0.2.2-py3-none-any.whl size=7554 sha256=bb3a681109abe8b7ce0d88ac4bcbeaf0c4fd76e52bccfef7c8515eacfc23b7e4
+  Stored in directory: /Users/callumparr/Library/Caches/pip/wheels/19/a7/b9/0740c7a3a7d1d348f04823339274b90de25fbcd217b2ee1fbe
+  Building wheel for termcolor (setup.py) ... done
+  Created wheel for termcolor: filename=termcolor-1.1.0-py3-none-any.whl size=4848 sha256=cf48bfb92a37a4157787f89a9232ce0606285ff664538128525a3b5ca72bb4db
+  Stored in directory: /Users/callumparr/Library/Caches/pip/wheels/93/2a/eb/e58dbcbc963549ee4f065ff80a59f274cc7210b6eab962acdc
+Successfully built gast termcolor
+Installing collected packages: zipp, typing-extensions, six, numpy, importlib-metadata, dataclasses, werkzeug, protobuf, markdown, h5py, grpcio, absl-py, wrapt, termcolor, tensorflow-estimator, tensorboard, scipy, pyyaml, opt-einsum, keras-preprocessing, keras-applications, google-pasta, gast, astor, tensorflow, keras, biopython, rnasamba
+Successfully installed absl-py-1.4.0 astor-0.8.1 biopython-1.79 dataclasses-0.8 gast-0.2.2 google-pasta-0.2.0 grpcio-1.48.2 h5py-2.10.0 importlib-metadata-4.8.3 keras-2.2.5 keras-applications-1.0.8 keras-preprocessing-1.1.2 markdown-3.3.7 numpy-1.16.5 opt-einsum-3.3.0 protobuf-3.19.6 pyyaml-6.0.1 rnasamba-0.2.5 scipy-1.5.4 six-1.16.0 tensorboard-1.15.0 tensorflow-1.15.5 tensorflow-estimator-1.15.1 termcolor-1.1.0 typing-extensions-4.1.1 werkzeug-2.0.3 wrapt-1.16.0 zipp-3.6.0
+```
+
+Got to run 
+
+```
+❯ rnasamba classify -h
+[1]    13975 illegal hardware instruction  rnasamba classify -h
+```
+
+**Docker**
+I've tried running it through docker but then there is a platform mismatch and it just hangs without doing anything. I tried with a cDNA sequence downloaded from ensembl to test. I presume it shouldn't take long to predict from one sequence.
+
+```
+❯ docker run -ti --rm -u $(id -u) -v ""$(pwd):/app"" antoniopcamargo/rnasamba classify -p predicted_proteins.fa classification.tsv ~/Downloads/Homo_sapiens_ENST00000420700_5_sequence.fa full_length_weights.hdf5
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+```
+
+I ensured I enabled docker settings to use the rosetta layer but it still hangs. 
+
+I have submitted it to the webserver but I could not find any option to output the protein sequence that is predicted
+
+Is there some other way to install? ",callumparr,https://github.com/apcamargo/RNAsamba/issues/22

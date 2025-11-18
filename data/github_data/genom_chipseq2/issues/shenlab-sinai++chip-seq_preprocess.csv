@@ -1,0 +1,51 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNTY5OTA1NQ==,Report number of multi-reads,CLOSED,2014-06-13T19:12:51Z,2014-06-13T20:38:03Z,2014-06-13T20:38:03Z,"It's better to report the number of reads that are aligned to multiple locations (reads with alignments suppressed due to -m) as well.
+",lishen,https://github.com/shenlab-sinai/chip-seq_preprocess/issues/1
+MDU6SXNzdWUzOTY2MjQyMA==,The meaning of multithread?,CLOSED,2014-08-06T20:28:33Z,2014-08-08T13:19:15Z,2014-08-07T14:16:11Z,"What does this option control? Does it determine the number of concurrent jobs to be submitted to cluster nodes? If that is true, why not simply set it to a large number, such as 100? A well configured HPC should be able to handle a large number of submissions easily.
+",lishen,https://github.com/shenlab-sinai/chip-seq_preprocess/issues/2
+MDU6SXNzdWU0MDA1ODE3MQ==,"""sort"" in rmdup?",CLOSED,2014-08-12T14:08:09Z,2014-08-16T00:33:04Z,2014-08-16T00:33:04Z,"It is totally unnecessary to sort bam files again after rmdup. The rmdup program basically relies on the fact that a input bam file is already sorted. It removes duplicates in a stream and then outputs alignments keeping their original order. Since sorting large bam files costs significant amount of resource, this kind of process should be eliminated. 
+",lishen,https://github.com/shenlab-sinai/chip-seq_preprocess/issues/3
+MDU6SXNzdWU0MTQ2NTE0OTQ=,chip-seq_preprocess not compatible with new samtools,OPEN,2019-02-26T14:52:22Z,2019-02-26T14:52:22Z,,"Hi- I've been using your awesome chip-seq_preprocess pipeline for several years. I just tried to run it on a computer on which I'm using the newest version of samtools (version 1.9) and am getting errors that I've traced to updates put into the new samtools. I've fixed one easier problem in fast2bam_by_bowtie2.sh. Here line 76 needs to have -o added before the output file name because the sort command on the new samtools requires this. With that change I can now align all my fastq files and run the subsequent steps (such as fastqc) until the rmdup step.
+This issue has me a little stuck. rmdup.bam.sh uses rmdup in line 7. However, this command no longer exists in samtools and has been replaced by markdup. markdup requires a few initial steps that I'm not quite sure how to incorporate here since I'm not quite sure of how to name the output files appropriately so as to not mess up the subsequent steps of the pipeline. I'm also not totally clear on how the input file is sorted at this stage in the pipeline and that is important for markdup. I think it would just require an additional few lines of code added to rmdup.bam.sh to replace the rmdup command but I'm having trouble figuring out how to do this. Is this something you could help with? Here is the link to the new samtools manual and below is the relevant info on markdup. 
+I'd love to be able to use the newer version of samtools if possible so any suggestions would be very much appreciated! Thank you!
+
+http://www.htslib.org/doc/samtools.html
+
+markdup
+samtools markdup [-l length] [-r] [-s] [-T] [-S] in.algsort.bam out.bam
+
+Mark duplicate alignments from a coordinate sorted file that has been run through fixmate with the -m option. This program relies on the MC and ms tags that fixmate provides.
+
+
+-l INT
+Expected maximum read length of INT bases. [300]
+
+-r
+Remove duplicate reads.
+
+-s
+Print some basic stats.
+
+-T PREFIX
+Write temporary files to PREFIX.samtools.nnnn.mmmm.tmp
+
+-S
+Mark supplementary reads of duplicates as duplicates.
+
+EXAMPLE
+
+# The first sort can be omitted if the file is already name ordered
+samtools sort -n -o namesort.bam example.bam
+
+
+# Add ms and MC tags for markdup to use later
+samtools fixmate -m namesort.bam fixmate.bam
+
+
+# Markdup needs position order
+samtools sort -o positionsort.bam fixmate.bam
+
+
+# Finally mark duplicates
+samtools markdup positionsort.bam markdup.bam
+",ericakorb,https://github.com/shenlab-sinai/chip-seq_preprocess/issues/9

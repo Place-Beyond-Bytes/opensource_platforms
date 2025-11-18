@@ -1,0 +1,218 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNjM0MzA5MTU=,Unable to download Genomic segmentation problems,CLOSED,2017-10-06T12:33:58Z,2017-10-11T18:32:18Z,2017-10-10T16:02:57Z,"When I run  `Rscript -e 'PeakSegPipeline::downloadProblems(""hg38"", ""hg38_problems.bed"")' `, I get the following error:
+
+```
+(peakerror) [athersh@biowulf PeakSegPipeline]$ Rscript -e 'PeakSegPipeline::downloadProblems(""hg38"", ""hg38_problems.bed"")'
+trying URL 'http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/chromInfo.txt.gz'
+Content type 'application/x-gzip' length 3804 bytes
+==================================================
+downloaded 3804 bytes
+
+gunzip /tmp/RtmpFpRdQo/file60b26b2d758b.gz 
+trying URL 'http://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/gap.txt.gz'
+Content type 'application/x-gzip' length 12165 bytes (11 KB)
+==================================================
+downloaded 11 KB
+
+gunzip /tmp/RtmpFpRdQo/file60b26110032f.gz 
+Error in fread(gap.bed) : 
+  'input' must be a single character string containing a file name, a command, full path to a file, a URL starting 'http[s]://', 'ftp[s]://' or 'file://', or the input data itself
+Calls: <Anonymous> -> gap2problems -> fread
+Execution halted
+```
+",HussainAther,https://github.com/tdhock/PeakSegPipeline/issues/1
+MDU6SXNzdWUyNjM1MTU3Njc=,Won't convert labels.txt to labels.bed,CLOSED,2017-10-06T17:20:11Z,2017-10-13T14:39:05Z,2017-10-13T14:39:05Z,"I have a `labels.txt` file that looks like this 
+
+```
+chr2L:72,965-73,182 peakStart
+chr2L:73,183-74,241 peaks
+chr2L:74,242-74,305 peakEnd
+
+chr2L:11,011,984-11,012,154 peakStart
+chr2L:11,012,278-11,012,441 peakEnd
+```
+
+but when I run `Rscript -e 'PeakSegPipeline::convert_labels(""labels.txt"")'`, I get the error
+
+```
+Error in order(chrom, chromStart, chromEnd) : object 'chrom' not found
+Calls: <Anonymous> -> order
+Execution halted
+```
+
+Have I labeled the `labels.txt` file incorrectly?",HussainAther,https://github.com/tdhock/PeakSegPipeline/issues/2
+MDU6SXNzdWUzMDE3NTgxNjc=,Need to add repo before installing BerkeleyDB STL,CLOSED,2018-03-02T12:57:57Z,2018-03-05T16:53:25Z,2018-03-05T16:53:25Z,"while running the following command 
+`sudo aptitude install build-essential libdb6.0++-dev libdb6.0-stl-dev `
+on a ubuntu16.04 system( I do have root access ), I faced the following error : 
+```
+build-essential is already installed at the requested version (12.1ubuntu2)
+Couldn't find any package whose name or description matched ""libdb6.0++-dev""
+Couldn't find any package whose name or description matched ""libdb6.0-stl-dev""
+build-essential is already installed at the requested version (12.1ubuntu2)
+Couldn't find any package whose name or description matched ""libdb6.0++-dev""
+Couldn't find any package whose name or description matched ""libdb6.0-stl-dev""
+```
+
+I am guessing this is because we haven't added the appropriate repo before installing. Please provide the same or correct me in any other way",fireballpoint1,https://github.com/tdhock/PeakSegPipeline/issues/3
+MDU6SXNzdWUzMDE3NjY1NjI=,Edit in flag setting,CLOSED,2018-03-02T13:30:32Z,2018-03-07T00:08:44Z,2018-03-07T00:08:44Z,"```
+CPPFLAGS=-I${HOME}/include
+LDFLAGS=-L${HOME}/lib -Wl,-rpath=${HOME}/lib
+```
+These commands should be written with quotes as : 
+
+```
+CPPFLAGS=""-I${HOME}/include""
+LDFLAGS=""-L${HOME}/lib -Wl,-rpath=${HOME}/lib""
+```
+as the quotes should be compiled first and then fed into LDFLAGS",fireballpoint1,https://github.com/tdhock/PeakSegPipeline/issues/4
+MDU6SXNzdWUzMDIwNDUyOTk=,Need help create track hub ,CLOSED,2018-03-04T00:32:14Z,2018-03-05T06:15:58Z,2018-03-05T06:15:58Z,"tree -L 4 project_dir on my server gives me : 
+(adding public_html  as everything lies in it )
+```
+public_html
+--project_dir/
+  `-- samples
+      |-- bcell
+      |   `-- MS026601
+      |       |-- coverage.bigWig
+      |       |-- labels.bed
+      |       `-- problems
+      |-- bcell_
+      |   `-- MS010302
+      |       |-- coverage.bigWig
+      |       `-- problems
+      |-- Input
+      |   |-- MS002201
+      |   |   |-- coverage.bigWig
+      |   |   |-- labels.bed
+      |   |   `-- problems
+      |   `-- MS026601
+      |       |-- coverage.bigWig
+      |       |-- labels.bed
+      |       `-- problems
+      |-- Input_
+      |   |-- MS002202
+      |   |   |-- coverage.bigWig
+      |   |   `-- problems
+      |   `-- MS010302
+      |       |-- coverage.bigWig
+      |       `-- problems
+      |-- kidney
+      |   `-- MS002201
+      |       |-- coverage.bigWig
+      |       |-- labels.bed
+      |       `-- problems
+      `-- kidney_
+          `-- MS002202
+              |-- coverage.bigWig
+              `-- problems
+
+23 directories, 12 files
+
+```
+However when I run 
+`PeakSegPipeline::create_track_hub(""project_dir"", ""http://researchweb.iiit.ac.in/~mayank.modi/"", ""hg19"", ""mayank.modi@research.iiit.ac.in"")`
+
+I get the following error : 
+`  no project_dir/samples/*/*/coverage.bigWig files`
+
+It would be great if some help can be rendered 
+
+",fireballpoint1,https://github.com/tdhock/PeakSegPipeline/issues/5
+MDU6SXNzdWUzMDI0MzE0ODI=,invalid class “dgeMatrix” object: Not a valid 'Mnumeric' class object,CLOSED,2018-03-05T19:33:30Z,2018-09-13T17:38:24Z,2018-09-13T17:38:24Z,"While running test-pipeline-demo.R 
+I face the following error :```
+
+```
+Error in validObject(.Object) : 
+  invalid class “dgeMatrix” object: Not a valid 'Mnumeric' class object
+Calls: <Anonymous> ... Matrix -> new -> initialize -> initialize -> validObject
+Execution halted
+Error in system.or.stop(job.cmd) : non-zero exit code 1
+```
+Earlier I was facing the following error
+```
+Error in as.vector(data) : 
+  no method for coercing this S4 class to a vector
+```
+Which I solved by installing package Matrix before running the Rscript.
+
+Is there a similar hack for dgeMatrix error as well ?
+",fireballpoint1,https://github.com/tdhock/PeakSegPipeline/issues/6
+MDU6SXNzdWUzMDYyOTA3OTY=,Coverage files empty,CLOSED,2018-03-18T22:30:32Z,2018-09-13T17:37:39Z,2018-09-13T17:37:39Z,"I am running the input-pipeline-test.
+While trying to predict the peaks, R doesn't find any coverage files and thus its not predicting any peaks. Am i missing something in particular that might lead to this ?
+
+```
+bash /home/ubuntu/PeakSegPipeline-test/demo/problems/chr10:42746000-46426964/jointProblems.bed.sh 
+head: cannot open '/home/ubuntu/PeakSegPipeline-test/demo/samples/bcell_/MS010302/problems/chr10:42746000-46426964/coverage.bedGraph' for reading: No such file or directory
+bigWigToBedGraph -chrom=chr10 -start=42746000 -end=46426964 /home/ubuntu/PeakSegPipeline-test/demo/samples/bcell_/MS010302/coverage.bigWig /home/ubuntu/PeakSegPipeline-test/demo/samples/bcell_/MS010302/problems/chr10:42746000-46426964/coverage.bedGraph 
+Error in fread(prob.cov.bedGraph) : 
+  File is empty: /home/ubuntu/PeakSegPipeline-test/demo/samples/bcell_/MS010302/problems/chr10:42746000-46426964/coverage.bedGraph
+Could not compute coverage in /home/ubuntu/PeakSegPipeline-test/demo/samples/bcell_/MS010302/problems/chr10:42746000-46426964 so not predicting peaks.
+```",fireballpoint1,https://github.com/tdhock/PeakSegPipeline/issues/7
+MDU6SXNzdWU0NzgyMjgwNzI=,import rtracklayer / remove sys reqs ucsc command line,OPEN,2019-08-08T03:10:43Z,2019-08-08T03:10:43Z,,"would be nice to drop the system requirement of ucsc command line programs, and instead use a more portable R package. 
+
+seems like https://github.com/lawremi/rtracklayer supports bigWig import/export but what about bigBed display of peak predictions and labels?
+
+search https://github.com/lawremi/rtracklayer/search?q=bigBed&unscoped_q=bigBed shows some refs to bigBed in C code but no R code.
+
+thread https://grokbase.com/t/r/bioconductor/12c293pab8/bioc-bigbed-support-in-rtracklayer seems to indicate that tabix should be used instead of bigBed, but that does not appear as one of the supported track hub formats on http://genome.cse.ucsc.edu/goldenPath/help/hgTrackHubHelp.html",tdhock,https://github.com/tdhock/PeakSegPipeline/issues/15
+MDU6SXNzdWU0OTg1NzIzMzQ=,sorting prior to bigWigToBedGraph,CLOSED,2019-09-25T23:29:37Z,2019-09-25T23:42:05Z,2019-09-25T23:42:05Z,"```
+th798@wind:~/genomic-ml/public_data/PeakSegFPOP/labels(penaltyLearning*)$ bash H3K4me3_TDH_immune/hub.sh
+/projects/genomic-ml/public_data/PeakSegFPOP/labels/H3K4me3_TDH_immune/samples/bcell/McGill0091/joint_peaks.bed\
+Graph is not case-sensitive sorted at line 15617.  Please use ""sort -k1,1 -k2,2n"" with LC_COLLATE=C,  or bedSor\
+t and try again.
+Error in system.or.stop(cmd) : non-zero exit code 255
+Calls: <Anonymous> -> bedGraphToBigWig -> system.or.stop
+Execution halted
+th798@wind:~/genomic-ml/public_data/PeakSegFPOP/labels(penaltyLearning*)$
+```
+the line in question is
+```
+chr9    140979462       140981329       24.81
+chr10   82168   87215   9.20
+```
+which means we have to sort alphabetically?",tdhock,https://github.com/tdhock/PeakSegPipeline/issues/18
+MDU6SXNzdWU1NzU3ODkxOTY=,error of using problem.target(),CLOSED,2020-03-04T21:26:56Z,2020-03-05T00:49:18Z,2020-03-05T00:49:18Z,"
+``` r
+library(data.table)
+problems<-as.data.frame(fread(""C:/Users/shirani/Downloads/db-problems.tsv""))
+problem.dir<-file.path(""G:"",
+                       ""peak-detection-data"",
+                       ""data"",
+                       ""ATAC_JV_adipose"",""samples"",""AC1"",""MSC77"",""problems"",""chr10_18024675-38818835"")
+target.list <- PeakSegPipeline::problem.target(problem.dir,verbose = 1)
+#> Error in stop_for_na(make.na): subject 1 did not match regex below; to output missing rows use nomatch.error=FALSE
+#> (chr[^-:]+)[-:]([0-9]+)-([0-9]+)
+```
+
+<sup>Created on 2020-03-04 by the [reprex package](https://reprex.tidyverse.org) (v0.3.0)</sup>
+  ",f-shirani,https://github.com/tdhock/PeakSegPipeline/issues/22
+MDU6SXNzdWU1NzY0NzU4OTI=,error of problem.target,CLOSED,2020-03-05T19:19:55Z,2020-03-23T23:55:17Z,2020-03-23T23:55:17Z,"``` r
+library(data.table)
+problem.dir<-file.path(""G:"",
+                       ""peak-detection-data"",
+                       ""data"",
+                       ""ATAC_JV_adipose"",""samples"",""AC1"",""MSC77"",""problems"",""chr10_18024675-38818835"")
+target.list <- PeakSegPipeline::problem.target(problem.dir,verbose = 1)
+#> Error in stop_for_na(make.na): subject 1 did not match regex below; to output missing rows use nomatch.error=FALSE
+#> (chr[^-:]+)[-:]([0-9]+)-([0-9]+)
+```
+
+<sup>Created on 2020-03-05 by the [reprex package](https://reprex.tidyverse.org) (v0.3.0)</sup>
+  ",f-shirani,https://github.com/tdhock/PeakSegPipeline/issues/23
+I_kwDOBagFMc47xt8I,incomprehensible error message when contig dir is not in correct format,OPEN,2021-09-21T17:09:06Z,2021-09-21T17:09:06Z,,"Hi @brookesebranek thanks for the issue report via email which said:
+
+These are the codes I tried to enter:
+
+PeakSegPipeline::problem.target(problem.dir = ""H3K4me3_TDH_ENCODE/samples/thyroid/ENCFF014AIG"", verbose = getOption(""PeakSegPipeline.verbose"", 1))
+
+PeakSegPipeline::problem.target(""H3K4me3_TDH_ENCODE/samples/thyroid/ENCFF014AIG"") 
+
+PeakSegPipeline::problem.target(problem.dir = ""chrom10_data"", verbose = getOption(""PeakSegPipeline.verbose"", 1))
+ 
+and the error I get for all of them is
+```
+Error in stop_for_na(make.na) :
+  subject 1 did not match regex below; to output missing rows use nomatch.error=FALSE
+(?:(chr[^-:]+)[-:]([0-9]+)-([0-9]+))
+```",tdhock,https://github.com/tdhock/PeakSegPipeline/issues/24
+I_kwDOBagFMc5HwZiu,no error message when bigWigToBedGraph has one input and character vector multiple outputs,OPEN,2022-04-13T23:08:01Z,2022-04-13T23:08:01Z,,TODO create error ,tdhock,https://github.com/tdhock/PeakSegPipeline/issues/26

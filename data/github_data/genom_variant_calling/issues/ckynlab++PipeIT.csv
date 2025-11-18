@@ -1,0 +1,32 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1OTQyNDExNjA=,"Error message: ""An error occurred while working with the tmp directory /scratch""",OPEN,2020-04-05T04:01:12Z,2020-07-06T13:49:13Z,,"Hi, 
+
+Thank you for writing PipeIT Container.  This is very helpful for Ion Torrent users.
+I tried to use the PipeIT Singularity Container (20190409 version), but got an error message as below:
+
+##### ERROR MESSAGE: An error occurred while working with the tmp directory /scratch. You can specify -Djava.io.tmpdir=X on the command line (before the -jar argument) where X is a directory path, to use a more appropriate temporary directory. Note that this is a JVM argument, not a GATK argument. The exact error was Unable to create directory
+
+I've traced the source of this error message and found  this error message resulted from this commend:
+java -Djava.io.tmpdir=/scratch -Xmx7G -jar /PipeIT_resources/usr/local/bin/GenomeAnalysisTK-3.6.jar  -S LENIENT -T LeftAlignAndTrimVariants -filterNoBases -R $REF -V PipeIT/sample/$OUT/TSVC_variants.multiallelic_ft.norm.vcf -o PipeIT/sample/$OUT/TSVC_variants.multiallelic_ft.norm.left_align.vcf && sleep 5
+
+I suppose the reason for this error message is that the tmp folder ""/scratch"" does not exist inside the Container, and it is not allowed to create the tmp folder ""/scratch"" because the Container is read-only?
+
+Therefore I modified the part ""-Djava.io.tmpdir=/scratch"" to ""-Djava.io.tmpdir=./scratch"" throughout the entire script, which changed the path of tmp folder to local machine, and then the script can run successfully without any errors.
+
+If you could help resolve this issue, it would be very appreciated.
+
+With warm regards, 
+Yi-Chen
+
+",lordaaa999,https://github.com/ckynlab/PipeIT/issues/1
+MDU6SXNzdWU2Mjg4Mjg5MTc=,Alternative Docker image,OPEN,2020-06-02T01:17:43Z,2020-06-02T01:17:43Z,,"Here, I would like to contribute that I have convert the latest version of PipeIT into a docker image using https://github.com/singularityhub/singularity2docker. Enjoy!
+
+https://hub.docker.com/repository/docker/hsiaoyi0504/pipeit
+
+Also, that would be fantastic if the authors could add this into the readme page. Thank you!",hsiaoyi0504,https://github.com/ckynlab/PipeIT/issues/2
+MDU6SXNzdWU3MTY1MTY2MjM=,hg38,OPEN,2020-10-07T13:10:08Z,2020-10-08T08:32:08Z,,"Hi,
+We would like to use PipeIT with the hg38 genome reference. Is that possible?
+
+Thanks for your answer
+
+Best regards",Anneleclair,https://github.com/ckynlab/PipeIT/issues/3

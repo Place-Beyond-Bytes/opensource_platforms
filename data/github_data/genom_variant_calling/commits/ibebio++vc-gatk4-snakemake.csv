@@ -1,0 +1,113 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+ab2c05df46207a29ff1f45f7e14c9f8f1b05ca4f,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Fix channel order
+
+Got libcrypto.so.1.0.0 not found in samtools -- this should fix it.
+https://stackoverflow.com/questions/76082662/samtools-shared-library-libcrypto-so-1-0-0-not-found",2024-12-17T12:36:49Z,ibebio
+bac2889b6a72c6afdabb28dec7217e458f2141cd,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Replaced cutadapt with trim_galore
+
+The trim_galore trimmer is more 'intelligent', and recognized the common
+adapter sequences without the need to manually provide them in the
+config file. The corresponding option in the config was also removed
+accordingly.",2022-09-29T14:24:19Z,ibebio
+154074c72c847fb251cf5f8fd878b42053c07c92,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Set snakemakeversion to 5.28, since 6.05 caused errors with conda envs
+
+The newest Snakemake version has issues with the cutadapt environment,
+seems that python does not find the module. Debugging is needed.
+Therefore, fix Snakemake to the last working version for now.",2021-03-29T17:37:34Z,ibebio
+63455710313cc05e2006efe5c0238599ac3e4555,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Added generation of fasta file from ref genome for each region,2020-12-22T17:34:52Z,ibebio
+7dba898f4089c61cb4115175f96ccce2d25ac7e8,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Fix: remove non-variant sites when selecting variants
+
+Otherwise, FastaAlternateReferenceMaker just keeps non-variant sites,
+resulting in identical FASTA files including any and all variants, even
+if they are not present for the specific sample.",2020-12-21T14:16:01Z,ibebio
+a1fb3202c0126d2cd7cbc724d1360bfaee201ab8,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Added missing rule file for create region fastas,2020-12-17T10:09:53Z,ibebio
+92195d5d5c2228393697ba2237b4d4b91e9974bc,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Update README,2020-12-16T12:58:51Z,ibebio
+1c64368b456ddcc95eb1115fd7cd0b2aacf53c4e,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,added region fasta files creation,2020-12-15T17:41:50Z,ibebio
+5f203659640e18372b551b4d386ad7b03c789b02,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Added biallellic SNPs generation,2020-12-08T19:48:32Z,ibebio
+5bb2b0c9e0bc8238daa954f350ea35c21f008c94,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Increase memory for filtering,2020-12-02T18:01:05Z,ibebio
+1dc9484c6d84fa79a2647b1e1691629cf41f0ff8,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Fix missing -V in combine_variants,2020-12-02T17:37:29Z,ibebio
+bc17495189416a610ef914a8c0ea62524d62aa2f,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Remove recursive option from git in docu,2020-12-02T13:41:46Z,ibebio
+fee562eb72d855515a67b76839c83f372a1c63a7,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Add extra option to VC, update config to HpA",2020-12-02T13:31:05Z,ibebio
+5e6777fab176b490e8570da62023e49abe2c1f96,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Initial commit to have the basic vc workflow
+
+- Ripped out all parts from the tiger workflow not required for vc.
+- Added gvcf variant calling and combining vcfs.",2020-12-02T13:09:33Z,ibebio
+95333aa5c6f82a9ea10f4ddf2a86d55ef49b617b,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Update README on how to obtain upstream updates,2020-11-23T13:41:13Z,ibebio
+680c0c66567b5464cfc0bd44df09c05151709f10,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Bump cutadapt version to 1.16 due to missing pigz dep,2020-11-23T13:33:40Z,ibebio
+57ee4d0ee39e5d437a26725d3797ecfdcf40d275,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Force greedy scheduler
+
+The newer snakemake versions use a new scheduler, which seems somewhat
+buggy. Snakemake gets stuck when trying to resolve the dependency graph.
+Therefore, force to use the greedy scheduler as the default option.",2020-11-19T14:28:50Z,ibebio
+2288f7cac0a3e95538510af1742b2545ab5835f4,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Increased cluster resources for read trimming and mapping,2020-11-19T13:29:41Z,ibebio
+d4107b3dbbd1c13b81b70e88421ac7a784c2cce2,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Modified rule execution order to force tiger input creation for all f2 samples,2020-11-19T13:28:20Z,ibebio
+13dfc00051d3f33dc680922aa856dd850ca889f5,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Workaround for plot creation
+
+The script used in the rule tiger_create_genotype_plot is not very
+stable and sometimes fails:
+
+[1] ""F2-14-1-008""
+[1] ""F2-14-1-008.pdf""
+[1] ""results/tiger_analysis/F2.14-1/rough_co/F2-14-1-008.rough_COs.txt""
+[1] ""results/tiger_analysis/F2.14-1/rough_co/F2-14-1-008.rough_COs.breaks.txt""
+[1] ""results/tiger_analysis/F2.14-1/rough_co_breaks_refined_corrected/F2-14-1-008.corrected.refined.breaks.txt""
+[1] ""results/tiger_analysis/F2.14-1/allele_frequencies/F2-14-1-008.input.corrected.frequencies_bmm.txt""
+[1] ""results/tiger_analysis/F2.14-1/hmm_model/F2-14-1-008_sliding_window.breaks.txt""
+Error in rect(r$V2[r$V1 == chr], 0, r$V3[r$V1 == chr], 0.3, col = ifelse(r$V4[r$V1 ==  :
+  cannot mix zero-length and non-zero-length coordinates
+Execution halted
+
+This needs to be fixed, but until then, use this workaround and not mark
+the job as failed, since an (incomplete) pdf is produced nevertheless,
+which can be viewed.",2020-11-12T16:06:56Z,ibebio
+7b181d741c83469e8de2b2069213d34aa4c600f0,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Increase mem and time for variant_calling_f2,2020-11-12T16:06:11Z,ibebio
+1cb7f295481ee8b3e143d8086da392f42cc3d577,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,moved tiger pipeline to localrules,2020-11-11T16:37:05Z,ibebio
+d23f201534529c92d85be846399979d98a69c0ca,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Streamline getting started part of README,2020-11-11T14:39:44Z,ibebio
+bbfb977325b9eebc0639621331d7ef1c6c67d925,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Increase mem for cluster job of f2 variant calling,2020-11-11T14:38:20Z,ibebio
+86591b45a20f07ffb0d00b7c259e02a1823d22e1,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Added branching if TIGER model generation fails
+
+The model generation step can fail for low quality (not enough variants)
+data. To allow the pipeline to continue, a branching step was added. If
+this step fails, the pipeline skips this sample, and continues
+nevertheless.",2020-11-11T13:07:48Z,ibebio
+97fb556b0a181490a39c65b430ba8b728f5201cf,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Adjust memory req for cluster,2020-11-06T10:17:08Z,ibebio
+1b0950f9118e60252d2a16f13ca1de57c4d282f9,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"More strict version dependency to circumvent asyncio bug
+
+This is a problem related to
+
+https://github.com/snakemake/snakemake/pull/726
+
+While this issue is going to be fixed, there is no harm in explicitly
+requiring a newer version of Python.",2020-11-05T11:10:50Z,ibebio
+328604e897e16577d59af1ec45ae1de097937a28,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Fix path issue,2020-11-05T10:23:49Z,ibebio
+44b59f3155cf747a54868395ac5ee6faf9420395,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Add estimation of strict filtering parameters from distributions
+
+Added a rule and a script to estimate the strict filtering parameters
+based on the distributions of the respective fields.
+
+Currently, the cut-offs are estimated from joint distributions of all
+parental vcfs. This should be changed to per crossing distributions.",2020-10-29T15:50:56Z,ibebio
+e0bc8f3229f79e8567b4cc10e2a7dce3eb6b5abe,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Update README,2020-10-21T08:36:46Z,ibebio
+473d655f19a833019564df7b0d0b3e0392a29a42,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Added TE bed file and chromosome size file to TAIR10,2020-10-21T08:23:20Z,ibebio
+35dcbfb969c95b62ad6236abe14c6a12aa5c3a33,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,Update README,2020-10-20T16:58:29Z,ibebio
+1915bb7f480c1075fac6be5a4fdb7e2b69d54a0e,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,workflow names fixing,2020-10-20T16:56:22Z,ibebio
+6cdf68de0e1bd5950dd0e11635d3a77d485bded1,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,add local option to workflow driver script,2020-10-20T16:55:56Z,ibebio
+4b1d91a875243ba043a8d22ccf8cb55d52af2c38,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Added plotting, TIGER pipeline as submodule, rqtl output",2020-10-20T16:31:24Z,ibebio
+2b7fb35abeb80fa2e9b25c9cc521f6cd139aee0e,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Bugfixes to reproduce output of the original pipeline
+
+A number of bugs was fixed in order to reproduce the output of Uli's
+original script.
+
+In particular, there was a missing exclusion of non-PASS variants, and
+a wrong input file for the hmm probabilities calculation.
+
+When tested on 2 F2 samples, the final output of one was the same as for
+the original script, and the other was not the same but close.",2020-10-20T10:49:35Z,ibebio
+ef3d2c8ade5325340b756bb337e23025509df94d,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Commit after 1st complete run
+
+- Bugfixes to have a complete run.
+- Added localrules",2020-10-19T12:01:51Z,ibebio
+34f7ba04769fc93217f64c0140bb98f89b29ed32,Ilja Bezrukov,ibezrukov@tuebingen.mpg.de,"Initial commit
+
+The dryrun with snakemake -n works, but no tests as to whether the
+workflow actually works done yet. Some debug work expected.",2020-10-16T14:01:10Z,ibebio

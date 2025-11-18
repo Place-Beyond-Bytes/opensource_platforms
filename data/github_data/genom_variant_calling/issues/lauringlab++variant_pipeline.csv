@@ -1,0 +1,201 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5ODIyMzEzNQ==,File headings in sum.csv is wrong,CLOSED,2015-07-30T17:37:46Z,2015-07-30T18:50:35Z,2015-07-30T18:50:35Z,,jtmccr1,https://github.com/lauringlab/variant_pipeline/issues/5
+MDU6SXNzdWUyODYzNTkzMzc=,update tutorial,CLOSED,2018-01-05T17:53:14Z,2018-08-27T09:19:20Z,2018-08-27T09:19:20Z,Update the tutorial to incorporate the changes in the hpc work flows,jtmccr1,https://github.com/lauringlab/variant_pipeline/issues/8
+MDU6SXNzdWUzNDU4NTg4Nzg=,"Can't reproduce results of tutorial, too many variants with p.val=NA",CLOSED,2018-07-30T17:36:39Z,2018-08-27T09:25:08Z,2018-08-27T09:25:08Z,"Hi,
+First of all, I could not get the pipeline to run ""as is"". 
+So, I run each step manually. See  scriptlog at the end of this post.
+
+My plots look similar to those of the tutorial. 
+However, when I get to the final part where the filtering analysis is demonstrated I noticed that the metrics of my variants do not match those of the tutorial. In particular, my p.val are all NAs for variants with Read_pos between 50 and 200.   
+
+I am puzzled by these discrepancies. Perhaps you @jtmccr1  can help me here.
+Your input would be greatly appreciated. Thanks
+
+===============================================================
+###
+# tool provenance
+###
+module load MUSCLE/3.8.31-IGB-gcc-4.9.4
+module load Bowtie2/2.3.2-IGB-gcc-4.9.4
+module load SAMtools/1.7-IGB-gcc-4.9.4
+module load Python/3.6.1-IGB-gcc-4.9.4
+module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
+module load picard/2.10.1-Java-1.8.0_152
+module load R/3.5.0-IGB-gcc-4.9.4
+
+###
+#alignment
+###
+
+bowtie2 --seed 42 --sensitive \
+-x ../../data/reference/wsn33_wt_plasmid \
+-1 ../../data/fastq/HA-22_S7_L001.1.1.fastq \
+-2 ../../data/fastq/HA-22_S7_L001.2.1.fastq \
+-S HA-22_S7_L001.sam 2> HA-22_S7_L001.align.log
+
+bowtie2 --seed 42 --sensitive \
+-x ../../data/reference/wsn33_wt_plasmid \
+-1 ../../data/fastq/Plasmid-control_S49_L001.1.1.fastq \
+-2 ../../data/fastq/Plasmid-control_S49_L001.2.1.fastq \
+-S Plasmid-control_S49_L001.sam 2> Plasmid-control_S49_L001.align.log
+
+###
+# filtering
+###
+
+samtools view -Shq 30 HA-22_S7_L001.sam > HA-22_S7_L001_filtered.sam
+samtools view -Shq 30 Plasmid-control_S49_L001.sam > Plasmid-control_S49_L001_filtered.sam
+
+###
+# mark and remove PCR duplicates
+###
+
+java -Xmx4g -Djava.io.tmpdir=./ -jar ${EBROOTPICARD}/picard.jar MarkDuplicates \
+INPUT=HA-22_S7_L001_filtered_sorted.bam \
+OUTPUT=HA-22_S7_L001_filtered_sorted_nodup.bam \
+REMOVE_DUPLICATES=true \
+CREATE_INDEX=true \
+METRICS_FILE=HA-22_S7_L001-picard.out.metrics \
+VALIDATION_STRINGENCY=LENIENT
+
+java -Xmx4g -Djava.io.tmpdir=./ -jar ${EBROOTPICARD}/picard.jar MarkDuplicates \
+INPUT=Plasmid-control_S49_L001_filtered_sorted.bam \
+OUTPUT=Plasmid-control_S49_L001_filtered_sorted_nodup.bam \
+REMOVE_DUPLICATES=true \
+CREATE_INDEX=true \
+METRICS_FILE=Plasmid-control_S49_L001-picard.out.metrics \
+VALIDATION_STRINGENCY=LENIENT
+
+###
+# call variants with deepSNV.R
+###
+
+# This R script was not able to convert reference.fasta to regions.bed
+#
+# error message: 
+#   could not find function ""fasta.info"" 
+#
+# So, I performed this step offline and then tweaked the script to read this input file instead
+
+
+
+# reference.bed     <- ""reference.bed""
+# test.bam          <- ""HA-22_S7.bam""
+# control.bam       <- ""Plasmid-control_S49.bam""
+# method            <- ""bonferroni""
+# p.cut             <- ""0.1""   
+# p.com.meth        <- ""fisher""
+# disp              <- ""two.sided""
+# stringent_freq    <- ""0.5""
+# csv               <- ""results.csv""  
+# fa                <- ""results.fa""
+
+###
+# add metrics with mapq.py
+###
+
+# This python script was not parsing the file correctly
+#
+# Error message:
+# Traceback (most recent call last):
+#  File ""../../scripts/mapq.py"", line 52, in <module>
+#    pos=int(line[1]) #The position relative to the chromosome
+# ValueError: invalid literal for int() with base 10: 'HA'
+
+# I rerun the deepSNV.R step and noticed that when I SKIPPED the step that adjusts the model
+# The output file DOES have the format that mapq.py expects.
+# So, I skipped it
+# However, the results of my final output file do NOT match those of the tutorial.
+# I see TOO many variants with p.val=NA
+",grendon,https://github.com/lauringlab/variant_pipeline/issues/11
+MDU6SXNzdWUzOTA4NDQzNDQ=,failed to install some R packages with packrat,OPEN,2018-12-13T20:21:21Z,2018-12-19T18:57:16Z,,"First of all, I am installing the pipeline on a cluster to my local space as I am a regular user rather than someone with root privileges.
+Some R packages like Rhtslib are failing to install  and the issue seems to be that packrat cannot direct the installation to happen on my local path.
+This problem has been known and discussed in places like this one:
+https://github.com/rstudio/packrat/issues/418
+
+Wouldn't it make more sense to use BiocManager in order to install that long list of R libraries that this pipeline requires?",grendon,https://github.com/lauringlab/variant_pipeline/issues/13
+MDU6SXNzdWUzOTI3NjYwOTM=,deepSNV.r generates output.csv files with different column order - why?,OPEN,2018-12-19T20:30:47Z,2018-12-19T21:05:58Z,,"I run deepSNV.r three times and I only changed one parameter in each case.
+The order of the columns of the three output.csv files is different.
+
+`Rscript --vanilla --slave deepSNV_R wsn33_wt_plasmid.fa \
+HA-22_S7_L001.sorted.dedup.filtered.bam \
+Plasmid-control_S49_L001.sorted.dedup.filtered.bam \
+bonferroni \
+0.1 \
+fisher \
+one.sided \
+1.1 \
+output.csv \
+output.fa \
+/.../src/R_lib
+
+
+Rscript --vanilla --slave deepSNV_R wsn33_wt_plasmid.fa \
+HA-22_S7_L001.sorted.dedup.filtered.bam \
+Plasmid-control_S49_L001.sorted.dedup.filtered.bam \
+bonferroni \
+0.1 \
+fisher \
+one.sided \
+0.1 \
+output3.csv \
+output3.fa \
+/.../src/R_lib
+
+
+Rscript --vanilla --slave deepSNV_R wsn33_wt_plasmid.fa \
+HA-22_S7_L001.sorted.dedup.filtered.bam \
+Plasmid-control_S49_L001.sorted.dedup.filtered.bam \
+bonferroni \
+0.1 \
+fisher \
+one.sided \
+0.5 \
+output4.csv \
+output4.fa \
+/.../src/R_lib
+
+
+`
+The corresponding output files are these:
+
+[output.csv.txt](https://github.com/lauringlab/variant_pipeline/files/2696398/output.csv.txt)
+[output3.csv.txt](https://github.com/lauringlab/variant_pipeline/files/2696399/output3.csv.txt)
+[output4.csv.txt](https://github.com/lauringlab/variant_pipeline/files/2696400/output4.csv.txt)
+",grendon,https://github.com/lauringlab/variant_pipeline/issues/14
+MDU6SXNzdWU0MjA4Nzc3Mzc=,control.bam,OPEN,2019-03-14T07:59:16Z,2019-03-14T12:36:19Z,,"Dear sir,
+We used the Illumina platform to determine the whole genome consensus sequence and to
+identify intrahost single nucleotide variants for each patient-derived sample
+ we want to using DeepSNV to identified single nucleotide variants (SNV) 
+which relies on a clonal control to estimate the，local error rate within a given sequence context and to identify strand bias in base calling. The
+clonal control was a library prepared in an identical fashion from 8 plasmids containing the
+genome for the respective circulating reference strain and sequenced in the same flow cell to
+control for batch effects
+But we don't know anything about ‘control’ 
+Can you help us figure out what ‘control’ is and how to use ‘control’
+",Lordhooze,https://github.com/lauringlab/variant_pipeline/issues/15
+MDU6SXNzdWU0MjQzOTUwNzU=,adding results files to the tutorial for comparison,OPEN,2019-03-22T20:51:49Z,2019-03-22T20:58:29Z,,"Hi,
+Would it be possible for you to add results files that correspond to the test data set you made available here?
+
+I finished a successful run of this pipeline and I would like to compare my results with yours.
+
+Thanks much in advance.
+
+--Gloria",grendon,https://github.com/lauringlab/variant_pipeline/issues/16
+MDU6SXNzdWU0NDE4MjczMzc=,reciprocal_variants.py throws error ,OPEN,2019-05-08T16:41:06Z,2019-05-09T17:46:35Z,,"Hi,
+I had a batch of 15 samples to analyze and I was able to obtain results for the majority of them.
+However, there were four samples that caused the reciprocal_variants.py script to fail with this error. See below. 
+
+`Traceback (most recent call last):
+  File ""src/variant_pipeline/scripts/reciprocal_variants.py"", line 130, in <module>
+    var = get_reference(row,bam,""var"")
+  File ""src/variant_pipeline/scripts/reciprocal_variants.py"", line 94, in get_reference
+    for pileupcolumn in bam.pileup(df.chr,py_pos,py_pos+1,truncate=True,stepper=""all"",max_depth=1E6): # look at the range py_pos to py_pos+1 and all the bases that align to those positions. Think of a column on each position like the samtools output of mpileup
+  File ""pysam/libcalignmentfile.pyx"", line 1051, in pysam.libcalignmentfile.AlignmentFile.pileup (pysam/libcalignmentfile.c:12611)
+  File ""pysam/libcalignmentfile.pyx"", line 774, in pysam.libcalignmentfile.AlignmentFile.parse_region (pysam/libcalignmentfile.c:10572)
+  File ""pysam/libcalignmentfile.pyx"", line 1631, in pysam.libcalignmentfile.AlignmentFile.gettid (pysam/libcalignmentfile.c:18839)
+  File ""pysam/libcalignmentfile.pyx"", line 689, in pysam.libcalignmentfile.AlignmentFile.get_tid (pysam/libcalignmentfile.c:9515)
+  File ""pysam/libcutils.pyx"", line 122, in pysam.libcutils.force_bytes (pysam/libcutils.c:3081)
+TypeError: Argument must be string, bytes or unicode.`
+
+Have you seen this error before? What is the cause? how can it be corrected?",grendon,https://github.com/lauringlab/variant_pipeline/issues/17

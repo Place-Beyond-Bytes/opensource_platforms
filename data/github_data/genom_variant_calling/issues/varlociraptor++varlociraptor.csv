@@ -1,0 +1,1629 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMzkzMDIwMzY=,New release with single-cell-bulk.rs?,CLOSED,2017-06-28T21:23:38Z,2017-07-06T22:06:58Z,2017-07-06T22:06:58Z,"For eventually getting a ProSolo release that can go into bioconda, I'd like to have a clear release of libprosic with the single cell bulk changes in. Also, a dependency on a specific release version of rust-bio would be needed, I think.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/10
+MDU6SXNzdWUyNjc2NTI4NjM=,FDR over sets of `Event`s,CLOSED,2017-10-23T12:42:19Z,2017-11-16T16:28:19Z,2017-11-16T16:28:19Z,"Instead of doing the FDR threshold / cutoff calculations for only a single `Event`, we want to enable doing it over sets of `Event`s. I.e. we want to sum up the probabilities of this set of `Event`s at each site and use that to generate the probability distribution for the cutoffs.
+
+@johanneskoester, I was wondering, if this shouldn't just be a change to `collect_prob_dist()` in the main `utils.rs`, i.e. making this work on `&Vec<E>` instead of `&E `:
+
+https://github.com/PROSIC/libprosic/blob/e9dc04a5b30e85fed966ec17bb19a6eb72962f44/src/utils.rs#L177-L180
+
+I think anything else would be hacking around this in this line with weird vectors of vectors:
+
+https://github.com/PROSIC/libprosic/blob/e9dc04a5b30e85fed966ec17bb19a6eb72962f44/src/estimation/fdr/ev.rs#L37
+
+Instead, we just need one distribution afterwards that `collect_prob_dist()` could create. Am I making sense?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/13
+MDU6SXNzdWUyNzYzOTY3MTY=,separate libprosic-based CLI tool for controlling the FDR ,CLOSED,2017-11-23T14:36:22Z,2019-05-07T13:25:35Z,2019-05-07T13:25:35Z,"In order to avoid duplicating too much functionality across `prosic2` and `prosolo` (and potential future `libprosic`-based variant callers), we should create a separate `libprosic`-based CLI tool to control the FDR for any `libprosic`-based caller, i.e. based on any `Event` spaces defined in accordance with `libprosic`.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/16
+MDU6SXNzdWUyNzY0NTY4MjE=,calculate and emit `Event` likelihoods for sites without candidate alt allele,CLOSED,2017-11-23T19:03:09Z,2018-03-05T17:52:58Z,2018-03-05T17:52:58Z,"To get an unbiased evaluation of libprosic-based calling of single nucleotide variant `Event`s, these should not only be called where the candidates provide a possible alternative allele, but also at sites that are listed in the candidates file, but where no alternative allele is listed.
+
+From what I see, this would require explicitly parsing those sites in the `utils.rs` function `collect_variants()` with some useful base/nucleotide provided to the SNV type (ambiguity code for any other nucleotide than the reference one at that site?) and in `model/evidence/reads.rs` the function `prob_read_base()` would then need to handle that base/nucleotide.
+
+Does this make sense?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/18
+MDU6SXNzdWUyOTQ1MTQxMjI=,arbitrary ALPHAS via command-line or finer resolution of small FDRs?,CLOSED,2018-02-05T19:29:51Z,2018-10-24T12:29:47Z,2018-10-24T12:29:47Z,"I have the case where I would like to further resolve FDRs smaller than 0.01, and the current definition only goes down to that value:
+
+https://github.com/PROSIC/libprosic/blob/e3da0d58729a29bfcb3a246ecacf6986f78ff7ff/src/estimation/fdr/mod.rs#L7-L36
+
+As a first step, I would suggest adding the following values to this static definition of ALPHAS (unless there is some good reason that `0.01` is the smallest value, e.g. a methodological limitation?!):
+```
+0.00001,
+0.00005,
+0.0001,
+0.0005,
+0.001,
+0.005,
+```
+
+In a second step (or maybe directly?), we could allow for passing extra (or all) alpha values on the command line.
+
+Any objections? Any further considerations to be made?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/25
+MDU6SXNzdWUzMDI0MDczNjc=,speedup of single-cell-bulk model: lookup tables for amplification distributions,CLOSED,2018-03-05T18:18:31Z,2018-10-10T08:12:19Z,2018-10-10T08:12:19Z,"@johanneskoester, do you think transforming the function `prob_rho()` in the single cell bulk model into a static pre-defined lookup table would yield performance improvements? My general idea would be to implement it as a three-layer array of arrays, with the outer-most level representing alt allele frequencies `0.0`, `0.5` and `1.0` (here a clear mapping of indexes needs to be in the comments), the second level representing the total coverage at a site (with indexes corresponding to total coverage) and the inner-most level representing the number of reads with an alternative allele (again with indexes corresponding to number of reads). Do you know if this will make a difference in Rust?
+
+https://github.com/PROSIC/libprosic/blob/7dfda4ef909015a3fb31557bfc0ab7a2b29b7386/src/model/priors/single_cell_bulk.rs#L42-115",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/27
+MDU6SXNzdWUzMTQwNzM3ODU=,speedup of SNV calling: caching window optimisations,OPEN,2018-04-13T11:38:53Z,2019-10-08T10:49:46Z,,"This is an idea by @johanneskoester to speed up single nucleotide variant calling:
+
+Currently, caching of reads in a window around candidate variant sites is optimised for indel calling. As for these events, the exact range of sequence affected is not known, the window read into cache is relatively large. So it might be one idea to have a smaller default window for candidate (SNV) sites and to only load a larger window if a candidate indel site comes up.
+
+A second approach might be to avoid unnecessary window updates. For SNV calling, it is sufficient to have all reads that cover the site in the current read buffer. Thus, an update of the read buffer is only needed, once the newest site is outside the current window for which all covering reads are known to be in the buffer. This would need to be short-circuited before the buffer update with a quick check of the variant type and inclusion of the position in the current window, and should drastically reduce update operations for any calling runs that include SNV candidate sites.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/31
+MDU6SXNzdWUzMTQwNzYwMzA=,speedup of non-variant site calling: heuristics,OPEN,2018-04-13T11:47:07Z,2019-10-08T10:49:29Z,,"Apart from the solution in #31, that will also apply to these types of candidate sites, @johanneskoester suggested that it might be OK to introduce some heuristics that lead to a rougher estimation of likelihoods in this case, e.g. without inspecting all reads covering such a site. From candidate site generation, we should be able to assume that there are no non-reference reads present in the sample at this site, so any deviation from a likelihood of 1 for the homozygous reference genotype will only be the result of base calling and alignment uncertainties.
+
+We could e.g. check how much we can downsample coverage at such sites without significantly changing the likelihoods we get. Especially for very high coverage sites that we see in whole genome amplified single cell sequencing data, this has the potential to speed up calculations significantly.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/32
+MDU6SXNzdWUzNDMxMTczOTM=,speedup idea likelihood calc: `1-MQ` (cache it and hard-code `1-Prob::from(PHREDProb)`),CLOSED,2018-07-20T13:56:38Z,2019-10-08T10:49:10Z,2019-10-08T10:49:10Z,"Looking at the flamegraph and the respective code again, @aschoen came up with the idea that when we read in PHRED scores with a limited precision, it doesn't make much sense to calculate the complementary likelihood (pseudo-code something like: `1-Prob::from(PHREDProb)`) with higher precision. Instead, we could implement a function / lookup table with something like the following signature:
+
+```
+impl PHREDProb {
+    /// Lookup of LogProb result for `1 - Prob::from( PHREDProb )`
+    pub fn ln_one_minus_int_phred(&self) -> LogProb {
+        1 - lookup_tabel_1m_int_phred(self)
+    }
+}
+```
+
+This could be further generalised with arbitrary precision for the PHRED score, but would obviously grow the lookup tabel with every decimal place. Implementation could either go into `libprosic` itself, or into `rust-bio`, if it is of more general interest:
+https://github.com/rust-bio/rust-bio/blob/master/src/stats/probs/mod.rs
+
+In addition, we could cache the `LogProb` value of `1 - Mapping Quality` upon reading in the mapping quality of a read, as this is a constant property of an individual read and could be used for multiple candidate sites that a read covers.  The value is used in these two locations:
+https://github.com/PROSIC/libprosic/blob/1b6c6a298fa5f95c1ac190e76896d44065762aa9/src/model/likelihood.rs#L66
+https://github.com/PROSIC/libprosic/blob/1b6c6a298fa5f95c1ac190e76896d44065762aa9/src/model/likelihood.rs#L93
+
+For this, `Observation` would need an extra field, e.g. something like `one_minus_prob_mapping`:
+https://github.com/PROSIC/libprosic/blob/1b6c6a298fa5f95c1ac190e76896d44065762aa9/src/model/evidence/observation.rs#L105-L107
+
+And it should probably be calculated at the same time as `prob_mapping`, so somewhere here:
+https://github.com/PROSIC/libprosic/blob/1d82007115e57bb12f5ebd7df6000cb461e27cea/src/model/sample.rs#L425-L448",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/37
+MDU6SXNzdWUzNDM2NjkzMTU=,cigar related compilation issue,CLOSED,2018-07-23T14:57:36Z,2018-07-24T10:08:38Z,2018-07-24T10:08:38Z,"Locally I get a compilation error that seems to also be caught by this (automatic regular?) compilation test on Travis:
+https://travis-ci.org/PROSIC/libprosic/builds/399098268
+
+Sounds like `rust-htslib` changes that have not been incorporated into libprosic? Is this expected?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/39
+MDU6SXNzdWUzNzM0NzA2OTY=,release 0.7.0,CLOSED,2018-10-24T13:01:21Z,2018-11-06T16:02:06Z,2018-11-06T16:02:06Z,"With all the recent changes, doesn't it make sense to create a new release of `libprosic`?
+
+For me, this would be useful for a stable release of ProSolo, pinning down clear versions of all the dependencies. To achieve that, this would currently also require a new release over at [rust-htslib](https://github.com/rust-bio/rust-htslib), because we need to have the recent rust-htslib addition of `remove_alleles()` in the current libprosic:
+<https://github.com/rust-bio/rust-htslib/commit/99166dbdd73381d4910a42346fe9f9074034a1da>
+Apart from that, I'd gladly create a release branch, once #48 is merged.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/49
+MDU6SXNzdWU0NDM4NjgxNDk=,varlociraptor chokes on indels due to Myers pattern_matching,CLOSED,2019-05-14T11:45:07Z,2019-05-16T08:24:47Z,2019-05-16T08:24:47Z,"From testing the circleci-provided bioconda package before merging the [varlociraptor recipe PR ](https://github.com/bioconda/bioconda-recipes/pull/15231) over there, I ran into this:
+
+```
+[src/model/modes/generic.rs:57] &posterior = GenericPosterior {
+    resolutions: [
+        100
+    ]
+}
+[src/model/modes/generic.rs:58] &likelihood = GenericLikelihood {
+    inner: [
+        Normal(
+            SampleLikelihoodModel
+        )
+    ]
+}
+thread 'main' panicked at 'Pattern too long', /root/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-0.26.1/src/pattern_matching/myers/mod.rs:276:9
+stack backtrace:
+   0: std::sys::unix::backtrace::tracing::imp::unwind_backtrace
+             at src/libstd/sys/unix/backtrace/tracing/gcc_s.rs:39
+   1: std::sys_common::backtrace::_print
+             at src/libstd/sys_common/backtrace.rs:70
+   2: std::panicking::default_hook::{{closure}}
+             at src/libstd/sys_common/backtrace.rs:58
+             at src/libstd/panicking.rs:200
+   3: std::panicking::default_hook
+             at src/libstd/panicking.rs:215
+   4: std::panicking::rust_panic_with_hook
+             at src/libstd/panicking.rs:478
+   5: std::panicking::begin_panic
+   6: <bio::pattern_matching::myers::Myers<T>>::new
+   7: <varlociraptor::model::evidence::reads::IndelEvidence as varlociraptor::model::evidence::reads::AbstractReadEvidence>::prob
+   8: varlociraptor::model::sample::Sample::fragment_observation::{{closure}}
+   9: varlociraptor::model::sample::Sample::extract_observations
+  10: <varlociraptor::call::Caller<A, L, Pr, Po, ModelPayload>>::call
+  11: varlociraptor::cli::run
+  12: varlociraptor::main
+  13: std::rt::lang_start::{{closure}}
+  14: std::panicking::try::do_call
+             at src/libstd/rt.rs:49
+             at src/libstd/panicking.rs:297
+  15: __rust_maybe_catch_panic
+             at src/libpanic_unwind/lib.rs:87
+  16: std::rt::lang_start_internal
+             at src/libstd/panicking.rs:276
+             at src/libstd/panic.rs:388
+             at src/libstd/rt.rs:48
+  17: main
+  18: __libc_start_main
+  19: <unknown>
+             at ../sysdeps/x86_64/elf/start.S:103
+```
+
+Command used was:
+```
+RUST_BACKTRACE=1 varlociraptor call variants  --output test_17_E-17_E.bcf --candidates ../genotyped/all.vcf.gz ../data/ref/genome/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna generic --scenario tumour.yaml --bams tumor=../recal/17_E-17_E.bam
+```
+
+It is always the first indel that it chokes on and using the `--omit-indels` flag makes it run through. Which makes sense, given it's in the `IndelEvidence` code.
+
+From looking at the `rust-bio` code, the error is happening here:
+https://github.com/rust-bio/rust-bio/blob/986e99e968fe3bc9333b58e477321490b84072ca/src/pattern_matching/myers/mod.rs#L272-L278
+
+In the varlociraptor code, it seems to be triggered here:
+https://github.com/varlociraptor/varlociraptor/blob/9ef3e6de0c8620e72e29e8e3295a033693307050/src/model/evidence/reads.rs#L272
+
+Something that would make sense as an error source with the pattern length check is that it seems like `varlociraptor` is using the `Myers<u128>`:
+https://github.com/varlociraptor/varlociraptor/blob/9ef3e6de0c8620e72e29e8e3295a033693307050/src/model/evidence/reads.rs#L685-L688 
+
+But `rust-bio` until now only implements the `u64` version, if I understand the code correctly:
+https://github.com/rust-bio/rust-bio/blob/986e99e968fe3bc9333b58e477321490b84072ca/src/pattern_matching/myers/mod.rs#L255
+
+So I'm guessing it probably requires a bugfix in `rust-bio`, but it's triggered over here, so I figured I'd post it here to start with. 
+
+Also, I'm not sure how to do the implementation. A copy of the `u64` code to drop into place when Type calls for `u128` patterns? Or any way of generalising this from `u64` to both `u64` and `u128`?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/68
+MDU6SXNzdWU0NDQ4Mjk3NzY=,Ideas for the testcase generation output,OPEN,2019-05-16T08:47:47Z,2019-10-08T10:50:45Z,,"I don't have the time to dig into this now, so I'll just write down the ideas I have from my first look at the testcase generation tool with `--testcase-locus`:
+
+* [x] In the resulting candidate VCF file, a lot of information is not necessary and could be removed. All of the INFO and FORMAT fields can go, as can the respective header lines. The same is true for all contig header lines except for the contig the candidate is on. I am not sure about further header lines, e.g. those documenting commands that created the file -- these might be interesting in some cases, but in other cases might contain infos about internal file systems or sample names that need not be posted publicly.
+* [x] In the resulting candidate BAM file, the read names could be obscured. The sequencing machine reads were generated on, should not be relevant to the test case and this would make for mostly worry-free test case generation even from non-public patient data (although very rare or special variants would probably be re-identifiable and should not be used for test cases?).
+* [ ] In the resulting `testcase.yaml`, all the options of the original call are recorded. I wasn't sure if those are used for test execution, as well, as I didn't see the explicitly set file names in the above yaml structure that do that. So maybe just add a quick comment above it, to state that the whole `options` structure is only for documentation purposes. Here, the same about internal  file system structure from above might apply.
+* [x] Whenever the respective CLI option is used, the call could print a quick info on how to include the test case into varlociraptor to stderr. This might make it more accessible for people who stumble upon it or who don't want to dig around or refer to the documentation for it.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/70
+MDU6SXNzdWU0NzUyMDIxNzc=,Bug: Exit without error message when event is absent,CLOSED,2019-07-31T15:09:34Z,2019-10-08T10:51:08Z,2019-10-08T10:51:08Z,Varlociraptor exits without any error message in case an event defined by the `events` parameter is not existing in the input bcf-file.,FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/75
+MDU6SXNzdWU0NzYwMzUzNTg=,WGBS usability: Some VAFs differ significantly from the OBS string,CLOSED,2019-08-02T07:20:16Z,2019-08-02T07:35:17Z,2019-08-02T07:34:43Z,"In WGBS samples, there seems to be an accumulation of differences in the VAF  compared to a manual calculation from the observations vector. This might be due to lower quality in BQ and MAPQ(?)
+Testcase is attached.
+
+
+[testcase_511950.zip](https://github.com/varlociraptor/varlociraptor/files/3460047/testcase_511950.zip)
+
+",jafors,https://github.com/varlociraptor/varlociraptor/issues/76
+MDU6SXNzdWU0ODMzMjg0OTY=,Adaptive smallest value for allele freq intervals regardless of resolution,CLOSED,2019-08-21T10:10:19Z,2019-10-08T10:48:25Z,2019-10-08T10:48:25Z,"If the resolution is too low (e.g. 5) we are unable to see events with too few supporting reads. Therefore, Varlociraptor should always add an allele frequency >0.0 that is derived from 1/n with n being the pileup size.",johanneskoester,https://github.com/varlociraptor/varlociraptor/issues/77
+MDU6SXNzdWU0ODM0MTgzMjY=,Testcase for spurious somatic variant call,CLOSED,2019-08-21T13:22:55Z,2019-09-13T07:17:52Z,2019-09-13T07:17:52Z,"[testcase.zip](https://github.com/varlociraptor/varlociraptor/files/3525493/testcase.zip)
+",FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/78
+MDU6SXNzdWU0ODg2MTUwNDI=,"Testcase for sv-calling from delly-calls: Error(""Pattern to long"") - Myers pattern matching",CLOSED,2019-09-03T13:44:07Z,2019-09-13T09:02:58Z,2019-09-13T09:02:57Z,"[delly_patternmatching_test.zip](https://github.com/varlociraptor/varlociraptor/files/3569703/delly_patternmatching_test.zip)
+",jafors,https://github.com/varlociraptor/varlociraptor/issues/80
+MDU6SXNzdWU0OTAyMTc4Mjc=,control-fdr: Error processing alt allele observations,CLOSED,2019-09-06T09:11:53Z,2019-09-12T16:25:23Z,2019-09-12T16:25:23Z,"Varlociraptor exits with the following error message when calling genomic variants with the `control-fdr` subcommand: `[E::bcf_remove_allele_set] Unexpected number of values in FORMAT/OBS at chr7:34878128; expected Number=A=2, but found 1`.
+
+Here is an excerpt from the affected line in the vcf-file:
+`DP:AF:OBS:SB	49,0:1,0:14N+12V+10V-8N-6v-3v+2n-,:.,.	129,129:1,0.99303:35N-33V-30V+29N+3v-1S+1v+,34V-33N-31N+29V+3n-1S-1n+:.,.`",FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/82
+MDU6SXNzdWU1MDk4ODUzMjg=,candidates.bcf format,CLOSED,2019-10-21T10:52:03Z,2020-03-10T09:54:21Z,2020-03-10T09:54:20Z,"Hi,
+
+I know you have test files for candidates.bcf, but do you have an example of the minimum requirements for this file? I am merging from ensemble somatic calling so reducing the required input would be useful.
+
+Thanks,
+
+Bruce.",brucemoran,https://github.com/varlociraptor/varlociraptor/issues/87
+MDU6SXNzdWU1MjA5MjY3ODU=,Make strandedness configurable per sample.,CLOSED,2019-11-11T12:17:38Z,2019-12-03T13:57:40Z,2019-12-03T13:57:40Z,"Currently, this is handled via `--strandedness opposite` or `same`. Via the grammar, we could additionally expose this per sample, such that sequencing protocols can be easily mixed.",johanneskoester,https://github.com/varlociraptor/varlociraptor/issues/89
+MDU6SXNzdWU1MjI4NjU4NjM=,installation instructions,CLOSED,2019-11-14T13:39:24Z,2019-12-03T09:18:57Z,2019-12-03T09:18:36Z,"Hi,
+
+I'm trying to support Varlociraptor for easybuild. 
+Just successfully wrote the easyconfig file and managed to install on our cluster. Tomorrow will be the big day, where this is polished and contributed to the easybuild trunk - hopefully. 
+
+However, my first attempt failed with:
+
+<snip>
+
+ cgu.8:function rgsl::randist::gaussian::ugaussian_P::h1653d8d3fa81c115: error: undefined reference to 'gsl_cdf_ugaussian_P'
+          collect2: error: ld returned 1 exit status
+
+I figured, this must be in GSL. Hence, an otherwise not mentioned dependency is GSL. Could you guys / Johannes perhaps add a build instruction file to the next release? Even though Varlociraptor is support via Bioconda, not every community enclined to resort to *conda.
+
+Best regards,
+Christian Meesters
+",cmeesters,https://github.com/varlociraptor/varlociraptor/issues/91
+MDU6SXNzdWU1NDAzMzc4NDk=,Found argument '--odds' which wasn't expected,CLOSED,2019-12-19T14:11:49Z,2020-03-10T09:48:59Z,2020-03-10T09:48:59Z,"Running 
+`varlociraptor filter-calls posterior-odds --events SOMATIC_TUMOR --odds strong < calls.bcf` 
+results in 
+`error: Found argument '--odds' which wasn't expected, or isn't valid in this context`
+
+control-fdr works as expected
+
+varlociraptor 1.5.0
+CentOs7, Singularity [here](https://cloud.sylabs.io/library/_container/5d24ff503a2c26622b038314)(somatic_exome_n-of-1)",brucemoran,https://github.com/varlociraptor/varlociraptor/issues/97
+MDU6SXNzdWU1NjM5NTU1MTM=,"Parental leave until end of February, please be patient :-)",CLOSED,2020-02-12T12:06:23Z,2020-03-10T09:45:17Z,2020-03-10T09:45:17Z,"Hi folks, I am on parental leave until end of February.
+Hence, I won't have the chance to look into your bug reports and PRs until then. 
+
+Of course, you are all invited to do mutual reviews :-)! 
+
+Thanks a lot for your patience. 
+Johannes",johanneskoester,https://github.com/varlociraptor/varlociraptor/issues/98
+MDU6SXNzdWU1ODI5MTkzODk=,fdr-control fails with out of bounds error,CLOSED,2020-03-17T10:43:40Z,2022-05-04T08:59:30Z,2022-05-04T08:59:12Z,"Varlociraptor fdr-control fails for certain kinds of records returning the following error:
+`thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/4560ea788cb760f0a34127156c78e2552949f734/src/libcore/slice/mod.rs:2717:10`
+
+This error is thrown when processing the following record:
+```
+17      40293848        DEL00005659     A       <DEL>   .       .       SVLEN=-127;PROB_ARTIFACT=79.1942;PROB_ABSENT=307.83;PROB_PRESENT=0.173908;PROB_FFPE_ARTIFACT=14.0613;ANN=<DEL>|downstream_gene_variant|MODIFIER|CDC6|ENSG00000094804|transcript|ENST00000473555.1|protein_coding||c.*2614delA|||||2614|WARNING_TRANSCRIPT_INCOMPLETE,<DEL>|downstream_gene_variant|MODIFIER|CDC6|ENSG00000094804|transcript|ENST00000580824.5|protein_coding||c.*2293delA|||||2293|WARNING_TRANSCRIPT_INCOMPLETE,<DEL>|downstream_gene_variant|MODIFIER|CDC6|ENSG00000094804|transcript|ENST00000577249.1|protein_coding||c.*2667delA|||||2667|WARNING_TRANSCRIPT_INCOMPLETE,<DEL>|intron_variant|MODIFIER|CDC6|ENSG00000094804|transcript|ENST00000209728.8|protein_coding|5/11|c.837-100delA||||||INFO_REALIGN_3_PRIME,<DEL>|intron_variant|MODIFIER|CDC6|ENSG00000094804|transcript|ENST00000582402.1|retained_intron|1/1|n.203-1506delA||||||INFO_REALIGN_3_PRIME   DP:AF:OBS:SB    68:0.0865052:53N*6V*4N-3V-1V+1N+:.
+```
+
+Following the backtrace shows that the issue occurs during accessing [svlens](https://github.com/varlociraptor/varlociraptor/blob/ecbe1ad679944183fea924c7670608995993ceeb/src/utils.rs#L218), being empty at this point.
+
+The following [issue](https://github.com/samtools/bcftools/issues/874) suggests that the value -127 is a special value which might cause the panic here.",FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/101
+MDU6SXNzdWU2MTk0NDI1Mzk=,Grammar for Germline variant calling,CLOSED,2020-05-16T10:50:31Z,2020-08-03T08:43:39Z,2020-08-03T08:43:39Z,"Hi @johanneskoester ! 
+
+Can you recommend a grammar for Germline variant calling?",kokyriakidis,https://github.com/varlociraptor/varlociraptor/issues/107
+MDU6SXNzdWU2Mzk0MDI2ODU=,Varlociraptor preprocess fails for input without records,OPEN,2020-06-16T06:21:34Z,2020-09-25T15:43:12Z,,"When varlociraptor receives an bcf-file without any records preprocessing fails with the following message:
+
+```
+Found no records to use for estimating the insert size. Will assume
+single end sequencing data and calculate deletion probabilities without
+considering the insert size.
+
+If your data should be paired end, please consider manually providing
+--alignment-properties, e.g. computed with `samtools stats`. Also,
+the following counts of unusable records might indicate a source of
+this problem:
+
+- I, D, S or H CIGAR operation: 9591
+- S CIGAR (soft clip, e.g. due to UMIs or adapters): 9591
+
+In addition, 10409 records were skipped in the estimation for one
+of the following reasons:
+- not paired
+- not the first segment with regard to the template sequence
+- mapping quality of 0
+- marked as a duplicate
+- mate mapped to different template (e.g. different chromosome)
+- failed some quality check according to the 512 SAM flag
+- mate unmapped
+- record unmapped
+
+thread 'main' panicked at 'This is a bug.
+
+                            AlignmentProperties has insert_size set to `None`, but you are trying to use it without checking for None.', src/estimation/alignment_properties.rs:204:21
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+```
+
+While this case seems to be expected it is not handled well, as I would expect to receive an empty output file.",FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/110
+MDU6SXNzdWU2NTY0OTk0OTY=,Missing EVENT tag preprocessing delly calls,CLOSED,2020-07-14T10:17:20Z,2020-08-03T08:26:29Z,2020-08-03T08:26:29Z,"It seems like varlociraptor v2.0 has issues preprocessing some bcf files created by delly failing with the following error message: `Error: tag EVENT undefined in BCF/VCF header`.
+
+While this issue does not occur for files created by freebayes, some (not all) delly input bcfs can not be processed.",FelixMoelder,https://github.com/varlociraptor/varlociraptor/issues/113
+MDU6SXNzdWU3MTYwMTg5MjQ=,free(): invalid next size (fast),OPEN,2020-10-06T21:00:40Z,2020-10-06T21:16:50Z,,"I get an error by performing BND calling. Varlociraptor version 2.3. I could pin the problem to a specific BND pair:
+
+```
+10	81370980	gridss33fb_1085o	T	T[10:81370998[	.	.	EVENT=gridss33fb_1085;SVTYPE=BND;MATEID=gridss33fb_1085h;PROB_MAPPING=2,0,0,0,1,0,6982,48788,1,0,3556,48946;PROB_REF=2,0,0,0,0,0,51712,1,0,29208,48945;PROB_ALT=2,0,0,0,1,0,29415,48945,0,0,52757;PROB_MISSED_ALLELE=2,0,0,0,1,0,29208,49073,1,0,29208,49073;PROB_SAMPLE_ALT=2,0,0,0,1,0,0,32768,1,0,0,32768;PROB_DOUBLE_OVERLAP=2,0,0,0,0,0,64512,0,0,64512;STRAND=2,0,0,0,0,0,1,0;READ_ORIENTATION=2,0,0,0,0,0,0,0;SOFTCLIPPED=257,0,0,0,768,2,0,0,0
+10	81370998	gridss33fb_1085h	A	]10:81370980]A	.	.	EVENT=gridss33fb_1085;SVTYPE=BND;MATEID=gridss33fb_1085o;PROB_MAPPING=2,0,0,0,1,0,6982,48788,1,0,3556,48946;PROB_REF=2,0,0,0,0,0,51712,1,0,29208,48945;PROB_ALT=2,0,0,0,1,0,29415,48945,0,0,52757;PROB_MISSED_ALLELE=2,0,0,0,1,0,29208,49073,1,0,29208,49073;PROB_SAMPLE_ALT=2,0,0,0,1,0,0,32768,1,0,0,32768;PROB_DOUBLE_OVERLAP=2,0,0,0,0,0,64512,0,0,64512;STRAND=2,0,0,0,0,0,1,0;READ_ORIENTATION=2,0,0,0,0,0,0,0;SOFTCLIPPED=257,0,0,0,768,2,0,0,0
+```
+
+command:
+```
+varlociraptor call variants generic --scenario scenarios/EPF-BUR.yaml --obs patient13=test/EPF-BUR-012-013.observation.vcf patient28=test/EPF-BUR-012-028.observation.vcf patient29=test/EPF-BUR-012-029.observation.vcf patient31=test/EPF-BUR-012-031.observation.vcf
+```
+
+output:
+```
+free(): invalid next size (fast)
+Aborted (core dumped)
+```
+
+scenario:
+```
+samples:
+  patient13:
+    # male
+    resolution: 3
+    universe: ""0.0 | 0.5 | 1.0""
+    X: ""0.0 | 1.0""
+    Y: ""0.0 | 1.0""
+  patient28:
+    # male
+    resolution: 3
+    universe: ""0.0 | 0.5 | 1.0""
+    X: ""0.0 | 1.0""
+    Y: ""0.0 | 1.0""
+  patient29:
+    # female
+    resolution: 3
+    universe: ""0.0 | 0.5 | 1.0""
+    X: ""0.0 | 0.5 | 1.0""
+    Y: ""0.0""
+  patient31:
+    # female
+    resolution: 3
+    universe: ""0.0 | 0.5 | 1.0""
+    X: ""0.0 | 0.5 | 1.0""
+    Y: ""0.0""
+
+events:
+  all: ""(patient13:0.5 | patient13:1.0) & (patient28:0.5 | patient28:1.0) & (patient29:0.5 | patient29:1.0) & (patient31:0.5 | patient31:1.0)""
+  not_interesting: ""patient13:0.0 | patient28:0.0 | patient29:0.0 | patient31:0.0""
+```
+
+observersions:
+[EPF-BUR-012.zip (observation vcfs)](https://github.com/varlociraptor/varlociraptor/files/5336706/EPF-BUR-012.zip)
+
+",christopher-schroeder,https://github.com/varlociraptor/varlociraptor/issues/125
+MDU6SXNzdWU3MjIzMTE1MDM=,CRAM support,CLOSED,2020-10-15T12:56:31Z,2020-10-27T09:29:26Z,2020-10-27T09:29:26Z,"
+Does `VarLociRaptor` support `cram` files?
+I think it would be nice since `cram` are quickly becoming relatively standard...",fgvieira,https://github.com/varlociraptor/varlociraptor/issues/126
+MDU6SXNzdWU3NDgxNzgwNDQ=,Bioconda recipe fail,CLOSED,2020-11-22T06:02:51Z,2021-05-03T09:59:39Z,2021-05-03T09:59:38Z,"Looks like the latest update failed MacOSX checks: bioconda/bioconda-recipes#25462
+
+Seems to be `hts-sys` failing to compile, missing a reference to `R_OK` --- seems similar to the issue https://github.com/samtools/htslib/commit/0ec5202de5691b27917ce828a9d24c9c729a9b81
+
+according to that issue, `#include <unistd.h>` is not being imported.",andersgs,https://github.com/varlociraptor/varlociraptor/issues/134
+MDU6SXNzdWU3NTUxMzQyOTc=,GT/PL field,CLOSED,2020-12-02T10:14:00Z,2020-12-03T15:16:46Z,2020-12-03T10:04:19Z,"Probably a naive question, is there a way to convert the filtered varlociraptor output VCF in a way that it contains a GT field?
+
+Bests,
+F",fbemm,https://github.com/varlociraptor/varlociraptor/issues/136
+MDU6SXNzdWU3NjIxMzQwNzY=,germline FDR support,CLOSED,2020-12-11T09:25:54Z,2020-12-15T08:03:17Z,2020-12-15T08:03:17Z,"Dear,
+Does varlociraptor support false discovery rate in somatic snv discovery ?
+Does varlociraptor support false discovery rate in germline snv and indel discovery ?",wangjiawen2013,https://github.com/varlociraptor/varlociraptor/issues/137
+MDU6SXNzdWU3NjgzNjY5NTA=,raw bam or realigned bam,CLOSED,2020-12-16T01:34:07Z,2021-05-03T09:56:56Z,2021-05-03T09:56:56Z,"Hi,
+When I use varlociraptor preprocess variants, I'm not sure about the bam. Does varlociraptor require raw bam or realigned bam file (such as realigned by GATK IndelRealigner to improve alignments around indels)?",wangjiawen2013,https://github.com/varlociraptor/varlociraptor/issues/140
+MDU6SXNzdWU3NjgzOTU1NTE=,Input bcf,CLOSED,2020-12-16T02:40:00Z,2021-03-01T09:32:27Z,2021-03-01T09:32:27Z,"Hi,
+Varlociraptor takes bcf generated by other callers (such as Lancet) as input. Lancet generates in output the list of variants in VCF format . All variants (SNVs and indels either shared, specific to the tumor, or specific to the normal) are exported in output.  Do I need to filter the variants first to keep only variants specific to the tumor, or the whole variants is suitable for the input ?",wangjiawen2013,https://github.com/varlociraptor/varlociraptor/issues/141
+MDU6SXNzdWU3Njg2NzQ4MTY=,variant calling grammar complains about `invalid formula` or ``,CLOSED,2020-12-16T10:14:56Z,2022-04-11T18:33:08Z,2021-02-25T11:48:08Z,"With this scenario:
+```
+# This scenario is templated with Jinja2 and rendered for each group (see sample sheet).
+# A variable `samples` is available, holding the dataframe of
+# the sample sheet, filtered to those samples contained in the group to be rendered.
+# For example, this can be used to pass arbitrary column values (like the purity below),
+# to the sample definitions.
+# Note that sample names here must correspond to the alias column in the sample sheet.
+
+samples:
+  germline:
+    universe: ""[0.0,0.1] | 0.5 | 1.0""
+  somatic:
+    universe: ""[0.0,1.0]""
+    contamination:
+      by: germline
+      fraction: 0.30000000000000004
+
+expressions:
+  ffpe_artifact: ""(C>T | G>A ) & ( ( somatic:]0.0,0.1] & germline:[0.0,0.1] ) | ( somatic:[0.0,0.1] & germline:]0.0,0.1] ) )""
+
+events:
+  ffpe_artifact: ""$ffpe_artifact""
+  somatic: ""germline:0.0 & somatic:]0.0,1.0] & !( $ffpe_artifact )""
+  germline: ""( germline:]0.0,0.1] | germline:0.5 | germline:1.0 ) & !( $ffpe_artifact )""
+```
+I get an error:
+```
+Error: events.somatic: invalid value: invalid VAF formula, expected a valid VAF formula (see https://varlociraptor.github.io/docs/calling) at line 22 column 12
+```
+
+I was wondering if it has to do with the use of expressions, and if I inline the expression directly for somatic and germline, i.e.:
+```
+# This scenario is templated with Jinja2 and rendered for each group (see sample sheet).
+# A variable `samples` is available, holding the dataframe of
+# the sample sheet, filtered to those samples contained in the group to be rendered.
+# For example, this can be used to pass arbitrary column values (like the purity below),
+# to the sample definitions.
+# Note that sample names here must correspond to the alias column in the sample sheet.
+
+samples:
+  germline:
+    universe: ""[0.0,0.1] | 0.5 | 1.0""
+  somatic:
+    universe: ""[0.0,1.0]""
+    contamination:
+      by: germline
+      fraction: 0.8
+
+expressions:
+  ffpe_artifact: ""(C>T | G>A ) & ( ( somatic:]0.0,0.1] & germline:[0.0,0.1] ) | ( somatic:[0.0,0.1] & germline:]0.0,0.1] ) )""
+
+events:
+  ffpe_artifact: ""$ffpe_artifact""
+#  somatic: ""germline:0.0 & somatic:]0.0,1.0] & !( $ffpe_artifact )""
+#  germline: ""( germline:]0.0,0.1] | germline:0.5 | germline:1.0 ) & !( $ffpe_artifact )""
+  somatic: ""germline:0.0 & somatic:]0.0,1.0] & !( (C>T | G>A ) & ( ( somatic:]0.0,0.1] & germline:[0.0,0.1] ) | ( somatic:[0.0,0.1] & germline:]0.0,0.1] ) ) )""
+  germline: ""( germline:]0.0,0.1] | germline:0.5 | germline:1.0 ) & !( (C>T | G>A ) & ( ( somatic:]0.0,0.1] & germline:[0.0,0.1] ) | ( somatic:[0.0,0.1] & germline:]0.0,0.1] ) ) )""
+```
+Then, I get a different error:
+```
+thread 'main' panicked at 'bug: observable_max may not be called if end=0.0.', src/grammar/formula.rs:381:9
+```
+
+I have also tried with `germline:[0.0,0.0]` instead of `germline:0.0`, but this does not change the error. It sounds like this is a corner case that is not yet implemented?",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/142
+MDU6SXNzdWU4NTkzNDQ5MzM=,Recommendations on joining variants across callers for input to varlociraptor,OPEN,2021-04-16T00:08:24Z,2022-10-11T20:56:08Z,,"The [calling docs](https://varlociraptor.github.io/docs/calling/)
+>  In particular, you can also first combine candidates from different callers, to cover diverse variant types and length ranges
+
+This is fairly intuitive if the candidates are _different_ variant types, however what if there are overlapping or duplicated variants?  An extreme example would be running multiple variant variant callers (eg. DeepVariant, GATK, etc.) to produce candidates and `varlociraptor` to produce a final set of calls.  In effect, we're using Varlociraptor to produce the final consensus calls among all these callers.",nh13,https://github.com/varlociraptor/varlociraptor/issues/149
+MDU6SXNzdWU4NzA1ODg0MTA=,"Unable to open a SAM file, varlociraptor 2.3.0",CLOSED,2021-04-29T04:00:51Z,2021-04-30T20:15:50Z,2021-04-30T20:15:49Z,"varlociraptor 2.3.0
+
+command
+```shell
+$ varlociraptor preprocess variants tmp.fasta --bam tmp.normal.sam --candidates tmp.vcf
+Error: unable to open SAM/BAM/CRAM file at tmp.normal.sam
+$ file tmp.normal.sam 
+tmp.normal.sam: Sequence Alignment/Map (SAM), with header version 1.6
+```
+
+```
+>chr1
+ggctAcggannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+```
+
+```
+##fileformat=VCFv4.2
+##ALT=<ID=NON_REF,Description=""Represents any non-reference allele."">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description=""Depth per allele."">
+##FORMAT=<ID=FREQ,Number=1,Type=Float,Description=""Non-ref frequency."">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=""Genotype quality."">
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype string."">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description=""Phred scaled genotype likelihoods."">
+##FORMAT=<ID=PS,Number=1,Type=Integer,Description=""Phase set."">
+##INFO=<ID=AC,Number=A,Type=Integer,Description=""Alternate allele counts in genotypes."">
+##INFO=<ID=DP,Number=1,Type=Integer,Description=""Depth across all samples."">
+##contig=<ID=chr1,length=1000>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	5	.	A	C	.	.	.	GT:AD:FREQ:PS	0|0:50,0:0.0:5	0/1:80,20:0.2
+```
+
+```
+##fileformat=VCFv4.2
+##ALT=<ID=NON_REF,Description=""Represents any non-reference allele."">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description=""Depth per allele."">
+##FORMAT=<ID=FREQ,Number=1,Type=Float,Description=""Non-ref frequency."">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=""Genotype quality."">
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype string."">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description=""Phred scaled genotype likelihoods."">
+##FORMAT=<ID=PS,Number=1,Type=Integer,Description=""Phase set."">
+##INFO=<ID=AC,Number=A,Type=Integer,Description=""Alternate allele counts in genotypes."">
+##INFO=<ID=DP,Number=1,Type=Integer,Description=""Depth across all samples."">
+##contig=<ID=chr1,length=1000>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	5	.	A	C	.	.	.	GT:AD:FREQ:PS	0|0:50,0:0.0:5	0/1:80,20:0.2
+(testing-varlociraptor) nils-fg:varlociraptor nhomer$ cat tmp.normal.sam 
+@HD	VN:1.6	SO:unsorted	GO:none
+@SQ	SN:chr1	LN:1000
+@RG	ID:normal	SM:normal
+0000	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0001	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0002	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0003	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0004	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0005	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0006	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0007	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0008	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0009	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0010	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0011	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0012	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0013	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0014	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0015	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0016	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0017	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0018	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0019	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0020	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0021	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0022	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0023	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0024	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0025	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0026	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0027	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0028	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0029	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0030	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0031	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0032	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0033	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0034	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0035	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0036	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0037	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0038	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0039	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0040	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0041	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0042	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0043	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0044	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0045	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0046	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0047	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0048	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0049	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0050	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0051	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0052	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0053	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0054	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0055	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0056	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0057	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0058	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0059	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0060	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0061	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0062	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0063	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0064	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0065	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0066	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0067	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0068	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0069	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0070	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0071	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0072	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0073	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0074	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0075	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0076	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0077	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0078	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0079	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0080	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0081	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0082	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0083	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0084	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0085	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0086	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0087	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0088	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0089	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0090	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0091	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0092	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0093	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0094	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0095	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0096	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0097	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0098	0	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+0099	16	chr1	1	60	9M	*	0	0	GGCTACGGA	?????????	RG:Z:normal
+```",nh13,https://github.com/varlociraptor/varlociraptor/issues/151
+MDU6SXNzdWU4NzA2MTIzMjI=,How to specify tumor purity in the grammar,CLOSED,2021-04-29T05:01:06Z,2021-04-30T09:31:52Z,2021-04-29T17:29:54Z,"The `varlociraptor call variants tumor-normal` built-in scenario has the `--purity` command line option.  I want to define a custom grammar for tumor-normal calling, how do I specify `purity` for the tumor sample?",nh13,https://github.com/varlociraptor/varlociraptor/issues/152
+MDU6SXNzdWU4NzA2MzEyMzM=,Setting GT (genotype) and AD (allele depths),OPEN,2021-04-29T05:40:30Z,2021-05-18T18:49:05Z,,"I am performing tumor-normal calling and I'd like the output VCF to contain both a genotype (FORMAT/GT) and per-allele depth (FORMAT/AD).  Many downstream tools will want these (I can't change the world in one day, but I can get folks to use this tool!).  I'd be glad to hear folks' thoughts on the below.
+
+#### Allele Depths
+
+The `FORMAT/OBS` field looks very informative, providing the summary of observations per _alternate allele_.  To get the per-alternate-allele depths, I could pick a cutoff (strong?) and assign the read counts to the particular allele.  I can then get the _reference_ allele depth by summing up the per-alternate-allele depths and subtracting that sum from the `FORMAT/DP` field.   This seems a bit risky, as I'd rather ALSO have the same summary CBTSOP for the reference allele.
+
+Is there a better way (or perhaps new feature), since skimming the code it looks like the observations (both from evidence or pileups) are available?  With some guidance, I could see a contribution being made if the tool itself could output allele depths (or predicted allele depths).
+
+#### Genotypes
+
+For the `normal` sample's genotype, I think I can create the following `events` in the grammar:
+```
+  normal_hom_ref: ""normal:0.0""
+  normal_het: ""normal:0.5""
+  normal_hom_alt: ""normal:1.0""
+```
+I can then pick the maximum posterior even for the `normal`.
+
+For the `tumor` sample's genotype, I could do something like:
+```
+  somatic_tumor_high: ""normal:0.0 & tumor:[0.1,1.0]""
+  somatic_tumor_low: ""normal:0.0 & tumor:]0.0,0.1[""
+  tumor_hom_ref: ""tumor:0.0""
+  tumor_het: ""tumor:0.5""
+  tumor_hom_alt: ""tumor:1.0""
+```
+and pick from the scenarios above.   In case of a tie, I'd prefer the `somatic_tumor*` cases.
+",nh13,https://github.com/varlociraptor/varlociraptor/issues/153
+MDU6SXNzdWU4NzA2OTEwMDY=,Tumor/normal allele frequencies very odd for 4bp deletion,OPEN,2021-04-29T07:15:32Z,2021-05-04T10:44:55Z,,"#### Summary
+I have a test case for a 4bp indel where the allele frequencies and reported probabilities look wrong, while changing the allele to be just an SNV gives the correct results.
+
+#### Details
+
+I am running tumor/normal calling on synthetic data where the normal sample has 100 depth and is hom-ref at `chr1:15`, while the tumor has 100 depth and has `0.2` allele frequency for a 4bp deletion.  This is shown in the input/candidate calls:
+```
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	15	.	TAAAA	T	.	.	.	GT:AD:FREQ:PS	0|0:100,0:0.0:15	0|1:80,20:0.2:15
+```
+
+Looking at the output calls, I see for the tumor and normal we have depths 100 as expected, but the normal allele frequency is `0.5` (should be 0%) and tumor allele frequency is `0.9901` (should be ~20%).  Looking at the observations (`FORMAT/OBS`), the normal has all 100 reads with `N`s, meaning likely not assigned to the deletion, while the tumor has all 20 reads with `V`s, meaning very strong scores assigning to the deletion.  The observations look right, but the allele frequency does not!
+
+```
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	15	.	TAAAA	T	.	.	SVLEN=-4;PROB_GERMLINE_HOM=6306.46;PROB_SOMATIC_NORMAL=8.62017;PROB_ABSENT=5.37444;PROB_SOMATIC_TUMOR=5.43259;PROB_GERMLINE_HET=5.43259;PROB_ARTIFACT=inf	DP:AF:OBS:SB:ROB:RPB	100:0.5:56Ns-**44Ns+**:.:.:.	100:0.9901:43Ns-**37Ns+**13Vs+**7Vs-**:.:.:.
+```
+
+If you look at the `INFO/PROB_*` fields (each on a newline):
+```
+PROB_ARTIFACT=inf
+PROB_SOMATIC_NORMAL=8.62017
+PROB_GERMLINE_HOM=6306.46
+PROB_SOMATIC_TUMOR=5.43259
+PROB_GERMLINE_HET=5.43259
+PROB_ABSENT=5.37444
+```
+you see:
+* the probability is `inf` because I turned all the artifact filters off (see below)
+* that there's non-trivial probability of germline (normal) heterozygous, which is odd, since all reads are reference
+
+If I re-run with the same depth/allele counts but change the variant allele from an indel to a SNV, I get the expected results: 0% normal, 20% tumor, probabilities indicate high probability of somatic tumor, zero probability of germline het or hom-alt
+
+Commands:
+```shell
+# normal
+$ varlociraptor preprocess variants tmp.fasta \
+  --bam tmp.normal.bam --candidates tmp.vcf \
+  | bcftools view -> tmp.varlociraptor.normal.preprocess.vcf;
+# tumor
+$ varlociraptor preprocess variants tmp.fasta \
+  --bam tmp.tumor.bam --candidates tmp.vcf \
+  | bcftools view -> tmp.varlociraptor.tumor.preprocess.vcf;
+# call
+$ varlociraptor call variants \
+  --omit-read-orientation-bias --omit-read-position-bias --omit-strand-bias \
+  tumor-normal --purity 1.0 \
+  --tumor tmp.varlociraptor.tumor.preprocess.vcf \
+  --normal tmp.varlociraptor.normal.preprocess.vcf \
+  | bcftools norm --multiallelics +any --fasta-ref tmp.fasta - \
+  > tmp.varlociraptor.calls.vcf;
+```
+
+#### Test Files
+
+<details>
+<summary>fasta</summary>
+
+```
+>chr1
+gagaccggaccccgTAAAActtttaccgtctaannnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+```
+</details>
+
+<details>
+<summary>candidates VCF</summary>
+
+```
+##fileformat=VCFv4.2
+##ALT=<ID=NON_REF,Description=""Represents any non-reference allele."">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description=""Depth per allele."">
+##FORMAT=<ID=FREQ,Number=1,Type=Float,Description=""Non-ref frequency."">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=""Genotype quality."">
+##FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype string."">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description=""Phred scaled genotype likelihoods."">
+##FORMAT=<ID=PS,Number=1,Type=Integer,Description=""Phase set."">
+##INFO=<ID=AC,Number=A,Type=Integer,Description=""Alternate allele counts in genotypes."">
+##INFO=<ID=DP,Number=1,Type=Integer,Description=""Depth across all samples."">
+##contig=<ID=chr1,length=1000>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	15	.	TAAAA	T	.	.	.	GT:AD:FREQ:PS	0|0:100,0:0.0:15	0|1:80,20:0.2:15
+```
+</details>
+
+<details>
+<summary>normal BAM</summary>
+
+```
+@HD	VN:1.6	SO:coordinate	GO:none
+@SQ	SN:chr1	LN:1000
+@RG	ID:normal	SM:normal
+@PG	ID:samtools	PN:samtools	VN:1.11	CL:samtools view -h tmp.normal.bam
+0000	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0004	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0008	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0010	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0011	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0012	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0014	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0016	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0017	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0022	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0025	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0026	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0028	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0029	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0031	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0034	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0035	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0036	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0038	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0045	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0047	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0049	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0051	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0052	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0056	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0057	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0059	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0061	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0065	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0066	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0069	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0072	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0073	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0074	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0075	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0078	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0082	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0084	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0086	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0090	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0092	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0096	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0098	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0099	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0001	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0002	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0003	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0005	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0006	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0007	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0009	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0013	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0015	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0018	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0019	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0020	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0021	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0023	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0024	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0027	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0030	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0032	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0033	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0037	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0039	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0040	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0041	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0042	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0043	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0044	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0046	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0048	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0050	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0053	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0054	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0055	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0058	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0060	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0062	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0063	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0064	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0067	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0068	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0070	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0071	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0076	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0077	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0079	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0080	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0081	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0083	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0085	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0087	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0088	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0089	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0091	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0093	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0094	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0095	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+0097	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:normal
+```
+</details>
+
+<details>
+<summary>normal BAM</summary>
+
+```
+@HD	VN:1.6	SO:coordinate	GO:none
+@SQ	SN:chr1	LN:1000
+@RG	ID:tumor	SM:tumor
+@PG	ID:samtools	PN:samtools	VN:1.11	CL:samtools view -h tmp.tumor.bam
+0001	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0003	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0004	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0005	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0006	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0007	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0011	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0013	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0018	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0022	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0025	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0026	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0027	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0028	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0029	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0030	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0032	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0034	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0035	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0038	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0041	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0042	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0045	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0049	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0051	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0056	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0057	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0059	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0060	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0063	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0067	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0068	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0072	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0073	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0074	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0075	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0077	0	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0080	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0082	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0084	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0085	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0086	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0088	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0089	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0090	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0094	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0096	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0097	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0098	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0099	0	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0000	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0002	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0008	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0009	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0010	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0012	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0014	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0015	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0016	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0017	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0019	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0020	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0021	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0023	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0024	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0031	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0033	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0036	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0037	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0039	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0040	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0043	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0044	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0046	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0047	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0048	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0050	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0052	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0053	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0054	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0055	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0058	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0061	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0062	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0064	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0065	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0066	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0069	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0070	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0071	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0076	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0078	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0079	16	chr1	1	60	33M	*	0	0	GAGACCGGACCCCGTAAAACTTTTACCGTCTAA	?????????????????????????????????	RG:Z:tumor
+0081	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0083	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0087	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0091	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0092	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0093	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+0095	16	chr1	1	60	15M4D14M	*	0	0	GAGACCGGACCCCGTCTTTTACCGTCTAA	?????????????????????????????	RG:Z:tumor
+```
+</details>
+
+<details>
+<summary>calls (output) VCF</summary>
+
+```
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description=""All filters passed"">
+##INFO=<ID=SVLEN,Number=A,Type=Integer,Description=""Difference in length between REF and ALT alleles"">
+##INFO=<ID=END,Number=A,Type=Integer,Description=""End position of structural variant (inclusive, 1-based)."">
+##INFO=<ID=SVTYPE,Number=A,Type=String,Description=""Structural variant type"">
+##INFO=<ID=EVENT,Number=A,Type=String,Description=""ID of event associated to breakend"">
+##INFO=<ID=MATEID,Number=1,Type=String,Description=""ID of mate breakend"">
+##contig=<ID=chr1,length=1000>
+##varlociraptor_preprocess_args={""Preprocess"":{""kind"":{""Variants"":{""reference"":""/Users/nhomer/tmp/pact_pharma/sow4/varlociraptor/tmp.fasta"",""candidates"":""/Users/nhomer/tmp/pact_pharma/sow4/varlociraptor/tmp.vcf"",""bam"":""/Users/nhomer/tmp/pact_pharma/sow4/varlociraptor/tmp.normal.bam"",""reference_buffer_size"":10,""min_bam_refetch_distance"":1,""alignment_properties"":null,""output"":null,""spurious_ins_rate"":2.8e-6,""spurious_del_rate"":5.1e-6,""spurious_insext_rate"":0.0,""spurious_delext_rate"":0.0,""protocol_strandedness"":""Opposite"",""realignment_window"":64,""max_depth"":200,""omit_insert_size"":false,""pairhmm_mode"":""exact""}}}}
+##varlociraptor_observation_format_version=7
+##bcftools_viewVersion=1.11+htslib-1.11
+##bcftools_viewCommand=view -; Date=Wed Apr 28 23:44:36 2021
+##INFO=<ID=PROB_GERMLINE_HET,Number=A,Type=Float,Description=""Posterior probability for event germline_het (PHRED)"">
+##INFO=<ID=PROB_GERMLINE_HOM,Number=A,Type=Float,Description=""Posterior probability for event germline_hom (PHRED)"">
+##INFO=<ID=PROB_SOMATIC_NORMAL,Number=A,Type=Float,Description=""Posterior probability for event somatic_normal (PHRED)"">
+##INFO=<ID=PROB_SOMATIC_TUMOR,Number=A,Type=Float,Description=""Posterior probability for event somatic_tumor (PHRED)"">
+##INFO=<ID=PROB_ARTIFACT,Number=A,Type=Float,Description=""Posterior probability for strand bias artifact (PHRED)"">
+##INFO=<ID=PROB_ABSENT,Number=A,Type=Float,Description=""Posterior probability for not having a variant (PHRED)"">
+##FORMAT=<ID=DP,Number=A,Type=Integer,Description=""Expected sequencing depth, while considering mapping uncertainty"">
+##FORMAT=<ID=OBS,Number=A,Type=String,Description=""Summary of observations. Each entry is encoded as CBTSOP, with C being a count, B being the posterior odds for the alt allele (see below), T being the type of alignment, encoded as s=single end and p=paired end, S being the strand that supports the observation (+, -, or * for both), O being the read orientation (> = F1R2, < = F2R1, * = unknown, ! = non standard, e.g. R1F2), and P being the read position (^ = most found read position, * = any other position or position is irrelevant). Posterior odds for alt allele of each fragment are given as extended Kass Raftery scores: N=none, E=equal, B=barely, P=positive, S=strong, V=very strong (lower case if probability for correct mapping of fragment is <95%). Thereby we extend Kass Raftery scores with a term for equality between the evidence of the two alleles (E=equal)."">
+##FORMAT=<ID=AF,Number=A,Type=Float,Description=""Maximum a posteriori probability estimate of allele frequency"">
+##FORMAT=<ID=SB,Number=A,Type=String,Description=""Strand bias estimate: + indicates that ALT allele is associated with forward strand, - indicates that ALT allele is associated with reverse strand, . indicates no strand bias. Strand bias is indicative for systematic sequencing errors. Probability for strand bias is captured by the ARTIFACT event (PROB_ARTIFACT)."">
+##FORMAT=<ID=ROB,Number=A,Type=String,Description=""Read orientation bias estimate: > indicates that ALT allele is associated with F1R2 orientation, < indicates that ALT allele is associated with F2R1 orientation, . indicates no read orientation bias. Read orientation bias is indicative of Guanin oxidation artifacts. Probability for read orientation bias is captured by the ARTIFACT event (PROB_ARTIFACT)."">
+##FORMAT=<ID=RPB,Number=A,Type=String,Description=""Read position bias estimate: ^ indicates that ALT allele is associated with the most found read position, . indicates that there is no read position bias."">
+##bcftools_normVersion=1.11+htslib-1.11
+##bcftools_normCommand=norm --multiallelics +any --fasta-ref /Users/nhomer/tmp/pact_pharma/sow4/varlociraptor/tmp.fasta -; Date=Wed Apr 28 23:44:36 2021
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	normal	tumor
+chr1	15	.	TAAAA	T	.	.	SVLEN=-4;PROB_GERMLINE_HOM=6306.46;PROB_SOMATIC_NORMAL=8.62017;PROB_ABSENT=5.37444;PROB_SOMATIC_TUMOR=5.43259;PROB_GERMLINE_HET=5.43259;PROB_ARTIFACT=inf	DP:AF:OBS:SB:ROB:RPB	100:0.5:56Ns-**44Ns+**:.:.:.	100:0.9901:43Ns-**37Ns+**13Vs+**7Vs-**:.:.:.
+```
+</details>",nh13,https://github.com/varlociraptor/varlociraptor/issues/154
+MDU6SXNzdWU4NzUyOTM2MDc=,evaluate records with multiple non-reference alleles jointly,OPEN,2021-05-04T09:48:31Z,2022-02-09T14:14:10Z,,"**Heterozygous genotype with two non-reference alleles**
+
+As [proposed by @nh13 over in another issue](https://github.com/varlociraptor/varlociraptor/issues/153#issuecomment-830391640), this would basically imply a VCF/BCF record that starts somewhat like this:
+
+```
+chr5 20 A C,G ... GT 1/2
+```
+
+This record is currently picked apart during `varlociraptor preprocess` to collect the relevant `observations`, splitting it by alternative allele right here:
+
+https://github.com/varlociraptor/varlociraptor/blob/70c1d4f755d1da09ba04a3f44988bd136acf5fff/src/utils/collect_variants.rs#L178
+
+Thus, each alternative allele is handled separately and the correct genotype is not even evaluated. I guess to solve this, we would have to move from a reference-centered idea of a variant (which is also at the heart of the allele representation of the VCF format) with alternative alleles to the reference, to a more genotype-centered setup. This would, first of all, mean quite some rewiring of how variants are currently represented and handled.
+
+Given such changes in the representation and handling, I would then see four solutions to this (three, really, as the 1st one is probably a non-solution with my reasoning given here;):
+
+1. We could look at the `GT` field, which varlociraptor currently doesn't. But this would require that candidate variant callers fill this field and do so in a meaningful way. I am not sure how far we can rely on this. Also, for example for freebayes, you can save computation time if you don't have it genotype the sites, but just emit interesting sites.
+2. We look at all possible combinations of alleles at a site separately, by simply adjusting the parsing at the spot quoted above to also include combinations among the non-reference alleles. This would mean that we could stick to the current setup of separate handling of different genotypes and simply add in further possible (two-allele) genotypes. However, handling all possible combinations can potentially lead to a combinatorial explosion of cases to consider, for example with lots of different indel alleles for a genomic site or in case we go to ploidies beyond diploid.
+3. We look at all possible combinations of alleles (i.e. genotypes) jointly, i.e. we marginalize over all these combinations jointly, and combinations where one allele simply isn't covered (in this case the `REF` allele) should get very low likelihoods and not matter much in the end. The combinatorial hazards apply similarly to 2, with the added complexity of having to handle all combinations at once.
+4. We somehow quickly evaluate each allele to see if the is any evidence for it and only include combinations of alleles that have some reasonable support. This would limit the number of combinations to conside, but would require making sure that we don't redo any work in collecting observations for alleles.
+
+I'd say that option 3 is the cleanest way to do this and could also be extended to include non-SNV alternative alleles (possibly in combination with SNV alleles) within a record.
+
+**SNV on one haplotype spanned by deletion on other haplotype**
+
+[This scenario, also described by @nh13 in another issue](https://github.com/varlociraptor/varlociraptor/issues/153#issuecomment-830395015), adds another layer of complexity, if we wanted to consider those two records jointly, as they don't even start at the same position. I guess that a feasible way to make this work with option 3 from above (evalutaing all possible combinations of alleles jointly), would be to somehow integrate those two records upstream (during candidate variant generation/normalization). Optimally, we would then get a record that reads something like:
+
+```
+chr1 5 AAAAAA A,AACAAA ... 1|2
+```
+
+For varlociraptor calling, we then wouldn't care about the genotype field, but would evaluated the allele combination `A` and `AACAAA` as one of three combinations and this should get the highest likelihood.
+
+I'm not sure if a tool to integrate such records exists, maybe bcftools norm can do this (at least for small indels, SNVs and MNVs?):
+https://www.htslib.org/doc/bcftools.html#norm
+
+Otherwise, I guess one would have to write it and would have to parse all variants on a chromosome / contig by starting position and keep variant records in memory while the position range they span / affect still overlaps with the current position. And then do gymnastics to for example get SNVs applied to a reference stretch as in the above example, so that all alleles eventually appear in the same record.",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/157
+MDU6SXNzdWU4NzU2OTU2MzQ=,Support genotyping with the grammar,OPEN,2021-05-04T17:51:33Z,2021-05-04T17:51:33Z,,"It would really useful to have as part of the grammar the ability to call genotypes, along with accurate allele depth and frequency for those genotypes.  A motivating example would be [tumor-normal somatic calling discussed in another issue](https://github.com/varlociraptor/varlociraptor/issues/153#issuecomment-829138510).  I could see the grammar allow defining a mapping from the probability of an event (or the sum from multiple independent events) to genotype.  The genotype would be the event with the maximum probability.  Allele depths and frequency can be calculated from the observations (eg. see this [comment](https://github.com/varlociraptor/varlociraptor/issues/153#issuecomment-829453913)).  One could even construct likelihoods (FROMAT/PL tag) from the posteriors (I think the posteriors as computed are the FORMAT/PP tag).  The genotyping would need to handle [multiple alleles](https://github.com/varlociraptor/varlociraptor/issues/157) and combinations of variant types (eg. SNV on one haplotype, indels on the other)
+
+",nh13,https://github.com/varlociraptor/varlociraptor/issues/158
+MDU6SXNzdWU4NzU2OTYzMjI=,How are phased candidate variants called?,OPEN,2021-05-04T17:52:28Z,2021-05-13T15:27:14Z,,Is this currently supported if we input phased candidate variants?,nh13,https://github.com/varlociraptor/varlociraptor/issues/159
+MDU6SXNzdWU4NzgyMTIxMjc=,Genotype depth does not conform to the VCF spec ,CLOSED,2021-05-06T23:54:12Z,2021-05-10T19:29:03Z,2021-05-10T19:29:03Z,"The depth (`DP`) in the genotype (format) field is a reserved key in the VCF specification and should be a single value.  If thre are multi-allelic (multiple alternate alleles), then `varlociraptor` will output multiple values in `DP`.  While the header does re-define the `FORMAT/DP` field, it does not conform to spec.
+
+```
+##FORMAT=<ID=DP,Number=A,Type=Integer,Description=""Expected sequencing depth, while considering mapping uncertainty"">
+```
+
+This is an issue for parsers like `htsjdk` that optimize the parsing of the reserved INFO and FORMAT keys.",nh13,https://github.com/varlociraptor/varlociraptor/issues/160
+MDU6SXNzdWU4OTIxNzM1MTk=,Reconcile reported read depths,CLOSED,2021-05-14T19:14:17Z,2021-07-16T07:44:19Z,2021-07-16T07:44:19Z,"I see in a ver small # of cases where the total sum of read counts is much smaller than what is reported by other tools, for example:
+```console
+samtools mpileup -r <region> -Q 0 -B -A <in.bam> 
+```
+or other the `FORMAT/DP` field in various variant callers.   An example would be a depth difference of 500 to 250 I've seen in one variant 
+
+I would have expected that no read filtering is performed and the observation counts would reflect the depth of coverage approximately similar to the `samtools mpileup` command above.  
+
+I've looked at the depth after keeping only properly paired, non-duplicate, QC-pass, high mapping quality reads, and high quality bases.  I still see a depth discrepancy (eg. 350 vs 250 now).
+
+I am sure re-alignment may impact things, but any hint as how to reconcile this further would be appreciated. 
+",nh13,https://github.com/varlociraptor/varlociraptor/issues/165
+MDU6SXNzdWU5NDEyMDE2NTE=,Rerun with new version,CLOSED,2021-07-10T08:16:56Z,2021-07-10T08:41:24Z,2021-07-10T08:41:24Z,"Hi @johanneskoester ,
+
+I saw that you added a new feature, divindel bias. Do I have to rerun only the calling step to take into account this new feature? Or do I have to rerun the preprocessing step?
+
+EDIT: Tried to run an already processed filed and got an error message saying that I need to preprocess them again. Got my answer!",kokyriakidis,https://github.com/varlociraptor/varlociraptor/issues/191
+MDU6SXNzdWU5NTgyNTQ3MTc=,Incorrect posterior odds filtering,CLOSED,2021-08-02T15:22:00Z,2021-12-07T17:41:57Z,2021-12-07T17:41:56Z,"Hello,
+  I am experiencing incorrect posterior odds filtering. Briefly, I executed the following on the same input.
+  
+`varlociraptor filter-calls posterior-odds --events SOMATIC_TUMOR --odds positive < {input} > {output}`
+`varlociraptor filter-calls posterior-odds --events SOMATIC_TUMOR --odds strong < {input} > {output}`
+
+Overall, there are more variants in the 'strong.bcf' output, and many of them probably should not be there. As an example, the following appears in the 'strong.bcf', but not in the 'positive.bcf':
+
+```
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  normal  tumor
+1       204237416       .       C       T       .       .       PROB_ABSENT=353.487;PROB_GERMLINE_HET=4.91533;PROB_GERMLINE_HOM=180.341;PROB_SOMATIC_TUMOR=12.9811;PROB_ARTIFACT=173.191;PROB_SOMATIC_NORMAL=2.02588  DP:AF:OBS:SB:ROB:RPB:SCB:SOBS   7:0.125:1Vp-*^.3Np-<*.2Np->*.1Np+<*.:.:.:.:.:1V6N     17:0.895425:3Vp-<*.2Vp+<*.2Vp-**$2Vp+**$1Vp+>*.1Vp+<^.1Vp->*.2Np-<*.2Np+<*.1Np-*^$:.:.:.:.:12V5N
+```
+
+And that is one example of many.
+
+This issue stills feels like user error, but I do not see how. 
+
+Thank you for any help.
+
+*Edit: Maybe I have it backwards and 'positive' is removing too many variants? Are the exact Kass Raftery scores posted somewhere? The ones on wikipedia don't really match. Thank you.
+",bwubb,https://github.com/varlociraptor/varlociraptor/issues/194
+MDU6SXNzdWU5NjE1MzYxNTM=,RNA Editing scenario,CLOSED,2021-08-05T07:37:17Z,2022-04-20T13:13:08Z,2022-04-20T13:13:08Z,"Hi,
+
+Can you propose a scenario for the detection of RNA-Editing Events? Is it possible?",kokyriakidis,https://github.com/varlociraptor/varlociraptor/issues/195
+I_kwDOA7ytOM49Iv-e,"Error in preprocess variants, apparently related to POS",CLOSED,2021-10-13T21:15:54Z,2022-04-22T16:04:40Z,2021-11-23T15:15:50Z,"I'm getting an error that, best I can tell, is related to particular yet apparently arbitrary POS coordinates. Please see below for example inputs to reproduce this behavior.
+
+(This using v4.5.0).
+
+I found that the following command:
+
+```bash
+RUST_BACKTRACE=1 varlociraptor preprocess variants \
+  GRCm38.fa.gz \
+  --log-mode each-record  \
+  --bam a.bam  \
+  --candidates last_line_fails.vcf \
+  > sample.obs.bcf
+```
+
+Results in the following error:
+
+```
+No deletion CIGAR operations found in first 10000 alignments. Varlociraptor will be unable to estimate the sampling bias for deletions.
+No deletion CIGAR operations found in first 10000 alignments. Varlociraptor will be unable to estimate the sampling bias for insertions.
+Processing record at 1:7780413
+Processing record at 1:7780414
+Processing record at 1:7780415
+Processing record at 1:7780418
+Processing record at 1:7780419
+thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: NulError(0, [0])', /opt/conda/conda-bld/varlociraptor_1633603011719/_build_env/.cargo/registry/src/github.com-1ecc6299db9ec823/rust-htslib-0.38.2/src/bcf/record.rs:581:48
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/c8dfcfe046a7680554bf4eb612bad840e7631c4b/library/std/src/panicking.rs:515:5
+   1: core::panicking::panic_fmt
+             at /rustc/c8dfcfe046a7680554bf4eb612bad840e7631c4b/library/core/src/panicking.rs:92:14
+   2: core::result::unwrap_failed
+             at /rustc/c8dfcfe046a7680554bf4eb612bad840e7631c4b/library/core/src/result.rs:1599:5
+   3: rust_htslib::bcf::record::Record::set_alleles
+   4: varlociraptor::calling::variants::Call::write_preprocessed_record
+   5: varlociraptor::calling::variants::preprocessing::ObservationProcessor<R>::process
+   6: varlociraptor::cli::run
+   7: varlociraptor::main
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+```
+
+If I change the last line of that failing VCF from
+
+```
+1       7780419 .       T       G       49.38
+```
+
+to
+
+```
+1       7780420 .       T       G       49.38
+```
+
+that is, simply increment POS by one, then there is no error. I cannot explain it but it's the only way I found to avoid the error! Of course, a full GATK-called VCF has many such problematic lines.
+
+Example input files are below.
+
+<details>
+<summary>
+
+`samtools view -h a.bam`
+
+</summary>
+
+```
+@HD     VN:1.6  SO:coordinate
+@SQ     SN:1    LN:195471971
+@PG     ID:samtools     PN:samtools     VN:1.11 CL:samtools view -h a.sam
+A00428:242:HHTJJDSXY:2:1166:9435:10066  83      1       7780166 60      151M    =       7779972 -345    ATGTAGAAATGCCTGGTAAGTAGGGACTATTAATAATGTTCATACCAGCATCCTGAGAACAAGATTCAGTAACTAATAAACAAAAACAAACACACCAGCCAGGTCTAGATGCACTGGATCATCACACAGATGCTAATGGATGAGTGTGAGT BECCGEEEDEFFFEECCEGCCGEEEEFCDDCEDCEDECDEFDCEFFGFFDEFFEEGEEEFEGEDDEFGCCEEFCEDCEEEFEEEEDEDEEEDEDEEFEEEFDBDEBFDCDEEDEDDDCDEC+EDEDEFDCDEEBDCDDDBCDFBDAEDGCB MC:Z:151M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:58
+A00428:242:HHTJJDSXY:2:2456:12500:23735 83      1       7780201 60      151M    =       7779971 -381    ATGTTCATACCAGCATCCTGAGAACAAGATTCAGTAACTAATAAACAAAAACAAACACACCAGCCAGGTCTAGATGCACTGGATCATCACACAGATGCTAATGGATGAGTGTGAGTTTCTGACTCATGTGAGAAAGCGGTCTGCCTAATCT BE5DEFDCE+FGFFDEFFEEGEEEFEGED*EFGCCEEFCEDCEEEFEEEEEFEE;FEFEFFGFFFGECEFCGEDEF;E<EEEDEFCDEEFDEFDCDEEBDCDDDCDDFBDBDDFBCCDEDDDEDECDBDDFDDDFE<DBCDDEEEAECEFB MC:Z:150M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:43
+A00428:242:HHTJJDSXY:2:1335:25590:17127 147     1       7780206 60      151M    =       7780075 -282    CATACCAGCATCCTGAGAACAAGATTCAGTAACTAATAAACAAAAACAAACACACCAGCCAGGTCTAGATGCACTGGATCATCACACAGATGCTAATGGATGAGTGTGAGTTTCTGACTCATGTGAGAAAGCGGTCTGCCTAATCTTAGGT AA@B7BCBCAACCBBCABBCBD4A@BCD@@BBC@BA@BBBCBBCCCCBBBCBC7DDE876E5AC7A;CBC,DCDCCCBCDBCDCDC7E6BCDDACBCCCBCCEACACCEABBCDCCCDCD8CACCECCCED;CAC:CDDDACCCDBDG<BB MC:Z:150M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:22
+A00428:242:HHTJJDSXY:2:2178:28646:25927 99      1       7780241 60      151M    =       7780634 544     ATAAACAAAAACAAACACACCAGCCAGGTCTAGATGCACTGGATCATCACACAGATGCTAATGGATGAGTGTGAGTTTCTGACTCATGTGAGAAAGCGGTCTGCCTAATCTTAGGTATTTTCTATGGCAGCAAGAGAAAAATCACTTGGCG BDCCDADCCC=ADCCBDBDBDDEEDDEEDDF:E+CEE:BFEEDCDDCDDBDBDEDCE>F9CDFEDCFEFEFEFEFEEEEGFECGEEDFEFEFEDDFF=FEEGFFEGC9DEGECFFECDEEEEGCDFFFEFFEDFEFEDDDDDEECGEFFF; MC:Z:151M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:20
+A00428:242:HHTJJDSXY:2:1510:3866:31548  83      1       7780245 60      151M    =       7780071 -325    ACAAAAACAAACACACCAGCCAGGTCTAGATGCACTGGATCATCACACAGATGCTAATGGATGAGTGTGAGTTTCTGACTCATGTGAGAAAGCGGTCTGCCTAATCTTAGGTATTTTCTATGGCAGCAAGAGAAAAATCACTTGGCGGGGG CFEEEEEFEEEFEFEFFGFFFGECEFCGEDEFFEFEEEDEFDEFEFEFGEDEFFCEDEEEDEEGCECEEGCDDEFEEEFEFDECEDFDEEFE<DBDEDEEEBDCDECBFDBBCCCCDEBCDDEEFEEDFDFDDDDDCDECDCDDE;EDEEB MC:Z:151M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:20
+A00428:242:HHTJJDSXY:2:1129:11125:13401 99      1       7780318 60      97M51S  =       7780564 397     TCTGACTCATGTGAGAAAGCGGTCTGCCTAATCTTAGGTATTTTCTATGGCAGCAAGAGAAAAATCACTTGGCGGGGGGGGGGGGGGGGGGGGGGGACAGGGGGGGGGGGGGGGTGGGTTTGGTGGGGGGGGGTTAACAATATTTTTT    BEGEEAFDDCDC>DEDCCEE<EDDFEEDFB=CDFDBEEDBC.DD,FBCEEEDEEDCEDEDCDDCCDEC@EFFF4FFFFFFFFFFFFFFFFFFFFFF)));F::F:,,,,,FF:,+9:F+--,F9FFF,++FF9*,')5(*+5*,E;;E    MC:Z:151M       MD:Z:97   PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:97 XS:i:32
+A00428:242:HHTJJDSXY:2:1445:23005:3599  163     1       7780384 6       30S25M39S       =       7780652 419     GGGGTGGGGGGGGGGAGCATGAGACAATGGACTTGGCGGGGGGGGGGGGGGGGGGTGGGGGGGGGGGTGGGGGGGGGGGGTGGGGGGGGGGGGG  :.>.---;--,D::,)D-)+D)-7))*+,,))0-DD,;9DDDDD+DDDD8DD88+*+8D++D++D8D*DD+8D++DD7+D*67+DDDD7DD7+D  MC:Z:151M       MD:Z:25 PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:25 XS:i:41
+A00428:242:HHTJJDSXY:2:2564:25337:11616 147     1       7780424 60      85S66M  =       7780025 -465    CCCCCCCCCCCCCGCCCCCCCCCCGCCCCCCCCCCCCCCCCGCCCCCCCCCCCCCCGCCCCCCCCCCCCCCCCCAACGGCGGGGTGTTGGGGTAGGGTTGTGGTGGTCGTGGTATCACTTAAGTGTTAGAGGTCCTAGAACAAGGGTTAAT 6+C+C6++++B6.,C+6+6+6+C$,C+6C777C++C+C+7$,+77D7+C+++++7$,77+7+777D++777+8+,8$+,$+CCA(4)(CCCA'ECCABCAC6A5CAC1ACC5ABCDCDBAC=ACABAECECAC:DA>8<CDC?99AECECB SA:Z:14,63050337,+,105S37M9S,19,0;4,108679154,-,30S33M88S,4,0;    MC:Z:151M       MD:Z:66 PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:66 XS:i:0
+A00428:242:HHTJJDSXY:2:1138:2772:31532  163     1       7780427 60      151M    =       7780666 390     GGGGTAGGGTTGTGGTGGTCGTGGTATCACTTAAGTGTTAGAGGTCCTAGAACAAGGGTTAATGAAAAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACACAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGC :EFF>ADD;;CDCDDCDD:C%C8DCABCCAECABD*DCCA9CDD9CCEADC7ACBDDDCCABBDCBBBBBB4CDCCC6ABBDCA/CCBD+DDC7DCAC7CBC7C7DECBBAA@(@BACBAAC7BBB:4D5+BA@4AACC+6B*B6A9@@:7 MC:Z:151M       MD:Z:113T37       PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:1  AS:i:146        XS:i:20
+A00428:242:HHTJJDSXY:2:1223:29785:16219 2193    1       7780427 0       108H39M =       7780029 -437    GGGGTAGGGTTGTGGTGGTCGTGGTATCACTTAAGTGTT +CC5(=CC5*)A6CACCAC;ACCAABCDCDCACEDECCB SA:Z:7,90441976,-,31S45M71S,0,0;7,90441975,-,46M101S,0,1;       MC:Z:150M       MD:Z:39 PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:39 XS:i:20
+A00428:242:HHTJJDSXY:2:1235:30526:7357  147     1       7780427 60      68S82M  =       7780094 -415    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCAAGCCGGGGCCTGGGGGTAGGGTTGTGGTGGTCGTGGTATCACTTAAGTGTTAGAGGTCCTAGAACAAGGGTTAATGAAAAAAACAGTCATAAAG  C7C7B+++C++CC+B6C6CC66+BCC6C7CCCCCCC677C+C+DD++C7CCC+7+,/,+;+++,+,(+55CAA<66A)5A5CACCAC;A5CAABCDCDBACEACABAE7ECACDDAECCCDCEC7ABACBCCCCCCCCCDEBCDBDEEFB  SA:Z:7,90441976,-,10S45M95S,0,0;  MC:Z:151M       MD:Z:82 PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:82 XS:i:20
+A00428:242:HHTJJDSXY:2:2445:13196:11412 99      1       7780460 60      151M    =       7780720 410     AGTGTTAGAGGTCCTAGAACAAGGGTTAATGAAAAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTC BFEEEC9EDEDCDDFBEDCBDCEEEDDBCCEDCCCCCCBDEDDDCBCCEDBFDDCEEEEDEFEBDEFEFEFFFGEEEDDCGEEDFEDDFEEEEGEGFFE:CEEDFFFFEDFEEECC=FGFEDE=FEFEEFFFEFFFEFFGECCEEFFGEGC MC:Z:150M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:0
+A00428:242:HHTJJDSXY:2:1338:4652:31000  163     1       7780464 60      151M    =       7780640 327     TTAGAGGTCCTAGAACAAGGGTTAATGAAAAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTCTGAA BDCFFDDCDCEADCBA7BDDDCCABBDCBBBBBBACDCCCBABBDCAECCBDDDDCDDCA5DD6DCDDDECCCBBAECCBDCBBDCCCCECEDDCBACBACCCCBBDCBB3@:CDCBAB:C7CBBCBCBC[W::sam_parse1] unrecognized mate reference name ""7""; treated as unmapped
+CCBCBCB@@BACCCACBDCB?   MC:Z:151M       MD:Z:151        PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:0
+A00428:242:HHTJJDSXY:2:2652:18566:16548 147     1       7780466 60      151M    =       7780081 -536    AGAGGTCCTAGAACAATGTTTTTTGAAAAAAACAGTCATCAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTGACCAGCTCTCTGAAGT B5DB(A6B2:4BB5B*A(AA)))BABB8,9B*CD(B65B+,DBCDCCBD5B8CEDD*DECCEACCDDCDDC:*7CD,E*CC<ABCD,CDC6CC8DD:<CC6C75A7BA*;DD(CBC;C5CAB6C,C0,CCEDDC+CDDEDDCECD8-EGBB MC:Z:151M       MD:Z:16G1G2A0A16A94T16    PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:6  AS:i:121        XS:i:20
+A00428:242:HHTJJDSXY:2:1307:16315:2065  97      1       7780474 60      151M    *       90441976        0       TAGAACAAGGGTTAATGAAAAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTCTGAAGTTTGGGTTA BCFDDADCEEDCDBCCEDCCCCCCBDEDDDCBCCEDBFDDCEEEEDEEDBDEEDEDEEEFDE9CCBGEEDFEDDFEEEEGEGFFEDCEEDFFFFEDFEEECC=FGF8DE=FEFEEFFFEFFFEFFGECCEEFFGEGEGFEDFEEEFFFEEA MC:Z:25S45M81S    MD:Z:151        PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:19
+A00428:242:HHTJJDSXY:2:1569:3586:22420  121     1       7780481 60      151M    =       7780481 0       AGGGTTAATGAAAAAAACAGTCAGAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTCTGAAGTTTGGGTTATGAAGGT EEE58CEDEEEEEEEEEFGCEFG+<-GEE:EF->EEFFG;FE,GEEGCEEFFEFFEEEFE:=GEE=GC*9FF:FEEE-EF;EGEEDDCE*CC9D<E<DDCD<D9DBCDDDDFDDDFEE=B>>EFEEDEDEDD2FBCCDDCACBCDCEAECB MD:Z:23T127     PG:Z:MarkDuplicates       RG:Z:sample1    NM:i:1  AS:i:146        XS:i:24
+A00428:242:HHTJJDSXY:2:1569:3586:22420  181     1       7780481 0       *       =       7780481 0       CACCACACCCTCCAGCCCCCCCCCGCCACCCTCAGAGCGACACTAACACCCACCCGCCCGCCCACCCGCCGCACGCCTGCCCCCAACCTCGACCCCCCACCCCCCCCCCACTACTCCCCCTACTTCCCAGTCCACCGCACCCCAGCACTCT A*CC*+*B6,(C5/,6B66++CC$,++*7+,(+/*;,$**+*7',*+*++C*CD;,D+$,++D77+;8+$,D*/,+8(,8DD++,*+,(0**D+D8D+*D++++++9+D*,'*D(+D,,9(+-*)D,,0)),D+D%-,+,,--1.:-F+E+ MC:Z:151M       PG:Z:MarkDuplicates       RG:Z:sample1    AS:i:0  XS:i:0
+A00428:242:HHTJJDSXY:2:1559:31485:15499 163     1       7780491 60      151M    =       7780778 438     AAAAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTCTGAAGTTTGGGTTATGAAGGTATGACTCTCC BCDDEBBADDCCCBABBDCAECCBDDDDCDDCACDDCDCDDDECCCBBAECCBDCBBDCCCCECEDD6BACCBDDDDCBDCCCAA;DEDCBC;DCDCCCCCBCCCCDDDB@@BBCCDBDBDCBACBABCCCBB@@BBACCA@ABA?DBDB@ MC:Z:151M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:21
+A00428:242:HHTJJDSXY:2:1276:22896:12179 163     1       7780493 60      151M    =       7780747 405     AAAAACAGTCATAAAGACTCAAGGGCAGCACAGGAGTGGCTCCAAACTCAAGAAAGTTCCTCTGGAACCAAGGGGATGTTTACGCTGATCGGTGTTGGGAGGGAGCTTACCAGCTCTCTGAAGTTTGGGTTATGAAGGTATGACTCTCCAT BCDDEACD,CCBABBDCAECCBDDDDCDDCACDDCDCDDDECCCBBAECCBDCBBDCCCCECEDDCBACCBDDDDCBDCCCAA;DEDCBC;DCDCCDDCBCCCBCDEC@@BBCCDBDBDCBACBBBBCCBB@ACA@CCB@@CB?CADBBB? MC:Z:151M       MD:Z:151  PG:Z:MarkDuplicates     RG:Z:sample1    NM:i:0  AS:i:151        XS:i:0
+```
+</details>
+
+<details>
+<summary>
+
+`last_line_fails.vcf`
+</summary>
+
+```
+##fileformat=VCFv4.2
+##contig=<ID=1,length=195471971,assembly=GRCm38.fa.gz>
+#CHROM  POS     ID      REF     ALT     QUAL
+1       7780413 .       GAA     G       44.96
+1       7780414 .       A       G,*     37.02
+1       7780415 .       A       G,*     37.02
+1       7780418 .       C       G,*     35.95
+1       7780419 .       T       G       49.38
+```
+</details>
+
+
+<details>
+<summary>
+
+`last_line_works.vcf`
+</summary>
+
+```
+##fileformat=VCFv4.2
+##contig=<ID=1,length=195471971,assembly=GRCm38.fa.gz>
+#CHROM  POS     ID      REF     ALT     QUAL
+1       7780413 .       GAA     G       44.96
+1       7780414 .       A       G,*     37.02
+1       7780415 .       A       G,*     37.02
+1       7780418 .       C       G,*     35.95
+1       7780420 .       T       G       49.38
+```
+</details>",daler,https://github.com/varlociraptor/varlociraptor/issues/225
+I_kwDOA7ytOM5BPEDc,Failed install via cargo gslv2,CLOSED,2022-01-05T15:22:45Z,2022-02-23T14:50:49Z,2022-02-23T14:50:48Z,"Greetings. I am attempting to do the cargo install. It appears I have GSL v2.5 
+
+```
+cargo install --features gslv2 varlociraptor
+    Updating crates.io index
+  Installing varlociraptor v4.10.1
+error: failed to compile `varlociraptor v4.10.1`, intermediate artifacts can be found at `/tmp/cargo-installfk9ZYd`
+
+Caused by:
+  Package `varlociraptor v4.10.1` does not have the feature `gslv2`
+
+```
+
+Is there something I have misunderstood? Thank you.",bwubb,https://github.com/varlociraptor/varlociraptor/issues/252
+I_kwDOA7ytOM5DSdiE,Question: Recommendations for benchmarking,OPEN,2022-02-09T18:58:39Z,2022-10-11T21:27:56Z,,"Hello,
+
+@dlaehnemann mentioned adding varlociraptor to a benchmark we have set up in #157, and I have some questions about recommendations for setting that up.
+
+We currently have an internal benchmark setup with but semi-recently started publishing [public results](https://github.com/HudsonAlpha/CSL_public_benchmark) in response to various discussions online.  This benchmark uses snakemake to basically set up each analysis following a `{reference}/{aligner}/{caller}` pattern with a few exceptions that we generally try to restrict as much as possible.  My understanding of varlociraptor is that it is not a de novo caller, but rather an advanced genotyper that requires a set of candidate variants (please correct me if I'm wrong about this).
+
+Assuming the above is true, this makes me think there are two broad ways we could add the tool to our benchmark:
+1. Add it as a modifier to another caller: Tthis would basically tie it to one (or more) callers (e.g. the pattern might be `{reference}/{aligner}/{caller}-varloci`). The obvious downside to this approach is that interpretation becomes more complicated, you're basically adding a fourth variable to the mix and effectively doubling the number of callers if we ran it on everything.
+2. Separate it out into a genotyper analysis: In this mode, I would actually give it the full set of TP variants from the benchmark and just see how good it is at correctly genotyping the variants that we expect to exist in the data.  This is a little bit simpler to interpret and I think is more inline with how varlociraptor is intended to be used.
+
+Or is there another approach you would recommend?
+
+Additionally, these are all germline variants, so I'm assuming a relatively basic scenario file is what you would recommend (see below), but please correct me if you think something else would be better.
+```
+species:
+  heterozygosity: 0.001
+  ploidy:
+    male:
+      all: 2
+      X: 1
+      Y: 1
+    female:
+      all: 2
+      X: 2
+      Y: 0
+
+samples:
+  sample:
+    sex: female
+
+events:
+  germline: ""sample:0.5 | sample:1.0""
+```
+
+Well, I think that's probably enough to start with... thanks for your help!",holtjma,https://github.com/varlociraptor/varlociraptor/issues/260
+I_kwDOA7ytOM5EcB7n,Installation Failure. error[E0277],CLOSED,2022-02-23T14:54:38Z,2022-03-01T16:20:51Z,2022-03-01T16:20:51Z,"Hello,
+
+  I am unable to install/upgrade to version 4.11.2. The error is completely strange to me so I am not sure what I should begin troubleshooting.
+
+```
+...
+Compiling varlociraptor v4.11.2
+error[E0277]: the trait bound `u128: bio::pattern_matching::myers::BitVec` is not satisfied
+  --> /home/bwubb/.cargo/registry/src/github.com-1ecc6299db9ec823/varlociraptor-4.11.2/src/variants/evidence/realignment/edit_distance.rs:19:11
+   |
+19 |     Short(myers::Myers<u128>),
+   |           ^^^^^^^^^^^^^^^^^^ the trait `bio::pattern_matching::myers::BitVec` is not implemented for `u128`
+   |
+note: required by a bound in `bio::pattern_matching::myers::Myers`
+  --> /home/bwubb/.cargo/registry/src/github.com-1ecc6299db9ec823/bio-0.39.2/src/pattern_matching/myers/simple.rs:17:8
+   |
+17 |     T: BitVec,
+   |        ^^^^^^ required by this bound in `bio::pattern_matching::myers::Myers`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `varlociraptor` due to previous error
+warning: build failed, waiting for other jobs to finish...
+error: failed to compile `varlociraptor v4.11.2`, intermediate artifacts can be found at `/tmp/cargo-installrzquek`
+
+Caused by:
+  build failed
+```
+Any help is greatly appreciated. Thank you
+
+-bwubb",bwubb,https://github.com/varlociraptor/varlociraptor/issues/261
+I_kwDOA7ytOM5JBTz8,varlociraptor preprocess panic: 'index out of bounds: the len is 186739 but the index is 186739' on Manta record,OPEN,2022-05-04T08:44:54Z,2022-05-10T14:36:31Z,,"Hello. I am receiving a similar error from preprocess. I am not certain how to do the backtrace nor which variant is causing this error. It is only appearing in a single sample and the input is from Manta results.
+
+```
+...
+[mem: 1675360 kB, swap: 418304 kB] 4088.23s 121330 records (29.68 records/s)
+[mem: 1102428 kB, swap: 418304 kB] 4108.29s 121528 records (29.58 records/s)
+[mem: 935900 kB, swap: 418304 kB] 4128.39s 121726 records (29.49 records/s)
+thread 'main' panicked at 'index out of bounds: the len is 186739 but the index is 186739', src/variants/types/replacement.rs:253:13
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+```
+
+_Originally posted by @bwubb in https://github.com/varlociraptor/varlociraptor/issues/101#issuecomment-1116248422_",dlaehnemann,https://github.com/varlociraptor/varlociraptor/issues/278
+I_kwDOA7ytOM5Kr3ft,Artifact detection on Oncopanels,CLOSED,2022-05-30T18:08:16Z,2022-09-13T14:34:19Z,2022-09-13T14:34:19Z,"Hi!
+
+I would like to ask if I could use Varlociraptor on oncopanels without a prior knowledge on contamination fraction T/N.
+
+More specifically I want to evaluate if a SNV or INDEL **IS NOT** an **ARTIFACT**. I do not want to classify them as GERMLINE OR SOMATIC. 
+
+If it is possible, how is the scenario going to look like for this case?
+
+KK",kokyriakidis,https://github.com/varlociraptor/varlociraptor/issues/283
+I_kwDOA7ytOM5MDtab,"Insufficient observations for hop parameter estimation, falling back to default hop parameters",CLOSED,2022-06-19T12:06:16Z,2022-09-13T14:32:08Z,2022-09-13T14:32:08Z,"I got ""Insufficient observations for hop parameter estimation, falling back to default hop parameters"" when I tried to estimate alignment-properties leading to:
+
+```
+{
+  ""insert_size"": {
+    ""mean"": 272.396522890563,
+    ""sd"": 82.8310866982974
+  },
+  ""max_del_cigar_len"": 57,
+  ""max_ins_cigar_len"": 43,
+  ""frac_max_softclip"": 0.8543046357615894,
+  ""max_read_len"": 151,
+  ""max_mapq"": 60,
+  ""gap_params"": {
+    ""prob_insertion_artifact"": -10.141672145224787,
+    ""prob_deletion_artifact"": -9.937162369725623,
+    ""prob_insertion_extend_artifact"": -2.065005318688192,
+    ""prob_deletion_extend_artifact"": -1.9650200264419593
+  },
+  ""hop_params"": {
+    ""prob_seq_homopolymer"": [
+      null,
+      null,
+      null,
+      null
+    ],
+    ""prob_ref_homopolymer"": [
+      null,
+      null,
+      null,
+      null
+    ],
+    ""prob_seq_extend_homopolymer"": [
+      null,
+      null,
+      null,
+      null
+    ],
+    ""prob_ref_extend_homopolymer"": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  ""wildtype_homopolymer_error_model"": {
+    ""24"": 4.257087106564836e-7,
+    ""21"": 8.06605978085969e-7,
+    ""27"": 1.1875032455154544e-7,
+    ""32"": 4.481144322699827e-9,
+    ""23"": 5.832956193380942e-7,
+    ""5"": 8.237836979896517e-6,
+    ""15"": 5.145100539846518e-6,
+    ""-4"": 3.248829633957375e-7,
+    ""34"": 1.4937147742332758e-9,
+    ""-7"": 3.2861725033132066e-8,
+    ""-3"": 8.39467703119101e-7,
+    ""22"": 6.131699148227598e-7,
+    ""-10"": 2.9874295484665516e-9,
+    ""-8"": 1.7177719903682673e-8,
+    ""2"": 0.000050973763528097655,
+    ""3"": 0.000018967190203214137,
+    ""13"": 8.525377073936422e-6,
+    ""20"": 1.486993057749226e-6,
+    ""28"": 3.0621152871782154e-8,
+    ""-5"": 1.3294061490676156e-7,
+    ""0"": 0.9995779142945285,
+    ""37"": 7.468573871166379e-10,
+    ""43"": 7.468573871166379e-10,
+    ""7"": 0.00001134252313814038,
+    ""31"": 6.721716484049741e-9,
+    ""19"": 1.8716246121142947e-6,
+    ""16"": 3.4616839892856166e-6,
+    ""-9"": 6.721716484049741e-9,
+    ""26"": 1.911954911018593e-7,
+    ""-1"": 1.966475500278108e-6,
+    ""25"": 2.755903758460394e-7,
+    ""6"": 0.000010751012087544003,
+    ""-11"": 2.9874295484665516e-9,
+    ""17"": 3.0524061411456993e-6,
+    ""1"": 0.00020517068652958583,
+    ""8"": 0.000014398663566221663,
+    ""11"": 0.000010568032027700427,
+    ""10"": 0.000014173859492699554,
+    ""29"": 1.792457729079931e-8,
+    ""33"": 7.468573871166379e-10,
+    ""36"": 7.468573871166379e-10,
+    ""12"": 0.000010317087945629237,
+    ""-13"": 1.4937147742332758e-9,
+    ""35"": 7.468573871166379e-10,
+    ""-12"": 3.734286935583189e-9,
+    ""30"": 1.1202860806749569e-8,
+    ""-14"": 1.4937147742332758e-9,
+    ""-2"": 4.3004048350176016e-6,
+    ""-19"": 7.468573871166379e-10,
+    ""9"": 0.000014389701277576263,
+    ""18"": 2.3630567728370424e-6,
+    ""14"": 6.154851727228213e-6,
+    ""-6"": 5.750801880798112e-8,
+    ""4"": 0.000012447872071073005
+  },
+  ""initial"": false
+}
+
+```
+
+Are these nulls expected to happen? I am using the latest 5.2.0 version.",kokyriakidis,https://github.com/varlociraptor/varlociraptor/issues/288
+I_kwDOA7ytOM5PVpK6,macos arm support,OPEN,2022-08-07T17:23:52Z,2022-09-13T14:35:48Z,,"Hello team， 
+
+I notice that .cargo configuration does not support arm64/aarch64, which also requires dynamic link on MacOS. Is that because some of the libraries are not supported on armm64?
+
+Thanks,
+
+Jianshu",jianshu93,https://github.com/varlociraptor/varlociraptor/issues/292
+I_kwDOA7ytOM5eFOFd,Compiling varlociraptor v5.9.0 error KassRaftery,CLOSED,2023-02-09T18:55:33Z,2024-03-19T12:01:25Z,2024-03-19T12:01:25Z,"Greetings,
+
+ I am having trouble updating to the newest (v5.9.0) of VLR. I get nearly to the very end. I _should_ have all the requirements, but if Im missing something it is not clear to me. The error is as follows. Thank you.
+
+```
+...
+   Compiling rust-htslib v0.40.2
+   Compiling varlociraptor v5.9.0
+error[E0599]: no variant or associated item named `iter` found for enum `KassRaftery` in the current scope
+   --> /home/bwubb/.cargo/registry/src/github.com-1ecc6299db9ec823/varlociraptor-5.9.0/src/cli.rs:705:45
+    |
+705 |             possible_values = &KassRaftery::iter().map(|v| v.into()).collect_vec(),
+    |                                             ^^^^ variant or associated item not found in `KassRaftery`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: the following trait is implemented but not in scope; perhaps add a `use` for it:
+    |
+6   | use strum::IntoEnumIterator;
+    |
+
+error[E0599]: no variant or associated item named `iter` found for enum `KassRaftery` in the current scope
+   --> /home/bwubb/.cargo/registry/src/github.com-1ecc6299db9ec823/varlociraptor-5.9.0/src/testcase/runner/common/version0.rs:442:80
+    |
+442 |                 possible_values = { use strum::IntoEnumIterator; &KassRaftery::iter().map(|v| v.into()).collect_vec() },
+    |                                                                                ^^^^ variant or associated item not found in `KassRaftery`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: the following trait is implemented but not in scope; perhaps add a `use` for it:
+    |
+119 |     use strum::IntoEnumIterator;
+    |
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `varlociraptor` due to 2 previous errors
+error: failed to compile `varlociraptor v5.9.0`, intermediate artifacts can be found at `/tmp/cargo-installKPZhlw`
+```",bwubb,https://github.com/varlociraptor/varlociraptor/issues/343
+I_kwDOA7ytOM5lveFA,cargo build is throwing the following error in Apple M1 machine,OPEN,2023-05-12T05:15:44Z,2023-06-13T05:22:57Z,,"  = note: ld: library not found for -lgsl
+          clang: error: linker command failed with exit code 1 (use -v to see invocation)
+          
+error: could not compile `GSL-sys` due to previous error
+
+cargo install varlociraptor 
+
+The above command also throwing the same error",PrakashShanmugam,https://github.com/varlociraptor/varlociraptor/issues/372
+I_kwDOA7ytOM5tD4en,KassRaftery issue on macOS,CLOSED,2023-07-31T17:46:30Z,2024-02-08T22:27:19Z,2023-08-15T22:31:47Z," I am still getting this issue on a macOS
+
+```rust
+error[E0599]: no variant or associated item named `iter` found for enum `KassRaftery` in the current scope
+   --> /Users/nuin/.cargo/registry/src/index.crates.io-6f17d22bba15001f/varlociraptor-8.3.0/src/cli.rs:750:45
+    |
+750 |             possible_values = &KassRaftery::iter().map(|v| v.into()).collect_vec(),
+    |                                             ^^^^ variant or associated item not found in `KassRaftery`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: the following trait is implemented but not in scope; perhaps add a `use` for it:
+    |
+6   + use strum::IntoEnumIterator;
+    |
+
+error[E0599]: no variant or associated item named `iter` found for enum `KassRaftery` in the current scope
+   --> /Users/nuin/.cargo/registry/src/index.crates.io-6f17d22bba15001f/varlociraptor-8.3.0/src/testcase/runner/common/version0.rs:442:80
+    |
+442 |                 possible_values = { use strum::IntoEnumIterator; &KassRaftery::iter().map(|v| v.into()).collect_vec() },
+    |                                                                                ^^^^ variant or associated item not found in `KassRaftery`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: the following trait is implemented but not in scope; perhaps add a `use` for it:
+    |
+119 +     use strum::IntoEnumIterator;
+    |
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `varlociraptor` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: failed to compile `varlociraptor v8.3.0`, intermediate artifacts can be found at `/var/folders/yq/7lz440kx2lz17cjdt0mln1c00000gn/T/cargo-install8ZMIAO`
+```
+
+```
+❯ rustc --version
+rustc 1.70.0 (90c541806 2023-05-31) (built from a source tarball)
+```
+
+Any help appreciated. This is a test machine, I am trying also on our production that runs RHEL8
+
+_Originally posted by @nuin in https://github.com/varlociraptor/varlociraptor/issues/343#issuecomment-1642625263_
+            ",nuin,https://github.com/varlociraptor/varlociraptor/issues/393
+I_kwDOA7ytOM50ZXc_,preprocessing poly G ,OPEN,2023-10-19T18:09:47Z,2024-03-19T14:49:29Z,,"I have multiple files from delly for preprocessing of WGS data which would not finish after more than a week.  I found that the specific region is a large poly G stretch of at least 70nt around chromosome 2, position 32916300. 
+
+[Human hg38 chr2:32916233-32916344 UCSC Genome Browser v455](https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr2%3A32916233%2D32916344&hgsid=1736400752_cum4XmAzYGuitSseSOy0p2RIZaCa)
+
+",delpropo,https://github.com/varlociraptor/varlociraptor/issues/402
+I_kwDOA7ytOM59wGXO,Calling variants with tumor only vcfs,CLOSED,2024-01-31T10:20:36Z,2024-03-19T12:07:15Z,2024-03-19T12:07:15Z,"Hi, thank you very much for developing such a fantastic tool!!!
+
+I am performing variant calling in cancer cell lines and as a result, have no matched normal tissue. Given this algorithm requires normal vcf files to work I was wondering if you think it would be sensible to use a panel of known germline variants in place of the vcf file generated from calling variants in matched normal tissue e.g The known vcfs  hosted on igenomes `Mills_and_1000G_gold_standard.indels.hg38`, `1000G_omni2.5.hg38.vcf`, `1000g_pon.hg38.vcf` and `af-only-gnomad.hg38.vcf`
+
+Thank you in advance for your help!!
+
+",grantn5,https://github.com/varlociraptor/varlociraptor/issues/409
+I_kwDOA7ytOM6C00ML,Varlociraptor Preprocess Variants on CRAM,CLOSED,2024-03-19T12:48:49Z,2024-03-26T09:38:22Z,2024-03-26T09:38:22Z,"Heya! 
+
+@grant5n and me have been trying to add varlociraptor to nf-core/sarek. A while ago we decided on using CRAM in the pipeline, which seems to cause some issues for us now. 
+
+The issue we run into is:
+
+```
+  [E::easy_errno] Libcurl reported error 60 (SSL peer certificate or SSH remote key was not OK)
+  [W::find_file_url] Failed to open reference ""https://www.ebi.ac.uk/ena/cram/md5/974dc7aec0b755b19f031418fdedf293"": Input/output error
+  [E::fai_build3_core] Failed to open the file /home/AD/gmackenz/nf-core_test_datasets/test-datasets/data/genomics/homo_sapiens/illumina/cram/../../genome/chr21/sequence/genome.fasta
+  [E::refs_load_fai] Failed to open reference file '/home/AD/gmackenz/nf-core_test_datasets/test-datasets/data/genomics/homo_sapiens/illumina/cram/../../genome/chr21/sequence/genome.fasta'
+  [E::cram_get_ref] Failed to populate reference for id 0
+  [E::cram_decode_slice] Unable to fetch reference #0:13611095-14517308
+  ```
+  
+We updated to version from 8.1.1 to 8.4.5 which fixed this for some options (i.e. `varlociraptor estimate alignment-properties`) but it persists for `  varlociraptor preprocess variants `.
+
+It looks like the problem is that it uses the fasta encoded in the header and not the one we provide via the command line. The full command is:
+
+ ```
+ #!/bin/bash -euo pipefail
+varlociraptor preprocess variants \
+    genome.fasta \
+    --alignment-properties sample3.alignment-properties.json \
+    --bam test.paired_end.recalibrated.sorted.cram \
+    --candidates sample3.strelka.variants.vcf.gz \
+     \
+    > sample3.vcf.gz
+ ```
+ 
+ The respective sarek PR is here: https://github.com/nf-core/sarek/pull/1154 and this can be reproduced with:
+ 
+ ```
+nextflow run main.nf \
+-profile test_cache,tools_somatic,docker \
+--outdir work \
+--tools strelka,varlociraptor
+ ```
+ 
+  Do we need to specify the fasta differently? Are we doing anything else funky?
+ 
+ Thanks a lot for your help :) ",FriederikeHanssen,https://github.com/varlociraptor/varlociraptor/issues/416
+I_kwDOA7ytOM6EGb4D,how to simulate a cancer genome?,CLOSED,2024-03-30T06:05:56Z,2024-04-02T08:39:12Z,2024-04-02T08:39:12Z,"Hi,
+
+I'm keenly interested in the simulation of cancer genomes.
+
+Could you kindly share me with the code used to simulate the evolutionary genome of cancer clones?
+
+I eagerly await your reply. 
+
+Many thanks, and wishing you all the best.",DayTimeMouse,https://github.com/varlociraptor/varlociraptor/issues/423
+I_kwDOA7ytOM6FEA7x,Questions:  Improving PROB_GERMLINE for better FDR filtering.,OPEN,2024-04-09T01:14:26Z,2024-09-16T19:56:17Z,,"Greetings,
+
+  I have a paired somatic pipeline and two of the callers it uses are vardict and varscan2, which will output germline calls as well. I wanted to include them into my VLR candidates because I figure it would distinguish them as PROB_GERMLINE and I could select and filter for that even in a separate output bcf. Most of our tumor/normal pairs have some sort of known inherent variant and we want to observe its presence and allele frequency in the tumor variant calling (usually for loh purposes).
+
+My scenario grammar looks like: (contamination fraction is filled accurately for each sample pair)
+```
+samples:
+  normal:
+    resolution: 0.1
+    universe: ""0.0 | 0.5 | 1.0 | ]0.0,0.5[""
+  tumor:
+    resolution: 0.01
+    universe: ""[0.0,1.0]""
+    contamination:
+      by: normal
+      fraction: 0.0
+
+expressions:
+  ffpe: '(C>T | G>A) & ((tumor:0.0 & normal:]0.0,0.1]) | (tumor:]0.0,0.1] & normal:0.0))'
+
+events:
+  ffpe_artifact:
+    '$ffpe'
+  germline:
+    'normal:0.5 | normal:1.0'
+  somatic_normal:
+    'normal:]0.0,0.5['
+  somatic_tumor:
+    'normal:0.0 & tumor:]0.0,1.0] & !$ffpe'
+```
+
+When it comes to the FDR filtering value I need to set it very high (~0.2-0.3) in order to capture these known germline variants in the output for PROB_GERMLINE. Ive repeated this in two separate datasets/tumor types each with ~50 pairs at least. When I look at the probability values at these known variant sites, PROB_GERMLINE is the the lowest value among all the  evaluated events, but the values themselves seems very high. 
+
+I guess because they are ""known to be real"" and have good coverage I was expecting the model to be more confident and I could drop the FDR value down to 0.05. I am trying to understand if my grammar could be improved? Is VLR less suited for making GERMLINE calls in tumor/normal pairs? Maybe I am misunderstanding something else. Thank you
+
+-bwubb",bwubb,https://github.com/varlociraptor/varlociraptor/issues/424
+I_kwDOA7ytOM6Qwg28,SV calling recipe?,OPEN,2024-07-24T23:34:15Z,2024-07-26T07:59:08Z,,"I am looking to use Varlociraptor to call SVs using candidates from several upstream callers (Delly, GRIDSS, Manta). Is there a recipe for how to configure Varlociraptor to do this?
+
+Specifically, I'm interested in having Varlociraptor reclassify all the candidate variants, give the heterogeneity in how these callers report SVTYPE (e.g. GRIDSS only reports BND and Manta reports INV as BND). Is this the default behavior, or does it require custom configuration?
+
+Thanks!",jdidion,https://github.com/varlociraptor/varlociraptor/issues/441
+I_kwDOA7ytOM6U4u0s,Deletion candidate REF/ALT are changed.,OPEN,2024-08-30T17:56:53Z,2024-09-12T14:25:01Z,,"Greetings,
+
+  I have a germline deletion candidate in a tumor/normal experiment that looks like the following going into 'varlociraptor preprocess variants'
+
+`X       115190645       .       GGGGGCCGCAACAGTTCCAGCAACAGTTACGGCCAGAGCCACCACTATGGAGGAGAAGGCCGCTATGAGGAGTACC    G       .       PASS    .`
+
+When it comes out, it has been changed to 
+
+`X       115190645       .       G       <DEL>   .       .`
+
+I am not sure if this can be explained, but I am trying to understand why VLR decided to completely change the variant REF/ALT. They are not equivlant and it seems like odd behavior. Please let me know if there is any additional information I can provide. Thank you.",bwubb,https://github.com/varlociraptor/varlociraptor/issues/447
+I_kwDOA7ytOM6fSrOt,Questions about the tumor-normal variant calling process,CLOSED,2024-11-19T14:53:58Z,2024-11-21T12:57:40Z,2024-11-19T15:29:00Z,"Hi there,
+    I would like to know if it is necessary to run the command 
+“varlociraptor preprocess variants reference.fa --alignment-properties sample.alignment-properties.json --bam sample.bam < candidates.bcf > sample.observations.bcf”
+    separately on Normal_tissue.bam and Tumor.bam before running “varlociraptor call variants tumor-normal” ?
+    Besides, if that is the case, since I only have one output VCF from the Lancet software, should I use it as candidates.bcf for both Normal_tissue and Tumor?
+    Thanks in advance!",vegetableyu,https://github.com/varlociraptor/varlociraptor/issues/464
+I_kwDOA7ytOM6iJCyJ,"Error handling ""BND"" when calling variants",OPEN,2024-12-05T12:26:17Z,2024-12-06T06:15:52Z,,"Hi there,
+I encountered an error while executing ""varlociraptor call variants"" as follows:
+thread 'main' panicked at src/variants/model/bias/strand_bias.rs:39:34:
+internal error: entered unreachable code
+stack backtrace:
+   0:     0x55fe2af3deab - <std::sys::backtrace::BacktraceLock::print::DisplayBacktrace as core::fmt::Display>::fmt::h5b6bd5631a6d1f6b
+   1:     0x55fe2ae28723 - core::fmt::write::h7550c97b06c86515
+   2:     0x55fe2af0c532 - std::io::Write::write_fmt::h7b09c64fe0be9c84
+   3:     0x55fe2af3f2e2 - std::sys::backtrace::BacktraceLock::print::h2395ccd2c84ba3aa
+   4:     0x55fe2af3f137 - std::panicking::default_hook::{{closure}}::he19d4c7230e07961
+   5:     0x55fe2af3f83d - std::panicking::rust_panic_with_hook::h8942133a8b252070
+   6:     0x55fe2af3f385 - std::panicking::begin_panic_handler::{{closure}}::hb5f5963570096b29
+   7:     0x55fe2af3f319 - std::sys::backtrace::__rust_end_short_backtrace::h6208cedc1922feda
+   8:     0x55fe2af3f30c - rust_begin_unwind
+   9:     0x55fe2ad74ddf - core::panicking::panic_fmt::h0c3082644d1bf418
+  10:     0x55fe2ad74e8b - core::panicking::panic::h957f98c65a3b3074
+  11:     0x55fe2b033920 - varlociraptor::variants::model::bias::Artifacts::is_possible::h7859f8df7d32deb6
+  12:     0x55fe2b02aafa - bio::stats::bayesian::model::Model<L,Pr,Po,Payload>::compute::h62769e368556413f
+  13:     0x55fe2b07f8bc - varlociraptor::calling::variants::calling::Caller<Pr,CP,CF>::call::hc1c9bedeed55ace8
+  14:     0x55fe2afd8b27 - varlociraptor::calling::variants::calling::call_generic::he242d8800160a6dc
+  15:     0x55fe2afa7e9e - varlociraptor::cli::run::hf9fcf624e97843a8
+  16:     0x55fe2adadee7 - varlociraptor::main::h3039080fd2bd48e1
+  17:     0x55fe2adab1f3 - std::sys::backtrace::__rust_begin_short_backtrace::h1f29902002ae6f9e
+  18:     0x55fe2adaecae - main
+  19:     0x7f61f0822555 - __libc_start_main
+  20:     0x55fe2adab149 - <unknown>
+  21:                0x0 - <unknown>
+
+My `candidates.bcf` is the output result from Manta. After I filtered out the 'BND' type SVs, the `varlociraptor call variants` command no longer reported the error, so I believe there is an issue with handling 'BND'. I noticed that your documentation suggests running `bcftools sort` first, but this did not resolve my problem. How should I properly handle 'BND'? 
+Thank you for your help!",vegetableyu,https://github.com/varlociraptor/varlociraptor/issues/471

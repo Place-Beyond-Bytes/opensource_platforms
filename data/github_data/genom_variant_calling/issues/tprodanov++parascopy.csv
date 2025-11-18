@@ -1,0 +1,297 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFkMGlM5PBWgz,how to use custom genome as reference ,CLOSED,2022-08-02T12:05:23Z,2023-06-26T08:56:01Z,2023-06-26T08:56:01Z,"Hi, I want to use custom genome as reference instead of hg38;but I don`t know how to do this.Could you please  help me.",zou-yawen,https://github.com/tprodanov/parascopy/issues/1
+I_kwDOFkMGlM5PCm00,Docker image,CLOSED,2022-08-02T16:14:26Z,2023-02-09T10:35:23Z,2023-02-09T10:35:23Z,"Hi I'm looking forward to trying this tool! 
+It would be great if a Dockerfile and/or docker image with all dependencies was available so I wouldn't have to create one locally. 
+If you're interested I could submit this as a PR. ",bw2,https://github.com/tprodanov/parascopy/issues/2
+I_kwDOFkMGlM5c-nEZ,Error in conda env with numpy,CLOSED,2023-01-27T15:06:12Z,2023-01-30T09:22:10Z,2023-01-30T09:22:10Z,"Hello,
+
+I have an error when I run the command: parascopy table -i pretable.bed.gz -f genome.fasta -o table.bed.gz
+It seems the error is related with numpy and a deprecated function in the new version.
+
+I am running the program in a conda environment created with:
+conda create --name paras_env parascopy
+conda activate paras_env
+
+Could you tell me what is causing the error and how to fix it?
+
+Thanks in advance
+
+Pablo
+
+![error](https://user-images.githubusercontent.com/70705390/215118114-6f4cfff0-0fac-4bf1-9e2e-541831c390dd.png)
+",pabloangulo7,https://github.com/tprodanov/parascopy/issues/3
+I_kwDOFkMGlM5eCKv-,Non Human Genome doubts,CLOSED,2023-02-09T10:27:36Z,2023-06-26T08:55:51Z,2023-06-26T08:55:51Z,"Hello,
+
+I would like to use Parascopy to calculate gene copy numbers in a set of 75 samples of Toxoplasma gondii (Haploid genome). Which parameters would I have to modify or adjust in order to make a reliable analysis since I'm not using a Human genome?
+
+Also, one of the reasons I would like to use this tool is because Parascopy takes into account the duplicated genes already present in the reference genome fasta file, so my question is that if I can use the original reference genome fasta to align reads without performing a masking step to remove duplicated regions or it is not necessary since this is taking into account with the homology table.
+
+Best and thanks in advance
+
+Pablo",pabloangulo7,https://github.com/tprodanov/parascopy/issues/4
+I_kwDOFkMGlM5hP-jm,how to estimate the copy number pf specific CDK20 gene in no human genome ,CLOSED,2023-03-20T07:58:04Z,2023-03-30T09:16:08Z,2023-03-30T09:16:08Z,"For our no human genome, the CDK20 genes contain 10 copies， I want to estimate the copy number of CDK20 at the population-level.
+![image](https://user-images.githubusercontent.com/54714639/226276926-c9cef352-b44c-4d68-8987-98717bc9a209.png)
+Following your pipeline, I run the following code to calculate it. 
+```
+1.building Homology table
+parascopy pretable -f genome.fa -o pretable.bed.gz
+parascopy table -i pretable.bed.gz -f genome.fa -o table.bed.gz
+
+2.Estimating copy number
+# Calculate background read depth.
+parascopy depth -I input.list -b windows.bed  -f genome.fa -o depth
+# Estimate agCN and psCN for multiple samples.
+parascopy cn -I input.list -t table.bed.gz -f genome.fa -R regions.bed -d depth -o analysis1
+```
+there are two customer input files, including the windows.bed and regions.bed. the former windows.bed were built from #4 , the regions.bed was shown in below, contained the location of ten CDK20 genes copies:
+```
+chr14   10440813        10467260        CDK20
+chr14   12592476        12593495        CDK20
+chr14   12597478        12598864        CDK20
+chr14   12984135        12992502        CDK20
+chr14   14839469        14847923        CDK20
+chr14   15451029        15477492        CDK20
+chr14   18309334        18335583        CDK20
+chr14   20048637        20061521        CDK20
+chr14   23532803        23552098        CDK20
+chr14   25822165        25830699        CDK20
+```
+I don't know if the region.bed is correct?  if not, how to make the .bed file for the pipeline?
+",zhoudreames,https://github.com/tprodanov/parascopy/issues/5
+I_kwDOFkMGlM5ndbvx,Display error missing region file,CLOSED,2023-06-01T08:29:10Z,2023-06-26T08:55:45Z,2023-06-26T08:55:45Z,"Hello, I used parascopy to successfully run the read depth step, but an error occurred when I ran the Estimate agCN and psCN step. My code is as follows:
+parascopy cn -I /home/project/muscle/WGS/parascopy/input_list.txt -t /home/database/GRCh37/table_GRCh37.bed.gz -f  /home/database/GRCh37/Homo_sapiens.GRCh37.dna_sm.primary_assembly.fa -R /home/database/jinyu_wes.bed -d depth -o  analysis1
+The error is as follows:
+Traceback (most recent call last):
+File ""/home/dell/miniconda3/envs/wgs/bin/parascopy"", line 10, in
+sys.exit(main())
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/entry_point py"", line 121, in the main
+return _process_exceptions(detect_cn.main, inner_prog, inner_argv, is_new)
+File ""/ home/dell/miniconda3 envs WGS/lib/python3.10 / site - packages/parascopy/entry_point. Py"", line 70, in _process_exceptions
+fn(*args, **kwargs)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy detect_cn. Py"", line 1066, in the main
+regions, loaded_models = get_regions(args, genome, load_models=not args.is_new)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy detect_cn. Py"", line 753, in get_regions
+return (common.get_regions(args, genome), None)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/common. Py"", line 229, in get_regions
+return get_regions_explicit(args.regions, args.regions_file, genome, only_unique)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/common. Py"", line 223, in get_regions_explicit
+raise errors.EmptyResult(
+parascopy.inner.errors.EmptyResult: No regions provided!  Please specify -r  [ ...]  or -R  [ ...]
+This indicates that I don't seem to have my region file, but I've already written the parameters
+Use another command -r:
+parascopy cn -I /home/project/muscle/WGS/parascopy/input_list.txt -t /home/database/GRCh37/table_GRCh37.bed.gz -f  /home/database/GRCh37/Homo_sapiens.GRCh37.dna_sm.primary_assembly.fa -d depth -r chr5:70220768-70248842::SMN1 -o  analysis1
+The error is still displayed:
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/genome. Py"", line 295, in the parse
+chrom_id = genome.chrom_id(m.group(1))
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/genome. Py"", 48, the line in chrom_id
+return self._ids[chrom_name]
+KeyError: 'chr5'
+I am sure I have the right to read and write my region bed file. How can I solve this problem?
+
+I would appreciate it if you could help me.",zshu-alt,https://github.com/tprodanov/parascopy/issues/6
+I_kwDOFkMGlM5ndcBt,Display error missing area file,CLOSED,2023-06-01T08:29:43Z,2023-06-26T08:55:36Z,2023-06-26T08:55:36Z,"Hello, I used parascopy to successfully run the read depth step, but an error occurred when I ran the Estimate agCN and psCN step. My code is as follows:
+parascopy cn -I /home/project/muscle/WGS/parascopy/input_list.txt -t /home/database/GRCh37/table_GRCh37.bed.gz -f  /home/database/GRCh37/Homo_sapiens.GRCh37.dna_sm.primary_assembly.fa -R /home/database/jinyu_wes.bed -d depth -o  analysis1
+The error is as follows:
+Traceback (most recent call last):
+File ""/home/dell/miniconda3/envs/wgs/bin/parascopy"", line 10, in
+sys.exit(main())
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/entry_point py"", line 121, in the main
+return _process_exceptions(detect_cn.main, inner_prog, inner_argv, is_new)
+File ""/ home/dell/miniconda3 envs WGS/lib/python3.10 / site - packages/parascopy/entry_point. Py"", line 70, in _process_exceptions
+fn(*args, **kwargs)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy detect_cn. Py"", line 1066, in the main
+regions, loaded_models = get_regions(args, genome, load_models=not args.is_new)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy detect_cn. Py"", line 753, in get_regions
+return (common.get_regions(args, genome), None)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/common. Py"", line 229, in get_regions
+return get_regions_explicit(args.regions, args.regions_file, genome, only_unique)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/common. Py"", line 223, in get_regions_explicit
+raise errors.EmptyResult(
+parascopy.inner.errors.EmptyResult: No regions provided!  Please specify -r  [ ...]  or -R  [ ...]
+This indicates that I don't seem to have my region file, but I've already written the parameters
+Use another command -r:
+parascopy cn -I /home/project/muscle/WGS/parascopy/input_list.txt -t /home/database/GRCh37/table_GRCh37.bed.gz -f  /home/database/GRCh37/Homo_sapiens.GRCh37.dna_sm.primary_assembly.fa -d depth -r chr5:70220768-70248842::SMN1 -o  analysis1
+The error is still displayed:
+
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/genome. Py"", line 295, in the parse
+chrom_id = genome.chrom_id(m.group(1))
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/genome. Py"", 48, the line in chrom_id
+return self._ids[chrom_name]
+KeyError: 'chr5'
+I am sure I have the right to read and write my region bed file. How can I solve this problem?
+I would appreciate it if you could help me.",zshu-alt,https://github.com/tprodanov/parascopy/issues/7
+I_kwDOFkMGlM5rqT4O,ERROR: Cannot fetch region,OPEN,2023-07-15T17:47:32Z,2023-07-30T17:18:55Z,,"Hello, I have a problem now, my software can run normally, but I can't get any result file I want. I used the fa of GRCh37 as the reference genome and successfully ran the first step. In the second step, I deleted the chr in my bed file and successfully ran it. But the result file does not have any results except the header, the error message is not added chr number when possible, but if I run the first step with the fa of hg19, the error message again says that I should not add ""chr"", I seem to be in a dilemma, how do I solve this problem and get the result I want? I would be very grateful if you could help me, I am sure that my input whole genome bam file uses hg19 as the reference genome.
+The header of the bam file looks like this:
+@HD VN:1.5 SO:coordinate
+@SQ     SN:chrM LN:16571
+@SQ     SN:chr1 LN:249250621
+@SQ     SN:chr2 LN:243199373
+@SQ     SN:chr3 LN:198022430
+@SQ     SN:chr4 LN:191154276
+@SQ     SN:chr5 LN:180915260
+@SQ     SN:chr6 LN:171115067
+@SQ     SN:chr7 LN:159138663
+@SQ     SN:chr8 LN:146364022
+@SQ     SN:chr9 LN:141213431
+@SQ     SN:chr10        LN:135534747
+@SQ     SN:chr11        LN:135006516
+@SQ     SN:chr12        LN:133851895
+@SQ     SN:chr13        LN:115169878
+@SQ     SN:chr14        LN:107349540
+@SQ     SN:chr15        LN:102531392
+@SQ     SN:chr16        LN:90354753
+@SQ     SN:chr17        LN:81195210
+@SQ     SN:chr18        LN:78077248
+@SQ     SN:chr19        LN:59128983
+@SQ     SN:chr20        LN:63025520
+@SQ     SN:chr21        LN:48129895
+@SQ     SN:chr22        LN:51304566
+@SQ     SN:chrX LN:155270560
+@SQ     SN:chrY LN:59373566
+My bam file seems to have 'chr' on it.
+If using the hg19 reference genome shows an error like this:
+parascopy depth -I input.list -g hg19 -f
+0:00:00.5 Loading predefined windows for hg19
+Traceback (most recent call last):
+File ""/home/dell/miniconda3/envs/wgs/bin/parascopy"", line 10, in
+sys.exit(main())
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/entry_point py"", line 114, in the main
+return _process_exceptions(depth.main, inner_prog, inner_argv)
+File ""/ home/dell/miniconda3 envs WGS/lib/python3.10 / site - packages/parascopy/entry_point. Py"", line 70, in _process_exceptions
+fn(*args, **kwargs)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/the depth. Py"", line 827, in the main
+windows = _load_windows(bed_lines, genome, out)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/the depth. Py"", line 62, in _load_windows
+chrom_id = genome.chrom_id(chrom_name)
+The File ""/ home/dell/miniconda3 / envs/WGS/lib/python3.10 / site - packages/parascopy/inner/genome. Py"", 48, the line in chrom_id
+return self._ids[chrom_name]
+KeyError: '1'
+
+I can run the first step successfully if I use the GRCh37 reference genome, but I can't seem to find my target region when running the second step
+0:00:00.8 ERROR: Cannot fetch 5:70234667-70234737 from /home/dell/ZSY/project/muscle/WGS/rawdata/21C354141_WGS001_NGS.rmdup.sorted.bam  (possibly missing chromosome).
+0:00:00.8 ERROR: Cannot fetch 5:70238186-70238385 from /home/dell/ZSY/project/muscle/WGS/rawdata/21C354141_WGS001_NGS.rmdup.sorted.bam  (possibly missing chromosome).
+0:00:00.8 ERROR: Cannot fetch 5:70237217-70237335 from /home/dell/ZSY/project/muscle/WGS/rawdata/21C354141_WGS001_NGS.rmdup.sorted.bam  (possibly missing chromosome).
+
+The software you developed is very important to my research and I would appreciate it if you could answer my questions!!以上翻译结果来自有道神经网络翻译（YNMT）· 通用场景
+
+逐句对照
+",zshu-alt,https://github.com/tprodanov/parascopy/issues/8
+I_kwDOFkMGlM6ARBNl,Filtering output of table command,CLOSED,2024-02-23T23:21:05Z,2024-05-07T21:22:28Z,2024-05-07T21:22:28Z,"Hello,
+
+Thank you for your tool!  We have been using Parascopy to find SEGDUP coordinates for the rat reference genome, and I had a couple of clarifying questions.
+
+The generated table by parascopy has ~1.1M regions which seems a lot. Could you provide some insights into whether any filtering has been applied to your precomputed tables for the human genome?
+
+Additionally, I couldn't find documentation on how to interpret certain fields in the table file, like SS or ALENGTH. Could you please provide some guidance on this?
+
+Best regards,
+Helia",heliziii,https://github.com/tprodanov/parascopy/issues/9
+I_kwDOFkMGlM6EGs3h,Analyze non-human genomes,CLOSED,2024-03-30T09:16:54Z,2024-04-19T07:34:04Z,2024-04-19T07:34:04Z,"Hello,
+
+Excellent work! I would like to use your helpful tool for the rhesus genome (Mmul10). In the FAQs, I noticed that a set of non-duplicated windows should be constructed for _parascopy depth_ to calculate background read depth. Could you provide more details? I would greatly appreciate it if the complete code for the pipeline could be provided.",yukixuen,https://github.com/tprodanov/parascopy/issues/10
+I_kwDOFkMGlM6Ga7kd,Detection of 1.4 Mb duplication,OPEN,2024-04-21T18:28:39Z,2024-04-22T12:19:24Z,,"Can parascopy be used to detect larger duplications e.g. a 1.4 Mb in chromosome 17p11.2 based?
+If so, would 30x fq hg38 data like in this example work?
+
+```
+@E100046761L1C001R00300000033/1
+GGACCTAFTTATAGGGTGAGATCTAGGCCTACCTCTGTGATCTCACCCCCCAAACCTCTTCCTGCTGTATTTTCTTTGCAGCACTTATCACTATCTGGAACTATTTACTTTTCTTGTTTATTGTCTGATCTACCACCATTACCGACCCTC
++
+GGFGGGGGGGGGGGGGGGGGFGGGGGGGGGGGGGGGGGGFGGGGGGGFGGGGGFGGGGGGGGGGGGGGFGGGGGGGGGGCFGGFGGGGGGGGFGGGFDCEGGGGGGGGGGGGFGGGGGGCGGGGGGG@GGGCGFFGGFGG:FF@;GEGGG
+@E100046761L1C001R00300000044/1
+TTTCCTGAGGCAATCCCCAGCCATGTGGAACTGTTAGTAACTTAAACTTCTTTCCTTAAGAAATTATCCAGTCTCAGGAAGTGTGAGAATGGACTAATAAAGTAAATTGGTACTGGTAGAGTGAGTACTGCCACAGAGATAGCCAAAAAC
++
+ACEC>ED<A2<FF7CBDBC2?EEC>+@EDAF>EFE>FADDFFADCCFFCDFEBAFFEED@EBEFDE::DBF@F@D?.B?<FCD<6.@6CF85AFB@FD@;;DE>=BB=<E<2F+9@C>>E=@67<@D<F;<2E?A;D71DBA77D/?<D=
+```
+
+Thank you very much!",wolfgang-braun,https://github.com/tprodanov/parascopy/issues/11
+I_kwDOFkMGlM6M4dpb,Non-human genomes,OPEN,2024-06-20T06:17:42Z,2024-06-20T14:12:53Z,,"Hi @tprodanov,
+Thank you for creating this tool. I want to try it for the cattle genome. Could you show me the format of the BED file for the parascopy depth command? Is the bin size 100 bp? Thank you.",quantrannnn,https://github.com/tprodanov/parascopy/issues/12
+I_kwDOFkMGlM6WSHya,An error occurred when using the pretable command,OPEN,2024-09-12T04:47:01Z,2024-09-18T08:58:38Z,,"**An error occurred when using the pretable command**
+
+**_My code:_**
+parascopy pretable -f hg38.fa -o pretable.bed.gz -@ 30 --force
+
+**_report an error：_**
+0:00:00.2  Using 30 threads
+0:00:00.3  Using temporary directory /tmp/parascopy2in_kat1
+0:00:00.3  Analyzing 711 regions split into 64 groups
+0:00:00.3  Self alignment to find homology
+0:00:00.3  [ 1 / 64] Aligning chr1:1-248,956,422 back to the genome:
+0:00:03.1      Writing artificial reads
+0:00:21.2      Running BWA on 1,535,986 artificial reads
+0:02:15.7      Analyzing BWA hits
+0:02:25.1  ERROR: BWA alignment of Region(chrom_id=0, start=135,600, end=136,500) produces invalid CIGAR: ""97I 522M 1I 280M"".
+0:02:25.1  ERROR (cont): BWA alignment: ""0-904	+	49	198221009	198221811	97I522M1I280M	12C328G79C380""
+0:02:25.1  ERROR: BWA alignment of Region(chrom_id=0, start=136,050, end=136,950) produces invalid CIGAR: ""49I 145M 4I 7M 1D 97M 1I 97M 1I 499M"".
+0:02:25.1  ERROR (cont): BWA alignment: ""0-907	+	49	198220516	198221362	49I145M4I7M1D97M1I97M1I499M	53G0T10T86^C6T5A30G34T2G9T0G47G45G13C54C29T0G19G45C328G11""
+
+
+Hi author, what is the cause of this and is there a solution?
+",LeeDarian,https://github.com/tprodanov/parascopy/issues/13
+I_kwDOFkMGlM6iAUc1,Integer OverFlow while `parascopy table`,OPEN,2024-12-04T14:50:14Z,2024-12-04T14:58:20Z,,"I am trying to build a homology table for the CHM13 T2T, and I used these commands:
+
+```sh
+
+wget https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/annotation/chm13v2.0_SD.bed
+
+parascopy pretable -f chm13v2.0.fa -o pretable_chm13v2.bed.gz -@ 64 -R chm13v2.0_SD.bed # succeed
+parascopy table -i pretable_chm13v2.bed.gz -f chm13v2.0.fa -o table_chm13v2.bed.gz -@ 64 -R chm13v2.0_SD.bed # failed
+```
+
+The `pretable` succeeded, while the `table` failed:
+
+```
+0:00:01.9  ERROR:
+Traceback (most recent call last):
+  File ""/path_to_parascopy/parascopy/combine_table.py"", line 434, in _save_component_wrapper
+    return _save_component(*tup)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File ""/path_to_parascopy/parascopy/combine_table.py"", line 418, in _save_component
+    comb_dupl = combine_segments(segments, aln_fun)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/path_to_parascopy/parascopy/inner/duplication.py"", line 975, in combine_segments
+    new_cigar = _move_everything_left(new_cigar, shift1, seq1, shift2, seq2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/path_to_parascopy/parascopy/inner/duplication.py"", line 842, in _move_everything_left
+    pos2 += length
+OverflowError: Python integer -181999855 out of bounds for uint32
+```
+",mr-eyes,https://github.com/tprodanov/parascopy/issues/14
+I_kwDOFkMGlM6iCC4Q,CIGAR errors when building pretable with Parascopy,OPEN,2024-12-04T17:59:04Z,2024-12-04T18:05:20Z,,"Hello,
+I get numerous error messages similar to the one below when running the pretable command in Parascopy:
+ ```
+parascopy pretable -f ~/References/GRCh38_full_analysis_set_plus_decoy_hla.fa -o GRCh38_full_analysis_set_plus_decoy_hla.bed.gz
+
+ERROR: BWA alignment of Region(chrom_id=0, start=47,119,500, end=47,120,400) produces invalid CIGAR: 
+""31I 291M 1I 233M 3I 309M 1D 32M"".
+```
+
+Parascopy finishes execution and generates the bed.gz pretable file, however the subsequent table generation command fails with:
+```
+parascopy table -i GRCh38_full_analysis_set_plus_decoy_hla.bed.gz -f ~/References/GRCh38_full_analysis_set_plus_decoy_hla.fa -o GRCh38_full_analysis_set_plus_decoy_hla.table.bed.gz 
+
+0:00:01.2  ERROR:
+Traceback (most recent call last):
+  File ""/home/pshea/Tools/Anaconda3/envs/paras_env/lib/python3.12/site-packages/parascopy/combine_table.py"", lin
+e 434, in _save_component_wrapper
+    return _save_component(*tup)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/pshea/Tools/Anaconda3/envs/paras_env/lib/python3.12/site-packages/parascopy/combine_table.py"", lin
+e 418, in _save_component
+    comb_dupl = combine_segments(segments, aln_fun)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/pshea/Tools/Anaconda3/envs/paras_env/lib/python3.12/site-packages/parascopy/inner/duplication.py"",
+ line 975, in combine_segments
+    new_cigar = _move_everything_left(new_cigar, shift1, seq1, shift2, seq2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/pshea/Tools/Anaconda3/envs/paras_env/lib/python3.12/site-packages/parascopy/inner/duplication.py"",
+ line 842, in _move_everything_left
+    pos2 += length
+OverflowError: Python integer -101916707 out of bounds for uint32 
+```
+
+
+For this I am using bwa version: 0.7.18-r1243-dirty and Parascopy v1.17.1, which were both installed using: 
+`conda create --name paras_env parascopy. ` Note that this error appears related to: https://github.com/tprodanov/parascopy/issues/13
+
+I realize there are precomputed tables for GRCh38, however I plan to use cram files there were generated using a reference with alt contigs and the documentation indicates I should use a custom homology table.",patrickrshea,https://github.com/tprodanov/parascopy/issues/15

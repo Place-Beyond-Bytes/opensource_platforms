@@ -1,0 +1,33 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2MDU1NDkzNDc=,"Exclude .brm.bam, .brm.bam.bai files from BRASS supplement",CLOSED,2020-04-23T13:45:47Z,2020-04-29T21:15:15Z,2020-04-29T21:15:14Z,"Due to large size, we don't keep .brm.bam files in BRASS supplement.",junjun-zhang,https://github.com/icgc-argo-workflows/variant-calling-tools/issues/19
+MDU6SXNzdWU2MDkzODIzMzk=,Payload generation for Sanger QC metrics failed due to incorrect inference of normal BAS,CLOSED,2020-04-29T21:49:01Z,2020-05-11T15:29:29Z,2020-05-11T15:29:29Z,"## Describe the bug
+Payload generation for Sanger QC metrics step failed with the follow message:
+```
+Traceback (most recent call last):
+    File ""/tools/payload-gen-variant-calling.py"", line 299, in <module>
+      main(args)
+    File ""/tools/payload-gen-variant-calling.py"", line 256, in main
+      file_info = get_files_info(f, args.wf_short_name, args.wf_version, somatic_or_germline, normal_analysis, tumour_analysis)
+    File ""/tools/payload-gen-variant-calling.py"", line 166, in get_files_info
+      os.symlink(os.path.abspath(file_to_upload), dst)
+  FileExistsError: [Errno 17] File exists: 'TEST-PR.DO250183.SA610229.wxs.20200427.aln.cram.bas_metrics.tgz' -> 'out/TEST-PR.DO253000.SA612999.wxs.20200429.sanger-wxs.somatic
+.bas_metrics.tgz'
+```
+## Steps To Reproduce
+In `rdpc-dev` environment, use `""tumour_aln_analysis_id"": ""48dc80b2-dcec-4f73-9c80-b2dcecef73d5""` and `""normal_aln_analysis_id"": ""4dc53c51-7b48-4843-853c-517b48584389""` as input aligned sequences to run Sanger WXS calling pipeline.
+
+## Expected behaviour
+Payload generation for qc_metrics should not fail.
+
+## Cause and possible fix
+The root cause is here: https://github.com/icgc-argo/data-processing-utility-tools/blob/payload-gen-variant-calling.0.1.0.0/tools/payload-gen-variant-calling/payload-gen-variant-calling.py#L82. The line assumes input BAS file name contains proper IDs for project/donor/sample in order to differentiate normal BAS and tumour BAS, which a kind of strong assumption. In the case this assumption is correct, we can see failure like mentioned above. A safer alternative is to have `tumour` or `normal` explicitly in the BAS file name, similar to contamination file pattern:  `r'.+?\.normal.contamination_metrics.tgz'`. This would be much more reliable way to differentiate `tumour` and `normal` BAS.
+
+Easiest fix is to have BAS filename include `tumour` or `normal` explicitly. This requires change in `generate_bas` to add this information.
+
+",junjun-zhang,https://github.com/icgc-argo-workflows/variant-calling-tools/issues/21
+MDU6SXNzdWU4NTQ4MzU3Njk=,Update tool prep-sanger-qc,CLOSED,2021-04-09T20:32:05Z,2021-04-09T20:35:53Z,2021-04-09T20:35:53Z,,lindaxiang,https://github.com/icgc-argo-workflows/variant-calling-tools/issues/31
+MDU6SXNzdWU4NTQ4MzU4OTc=,Update tool prep-sanger-supplement,CLOSED,2021-04-09T20:32:20Z,2021-04-09T20:35:38Z,2021-04-09T20:35:38Z,,lindaxiang,https://github.com/icgc-argo-workflows/variant-calling-tools/issues/32
+MDU6SXNzdWU4NTgzMzQyNTA=,Update 'description' in extra_info.json for prep-sanger-qc,CLOSED,2021-04-14T23:15:47Z,2024-09-19T19:44:59Z,2021-04-15T19:28:52Z,"Update `Sanger bas_stats.pl script` to `Sanger bam_stats tool`
+
+This is required by https://github.com/icgc-argo/data-processing-utility-tools/issues/118
+",junjun-zhang,https://github.com/icgc-argo-workflows/variant-calling-tools/issues/33

@@ -1,0 +1,206 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzMjgxMTE5ODE=,calls for single cell sites without any coverage,OPEN,2018-05-31T12:07:09Z,2018-07-17T10:34:05Z,,"@aschoen, @alicemchardy and I just discussed this possible future idea to extend the statistical model for sites where there is no coverage in a particular cell, but possibly in the respective bulk sample. In this case, another of coverage vs. no-coverage would have to be added, where the coverage part is covered by the existing model and the no-coverage part would have to be newly defined. The major challenge is, that the beta-binomials of the empirical model are not defined for a coverage of zero, so instead something like a general or cell-specific heterozygosity prior would need to be used. In combination with the bulk likelihoods, this might still give reasonable likelihoods, although the comparability with the existing model would need to be looked at in detail before e.g. trying a joint false discovery rate control on sites with and without coverage in a particular single cell.",dlaehnemann,https://github.com/ProSolo/prosolo/issues/1
+MDU6SXNzdWUzNDMwMDk1ODY=,optimising prosolo performance,CLOSED,2018-07-20T07:58:43Z,2018-12-04T13:07:23Z,2018-12-04T13:07:22Z,"As `ProSolo` is looking at Single Nucleotide Variants (SNVs), this means inspecting a lot more positions than `prosic` previously did. While scaling linearly with the amount of sequencing data, we needed to improve the previous runtime.
+
+The first step was to flamegraph the running of the tool before optimisations (for methods see below). As it is not straightforward to include SVGs in GitHub issues, I'll send the respective files via eMail.
+
+So I created an initial flamegraph with `perf + flamegraph.pl` and inspected it with @johanneskoester. The main things that stuck out were bigger chunks of time being spent in `bam_aux_get()`, an `htslib` functionality for getting auxiliairy read data, related calls to `C` string creation functions and a lot of time spent in the likelihood calculations in log space. Thus, the main ideas we came up with were:
+
+1. **Ensure that each read and each piece of auxiliary data is read only once, and as the `time` analysis below shows, the changes implemented by @johanneskoester heavily improve runtime by 1/3!**
+2. Ignore reads in the current read buffer that start right of a candidate SNV, in contrast to candidate indels where these might be informative. This change implemented by @johanneskoester did not cause any measurable speedup.
+3. Avoiding the recalculation of likelihoods for single cell sample and bulk sample allele frequencies for different `Event`s where they might be needed. This change that I implemented, did not yield any measurable speedup. My assumption is that the reduced number of likelihood calculations is offset by a slight increase in overhead caused by the caching.
+
+To validate these findings based on timing and to see whether any further optimisations might make sense, I then also created more detailed flamegraphs with `rust` functionality. This demonstrated nicely that the first change strongly reduced the CIGAR string related time chunks, whereas the other changes did not noticeably affect relative time usage of different code parts. In addition, the resulting flamegraphs after all optimisations clearly show, that most of the time is now spent in calls to low-level rust library functions (`rust-bio` log likelihood calculations) and eventually system library log calculation functions. My conclusion for now would thus be:
+
+We are down to pretty much the most efficient code we can get with `libprosic` and `prosolo`, and all we can do now to reduce runtime would mean reducing the amount of data we look at. I.e. we would have to introduce heuristics to downsample single cell or bulk read coverage at certain sites. To do this, we would have to track how any of those changes affect especially the recall, as throwing away data bears the danger of throwing away alternative allele evidence.
+
+# baseline timing
+
+Before we started on optimisations, `time` for the flamegraphing run gave the following runtime:
+```
+real    35m32.092s
+user    35m30.020s
+sys 0m2.208s
+```
+A second run confirmed the runtime:
+```
+real    35m4.222s
+user    35m2.892s
+sys 0m1.172s
+```
+
+# unpack CIGAR Strings only once
+
+https://github.com/PROSIC/libprosic/pull/34
+
+Runtime after this optimisation decreased by about a third:
+```
+real    23m16.300s
+user    23m14.684s
+sys 0m1.028s
+```
+
+# ignore reads right of SNVs
+
+https://github.com/PROSIC/libprosic/commit/72bd0d7dc3f9da9976284bdb8f8e72caba22233e
+
+Runtime after this optimisation did improve significantly:
+```
+real    22m58.577s
+user    22m57.604s
+sys 0m0.868s
+```
+
+# caching of likelihoods
+
+https://github.com/PROSIC/libprosic/pull/36
+
+Runtime after this optimisation did not improve significantly:
+```
+real    23m9.813s
+user    23m8.716s
+sys 0m0.996s
+```
+
+# flamegraph procedure
+
+## system CPU sampling (perf + flamegraph.pl)
+
+### One-time setup
+
+1. Install `perf`. Under Ubuntu, apparently the wrapper packages `linux-tools-generic` and `linux-cloud-tools-generic` do not necessarily do the trick -- you will sometimes have to explicitly request the ones for your kernel version by using:
+```
+sudo apt install linux-tools-generic linux-cloud-tools-generic linux-tools-`uname -r`-generic linux-cloud-tools-`uname -r`-generic
+```
+Or you might even have to explicitly ask for an older version to meet dependencies. Trying to run perf I got an error message I cannot reconstruct any more, but from it I deduced trying to install the following version and it worked:
+```
+sudo apt install linux-tools-generic linux-cloud-tools-generic linux-tools-4.4.0-127-generic linux-cloud-tools-4.4.0-127-generic
+```
+2. Install `flamegraph` from repo:
+  1. Clone the repo locally: `git clone https://github.com/brendangregg/FlameGraph`
+  2. Add the main directory withh all the `*.pl` Perl files to the path.
+
+### flamegraph a binary
+
+To turn on debugging information in the binary, to get actual function names in the flamegraph output, temporarily add to `Cargo.toml`:
+
+```
+[profile.release]
+debug = true
+```
+
+Then compile with the `--release` flag, to get cargo to optimize the resulting binary. Otherwise, any slowness may be due to a lack of compiler optimisations:
+
+```
+cargo build --release
+```
+
+Run the cpu sampling with:
+
+```
+perf record -g -F 10000 ../target/release/name-of-binary <command-line-arguments>
+```
+
+In our case, a good example run from a subdirectory of my local `prosolo/benches` directory was:
+```
+time perf record -g -F 10000 ../../target/release/bins_7dfda4ef909015a3fb31557bfc0ab7a2b29b7386/prosolo single-cell-bulk --omit-indels --candidates ../PAG5.PNG.prosolo_candidates.chr4_3000000-4000000.bcf ../PAG5.bps.sorted.chr4_3000000-4000000.bam ../PNG.bps.sorted.chr4_3000000-4000000.bam ~/analysis/hg19/ucsc.hg19.fasta  --sc-isize-mean 202.8 --sc-isize-sd 67.2 --output PAG5.chr4_3000000-4000000.prosolo.bcf
+```
+
+The resulting `report.perf` can be rather large, depending on the length of your example run and the sampling frequency selected -- e.g. 1G for a half hour run of `prosolo` with the above frequency. Based on the report, generate the flamegraph with:
+
+```
+perf script | stackcollapse-perf.pl | flamegraph.pl > flame.svg
+```
+
+Inspect the `flame.svg` file by opening it in a browser and hovering over individual bars to get the respective function names displayed.
+
+Or inspect the report interactively by issuing:
+```
+perf report
+```
+
+## Rust internal flamegraphing: flame and flamer crates
+
+The crates used are (basic usage is documented on GitHub):
+* `flame` provides flamegraphing functions for use within Rust code: https://github.com/TyOverby/flame
+* `flamer` makes it easy to deploy via feature annotations: https://github.com/llogiq/flamer
+
+Using [rustup](https://rustup.rs/), install the nightly Rust build:
+
+```
+rustup toolchain install nightly
+```
+
+Follow the [documentation of `flamer`](https://github.com/llogiq/flamer) to get going. In addition, add the following to your `main.rs` (or `lib.rs` in a library crate) -- it ensures that calls to the same function at the same level of the hierarchy are collapsed into one flamegraph bar (this ensures that your browser can cope with the graph and makes it a more useful representation than with thousands to millions of little blocks of the same name):
+```
+/// Implementation as given by @ebarnard at: https://github.com/TyOverby/flame/issues/33#issuecomment-352312506
+#[cfg(feature=""flame_it"")]
+fn write_flamegraph() {
+    let mut spans = flame::threads().into_iter().next().unwrap().spans;
+    merge_spans(&mut spans);
+    flame::dump_html_custom(&mut File::create(""flame-graph.html"").unwrap(), &spans)
+        .unwrap();
+}
+
+fn merge_spans(spans: &mut Vec<flame::Span>) {
+    if spans.is_empty() {
+        return;
+    }
+
+    // Sort so spans to be merged are adjacent and spans with the most children are
+    // merged into to minimise allocations.
+    spans.sort_unstable_by(|s1, s2| {
+        let a = (&s1.name, s1.depth, usize::max_value() - s1.children.len());
+        let b = (&s2.name, s2.depth, usize::max_value() - s2.children.len());
+        a.cmp(&b)
+    });
+
+    // Copy children and sum delta from spans to be merged
+    let mut merge_targets = vec![0];
+    {
+        let mut spans_iter = spans.iter_mut().enumerate();
+        let (_, mut current) = spans_iter.next().unwrap();
+        for (i, span) in spans_iter {
+            if current.name == span.name && current.depth == span.depth {
+                current.delta += span.delta;
+                let mut children = mem::replace(&mut span.children, Vec::new());
+                current.children.extend(children.into_iter());
+            } else {
+                current = span;
+                merge_targets.push(i);
+            }
+        }
+    }
+
+    // Move merged spans to the front of the spans vector
+    for (target_i, &current_i) in merge_targets.iter().enumerate() {
+        spans.swap(target_i, current_i);
+    }
+
+    // Remove duplicate spans
+    spans.truncate(merge_targets.len());
+
+    // Merge children of the newly collapsed spans
+    for span in spans {
+        merge_spans(&mut span.children);
+    }
+}
+
+
+#[cfg(not(feature=""flame_it""))]
+fn write_flamegraph() {
+}
+```
+
+And add `write_flamegraph();` to the end of your `main()` function. Then, build with the feature `flame_it` activated and using the nightly build:
+
+```
+rustup run nightly cargo build --release --features flame_it
+```
+
+Using the generated binary, run the program on some example data, in my case:
+```
+../../target/release/bin_flame_it/prosolo single-cell-bulk --omit-indels --candidates ../PAG5.PNG.prosolo_candidates.chr7_100000-200000.bcf ../PAG5.bps.sorted.chr7_100000-200000.bam ../PNG.bps.sorted.chr7_100000-200000.bam ~/analysis/hg19/ucsc.hg19.fasta  --sc-isize-mean 196.1 --sc-isize-sd 71.1 --output PAG5.chr7_100000-200000.prosolo.bcf
+```
+
+And inspect...",dlaehnemann,https://github.com/ProSolo/prosolo/issues/2

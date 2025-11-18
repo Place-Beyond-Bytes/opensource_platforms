@@ -1,0 +1,41 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1ODUyMzY0NDQ=,Further improve set of validation datasets for end-to-end testing,OPEN,2020-03-20T17:56:56Z,2021-03-31T19:20:43Z,,"First:
+- [x] Twist + Illumina
+- [x] ARTIC v1 + Illumina
+- [x] RNA-seq (Illumina) 
+- [ ] ARTIC v2 + Illumina
+- [x] ARTIC v3 + Illumina
+- [ ] High human known negatives (to test polyA tail mapping and related issues)
+
+Later:
+- [x] ARTIC + ONT
+- [ ] dRNA-seq (ONT)
+
+We need _truth data_ for all of these so we can do some golden output testing, i.e., hand inspected variants that we truly believe. This may or may not be doable for some of the RNA-seq data.",boydgreenfield,https://github.com/onecodex/sars-cov-2/issues/1
+MDU6SXNzdWU1ODUyMzg2ODE=,Determinate optimal SNP calling parameters,CLOSED,2020-03-20T18:01:06Z,2020-04-01T03:48:51Z,2020-04-01T03:48:51Z,"Key determinations:
+- [x] `ivar` vs. `freebayes`
+- [x] Parameters for each
+- [x] Robustness across validation datasets (ideally amplicon + WTS, probably not ILMN + ONT)",boydgreenfield,https://github.com/onecodex/sars-cov-2/issues/2
+MDU6SXNzdWU1ODUyMzg4NTQ=,Generate consensus FASTA with proper N masking,CLOSED,2020-03-20T18:01:24Z,2020-04-01T03:46:45Z,2020-04-01T03:46:45Z,,boydgreenfield,https://github.com/onecodex/sars-cov-2/issues/3
+MDU6SXNzdWU1OTMyODY5NjY=,singularity image,CLOSED,2020-04-03T10:37:26Z,2021-04-29T04:07:28Z,2021-04-29T04:07:28Z,"Could you please provide a singularity image, since docker is not usable in HPC environment.
+Thank you!",mestia,https://github.com/onecodex/sars-cov-2/issues/19
+MDU6SXNzdWU1OTUyNTg4OTI=,Upgrade to ivar 1.2,CLOSED,2020-04-06T16:34:32Z,2021-04-21T04:30:40Z,2021-04-21T04:30:40Z,"New version of ivar: https://github.com/andersen-lab/ivar/releases/tag/v1.2
+
+* Handle overlapping primers by taking minimum of start pos of primers for forward reads and maximum of end position of primers for reverse reads
+* Updated default consensus to `-m 1 -n N`
+
+Needed for ARTIC v3 support",audy,https://github.com/onecodex/sars-cov-2/issues/20
+MDU6SXNzdWU1OTUyNTkwNzY=,Add support for ARTIC v3 primers,CLOSED,2020-04-06T16:34:50Z,2021-03-31T19:20:07Z,2021-03-31T19:20:07Z,Depends on #20 ,audy,https://github.com/onecodex/sars-cov-2/issues/21
+I_kwDODtC8lc5G7u0z,Unable to run illumina pipeline in Docker (ubuntu 20.04),CLOSED,2022-04-01T17:04:51Z,2023-09-11T19:55:06Z,2023-09-11T19:55:05Z,"STACK TRACE
+`ERROR conda.cli.main_run:execute(33): Subprocess for 'conda run ['jupyter', 'nbconvert', '--execute', '--to', 'onecodex_pdf', '--ExecutePreprocessor.timeout=-1', '--output=report.pdf', '--output-dir=.', 'report.ipynb']' command failed.  (See above for error)
+Traceback (most recent call last):
+  File ""/usr/local/bin/jupyter-nbconvert"", line 5, in <module>
+    from nbconvert.nbconvertapp import main
+  File ""/usr/local/lib/python3.8/site-packages/nbconvert/__init__.py"", line 4, in <module>
+    from .exporters import *
+  File ""/usr/local/lib/python3.8/site-packages/nbconvert/exporters/__init__.py"", line 3, in <module>
+    from .html import HTMLExporter
+  File ""/usr/local/lib/python3.8/site-packages/nbconvert/exporters/html.py"", line 12, in <module>
+    from jinja2 import contextfilter
+ImportError: cannot import name 'contextfilter' from 'jinja2' (/usr/local/lib/python3.8/site-packages/jinja2/__init__.py)
+`",jwin4740,https://github.com/onecodex/sars-cov-2/issues/58

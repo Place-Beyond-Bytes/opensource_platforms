@@ -1,0 +1,171 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIuTgr85kByxb,A question about the dataset of RNA secondary structure,CLOSED,2023-04-21T09:18:56Z,2023-04-26T10:01:17Z,2023-04-26T10:01:16Z,"Hi, thanks for sharing this great work.
+As for the dataset used for RNA secondary structure  was mentioned in the paper: ""405 RNAs for TR1, 40 RNAs for VL1 and 39 RNAs for TS1, ..., We combined TS1 and TS2 to make the final independent test set with 70 RNAs (TS)"".
+I downloaded the data set for RNA secondary structure from SPOT-RNA or SPOT-RNA2, but the number of samples did not match the number mentioned in RNA-MSM. So, I was wondering, did you update the data set or did I download it by mistake. Would you mind sharing this new data or the download link?
+Thanks.",fuxuliu,https://github.com/yikunpku/RNA-MSM/issues/2
+I_kwDOIuTgr85lO5hy,installation,CLOSED,2023-05-06T03:26:49Z,2023-05-09T02:23:00Z,2023-05-09T02:23:00Z,"Hello! I encountered a problem during installation.
+![an](https://user-images.githubusercontent.com/106303234/236596270-40891b34-09fd-45c7-a332-a2f58c47b3f0.png)
+DO I need to replace fair-msm with fair-esm?",fiting-all,https://github.com/yikunpku/RNA-MSM/issues/3
+I_kwDOIuTgr85lPbY6,web server,CLOSED,2023-05-06T08:55:34Z,2023-05-09T02:22:51Z,2023-05-09T02:22:51Z,"When I submit tasks using RNA-MSM web server, the following issue always appear.
+![web](https://user-images.githubusercontent.com/106303234/236614104-5d021ae6-8236-43f5-9a04-5119fe05f7a8.png)
+",fiting-all,https://github.com/yikunpku/RNA-MSM/issues/4
+I_kwDOIuTgr85x2x_2,dataset download problem,CLOSED,2023-09-24T10:32:31Z,2024-03-17T16:01:27Z,2024-03-17T16:01:26Z,"Hi! I have the connection problem with google drive. Please upload your rna dataset to huggingface or other cloud disk that is accessible in mainland
+",liusfore,https://github.com/yikunpku/RNA-MSM/issues/5
+I_kwDOIuTgr859d9NO,Could not find fair-msm,CLOSED,2024-01-29T09:11:16Z,2024-03-17T15:59:45Z,2024-03-17T15:59:45Z,"ERROR: Could not find a version that satisfies the requirement fair-msm
+ERROR: No matching distribution found for fair-msm
+",Binyun-Z,https://github.com/yikunpku/RNA-MSM/issues/7
+I_kwDOIuTgr859uxgf,no such file or directory: 'hhfilter',CLOSED,2024-01-31T06:55:59Z,2024-03-17T16:05:15Z,2024-03-17T16:05:15Z,"When I ran the sample program I encountered the following problem 
+
+---> 24 print(rna_data[0])
+Cell In[15], line 24
+     14     test_rnas.sort()
+     16 rna_data = RNADataset(
+     17     data_path=cfg.data.root_path,
+     18     msa_path=cfg.data.MSA_path,
+   (...)
+     22     sample_method=cfg.data.sample_method,
+     23 )
+---> 24 print(rna_data[0])
+     25 rna_data = RandomCropDataset(
+     26     rna_data,
+     27     cfg.data.max_seqlen,
+     28 )
+     30 print(rna_data[0])
+
+File /pentapool/home/zhangbinyun/Project/RNA_foundation_model/RNA-MSM/dataset.py:122, in RNADataset.__getitem__(self, index)
+    120 def __getitem__(self, index):
+    121     rna_id = self.rna_id[index]
+--> 122     msa = self.a3m_data[index]
+    123     tokens = torch.from_numpy(self.vocab.encode(msa))
+    125     return rna_id, tokens
+
+File /pentapool/home/zhangbinyun/Project/RNA_foundation_model/RNA-MSM/dataset.py:88, in A2MDataset.__getitem__(self, index)
+     86 msa = MSA.from_fasta(self._file_list[index])
+     87 if self._max_seqs_per_msa is not None:
+---> 88     msa = msa.select_diverse(
+     89         self._max_seqs_per_msa, method=self._sample_method
+     90     )
+     91 return msa
+
+File /pentapool/home/zhangbinyun/Project/RNA_foundation_model/RNA-MSM/utils/align.py:171, in MSA.select_diverse(self, num_seqs, method)
+    168     return self
+    170 if method == ""hhfilter"":
+--> 171     msa = self.hhfilter(diff=num_seqs)  # diff=num_seqs
+    172     if num_seqs < msa.depth:
+    173         msa = msa.select(np.arange(num_seqs))
+
+File /pentapool/home/zhangbinyun/Project/RNA_foundation_model/RNA-MSM/utils/align.py:98, in MSA.hhfilter(self, seqid, diff, cov, qid, qsc, binary)
+     84 output_file = tempdir / ""output.fasta""
+     85 command = "" "".join(
+     86     [
+     87         f""{binary}"",
+   (...)
+     96     ]
+     97 ).split("" "")
+---> 98 result = subprocess.run(command, capture_output=True)
+     99 result.check_returncode()
+    100 with output_file.open() as f:
+
+File ~/envs/MoE/lib/python3.8/subprocess.py:493, in run(input, capture_output, timeout, check, *popenargs, **kwargs)
+    490     kwargs['stdout'] = PIPE
+    491     kwargs['stderr'] = PIPE
+--> 493 with Popen(*popenargs, **kwargs) as process:
+    494     try:
+    495         stdout, stderr = process.communicate(input, timeout=timeout)
+
+File ~/envs/MoE/lib/python3.8/subprocess.py:858, in Popen.__init__(self, args, bufsize, executable, stdin, stdout, stderr, preexec_fn, close_fds, shell, cwd, env, universal_newlines, startupinfo, creationflags, restore_signals, start_new_session, pass_fds, encoding, errors, text)
+    854         if self.text_mode:
+    855             self.stderr = io.TextIOWrapper(self.stderr,
+    856                     encoding=encoding, errors=errors)
+--> 858     self._execute_child(args, executable, preexec_fn, close_fds,
+    859                         pass_fds, cwd, env,
+    860                         startupinfo, creationflags, shell,
+    861                         p2cread, p2cwrite,
+    862                         c2pread, c2pwrite,
+    863                         errread, errwrite,
+    864                         restore_signals, start_new_session)
+    865 except:
+    866     # Cleanup if the child failed starting.
+    867     for f in filter(None, (self.stdin, self.stdout, self.stderr)):
+
+File ~/envs/MoE/lib/python3.8/subprocess.py:1720, in Popen._execute_child(self, args, executable, preexec_fn, close_fds, pass_fds, cwd, env, startupinfo, creationflags, shell, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite, restore_signals, start_new_session)
+   1718     if errno_num != 0:
+   1719         err_msg = os.strerror(errno_num)
+-> 1720     raise child_exception_type(errno_num, err_msg, err_filename)
+   1721 raise child_exception_type(err_msg)",Binyun-Z,https://github.com/yikunpku/RNA-MSM/issues/8
+I_kwDOIuTgr86HL0st,ModuleNotFoundError: No module named 'msm.version',CLOSED,2024-04-29T02:56:49Z,2024-06-12T18:08:38Z,2024-06-06T02:41:06Z,"Hello, There is an error when I run the command:
+```
+$ conda activate rnamsm
+(rnamsm) [kjw@master RNA-MSM]$ python RNA_MSM_Inference.py \
+> data.root_path=/public/work/jinwen/4Gdb_test/RNA-MSM/test \
+> data.MSA_path=/public/work/jinwen/4Gdb_test/RNA-MSM/test/results \
+> data.model_path=/public/work/jinwen/4Gdb_test/RNA-MSM/test/pretrained \
+> data.MSA_list=/public/work/jinwen/4Gdb_test/RNA-MSM/test/rna_id.txt
+Traceback (most recent call last):
+  File ""RNA_MSM_Inference.py"", line 5, in <module>
+    from utils.tokenization import Vocab
+  File ""/public/work/jinwen/software/RNA-MSM/utils/tokenization.py"", line 6, in <module>
+    import msm
+  File ""/public/work/jinwen/software/RNA-MSM/msm/__init__.py"", line 6, in <module>
+    from .version import version as __version__  # noqa
+ModuleNotFoundError: No module named 'msm.version'
+```
+",JinwnK,https://github.com/yikunpku/RNA-MSM/issues/9
+I_kwDOIuTgr86MCHgS,No EOS token appended,OPEN,2024-06-12T17:44:49Z,2024-07-22T14:12:42Z,,"Hi, 
+
+Thank you for this wonderful work! 
+
+When I was trying to reproduce your results, I faced some challenges when getting a minimum working example to run. 
+
+```python
+import __main__
+
+import torch
+
+from model import MSATransformer
+from utils.tokenization import Vocab
+from msm.data import Alphabet
+
+
+# evil hack
+__main__.Config = dict()
+__main__.OptimizerConfig = dict()
+__main__.MSATransformerModelConfig = dict()
+__main__.DataConfig = dict()
+__main__.TrainConfig = dict()
+__main__.LoggingConfig = dict()
+
+pretrained = ""RNA_MSM_pretrained.ckpt""
+
+alphabet = Alphabet.from_architecture(""rna language"")
+vocab = Vocab.from_esm_alphabet(alphabet)
+tokenizer = vocab.encode
+model = MSATransformer(vocab, num_layers=10)
+model.load_state_dict(torch.load(pretrained, map_location='cpu')['state_dict'])
+model.eval()
+
+sequence = ""UAGCNUAUCAGACUGAUGUUGA""
+inputs = torch.tensor(tokenizer(sequence))[None, None, :]
+
+o = model(inputs, need_head_weights=True, repr_layers=list(range(13)))
+```
+
+The length of sequence is 22, so inputs should have 24 tokens (with <cls> and <eos>)
+But it only has 23 tokens. 
+
+The inputs is:
+```
+tensor([[[0, 7, 4, 5, 6, 9, 7, 4, 7, 6, 4, 5, 4, 6, 7, 5, 4, 7, 5, 7, 7, 5, 4]]])
+```
+
+Since vocab is `Vocab({'<cls>': 0, '<pad>': 1, '<eos>': 2, '<unk>': 3, 'A': 4, 'G': 5, 'C': 6, 'U': 7, 'X': 8, 'N': 9, '-': 10, '<mask>': 11})`, 
+it appears `<eos>` token is not appended by the vocab. 
+",ZhiyuanChen,https://github.com/yikunpku/RNA-MSM/issues/10
+I_kwDOIuTgr86RZtig,Can I use the code to train the model from scratch?,CLOSED,2024-07-31T08:22:05Z,2024-08-01T07:58:23Z,2024-08-01T07:58:23Z,"Congrats to this wonderful work! Could you provide the detailed code to help me train the model from scratch?
+
+Thank you.
+
+",minwochai,https://github.com/yikunpku/RNA-MSM/issues/11
+I_kwDOIuTgr86Sed3Z,readme.md修改：提醒使用者enviroment.yml文件中的prefix应该根据自己电脑路径更改,OPEN,2024-08-09T09:02:13Z,2024-08-09T09:02:13Z,,,yangfa-zhang,https://github.com/yikunpku/RNA-MSM/issues/12
+I_kwDOIuTgr86e9eZ4,关于RNA-MSM的网站,OPEN,2024-11-18T02:57:19Z,2024-11-18T02:57:19Z,,您好，我想尝试使用您提供的网站生成rna的连接图，但是您的网站好像已经关闭。,Dowson0,https://github.com/yikunpku/RNA-MSM/issues/13
+I_kwDOIuTgr86fIQq7,env package conflict,OPEN,2024-11-18T20:03:06Z,2024-11-18T20:03:06Z,,Hi! We encounter package version conflict when trying to install the conda env via conda env create -f environment.yml. Could you double check the env file or list the essential package needed?,zkysfls,https://github.com/yikunpku/RNA-MSM/issues/14

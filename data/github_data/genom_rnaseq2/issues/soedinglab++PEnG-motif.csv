@@ -1,0 +1,45 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMDY5Njk2ODQ=,segfault on ridiculously small data set.,CLOSED,2017-02-11T09:28:11Z,2017-02-13T12:33:24Z,2017-02-13T12:33:24Z,"```
+peng_motif '/tmp/foo.fasta' -t 100 -w 8 -bg-model-order 1 -b 0.75 -a 1000 \
+     -em-threshold 0.08 -em-max-iterations 100 -threads 4 -o '/tmp/foo.out' -strand PLUS
+```
+
+segfaults on http://pastebin.com/DwDmZsAm
+
+works without `-strand PLUS`",croth1,https://github.com/soedinglab/PEnG-motif/issues/3
+MDU6SXNzdWUyMDc0NjM1OTU=,-version command line argument,CLOSED,2017-02-14T09:39:44Z,2017-02-14T10:23:46Z,2017-02-14T10:23:46Z,"please consider implementing a `-version` command line argument, that simply prints the version number and exits with 0. We might eventually need that for the wrapper.",croth1,https://github.com/soedinglab/PEnG-motif/issues/4
+MDU6SXNzdWUyMTkxNzE5MDQ=,command line inconsistency between peng and shoot_peng,CLOSED,2017-04-04T08:12:59Z,2017-04-04T09:18:05Z,2017-04-04T09:17:54Z,"shoot_peng cannot be used with advanced options because of a mismatch in the optional argument style:
+
+e.g peng uses `-strand`, shoot_peng wants to set `--strand`.",croth1,https://github.com/soedinglab/PEnG-motif/issues/5
+MDU6SXNzdWUyMjI3NTgxNjI=,shoot_peng should be integrated into BaMM-suite,CLOSED,2017-04-19T14:30:54Z,2018-05-10T09:05:24Z,2018-05-10T09:05:24Z,"BaMM-suite will eventually become the main wrapper around all our tools. To integrate peng_motif, following things have to be done:
+
+- [x] search for all required scripts and binaries in the PATH, remove hard-coded paths
+- [ ] install shoot_peng as part of a python package. This will allow to avoid duplication of the command line parser
+- [ ] rewrite shoot_peng so that it uses a function `add_arguments(argparse_parser)` which adds arguments to a given parser
+- [ ] integrate shoot_peng into the `bamm_wrapper` 
+- [ ] document all options using the sphinx documentation in the BaMMs-suite repository",croth1,https://github.com/soedinglab/PEnG-motif/issues/6
+MDU6SXNzdWUyNDEzMDg3MzE=,include <cmath> in the peng.cpp file,CLOSED,2017-07-07T16:02:27Z,2017-07-12T15:28:03Z,2017-07-12T15:28:03Z,"without #include <cmath> in the peng.cpp file, it shows error when compiling PEnG-motif on Max OS, saying that:
+
+error: 'log' is not a member of 'std' 
+...
+",wge11,https://github.com/soedinglab/PEnG-motif/issues/7
+MDU6SXNzdWUyNzAzNTM3OTY=,Can this copying step be avoided?,CLOSED,2017-11-01T15:48:25Z,2017-11-09T10:06:36Z,2017-11-09T10:06:36Z,https://github.com/soedinglab/PEnG-motif/blob/96633023fda18394ffdeaf0e12250dab367f7968/scripts/shoot_peng.py#L165,wge11,https://github.com/soedinglab/PEnG-motif/issues/22
+MDU6SXNzdWUyNzE0NTU5ODY=,Here it needs to output the values in scientific notation to avoid the rounding problem,CLOSED,2017-11-06T12:17:07Z,2017-11-06T13:30:18Z,2017-11-06T13:30:18Z,https://github.com/soedinglab/PEnG-motif/blob/96633023fda18394ffdeaf0e12250dab367f7968/src/peng.cpp#L594,wge11,https://github.com/soedinglab/PEnG-motif/issues/23
+MDU6SXNzdWUyOTMyNTUxMTc=,Docker image,CLOSED,2018-01-31T17:58:16Z,2018-05-10T09:05:07Z,2018-05-10T09:05:07Z,"I am having hard time installing on a machine
+Linux 64dc5edce39d 4.9.49-moby #1 SMP Wed Sep 27 23:17:17 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+It would be good if you have Dockerfile for installing these in a standard ubuntu or other linux machine. ",pranjan77,https://github.com/soedinglab/PEnG-motif/issues/26
+MDU6SXNzdWUzODQzNDc0OTQ=,C+G content is 40% while A+T content is 60%,OPEN,2018-11-26T14:10:16Z,2018-11-26T14:10:16Z,,https://github.com/soedinglab/PEnG-motif/blob/78d35ce5d317171b76e4995285771fd5f5b15bc9/scripts/pwm2iupac.py#L91,wge11,https://github.com/soedinglab/PEnG-motif/issues/33
+MDU6SXNzdWU0MTEyMzI2MDI=,Bug report,CLOSED,2019-02-17T20:43:05Z,2019-02-19T09:11:10Z,2019-02-19T09:11:10Z,"Hello Developer, 
+
+My name is Enas and I am a Ph.D. student. My research focuses on static code analysis. I was looking for open-source software to collect some static code analysis tool warnings. I checked your source code, and I ran one of static code analysis tools over the source code. A number of warnings were generated; some of them may represent true defects in the source code and some may represent false reports, where the tool shows a defect but in reality there is none. 
+
+I need your help by going through the warnings and checking if any of them represent a true defect in your source code. To do that, kindly find the attached file, which contains the warnings. 
+
+Your response and help are highly appreciated. 
+
+Thanks, 
+Enas 
+ 
+[FF.xlsx](https://github.com/soedinglab/PEnG-motif/files/2873399/FF.xlsx)
+",AnosAhmad,https://github.com/soedinglab/PEnG-motif/issues/34

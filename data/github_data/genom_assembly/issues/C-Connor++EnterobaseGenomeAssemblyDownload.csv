@@ -1,0 +1,39 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNDQ3NjAzMTc=,Error in Readme,OPEN,2018-07-26T09:14:15Z,2018-07-26T09:14:15Z,,"Just a little issue, the readme says ecoli is an option for database - this doesn't work, instead seems to work with escherichia",tomhayes,https://github.com/C-Connor/EnterobaseGenomeAssemblyDownload/issues/1
+I_kwDOCEtmiM6M1HCm,Some alterations to the code to make it work for myself,OPEN,2024-06-19T16:12:05Z,2024-06-19T16:12:05Z,,"1. I could not get the API token via the log in details so I blocked this section out and added a hard coded variable called API_TOKEN where I pasted my API token into:
+
+```
+#prompt for loging details
+#ENTEROBASE_USERNAME = raw_input(""Please enter Enterobase username: "")
+#ENTEROBASE_PASSWORD = getpass.getpass(""Please enter Enterobase password: "")
+
+ENTEROBASE_SERVER = 'https://enterobase.warwick.ac.uk'
+#apiaddress = '%s/api/v2.0/login?username=%s&password=%s' %(ENTEROBASE_SERVER, ENTEROBASE_USERNAME, ENTEROBASE_PASSWORD)
+
+#get API token
+print('Retrieving API token.')
+#try:
+#    response = urllib2.urlopen(apiaddress)
+#    data = json.load(response)
+#    API_TOKEN = data['api_token']
+#except urllib2.HTTPError as Response_error:
+#    print(""Connection error ocurred:"")
+#    print '%d %s.\n Reason: %s' %(Response_error.code, Response_error.msg, Response_error.read())
+#    sys.exit()
+
+API_TOKEN = '<copy_API_here>'
+```
+------------------------------------------------
+
+2. in the barcode_search function
+The function is looking for a header called 'Assembly barcode' - in my file the 'b' in the barcode was capitalised so I altered this line to:
+`if header_line.split('\t')[count].strip() == 'Assembly Barcode':`
+
+----------------------------------------------
+
+3. In the accession_search function:
+I alter the line looking for the Data Source column header to mirror what was in the my downloaded file:
+`if header_line.split('\t')[count].strip() == 'Data Source(Accession No.;Sequencing Platform;Sequencing Library;Insert Size;Experiment;Bases;Average Length;Status)':`
+
+---------------------------------------------
+",a-damC,https://github.com/C-Connor/EnterobaseGenomeAssemblyDownload/issues/2

@@ -1,0 +1,2193 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5MDY4NzgzNjI=,performance optimization,CLOSED,2021-05-30T20:50:40Z,2021-06-04T20:06:47Z,2021-06-04T20:06:47Z,"This is more of a request to optimize the code to run faster in production environment. multi threading, or GPU acceleration.",husamia,https://github.com/kcleal/dysgu/issues/1
+MDU6SXNzdWU5MDcyNjQwMjQ=,joint sample VCF,CLOSED,2021-05-31T08:55:31Z,2021-12-17T13:38:15Z,2021-12-17T13:38:15Z,"Hi,
+
+Thanks for the nice tool. Do you have some method (or future plan) for joint calling? 
+I tried `merge` to combine multiple samples' VCFs but am not sure whether this is a correct way to get reference homozygous genotypes..
+
+",joonan30,https://github.com/kcleal/dysgu/issues/2
+MDU6SXNzdWU5MDc2Mjc5NTA=,AttributeError: module 'pysam.libcalignmentfile' has no attribute 'IteratorColumnAll',CLOSED,2021-05-31T17:29:46Z,2021-05-31T17:35:36Z,2021-05-31T17:35:36Z,"Hi,
+
+I wanted to test this out, I was packaging it up for nixpkgs, but I get this error when running the tests:
+
+```
+AttributeError: module 'pysam.libcalignmentfile' has no attribute 'IteratorColumnAll'
+```
+
+What version of pysam do you use? This is the error log:
+
+```s
+Traceback (most recent call last):
+  File ""nix_run_setup"", line 8, in <module>
+    exec(compile(getattr(tokenize, 'open', open)(__file__).read().replace('\\r\\n', '\\n'), __file__, 'exec'))
+  File ""setup.py"", line 136, in <module>
+    setup(
+  File ""/nix/store/sbiym6y0nmyabnh6mz4xzy26l0fhyqy7-python3.8-setuptools-47.3.1/lib/python3.8/site-packages/setuptools/__init__.py"", line 161, in setup
+    return distutils.core.setup(**attrs)
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/distutils/core.py"", line 148, in setup
+    dist.run_commands()
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/distutils/dist.py"", line 966, in run_commands
+    self.run_command(cmd)
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/distutils/dist.py"", line 985, in run_command
+    cmd_obj.run()
+  File ""/nix/store/sbiym6y0nmyabnh6mz4xzy26l0fhyqy7-python3.8-setuptools-47.3.1/lib/python3.8/site-packages/setuptools/command/test.py"", line 238, in run
+    self.run_tests()
+  File ""/nix/store/sbiym6y0nmyabnh6mz4xzy26l0fhyqy7-python3.8-setuptools-47.3.1/lib/python3.8/site-packages/setuptools/command/test.py"", line 256, in run_tests
+    test = unittest.main(
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/main.py"", line 100, in __init__
+    self.parseArgs(argv)
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/main.py"", line 124, in parseArgs
+    self._do_discovery(argv[2:])
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/main.py"", line 244, in _do_discovery
+    self.createTests(from_discovery=True, Loader=Loader)
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/main.py"", line 154, in createTests
+    self.test = loader.discover(self.start, self.pattern, self.top)
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/loader.py"", line 349, in discover
+    tests = list(self._find_tests(start_dir, pattern))
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/loader.py"", line 405, in _find_tests
+    tests, should_recurse = self._find_test_path(
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/loader.py"", line 483, in _find_test_path
+    tests = self.loadTestsFromModule(package, pattern=pattern)
+  File ""/nix/store/sbiym6y0nmyabnh6mz4xzy26l0fhyqy7-python3.8-setuptools-47.3.1/lib/python3.8/site-packages/setuptools/command/test.py"", line 55, in loadTestsFromModule
+    tests.append(self.loadTestsFromName(submodule))
+  File ""/nix/store/qy5z9gcld7dljm4i5hj3z8a9l6p37y81-python3-3.8.8/lib/python3.8/unittest/loader.py"", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File ""/build/source/dysgu/view.py"", line 11, in <module>
+    from dysgu import io_funcs, cluster
+  File ""dysgu/cluster.pyx"", line 16, in init dysgu.cluster
+    from dysgu import coverage, graph, call_component, assembler, io_funcs, re_map, post_call_metrics
+  File ""dysgu/graph.pyx"", line 1, in init dysgu.graph
+    #cython: language_level=3, boundscheck=False, c_string_type=unicode, c_string_encoding=utf8, infer_types=True
+AttributeError: module 'pysam.libcalignmentfile' has no attribute 'IteratorColumnAll'
+```
+
+I see this is also an issue mentioned here:
+
+* https://github.com/alimanfoo/pysamstats/issues/105
+* https://github.com/alimanfoo/pysamstats/issues/112",scalavision,https://github.com/kcleal/dysgu/issues/3
+MDU6SXNzdWU5MDg0OTM1MTg=,VCF format for genome browser,CLOSED,2021-06-01T16:44:46Z,2021-06-02T17:43:33Z,2021-06-02T17:43:09Z,Is the VCF output compatible with genome browser? I am getting error that the reference allele is missing when I try to open the VCF output with IGV. This would be highly needed for visualize the results. ,husamia,https://github.com/kcleal/dysgu/issues/4
+MDU6SXNzdWU5MTE4NDUwMjM=,VCF filtering,CLOSED,2021-06-04T21:12:16Z,2023-08-07T09:16:32Z,2021-06-05T11:17:04Z,"The majority of the SV calls are low quality so it's important to filter the results to highest quality calls. Is there an easy way to filter cals based on the INFO column annotation and the Genotype info key? 
+
+for example: 
+
+SU > 10
+PE > 5
+SC > 10
+PROB > 0.95
+Filter = PASS
+
+I know this can be done with awk. It would take me many hours to find the right command.",husamia,https://github.com/kcleal/dysgu/issues/5
+MDU6SXNzdWU5MzU4NTc0OTI=,Dysgu merge function,CLOSED,2021-07-02T15:08:19Z,2021-07-22T15:09:53Z,2021-07-22T15:09:53Z,"Hi
+Thank you for your great tools.
+I had a question about the merge function. 
+I want to merge my different vcf files containing duplicates and I would like to know the properties of this function 
+does this function merge the same duplicates present on my different samples or does it recover all duplicates at the same time
+Thanks in advance",assane-mbodj,https://github.com/kcleal/dysgu/issues/6
+MDU6SXNzdWU5Mzg3MjYyOTM=,ENH: support cram,CLOSED,2021-07-07T10:12:40Z,2021-07-12T08:03:02Z,2021-07-12T08:03:02Z,"currently, if a cram file is sent, then dysgu will try to use a fasta over the network according to the header (which fails in my case).
+it would be faster to use:
+```
+result = hts_set_fai_filename(f_in, fasta);
+...
+```
+after `sam_open`. This will work for bam as well (in that it will have no effect for bam files).",brentp,https://github.com/kcleal/dysgu/issues/7
+MDU6SXNzdWU5NDEyNjMzNjM=,how to get actual inserted/deleted sequence,CLOSED,2021-07-10T14:41:08Z,2021-10-06T08:50:19Z,2021-10-06T08:50:19Z,"Hi, given a variant like this one (added some newlines for readability):
+
+```
+chr1    54712   5       .       <INS>   .       PASS
+SVMETHOD=DYSGUv1.2.3;SVTYPE=INS;END=54712;CHR2=chr1;GRP=426691;NGRP=1;CT=5to3;CIPOS95=0;CIEND95=0;SVLEN=36;
+CONTIGA=ttttttttctttctttctttctttctttctttctttctttcTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTTCTTCCTCCTTTTCTTTCCTTTTCTTTCTTTCATTCTTTCTTTCTTTTTTAAGTGGCAGGGTCTCACT;
+KIND=extra-regional;GC=28.14;NEXP=28;STRIDE=4;
+EXPSEQ=ctttctttctttctttctttctttcTTT;
+RPOLY=84;OL=0;SU=4;WR=0;PE=0;SR=0;SC=4;BND=4;LPREC=1;RT=pe 
+GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB
+1/1:10:34.5:4:0:0:0:4:4:16.5:1:1:3:76:1:7:0.829:1.129:0.935:0.65
+```
+what is the actual inserted sequence?
+SVLEN says 36. EXPSEQ has len=28, the lowercase sequence in `CONTIGA` has len=41
+
+I understand that in some cases we can't get the full inserted sequence, but for those cases, can we get the left end of the inserted sequence from CONTIGA and the right end from CONTIGB? how?
+
+Would also be nice to be able to get deleted sequence for DEL:
+```
+chr1    10250   2       .       <DEL>   .       PASS    SVMETHOD=DYSGUv1.2.3;SVTYPE=DEL;END=10282;CHR2=chr1;GRP=212728;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=32;CONTIGA=CTAACCCTAACCCTAAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCCTAACCCTAACCCTAAACCTCACCCCCACCCCCACCCCCACCCCCACCCCCACCCCAACCCTAACCCCTAACCCTAACCCTAACCCTAacCCCTAACCCTAACCCTAACCCTAACCCTAACC;KIND=extra-regional;GC=56.52;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=120;OL=0;SU=6;WR=2;PE=1;SR=0;SC=2;BND=1;LPREC=1;RT=pe
+```
+In this case, the sequence after the lower-case letters in CONTIGA is length 32. Is that the deleted sequence? Or would I look this up in a fasta and contig A is the haplotype with the deletion?
+",brentp,https://github.com/kcleal/dysgu/issues/10
+MDU6SXNzdWU5NDQ0NDgxMzQ=,"KeyError: ""sequence '1' not present""",CLOSED,2021-07-14T13:48:00Z,2021-07-14T14:44:16Z,2021-07-14T14:44:16Z,"I am running dysgu installed on Linux WSL2 (Windows 10). The command is default
+
+`dysgu run -p4 GRCh38_full_analysis_set_plus_decoy_hla.fa sample.bam > sample_dysgu_sv.vcf
+`
+
+the data is 30x WGS (illumina) PE 150. The output an empty vcf, the folder contains 25 bin files and the reads.bam file which is about 30GB. The output log is too long to paste but here is the last few lines of it.
+
+```
+  File ""/usr/lib/python3/dist-packages/click/decorators.py"", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/husamia/.local/lib/python3.8/site-packages/dysgu/main.py"", line 220, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""/home/husamia/.local/lib/python3.8/site-packages/dysgu/re_map.py"", line 473, in drop_svs_near_reference_gaps
+    logging.warning(""Error fetching reference chromosome: {}"".format(chrom), errors)
+Message: 'Error fetching reference chromosome: Y'
+Arguments: (KeyError(""sequence 'Y' not present""),)
+2021-07-13 15:33:00,848 [INFO   ]  N near gaps dropped 0
+
+2021-07-13 15:33:45,354 [INFO   ]  Loaded n=25 chromosome coverage arrays from /mnt/e/20A0012672_Proband/dysgu
+2021-07-13 15:35:37,356 [INFO   ]  Adding genotype
+Traceback (most recent call last):
+  File ""/home/husamia/.local/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/usr/lib/python3/dist-packages/click/core.py"", line 764, in __call__
+    return self.main(*args, **kwargs)
+  File ""/usr/lib/python3/dist-packages/click/core.py"", line 717, in main
+    rv = self.invoke(ctx)
+  File ""/usr/lib/python3/dist-packages/click/core.py"", line 1137, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/usr/lib/python3/dist-packages/click/core.py"", line 956, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/usr/lib/python3/dist-packages/click/core.py"", line 555, in invoke
+    return callback(*args, **kwargs)
+  File ""/usr/lib/python3/dist-packages/click/decorators.py"", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/husamia/.local/lib/python3.8/site-packages/dysgu/main.py"", line 220, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1051, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 970, in dysgu.cluster.pipe1
+  File ""dysgu/post_call_metrics.pyx"", line 465, in dysgu.post_call_metrics.ref_repetitiveness
+  File ""pysam/libcfaidx.pyx"", line 303, in pysam.libcfaidx.FastaFile.fetch
+KeyError: ""sequence '1' not present""
+```
+
+",husamia,https://github.com/kcleal/dysgu/issues/11
+MDU6SXNzdWU5NTQ4MzQ2MzY=,Segmentation fault,CLOSED,2021-07-28T13:05:11Z,2021-09-01T18:16:20Z,2021-09-01T18:16:20Z,"I ran three samples simultanously. One of them processed to completion but two failed due to Segmentation fault during the Building graph step
+
+
+```
+2021-07-27 16:01:08,978 [INFO   ]  [dysgu-run] Version: 1.1.7
+2021-07-27 16:01:08,980 [INFO   ]  run -p5 GRCh38_full_analysis_set_plus_decoy_hla.fa X_dysgu X.cram.bam
+2021-07-27 16:01:08,980 [INFO   ]  Destination: X_dysgu
+2021-07-27 20:52:22,501 [INFO   ]  dysgu fetch X.cram.bam written to X_dysgu/X.cram.dysgu_reads.bam, n=32435857, time=4:51:13 h:m:s
+2021-07-27 20:52:22,501 [INFO   ]  Input file is: X_dysgu/X.cram.dysgu_reads.bam
+[E::idx_find_and_load] Could not retrieve index file for 'X_dysgu/X.cram.dysgu_reads.bam'
+2021-07-27 20:52:22,715 [INFO   ]  Input file has index False
+2021-07-27 20:52:23,231 [WARNING]  Warning: more than one @RG, using first sample (SM) for output: X
+2021-07-27 20:52:23,231 [INFO   ]  Sample name: X
+2021-07-27 20:52:23,231 [INFO   ]  Writing vcf to stdout
+2021-07-27 20:52:23,231 [INFO   ]  Running pipeline
+2021-07-27 20:52:26,642 [INFO   ]  Removed 55 outliers with insert size >= 1661
+2021-07-27 20:52:26,659 [INFO   ]  Inferred read length 151.0, insert median 444, insert stdev 202
+2021-07-27 20:52:26,660 [INFO   ]  Max clustering dist 1454
+2021-07-27 20:52:26,660 [INFO   ]  Minimum support 3
+2021-07-27 20:52:26,660 [INFO   ]  Building graph with clustering distance 1454 bp, scope length 1454 bp
+Segmentation fault
+```",husamia,https://github.com/kcleal/dysgu/issues/12
+MDU6SXNzdWU5NTQ5Nzc0Mjk=,Large memory request,CLOSED,2021-07-28T15:23:31Z,2021-08-19T13:30:02Z,2021-08-19T08:44:25Z,"Hello,
+
+I ran into an issue while running a basic test with dysgu that seems to be allocating an extremely large array for some reason.  The error is below (redacting some file paths):
+
+```
+2021-07-28 08:59:57,769 [INFO   ]  [dysgu-run] Version: 1.2.7
+2021-07-28 08:59:57,770 [INFO   ]  run -o output.vcf --mode pe --pl pe /cluster/home/jholt/reference/hg38_asm5_alt/hg38.fa ./working_dir <redacted>/pipeline/merged_alignments/hg38_asm5_alt/sentieon-202010.02/HALB3002753.bam
+2021-07-28 08:59:57,770 [INFO   ]  Destination: ./working_dir
+2021-07-28 09:43:45,827 [INFO   ]  dysgu fetch <redacted>/pipeline/merged_alignments/hg38_asm5_alt/sentieon-202010.02/HALB3002753.bam written to ./working_dir/HALB3002753.dysgu_reads.bam, n=65472206, time=0:43:48 h:m:s
+2021-07-28 09:43:45,827 [INFO   ]  Input file is: ./working_dir/HALB3002753.dysgu_reads.bam
+2021-07-28 09:43:48,444 [INFO   ]  Sample name: HALB3002753
+2021-07-28 09:43:48,444 [INFO   ]  Writing SVs to output.vcf
+2021-07-28 09:43:48,446 [INFO   ]  Running pipeline
+2021-07-28 09:43:49,103 [INFO   ]  Removed 34 outliers with insert size >= 903.0
+2021-07-28 09:43:49,124 [INFO   ]  Inferred read length 151.0, insert median 391, insert stdev 99
+2021-07-28 09:43:49,125 [INFO   ]  Max clustering dist 886
+2021-07-28 09:43:49,126 [INFO   ]  Minimum support 3
+2021-07-28 09:43:49,126 [INFO   ]  Building graph with clustering distance 886 bp, scope length 886 bp
+2021-07-28 10:01:48,141 [INFO   ]  Total input reads 63689262
+2021-07-28 10:02:50,425 [INFO   ]  Graph constructed
+(315,)
+(132,)
+(array([[1.320000e+02, 1.870000e+02],
+       [1.230000e+02, 1.980000e+02],
+       [1.400000e+02, 2.810000e+02],
+       ...,
+       [1.496422e+06, 1.496339e+06],
+       [1.496425e+06, 1.496419e+06],
+       [1.496474e+06, 1.496389e+06]]),)
+Traceback (most recent call last):
+  File ""dysgu/call_component.pyx"", line 663, in dysgu.call_component.partition_single
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/scipy/cluster/hierarchy.py"", line 1064, in linkage
+    if not np.all(np.isfinite(y)):
+numpy.core._exceptions.MemoryError: Unable to allocate 41.6 GiB for an array with shape (44717395096,) and data type bool
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""<redacted>/miniconda3/envs/dysgu_test/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/core.py"", line 1137, in __call__
+    return self.main(*args, **kwargs)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/core.py"", line 1062, in main
+    rv = self.invoke(ctx)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/core.py"", line 1668, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/core.py"", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/core.py"", line 763, in invoke
+    return __callback(*args, **kwargs)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/dysgu/main.py"", line 252, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1110, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 901, in dysgu.cluster.pipe1
+  File ""dysgu/cluster.pyx"", line 653, in dysgu.cluster.component_job
+  File ""dysgu/call_component.pyx"", line 1747, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1755, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1736, in dysgu.call_component.multi
+  File ""dysgu/call_component.pyx"", line 874, in dysgu.call_component.single
+  File ""dysgu/call_component.pyx"", line 668, in dysgu.call_component.partition_single
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/scipy/cluster/hierarchy.py"", line 1060, in linkage
+    y = distance.pdist(y, metric)
+  File ""<redacted>/miniconda3/envs/dysgu_test/lib/python3.9/site-packages/scipy/spatial/distance.py"", line 2250, in pdist
+    return pdist_fn(X, out=out, **kwargs)
+numpy.core._exceptions.MemoryError: Unable to allocate 333. GiB for an array with shape (44717395096,) and data type float64
+```
+
+It seems like the memory requirements should be much lower [according to the docs](https://github.com/kcleal/dysgu#resource-requirements).  Any suggestions?",holtjma,https://github.com/kcleal/dysgu/issues/13
+I_kwDODQYcac47xRJ4,small duplication false negative,CLOSED,2021-09-21T16:00:47Z,2021-12-30T12:44:12Z,2021-10-06T08:49:43Z,"Why does dysgu-SV not detect this 77bp duplication? the reads look pretty good. It's a custom library target NGS with illumina with high coverage. I tried the option --keep-small and still didn't call it. Is this by design or false negative or what?
+
+![image](https://user-images.githubusercontent.com/13439952/134205643-61989e4c-8aa3-4d3c-9a37-07af84efc9b7.png)
+",husamia,https://github.com/kcleal/dysgu/issues/14
+I_kwDODQYcac4-4qId,Problem in re genotyping a sample using merged sites,CLOSED,2021-11-16T15:51:41Z,2021-12-17T13:35:26Z,2021-12-17T13:35:26Z,"Hi,
+
+Nice tool! I like that it can run with both short and long reads.
+In my case I have few small families (duos or trios) sequenced using PacBio HiFi reads for which I want to create family VCFs
+
+Following your suggestions I've first generated SV calls for each individual using `dysgu run --mode pacbio`, then for each family I've merged calls from the various family members using `dysgu merge vcf_sample1.vcf vcf_sample2.vcf | bgzip -c > merged.vcf.gz`
+
+Finally I want to re-call SV so I've tried something like the following
+```
+dysgu run -p12 --mode pacbio --sites merged.vcf.gz --sites-prob 0.8 --all-sites True GRCh38.fa tmpdir sample1.bam
+```
+I've tried the above also using uncompressed merged file and without `--site-prob` and the results are the same as described below
+
+In the beginning, the tool seems to run fine and it can read variants from my input I think. Here is an extract of the log:
+```
+2021-11-16 15:35:56,906 [INFO   ]  Writing vcf to stdout
+2021-11-16 15:35:56,906 [INFO   ]  Running pipeline
+2021-11-16 15:35:56,940 [INFO   ]  Minimum support 2
+2021-11-16 15:35:56,940 [INFO   ]  Reading --sites
+2021-11-16 15:35:57,623 [INFO   ]  Building graph with clustering 500000 bp
+2021-11-16 15:36:31,347 [INFO   ]  Total input reads 244912
+2021-11-16 15:36:31,417 [INFO   ]  Added 43336 variants from input sites
+2021-11-16 15:36:31,504 [INFO   ]  Graph constructed
+```
+
+But then just after that I always get this error:
+```
+Traceback (most recent call last):
+  File ""/well/gel/HICF2/software/conda_envs/dysgu/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/site-packages/dysgu/main.py"", line 280, in run_pipeline 
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1115, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 919, in dysgu.cluster.pipe1
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/multiprocessing/connection.py"", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File ""/gpfs3/well/gel/HICF2/software/conda_envs/dysgu/lib/python3.7/multiprocessing/reduction.py"", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+_pickle.PicklingError: Can't pickle <class 'dysgu.sites_utils.Site'>: attribute lookup Site on dysgu.sites_utils failed
+```
+
+Any idea of possible solutions?
+
+Thanks!",edg1983,https://github.com/kcleal/dysgu/issues/15
+I_kwDODQYcac5AlH35,Zero Division Error During Call Component,CLOSED,2021-12-17T17:31:20Z,2021-12-21T18:31:04Z,2021-12-18T09:10:19Z,"Hello Kez,
+
+Exciting work you've put together here with dysgu. Very happy to have come across your preprint as I've been looking for a tool that would generate such useful read metrics for the major SV classes.
+I have been trying to get the software to complete on one of my samples and continue to run into this same error upon running the `call` step.
+
+```
+dysgu fetch working_dir PD26400a_T.final.bam
+2021-12-17 11:44:15,327 [INFO   ]  [dysgu-fetch] Version: 1.3.0
+2021-12-17 11:59:25,375 [INFO   ]  dysgu fetch PD26400a_T.final.bam written to working_dir/PD26400a_T.final.dysgu_reads.bam, n=6183390, time=0:15:10 h:m:s
+
+dysgu call --ibam PD26400a_T.final.bam --sites PD26400a_T_vs_PD26400b_N.consensus.somatic.sv.vcf Homo_sapiens_assembly38.fasta working_dir workin
+g_dir/PD26400a_T.final.dysgu_reads.bam > svs.vcf
+2021-12-17 12:01:57,321 [INFO   ]  [dysgu-call] Version: 1.3.0
+2021-12-17 12:01:57,321 [INFO   ]  Input file is: working_dir/PD26400a_T.final.dysgu_reads.bam
+2021-12-17 12:01:57,321 [INFO   ]  call --ibam PD26400a_T.final.bam --sites PD26400a_T_vs_PD26400b_N.consensus.somatic.sv.vcf Homo_sapiens_assembly38.fasta working_dir working_dir/PD26400a_T.final.dysgu_reads.bam
+[W::hts_idx_load3] The index file is older than the data file: PD26400a_T.final.bai
+2021-12-17 12:01:57,573 [INFO   ]  Sample name: PD26400a_T
+2021-12-17 12:01:57,573 [INFO   ]  Writing vcf to stdout
+2021-12-17 12:01:57,573 [INFO   ]  Running pipeline
+2021-12-17 12:01:58,283 [INFO   ]  Calculating insert size. Removed 27 outliers with insert size >= 938.0
+2021-12-17 12:01:58,299 [INFO   ]  Inferred read length 151.0, insert median 458, insert stdev 89
+2021-12-17 12:01:58,301 [INFO   ]  Max clustering dist 903
+2021-12-17 12:01:58,301 [INFO   ]  Minimum support 3
+2021-12-17 12:01:58,301 [INFO   ]  Reading --sites
+[W::vcf_parse_info] INFO/END=34143939 is smaller than POS at chr1:84232901
+2021-12-17 12:01:58,351 [INFO   ]  Building graph with clustering 903 bp
+2021-12-17 12:03:57,234 [INFO   ]  Total input reads 6183142
+2021-12-17 12:03:59,688 [INFO   ]  Added 57 variants from input sites
+2021-12-17 12:04:01,797 [INFO   ]  Graph constructed
+Traceback (most recent call last):
+  File ""/conda/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/dysgu/main.py"", line 442, in call_events
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1115, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 898, in dysgu.cluster.pipe1
+  File ""dysgu/cluster.pyx"", line 633, in dysgu.cluster.component_job
+  File ""dysgu/call_component.pyx"", line 1914, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1928, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1880, in dysgu.call_component.multi
+  File ""dysgu/call_component.pyx"", line 988, in dysgu.call_component.single
+  File ""dysgu/call_component.pyx"", line 608, in dysgu.call_component.make_single_call
+  File ""dysgu/call_component.pyx"", line 286, in dysgu.call_component.count_attributes2
+ZeroDivisionError: float division
+```
+
+To troubleshoot, I first ran `dysgu test` to determine if my build was fully successful and this completed without error.
+Next, I checked the output bam from the `fetch` step with some samtools commands. It's wasn't corrupt and had a reasonable amount of reads (6183390).
+Then I went into the script call_component.pyx and looked into the code block where the error originated:
+```
+if clipped_bases > 0 and aligned_bases > 0:
+        er.clip_qual_ratio = (aligned_base_quals / aligned_bases) / (clipped_base_quals / clipped_bases)
+    else:
+        er.clip_qual_ratio = 0
+```
+From that I can see it's one of `aligned_bases`, `clipped_base_quals`, or `clipped_bases`
+I couldn't see a reason any to these values would be zero based on the BAM that was produced so I wanted to present the issue here.
+
+Let me know if there is any other information or tests you would like me to try.
+Best regards,
+Patrick
+
+Below are packages installed for build via Anaconda and pip:
+```
+Cython                 0.29.26
+click                  8.0.3
+numpy                  1.21.2
+pandas                 1.3.5
+pysam                  0.18.0
+networkx               2.6.3
+scikit-learn           1.0.1
+ncls                   0.0.62
+scikit-bio             0.5.6
+edlib                  1.3.9
+sortedcontainers       2.4.0
+lightgbm               3.3.1
+```
+
+",pblaney,https://github.com/kcleal/dysgu/issues/16
+I_kwDODQYcac5AvLdg,Issue writing REP metric to VCF,CLOSED,2021-12-21T18:40:02Z,2021-12-23T11:47:52Z,2021-12-22T19:48:01Z,"Hi Kez,
+
+During the steps to write the output of the `call` function to the VCF, I encountered the following error:
+
+```
+dysgu call --ibam PD26400a_T.final.bam --sites PD26400a_T_vs_PD26400b_N.consensus.somatic.sv.vcf --all-sites True --ho
+m-ref-sites True --clip-length 15 --metrics Homo_sapiens_assembly38.fasta working_dir working_dir/PD26400a_T.final.dysgu_reads.bam 
+> svs.vcf
+2021-12-21 13:12:33,777 [INFO   ]  [dysgu-call] Version: 1.3.3
+2021-12-21 13:12:33,777 [INFO   ]  Input file is: working_dir/PD26400a_T.final.dysgu_reads.bam
+2021-12-21 13:12:33,777 [INFO   ]  call --ibam PD26400a_T.final.bam --sites PD26400a_T_vs_PD26400b_N.consensus.somatic.sv.vcf --all-sites True --hom-ref-sites True --clip-length 15 --metrics Homo_sapiens_assembly38.fasta working_dir working_dir/PD26400a_T.final.dysgu_reads.bam
+[W::hts_idx_load3] The index file is older than the data file: PD26400a_T.final.bai
+2021-12-21 13:12:34,079 [INFO   ]  Sample name: PD26400a_T
+2021-12-21 13:12:34,079 [INFO   ]  Writing vcf to stdout
+2021-12-21 13:12:34,079 [INFO   ]  Running pipeline
+2021-12-21 13:12:34,782 [INFO   ]  Calculating insert size. Removed 27 outliers with insert size >= 938.0
+2021-12-21 13:12:34,798 [INFO   ]  Inferred read length 151.0, insert median 458, insert stdev 89
+2021-12-21 13:12:34,799 [INFO   ]  Max clustering dist 903
+2021-12-21 13:12:34,799 [INFO   ]  Minimum support 3
+2021-12-21 13:12:34,799 [INFO   ]  Reading --sites
+[W::vcf_parse_info] INFO/END=34143939 is smaller than POS at chr1:84232901
+2021-12-21 13:12:34,826 [INFO   ]  Building graph with clustering 903 bp
+2021-12-21 13:14:03,262 [INFO   ]  Total input reads 4894147
+2021-12-21 13:14:04,966 [INFO   ]  Added 57 variants from input sites
+2021-12-21 13:14:06,505 [INFO   ]  Graph constructed
+2021-12-21 13:19:44,026 [INFO   ]  Number of components 2578332. N candidates 416974
+2021-12-21 13:19:44,330 [INFO   ]  Number of matching SVs from --sites 62
+2021-12-21 13:20:02,988 [INFO   ]  Re-alignment of soft-clips done. N candidates 300203
+2021-12-21 13:20:07,483 [INFO   ]  Number of candidate SVs merged: 25814
+2021-12-21 13:20:07,483 [INFO   ]  Number of candidate SVs after merge: 274389
+2021-12-21 13:20:07,573 [INFO   ]  Number of candidate SVs dropped with sv-len < min-size or support < min support: 243030
+2021-12-21 13:20:07,893 [INFO   ]  Number or SVs near gaps dropped 174
+2021-12-21 13:20:09,897 [INFO   ]  Loaded n=24 chromosome coverage arrays from working_dir
+/conda/lib/python3.7/site-packages/sklearn/base.py:333: UserWarning: Trying to unpickle estimator LabelEncoder from version 0.23.2 when using version 1.0.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
+  UserWarning,
+2021-12-21 13:20:29,021 [INFO   ]  Model: pe, diploid: True, contig features: True. N features: 43
+Traceback (most recent call last):
+  File ""/conda/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/conda/lib/python3.7/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/conda/lib/python3.7/site-packages/dysgu/main.py"", line 445, in call_events
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1190, in dysgu.cluster.cluster_reads
+  File ""dysgu/io_funcs.pyx"", line 656, in dysgu.io_funcs.to_vcf
+  File ""dysgu/io_funcs.pyx"", line 279, in dysgu.io_funcs.make_main_record
+ValueError: could not convert string to float: '.'
+```
+
+There was no issues with the `fetch` command and the beginning of the `svs.vcf` appears to be output correctly (i.e. full header  was present, including all FILTER/INFO/FORMAT fields).
+
+The issue stems from the REP metric calculation, specifically at the following code block:
+```
+if not small_output:
+        info_extras += [
+                    f""REP={'%.3f' % float(rep)}"",
+                    f""REPSC={'%.3f' % float(repsc)}"",
+
+                    ]
+```
+
+I'm running the most recent push to pypi (v1.3.3).",pblaney,https://github.com/kcleal/dysgu/issues/17
+I_kwDODQYcac5A9S42,Supporting reads,CLOSED,2021-12-28T11:19:20Z,2022-08-25T18:55:41Z,2022-02-07T11:05:21Z,"Hello,
+I was wondering if it would be possible to add an option to list the supporting reads for each SV? Even if only for the pacbio/ont reads, I think it would be useful to have as an information. 
+Thank you in advance,
+Andrea",RenzoTale88,https://github.com/kcleal/dysgu/issues/18
+I_kwDODQYcac5Cr5CK,Coverage of reads,CLOSED,2022-01-31T00:21:36Z,2022-02-21T14:27:32Z,2022-02-15T19:52:05Z,"Hi,
+This is more of a query than an issue. I have twenty samples of a DNA virus. I have both Illumina and nanopore reads. I would like to try Dysgu PE mode, LR mode, and hybrid mode. My samples are full genome data and have coverage of more than 1000x. I would like to know how to set the coverage for the input file. I can set the max coverage option to auto. Is this enough? Alternatively, I can use RASUSA (https://github.com/mbhall88/rasusa) to get 20x data then map with NGMLR or minimap2 or I can use samtools mpileup to reduce the coverage. What is the recommended coverage for PE mode, LR mode, and hybrid mode? My virus is a herpes virus. What do you suggest?",arunvv90,https://github.com/kcleal/dysgu/issues/19
+I_kwDODQYcac5DBJYN,Location on CHR2 for translocations,CLOSED,2022-02-04T16:14:37Z,2022-02-04T17:16:32Z,2022-02-04T17:16:32Z,"Hello, 
+
+Thanks for your tool. I was wondering if there is any way for translocations to get the location on both chromosomes. At the moment I don't see this information in the VCF file (only CHR2). Thank you. 
+
+P.S. I think the VCF format would encode these with SVTYPE=BND for each breakend. For my case I don't need the breakend information, but it would be great to get the location.",tbenavi1,https://github.com/kcleal/dysgu/issues/20
+I_kwDODQYcac5DGkcc,Installation Note,CLOSED,2022-02-07T10:28:07Z,2023-03-08T14:52:54Z,2023-03-07T16:14:19Z,"I was interested in trying Dysgu, and created a fresh conda environment with python 3.10. When I tried to install dysgu within that fresh env, I got the following error:
+```
+(dysgu)$ pip install dysgu
+ERROR: Could not find a version that satisfies the requirement dysgu (from versions: none)
+ERROR: No matching distribution found for dysgu
+```
+
+This seemed odd to me, and may have something to do with it the new version released 1 day before.
+
+However, when I dropped my python version down to 3.7 it went through (I did have to install `numpy` first). This is just for your documentation or others' troubleshooting.
+
+",nickhsmith,https://github.com/kcleal/dysgu/issues/21
+I_kwDODQYcac5DH8u0,Does the merge command work for translocations?,CLOSED,2022-02-07T15:38:57Z,2022-04-18T18:21:23Z,2022-04-18T18:21:23Z,"Apologies if I missed this somewhere, but does the merge command work for merging translocations across input samples? I used the merge command and it didn't seem to merge any, though I could be missing something. If it does merge translocations, is there information for how it does so? Thanks for any assistance. ",tbenavi1,https://github.com/kcleal/dysgu/issues/22
+I_kwDODQYcac5DLGsz,Pickle Warning in run command,CLOSED,2022-02-08T09:16:01Z,2022-02-08T12:22:27Z,2022-02-08T12:22:27Z,"Towards the end of the SV run command I noticed the following line:
+`python3.7/site-packages/sklearn/base.py:338: UserWarning: Trying to unpickle estimator LabelEncoder from version 0.23.2 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to: https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations  UserWarning`
+
+Are you all aware of this? Should I be concerned about the `unpickle`?
+
+Thanks in advance. Very easy to use tool btw.",nickhsmith,https://github.com/kcleal/dysgu/issues/23
+I_kwDODQYcac5DXWzb,Manual installation,CLOSED,2022-02-10T14:40:14Z,2022-04-02T19:06:00Z,2022-04-02T19:06:00Z,"Just a note for others.
+
+Running manual installation (without conda) worked for me, but only after a little mucking around.
+
+`conda deactivate
+`
+
+Then from the github README
+```
+git clone --recursive https://github.com/kcleal/dysgu.git
+cd dysgu/dysgu/htslib
+make
+cd ../../
+pip install --user -r requirements.txt
+pip install .
+
+```
+
+```
+Successfully installed dysgu-1.3.6
+
+
+$ dysgu
+
+Traceback (most recent call last):
+  File ""/home/rcug/.local/bin/dysgu"", line 5, in <module>
+    from dysgu.main import cli
+  File ""/home/rcug/.local/lib/python3.8/site-packages/dysgu/main.py"", line 106, in <module>
+    version = pkg_resources.require(""dysgu"")[0].version
+  File ""/usr/lib/python3/dist-packages/pkg_resources/__init__.py"", line 901, in require
+    needed = self.resolve(parse_requirements(requirements))
+  File ""/usr/lib/python3/dist-packages/pkg_resources/__init__.py"", line 792, in resolve
+    raise VersionConflict(dist, req).with_context(dependent_req)
+pkg_resources.ContextualVersionConflict: (Click 7.0 (/usr/lib/python3/dist-packages), Requirement.parse('click>=8.0.0'), {'black'})
+
+```
+
+
+solved with
+
+`pip install --user click==8.0`
+
+Now works
+
+```
+Usage: dysgu [OPTIONS] COMMAND [ARGS]...
+
+  Dysgu-SV is a set of tools calling structural variants from bam/cram files
+
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  call   Call structural variants from alignment file/stdin
+  fetch  Filters input .bam/.cram for read-pairs that are discordant or...
+  merge  Merge .vcf/csv variant files
+  run    Run the dysgu pipeline.
+  test   Run dysgu tests
+
+```",colindaven,https://github.com/kcleal/dysgu/issues/24
+I_kwDODQYcac5DXnmK,redundant results and insertion variants recording,CLOSED,2022-02-10T15:11:25Z,2022-03-21T10:20:33Z,2022-03-21T10:20:33Z,"Dear @kcleal 
+
+I have several questions about the output of dysgu, hope you can take some time to help me. Thank you in advance.
+
+First, I found the result of dysgu is redundant, for example, the following deletion can be merged, in my opinion.
+```
+1       1136857 78530   C       <DEL>   .       PASS    SVMETHOD=DYSGUv1.3.5;SVTYPE=DEL;END=1136943;CHR2=1;GRP=2350686;NGRP=1;CT=5to3;CIPOS95=0;CIEND95=0;SVLEN=86;CONTIGB=gcggggtttattctaagaatgattatttccCATAATTCCTGGTCCTGTGTGAGTGCCAGCCACCGTTTCCTCGTGTCCCTCTGGATGGGTCATTCCCTGGCCTCTGGCCTGTGTGCTGACCAGTCctgagcggccct;KIND=intra_regional;GC=55.47;NEXP=0;STRIDE=0;EXPSEQ;RPOLY=0;OL=0;SU=3;WR=0;PE=0;SR=0;SC=3;BND=3;LPREC=0;RT=pe      GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB   0/1:66:60:3:0:0:0:3:3:16.89:0:1:2:54:0:0:0.938:0.789:0.842:0.559
+1       1136860 78532   C       <DEL>   .       PASS    SVMETHOD=DYSGUv1.3.5;SVTYPE=DEL;END=1136945;CHR2=1;GRP=1565924;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=85;CONTIGA=GTTAATTTGCTTGCAAGAAGTTTGAGCCTTTCTGGTCTCGCTTTTACGATGCATTGAAAGTGAGCCTGGAGCGGGGTTTATTCTAAGAATGATTATTTCCCAtaattcctggtcctgtgtgagtgccagccaccgtttcctcgtgtccctctgg;KIND=intra_regional;GC=46.75;NEXP=0;STRIDE=0;EXPSEQ;RPOLY=0;OL=0;SU=6;WR=0;PE=0;SR=0;SC=6;BND=6;LPREC=0;RT=pe     GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB   0/1:28:60:6:0:0:0:6:6:16.89:0:0:6:76:28:0:0.938:0.789:0.842:0.572
+```
+Second, I found that REF allele was not identical with the reference sequence allele at that POS
+
+Finally, for the insertion, in my mind, the END tag should be the same with POS, however, they are different in the output, for example,
+```
+1       8058312 59      G       TAGCTAGCTAGCTAGCTAGATCTATAAATAGATAGATAG .       PASS    SVMETHOD=DYSGUv1.3.5;SVTYPE=INS;END=8058322;CHR2=1;GRP=2400;NGRP=1;CT=5to3;CIPOS95=0;CIEND95=0;SVLEN=40;KIND=extra-regional;GC=32.03;NEXP=0;STRIDE=0;EXPSEQ;RPOLY=42;OL=0;SU=13;WR=0;PE=1;SR=3;SC=12;BND=9;LPREC=0;RT=pe        GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB   0/1:147:60:13:0:1:3:12:9:16.65:0:11:6:0:0:13:0.655:1.526:1:0.627
+```
+
+Sincerely,
+Zheng zhuqing",biozzq,https://github.com/kcleal/dysgu/issues/25
+I_kwDODQYcac5D0IW9,Reporting only SVs from --sites for genotyping,CLOSED,2022-02-14T19:24:00Z,2022-02-15T19:51:26Z,2022-02-15T19:51:26Z,"Hi,
+
+I'm interested in seeing how dysgu performs in genotyping a set of SVs discovered from a consensus of SV callers, but when running with --sites <vcf> and --all-sites True the output includes new SVs discovered by dysgu. Is there a way to report only the sites from the provided vcf? 
+
+Thanks,
+Will",wbooker,https://github.com/kcleal/dysgu/issues/26
+I_kwDODQYcac5EcSg4,PacBio long reads?,CLOSED,2022-02-23T15:50:38Z,2023-07-13T19:51:14Z,2023-07-13T19:51:14Z,"Hello, thank you for creating this great software. I look forward to using this software in my analyses.
+
+However, I have a question, does Dysgu supports PacBio long reads? I know you mention it supports PacBio HiFi reads but I was wondering about the PacBio long reads. Thank you, in advance. And I apologize if I missed this information.",beantkapoor786,https://github.com/kcleal/dysgu/issues/27
+I_kwDODQYcac5FIC8f,Dysgu Cluster,CLOSED,2022-03-04T14:58:57Z,2022-03-07T09:58:05Z,2022-03-07T09:58:05Z,"Hi,
+Thanks your for this tools.
+I have a question. can dysgu run on a cluster. I would install this on the cluster.
+Thanks your ",assane-mbodj,https://github.com/kcleal/dysgu/issues/28
+I_kwDODQYcac5GPsu-,Error - pip3 dysgu installation,CLOSED,2022-03-23T18:42:05Z,2022-03-24T21:58:07Z,2022-03-24T21:58:06Z,"Hi, 
+I am upgrading to the newest version of dysgu and I have the following error with pip3. I created a dedicated conda env especially for that.
+
+```
+Collecting dysgu
+  Using cached dysgu-1.3.7-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (72.7 MB)
+Collecting lightgbm
+  Using cached lightgbm-3.3.2-py3-none-manylinux1_x86_64.whl (2.0 MB)
+Requirement already satisfied: numpy>=1.16.5 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from dysgu) (1.19.5)
+Collecting networkx>=2.4
+  Using cached networkx-2.7.1-py3-none-any.whl (2.0 MB)
+Requirement already satisfied: pandas in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from dysgu) (1.3.3)
+Requirement already satisfied: scipy in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from dysgu) (1.7.1)
+Collecting click>=8.0
+  Using cached click-8.0.4-py3-none-any.whl (97 kB)
+Collecting scikit-learn>=0.22
+  Using cached scikit_learn-1.0.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (26.4 MB)
+Collecting edlib
+  Using cached edlib-1.3.9-cp39-cp39-manylinux2010_x86_64.whl (327 kB)
+Requirement already satisfied: pysam in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from dysgu) (0.17.0)
+Collecting cython
+  Using cached Cython-0.29.28-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl (1.9 MB)
+Collecting scikit-bio
+  Using cached scikit-bio-0.5.6.tar.gz (8.4 MB)
+  Preparing metadata (setup.py) ... done
+Collecting sortedcontainers
+  Using cached sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+Collecting joblib>=0.11
+  Using cached joblib-1.1.0-py2.py3-none-any.whl (306 kB)
+Collecting threadpoolctl>=2.0.0
+  Using cached threadpoolctl-3.1.0-py3-none-any.whl (14 kB)
+Requirement already satisfied: wheel in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from lightgbm->dysgu) (0.37.1)
+Requirement already satisfied: python-dateutil>=2.7.3 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from pandas->dysgu) (2.8.2)
+Requirement already satisfied: pytz>=2017.3 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from pandas->dysgu) (2021.1)
+Collecting lockfile>=0.10.2
+  Using cached lockfile-0.12.2-py2.py3-none-any.whl (13 kB)
+Collecting CacheControl>=0.11.5
+  Using cached CacheControl-0.12.10-py2.py3-none-any.whl (20 kB)
+Collecting decorator>=3.4.2
+  Using cached decorator-5.1.1-py3-none-any.whl (9.1 kB)
+Collecting IPython>=3.2.0
+  Using cached ipython-8.1.1-py3-none-any.whl (750 kB)
+Collecting matplotlib>=1.4.3
+  Using cached matplotlib-3.5.1-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl (11.2 MB)
+Collecting natsort>=4.0.3
+  Using cached natsort-8.1.0-py3-none-any.whl (37 kB)
+Collecting hdmedians>=0.13
+  Using cached hdmedians-0.14.2.tar.gz (7.6 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Installing backend dependencies ... done
+  Preparing metadata (pyproject.toml) ... done
+Requirement already satisfied: requests in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from CacheControl>=0.11.5->scikit-bio->dysgu) (2.26.0)
+Collecting msgpack>=0.5.2
+  Using cached msgpack-1.0.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (322 kB)
+Collecting prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0
+  Using cached prompt_toolkit-3.0.28-py3-none-any.whl (380 kB)
+Requirement already satisfied: setuptools>=18.5 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from IPython>=3.2.0->scikit-bio->dysgu) (60.5.0)
+Collecting matplotlib-inline
+  Using cached matplotlib_inline-0.1.3-py3-none-any.whl (8.2 kB)
+Collecting pexpect>4.3
+  Using cached pexpect-4.8.0-py2.py3-none-any.whl (59 kB)
+Collecting stack-data
+  Using cached stack_data-0.2.0-py3-none-any.whl (21 kB)
+Collecting jedi>=0.16
+  Using cached jedi-0.18.1-py2.py3-none-any.whl (1.6 MB)
+Collecting traitlets>=5
+  Using cached traitlets-5.1.1-py3-none-any.whl (102 kB)
+Collecting backcall
+  Using cached backcall-0.2.0-py2.py3-none-any.whl (11 kB)
+Collecting pygments>=2.4.0
+  Using cached Pygments-2.11.2-py3-none-any.whl (1.1 MB)
+Collecting pickleshare
+  Using cached pickleshare-0.7.5-py2.py3-none-any.whl (6.9 kB)
+Collecting kiwisolver>=1.0.1
+  Using cached kiwisolver-1.4.0-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (1.6 MB)
+Collecting fonttools>=4.22.0
+  Using cached fonttools-4.31.2-py3-none-any.whl (899 kB)
+Collecting cycler>=0.10
+  Using cached cycler-0.11.0-py3-none-any.whl (6.4 kB)
+Collecting pillow>=6.2.0
+  Using cached Pillow-9.0.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.3 MB)
+Collecting packaging>=20.0
+  Using cached packaging-21.3-py3-none-any.whl (40 kB)
+Collecting pyparsing>=2.2.1
+  Using cached pyparsing-3.0.7-py3-none-any.whl (98 kB)
+Requirement already satisfied: six>=1.5 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from python-dateutil>=2.7.3->pandas->dysgu) (1.15.0)
+Collecting parso<0.9.0,>=0.8.0
+  Using cached parso-0.8.3-py2.py3-none-any.whl (100 kB)
+Collecting ptyprocess>=0.5
+  Using cached ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
+Collecting wcwidth
+  Using cached wcwidth-0.2.5-py2.py3-none-any.whl (30 kB)
+Requirement already satisfied: idna<4,>=2.5 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from requests->CacheControl>=0.11.5->scikit-bio->dysgu) (3.2)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from requests->CacheControl>=0.11.5->scikit-bio->dysgu) (1.26.7)
+Requirement already satisfied: charset-normalizer~=2.0.0 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from requests->CacheControl>=0.11.5->scikit-bio->dysgu) (2.0.6)
+Requirement already satisfied: certifi>=2017.4.17 in /home/kgagalova/.linuxbrew/lib/python3.9/site-packages (from requests->CacheControl>=0.11.5->scikit-bio->dysgu) (2021.5.30)
+Collecting asttokens
+  Using cached asttokens-2.0.5-py2.py3-none-any.whl (20 kB)
+Collecting executing
+  Using cached executing-0.8.3-py2.py3-none-any.whl (16 kB)
+Collecting pure-eval
+  Using cached pure_eval-0.2.2-py3-none-any.whl (11 kB)
+Building wheels for collected packages: scikit-bio, hdmedians
+  Building wheel for scikit-bio (setup.py) ... error
+ERROR: Command errored out with exit status 1:
+   command: /home/kgagalova/.linuxbrew/opt/python@3.9/bin/python3.9 -u -c 'import io, os, sys, setuptools, tokenize; sys.argv[0] = '""'""'/tmp/pip-install-22gwih1p/scikit-bio_fd5adfa3cbcc4059926676ebae73c81f/setup.py'""'""'; __file__='""'""'/tmp/pip-install-22gwih1p/scikit-bio_fd5adfa3cbcc4059926676ebae73c81f/setup.py'""'""';f = getattr(tokenize, '""'""'open'""'""', open)(__file__) if os.path.exists(__file__) else io.StringIO('""'""'from setuptools import setup; setup()'""'""');code = f.read().replace('""'""'\r\n'""'""', '""'""'\n'""'""');f.close();exec(compile(code, __file__, '""'""'exec'""'""'))' bdist_wheel -d /tmp/pip-wheel-c_4psgrc
+       cwd: /tmp/pip-install-22gwih1p/scikit-bio_fd5adfa3cbcc4059926676ebae73c81f/
+  Complete output (663 lines):
+  running bdist_wheel
+  running build
+[....]
+running build_ext
+  creating build/temp.linux-x86_64-3.9
+  creating build/temp.linux-x86_64-3.9/skbio
+  creating build/temp.linux-x86_64-3.9/skbio/metadata
+  gcc-5 -pthread -Wno-unused-result -Wsign-compare -DNDEBUG -g -O3 -Wall -fPIC -I/home/kgagalova/.linuxbrew/opt/python@3.9/lib/python3.9/site-packages/numpy/core/include -I/home/kgagalova/.linuxbrew/opt/python@3.9/include/python3.9 -c skbio/metadata/_intersection.c -o build/temp.linux-x86_64-3.9/skbio/metadata/_intersection.o
+  error: command 'gcc-5' failed: No such file or directory
+  ----------------------------------------
+  ERROR: Failed building wheel for scikit-bio
+  Running setup.py clean for scikit-bio
+  Building wheel for hdmedians (pyproject.toml) ... error
+  ERROR: Command errored out with exit status 1:
+   command: /home/kgagalova/.linuxbrew/opt/python@3.9/bin/python3.9 /home/kgagalova/.linuxbrew/opt/python@3.9/lib/python3.9/site-packages/pip/_vendor/pep517/in_process/_in_process.py build_wheel /tmp/tmpke8nnicz
+       cwd: /tmp/pip-install-22gwih1p/hdmedians_34f0c0b3631144b6aeec2bd7484540bd
+  Complete output (9 lines):
+  running bdist_wheel
+  running build
+  running build_py
+  running build_ext
+  cythoning hdmedians/geomedian.pyx to hdmedians/geomedian.c
+  /tmp/pip-build-env-b8fpnjvp/overlay/lib/python3.9/site-packages/Cython/Compiler/Main.py:369: FutureWarning: Cython directive 'language_level' not set, using 2 for now (Py2). This will change in a later release! File: /tmp/pip-install-22gwih1p/hdmedians_34f0c0b3631144b6aeec2bd7484540bd/hdmedians/geomedian.pyx
+    tree = Parsing.p_module(s, pxd, full_module_name)
+  building 'hdmedians.geomedian' extension
+  error: command 'gcc-5' failed: No such file or directory
+  ----------------------------------------
+  ERROR: Failed building wheel for hdmedians
+Failed to build scikit-bio hdmedians
+ERROR: Could not build wheels for hdmedians, which is required to install pyproject.toml-based projects
+```
+Looks like I have some issues installing gcc-5 on my system. 
+```
+ERROR conda.core.link:_execute(699): An error occurred while installing package 'psi4::gcc-5-5.2.0-1'.
+Rolling back transaction: done
+
+LinkError: post-link script failed for package psi4::gcc-5-5.2.0-1
+location of failed script: /home/kgagalova/miniconda3/envs/py3.7/bin/.gcc-5-post-link.sh
+==> script messages <==
+<None>
+==> script output <==
+stdout: Couldn't locate crtXXX.o in default library search paths. You may not have it  at all. It is usually packaged in libc6-dev/glibc-devel packages. We will try  to locate crtXXX.o with system installed gcc...
+Installation failed: gcc is not able to compile a simple 'Hello, World' program.
+
+stderr: ln: failed to create symbolic link '/home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/crt1.o': File exists
+ln: failed to create symbolic link '/home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/crti.o': File exists
+ln: failed to create symbolic link '/home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/11.2.0': File exists
+ln: failed to create symbolic link '/home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/crtn.o': File exists
+ln: failed to create symbolic link '/home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/11.2.0': File exists
+/home/kgagalova/miniconda3/envs/py3.7/bin/.gcc-5-post-link.sh: line 98: /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-conda-linux-gnu/11.2.0 /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/specs: No such file or directory
+sed: can't read /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-conda-linux-gnu/11.2.0 /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/specs: No such file or directory
+sed: can't read /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-conda-linux-gnu/11.2.0 /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/specs: No such file or directory
+sed: can't read /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-conda-linux-gnu/11.2.0 /home/kgagalova/miniconda3/envs/py3.7/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/specs: No such file or directory
+/home/kgagalova/miniconda3/envs/py3.7/gcc/libexec/gcc/x86_64-unknown-linux-gnu/5.2.0/cc1: error while loading shared libraries: libisl.so.10: cannot open shared object file: No such file or directory
+
+return code: 1
+
+()
+```
+Do you have any suggestion on how to install dysgu with pip3? Thank you in advance",KristinaGagalova,https://github.com/kcleal/dysgu/issues/31
+I_kwDODQYcac5GPtPh,Error with --max-cov auto,CLOSED,2022-03-23T18:43:41Z,2022-03-30T10:30:50Z,2022-03-30T10:30:50Z,"Hi @kcleal and thanks for the great tool!
+
+I was playing around with a few settings and ran into the following error when trying out `--max-cov auto`.
+Note that the pipeline runs perfectly when this is set to -1 or the default 200 for instance.
+
+```
+2022-03-23 19:26:25,545 [INFO   ]  [dysgu-run] Version: 1.3.7
+2022-03-23 19:26:25,546 [INFO   ]  run --mode nanopore --diploid True --min-support 3 --min-size 30 --max-cov auto -o output.vcf -p 18 -c genome.fa /scratch input.bam
+2022-03-23 19:26:25,546 [INFO   ]  Destination: /scratch
+[W::hts_idx_load3] The index file is older than the data file: input.bam.bai
+Traceback (most recent call last):
+  File ""/opt/venv/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/dysgu/main.py"", line 270, in run_pipeline
+    max_cov_value = sv2bam.process(ctx.obj)
+  File ""dysgu/sv2bam.pyx"", line 165, in dysgu.sv2bam.process
+  File ""dysgu/coverage.pyx"", line 47, in dysgu.coverage.auto_max_cov
+TypeError: 'bool' object is not callable
+```
+
+",jdemeul,https://github.com/kcleal/dysgu/issues/32
+I_kwDODQYcac5GTt2j,Read Depth,CLOSED,2022-03-24T14:10:11Z,2022-03-25T17:07:08Z,2022-03-25T17:07:08Z,"Hello!
+
+I've noticed in the FORMAT field there is a metric that reports the number of reads supporting the structural variant, but I was wondering if there is any metric or a way to report the total number of reads in that region.
+
+Best regards,
+Jonatan",Akazhiel,https://github.com/kcleal/dysgu/issues/33
+I_kwDODQYcac5HRlx-,TRA variants,CLOSED,2022-04-07T09:44:23Z,2023-08-15T19:17:08Z,2022-04-18T18:20:37Z,"Hello,
+
+Is there any option to output the Translocations according to the VCF specifications? Meaning 2 entries per translocation and the alternate allele in this fashion `]chr18:53456042]N` ?
+
+Best regards,
+Jonatan",Akazhiel,https://github.com/kcleal/dysgu/issues/34
+I_kwDODQYcac5HhtNb,PacBio CLR reads failing with Nanopore setting,CLOSED,2022-04-11T13:58:28Z,2022-04-19T19:22:22Z,2022-04-18T18:20:11Z,"Based on another issue posted here, I am running Dysgu with PacBio CLR reads using the Nanopore model. The specific error that it is outputting is:
+
+Exception ignored in: 'dysgu.assembler.topo_sort2'
+ValueError: Graph contains a cycle. Please report this. n=10, w=10, v=0. Node info n was: 10, 0, 0, 32
+ValueError: Graph contains a cycle. Please report this. n=22, w=22, v=0. Node info n was: 6, 1, 0, 32
+
+This occurs thousands and thousands of times using both the run and call subcommands. 
+
+Any suggestions? ",AQWixom,https://github.com/kcleal/dysgu/issues/35
+I_kwDODQYcac5IHdni,Error running 1.3.10,CLOSED,2022-04-20T16:19:59Z,2022-05-12T13:54:09Z,2022-05-12T13:54:09Z,"Hello,
+
+I've been trying to run dysgu v1.3.10 using a conda approach (which is what I've done for previous versions).  However, I keep encountering a strange error:
+
+```
+Activating conda environment: <redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435
+2022-04-20 11:11:43,425 [INFO   ]  [dysgu-run] Version: 1.3.10
+2022-04-20 11:11:43,429 [INFO   ]  run -o <redacted>/CSL_pipeline_benchmark/pipeline/structural_variant_calls/hg38_T2T_masked/sentieon_mm2-202112.01/dysgu-1.3.10/HALB3010452.vcf --mode pacbio --pl pacbio --procs 16 --search <redacted>/CSL_pipeline_benchmark/data_files/hg38_contigs.bed.gz <redacted>/reference/hg38_T2T_masked/hg38.fa <redacted>/CSL_pipeline_benchmark/pipeline/structural_variant_calls/hg38_T2T_masked/sentieon_mm2-202112.01/dysgu-1.3.10/HALB3010452_tmp <redacted>/CSL_pipeline_benchmark/pipeline/merged_alignments/hg38_T2T_masked/sentieon_mm2-202112.01/HALB3010452.bam
+2022-04-20 11:11:43,430 [INFO   ]  Destination: <redacted>/CSL_pipeline_benchmark/pipeline/structural_variant_calls/hg38_T2T_masked/sentieon_mm2-202112.01/dysgu-1.3.10/HALB3010452_tmp
+2022-04-20 11:11:43,430 [INFO   ]  Searching regions from <redacted>/CSL_pipeline_benchmark/data_files/hg38_contigs.bed.gz
+Traceback (most recent call last):
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/core.py"", line 1130, in __call__
+    return self.main(*args, **kwargs)
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/core.py"", line 1055, in main
+    rv = self.invoke(ctx)
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/core.py"", line 1657, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/core.py"", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/core.py"", line 760, in invoke
+    return __callback(*args, **kwargs)
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/site-packages/dysgu/main.py"", line 270, in run_pipeline
+    max_cov_value = sv2bam.process(ctx.obj)
+  File ""dysgu/sv2bam.pyx"", line 184, in dysgu.sv2bam.process
+  File ""dysgu/sv2bam.pyx"", line 58, in dysgu.sv2bam.parse_search_regions
+  File ""dysgu/sv2bam.pyx"", line 59, in dysgu.sv2bam.parse_search_regions
+  File ""<redacted>/CSL_pipeline_benchmark/scripts/.snakemake/conda/a45103408c16f97aed2118b0a7687435/lib/python3.8/codecs.py"", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+```
+
+I'm not sure what's causing this, the BAM files have worked for all of my other tests.  I am also happy to try the Docker if you'd prefer that, but I would need it versioned on docker hub (I only saw ""latest"" earlier).
+
+Thanks!",holtjma,https://github.com/kcleal/dysgu/issues/36
+I_kwDODQYcac5JSuQE,Best protocol about dysgu run/merge with WGS 35X from multiple patients? Calling cohorts,CLOSED,2022-05-09T12:39:03Z,2023-09-22T14:53:32Z,2023-09-22T14:53:31Z,"Hi,
+
+I'm working with Human WGS 35X data from multiple patients.
+
+First, I call SV variants with dysgu run (in 26 samples below example for sample 1):
+
+```
+dysgu run \
+  --procs 12 \
+  --mode pe --pl pe \
+  --diploid True \
+  --drop-gaps True \
+  --max-cov auto \
+  --min-support 5 \
+  --mq 20 \
+  --exclude ${blacklist} \
+  --min-size 50 \
+  --verbosity 2 \
+  ${hg38} \
+  ${output}/tmp1 \
+  ${input}/sample1.bam > ${output_run}/sample1.SV.vcf
+```
+
+Then, I merge the samples into a unified site list:
+
+```
+dysgu merge \
+${output_run}/sample1.SV.vcf  \
+${output_run}/sample2.SV.vcf ... \
+> ${output_merge}/merged.vcf
+```
+
+I re-genotype at the sample level:
+
+```
+dysgu run --sites ${output_merge}/merged.vcf  ${hg38} tmp1 sample1.bam > ${output_geno}/sample1.re_geno.vcf
+dysgu run --sites ${output_merge}/merged.vcf  ${hg38} tmp2 sample1.bam > ${output_geno}/sample2.re_geno.vcf
+....
+```
+
+Finally, I merge re-genotyped samples:
+
+```
+dysgu merge \
+${output_geno}/sample1.re_geno.vcf  \
+${output_geno}/sample2.re_geno.vcf... \
+> ${output_merge}/merged.re_geno.vcf
+```
+
+My questions are:
+    1) Based on WGS with 35X (Illumina paired-end), what better recommended value for ""--min-support""?
+    2) Is the last step (merge regenotyped samples) correct? because is not mentioned in the doc https://github.com/kcleal/dysgu/blob/master/README.rst
+    3) Do you have any specific recommendations for calling germline variants?
+
+Thanks for any help you can provide me on this protocol,
+
+Best,
+Tarek
+",Taalouane,https://github.com/kcleal/dysgu/issues/37
+I_kwDODQYcac5Jqli8,input vcf cannot be read,CLOSED,2022-05-14T07:18:35Z,2022-05-14T17:17:05Z,2022-05-14T17:17:05Z,"Hi,
+And thanks for such a useful tool.
+I'm exploring polymorphisms including previous data (in addition to new ones) and I'm trying to feed a VCF with --sites to dysgu run (conda env with python 3.9). I get the following error:
+File ""/opt/miniconda3/envs/dysgu/lib/python3.9/site-packages/dysgu/sites_utils.py"", line 70, in vcf_reader
+    svt = r.info[""SVTYPE""]
+  File ""pysam/libcbcf.pyx"", line 2581, in pysam.libcbcf.VariantRecordInfo.__getitem__
+KeyError: 'Unknown INFO field: SVTYPE'
+The VCF is v4.2 generated with bcftools 1.13
+What can I do to fix the problem?
+Thanks!
+
+NP",nponts,https://github.com/kcleal/dysgu/issues/38
+I_kwDODQYcac5KRiFl,running docker container fails,CLOSED,2022-05-24T07:32:21Z,2022-05-24T09:13:42Z,2022-05-24T09:13:42Z,"Dear,
+
+Thanks for this very promising tool.
+I fetched the container but when I run the following command I get an error, can you please help me?
+Other docker images do run on my machine (ubuntu 20 server)
+
+Thanks
+
+```
+$ sudo docker images
+REPOSITORY                    TAG          IMAGE ID       CREATED         SIZE
+kcleal/dysgu                  latest       5e3234d8d9f0   3 months ago    1.98GB
+```
+
+```
+$ sudo docker run kcleal/dysgu test        # no output and no error
+
+sudo docker run kcleal/dysgu --help
+docker: Error response from daemon: failed to create shim: OCI runtime create failed: runc create failed: unable to start container process: exec: ""--help"": executable file not found in $PATH: unknown.
+ERRO[0000] error waiting for container: context canceled 
+
+sudo docker run kcleal/dysgu run --help
+docker: Error response from daemon: failed to create shim: OCI runtime create failed: runc create failed: unable to start container process: exec: ""run"": executable file not found in $PATH: unknown.
+ERRO[0000] error waiting for container: context canceled 
+```",splaisan,https://github.com/kcleal/dysgu/issues/39
+I_kwDODQYcac5KSNS3,changing default argument when high read depth,CLOSED,2022-05-24T09:48:15Z,2022-05-24T12:24:09Z,2022-05-24T12:24:09Z,"Hi
+I am using a high coverage depth pacbio hifi dataset with depth 300+
+I noticed that the default `--mode pacbio` includes `--max-cov 150` which is less than my actual avg data depth
+
+```
+pacbio: 
+  --mq 20 
+  --paired False 
+  --min-support 2 
+  --max-cov 150 
+  --dist-norm 200 
+  --trust-ins-len True
+```
+
+Can I add `--max-cov 500` after `--mode pacbio` and overwrite that parameter at runtime or should I set manually all arguments behind `--mode pacbio` and replace it altogether?
+
+`dysgu run -p 24 --mode pacbio --max-cov 500 -x -c --thresholds 0.45,0.45,0.45,0.45,0.45 Sc.R64-1-1.fa wd mappings.bam > var.vcf`
+
+Another point; what other values than 0.45 would one want to use for `--thresholds` and what would that mean?
+
+thanks for your help",splaisan,https://github.com/kcleal/dysgu/issues/40
+I_kwDODQYcac5LzOaq,Merging SV from Oxford Nanopore - expected runtime,CLOSED,2022-06-15T06:12:26Z,2022-06-15T10:14:12Z,2022-06-15T10:14:11Z,"Hi,
+I am trying to merge SVs discovered from Oxford Nanopore data (plant species, 60 samples, 20,000-50,000 SVs/sample). It's been running for 10 hours now. Is that an expected runtime? Would it make sense to try to merge step wise? For example, find most closely related samples, merge those first (say groups 5-10) and then merge the merged files to get final non-redundant SVs?
+
+```
+minimap2 --MD -t 16 -ax map-ont ../short/Express617_v1.fa /vol/agcpgl/jlee/BreedPath_nanopore/${ID}.fq.gz | samtools sort -o ${ID}.bam
+dysgu call -p 8 -v 2 --min-support 5 --mode nanopore ../short/Express617_v1.fa temp_dir.$ID $ID.bam > $ID.vcf
+python flt_vcf.py $p.vcf > $p.pass.vcf
+dysgu merge *pass.vcf > long.vcf
+```",agolicz,https://github.com/kcleal/dysgu/issues/41
+I_kwDODQYcac5McqgS,re-using temp files with --ibam,CLOSED,2022-06-23T15:23:28Z,2022-07-05T12:09:01Z,2022-07-05T12:09:01Z,"How can I re-use the temp files with the --ibam option?
+
+",husamia,https://github.com/kcleal/dysgu/issues/42
+I_kwDODQYcac5NhHdk,SV calling NOT working,CLOSED,2022-07-11T10:40:53Z,2022-07-12T10:51:25Z,2022-07-12T10:51:25Z,"Hello,
+ I have used dysgu for SV calling earlier without facing any errors but suddenly now I facing following error. Can you please help me what's going wrong, since google didn't show any possible solution
+
+command : dysgu call --mode nanopore -p 20 ../../hg38.fa work_dir/ --ibam HG00733.sortedmappeddedup.bam > HG00733_ONTlee_dysgu.vcf
+
+error : 
+2022-07-11 12:11:04,948 [INFO   ]  [dysgu-call] Version: 1.3.11
+Traceback (most recent call last):
+  File ""/home/sachin/miniconda3/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/sachin/miniconda3/lib/python3.8/site-packages/dysgu/main.py"", line 431, in call_events
+    raise ValueError(""Could not find '{}'"".format(kwargs[""sv_aligns""]))
+ValueError: Could not find 'None'",sachingadakh,https://github.com/kcleal/dysgu/issues/43
+I_kwDODQYcac5OPT7H,Multiprocessing error,CLOSED,2022-07-21T05:19:29Z,2022-07-24T15:38:01Z,2022-07-24T15:38:01Z,"I'm trying to run dysgu with the multiprocessing flag (-p), some samples runs smoothly but once in a while i get errors like this one:
+```
+2022-07-20 18:39:33,269 [INFO   ]  [dysgu-run] Version: 1.3.11
+2022-07-20 18:39:35,108 [INFO   ]  run -v1 -p4 -c --regions /home/mimmie/glob/dysgu/chr1_1.bed --regions-only True -I 393,95,151 parsed.pabies-2.0.fa P9904-117_temp dedup.ir.P9904-117.bam
+2022-07-20 18:39:35,108 [INFO   ]  Destination: P9904-117_temp
+2022-07-20 18:39:35,108 [INFO   ]  Searching regions from /home/mimmie/glob/dysgu/chr1_1.bed
+2022-07-20 18:41:13,640 [INFO   ]  dysgu fetch dedup.ir.P9904-117.bam written to P9904-117_temp/dedup.ir.P9904-117.dysgu_reads.bam, n=417399, time=0:01:38 h:m:s
+2022-07-20 18:41:13,789 [INFO   ]  Input file is: P9904-117_temp/dedup.ir.P9904-117.dysgu_reads.bam
+2022-07-20 18:41:13,791 [INFO   ]  Input file has no index, but --include was provided, attempting to index
+2022-07-20 18:41:14,439 [INFO   ]  Sample name: P9904-117
+2022-07-20 18:41:14,439 [INFO   ]  Writing vcf to stdout
+2022-07-20 18:41:14,439 [INFO   ]  Running pipeline
+2022-07-20 18:41:14,441 [INFO   ]  Read length 151, insert_median 393, insert stdev 95
+2022-07-20 18:41:14,441 [INFO   ]  Max clustering dist 868
+2022-07-20 18:41:14,442 [INFO   ]  Minimum support 3
+2022-07-20 18:41:14,442 [INFO   ]  Building graph with clustering 868 bp
+2022-07-20 18:41:29,817 [INFO   ]  Total input reads 533293
+2022-07-20 18:48:00,408 [INFO   ]  Graph constructed
+Process Process-1:
+Traceback (most recent call last):
+  File ""/home/mimmie/.pyenv/versions/3.9.9/lib/python3.9/multiprocessing/process.py"", line 315, in _bootstrap
+    self.run()
+  File ""/home/mimmie/.pyenv/versions/3.9.9/lib/python3.9/multiprocessing/process.py"", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File ""dysgu/cluster.pyx"", line 813, in dysgu.cluster.process_job
+  File ""dysgu/cluster.pyx"", line 761, in dysgu.cluster.component_job
+  File ""dysgu/call_component.pyx"", line 1972, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1986, in dysgu.call_component.call_from_block_model
+  File ""dysgu/call_component.pyx"", line 1933, in dysgu.call_component.multi
+  File ""dysgu/call_component.pyx"", line 1822, in dysgu.call_component.get_reads
+  File ""pysam/libcalignmentfile.pyx"", line 1876, in pysam.libcalignmentfile.AlignmentFile.__next__
+OSError: error -4 while reading file
+```
+
+If i run the sample without multiprocessing, it runs through without any problems. Since I have over 1000 samples with massive genomes it's not an option to run without multiprocessing so I'm grateful for any ideas and suggestions to what could cause this error and how to fix it.",mc-er,https://github.com/kcleal/dysgu/issues/44
+I_kwDODQYcac5Ob2_W,Invalid character '.' in 'GQ' FORMAT field,CLOSED,2022-07-24T14:44:46Z,2022-08-03T08:53:47Z,2022-08-03T08:53:46Z,"Hi,
+I got a problem with dysgu merging multiple samples and genotyping. I have twenty samples. First, SVs were called on each of them and merged. However, genotyping with the merged vcf file has failed with the following error.
+ATCC BCAHV C02-169 C96-152 C97-256 C98-172 LA87-305 LA90-390 S03-468 S09-363 S09-391 S09-398 S11-140 S11-366 S11-375 S11-462 S11-467 S98-108 S98-595 S99-1170
+20
+Dysgu is Processing  ATCC
+2022-07-24 09:03:54,699 [INFO   ]  [dysgu-call] Version: 1.3.11
+2022-07-24 09:03:54,700 [INFO   ]  Input file is: /ssd2/av724/var_jul19/final2/minimap2_snf/ATCC.bam
+2022-07-24 09:03:54,700 [INFO   ]  call --sites /ssd2/av724/var_jul19/final2/dysgu_np30x/ver2/dy_poplnmerg.vcf /ssd2/av724/varanalysis/reference/atcc_ref_ccv.fna /ssd2/av724/var_jul19/final2/dysgu_np30x/ver2/ATCC-temp /ssd2/av724/var_jul19/final2/minimap2_snf/ATCC.bam
+2022-07-24 09:03:54,700 [WARNING]  Warning: no @RG, using input file name as sample name for output: ATCC
+2022-07-24 09:03:54,700 [INFO   ]  Sample name: ATCC
+2022-07-24 09:03:54,700 [INFO   ]  Writing vcf to stdout
+2022-07-24 09:03:54,700 [INFO   ]  Running pipeline
+2022-07-24 09:03:54,764 [INFO   ]  Inferred read length 3398.0
+2022-07-24 09:03:54,764 [INFO   ]  Max clustering dist 1050
+2022-07-24 09:03:54,764 [INFO   ]  Minimum support 3
+2022-07-24 09:03:54,764 [INFO   ]  Reading --sites
+[E::vcf_parse_format] Invalid character '.' in 'GQ' FORMAT field at NC_001493.2:78
+Traceback (most recent call last):
+  File ""/home/av724/miniconda3/envs/dysgu2/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/core.py"", line 1134, in __call__
+    return self.main(*args, **kwargs)
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/core.py"", line 1059, in main
+    rv = self.invoke(ctx)
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/core.py"", line 1665, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/core.py"", line 1401, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/core.py"", line 767, in invoke
+    return __callback(*args, **kwargs)
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/dysgu/main.py"", line 444, in call_events
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1337, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 917, in dysgu.cluster.pipe1
+  File ""/home/av724/miniconda3/envs/dysgu2/lib/python3.7/site-packages/dysgu/sites_utils.py"", line 61, in vcf_reader
+    for idx, r in enumerate(vcf):
+  File ""pysam/libcbcf.pyx"", line 4175, in pysam.libcbcf.VariantFile.__next__
+
+I checked the VCF file. Here in the field at NC_001493.2:78, GQ is equal to MAPQ. In the header file, GQ is defined as an integer and MAPQ is a Float. This is causing the problem. I changed the GQ datatype from integer to float. It solved the problem. I hope this will not affect the results. Please let me know your suggestion. ",arunvv90,https://github.com/kcleal/dysgu/issues/45
+I_kwDODQYcac5Ob4tx,"Hi,",CLOSED,2022-07-24T15:13:50Z,2022-07-24T15:14:18Z,2022-07-24T15:14:18Z,,arunvv90,https://github.com/kcleal/dysgu/issues/46
+I_kwDODQYcac5Ob5h4,Merging genotype files,CLOSED,2022-07-24T15:27:31Z,2022-10-11T08:44:25Z,2022-08-22T13:31:16Z,"Hi,
+I merged multiple samples and used them to genotype each sample. Then I merged the genotyped samples to get a population level VCF. It has variants with a mapping quality of zero and genotype quality zero. These variants are not present in the original sample genotype file. 
+
+Chr: NC_001493.2
+Position: 63036-63075
+ID: 35
+
+Genotype Information
+Sample: ATCC.dysgu_reads
+Genotype: T
+Quality: 0
+Type: HOM_REF
+Is Filtered Out: No
+
+Genotype Attributes
+MAPQP: 0
+SU: 0
+PS: 0
+BCC: 0
+MS: 0
+FCC: 0
+Genotype Quality: 0
+COV: 0
+SC: 0
+RED: 0
+PROB: 0
+PE: 0
+ICN: 0
+NEIGH10: 0
+BND: 0
+RMS: 0
+WR: 0
+OCN: 0
+SR: 0
+How to filter them? Thank you",arunvv90,https://github.com/kcleal/dysgu/issues/47
+I_kwDODQYcac5Pdqw-,Bug in re-mapping?,CLOSED,2022-08-09T12:21:50Z,2022-08-12T12:20:25Z,2022-08-12T12:20:25Z,"Hi,
+I am currently testing dysgu on some chicken samples. For some samples, sequenced with 2*151bp paired-end Illumina reads, I encounter an error if `--remap=True`:
+```
+...
+2022-08-09 13:41:43,692 [INFO   ]  Number of matching SVs from --sites 101804
+Traceback (most recent call last):
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/core.py"", line 1130, in __call__
+    return self.main(*args, **kwargs)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/core.py"", line 1055, in main
+    rv = self.invoke(ctx)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/core.py"", line 1657, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/core.py"", line 1404, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/core.py"", line 760, in invoke
+    return __callback(*args, **kwargs)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/dysgu/main.py"", line 444, in call_events
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1337, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 1192, in dysgu.cluster.pipe1
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/dysgu/re_map.py"", line 427, in remap_soft_clips
+    gstart, ref_seq_big, idx)
+  File ""/home/uni08/geibel/chicken/chicken_sv/test/testDysgou/.snakemake/conda/023852c9410a500a0b2051e5e324c328/lib/python3.7/site-packages/dysgu/re_map.py"", line 279, in process_contig
+    e.ref_seq = ref_seq_clipped[500 - 1]
+IndexError: string index out of range
+```
+The chicken reference genome actually has some small contigs < 500bp, but I'm not sure whether `ref_seq_clipped` holds the reference contig. Further, I would expect the error then for all samples when force-calling, but it appears only in 4 out of 6 test samples.
+Do you have any clue whether this could cause the problem?
+Thanks,
+Johannes 
+",johannesgeibel,https://github.com/kcleal/dysgu/issues/48
+I_kwDODQYcac5S47iJ,Error while trying to clone the repository,CLOSED,2022-09-29T10:44:42Z,2023-02-07T21:18:49Z,2023-02-07T21:18:49Z,"Hello, while I was trying to clone your repository (using `git clone --recursive https://github.com/kcleal/dysgu.git`), I got the following error:
+
+`fatal: remote error: upload-pack: not our ref b341a74e355bcf4ff295307ed22d1f4905facb11`
+`fatal: Fetched in submodule path 'dysgu/htslib', but it did not contain b341a74e355bcf4ff295307ed22d1f4905facb11. Direct fetching of that commit failed.`
+`fatal: `",mkyriak,https://github.com/kcleal/dysgu/issues/49
+I_kwDODQYcac5WvmJR,RAM Issue - merging large cohorts,CLOSED,2022-11-18T15:20:09Z,2024-02-28T02:02:10Z,2022-12-01T19:23:53Z,"Hi 
+I am working with plant WGS 20X data from more than 300 accessions.
+First, I call SV variants with dysgu run and then dysgu merge
+I re-genotyped at the sample level and when I have to merge the re-genotyped samples I got RAM issue (basically 500 gb RAM are not enough)
+What I found really weird is that the first merge was fine with no problem.
+Any idea on how I can manage this issue?
+Cheers",lurens,https://github.com/kcleal/dysgu/issues/50
+I_kwDODQYcac5X7TUl,Type error: '<' not supported between instances of 'bool' and 'str',CLOSED,2022-12-04T20:37:03Z,2023-07-13T19:53:34Z,2023-07-13T19:53:34Z,"Hi, 
+First of all, thank you for the great tool, dysgu!
+I am running it with my bam file from 10x genomics linked-read sequencing, and I found that error keep popping up. Could you give me some advice please?
+
+2022-12-04 15:31:26,573 [INFO   ]  Sample name: SHR_OlaIpcv
+2022-12-04 15:31:26,575 [INFO   ]  Writing vcf to stdout
+2022-12-04 15:31:26,575 [INFO   ]  Running pipeline
+2022-12-04 15:31:27,337 [INFO   ]  Calculating insert size. Removed 735 outliers with insert size >= 1033.0
+2022-12-04 15:31:27,345 [INFO   ]  Inferred read length 148.0, insert median 302, insert stdev 128
+2022-12-04 15:31:27,362 [INFO   ]  Max clustering dist 942
+2022-12-04 15:31:27,362 [INFO   ]  Minimum support 3
+2022-12-04 15:31:27,372 [INFO   ]  Building graph with clustering 942 bp
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'
+Exception ignored in: 'dysgu.graph.process_alignment'
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'
+Exception ignored in: 'dysgu.graph.process_alignment'
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'
+Exception ignored in: 'dysgu.graph.process_alignment'
+Traceback (most recent call last):
+  File ""dysgu/graph.pyx"", line 754, in dysgu.graph.alignments_from_sa_tag
+TypeError: '<' not supported between instances of 'bool' and 'str'",distilledchild,https://github.com/kcleal/dysgu/issues/51
+I_kwDODQYcac5a3AcW,About Pacio ccs.bam,CLOSED,2023-01-08T07:09:26Z,2023-02-08T13:06:29Z,2023-02-08T13:06:29Z,"Dear dysgu team,
+
+Good afternoon.
+
+I used ccs.bam file as input in dysqu program as below,
+
+dysgu call --mode pacbio NK.fasta pb.large.ccs.bam > PbNK.vcf
+
+However, I got the Error like this:
+
+
+""Traceback (most recent call last):
+  File ""/home/hsiang/miniconda3/envs/Python3_9/bin/dysgu"", line 5, in <module>
+    from dysgu.main import cli
+  File ""/home/hsiang/miniconda3/envs/Python3_9/lib/python3.9/site-packages/dysgu/__init__.py"", line 2, in <module>
+    from dysgu.python_api import DysguSV,\
+  File ""/home/hsiang/miniconda3/envs/Python3_9/lib/python3.9/site-packages/dysgu/python_api.py"", line 9, in <module>
+    from dysgu.cluster import pipe1, merge_events
+  File ""dysgu/cluster.pyx"", line 1, in init dysgu.cluster
+ValueError: numpy.ufunc size changed, may indicate binary incompatibility. Expected 232 from C header, got 216 from PyObject""
+
+
+
+Should I run pbmm2 align to get the new alignment bam?
+
+Thank you very much
+
+Sincerely yours,
+
+Clarence",ClarenceHsiang,https://github.com/kcleal/dysgu/issues/52
+I_kwDODQYcac5fZE-V,AttributeError: module 'numpy' has no attribute 'float',CLOSED,2023-02-27T03:43:52Z,2023-03-07T16:13:04Z,2023-03-07T16:13:03Z,"Hi,
+
+Would you please add dysgu to bioconda.
+
+After trying very hard to install dysgu, I got following errors, do you know why?
+dysgu -h
+Traceback (most recent call last):
+  File ""/Bio/User/kxie/software/anaconda3/envs/dysgu/bin/dysgu"", line 5, in <module>
+    from dysgu.main import cli
+  File ""/Bio/User/kxie/software/anaconda3/envs/dysgu/lib/python3.9/site-packages/dysgu/main.py"", line 11, in <module>
+    from dysgu import cluster, view, sv2bam
+  File ""dysgu/cluster.pyx"", line 15, in init dysgu.cluster
+  File ""dysgu/coverage.pyx"", line 5, in init dysgu.coverage
+  File ""dysgu/io_funcs.pyx"", line 19, in init dysgu.io_funcs
+  File ""/Bio/User/kxie/software/anaconda3/envs/dysgu/lib/python3.9/site-packages/numpy/__init__.py"", line 284, in __getattr__
+    raise AttributeError(""module {!r} has no attribute ""
+AttributeError: module 'numpy' has no attribute 'float'
+
+Best,
+Kun",xiekunwhy,https://github.com/kcleal/dysgu/issues/54
+I_kwDODQYcac5fjCB8,Merging samples VCFs,CLOSED,2023-02-28T12:55:17Z,2023-03-06T10:29:04Z,2023-03-06T10:29:04Z,"Hi,
+
+Thanks for the nice tool
+
+I am trying to merge multiple samples that came out from the `dysgu run -v2` command in one combined file. I used the following command:
+
+`dysgu merge Sample1_SVs.vcf Sample2_SVs.vcf Sample3_SVs.vcf .... Sample8_SVs.vcf  > Combined_file.vcf`
+
+However, if the variant exists in multiple samples it doesn't get actually merged. Instead, it keeps writing the same variant in separate rows:
+
+<html xmlns:v=""urn:schemas-microsoft-com:vml""
+xmlns:o=""urn:schemas-microsoft-com:office:office""
+xmlns:x=""urn:schemas-microsoft-com:office:excel""
+xmlns=""http://www.w3.org/TR/REC-html40"">
+
+<head>
+
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content=""Microsoft Excel 15"">
+<link id=Main-File rel=Main-File
+href=""file:///C:/Users/MKOHAI~1/AppData/Local/Temp/msohtmlclip1/01/clip.htm"">
+<link rel=File-List
+href=""file:///C:/Users/MKOHAI~1/AppData/Local/Temp/msohtmlclip1/01/clip_filelist.xml"">
+<!--table
+	{mso-displayed-decimal-separator:""\."";
+	mso-displayed-thousand-separator:""\,"";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+td
+	{padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:black;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Calibri, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+-->
+</head>
+
+<body link=""#0563C1"" vlink=""#954F72"">
+
+
+
+#CHROM | POS | ID | REF | ALT | QUAL | FILTER | INFO | FORMAT | Sample1 | Sample2 | Sample3 | Sample4 | Sample5 | Sample6 | Sample7 | Sample8
+-- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | --
+2 | 34200481 | 18843 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=151067;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTA;CONTIGB=agtatatacactattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATTGTT;GC=24.85;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=21;WR=7;PE=0;SR=0;SC=7;BND=0;LPREC=1;RT=pe;MeanPROB=0.892;MaxPROB=0.892 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0/1:129.0:60.0:21:7:0:0:7:0:40.02:3:7:7:0:0:18:0.516:0.513:0.994:0.892 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 72815 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=137688;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ATACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATA;CONTIGB=cagtatatacactattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATTGTTTCT;GC=24.85;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=21;WR=9;PE=0;SR=0;SC=3;BND=0;LPREC=1;RT=pe;MeanPROB=0.89;MaxPROB=0.89 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:101.0:60.0:21:9:0:0:3:0:38.48:3:6:6:0:0:20:0.444:0.421:0.947:0.89 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 127694 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=138581;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ATACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACAC;GC=24.43;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=26;WR=10;PE=0;SR=0;SC=6;BND=0;LPREC=1;RT=pe;MeanPROB=0.896;MaxPROB=0.896 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:78.0:60.0:26:10:0:0:6:0:37.75:3:11:5:0:0:17:0.342:0.342:1.0:0.896 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 182265 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=148809;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ATACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACA;CONTIGB=tatacactattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTT;GC=25.08;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=22;WR=10;PE=0;SR=0;SC=2;BND=0;LPREC=1;RT=pe;MeanPROB=0.888;MaxPROB=0.888 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:134.0:60.0:22:10:0:0:2:0:38.75:3:8:4:0:0:20:0.509:0.568:1.115:0.888 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 236622 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=149759;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=TGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGT;CONTIGB=ctattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATTGTTT;GC=25.16;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=12;WR=3;PE=0;SR=0;SC=6;BND=0;LPREC=1;RT=pe;MeanPROB=0.865;MaxPROB=0.865 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:92.0:60.0:12:3:0:0:6:0:36.96:3:6:3:0:0:8:0.392:0.389:0.993:0.865 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 290902 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=154353;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ATACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACA;CONTIGB=tatacactattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATT;GC=24.77;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=19;WR=8;PE=0;SR=0;SC=3;BND=0;LPREC=1;RT=pe;MeanPROB=0.827;MaxPROB=0.827 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:171.0:60.0:19:8:0:0:3:0:37.45:3:5:6:0:0:13:0.712:0.684:0.961:0.827 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 341988 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=132226;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=ATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACAC;CONTIGB=agtatatacactattgacaatagtgtataTAGAGATATAGCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATT;GC=25.31;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=8;WR=3;PE=0;SR=0;SC=2;BND=0;LPREC=1;RT=pe;MeanPROB=0.842;MaxPROB=0.842 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:71.0:60.0:8:3:0:0:2:0:32.49:3:2:3:0:0:8:0.344:0.333:0.97:0.842 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0
+2 | 34200481 | 391981 | A | <DEL> | . | PASS | SVMETHOD=DYSGUv1.3.14;SVTYPE=DEL;END=34200511;CHR2=2;GRP=154176;NGRP=1;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=30;CONTIGA=TACTATTGACAATAGTACATATATAATATACAGTATATACACTATTGACAATAGTGTATATAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACAC;CONTIGB=atatacactattgacaatagtgtataTAGAGATATATCTCTATATTGATACATATGTAGAGATATATCTCTATATTGATATATATGTACACACACAGGAGATATATACGTATGTATCAAAACATGTAATATACGTATACACACGTCTTTTTTATTG;GC=25.23;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=36;OL=0;SU=30;WR=12;PE=0;SR=0;SC=6;BND=0;LPREC=1;RT=pe;MeanPROB=0.92;MaxPROB=0.92 | GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0 | 0/1:138.0:60.0:30:12:0:0:6:0:39.6:3:8:10:0:0:19:0.575:0.579:1.007:0.92
+
+
+
+</body>
+
+</html>
+
+
+Is this what I should expect from the `merge` command? or I am doing something wrong?
+
+Thanks",mkohailan,https://github.com/kcleal/dysgu/issues/55
+I_kwDODQYcac5hTSMe,Segfault only when using --regions and not --contigs False,CLOSED,2023-03-20T16:15:37Z,2023-03-22T09:09:22Z,2023-03-22T09:09:21Z,"Hello,
+
+I have been testing dysgu on human exome sequencing, using --regions with the relevant bed file for the exome library. I am getting the following output:
+dysgu call -v2 -x --regions S04380219_Padded.GRCh38.merged.bed --ibam test.bam ../Homo_sapiens.GRCh38.dna.primary_assembly.fa ~/tempdir/ ~/tempdir/test.dysgu_reads.bam > svs.vcf
+2023-03-20 15:58:32,562 [INFO   ]  [dysgu-call] Version: 1.3.16
+2023-03-20 15:58:32,562 [INFO   ]  Input file is: /home/morag/tempdir/test.dysgu_reads.bam
+2023-03-20 15:58:32,562 [INFO   ]  call -v2 -x --regions S04380219_Padded.GRCh38.merged.bed --ibam test.bam ../Homo_sapiens.GRCh38.dna.primary_assembly.fa /home/morag/tempdir/ /home/morag/tempdir/test.dysgu_reads.bam
+2023-03-20 15:58:32,563 [INFO   ]  Input file has no index, but --regions was provided, attempting to index
+2023-03-20 15:58:33,229 [INFO   ]  Sample name: test
+2023-03-20 15:58:33,229 [INFO   ]  Writing vcf to stdout
+2023-03-20 15:58:33,229 [INFO   ]  Running pipeline
+2023-03-20 15:58:34,120 [INFO   ]  Calculating insert size. Removed 1402 outliers with insert size >= 594
+2023-03-20 15:58:34,129 [INFO   ]  Inferred read length 125.0, insert median 173, insert stdev 65
+2023-03-20 15:58:34,129 [INFO   ]  Max clustering dist 498
+2023-03-20 15:58:34,129 [INFO   ]  Minimum support 3
+2023-03-20 15:58:34,130 [INFO   ]  Building graph with clustering 498 bp
+2023-03-20 15:58:48,044 [INFO   ]  Total input reads 959578
+2023-03-20 15:58:48,910 [INFO   ]  Graph constructed
+Segmentation fault (core dumped)
+
+If it's helpful, dmesg says:
+[1036277.755659] dysgu[85061]: segfault at 7fa538649fef ip 00007fa5923058b5 sp 00007fffdb44fcc0 error 4 in assembler.cpython-37m-x86_64-linux-gnu.so[7fa5922d7000+43000]
+[1036277.755669] Code: 00 20 4c 8b 43 20 4c 8b 4b 18 44 89 a5 28 fe ff ff 48 01 c1 48 85 c0 48 0f 48 c1 48 0f af 85 88 fe ff ff 48 8b 8d 70 fe ff ff <0f> b6 04 01 8b 4b 44 89 85 30 fe ff ff 89 d0 d1 f8 48 98 0f be 04
+
+If I leave out the regions option, or set --contigs False (and keep the regions option), the command works, although the output files differ. I would note that the bam file has been indexed (despite the comment in the output above) and the index (test.bam.bai) is available in the same directory (and the test.dysgu_reads.bam.bai file is also in the tempdir working directory). Should I be doing anything different with respect to the index file? Given that it is exome sequencing anyway, is the regions option actually doing anything useful? Please do let me know what other information would be helpful.
+
+Thanks very much for your help.",moraglewis,https://github.com/kcleal/dysgu/issues/56
+I_kwDODQYcac5j9OyL,Can dysgu be used in haploid genome?,CLOSED,2023-04-20T15:52:14Z,2023-04-21T07:43:42Z,2023-04-21T07:43:42Z,"Hi, Can I use dysgu in haploid genome resequencing PE reads?
+Thanks
+Best
+Shuangyang",wushyer,https://github.com/kcleal/dysgu/issues/57
+I_kwDODQYcac5lVrSq,input bam files refinements,CLOSED,2023-05-08T12:40:23Z,2023-05-09T09:59:31Z,2023-05-09T09:59:31Z,"Hi.
+In some SNP discovery protocols it is suggested to perform pcr duplicate labeling and base quality score recalibration if possible. Would you also recommend this before running dysgu?
+
+As for pcr duplicates, in case, is tagging enough or is removal better?",linsson,https://github.com/kcleal/dysgu/issues/58
+I_kwDODQYcac5nZzVK,Support for Python 3.11,CLOSED,2023-05-31T18:57:38Z,2023-06-21T15:11:03Z,2023-06-21T15:11:03Z,"Hello,
+
+I was wondering if you planned to add support for Python 3.11. I was trying to use pip to install but there was no matching distribution found for dysgu. Thanks.",tbenavi1,https://github.com/kcleal/dysgu/issues/59
+I_kwDODQYcac5nqFXV,"ValueError: numpy.ufunc size changed, may indicate binary incompatibility. Expected 232 from C header, got 216 from PyObject",CLOSED,2023-06-03T02:41:20Z,2023-08-29T09:00:53Z,2023-08-29T09:00:52Z,"Hi,
+
+May I ask how to resolve the issue below?
+**dysgu run -p4 /n/data1/bch/genetics/lee/reference/b37/human_g1k_v37_decoy.fasta temp_dir /n/scratch3/users/x/xiz978/L1_mediated_SV/data/HG002_Genome_in_the_Bottle/HG002_hs37d5_ONT-UL_GIAB_20200122.phased.bam > HG002_ONT.vcf**
+
+Traceback (most recent call last):
+  File ""/home/xiz978/anaconda3/bin/dysgu"", line 5, in <module>
+    from dysgu.main import cli
+  File ""/home/xiz978/anaconda3/lib/python3.9/site-packages/dysgu/__init__.py"", line 2, in <module>
+    from dysgu.python_api import DysguSV,\
+  File ""/home/xiz978/anaconda3/lib/python3.9/site-packages/dysgu/python_api.py"", line 9, in <module>
+    from dysgu.cluster import pipe1, merge_events
+  File ""dysgu/cluster.pyx"", line 1, in init dysgu.cluster
+ValueError: numpy.ufunc size changed, may indicate binary incompatibility. Expected 232 from C header, got 216 from PyObject",zengxi-hada,https://github.com/kcleal/dysgu/issues/60
+I_kwDODQYcac5pHxXm,GT value for missing data,CLOSED,2023-06-19T14:14:05Z,2023-06-19T18:41:16Z,2023-06-19T18:41:16Z,"Dear dysgu developers,
+
+I am finding many `0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0` (FORMAT: `GT:GQ:MAPQP:SU:WR:PE:SR:SC:BND:COV:NEIGH10:PS:MS:RMS:RED:BCC:FCC:ICN:OCN:PROB`) in my results. I also have a `./.:.:33.5:1:0:1:0:0:0:0:6:1:1:0:0:42:-1:-1:-1:0.496.` What's the difference between GT=0 and GT=./. in dysgu? Is it expected to have GT=./. followed by some nonzero values?",linsson,https://github.com/kcleal/dysgu/issues/61
+I_kwDODQYcac5r48Eg,no command as dysgu filter-normal,CLOSED,2023-07-18T14:46:02Z,2023-07-18T15:56:43Z,2023-07-18T15:15:04Z,i tried dysgu filter-normal but got no such a command error,GManjiLab,https://github.com/kcleal/dysgu/issues/62
+I_kwDODQYcac5tmurt,what is SVLEN？,CLOSED,2023-08-07T07:37:08Z,2023-08-07T08:55:06Z,2023-08-07T08:55:06Z,"Thanks to dysgu, it's a really great tool.
+I have a question during running:
+
+for this
+![image](https://github.com/kcleal/dysgu/assets/40107519/162ef87b-2fad-45f3-8e37-392fcb47501d)
+
+As shown in the picture above, I think it means that the C at position 1028532 on chromosome 1 is deleted, but the SVLEN is 550 shown in INFO, why? Shouldn't it be 1?",wenyuhaokikika,https://github.com/kcleal/dysgu/issues/63
+I_kwDODQYcac5twYmZ,Error with --search option,CLOSED,2023-08-08T14:10:12Z,2023-08-08T15:59:31Z,2023-08-08T15:59:31Z,"I am getting an error with the command --search that I can't figure out
+
+this is 30x WGS data. I want to get SVs from only chromosome 17 so I provided the bed file and used the --search PATH                   .bed file, limit search to regions option
+
+
+```
+root@d0ce0b963ba0:/data# cat /data/Craniofacial/chr17_GAA_hg19_region.bed
+chr17   1       159138663
+```
+
+```
+root@d0ce0b963ba0:/data# dysgu run --search /data/Craniofacial/chr17_GAA_hg19_region.bed -o /data/Craniofacial/CARC012_dysgu_SV.vcf -p 20 --mode pe --clean Homo_sapiens_assembly19_1000genomes_decoy.fasta /data/Craniofacial/CARC_012_001_chr17 /data/Craniofa
+cial/CARC_012_001.bam
+2023-08-08 14:03:48,518 [INFO   ]  [dysgu-run] Version: 1.5.0
+2023-08-08 14:03:48,522 [INFO   ]  run --search /data/Craniofacial/chr17_GAA_hg19_region.bed -o /data/Craniofacial/CARC012_dysgu_SV.vcf -p 20 --mode pe --clean Homo_sapiens_assembly19_1000genomes_decoy.fasta /data/Craniofacial/CARC_012_001_chr17 /data/Craniofacial/CARC_012_001.bam
+2023-08-08 14:03:48,522 [INFO   ]  Destination: /data/Craniofacial/CARC_012_001_chr17
+2023-08-08 14:03:48,524 [INFO   ]  Searching regions from /data/Craniofacial/chr17_GAA_hg19_region.bed
+2023-08-08 14:04:34,736 [INFO   ]  dysgu fetch /data/Craniofacial/CARC_012_001.bam written to /data/Craniofacial/CARC_012_001_chr17/CARC_012_001.dysgu_reads.bam, n=218647, time=0:00:46 h:m:s
+2023-08-08 14:04:34,754 [INFO   ]  Input file is: /data/Craniofacial/CARC_012_001_chr17/CARC_012_001.dysgu_reads.bam
+2023-08-08 14:04:34,879 [INFO   ]  Sample name: CARC_012_001
+2023-08-08 14:04:34,880 [INFO   ]  Writing SVs to /data/Craniofacial/CARC012_dysgu_SV.vcf
+2023-08-08 14:04:34,884 [INFO   ]  Running pipeline
+2023-08-08 14:04:36,568 [INFO   ]  Calculating insert size. Removed 0 outliers with insert size >= 717.0
+2023-08-08 14:04:36,586 [INFO   ]  Inferred read length 150.0, insert median 325, insert stdev 75
+2023-08-08 14:04:36,588 [INFO   ]  Max clustering dist 700
+2023-08-08 14:04:36,588 [INFO   ]  Minimum support 3
+2023-08-08 14:04:36,588 [INFO   ]  Building graph with clustering 700 bp
+2023-08-08 14:04:41,525 [INFO   ]  Total input reads 218647
+2023-08-08 14:04:41,705 [INFO   ]  Graph constructed
+2023-08-08 14:04:50,490 [INFO   ]  Number of components 184739. N candidates 4011
+Traceback (most recent call last):
+  File ""/opt/venv/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1053, in main
+    rv = self.invoke(ctx)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1659, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/opt/venv/lib/python3.9/site-packages/click/core.py"", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/click/decorators.py"", line 26, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/opt/venv/lib/python3.9/site-packages/dysgu/main.py"", line 256, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1079, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 957, in dysgu.cluster.pipe1
+  File ""/opt/venv/lib/python3.9/site-packages/dysgu/re_map.py"", line 365, in remap_soft_clips
+    if ref_genome.get_reference_length(e.chrA) < 1000 or ref_genome.get_reference_length(e.chrB) < 1000:
+  File ""pysam/libcfaidx.pyx"", line 347, in pysam.libcfaidx.FastaFile.get_reference_length
+KeyError: 'chr17'
+```",husamia,https://github.com/kcleal/dysgu/issues/64
+I_kwDODQYcac5tzg7m,Generating Alternative Reference,CLOSED,2023-08-08T23:10:08Z,2023-08-22T22:53:50Z,2023-08-20T04:42:09Z,"Hi,
+
+I have a hemizygous genome and I have detected SVs on the main reference genome using dysgu. I wanted to confirm that the filtering parameters I am using would make sense in this case, and also to check if you knew of any good tools that can create an alternative reference genome using the vcf output file from dysgu.
+I ran dysgu as follows:
+
+`dysgu run -p$cpus --mode pacbio --pl pacbio --drop-gaps False --verbosity 2 --metrics --clean --overwrite $ref temp_${name} $file -o ${name}.vcf`
+`dysgu filter -p$cpus --min-prob 0.5 -o ${name}.flt.vcf ${name}.vcf`
+
+I am merging the results from dysgu with the results from deepvariant to obtain an full alt vcf.
+I was using gatk to generate the alternate reference but the issue is that it only can process SNPs INS and DELs but not DUP, TRA and INV
+`gatk IndexFeatureFile -I 3.chr.vcf`
+`gatk CreateSequenceDictionary -R ${ref}.fasta -O ${ref}.dict`
+`gatk FastaAlternateReferenceMaker -R ${ref}.fasta -O reference_alt.fasta -V 3.chr.vcf`
+
+is there any good alternative for this that you could recommend?
+
+Thanks",grpiccoli,https://github.com/kcleal/dysgu/issues/65
+I_kwDODQYcac5uenoo,Run OSError: [Errno 24] Too many open files Mac OS M ,CLOSED,2023-08-16T15:58:00Z,2023-08-17T20:42:23Z,2023-08-17T20:42:23Z,"I am running version 1.5.0 on Mac OS with M chip
+the following command 
+
+`dysgu run --low-mem --mode pe -o NBVY8432_GRCh38_dysgu.vcf -f vcf -p 8 --metrics --keep-small --clean Homo_sapie
+ns_assembly38.fasta.gz NBVY8432_GRCh38_dysgu NBVY8432_GRCh38.bam`
+
+here is the error
+''
+2023-08-16 11:48:55,745 [INFO   ]  [dysgu-run] Version: 1.5.0
+2023-08-16 11:48:55,745 [INFO   ]  run --low-mem --mode pe -o NBVY8432_GRCh38_dysgu.vcf -f vcf -p 8 --metrics --keep-small --clean Homo_sapiens_assembly38.fasta.gz NBVY8432_GRCh38_dysgu NBVY8432_GRCh38.bam
+2023-08-16 11:48:55,745 [INFO   ]  Destination: NBVY8432_GRCh38_dysgu
+2023-08-16 11:54:07,557 [INFO   ]  dysgu fetch NBVY8432_GRCh38.bam written to NBVY8432_GRCh38_dysgu/NBVY8432_GRCh38.dysgu_reads.bam, n=23864581, time=0:05:11 h:m:s
+2023-08-16 11:54:07,557 [INFO   ]  Input file is: NBVY8432_GRCh38_dysgu/NBVY8432_GRCh38.dysgu_reads.bam
+2023-08-16 11:54:07,606 [WARNING]  Warning: no @RG, using input file name as sample name for output: NBVY8432_GRCh38.dysgu_reads
+2023-08-16 11:54:07,606 [INFO   ]  Sample name: NBVY8432_GRCh38.dysgu_reads
+2023-08-16 11:54:07,606 [INFO   ]  Writing SVs to NBVY8432_GRCh38_dysgu.vcf
+2023-08-16 11:54:07,607 [INFO   ]  Running pipeline
+2023-08-16 11:54:07,894 [INFO   ]  Calculating insert size. Removed 31 outliers with insert size >= 887.0
+2023-08-16 11:54:07,900 [INFO   ]  Inferred read length 150.0, insert median 399, insert stdev 90
+2023-08-16 11:54:07,901 [INFO   ]  Max clustering dist 849
+2023-08-16 11:54:07,901 [INFO   ]  Minimum support 3
+2023-08-16 11:54:07,901 [INFO   ]  Building graph with clustering 849 bp
+Traceback (most recent call last):
+  File ""/Users/husw5y/miniconda3/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/Users/husw5y/miniconda3/lib/python3.10/site-packages/dysgu/main.py"", line 256, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1079, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 755, in dysgu.cluster.pipe1
+  File ""dysgu/graph.pyx"", line 1135, in dysgu.graph.construct_graph
+  File ""dysgu/graph.pyx"", line 1151, in dysgu.graph.construct_graph
+  File ""dysgu/extra_metrics.pyx"", line 30, in dysgu.extra_metrics.BadClipCounter.__init__
+OSError: [Errno 24] Too many open files: 'NBVY8432_GRCh38_dysgu/249.badclip.bin'
+`'",husamia,https://github.com/kcleal/dysgu/issues/66
+I_kwDODQYcac5vPCGL,OverflowError: can't convert negative value to size_t,CLOSED,2023-08-25T03:32:57Z,2023-08-25T10:58:53Z,2023-08-25T10:58:53Z,"Thank you for providing dysgu such a good tool~~~
+
+I have 8 samples with a sequencing depth of 45X,  the first 7 samples ran successfully, but the last one encountered an issue. I attempted to re-run BWA mem, but the problem persisted. This sample is from human HET293T cell line's WGS sequencing with a sequencing depth of 45X. The data is sourced from PRJNA565658, with the SRA accession number SRR10129631. I initially used the sratoolkit tool 'prefetch' to download the raw data and then converted it to fastq format using 'fastq-dump'. Finally, I ran BWA mem with the following code.
+
+```
+$ dysgu --version
+dysgu, version 1.5.0
+
+sample=SRR10129631
+bwa mem -t 30 -R ""@RG\tID:""$sample""\tSM:""$sample""\tPL:ILLUMINA"" /data/wenyuhao/55/CCLE/raw/resources/genome.fasta $sample""_1.fastq"" $sample""_2.fastq"" | samtools sort -T ./TMP/ -o $sample""_sorted1.bam"" -
+dysgu run -x -p4 /data/wenyuhao/55/CCLE/raw/resources/genome.fasta TMP $sample""_sorted1.bam"" > $sample""_dysgu.vcf""
+```
+then it raise Exception, that why?
+```
+$ dysgu run -x -p4 /data/wenyuhao/55/CCLE/raw/resources/genome.fasta TMP $sample""_sorted1.bam"" > $sample""_dysgu.vcf""                     
+2023-08-25 10:03:03,242 [INFO   ]  [dysgu-run] Version: 1.5.0
+2023-08-25 10:03:03,242 [INFO   ]  run -x -p4 --contigs False /data/wenyuhao/55/CCLE/raw/resources/genome.fasta TMP SRR10129631_sorted1.bam
+2023-08-25 10:03:03,242 [INFO   ]  Destination: TMP
+2023-08-25 10:22:26,198 [INFO   ]  dysgu fetch SRR10129631_sorted1.bam written to TMP/SRR10129631_sorted1.dysgu_reads.bam, n=16505931, time=0:19:22 h:m:s
+2023-08-25 10:22:26,198 [INFO   ]  Input file is: TMP/SRR10129631_sorted1.dysgu_reads.bam
+2023-08-25 10:22:26,438 [INFO   ]  Sample name: SRR10129631
+2023-08-25 10:22:26,438 [INFO   ]  Writing vcf to stdout
+2023-08-25 10:22:26,438 [INFO   ]  Running pipeline
+2023-08-25 10:22:26,898 [INFO   ]  Calculating insert size. Removed 47 outliers with insert size >= 835.0
+2023-08-25 10:22:26,913 [INFO   ]  Inferred read length 151.0, insert median 387, insert stdev 87
+2023-08-25 10:22:26,914 [INFO   ]  Max clustering dist 822
+2023-08-25 10:22:26,915 [INFO   ]  Minimum support 3
+2023-08-25 10:22:26,915 [INFO   ]  Building graph with clustering 822 bp
+2023-08-25 10:27:51,487 [INFO   ]  Total input reads 16505931
+2023-08-25 10:27:57,417 [INFO   ]  Graph constructed
+Traceback (most recent call last):
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/bin/dysgu"", line 11, in <module>
+    sys.exit(cli())
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.10/site-packages/dysgu/main.py"", line 256, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1079, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 883, in dysgu.cluster.pipe1
+  File ""dysgu/graph.pyx"", line 1424, in dysgu.graph.proc_component
+  File ""dysgu/graph.pyx"", line 1444, in dysgu.graph.proc_component
+  File ""dysgu/graph.pyx"", line 574, in dysgu.graph.NodeToName.__getitem__
+OverflowError: can't convert negative value to size_t
+```",wenyuhaokikika,https://github.com/kcleal/dysgu/issues/68
+I_kwDODQYcac5xFqqn,Dysgu filter IndexError: string index out of range,CLOSED,2023-09-14T21:09:07Z,2023-09-22T13:05:53Z,2023-09-22T13:05:53Z,"Hello I ran the dysgu filter command and got the following error:
+```
+Traceback (most recent call last):
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+             ^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/main.py"", line 467, in filter_normal
+    filter_normals.run_filtering(ctx.obj)
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/filter_normals.py"", line 907, in run_filtering
+    good = process_intra(r, posB, bams, infile, bam_is_paired_end, support_fraction, pad=pad, sample=sample_name, keep_all=keep_all)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/filter_normals.py"", line 829, in process_intra
+    if cached and matching_soft_clips(r, cached, is_paired_end):
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/filter_normals.py"", line 594, in matching_soft_clips
+    break_seqs = BreakSeqs(r)
+                 ^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/filter_normals.py"", line 287, in __init__
+    left_clip, right_clip = get_contig_clipped_bases(r.info[""CONTIGA""])
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/rranallo-benavidez/mambaforge/envs/snakemake/lib/python3.11/site-packages/dysgu/filter_normals.py"", line 264, in get_contig_clipped_bases
+    while cont[i].islower():
+          ~~~~^^^
+IndexError: string index out of range
+```
+
+Any advice? Let me know if you need further information from me. Thanks.",tbenavi1,https://github.com/kcleal/dysgu/issues/69
+I_kwDODQYcac5xLEXC,long reads default mapq lowered to 1: help text for dysgu call still says pacbio and nanopore mode has --mq 20,CLOSED,2023-09-15T16:13:16Z,2023-09-18T16:49:02Z,2023-09-18T16:49:02Z,"Hello,
+
+In version 1.6.0 I believe the default mapq for long reads was lowered to 1. However, the help text for dysgu call incorrectly says that --mq is set to 20.
+
+Also, I was wondering for the reason for the change? Does this change improve sensitivity without getting too many false positives? Do you have a recommended value for mq? Thanks for any information.",tbenavi1,https://github.com/kcleal/dysgu/issues/70
+I_kwDODQYcac5xzJgd,When will docker image with new release be available? ,CLOSED,2023-09-22T16:52:10Z,2023-09-25T13:27:01Z,2023-09-25T13:27:00Z,"Hi @kcleal ,
+Thanks for release new version of Dysgu, when will docker image with new release be available from dockerhub? ",LNGDingj,https://github.com/kcleal/dysgu/issues/72
+I_kwDODQYcac5yn7SC,"Got an warning when Loading Model in ""dysgu run""",CLOSED,2023-10-03T00:40:19Z,2023-10-03T07:43:02Z,2023-10-03T07:43:02Z,"Hello @kcleal ,
+
+Got the following warning when ran command ""dysgu run"" using [dysgu-run] Version: 1.6.1, can it be ignored? Thanks so much! 
+
+ Loading Model: /opt/venv/lib/python3.11/site-packages/dysgu/dysgu_model.1.pkl.gz
+/opt/venv/lib/python3.11/site-packages/sklearn/base.py:348: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 0.23.2 when using version 1.3.1. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to: https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+
+",LNGDingj,https://github.com/kcleal/dysgu/issues/73
+I_kwDODQYcac54WByF,"problems genotyping, dysgu run --sites ",CLOSED,2023-11-30T16:31:07Z,2023-12-16T13:20:18Z,2023-12-16T13:20:18Z,"Hello,
+I am having trouble getting the expected genotyping behaviour from `dysgu run --sites`. I am appreciating help in understanding the problem, which might be a misunderstanding of the expected behaviour on my part, in which case a clarification would be nice.
+
+I called SVs separately in mutant and wildtype and filtered to get the unique ones. Up to here everything works fine. 
+
+```
+dysgu filter \
+--normal-vcf wildtype.vcf \
+mutant.vcf \
+wildtype.bam \
+> mutant-vs-wildtype.vcf
+
+```
+as documented, the resulting vcf (mutant-vs-wildtype.vcf) contains the sites predicted to be unique in mutant and contains only one sample: ""mutant"". I would like to generate a vcf that has these positions but also contains a column for the wildtype sample. To this end I was thinking I can genotype the wildtype sample for the reported positions and then merge the vcfs, however, when I issue below genotyping command, the resulting vcf (wildtype.re_geno.vcf) contains many more variants than the input vcf specified with --sites (mutant-vs-wildtype.vcf). 18,000 vs 100. Is this expected, or am I using it wrongly?
+
+```
+dysgu run -x -p8 --sites  mutant-vs-wildtype.vcf \
+reference-genome.fa \
+./tmp \
+wildtype.bam \
+> wildtype.re_geno.vcf
+```
+
+Another observation is that the process took much longer than the original SV calling (double), despite specifying double the processors to use. Thank you very much for your help, the stdout/stderr is belwo.
+
+2023-11-30 18:01:45,225 [INFO   ]  [dysgu-run] Version: 1.6.2
+2023-11-30 18:01:45,225 [INFO   ]  run -x -p8 --sites mutant-vs-wildtype.vcf reference.fa ./tmp wildtype.bam
+2023-11-30 18:01:45,225 [INFO   ]  Destination: ./tmp
+2023-11-30 18:03:39,600 [INFO   ]  dysgu fetch wildtype.bam written to ./tmp/wildtype.dysgu_reads.bam, n=17391638, time=0:01:54 h:m:s
+2023-11-30 18:03:39,601 [INFO   ]  Input file is: ./tmp/wildtype.dysgu_reads.bam
+2023-11-30 18:03:39,662 [INFO   ]  Sample name: wildtype
+2023-11-30 18:03:39,662 [INFO   ]  Writing vcf to stdout
+2023-11-30 18:03:39,662 [INFO   ]  Running pipeline
+2023-11-30 18:03:40,117 [INFO   ]  Calculating insert size. Removed 3 outliers with insert size >= 2187
+2023-11-30 18:03:40,124 [INFO   ]  Inferred read length 151.0, insert median 99, insert stdev 205
+2023-11-30 18:03:40,125 [INFO   ]  Max clustering dist 1124
+2023-11-30 18:03:40,125 [INFO   ]  Reading --sites mutant-vs-wildtype.vcf
+2023-11-30 18:03:40,148 [INFO   ]  Building graph with clustering 1124 bp
+2023-11-30 18:13:31,832 [INFO   ]  Total input reads 17391638
+2023-11-30 18:13:32,277 [INFO   ]  Added 99 variants from input sites
+2023-11-30 18:13:32,650 [INFO   ]  Graph constructed
+2023-11-30 18:13:32,651 [INFO   ]  Minimum support 3
+2023-11-30 18:19:45,004 [INFO   ]  Number of components 12070167. N candidates 3391085
+2023-11-30 18:19:45,194 [INFO   ]  Number of matching SVs from --sites 109
+2023-11-30 18:33:38,783 [INFO   ]  Re-alignment of soft-clips done. N candidates 34699
+2023-11-30 18:33:39,130 [INFO   ]  Number of candidate SVs merged: 2885
+2023-11-30 18:33:39,130 [INFO   ]  Number of candidate SVs after merge: 31814
+2023-11-30 18:33:39,169 [INFO   ]  Loaded n=9 chromosome coverage arrays from ./tmp
+2023-11-30 18:33:48,265 [INFO   ]  Loading Model: /home/norman/miniconda3/envs/dysgu/lib/python3.10/site-packages/dysgu/dysgu_model.1.pkl.gz
+/home/norman/miniconda3/envs/dysgu/lib/python3.10/site-packages/sklearn/base.py:348: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 0.23.2 when using version 1.3.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+2023-11-30 18:33:48,486 [INFO   ]  Model config: pe, diploid: True, contig features: True. N features: 43
+2023-11-30 18:33:54,382 [INFO   ]  dysgu call ./tmp/wildtype.dysgu_reads.bam complete, n=17929, time=0:30:14 h:m:s
+2023-11-30 18:33:54,594 [INFO   ]  dysgu run wildtype.bam complete, time=0:32:09 h:m:s
+
+
+",warthmann,https://github.com/kcleal/dysgu/issues/76
+I_kwDODQYcac54wLT3,clarification needed on RG and samples,CLOSED,2023-12-05T10:48:45Z,2023-12-05T17:09:13Z,2023-12-05T17:09:13Z,"Dear Kez,
+I am trying to pipe `samtools view` output to `dysgu run`, and I am uncertain of the behaviour to expect. It would be nice if you could clarify. I have a multi-sample bam file; 6 samples, each sample with a unique RG (Read Group). Three (3) samples in the bam file are control replicates (3 different RGs) and 3 samples are treatment replicates (another 3 RGs). For SV calling I would like to compare the treatment replicates jointly to the control replicates: 1) calling SVs jointly in all controls 2) calling SVs jointly in all treatment samples, 3) running dysgu filter with treatment vs control. 
+
+ With the below I am piping all 3 control samples to dysgu, however, I am finding that the resulting svs.vcf contains only one sample labeled with the first RG in the list (sample-names-control). Is this now a joint sample only labeled with the first RG or has dysgu only analysed the first sample. Any help clarifying and/or advice in how to perform the desired operation in another way would be nice. 
+
+```
+samtools view -bh -R sample-names-control \
+../all_merged.bam Chr04 \
+| dysgu run -p8 -v2 -x --clean \
+../reference.fa \
+./temp \
+- \
+> svs.vcf
+```",warthmann,https://github.com/kcleal/dysgu/issues/77
+I_kwDODQYcac541ICG,Getting SV length in dysgu output vcf,CLOSED,2023-12-05T21:56:29Z,2023-12-16T13:19:55Z,2023-12-16T13:19:55Z,"Hi there,
+I'm trying to plot the lenght of the SVs detected by dysgu. I noticed there is a specific paramenter in the INFO column in the output .vcf (SVLEN) but it only appears to be accurate for DEL, DUP and INV types.
+I calculated the SV lenght by doing END in the INFO column - POS column
+
+For INS cases the actual length is always different from SVLEN. 
+Also, I was wondering...why is the SVLEN parameter missing completely in TRA variants?
+
+How do I calculate the variant length in these two cases? And is it correct to look at 'SVLEN' in general?
+
+Also, is there a lower/upper limit for the variants detected by the software? My lowest value is SVLEN=30, my highest... 47,303,837 (almost like a whole chromosome? I think it's quite unlikely for this SV to be an actual one... but I do have a few variants exceeding SVLEN > 1.000.000).
+
+Thank you in advance.",TizianaS92,https://github.com/kcleal/dysgu/issues/78
+I_kwDODQYcac56G6ft,"_pickle.UnpicklingError: invalid load key, 'A'. Failed to read from standard input: unknown file type",CLOSED,2023-12-19T13:11:40Z,2023-12-20T02:15:36Z,2023-12-20T02:11:46Z,"Thanks for Dysgu ~~~
+
+Many samples are running normally, but one of them has a problem. What is the reason?
+when I run`run -x -p 10 /public/home/wenyuhao/seq/WGS/D1/resources/genome.fasta /public/home/wenyuhao/seq/WGS/dysgu/tmpDir /public/home/wenyuhao/seq/WGS/D1/results/recal/DRR016851-1.bam`, raise Exception
+```
+2023-12-19 14:39:34,444 [INFO   ]  [dysgu-run] Version: 1.6.2
+2023-12-19 14:39:34,444 [INFO   ]  run -x -p 10 /public/home/wenyuhao/seq/WGS/D1/resources/genome.fasta /public/home/wenyuhao/seq/WGS/dysgu/tmpDir /public/home/wenyuhao/seq/WGS/D1/results/recal/DRR016851-1.bam
+2023-12-19 14:39:34,444 [INFO   ]  Destination: /public/home/wenyuhao/seq/WGS/dysgu/tmpDir
+2023-12-19 14:43:59,686 [INFO   ]  dysgu fetch /public/home/wenyuhao/seq/WGS/D1/results/recal/DRR016851-1.bam written to /public/home/wenyuhao/seq/WGS/dysgu/tmpDir/DRR016851-1.dysgu_reads.bam, n=2995745, time=0:04:25 h:m:s
+2023-12-19 14:43:59,686 [INFO   ]  Input file is: /public/home/wenyuhao/seq/WGS/dysgu/tmpDir/DRR016851-1.dysgu_reads.bam
+2023-12-19 14:44:00,472 [INFO   ]  Sample name: DRR016851
+2023-12-19 14:44:00,472 [INFO   ]  Writing vcf to stdout
+2023-12-19 14:44:00,472 [INFO   ]  Running pipeline
+2023-12-19 14:44:00,931 [INFO   ]  Calculating insert size. Removed 86 outliers with insert size >= 777.0
+2023-12-19 14:44:00,942 [INFO   ]  Inferred read length 101.0, insert median 281, insert stdev 93
+2023-12-19 14:44:00,943 [INFO   ]  Max clustering dist 746
+2023-12-19 14:44:00,943 [INFO   ]  Building graph with clustering 746 bp
+2023-12-19 14:44:27,722 [INFO   ]  Total input reads 2995745
+2023-12-19 14:44:29,379 [INFO   ]  Graph constructed
+2023-12-19 14:44:29,380 [INFO   ]  Minimum support 3
+Traceback (most recent call last):
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/bin/dysgu"", line 8, in <module>
+    sys.exit(cli())
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/public/home/wenyuhao/anaconda3/envs/dysgu/lib/python3.8/site-packages/dysgu/main.py"", line 259, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1188, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 996, in dysgu.cluster.pipe1
+_pickle.UnpicklingError: invalid load key, 'A'.
+Failed to read from standard input: unknown file type
+```
+When this problem occurred, I thought there was a problem with my bam file, but when using `samtolls views`, it can be displayed normally.
+
+```
+samtools view /public/home/wenyuhao/seq/WGS/D1/results/recal/DRR016852-1.bam | head
+DRR016852.155276582     163     1       10000   0       4S35M62S        =       10179   220     AACCATAACCCTAACCCTAACCCTAACCCTAACCCTAACAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTAAAA   :;?@+;<A&>?=;@>@>A;A=:@@?A><@@=?=?AA>A>>/7?>29A@<?>#.@@-=>><::>(<=7?52;<<;6=;D@,9A<:??-::-?<;<>.=A3=>     MC:Z:60S41M     MD:Z:35 PG:Z:MarkDuplicates     RG:Z:DRR016852  NM:i:0  AS:i:35 XS:i:35
+DRR016852.15743215      99      1       10001   0       101M    =       10152   206     TAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACC   BBDACCDAC@CCDAD@BBCAD@BBCAC@BBCAD@BCDAD@CBBAC>BBBAB@BA=@B@C@=?;?CCC@D?@EBAD:@AC9BACD?@C@AEEBECD@DC>AF     MC:Z:18M1D36M   MD:Z:101        PG:Z:MarkDuplicates     RG:Z:DRR016852  NM:i:0  AS:i:101        XS:i:101
+DRR016852.51109508      163     1       10001   0       46M3D55M        =       10066   157     TAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTA   AAC@BAC@C@BCD@C?AAC@D?BACAD@BBCAD@BBC@D@CBB@C@>B@B@C>B@CCD:B?CCD@AACDE@C?CBDBD@AC@<C@BDE<C@DDEB<ABCEA     MC:Z:16M1I76M8S MD:Z:46^CCT55   PG:Z:MarkDuplicates     RG:Z:DRR016852  NM:i:3  AS:i:92 XS:i:96
+DRR016852.66863023      163     1       10001   0       101M    =       10178   281     TAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACC   AAC@BAC@C@CCD@C?AAC@D?BACAD@BBCAD@BBCAD@BBDAD@BBDACACCCAD@BBDAC>DDB?C<ABA@C?CCCBDAEDEADBDDEBA@B>FCEAB     MC:Z:58M1I6M1I21M5D14M  MD:Z:101        PG:Z:MarkDuplicates     RG:Z:DRR016852  NM:i:0  AS:i:101        XS:i:101
+DRR016852.73598611      99      1       10001   0       101M    =       10100   142     TAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACC   BBDACCDAC@CCDAD@BBC@C?BBA?A@BBB?D@BC>AD;BBB?@=CCA?A;BA??<8?=-;79><B;)9<A@((:;AD7BAED?0?=:>?ADCDADAC83     MC:Z:43M        MD:Z:101        PG:Z:MarkDuplicates     RG:Z:DRR016852  NM:i:0  AS:i:101        XS:i:101
+```
+",wenyuhaokikika,https://github.com/kcleal/dysgu/issues/79
+I_kwDODQYcac57HULM,Subject: Inquiry on Benchmarking DEL and INS Events with dysgu Pipelines.,CLOSED,2024-01-04T11:50:03Z,2024-03-06T11:11:02Z,2024-01-06T12:30:01Z,"Hello,
+
+I hope this message finds you well. I am currently running dysgu and multiple pipelines (Manta, Delly, Lumpy, Gridss) on NIST_NA12878_HG001_HiSeq_300x HG001 (PE) data from GIAB. I am aiming to replicate the benchmark analysis from one flow cell, and I noticed in your paper that DEL and INS events were separated for precision and recall assessment. Could you please explain how you accomplished this and the rationale behind it?
+
+Additionally, I am facing challenges when benchmarking my .vcf files, with precision and recall values coming out lower than expected. I've attached the log file for your reference, and I've tried to use the same parameters as mentioned in your paper. If you could provide any insights or suggest ideas to improve these metrics, I would greatly appreciate it.
+
+Many thanks for your assistance.
+
+log.txt, summaty.json == [truvari_results] 
+[log.txt](https://github.com/kcleal/dysgu/files/13829301/log.txt)
+[summary.json](https://github.com/kcleal/dysgu/files/13829302/summary.json)
+
+From SVanalyzer
+RECALL:
+Number of detected true variants (DTP): 2812
+Number of undetected true variants (FN): 11126
+Recall (DTP/(DTP+FN)): 20.18%
+
+PRECISION:
+Number of predictions that are true (PTP): 2781
+Number of false positives (FP): 5072
+Precision (PTP/(PTP+FP)): 35.41%
+
+F1 (2*Recall*Precision/(Recall+Precision): 0.257055568176129
+
+
+",poddarharsh15,https://github.com/kcleal/dysgu/issues/80
+I_kwDODQYcac5_zqRR,TypeError: an integer is required when using --sites option and manta.vcf,CLOSED,2024-02-20T12:19:05Z,2024-03-26T22:53:12Z,2024-03-26T22:53:12Z,"Hi, am finding Dysgu very useful but I am encountering the following error when using `--sites` option and a manta.vcf file.
+
+I am using a docker and this is the command I am using:
+```
+docker exec dysgu sh -c ""dysgu run -p4 \
+    /data/input/vcf/$manta \
+    /data/input/ref/$ref \
+    /data/temp/ \
+    /data/input/bams/$bam \
+    -x > /data/$sample.dysgu3.vcf""
+```
+
+The error:
+```
+2024-02-20 11:29:45,607 [INFO   ]  Writing vcf to stdout
+2024-02-20 11:29:46,050 [INFO   ]  Inferred read length 149.0, insert median 407, insert stdev 173
+    sys.exit(cli())
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    sys.exit(cli())
+             ^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/opt/venv/lib/python3.11/site-packages/dysgu/main.py"", line 259, in run_pipeline
+    cluster.cluster_reads(ctx.obj)
+  File ""dysgu/cluster.pyx"", line 1188, in dysgu.cluster.cluster_reads
+  File ""dysgu/cluster.pyx"", line 790, in dysgu.cluster.pipe1
+  File ""dysgu/graph.pyx"", line 1086, in dysgu.graph.construct_graph
+  File ""dysgu/graph.pyx"", line 1212, in dysgu.graph.construct_graph
+  File ""dysgu/graph.pyx"", line 872, in dysgu.graph.process_alignment
+  File ""dysgu/graph.pyx"", line 1074, in dysgu.graph.SiteAdder.add_any_sites
+TypeError: an integer is required
+```",bbunce,https://github.com/kcleal/dysgu/issues/81
+I_kwDODQYcac6ALfym,"When combining a large number of samples, the speed is very slow",OPEN,2024-02-23T07:15:38Z,2024-12-14T10:17:07Z,,"Hi, thank you for releasing such a nice tool.I have 302 samples (30x) of vcf files, when I use dysgu merge, whether it is to split chromosomes or not to split, it is running very slowly, is there any good way?Looking forward to your reply",zhongleishi,https://github.com/kcleal/dysgu/issues/82
+I_kwDODQYcac6AMNG1,"When merging a large number of samples, the process is very slow",CLOSED,2024-02-23T09:17:43Z,2024-02-23T09:23:07Z,2024-02-23T09:23:07Z,"Sorry, I accidentally closed the question, my first time asking on GitHub.I tried two approaches,I just use the three filtering methods provided by the tutorial to filter in advance.
+![微信截图_20240223171004](https://github.com/kcleal/dysgu/assets/132836860/56676de5-e986-423a-b2bb-e8544a875b60)
+
+
+dysgu merge -p24 --input-list list > merged.vcf
+dysgu merge -v 2 *.vcf > merged.vcf",zhongleishi,https://github.com/kcleal/dysgu/issues/83
+I_kwDODQYcac6AxU2N,Long run time,CLOSED,2024-02-29T05:26:09Z,2024-04-12T16:34:04Z,2024-03-01T03:50:32Z,"Distinguished DYSGU developers,
+
+  I am new to DYSGU software, and I humbly ask for you help for why the prolong run time for DYSGU.
+
+  First, I use Minimap2 to align my raw nanopore FASTQ sequnce (X174 coverage) to the reference genome and output the aligned SAM file. I filter the SAM file with -F 4069 with samtools and converted to BAM at the same time. I use this BAM file (filtered.bam) as the DYSGU input.
+
+  My command for running DYSGU is :
+
+dysgu call -p 12 --mode nanopore GCA_000001405.15_GRCh38_no_alt_analysis_set.fasta temp filtered.bam
+
+The run took >52 hours (still running) on dual Intel Xeon (with HDD array) and DYSGU only use single core mostly, which I think the run time is too long for you mentioned ""_Using a single core and depending on hard-drive speed, dysgu usually takes ~1h to analyse a 30X coverage genome_"". Also the program does not output any error and output nothing after ""_Building graph with clustering 500000 bp_"".
+  
+  Do you have any ideas?",JMencius,https://github.com/kcleal/dysgu/issues/84
+I_kwDODQYcac6BJYvP,"Parameters for R9 Guppy2, 4, 6",CLOSED,2024-03-04T12:21:51Z,2024-03-06T05:57:55Z,2024-03-06T05:57:55Z,"Hi DYSGU developers, I am running DYSGU calling for SV in human genome using the nanopore data. Currently I have 3 fastq file from 3 different volunteers. These 3 sets of data is sequencing using R9 nanopore. Because of the time of sampling date, these 3 fastq files were basecalling using Guppy2, Guppy4 (HAC), and Guppy6 (HAC) respectively. I noticed that in your documentation you mentioned that ""If you are using reads with higher error rates, or are unsure of the accuracy, it is recommended to set '--divergence auto' "". I am confused what parameters I should use for these 3 sets of data, since Guppy6 (HAC) has considerable accuracy.",StellariaYuki,https://github.com/kcleal/dysgu/issues/85
+I_kwDODQYcac6DKZ5G,Process_KILLED,CLOSED,2024-03-21T15:47:22Z,2024-03-22T14:06:52Z,2024-03-22T14:06:52Z,"Hi @kcleal I am trying to run a bam files and after running for couple of minutes it gets KILLED, Could you please suggest some ideas I don't understand what's happening haven't seen dysgu doing this before :( 
+Thanks in advance.
+ 
+
+![Screenshot from 2024-03-21 16-45-09](https://github.com/kcleal/dysgu/assets/45700858/148effce-4077-4e98-8104-fd85ce2390af)
+",poddarharsh15,https://github.com/kcleal/dysgu/issues/86
+I_kwDODQYcac6Du_AF,Paired-end reads calling sv,CLOSED,2024-03-27T08:08:37Z,2024-03-27T12:05:41Z,2024-03-27T12:05:41Z,"When I call call SVs, there was an error
+dysgu run --sites combined_chang.vcf  genomic.fna wd /mnt/f/rmbam/4.sort.rmdup.bam > sample1.vcf
+![image](https://github.com/kcleal/dysgu/assets/165139484/eb7cbf27-7d19-4807-827d-03ea84eeaf61)
+
+",C-YONG,https://github.com/kcleal/dysgu/issues/88
+I_kwDODQYcac6HPcIY,Error installing with conda,CLOSED,2024-04-29T12:55:09Z,2024-09-13T08:45:37Z,2024-09-13T08:45:37Z,"Hi!
+
+
+I have an error when running dysgu test.
+I get this message:
+```
+2024-04-29 14:47:56,143 [INFO   ]  [dysgu-test] Version: 1.6.2
+Traceback (most recent call last):
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/bin/dysgu"", line 11, in <module>
+    sys.exit(cli())
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1157, in __call__
+    return self.main(*args, **kwargs)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1078, in main
+    rv = self.invoke(ctx)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/core.py"", line 783, in invoke
+    return __callback(*args, **kwargs)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/click/decorators.py"", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/dysgu/main.py"", line 534, in test_command
+    v = run(shlex.split(c), shell=False, capture_output=True, check=True)
+  File ""/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/subprocess.py"", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['dysgu', 'fetch', '-x', '/pfs/stor10/projects/projnb10/snic2019-29-3/wd_test', '/home/j/jbruxaux/miniconda3/envs/dysgu/lib/python3.10/site-packages/dysgu/tests/small.bam']' returned non-zero exit status 1.
+```
+
+I have installed dysgu using conda. I have all the packages requested:
+```
+# packages in environment at /home/j/jbruxaux/miniconda3/envs/dysgu:
+#
+# Name                    Version                   Build  Channel
+_libgcc_mutex             0.1                 conda_forge    conda-forge
+_openmp_mutex             4.5                       2_gnu    conda-forge
+bzip2                     1.0.8                hd590300_5    conda-forge
+c-ares                    1.28.1               hd590300_0    conda-forge
+ca-certificates           2024.2.2             hbcca054_0    conda-forge
+click                     8.1.7           unix_pyh707e725_0    conda-forge
+cython                    3.0.10          py310hc6cd4ac_0    conda-forge
+dysgu                     1.6.2           py310h770aed0_0    bioconda
+htslib                    1.20                 h81da01d_0    bioconda
+joblib                    1.4.0              pyhd8ed1ab_0    conda-forge
+keyutils                  1.6.1                h166bdaf_0    conda-forge
+krb5                      1.21.2               h659d440_0    conda-forge
+ld_impl_linux-64          2.40                 h55db66e_0    conda-forge
+libblas                   3.9.0           22_linux64_openblas    conda-forge
+libcblas                  3.9.0           22_linux64_openblas    conda-forge
+libcurl                   8.7.1                hca28451_0    conda-forge
+libdeflate                1.18                 h0b41bf4_0    conda-forge
+libedit                   3.1.20191231         he28a2e2_2    conda-forge
+libev                     4.33                 hd590300_2    conda-forge
+libffi                    3.4.2                h7f98852_5    conda-forge
+libgcc-ng                 13.2.0               hc881cc4_6    conda-forge
+libgfortran-ng            13.2.0               h69a702a_6    conda-forge
+libgfortran5              13.2.0               h43f5ff8_6    conda-forge
+libgomp                   13.2.0               hc881cc4_6    conda-forge
+liblapack                 3.9.0           22_linux64_openblas    conda-forge
+libnghttp2                1.58.0               h47da74e_1    conda-forge
+libnsl                    2.0.1                hd590300_0    conda-forge
+libopenblas               0.3.27          pthreads_h413a1c8_0    conda-forge
+libsqlite                 3.45.3               h2797004_0    conda-forge
+libssh2                   1.11.0               h0841786_0    conda-forge
+libstdcxx-ng              13.2.0               h95c4c6d_6    conda-forge
+libuuid                   2.38.1               h0b41bf4_0    conda-forge
+libxcrypt                 4.4.36               hd590300_1    conda-forge
+libzlib                   1.2.13               hd590300_5    conda-forge
+lightgbm                  4.3.0           py310hc6cd4ac_0    conda-forge
+ncurses                   6.4.20240210         h59595ed_0    conda-forge
+networkx                  3.3                pyhd8ed1ab_1    conda-forge
+numpy                     1.26.4          py310hb13e2d6_0    conda-forge
+openssl                   3.2.1                hd590300_1    conda-forge
+pandas                    2.2.2           py310hcc13569_0    conda-forge
+pip                       24.0               pyhd8ed1ab_0    conda-forge
+pysam                     0.22.0          py310h41dec4a_1    bioconda
+python                    3.10.14         hd12c33a_0_cpython    conda-forge
+python-dateutil           2.9.0              pyhd8ed1ab_0    conda-forge
+python-edlib              1.3.9           py310h0dbaff4_6    bioconda
+python-tzdata             2024.1             pyhd8ed1ab_0    conda-forge
+python_abi                3.10                    4_cp310    conda-forge
+pytz                      2024.1             pyhd8ed1ab_0    conda-forge
+readline                  8.2                  h8228510_1    conda-forge
+scikit-learn              1.4.2           py310h1fdf081_0    conda-forge
+scipy                     1.13.0          py310hb13e2d6_0    conda-forge
+setuptools                69.5.1             pyhd8ed1ab_0    conda-forge
+six                       1.16.0             pyh6c4a22f_0    conda-forge
+sortedcontainers          2.4.0              pyhd8ed1ab_0    conda-forge
+threadpoolctl             3.4.0              pyhc1e730c_0    conda-forge
+tk                        8.6.13          noxft_h4845f30_101    conda-forge
+tzdata                    2024a                h0c530f3_0    conda-forge
+wheel                     0.43.0             pyhd8ed1ab_1    conda-forge
+xz                        5.2.6                h166bdaf_0    conda-forge
+zlib                      1.2.13               hd590300_5    conda-forge
+zstd                      1.5.5                hfc55251_0    conda-forge
+```
+
+I use conda 24.3.0 in case it matters.
+
+Any suggestion?
+
+Thanks in advance!",jbruxaux,https://github.com/kcleal/dysgu/issues/90
+I_kwDODQYcac6MLpcd,using short paired end split reads?,CLOSED,2024-06-13T19:00:55Z,2024-06-18T16:22:46Z,2024-06-18T16:22:46Z,"I'm studying a dataset where each sample has one known translocation, and I'm trying to detect if they have other SVs, as well. We performed paired-end short read targeted capture sequencing, so I have a high sequencing depth for several regions of interest. 
+
+I aligned my experiment using BWA MEM. When I look at reads that align to the site of the known translocation, I can see that I have a lot of split reads that align to ~50bp on either side of the expected breakpoint. When I run Dysgu, it doesn't call the known translocation. In addition, for every SV that is called, SR=0, so I guess all of these split reads are not being utilized. What is the correct way to include split reads in short read PE analyses? 
+
+I'm using dysgu v.1.6.3 and python 3.12.1. I've been troubleshooting the ""dysgu run"" parameters, most recently: 
+
+dysgu run -p4 -x --keep-small --min-support 3 --metrics --max-cov -1 hg38.fa temp_dir bamfile.bam > vcffile.vcf
+ ",egnst,https://github.com/kcleal/dysgu/issues/91
+I_kwDODQYcac6NZG9K,Error with working directories,CLOSED,2024-06-25T09:27:05Z,2024-06-25T15:49:42Z,2024-06-25T15:49:42Z,"Hi @kcleal Could please suggest me some ideas how to modify the command line to solve this directory errors!
+
+cmd line:-
+
+```
+dysgu run \\
+        -p ${task.cpus} \\     
+        $fasta \\
+        . \\
+        $input_bam \\
+        | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz
+    tabix ${args3} ${prefix}.vcf.gz
+
+```
+
+
+> 2024-06-25 09:07:20,781 [INFO   ]  [dysgu-run] Version: 1.6.2
+> Traceback (most recent call last):
+>   File ""/usr/local/bin/dysgu"", line 11, in <module>
+>     sys.exit(cli())
+>   File ""/usr/local/lib/python3.10/site-packages/click/core.py"", line 1157, in __call__
+>     return self.main(*args, **kwargs)
+>   File ""/usr/local/lib/python3.10/site-packages/click/core.py"", line 1078, in main
+>     rv = self.invoke(ctx)
+>   File ""/usr/local/lib/python3.10/site-packages/click/core.py"", line 1688, in invoke
+>     return _process_result(sub_ctx.command.invoke(sub_ctx))
+>   File ""/usr/local/lib/python3.10/site-packages/click/core.py"", line 1434, in invoke
+>     return ctx.invoke(self.callback, **ctx.params)
+>   File ""/usr/local/lib/python3.10/site-packages/click/core.py"", line 783, in invoke
+>     return __callback(*args, **kwargs)
+>   File ""/usr/local/lib/python3.10/site-packages/click/decorators.py"", line 33, in new_func
+>     return f(get_current_context(), *args, **kwargs)
+>   File ""/usr/local/lib/python3.10/site-packages/dysgu/main.py"", line 238, in run_pipeline
+>     make_wd(kwargs)
+>   File ""/usr/local/lib/python3.10/site-packages/dysgu/main.py"", line 125, in make_wd
+>     raise ValueError(""Working directory already exists. Add -x / --overwrite=True to proceed, ""
+> ValueError: Working directory already exists. Add -x / --overwrite=True to proceed, or supply --ibam to re-use temp files in working directory
+
+Thanks.",poddarharsh15,https://github.com/kcleal/dysgu/issues/92
+I_kwDODQYcac6Njyzy,Issue: Dysgu Module Integration and Empty VCF File Output,CLOSED,2024-06-26T10:31:07Z,2024-07-05T08:14:09Z,2024-07-05T07:15:51Z,"**Description**
+I am currently working on adding `Dysgu` as a new module in nf-core/modules, with the aim of later incorporating it into the nf-core/sarek pipeline for Structural Variant (SV) calling.
+(https://github.com/nf-core/sarek/tree/3.4.2)
+
+**Issue Details**
+The module has been created by me with assistance from other developers from nf-core/sarek @famosab. While `Dysgu` passes all the tests and works well within the module, it returns an empty VCF file (a text file) when run on the test data provided by the nf-core community. In theory, it should at least return an empty VCF file with a header, similar to other tools like `Manta` and `Tiddit` when run with the same data.
+
+**Steps to Reproduce**
+Create the Dysgu module in nf-core/modules.
+Run Dysgu on the provided test data from the nf-core community.
+Observe that the resulting VCF file is empty, lacking even the expected header.
+
+**Expected Behavior**
+The Dysgu module should produce a VCF file with a header, even if no variants are detected, similar to the behavior observed with `Manta` and `Tiddit`.
+
+Test data files used for Dysgu (https://github.com/nf-core/test-datasets/tree/sarek3)
+[input.zip](https://github.com/user-attachments/files/15986469/input.zip)
+
+
+Output VCF files from `Manta` and `Tiddit` runs on the same test data
+[sample1.manta.diploid_sv.vcf.gz](https://github.com/user-attachments/files/15986477/sample1.manta.diploid_sv.vcf.gz)
+[sample1.tiddit.vcf.gz](https://github.com/user-attachments/files/15986489/sample1.tiddit.vcf.gz)
+
+Could you please investigate this issue? I am tagging #sarek developers in this issue to help identify the problem. Your assistance is highly appreciated! @famosab
+
+Thank you for your help.
+
+
+
+",poddarharsh15,https://github.com/kcleal/dysgu/issues/93
+I_kwDODQYcac6Pdw14,dsygu filter broken for non-translocations,CLOSED,2024-07-13T14:00:06Z,2024-07-18T07:22:18Z,2024-07-15T08:39:50Z,"Hello,
+
+I think some recent refactoring of filter_normal.py has broken `dysgu filter`. I suspect the cause is that [`process_intra()`](https://github.com/kcleal/dysgu/blob/eeafe830e2c07f91f4cc9fc0eb3ce8b72d16069d/dysgu/filter_normals.py#L888C5-L888C18) never returns None. From a brief inspection of `dysgu filter --keep-all` it seems to complain about low support for all non-TRA events. I tried to track the logic of `process_intra()` but ran out of time.
+
+I've confirmed that version `1.6.2` works as expected, but nothing since then does, so I suspect the bug [is somewhere here](https://github.com/kcleal/dysgu/compare/v1.6.2...v1.6.3#diff-e3d818e59317d6aa6049a931b2f8d05b26a179c0fd8dfb8b12552178bb4c961c).
+
+I've already made a PR for a bug that prevented using `--keep-all` since v1.6.2, #99. 
+
+best,
+K",kdm9,https://github.com/kcleal/dysgu/issues/100
+I_kwDODQYcac6RIHQk,`dysgu is not installable because there are no viable options` using Conda,CLOSED,2024-07-29T08:46:17Z,2024-07-29T09:37:19Z,2024-07-29T09:30:06Z,"Hi @kcleal, thanks for your work on Dysgu :smile:.
+
+I am having trouble installing Dysgu using Conda :cry:. Could you please provide some assistance?
+
+## Command:
+`mamba create -n dysgu-test -c bioconda -c conda-forge dysgu`
+
+(It also can't be installed using Snakemake's Conda integration)
+
+## Error:
+```
+Could not solve for environment specs
+The following packages are incompatible
+└─ dysgu is not installable because there are no viable options
+   ├─ dysgu [1.3.16|1.4.0|1.4.2|1.5.0] would require
+   │  └─ htslib [>=1.16,<1.21.0a0 |>=1.17,<1.21.0a0 ] but there are no viable options
+   │     ├─ htslib [1.17|1.18|1.19|1.19.1|1.20] would require
+   │     │  └─ libdeflate >=1.18,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   │     ├─ htslib 1.20 would require
+   │     │  └─ libdeflate >=1.20,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   │     └─ htslib [1.15.1|1.16|1.17] would require
+   │        └─ libdeflate >=1.13,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   ├─ dysgu 1.6.0 would require
+   │  └─ htslib >=1.18,<1.21.0a0 , which cannot be installed (as previously explained);
+   ├─ dysgu [1.6.0|1.6.1|1.6.2] would require
+   │  └─ pysam >=0.19  but there are no viable options
+   │     ├─ pysam [0.19.0|0.19.1] would require
+   │     │  └─ libdeflate >=1.10,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   │     ├─ pysam [0.19.1|0.20.0|0.21.0] would require
+   │     │  └─ libdeflate >=1.13,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   │     ├─ pysam [0.21.0|0.22.0|0.22.1] would require
+   │     │  └─ libdeflate >=1.18,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   │     └─ pysam 0.22.1 would require
+   │        └─ libdeflate >=1.20,<1.21.0a0 , which conflicts with any installable versions previously reported;
+   └─ dysgu [1.6.4|1.6.5|1.6.6] would require
+      └─ htslib >=1.12  but there are no viable options
+         ├─ htslib [1.17|1.18|1.19|1.19.1|1.20], which cannot be installed (as previously explained);
+         ├─ htslib 1.20, which cannot be installed (as previously explained);
+         ├─ htslib [1.15.1|1.16|1.17], which cannot be installed (as previously explained);
+         ├─ htslib [1.12|1.13|1.14] would require
+         │  └─ libdeflate >=1.7,<1.21.0a0 , which conflicts with any installable versions previously reported;
+         ├─ htslib 1.14 would require
+         │  └─ libdeflate >=1.9,<1.21.0a0 , which conflicts with any installable versions previously reported;
+         └─ htslib [1.14|1.15|1.15.1] would require
+            └─ libdeflate >=1.10,<1.21.0a0 , which conflicts with any installable versions previously reported.
+```",jsquaredosquared,https://github.com/kcleal/dysgu/issues/104
+I_kwDODQYcac6Rub2C,Information about running multiple bam files ,CLOSED,2024-08-02T12:33:13Z,2024-08-02T14:53:56Z,2024-08-02T14:53:56Z,"Hi @kcleal ,
+
+I need some information regarding running multiple BAM files (around 10, and possibly up to 100 in the future). Is it possible to run them using a text file [like job array] with the locations provided inside it? If so, could you please guide me on how to set this up, or if there's a specific parameter in `dysgu` I need to address for it?
+Thank you for your assistance.",poddarharsh15,https://github.com/kcleal/dysgu/issues/105
+I_kwDODQYcac6TYqDU,Low SV Count When Performing SV Calling on HG002 ONT Data,CLOSED,2024-08-19T08:01:19Z,2024-08-22T07:31:30Z,2024-08-22T07:31:30Z,"Hello, when I use Dysgu for SV calling with ONT data, the number of SVs obtained is only 5000. Below is my code. Could you please help me understand why this is happening?
+
+```
+/dysgu call --pl nanopore --min-size 50 -c -p 20 --mode nanopore ./GCF_000001405.25_GRCh37.p13_genomic.fa ./HG002.ONT_vulcan_dysguwd ./HG002.ONT_vulcan.sort.bam
+```",Flooooooooooooower,https://github.com/kcleal/dysgu/issues/106
+I_kwDODQYcac6WMOcr,Probably pysam error ,CLOSED,2024-09-11T13:41:01Z,2024-09-17T09:13:09Z,2024-09-17T09:13:09Z,"Hi @kcleal,
+
+I hope you're doing well. I'm encountering some errors while using the latest version of Dysgu within a Conda environment. I have attached the log.txt file for your reference. Could you please take a look when you have a moment?
+
+Thank you in advance for your help!
+
+> command used 
+
+`dysgu run -x -p 16 --min-support 5 --mq 5 GRCh38_GIABv3_no_alt_analysis_set_maskedGRC_decoys_MAP2K3_KMT2C_KCNJ18.fasta  $temp1  UD_AN001_F.sorted.uniq.bam --regions $exones_padded_50bp_sorted.bed | bgzip -c > dysgu_output.vcf.gz`
+
+
+[log.txt](https://github.com/user-attachments/files/16964364/log.txt)
+[process_bams_dysgu_732982_1.txt](https://github.com/user-attachments/files/16964454/process_bams_dysgu_732982_1.txt)
+",poddarharsh15,https://github.com/kcleal/dysgu/issues/107
+I_kwDODQYcac6XT-xo,Issues when installing with `conda`,CLOSED,2024-09-20T11:39:29Z,2024-11-22T11:50:45Z,2024-11-22T11:50:44Z,"In the readme, the suggested installation command is `conda install -c bioconda -c conda-forge dysgu`. However, this causes a `LibMambaUnsatisfiableError` due to incompatible packages. 
+
+Changing the command to `conda install -c conda-forge -c bioconda dysgu` solves this problem. This is because the conda-forge channel needs to have a higher priority because ""bioconda heavily depends on the conda-forge channel"" ([source](https://bioconda.github.io/#explain-commands)). Perhaps the readme should be updated to use this command instead?
+
+Furthermore, I encountered an issue where running `conda install -c conda-forge -c bioconda dysgu` would install Dysgu successfully along with the latest version of NumPy, but then when running `dysgu run` it would throw the following error:
+
+```
+pkg_resources.ContextualVersionConflict: (numpy 2.1.1 (/[...]/lib/python3.12/site-packages), Requirement.parse('numpy<2'), {'dysgu'})
+```
+
+Perhaps the requirements need to be updated?",jsquaredosquared,https://github.com/kcleal/dysgu/issues/109
+I_kwDODQYcac6dHn9E,Potentially inconsistent counting for reads supporting call,CLOSED,2024-11-05T17:08:02Z,2024-11-22T11:50:09Z,2024-11-22T11:50:09Z,"Hi @kcleal,
+
+
+I'm seeing some weird behavior from Dysgu around read counting and was curious if you could help. I'll preface this by saying the sequencing data I'm working with is not WGS/WES but instead target enrichment data, which might be a confounding variable. Not entirely sure how Dysgu's modeling deals with more peaky data. 
+
+Attached is a BAM subset to the region I'm curious about in _MUTYH_ and the corresponding Dysgu VCF. Dysgu command: `.venv/bin/dysgu run b37/GRCh37.p12.fa temp sample_roi.bam --max-cov -1 -p 6 --min-support 3 --svs-out sample_roi.vcf -x --min-size 50 --metrics`. Note that this BAM was created by taking the alignment file from `dysgu fetch` and subsetting it to `1:45790000-45800000`.
+
+[sample_roi_bam_vcf.zip](https://github.com/user-attachments/files/17635870/sample_roi_bam_vcf.zip)
+
+
+I'm seeing Dysgu call a 67bp deletion starting at `chr1:45797418` (`\t -> \n` to make reading easier):
+```
+1
+45797418
+132
+T
+<DEL>
+.
+PASS
+SVMETHOD=DYSGUv1.6.7;SVTYPE=DEL;END=45797485;CHR2=1;GRP=131;NGRP=3;CT=3to5;CIPOS95=0;CIEND95=0;SVLEN=67;KIND=intra_regional;REP=0.163;REPSC=0.000;GC=63.33;NEXP=0;STRIDE=0;EXPSEQ=;RPOLY=0;OL=0;SU=1384;WR=1;PE=838;SR=0;SC=1199;BND=544;LPREC=1;RT=pe
+GT:GQ:NMP:NMS:NMB:MAPQP:MAPQS:NP:MAS:SU:WR:PE:SR:SC:BND:SQC:SCW:SQR:BE:COV:MCOV:LNK:NEIGH:NEIGH10:RB:PS:MS:SBT:NG:NSA:NXA:NMU:NDC:RMS:RED:BCC:FCC:STL:RAS:FAS:ICN:OCN:CMP:RR:JIT:PROB
+1/1:200:0.48:0.0:0.45:59.92:0.0:1085:0:1384:1:838:0:1199:544:-1.0:0.0:0.993:0:16.88:253.0:0:0:0:150:625:758:0.0:0.01:0.84:0.0:0:1:0:0:0:1.634:2:0:0:2.892:1.77:50.67:0.154:0.0:0.487
+
+```
+
+The part that's confusing to me is the read metrics Dysgu says support the call, they are: `SU=1384;WR=1;PE=838;SR=0;SC=1199;BND=544`. But if I manually inspect that region in IGV, I see no evidence of the hundreds of SU, PE, SC, or BND alignments that would support this call? Average coverage across this region is ~110x. I see a similar pattern with short DEL (\~<80bp) and INV (\~<400bp) across several of the samples I've tested so far, where Dysgu seems to be producing a very confident call given the read support indicated but then inspection of the alignment doesn't back up these calls.
+
+
+![IGV 2024-11-05 - 08 53 16](https://github.com/user-attachments/assets/013dcbad-ac53-45ea-b5d0-969e44e9a026)
+
+
+
+Happy to provide more details if that would help! 
+
+
+
+
+@kkchau",aroon-color,https://github.com/kcleal/dysgu/issues/114
+I_kwDODQYcac6gV9gw,Information about Structural Variant Allele Frequency estimation!,OPEN,2024-11-25T10:11:48Z,2024-12-16T15:22:28Z,,"Hi @kcleal 
+
+What would be the best practice to estimate Structural Variant Allele Frequency for outputs generated from the Dysgu tool on a cohort of 300 samples? Currently, I'm trying to use `bcftools +fill-tags`, but I’m not completely sure if it's accurately capturing the AF or [MAF/VAF]. Could you suggest some ideas or recommend alternative approaches?
+
+Thanks for the help. ",poddarharsh15,https://github.com/kcleal/dysgu/issues/117

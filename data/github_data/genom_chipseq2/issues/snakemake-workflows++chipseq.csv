@@ -1,0 +1,27 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5MTE4MTEyMDk=,snakemake version issue,CLOSED,2021-06-04T20:22:14Z,2021-06-07T10:22:35Z,2021-06-04T21:39:28Z,"Hello, 
+
+I tried to use this workflow and ran into multiple issues, I guess it's related to the snakemake version:
+
+If under 5.17.0
+
+```
+WorkflowError in line 37 of /project/umw_ingolf_bach/rui/final/chipseq/workflow/rules/peak_analysis.smk:
+Extensions for multiext may not contain path delimiters (/,\) and must start with '.' (e.g. .txt).
+  File ""/project/umw_ingolf_bach/rui/final/chipseq/workflow/Snakefile"", line 13, in <module>
+  File ""/project/umw_ingolf_bach/rui/final/chipseq/workflow/rules/peak_analysis.smk"", line 37, in <module>
+```
+
+if version 6.4.1
+```
+MissingInputException in line 163 of /project/umw_ingolf_bach/rui/final/chipseq/workflow/rules/post-analysis.smk:
+Missing input files for rule phantompeak_correlation:
+../workflow/header/spp_corr_header.txt
+```
+
+Is this a snakemake version issue?  Snakemake seem to have trouble finding '../workflow' in the newer version, and it complained about syntax in the older version.
+
+Which snakemake version was this tested on ? Thanks!
+
+Ray
+",radio1988,https://github.com/snakemake-workflows/chipseq/issues/7

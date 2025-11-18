@@ -1,0 +1,484 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMTAyMDk1NDU=,Adding flags to simulate SET from PET bams in lines 448-450 (run_spp.R),OPEN,2017-02-25T04:23:53Z,2017-02-25T04:23:53Z,,"I am looking at lines 448-450 in run_spp.R and it looks like one can simulate RSC and NSC computation on PET bam file, by running adding samtools flags to select only the first mate or second mate in lines 448-450. Ideally one could compute both ways and report the average? Is there something I missed? 
+
+It would save some compute if one doesn't have to write bam files containing only one mate when run_spp.R does the tagaAlign conversion anyway. ",sitag,https://github.com/kundajelab/phantompeakqualtools/issues/1
+MDU6SXNzdWUyMTQ3NzU5NTk=,phantompeakqual Error in names(cc) < names(otl) :attempt to set an attribute on NULL ,OPEN,2017-03-16T17:11:48Z,2017-03-28T14:06:40Z,,"from https://github.com/kundajelab/chipseq_pipeline/issues/12
+maybe more appropriate here.
+hi,
+I run phantompeakqual on my duplicates removed bam files and got an error shown in the title.
+later, I re-run the same command but on bam files before samtools rmdup -s, it worked fine.
+
+seems that samtools rmdup did something phantompeakqual did not like.
+
+Thanks,
+Tommy",crazyhottommy,https://github.com/kundajelab/phantompeakqualtools/issues/2
+MDU6SXNzdWUyMTY4MTQ5NDE=,another problem: Error: protect(): protection stack overflow,OPEN,2017-03-24T15:10:44Z,2017-12-07T08:15:46Z,,"Hi, 
+
+another problem with phantompeakqual or with R
+
+```
+Decompressing ChIP file
+Decompressing control file
+Loading required package: caTools
+Reading ChIP tagAlign/BAM file Hs_940_temp//M940_Crep2.tagAlign.gz 
+opened Hs_940_temp/M940_Crep2_spp_tmp//M940_Crep2.tagAlign144c7b15c3b9
+done. read 42273553 fragments
+ChIP data read length 37 
+[1] TRUE
+Reading Control tagAlign/BAM file Hs_940_.temp/control.tagAlign.gz 
+opened Hs_940_.temp/M940_Crep2_spp_tmp//control.tagAlign144c62adab27
+done. read 2922304 fragments
+Error: protect(): protection stack overflow
+Execution halted
+Error: protect(): protection stack overflow
+Execution halted
+```
+
+I googled and found http://stackoverflow.com/questions/28728774/how-to-set-max-ppsize-in-r
+
+after adding one line 
+
+`options(""experssion"" = 500000)`
+
+on top of the run_spp.R script, same error.
+Thanks for looking into this.
+Tommy
+
+",crazyhottommy,https://github.com/kundajelab/phantompeakqualtools/issues/3
+MDU6SXNzdWUyMzQwNzc2NjA=,"install.packages(""./spp_1.14.tar.gz""), error.",CLOSED,2017-06-07T02:50:10Z,2017-06-08T07:33:00Z,2017-06-08T07:33:00Z,"I googled this chat, install.packages(""./spp_1.14.tar.gz""). The[ post  here](https://groups.google.com/forum/#!topic/idr-discuss/XsjeWCwGxG0) complained that the package cannot be installed. I replicated the same error <inferring 'repos = NULL' from 'pkgs' Error in getOctD(x, offset, len) : invalid octal digit>. Is there any progress on this issue or I should upgrade some additional packages? Thanks.
+",zhenyisong,https://github.com/kundajelab/phantompeakqualtools/issues/4
+MDU6SXNzdWUyNDE4MzQ0NzM=,multiple datasets,OPEN,2017-07-10T20:16:25Z,2017-07-11T22:54:32Z,,"Hi,
+
+How do you run phantompeakqualtools for multiple dataset? How to specify multiple input files?",olechnwin,https://github.com/kundajelab/phantompeakqualtools/issues/5
+MDU6SXNzdWUzMDYwNDcwNTc=,need to load caTools,OPEN,2018-03-16T19:15:58Z,2018-03-16T19:15:58Z,,"In the script run_spp.R  at line 650 you also need to load caTools otherwise you get an error
+
+library(caTools)",mistrm82,https://github.com/kundajelab/phantompeakqualtools/issues/6
+MDU6SXNzdWUzMzQ3OTY5ODY=,Use phantompeakqualtools in RIP-seq or MeRIP-seq?,OPEN,2018-06-22T08:49:51Z,2018-06-22T08:49:51Z,,"Hi,
+could this tools be used in RIP-seq or MeRIP-seq?
+Thanks~",yuqingren,https://github.com/kundajelab/phantompeakqualtools/issues/7
+MDU6SXNzdWUzMzczODgyNTI=,Getting lots of compilation errors on install,CLOSED,2018-07-02T06:43:16Z,2018-07-04T07:19:50Z,2018-07-04T05:16:37Z,"```
+# ... many more error messages removed - last one fatal
+bed2vector.cpp:2530:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:2532:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:2532:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:2536:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+/mnt/work/endrebak/software/anaconda/lib/R/etc/Makeconf:167: recipe for target 'bed2vector.o' failed
+make: *** [bed2vector.o] Error 1
+ERROR: compilation failed for package 'spp'
+* removing '/mnt/work/endrebak/software/anaconda/lib/R/library/spp'
+```
+
+",endrebak,https://github.com/kundajelab/phantompeakqualtools/issues/8
+MDU6SXNzdWUzMzk1NDg1OTk=,cannot find runmean function,CLOSED,2018-07-09T17:55:13Z,2020-07-20T19:59:48Z,2020-07-20T19:59:48Z,"In this line:
+c$y <- runmean(cc$y,sbw,alg=""fast"")
+
+in newer R version(atleast, 3.4.4), runmean is not found. Instead, library(caTools) should be called, then runmean can be used. ",bioinfouser,https://github.com/kundajelab/phantompeakqualtools/issues/9
+MDU6SXNzdWUzNDUyMTk4NjM=,Add to bioconda?,CLOSED,2018-07-27T13:09:14Z,2018-08-03T07:43:48Z,2018-08-03T07:43:47Z,"Should this be added to bioconda?
+
+If so, how modified is the SPP version? Would it be possible to make use of the SPP already in bioconda?
+In your atac-seq-pipeline, you use r-spp v1.13. Is that sufficient?",karl616,https://github.com/kundajelab/phantompeakqualtools/issues/10
+MDU6SXNzdWU0NzQ2MjgxMDY=,"run_spp, not tag.lwcc error",CLOSED,2019-07-30T14:43:33Z,2020-07-20T21:04:27Z,2020-07-20T21:04:27Z,"Hi, 
+
+I have a problem when I run run_spp.R:
+Error in argfun(job) : object 'tag.lwcc' not found
+Calls: find.binding.positions ... sendData -> sendData.SOCKnode -> serialize -> argfun
+Execution halted
+Thanks a lot!
+
+Kun",KunFang93,https://github.com/kundajelab/phantompeakqualtools/issues/13
+MDU6SXNzdWU1MTM5MTI5ODk=,Unable to install spp_1.14.tar.gz - boost version minimum?,OPEN,2019-10-29T13:22:05Z,2023-08-31T06:52:58Z,,"Installation of spp R package gives many errors:
+
+bed2vector.cpp: In function 'SEXPREC* read_bed_ends(SEXP)':
+bed2vector.cpp:118:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:163:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:163:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:165:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:165:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:169:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+
+Is this perhaps related to wrong boost version? What version of boost libs is needed?
+
+CentOS 6
+R version 3.5.1
+boost                     1.69.0          py37h8619c78_1001    conda-forge
+boost-cpp                 1.69.0            h11c811c_1000    conda-forge
+
+
+",jjv5,https://github.com/kundajelab/phantompeakqualtools/issues/15
+MDU6SXNzdWU1NzE1MDI1MjY=,unable to save narrowpeak data,OPEN,2020-02-26T16:20:47Z,2020-03-03T15:44:29Z,,"Trying to run a bam file, but I get errors when I add the ""-savn"" option (everything else runs fine when I omit the ""-savn""). 
+
+$ Rscript run_spp.R -c=<bamfile> -savp -savn -savd -savp -odir=files/phantompeak -out=files/phantompeak/peakshift -rf
+Loading required package: caTools
+Error in if (is.na(control.file) && !is.na(output.npeak.file)) { : 
+  missing value where TRUE/FALSE needed
+Calls: parse.arguments
+In addition: Warning message:
+In is.na(output.npeak.file) :
+  is.na() applied to non-(list or vector) of type 'NULL'
+Execution halted
+
+Also, is there a way to identify later on which peaks are likely to be phantompeaks after peak calling?",N/A,https://github.com/kundajelab/phantompeakqualtools/issues/16
+MDU6SXNzdWU2MDEzNDI4NDY=,"install.packages(""./spp_1.14.tar.gz"") Error",CLOSED,2020-04-16T18:56:12Z,2020-04-16T19:02:34Z,2020-04-16T19:02:34Z,"Hello,
+While installing the spp_1.14.tar.gz package with R 3.6.1 on CentOS 7, compilation of bed2vector.cpp fails. Here is the R output:
+```
+> install.packages(""./spp_1.14.tar.gz"")
+inferring 'repos = NULL' from 'pkgs'
+Warning in untar2(tarfile, files, list, exdir, restore_times) :
+  skipping pax global extended headers
+* installing *source* package ‘spp’ ...
+** using staged installation
+checking for gcc... /home/msimenc/software/anaconda3/envs/R/bin/x86_64-conda_cos6-linux-gnu-cc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether /home/msimenc/software/anaconda3/envs/R/bin/x86_64-conda_cos6-linux-gnu-cc accepts -g... yes
+checking for /home/msimenc/software/anaconda3/envs/R/bin/x86_64-conda_cos6-linux-gnu-cc option to accept ISO C89... none needed
+checking for BZ2_bzDecompressInit in -lbz2... yes
+checking whether we are using the GNU C++ compiler... yes
+checking whether /home/msimenc/software/anaconda3/envs/R/bin/x86_64-conda_cos6-linux-gnu-c++ accepts -g... yes
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking how to run the C++ preprocessor... /home/msimenc/software/anaconda3/envs/R/bin/x86_64-conda_cos6-linux-gnu-c++ -E
+checking for a sed that does not truncate output... /home/msimenc/software/anaconda3/envs/R/bin/sed
+checking for Boost headers version >= 1.41.0... /usr/include
+checking for Boost's header version... 1_53
+configure: creating ./config.status
+config.status: creating src/Makevars
+** libs
+x86_64-conda_cos6-linux-gnu-c++ -std=gnu++11 -I""/home/msimenc/software/anaconda3/envs/R/lib/R/include"" -DNDEBUG   -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/msimenc/software/anaconda3/envs/R/include -I/home/msimenc/software/anaconda3/envs/R/include -Wl,-rpath-link,/home/msimenc/software/anaconda3/envs/R/lib -I./ -D_FASTMAP -DMAQ_LONGREADS  -I/usr/include -fpic  -fvisibility-inlines-hidden  -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /home/msimenc/software/anaconda3/envs/R/include -fdebug-prefix-map=/home/conda/feedstock_root/build_artifacts/r-base_1574178861180/work=/usr/local/src/conda/r-base-3.6.1 -fdebug-prefix-map=/home/msimenc/software/anaconda3/envs/R=/usr/local/src/conda-prefix  -c bed2vector.cpp -o bed2vector.o
+In file included from /home/msimenc/software/anaconda3/envs/R/x86_64-conda_cos6-linux-gnu/include/c++/7.3.0/ext/hash_map:60:0,
+                 from pc.h:4,
+                 from bed2vector.cpp:1:
+/home/msimenc/software/anaconda3/envs/R/x86_64-conda_cos6-linux-gnu/include/c++/7.3.0/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
+ #warning \
+  ^~~~~~~
+bed2vector.cpp: In function 'SEXPREC* read_bed_ends(SEXP)':
+bed2vector.cpp:118:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:163:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:163:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:165:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:165:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:169:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_meland_old(SEXP)':
+bed2vector.cpp:254:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:296:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:296:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:298:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:298:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:302:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_meland(SEXP, SEXP)':
+bed2vector.cpp:432:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:476:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:476:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:478:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:478:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:482:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_eland_mismatches(SEXP)':
+bed2vector.cpp:624:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:692:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:692:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:694:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:694:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:698:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_eland(SEXP, SEXP, SEXP)':
+bed2vector.cpp:817:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:868:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:868:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:870:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:870:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:874:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_eland_extended(SEXP, SEXP, SEXP)':
+bed2vector.cpp:1004:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:1078:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:1078:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:1080:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:1080:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:1084:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_eland_multi(SEXP, SEXP, SEXP)':
+bed2vector.cpp:1213:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:1366:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:1366:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:1368:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:1368:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:1372:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_bowtie(SEXP, SEXP)':
+bed2vector.cpp:1500:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:1575:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:1575:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:1577:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:1577:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:1581:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_helicostabf(SEXP, SEXP)':
+bed2vector.cpp:1714:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:1792:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:1792:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:1794:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:1794:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:1798:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_maqmap(SEXP, SEXP)':
+bed2vector.cpp:1941:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:1984:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:1984:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:1986:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:1986:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:1990:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_tagalign(SEXP)':
+bed2vector.cpp:2119:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:2161:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:2161:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:2163:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:2163:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:2167:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_arachne(SEXP)':
+bed2vector.cpp:2270:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:2329:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:2329:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:2331:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:2331:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:2335:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+bed2vector.cpp: In function 'SEXPREC* read_arachne_long(SEXP)':
+bed2vector.cpp:2441:55: error: template argument 3 is invalid
+   hash_map<string, int, hash<string>,equal_to<string> > cind_map;
+                                                       ^
+bed2vector.cpp:2530:59: error: template argument 3 is invalid
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                           ^
+bed2vector.cpp:2530:77: error: qualified-id in declaration before 'li'
+       hash_map<string, int, hash<string>,equal_to<string> >::const_iterator li=cind_map.find(chr);
+                                                                             ^~
+bed2vector.cpp:2532:10: error: 'li' was not declared in this scope
+       if(li==cind_map.end()) {
+          ^~
+bed2vector.cpp:2532:23: error: request for member 'end' in 'cind_map', which is of non-class type 'int'
+       if(li==cind_map.end()) {
+                       ^~~
+bed2vector.cpp:2536:10: error: no match for 'operator[]' (operand types are 'int' and 'std::__cxx11::string {aka std::__cxx11::basic_string<char>}')
+  cind_map[chr]=cind;
+          ^
+make: *** [/home/msimenc/software/anaconda3/envs/R/lib/R/etc/Makeconf:175: bed2vector.o] Error 1
+ERROR: compilation failed for package ‘spp’
+* removing ‘/home/msimenc/software/anaconda3/envs/R/lib/R/library/spp’
+Warning message:
+In install.packages(""./spp_1.14.tar.gz"") :
+  installation of package ‘./spp_1.14.tar.gz’ had non-zero exit status
+```",mcsimenc,https://github.com/kundajelab/phantompeakqualtools/issues/17
+MDU6SXNzdWU2Mjg0NjM5OTQ=,R spp_run.r,CLOSED,2020-06-01T14:03:30Z,2020-06-01T14:11:26Z,2020-06-01T14:11:26Z,"
+",JianwuPSC,https://github.com/kundajelab/phantompeakqualtools/issues/18
+MDU6SXNzdWU2Mzg0NDk3NDc=,How to deal with the data that have Phantom Peak Quality Tag -2/-1,OPEN,2020-06-14T23:14:09Z,2020-06-14T23:14:09Z,,"Hi,
+
+I was wondering if there is any way to process the bam file with tag -2/-1 to allow it to do the downstream peak calling? Thanks!
+
+Best,
+Kun",KunFang93,https://github.com/kundajelab/phantompeakqualtools/issues/19
+MDU6SXNzdWU5MjY0OTMyODQ=,Peak Calling - Error when calculating statistical thresholds,OPEN,2021-06-21T18:43:36Z,2021-07-05T07:57:58Z,,"I have been trying to call peaks/generate narrow peaks files for a number of chip replicates and psuedo-replicates using the following settings:
+
+-npeak=300000
+-speak={Fragment_Length_Estimated_Previously_from_spp}
+-x=-500:{Max_Exclusion_Range_Estimated_From_First_100_Reads} 
+
+It has run without errors on about half of the files but for others I am getting the following error:
+
+""""
+calculating statistical thresholds
+Error in if (!is.null(k) & dim(k)[1] > 0) { : argument is of length zero
+Calls: find.binding.positions -> lwcc.prediction -> do.call -> lapply -> FUN
+Execution halted
+""""
+
+Based on a similar issue posted here where npeak files where not saved I have tried:
+- changing the -fdr to 0.95
+- removing the -npeak threshold
+- specifying the npeak file with -savn='filename'
+- a combination of all of the above. 
+
+But I still get the same error. 
+
+Any help on fixing this issue would be much appreciated!
+
+",mw-neuro,https://github.com/kundajelab/phantompeakqualtools/issues/20
+I_kwDOA9XxAs5E_OQg,awk: line 2: function and never defined,CLOSED,2022-03-02T16:31:16Z,2022-03-03T09:33:03Z,2022-03-03T09:33:03Z,"Hello,
+The conversion from BAM to tagAlign is not working for me. It gives me the following error: `awk: line 2: function and never defined`. Any ideas? I'm sure I'm just forgetting something in the command line...
+
+`samtools view -F 0x0204 -o - CNVR192.R1.filtered01.bam | awk 'BEGIN{OFS=""\t""}{if (and($2,16) > 0) {print $3,($4-1),($4-1+length($10)),""N"",""1000"",""-""} else {print $3,($4-1),($4-1+length($10)),""N"",""1000"",""+""} }' | gzip -c > CNVR192.tagAlign.gz`
+
+Thanks.
+Rita",RRebo,https://github.com/kundajelab/phantompeakqualtools/issues/21
+I_kwDOA9XxAs5LFa8J,Negative Strand length,OPEN,2022-06-03T10:02:10Z,2022-06-09T10:45:50Z,,"Hello,
+
+I am performing peak calling with various tools (macs2, PeakSeq, CSAR, SPP). In order to perform peak calling in macs2 without model building (--nomodel and --ext size) we need to provide an estimated fragment length. Since run_spp.R provides the information of the estimated fragment length, I performed the analysis. 
+
+It is observed that the peak quality of the chip bam file is ""2"" and strand shift value with maximum correlation at ""-5"". I couldn't understand the result. The next two-strand shift values are 190 and 215. Can you or anyone help me to understand the result? 
+
+I posted a similar question on [""[biostar]""](https://www.biostars.org/p/9518762/) but I didn't get any response. 
+
+Thank you
+",varamhcu,https://github.com/kundajelab/phantompeakqualtools/issues/22
+I_kwDOA9XxAs56fwr2,Use phantompeakqualtools in CUT&Tag?,OPEN,2023-12-24T15:55:11Z,2024-01-15T11:33:53Z,,"The software phantompeakqualtools could be used in CUT&Tag data? Here is the plot created by phantompeakqualtools. The antibody used was H3K27ac, and the library was sequenced based on PE150 strategy. I can't understand why the highest peak shown in the left of the so-called phantom peak, which marked by the blue dashed line.  And what's the meaning of the highest peak. Any advice would be appreciated! 
+![Plot](https://github.com/kundajelab/phantompeakqualtools/assets/71891490/1be3695e-529a-4c66-8682-a04e0fface9d)
+",Doctoryang90,https://github.com/kundajelab/phantompeakqualtools/issues/23
+I_kwDOA9XxAs56qQaz,single-end or paired-end,OPEN,2023-12-28T01:45:34Z,2023-12-28T01:45:34Z,,Why is ChIPQC friendly for two-ended sequencing， and low RSC for single-ended?,rickbingpan,https://github.com/kundajelab/phantompeakqualtools/issues/24

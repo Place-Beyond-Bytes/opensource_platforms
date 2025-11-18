@@ -1,0 +1,177 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjY1Mzk4MTY=,Please provide a way to run without requiring all CRAMs to be input at the same time,CLOSED,2018-10-03T21:37:45Z,2019-04-24T05:46:02Z,2019-04-24T05:46:02Z,"In freeze3 of the variant caller the joint genotyping step required all CRAMs to be available on disk (or available via gcsfuse or s3fuse). This requirement is not compatible with some cloud infrastructure providers such as Broad's FireCloud and the workflow definition language (WDL) which do not support gcsfuse or s3fuse and which use VMs for tasks. 
+
+In particular when the joint genotyping step is implemented in WDL as a task a VM is started on a GCP instance and all inputs, which includes all CRAM files, are localized to the VM disk. In our case this required over 600 CRAM files to be localized to one VM resulting in very large disk space requirements and time to localize. This is not scalable for large number of CRAMs. 
+
+Instead what would be helpful is some sort of mode where joint variant calling can be run on one CRAM at a time to produce some sort of gVCF https://software.broadinstitute.org/gatk/documentation/article.php?id=3893
+The joint variant calling would be scattered across multiple VMs that only had to localize one CRAM and produce a single gVCF.
+
+",wshands,https://github.com/statgen/topmed_variant_calling/issues/1
+MDU6SXNzdWU0NzI4NDM5MzQ=,#WARNING & ERROR MESSAGE while running merging command of 2nd step,OPEN,2019-07-25T12:43:23Z,2019-07-25T12:43:23Z,,"Hi, I am using Freeze8 latest version of TOPMed pipeline in CentOS (centos-release-7-3.1611.el7.centos.x86_64). 
+I got the following warning and error message while running the TOPMed pipeline
+
+1)While running merging  verifyBamID2 results and X/Y depth results into a single index file (../apigenome/bin/cram-vb-xy-index --index index/list.107.local.crams.index --dir out/sm/ --out out/index/list.107.local.crams.vb_xy.index) I get this warning:
+
+***""WARNING: Third column is not given from index/list.107.local.crams.index. Assuming out/sm//YO2152001                                                                                                4QH/YO21520014QH.bcf is BCF_PATH for line 1. Further warnings will be suppressed
+Finished writing out/index/list.107.local.crams.vb_xy.index as the index file containing QC metrics""***
+
+Could you please explain why this warning occurs and what should I do to fix it?
+
+2)Next, I ran Step2: Hierarchical merge of variant sites.. command
+
+I have got the following error message
+
+***Finished forkExecWait(): ../bcftools/bcftools index out/union/81/b81.chr11_40000001_50000000.merged.sites.bcf
+ERROR: Could not successfully finish the command '../bcftools/bcftools index out/union/81/b81.chr11_40000001_50000000.merged.sites.bcf', returning exit code 255
+Successfully finished the step3 command '../bcftools/bcftools index out/union/81/b81.chr11_40000001_50000000.merged.sites.bcf'***
+
+Why this error is occurring? what are the files need modification?
+
+3)  For running the pipeline, what is the minimum samples number required?
+
+***Tools version:***
+1. samtools 1.9-66-gc15e884
+Using htslib 1.9-143-gcda2298
+Copyright (C) 2019 Genome Research Ltd.
+
+2.bcftools 1.9-145-g1de0487
+Using htslib 1.9-143-gcda2298
+Copyright (C) 2018 Genome Research Ltd.
+
+Thanks.
+
+
+
+
+
+[error-msg.txt](https://github.com/statgen/topmed_variant_calling/files/3431531/error-msg.txt)
+",nitha26,https://github.com/statgen/topmed_variant_calling/issues/2
+MDU6SXNzdWU1MjA5OTI0MjQ=,Cramore,CLOSED,2019-11-11T14:23:55Z,2019-11-14T13:18:31Z,2019-11-14T13:18:31Z,"While going through the installation instructions, building the various submodules, this output didn't seem right: 
+
+bashprompt topmed_variant_calling]$ cd cramore; autoreconf -vfi; ./configure; make; cd ..
+autoreconf: 'configure.ac' or 'configure.in' is required
+-bash: ./configure: No such file or directory
+make: *** No targets specified and no makefile found.  Stop.
+
+Cramore seems to now use cmake (https://github.com/hyunminkang/cramore/tree/d6457c68c1d3874d2a240b16159ec8eb25828f08), should I built it in the current directory in this case?  
+
+""cd cramore; cmake ./; cd .."" without quotes?  ",ttbek,https://github.com/statgen/topmed_variant_calling/issues/3
+MDU6SXNzdWU1MjUwMjk1MjI=,Using with B37,OPEN,2019-11-19T14:03:14Z,2019-11-19T14:03:14Z,,"I'm attempting to use this pipeline with bam files that are aligned to B37.  
+
+1000G_omni2.5.b38.sites.PASS.vcf.gz
+1000G_omni2.5.b38.sites.PASS.vcf.gz.tbi
+dbsnp_142.b38.vcf.gz
+dbsnp_142.b38.vcf.gz.tbi
+hapmap_3.3.b38.sites.vcf.gz
+hapmap_3.3.b38.sites.vcf.gz.tbi
+Seem to have direct analogues available at ftp://anonymous@share.sph.umich.edu/gotcloud/ref/hs37d5-db142-v1.tgz
+
+hg38.centromere.bed.gz
+This file seems simple enough, but I'm not sure I have a good B37 equivalent, I could construct a file in the same format using the info at https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz , but their resolution seems to be by the 100,000 bp...  e.g. 
+chr1	121500000	125000000	p11.1	acen
+chr1	125000000	128900000	q11	acen
+
+I am having trouble finding B37 versions of the following:
+HGDP_938.b38.genotypes.svd.fUD.gz
+HGDP_938.b38.genotypes.svd.V.gz
+I've figured out that they are for Cramore's cram-verify-bam
+""== Options for input SVD files ==
+   --svd             [STR: ]             : Prefix of SVD (.fUD, .V) files
+   --num-PC          [INT: 2]            : Number of PCs to use""
+But I don't know how I would generate these SVD files.  Some kind of singular value decomposition on the HGDP data for ancestry?  
+
+The md5 folder, I've figured out it is also for Cramore, but I'm not sure how to create it for the B37 data.  Or is it generated automatically (I tried a run even though I knew my B37 input would fail to see where)?  
+
+HGDP_938.hg38.sites.vcf.gz  ... so this is the unrelated set from HGDP, but those are B36.1 and this one is B38, is there a B37 version?  Create it with liftover?  HGDP_938.hg38.sites.vcf.gz.csi and HGDP_938.hg38.sites.vcf.gz.tbi I can easily generate once I have my B37 equivalent of HGDP_938.hg38.sites.vcf.gz
+
+hs38DH.fa and hs38DH.fa.fai I have the analogs of, I guess I can create my B37 equivalent of hs38DH.dict with Picard.  
+
+hs38DH.gc.w150.s5.gz and hs38DH.gc.w150.s5.gz.gzi Umm, I guess these are somehow analogous to hs37d5.winsize100.gc, but with a different window size, so perhaps I can get away with gzipping and indexing that (what tool is used for the .gzi index?).  https://genome.sph.umich.edu/wiki/GotCloud:_Genetic_Reference_and_Resource_Files#Reference_fasta_Files suggests that I can generate this with qplot, does that take an argument for the window size?  
+
+Sorry for all the questions, let me know if there is a better place to ask them, person to email, etc...",ttbek,https://github.com/statgen/topmed_variant_calling/issues/4
+MDU6SXNzdWU5MTExMTU3MTU=,vcf-infer-ped returns pedigree file with most samples indicated as duplicates,CLOSED,2021-06-04T04:51:55Z,2021-08-04T22:53:31Z,2021-08-04T22:53:31Z,"Hello,
+I am trying to use the TOPMed Variant Calling Pipeline (latest: Freeze 8) to analyze human genetic data from 651 exome sequencing samples. I am following the instructions on the Readme (https://github.com/statgen/topmed_variant_calling) and completed Steps 1-3 without incident. Next, I performed Step 4 (inferring the pedigree using `king`, followed by using `vcf-infer-ped`). However, I examined the `.ped` file produced and think it looks wrong. My suspicion that something was off seemed to be confirmed when I next attempted to perform Step 5 and encountered multiple gzip errors about unexpected end of file, for example: `gzip: out/milk/chr11/milk.chr11_87000001_88000000.full.vcf.gz: unexpected end of file`.
+The `.ped` file in question contains one sample in the first column, followed in the second column by the same sample along with 555 (~85%) of the remaining samples separated by commas (as indicated in the table below).
+
+| HSC-BOS023 | HSC-BOS023, HSC-BOS041, HSC-BOS047, HSC-BOS052,... | 0 | 0 | 1 | -9 |
+|----------------|----------------------------------------------------------------|---|---|---|----|
+
+According to the Readme, this `.ped` file should contain the nuclear families and duplicate samples, with the sample IDs representing the duplicated sample present in the 2nd column. From what I understand, this `.ped` file is indicating most of the samples are duplicates, which is incorrect. Could this be due to the fact that I am using `king` to infer the pedigree of the HGDP-site BCF file using exome sequencing data (as opposed to whole genome sequencing)? Or is there something else I am missing?
+
+In case it helps, below I am pasting the output I received from running the `king` and `vcf-infer-ped` commands:
+
+#### king command
+
+`../king/king -b out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.plink.bed --degree 4 --kinship --prefix out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king`
+
+KING 2.2 - (c) 2010-2019 Wei-Min Chen
+
+The following parameters are in effect:
+                   Binary File : out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.plink.bed (-bname)
+
+Additional Options
+         Close Relative Inference : --related, --duplicate
+   Pairwise Relatedness Inference : --kinship [ON], --ibdseg, --ibs, --homog
+              Inference Parameter : --degree [4]
+         Relationship Application : --unrelated, --cluster, --build
+                        QC Report : --bysample, --bySNP, --roh, --autoQC
+                     QC Parameter : --callrateN, --callrateM
+             Population Structure : --pca, --mds
+              Structure Parameter : --projection
+              Disease Association : --tdt
+   Quantitative Trait Association : --mtscore
+                Association Model : --trait [], --covariate []
+            Association Parameter : --invnorm, --maxP
+               Genetic Risk Score : --risk, --model [], --prevalence, --noflip
+              Computing Parameter : --cpus
+                   Optional Input : --fam [], --bim [], --sexchr [23]
+                           Output :
+                                    --prefix [out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king],
+                                    --rplot
+
+KING starts at Sat May 29 21:10:39 2021
+Loading genotype data in PLINK binary format...
+Read in PLINK fam file out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.plink.fam...
+  PLINK pedigrees loaded: 651 samples
+Read in PLINK bim file out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.plink.bim...
+  Genotype data consist of 584771 autosome SNPs
+  PLINK maps loaded: 584771 SNPs
+Read in PLINK bed file out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.plink.bed...
+  PLINK binary genotypes loaded.
+  KING format genotype data successfully converted.
+Autosome genotypes stored in 9138 words for each of 651 individuals.
+
+Options in effect:
+        --kinship
+        --degree 4
+        --prefix out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king
+
+Each family consists of one individual.
+Relationship inference across families starts at Sat May 29 21:10:40 2021
+                                         ends at Sat May 29 21:10:50 2021
+Between-family kinship data (up to degree 4, 211037 pairs in total) saved in file out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king.kin0
+KING ends at Sat May 29 21:10:50 2021
+
+#### vcf-infer-ped command
+
+`../apigenome/bin/vcf-infer-ped --kin0 out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king.kin0 --sex out/genotypes/merged/chr1/merged.chr1_1_1000000.sex_map.txt --out out/genotypes/hgdp/merged.autosomes.gtonly.minDP0.hgdp.king.inferred.ped`
+
+Finished reading sex information of 651 individuals from out/genotypes/merged/chr1/merged.chr1_1_1000000.sex_map.txt
+Skipping assigning group information for each individual
+Finished reading pairwise relationship of 45715 duplicates, 8 parent-offsprings, 158540 full-siblings, and 6774 other relationships
+Observed 0 possible sex match errors between spouses
+Writing PED file across 0 nuclear families..
+
+
+
+
+I would greatly appreciate any help in solving this issue. Thank you!",cbostwick87,https://github.com/statgen/topmed_variant_calling/issues/5
+I_kwDOCCzsb85B5TDf,Installation Problem,OPEN,2022-01-17T08:43:53Z,2022-01-17T08:43:53Z,,"I followed the installation steps, however there are alot of problems in the installation steps. I don't really know where is wrong",marissa97,https://github.com/statgen/topmed_variant_calling/issues/6
+I_kwDOCCzsb86JIRK_,Fatal problem during installation！！！！,CLOSED,2024-05-16T14:57:10Z,2024-05-20T13:08:13Z,2024-05-20T13:08:12Z,"
+Hello, I am following your install tutorial, however, apigenome `make` is reporting an error: configure: error: Please install gnuplot at http://sourceforge.net/projects/gnuplot/files/ before installing (below)
+![image](https://github.com/statgen/topmed_variant_calling/assets/63234787/1d35497a-2382-47ec-895a-b97f2e0ffc5e)
+
+So I downloaded gnuplot, and when I `make` gnuplot, I got the error again: fatal error: QtCore: No such file or directory (see below).
+![image](https://github.com/statgen/topmed_variant_calling/assets/63234787/90926ff3-ed0a-4086-a0e7-e1b53881c4f2)
+
+How can I solve this problem? Thank you very much!",zxy1555847,https://github.com/statgen/topmed_variant_calling/issues/7

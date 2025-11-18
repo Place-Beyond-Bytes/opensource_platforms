@@ -1,0 +1,134 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2MjA4NjUyOA==,Interpretation of log2FC-Value,CLOSED,2015-03-16T13:46:40Z,2015-04-10T13:41:13Z,2015-04-10T13:41:13Z,"```
+What steps will reproduce the problem?
+1. Running DiffReps over a regular Chip-Seq-Dataset
+
+What is the expected output? What do you see instead?
+After taking a look into the respective output.txt I observe many entries with 
+a log2FC-value of 'inf' or '-inf', respectively instead of a normal value (e.g. 
++/- 1.8). Such an entry does hardly yield any information.
+
+What version of the product are you using? On what operating system?
+Latest Version of DiffReps. Running on Ubuntu.
+
+```
+
+Original issue reported on code.google.com by `oliver.h...@googlemail.com` on 10 Feb 2014 at 9:48
+",GoogleCodeExporter,https://github.com/shenlab-sinai/diffreps/issues/1
+MDU6SXNzdWU2MjA4NjUzMA==,error on running region_analysis,CLOSED,2015-03-16T13:46:40Z,2015-04-10T20:06:46Z,2015-04-10T19:40:18Z,"```
+What steps will reproduce the problem?
+1. see example command below
+2. file test.loc is a head of a file containing only three columns (chom, 
+start, end)
+3. mm10 was downloaded from Dropbox and installed as directed
+
+What is the expected output? What do you see instead?
+
+[rhart@localhost mouse]$ region_analysis.py -i test.loc -r -g mm10
+refseq database version mm10 of mm10, RAver 3.00 will be used.
+Traceback (most recent call last):
+  File ""/usr/bin/region_analysis.py"", line 7, in <module>
+    execfile(__file__)
+  File ""/home/rhart/Documents/region_analysis/bin/region_analysis.py"", line 164, in <module>
+    main()
+  File ""/home/rhart/Documents/region_analysis/bin/region_analysis.py"", line 118, in main
+    input_GB = input_bed_mid.intersect(anno, wao=True).saveas()
+  File ""/home/rhart/Documents/pybedtools/pybedtools/bedtool.py"", line 668, in decorated
+    result = method(self, *args, **kwargs)
+  File ""/home/rhart/Documents/pybedtools/pybedtools/bedtool.py"", line 243, in wrapped
+    check_stderr=check_stderr)
+  File ""/home/rhart/Documents/pybedtools/pybedtools/helpers.py"", line 440, in call_bedtools
+    raise BEDToolsError(subprocess.list2cmdline(cmds), stderr)
+pybedtools.helpers.BEDToolsError: 
+Command was:
+
+        bedtools intersect -wao -b /home/rhart/Documents/mouse/pybedtools.9pGU9n.tmp -a /home/rhart/Documents/mouse/pybedtools.W0SOG_.tmp
+
+Error message was:
+***** ERROR: illegal character '+' found in integer conversion of string +. 
+Exiting...
+
+[rhart@localhost mouse]$
+
+What version of the product are you using? On what operating system?
+0.1.2 on Fedora 19
+
+Please provide any additional information below.
+
+```
+
+Original issue reported on code.google.com by `rhart...@gmail.com` on 16 Dec 2014 at 8:55
+",GoogleCodeExporter,https://github.com/shenlab-sinai/diffreps/issues/2
+MDU6SXNzdWU2NzYwMTY0Mg==,Find hotspots for Yan's ChIP-seq and RNA-seq data,CLOSED,2015-04-10T13:57:59Z,2016-11-04T18:48:34Z,2016-11-04T18:48:34Z,"@eddielohyh and @ipurusho Adjust the local window sizes to some reasonable values and see if the findHotspots script returns anything useful. 
+",lishen,https://github.com/shenlab-sinai/diffreps/issues/3
+MDU6SXNzdWU5NzQ2NTE0Mg==,Bug in preventing intermediate files from being overwritten,OPEN,2015-07-27T13:36:47Z,2015-07-27T13:36:47Z,,"There is a mechanism to prevent an intermediate file from being overwritten by adding a random number to the file name to be written. However, the file name construction code has a bug which generates warnings. 
+",lishen,https://github.com/shenlab-sinai/diffreps/issues/4
+MDU6SXNzdWUxNTgyNTU1ODk=,Galaxy (usegalaxy.org) wrapper for diffReps,CLOSED,2016-06-02T22:39:16Z,2016-11-04T18:49:13Z,2016-11-04T18:49:13Z,"Hi,
+Are there any plans to develop a Galaxy (usegalaxy.org) wrapper for diffReps?
+
+Thank you in advance.
+
+Best wishes,
+
+Mic
+",mictadlo,https://github.com/shenlab-sinai/diffreps/issues/5
+MDU6SXNzdWUyNDMzNzkzODM=,Can't use 'defined(@array)' error,OPEN,2017-07-17T12:28:17Z,2017-09-05T22:34:56Z,,"I'm trying to use the diffReps.pl script and have install it using the cpanm method with all the dependencies. But when I am tryoing to run it I keep getting the error message 
+
+`Can't use 'defined(@array)' (Maybe you should just omit the defined()?) at /usr/local/bin/diffReps.pl line 465.`
+
+I'm running it on Ubuntu 16.04 with perl version 5.22
+
+any Ideas?
+thanks
+Assa
+",yeroslaviz,https://github.com/shenlab-sinai/diffreps/issues/6
+MDU6SXNzdWUyOTY0NTQ2Mzc=,MACS2 peak calling and diffreps,OPEN,2018-02-12T17:10:24Z,2018-02-12T17:11:46Z,,"Hello, we've been using diffreps to assess differential binding between two conditions in a Chip-seq analysis, thank you for the work. Additionally, we have performed macs2 peak calling at each condition
+
+The issue is macs2 peaks rarely overlap with diffreps output regions (we've been observing 10% overlap of macs2 peaks at certain windows), and thus we were wondering whether diffrep regions are relevant enriched regions at each condition.
+
+As we have background files available for each condition, diffreps output is providing Treatment.enr and Ctrl.enr columns. Even applying a threshold here (e.g. 2 Fold Change) the coincidence with significant macs2 peaks is low. Do you have any recommendation on what threshold to apply or how to proceed at this point?
+The aim is to identify regions with differential binding activity, but also assess that these regions are relevant at each condition.
+
+Hope you have any comment on this.
+Thank you for your time ",josruirod,https://github.com/shenlab-sinai/diffreps/issues/7
+MDU6SXNzdWUzMDc3MzU2NDU=,fold change of 0  ,OPEN,2018-03-22T17:10:03Z,2018-03-22T17:10:03Z,,"Hello,
+
+I am using DiffReps on a deeply sequenced histone ChIP-seq data set with 6 replicates per condition.
+
+Question 1:
+In the report.txt, I find that 1% of the ""differential"" sites have a log2FC and winFC of 0 (but still an assignment for UP and DOWN) and many others have very very small fold changes. Why are these sites included? Is it ok to filter them out or is this the result of a bug to begin with?
+
+Question 2:
+The default hotspot analysis also includes the sites with 0 and very small FC. Would you advise against filtering the report.txt and rerunning the analysis because these sites have some value somehow?
+
+Thank you for the help, it is much appreciated!
+",N/A,https://github.com/shenlab-sinai/diffreps/issues/8
+MDU6SXNzdWU0OTE3MTMwNDQ=,Itermediate output file missing,OPEN,2019-09-10T14:33:42Z,2019-09-10T14:33:42Z,,"Hello!
+I just installed and tested 'diffreps' using exemplary files with the command:
+diffReps.pl --treatment h3k9me3.coc.r1.bed h3k9me3.coc.r2.bed --control h3k9me3.sal.r1.bed h3k9me3.sal.r2.bed h3k9me3.sal.r3.bed --gname mm9 -me nb
+A couple of files got generated (diff.nb.txt; diff.nb.txt.hotspot) but the run ended up with: '/Applications/anaconda2/bin/refgene_getnearestgene: /Applications/anaconda2/bin/refgene_getnearestgene: cannot execute binary file
+Itermediate output file missing: No such file or directory. Execution halt!'
+I'm not sure what caused it.
+Thanks,
+Jarek",staszkj,https://github.com/shenlab-sinai/diffreps/issues/10
+MDU6SXNzdWU1NDY1NjIzMDg=,nsd cut off for H3k4me1 and H3K4me2,OPEN,2020-01-07T23:28:25Z,2020-01-07T23:28:25Z,,"Hello, 
+
+As per documentation I choose nsd cutoff as 2 for H3k4me1 and H3K4me2 as they have sharp peaks but I ended up getting < 100 sites in output file. When performed the same without specifying -nsd option the output files have about 4500 sites. 
+Is it expected behavior ? What is the ideal cut-off for H3k4me1 and H3K4me2 ? b(road) or s(harp) ? 
+
+Thanks, 
+Nick",npatel22526,https://github.com/shenlab-sinai/diffreps/issues/11
+MDU6SXNzdWU1ODU3MDI4ODk=,hg38 version ,OPEN,2020-03-22T12:03:46Z,2020-03-22T12:03:46Z,,"Dear, Is there a way to use DiffReps with hg38?",AnnaKuchmiy,https://github.com/shenlab-sinai/diffreps/issues/12
+I_kwDOAe1IrM5M0R5F,Question about ChIP-seq library fragment size parameter,OPEN,2022-06-29T13:58:34Z,2022-06-29T13:58:34Z,,"Hello
+We are using diffReps in a project where we care only about the 5' ends of the BAM file mates. We would like to know how exactly the --frag option is handled by diffReps. It is not ChIP-seq data, so we want NO read extension and NO read shifting, those concepts don't apply here.
+
+It is not very clear from the documentation and I have to admit that the code from [MyShortRead.pm](https://github.com/shenlab-sinai/diffreps/blob/master/lib/MyShortRead/MyShortRead.pm) was too difficult for me to understand. The help states ""ChIP-seq library fragment size. Use to shift read positions."" 
+Are BED file elements shifted (new_start=original_start + frag ; new_end=original_end + frag) or are they extended by the indicated amount (new_start=original_start ; new_end=original_end+frag) or are they extended so that the final element size matches the value of frag (new_start=original_start ; new_end=original_start+frag), or something else perhaps?
+
+For instance, if I use a BED file that represents the 5' end of reads (each row of the BED file describes a 1 base pair long element) and I set --frag=0, how will this be handled by diffReps? My desire is that diffReps only counts those 1 base pair positions.
+
+Thanks
+Alex
+
+
+",AlexBlais74,https://github.com/shenlab-sinai/diffreps/issues/13

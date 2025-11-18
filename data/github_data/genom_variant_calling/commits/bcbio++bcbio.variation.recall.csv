@@ -1,0 +1,156 @@
+commit_sha,commit_author_name,commit_author_email,commit_message,commit_date,login
+b7aa436dcb558535f87d004ba0abc5d7bc380b70,chapmanb,chapmanb@50mail.com,v0.2.6 Fix allele finding problem with uppercasing strings,2019-09-17T09:08:19Z,chapmanb
+1d3bafa6c8315690941c24b9a5ce2d9672cd1678,chapmanb,chapmanb@50mail.com,"v0.2.5: handle input VCFs with differing cases in REF and ALT alleles
+
+Avoids issues when some input VCFs have lower versus uppercase in allele
+representations. Consistently convert to upper case for preparation and
+comparisons.
+
+Fixes #2924
+Fixes #2350",2019-09-01T08:55:09Z,chapmanb
+111cfcd65608b3771973868a5a9f30f478e894a2,chapmanb,chapmanb@50mail.com,"v0.2.4: platypus fix for contig VCF headers
+
+Ensure Platypus output files have contigs in the VCF header, which
+avoids downstream errors with GATK4 GatherVcfs.
+bcbio/bcbio-nextgen#2688",2019-02-22T10:35:42Z,chapmanb
+bfe5cd1a5f6970886ee49915e1239ae6d229724d,chapmanb,chapmanb@50mail.com,"v0.2.3: fix wrapper script to correctly check for JAVA_HOME
+
+Fixes #22",2019-02-12T10:20:01Z,chapmanb
+96d30ba3b742cd40883e9e32fe58918b43227b7a,chapmanb,chapmanb@50mail.com,"v0.2.2: support for recent bcftools; improved logging
+
+- Handles issues with recent bcftools, which are more picky about
+  input files:
+  - Avoid bcftools concat errors with all empty inputs.
+  - Remove problematic FreeBayes annotations which no longer match
+    header requirements after decomposition.
+- Fix logging to correctly raise errors on failures.",2019-02-01T09:43:20Z,chapmanb
+558d370b522a5deff2c024baa269d2083ebbbadd,chapmanb,chapmanb@50mail.com,"v0.2.1: square fix for redundant DP filters to bcftools
+
+Recent versions of bcftools will not process ambiguous filter
+specifications like `DP` when present in both INFO and FORMAT files.
+This clarifies intent to avoid errors. Thanks to @ohofmann",2019-01-18T10:43:31Z,chapmanb
+8ce8c7513b579c71b5705ab55f1459c2e57d63aa,chapmanb,chapmanb@50mail.com,v0.2.0: update clojure and associated dependencies,2018-12-29T10:59:51Z,chapmanb
+be398aad63aae03a36a237a45470e8c0c04e8518,chapmanb,chapmanb@50mail.com,"v0.1.9: Remove usage of gatk-framework; replace with bcftools
+
+Removes usage of older GATK3 gatk-framework, replacing with
+modern bcftools equivalents. gatk-framework is no longer distributed
+with bcbio. bcbio/bcbio-nextgen#2412",2018-08-03T10:00:10Z,chapmanb
+a22b08ab73fb1afda3aaa08f00305c6257805efb,chapmanb,chapmanb@50mail.com,"v0.1.8: fix tabix index error for variants at position 1 of contigs.
+
+Fixes chapmanb/bcbio-nextgen#2383",2018-05-18T09:05:25Z,chapmanb
+6e6ea19a094cd1e6c9e86d012ec2bd88905bd170,chapmanb,chapmanb@50mail.com,v0.1.7: Avoid FreeBayes error when running variant-input without an empty VCF. Fixes chapmanb/bcbio-nextgen#1503,2016-08-15T16:27:51Z,chapmanb
+675046d2c56a8cf4dd830ed86732b02e9a64c81f,chapmanb,chapmanb@50mail.com,"Handle non-bgzipped ensemble outputs
+
+Convert these inputs to bgzipped output to avoid GATK issues writing
+the index. Fixes #10",2016-04-25T12:10:00Z,chapmanb
+fd61c51d319542cd340c695229a224dd6577248f,chapmanb,chapmanb@50mail.com,"Fixes for merging larger numbers of input samples
+
+- Handle larger merge sizes with additional memory specifications up to
+  3000 or more samples.
+- Use local temporary directories for GATK calls, avoiding filling up
+  temporary space. Thanks to @brainstorm.
+- Correctly parse sample names from large numbers of inputs without
+  causing overflow error.
+- Do not silently exit if running into Java memory errors.",2016-04-25T09:34:07Z,chapmanb
+053ece89bd977876c74e94ee2a2a5b8f5e458ee5,chapmanb,chapmanb@50mail.com,"v0.1.5: genotype qualities and samtools for CRAM
+
+- Adds genotype qualities for FreeBayes calls. Thanks to @mjafin
+- Use samtools for CRAM support to avoid scramble dependency",2016-04-15T09:53:20Z,chapmanb
+48b06869b58eebfb2380ec728605ec18e9bfac0f,chapmanb,chapmanb@50mail.com,v0.1.4: Annotate ensemble variant calls with names of callers supporting an ensemble variant,2015-10-15T10:15:38Z,chapmanb
+992198bd3425c266c34a2b63fb65ef77ed023583,chapmanb,chapmanb@50mail.com,"v0.1.3: Support latest GATK and htsjdk
+
+Provides compatibility with GATK 3.4 gVCFs and changes to class
+structure in the corresponding htsjdk.",2015-10-13T17:41:35Z,chapmanb
+bebba92d056a8ff399f2e421a692d6175d182358,chapmanb,chapmanb@50mail.com,Document requirement for matching VCF and BAM naming (fixes #7),2015-09-03T16:45:14Z,chapmanb
+9b43153ab8f570aab1667e5a8ea0cb815bb5dd24,chapmanb,chapmanb@50mail.com,v0.1.2: Avoid copy errors when running with transactional directories. Fixes chapmanb/bcbio-nextgen#831,2015-04-25T09:13:21Z,chapmanb
+210efbeef6a0875000f6b2665b4610eeb5acb31b,chapmanb,chapmanb@50mail.com,Correctly intersect files when one of the inputs is empty. Fixes chapmanb/bcbio-nextgen#826,2015-04-15T09:11:18Z,chapmanb
+dcc9416e63293e4175c3104f1b7afc7c708fdc17,chapmanb,chapmanb@50mail.com,v0.1.0: Fix sorting issues with X/Y chromosomes (fixes #5). Separate out clhelp support functionality,2015-04-07T10:02:31Z,chapmanb
+2c3d16d9f5eeaeb04105ad4c32cc2be74ee0350a,chapmanb,chapmanb@50mail.com,v0.0.9: FreeBayes: update with options for latest validated version 0.9.21-7,2015-04-02T09:39:34Z,chapmanb
+45acd66938d285a5b400bce8e2e50624e1d0f87d,chapmanb,chapmanb@50mail.com,v0.0.8: Avoid copy errors when merging recalls with only a single region.,2015-03-20T08:45:17Z,chapmanb
+d507f898f1b198a5220f9da3b1b46852f7257d33,chapmanb,chapmanb@50mail.com,v0.0.7: additional transactional directories to avoid partially written/copied files at scale (Fixes chapmanb/bcbio-nextgen#771,2015-02-23T10:00:10Z,chapmanb
+ea41188c92b162adf2a97e065686f6d601b9b21d,chapmanb,chapmanb@50mail.com,v0.0.6 release,2015-01-30T10:55:35Z,chapmanb
+d7acd4b1358d2683cda8e04beb7423114ca1c65e,chapmanb,chapmanb@50mail.com,Support sambamba 0.5.1 indexing without ability to specify output bai file location,2015-01-16T16:28:38Z,chapmanb
+dce1d1c1d8aaf7e4de34ebb4f1089adb6fb7eb9e,chapmanb,chapmanb@50mail.com,Handle BED input files with non-standard line endings,2015-01-16T11:37:03Z,chapmanb
+2560be165828f5640943cae224edcb23774a9820,Brad Chapman,chapmanb@50mail.com,"Merge pull request #3 from roryk/master
+
+Fix logic for no regions specification.",2015-01-14T15:20:42Z,chapmanb
+0ac9c2d982e869c56d98f267b75eb8bdaefcca55,roryk,rory.kirchner@gmail.com,Fix logic for no regions specification.,2015-01-14T13:30:48Z,roryk
+e59e395b94f865e974fa3d0ce04ed1192c2609e0,chapmanb,chapmanb@50mail.com,Update vcffixup usage to match stdin changes in latest development vcflib. Thanks to Craig Bohrson,2015-01-05T11:10:53Z,chapmanb
+8d48393c7ee0188ddadd6237f5a7f51ba2d2fe5f,chapmanb,chapmanb@50mail.com,Avoid filtering low quality reference calls when recalling with Platypus. Thanks to Craig Bohrson,2015-01-04T17:17:32Z,chapmanb
+8960a5ce454f44bba9891af561c14bb4049d5072,chapmanb,chapmanb@50mail.com,Handle inputs to recalling where initial files have identical final file names. Thanks to Craig Bohrson,2015-01-04T12:26:14Z,chapmanb
+efcc4cd8f84cafbc050c9dd0ae7574317df5f784,chapmanb,chapmanb@50mail.com,"v0.0.5: handle inputs with multiple identical variant calls, which can happen with FreeBayes output. Thanks to @mjafin",2014-12-01T14:41:43Z,chapmanb
+0373731451129d40e9341f2a507ebd1c21daed12,chapmanb,chapmanb@50mail.com,"Work to speed up FreeBayes recalling: use additional memory for small merges, make use of samtools for CRAM data and limit FreeBayes alleles evaluated",2014-11-26T00:34:48Z,chapmanb
+1585fc8ae8670061a87b47c796655e567a74b2a1,chapmanb,chapmanb@50mail.com,v0.0.4: FreeBayes recalling fixes to support GATK compatibility: remove duplicate alternative alleles and ceil very low FreeBayes quality scores.,2014-10-28T11:19:23Z,chapmanb
+5cfb91fad5611d59fe3ca6a8b2b7c50e35496571,chapmanb,chapmanb@50mail.com,v0.0.3: Fix FreeBayes recalling/squaring off to better distinguish reference and no call. Avoid filtering low-quality reference positions and assigning as no call while still removing problem variants.,2014-10-27T00:35:27Z,chapmanb
+2478a4a8ead855287cb1b109976f3136bd5db6f1,chapmanb,chapmanb@50mail.com,Handle intersection retrieval when we have multiple calls with identical ref/alts next to a call,2014-10-02T00:22:20Z,chapmanb
+7092eba0843d2c561727031996c52ac2201bad41,chapmanb,chapmanb@50mail.com,v0.0.2: Document and finalize initial ensemble intersection approach,2014-09-29T10:45:13Z,chapmanb
+45ab9268de56d8b0f0b7632569f9403fc6091616,chapmanb,chapmanb@50mail.com,Ensure unique temporary file names when adding multiple files into ensemble calling with the same basename. Allows usage from bcbio-nextgen processing directories,2014-09-28T10:35:46Z,chapmanb
+2b65c5586453153b10370f9f335ad53ff6f1749c,chapmanb,chapmanb@50mail.com,Enable sorting of multi-sample input files for ensemble calling. Ensures consistent sample ordering for comparison purposes,2014-09-27T10:24:03Z,chapmanb
+3a5566d5074a280ce4caaae4c7ea0d5d94d0e6bc,chapmanb,chapmanb@50mail.com,Add option to remove pre-filtered variants prior to performing ensemble calling. Expected to be the default for tumor/normal calling where we remove germline mutations prior to combining,2014-09-25T09:39:34Z,chapmanb
+a8631471eda5d080d6fd6d7af1369564eec6a8f7,chapmanb,chapmanb@50mail.com,Initial implementation of count based ensemble calling: intersect files passing only those identified by a specified number of callers. Pick variant at each passing position based on priority: first VCF inputs first if variant is present,2014-09-23T14:01:35Z,chapmanb
+1599a2f657168281339598d0360fa670c2d1db9f,chapmanb,chapmanb@50mail.com,Incorporate variant manipulation code from bcbio.variation and re-work to generalize,2014-09-22T18:33:34Z,chapmanb
+8806cb1bd8d1ff60bac4cfa9cb2091ccefb9c352,chapmanb,chapmanb@50mail.com,Initial framework to do intersection and count based ensemble calling from multiple input VCFs,2014-09-22T09:31:52Z,chapmanb
+01ac5b04eeacd0830e3845f3f61c6b7ef3691b31,chapmanb,chapmanb@50mail.com,Update Java dependencies to use new combined htsjdk library and picard,2014-09-21T10:01:54Z,chapmanb
+babc804fd93a5347448ade07477796a365abdea7,chapmanb,chapmanb@50mail.com,v0.0.1: Improve memory usage for large samples and generalize calculation of memory based on number of variant inputs merged,2014-09-20T10:15:10Z,chapmanb
+d45780e95ce0fcc22e548741548986be8c37549a,chapmanb,chapmanb@50mail.com,Add samtools squaring off support. Update platypus squaring off with latest filtering from NA12878 evaluations. Improve variant union creation with GATK CombineVariants,2014-09-19T14:53:53Z,chapmanb
+74cc08f2d4e219a16658977865d67eb55de0002a,chapmanb,chapmanb@50mail.com,Allow passing a region to subset into merging,2014-09-14T22:59:35Z,chapmanb
+b948ff5ff1986877af77357294eb8fe5e0015de6,chapmanb,chapmanb@50mail.com,Generalize memory usage for merging to handle larger inputs,2014-09-14T10:21:51Z,chapmanb
+5bd19bf6c30c1a47f343257b9290a32db0a2bd06,chapmanb,chapmanb@50mail.com,Improve ability to combine variant files: pass list file to CombineVariants for easier debugging and use bcftools concat with input list,2014-09-11T10:08:52Z,chapmanb
+1e3f185b2fc32c92f176a5ba3f07a8214a39c7e0,chapmanb,chapmanb@50mail.com,Normalize and remove duplicate alleles from Platypus recall output. Duplicates cause issues with GATK post-processing,2014-09-02T10:20:53Z,chapmanb
+5dbcca77f9b16f7013188c2c749e18f167d7a4c4,chapmanb,chapmanb@50mail.com,Provide consistent filtering of FreeBayes and Platypus calls in low depth low quality regions,2014-08-19T10:09:49Z,chapmanb
+e583f06de23ac837d8ceafa3638bedc2210ef9b5,chapmanb,chapmanb@50mail.com,Memory usage tweaks: avoid parallel GC when running gatk-framework,2014-08-16T17:37:42Z,chapmanb
+a6f5d663346eef8922efc7c61cfcdf8fbb69134d,chapmanb,chapmanb@50mail.com,Fixes to work with latest bedtools: ensure header passed on to merge so can be detected as VCF file and ensure stdin passed to merge,2014-08-08T16:47:40Z,chapmanb
+d12c2a7ae38035ceb15c12d5db917118d18d25e4,chapmanb,chapmanb@50mail.com,Generalizations for more tricky cases: memory usage on java merge and handle empty regional breakpoint BED files by using the entire region,2014-06-29T21:46:09Z,chapmanb
+e524b7a9ec0f4ef3a016528ff4a70173b1b18a40,chapmanb,chapmanb@50mail.com,"Move creation of union sites to use GATK framework. bcftools isec does not collapse complex variants which causes long run times in repetitive, hard to resolve regions",2014-06-24T12:36:08Z,chapmanb
+e3864c165c1b8a7e6d735d0b307cf6117be4e5c2,chapmanb,chapmanb@50mail.com,"Scaling and output fixes: avoid duplicate alleles from recalling with vcfuniqalleles, ensure inputs to GATK merge are bgzipped",2014-06-23T10:12:50Z,chapmanb
+11c89353e2e5d11af0d1ba08c6b39f2fc7076ac1,chapmanb,chapmanb@50mail.com,"Provide VCF merging using GATK framework, make this default option to avoid merge errors with bcftools on complex variants",2014-06-20T18:45:58Z,chapmanb
+f3df6b07cef027c15e4fd484105f8d6d99932c0b,chapmanb,chapmanb@50mail.com,Swap out use of genomecov with simpler and faster direct manipulations on original BED file,2014-06-20T15:06:22Z,chapmanb
+4f4b170d531310d081095901c9b1117c5adca1dc,chapmanb,chapmanb@50mail.com,Speed and error reporting improvements: ensure recalling steps run multicore. Do not swallow error messages when running from command line,2014-06-20T12:16:21Z,chapmanb
+8e5bcd91d98fa3b932fa7c77cf0668fdd82d1e84,chapmanb,chapmanb@50mail.com,Speed improvements: prepare pre-computed fai and BED files for when calculating breakpoints to avoid needing to compute over full genome,2014-06-19T13:35:14Z,chapmanb
+da49a86bff3c8871c64f429a53fb1eb4105f79ed,chapmanb,chapmanb@50mail.com,Improve nesting of in-progress directory structure to avoid large directies when scaling to many samples,2014-06-19T10:37:02Z,chapmanb
+c0928c47287e0057052ae7404b81ab7efc1e4a29,chapmanb,chapmanb@50mail.com,Cache sample to BAM/CRAM map to avoid needing to read per-region for large number of input files,2014-06-19T09:47:01Z,chapmanb
+46f49cd4ca4b2ae5de4ae63c09af3956a444836a,chapmanb,chapmanb@50mail.com,Ensure sample prepped and region selected VCFs get passed along to recalling and merging steps to avoid need to re-extract these. Re-make out of date tabix indexes,2014-06-18T18:32:27Z,chapmanb
+802bfe7d93b8d94834d5784a3e96e58e06cadae4,chapmanb,chapmanb@50mail.com,Expose error message swallowed by rmap when we have duplicate input samples,2014-06-17T19:58:27Z,chapmanb
+832ef0b99c19f757cb6d1d6e44e59a5889d5ac9c,Brad Chapman,chapmanb@50mail.com,"Merge pull request #2 from roryk/master
+
+Sort BED file by chromosome and position after calculating breakpoints.",2014-06-17T19:38:14Z,chapmanb
+9a6fe5440e61b9f224671598b8515fb7123d224b,chapmanb,chapmanb@50mail.com,Fix issues with correctly placing preparation directory with passed calls. Avoid unnecessary prefix when creating split output directories,2014-06-17T18:36:25Z,chapmanb
+6437ed89a47823cf5f2c67131c96e2496400a5c6,roryk,rory.kirchner@gmail.com,Add a sort to the bedtools intersect in fai->bed.,2014-06-17T12:35:43Z,roryk
+5d6b86821b55d79084760fbcb5fa511dd8161d7f,roryk,rory.kirchner@gmail.com,Sort BED file by chromosome and position after calculating breakpoints.,2014-06-17T12:16:37Z,roryk
+07530a3445c87863cb28695c9fcdcca8f91d1927,chapmanb,chapmanb@50mail.com,Correctly segregate split determination by input sub-region. Handle ploidy and correctly call in chrM and other non-diploid regions. Write passonly files inside of work directory instead of in initial location.,2014-06-12T18:00:42Z,chapmanb
+694d5afe5e95bfadf13518e76a614a23a4b8741f,chapmanb,chapmanb@50mail.com,Improve regional support for squaring off by handling subsetting of reference by BED files/regions. Handle empty VCF files in regional calls,2014-06-11T20:48:51Z,chapmanb
+c68dea3e4c4fd29bb152ae3f93ada39ce21d9696,chapmanb,chapmanb@50mail.com,Enable squaring off with either BED file or region (chr1:1-100) specifications to allow parallelization,2014-06-09T14:25:03Z,chapmanb
+f21b1e963fcf2785854815c44c9f26492d46acb1,chapmanb,chapmanb@50mail.com,Enable subsetting of squaring off by chromosome region. Allows external parallelization by region. Fixes to support latest FreeBayes with experimental-gls,2014-05-01T18:59:48Z,chapmanb
+7dca3034eb75fa270120c3db1c316f1cd7b0b0e0,chapmanb,chapmanb@50mail.com,Support CRAM files as input to squaring off. Handles automatic conversion of CRAMs to BAM files within genomic regions so they can feed into recalling.,2014-04-05T09:39:53Z,chapmanb
+cc406cba04addc207d51e6061ed83c9bbbe51aac,chapmanb,chapmanb@50mail.com,"Use freebayes for squaring off/backfilling approaches, requiring recent version with fixes for variant-inputs",2014-04-03T15:24:49Z,chapmanb
+4a83c196cba2af7946542f6faa18c3ff8b2d2ec7,chapmanb,chapmanb@50mail.com,Use vt for concatenation instead of vcfcat from vcflib. Provides much faster concatenation on large population VCFs. Requires consistent headers throughout so use recalling even on empty regions,2014-03-24T01:31:11Z,chapmanb
+1c0acb6c3fbe7603d56f95a6de4194cf41cffefe,chapmanb,chapmanb@50mail.com,Speed improvements for merging -- enable merging of larger batches with bcftools and bgzip and vcfcat files simultaneously,2014-03-20T17:33:09Z,chapmanb
+26dad9c0f71acd9c42f71b21bde114af882ea79d,chapmanb,chapmanb@50mail.com,Pre-filter VCF files removing filtered variants prior to merging. Avoids issues where bcftools merges multiple samples using the union of filters from each sample,2014-03-19T17:42:19Z,chapmanb
+6586f128f933184e0fc9d300677a01cb0d97586d,chapmanb,chapmanb@50mail.com,Finalize read filtering for Platypus: more lenient badReads and low-depth filtering. Achieved equal quality to FreeBayes/GATK Haplotype callers,2014-02-26T11:11:31Z,chapmanb
+b838acdc0482aedca6f19a016cfb79c0cb3b633b,chapmanb,chapmanb@50mail.com,Add vcflib/vcffilter based post-platypus filtering to replace bcftools. vcflib handles existing filters correctly,2014-02-25T21:16:12Z,chapmanb
+6edfb89958519f8da59ec85a1922ee55e550e229,chapmanb,chapmanb@50mail.com,Increase merge size for parallel blocks to avoid large numbers of very small files for processing,2014-02-25T17:06:14Z,chapmanb
+e57d3201877708abe029e11552e574b34fda7021,chapmanb,chapmanb@50mail.com,"Improved platypus filtering: less stringent filters for repetitive regions and multiple haplotypes. Remove hard Q20 filtering and use hard filtering based on quality, depth and het/hom calls",2014-02-25T17:02:05Z,chapmanb
+fdd4a585d5036eba8e5a3bfb13b02bc2c1b59a6b,chapmanb,chapmanb@50mail.com,Update bcftools command lines to match the latest 0.2.0-rc6 release,2014-02-24T10:22:19Z,chapmanb
+500454a78c5da28312648b40f512a6bcf1c1d9f2,chapmanb,chapmanb@50mail.com,"Improvements for running ensemble recalling from commandline: cleanly exit from parallel runs, handle bgzipped or non-bgzipped outputs, tone down platypus verboseness",2014-02-16T10:36:03Z,chapmanb
+7dfd42647a4bd643e1b0911611a58e3dffeea7b0,chapmanb,chapmanb@50mail.com,Add ensemble based calling using platypus. Provide top level command line target to run ensemble calling on potentially multisample input files,2014-02-13T09:56:33Z,chapmanb
+16b3859b0d44b7051a195d6181425ce44b20d802,chapmanb,chapmanb@50mail.com,Integrate Platypus variant caller into squaring off. Provide functionality to resolve FreeBayes/Platypus headers into final output VCF,2014-02-11T19:17:37Z,chapmanb
+6db1a07fd58868961ee8e56a81622bf399da318a,chapmanb,chapmanb@50mail.com,Expose squaring off functionality with a top level command line. Extract command line convenience helpers into separate module for better re-use,2014-01-11T19:18:29Z,chapmanb
+e2fcd6ea4995f22394bd1d63ae0b4552bd5e3bf8,chapmanb,chapmanb@50mail.com,"Finalize end to end workflow for squaring off: create variants to recall, recall with freebayes and merge into final output file",2014-01-10T18:31:45Z,chapmanb
+274a7f0b8d7423dfd8d6d97d227a0106bf6b8269,chapmanb,chapmanb@50mail.com,Squaring off work: retrieve BAM files by sample and avoid re-calling regions with BAM files. Setup splitting and prep for recalling each sample in a genomic region,2014-01-10T13:40:56Z,chapmanb
+2c533710f19b734abce964611eaa9486fe09c26c,chapmanb,chapmanb@50mail.com,Initial framework for doing squaring off of variant populations. Reuse and generalize existing ensemble and merge functionality,2014-01-10T02:55:43Z,chapmanb
+2942a356dc234760d355c33051dd6e57adb4654e,chapmanb,chapmanb@50mail.com,Improve shell script wrapper to support identification of java specific options for memory and properties,2014-01-03T11:08:33Z,chapmanb
+e04186d43efd013ef022c8eb7021356c98eba06c,Brad Chapman,chapmanb@50mail.com,Reduce initial merge group size with bcftools to keep memory usage under 2Gb/process,2013-12-29T09:23:48Z,chapmanb
+c14491f6806cd39536f3bdda78fd11c152b5bb91,chapmanb,chapmanb@50mail.com,Rework bcftools merging to merge in batches. Keeps memory usage down for large population merges,2013-12-29T09:07:31Z,chapmanb
+807495c75a7a9a7638c7a5fa767e2370827d9ddf,chapmanb,chapmanb@50mail.com,"Create local regional VCF files for input into vcflib and bcftools, trying to avoid indexing penalties and work around file handle errors with piping",2013-12-28T18:54:24Z,chapmanb
+4a82395d07f09d7faa86cad07bdb3c28dffc5288,chapmanb,chapmanb@50mail.com,Batch vcfcombine commands into pipes to avoid opening large numbers of simultaneous named pipes,2013-12-27T18:07:44Z,chapmanb
+fa6324cd71dbf678ccd38d1989c4348a6561c1c0,chapmanb,chapmanb@50mail.com,"Merge files using vcfcombine from vcflib, working to avoid memory issues with large numbers of files to bcftools merge",2013-12-27T16:30:26Z,chapmanb
+4a0341fbb793fd49872d1bc6473a37d6b57387b0,chapmanb,chapmanb@50mail.com,Fixes for ensemble realignment/recalling with glia and freebayes,2013-12-21T17:25:16Z,chapmanb
+40de2762959b6cb03123eb955e2f416b8032f737,chapmanb,chapmanb@50mail.com,Parallelize detection of analysis regions. Handle pre-bgzipped inputs. Avoid errors without JAVA_HOME set,2013-12-20T20:16:45Z,chapmanb
+e9e50b33fabdbe72e4dcdac5a8f80b4db0d4718f,chapmanb,chapmanb@50mail.com,Finalize executable merge command and prepare shell script for easier distribution,2013-12-20T14:21:28Z,chapmanb
+b3fe4dec77c72f3463808799b5b139cdf0c7172e,chapmanb,chapmanb@50mail.com,"Parallelize merging functionality, allowing specification of cores to use. Add initial infrastructure for command line calling.",2013-12-20T02:58:42Z,chapmanb
+be9e2bdff6cbb07753b97f3464dc4b2c7b65a3f1,chapmanb,chapmanb@50mail.com,Concatenation of VCF handles using external vcfcat in vcflib. Handle bgzip and plain VCF,2013-12-19T15:25:28Z,chapmanb
+26c498f56ea5c0eacab723c7bc7bce28d7faecb6,chapmanb,chapmanb@50mail.com,"Provide region-based merging of multi-sample VCFs, with parallelization by reducers",2013-12-18T21:52:12Z,chapmanb
+343491c5f003f152273e39f3c7ce286d2ba084f1,chapmanb,chapmanb@50mail.com,Initial framework for parallel VCF merging by minimal genomic region,2013-12-18T10:08:22Z,chapmanb
+6f5374571ebf35a3e1120fc909ba94762277adaa,chapmanb,chapmanb@50mail.com,Finalize identification of blocks of shared variation across multiple samples for parallelization,2013-12-17T15:01:20Z,chapmanb
+da6efaaa88abca810867bd4f777772d698acd158,chapmanb,chapmanb@50mail.com,Convert individual VCF breakpoints into grouped set of parallelization breakpoints in common across all samples,2013-12-17T11:36:18Z,chapmanb
+70bff7ac260eaf1814d4650029ff77b00b5642fd,chapmanb,chapmanb@50mail.com,"Initial commit of repository for handling parallel merging, recaling, squaring off and ensemble calling",2013-12-16T20:46:04Z,chapmanb

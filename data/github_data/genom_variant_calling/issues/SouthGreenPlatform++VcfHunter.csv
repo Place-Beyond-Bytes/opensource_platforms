@@ -1,0 +1,59 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU1OTA5NjYyNzE=,problem vcf format with ,OPEN,2020-03-31T10:00:38Z,2021-04-21T09:56:00Z,,"Hello,
+
+For some reasons, VCF filtered by GATK v4 may produce a different tag by adding the assembly information next to the contig size.
+`##contig=<ID=mito8,length=456355,assembly=Musa_genomes_V2.fasta>`
+
+
+Then this error occurs as the scripts expects only a integer
+
+`
+Traceback (most recent call last):
+  File ""vcf2allPropAndCov.py"", line 375, in <module>
+    if __name__ == ""__main__"": __main__()
+  File ""vcf2allPropAndCov.py"", line 338, in __main__
+    chr_info = get_chr_size(data)
+  File ""vcf2allPropAndCov.py"", line 220, in get_chr_size
+    return [split_on_eq[2].split(',')[0], int(split_on_eq[3])]
+ValueError: invalid literal for int() with base 10: '456355,assembly'
+`",mrouard,https://github.com/SouthGreenPlatform/VcfHunter/issues/2
+I_kwDOCAdBYs5IQuDd,Error in step A: read group line contained literal <tab>,OPEN,2022-04-22T13:09:31Z,2022-06-09T09:00:14Z,,"When running the process_reseq_1.0.py script, the following error occurs:
+
+`Line : 677 - Error in step A (bwa-mem):
+[E::bwa_set_rg] the read group line contained literal <tab> characters -- replace with escaped tabs: \t`
+
+Does anyone know whatever causes this error and how to resolve it?
+",sanderdebacker,https://github.com/SouthGreenPlatform/VcfHunter/issues/3
+I_kwDOCAdBYs5LU1wN,Error running Tutorial for VcfHunter Genetic linkage analysis,OPEN,2022-06-07T19:15:12Z,2022-08-09T10:04:25Z,,"I got the following error, when I am running the tutorial:
+
+
+
+raceback (most recent call last):
+  File ""/biodata5/mapa-genetico-jhtrujillo/tools/VcfHunter/TestTools/../bin/vcf2popNew.1.0.py"", line 881, in <module>
+    if __name__ == ""__main__"": __main__()
+  File ""/biodata5/mapa-genetico-jhtrujillo/tools/VcfHunter/TestTools/../bin/vcf2popNew.1.0.py"", line 804, in __main__
+    Khi_stat = KhiSquare(liste[0], Accession_header, dico_acc, DicoSegregation)
+  File ""/biodata5/mapa-genetico-jhtrujillo/tools/VcfHunter/TestTools/../bin/vcf2popNew.1.0.py"", line 326, in KhiSquare
+    chi2, p = stats.chisquare(FreqObs, f_exp=FreqTheor)
+  File ""/home/estuvar4/.local/lib/python3.9/site-packages/scipy/stats/_stats_py.py"", line 6911, in chisquare
+    return power_divergence(f_obs, f_exp=f_exp, ddof=ddof, axis=axis,
+  File ""/home/estuvar4/.local/lib/python3.9/site-packages/scipy/stats/_stats_py.py"", line 6753, in power_divergence
+    raise ValueError(msg)
+ValueError: For each axis slice, the sum of the observed frequencies must agree with the sum of the expected frequencies to a relative tolerance of 1e-08, but the percent differences are
+
+
+",jhtrujillo,https://github.com/SouthGreenPlatform/VcfHunter/issues/4
+I_kwDOCAdBYs5RlHMa,VcfPreFilter.1.0.py,OPEN,2022-09-10T17:26:36Z,2022-09-20T21:27:20Z,,"I got the following error, when I am running the my vcf:
+
+python3 VcfPreFilter.1.0.py -v M301.A.sorted.MD.vcf -m 8 -M 200 -f 0.05 -c 3 -o M301.A.sorted.MD.preFiltred -d y
+Traceback (most recent call last):
+  File ""VcfPreFilter.1.0.py"", line 282, in <module>
+    if __name__ == ""__main__"": __main__()
+  File ""VcfPreFilter.1.0.py"", line 257, in __main__
+    for line in file:
+  File ""/home/harun/anaconda3/envs/Env1/lib/python3.8/codecs.py"", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfc in position 6866: invalid start byte
+
+Thanks
+",pbreeder,https://github.com/SouthGreenPlatform/VcfHunter/issues/5

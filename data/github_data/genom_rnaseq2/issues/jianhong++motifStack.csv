@@ -1,0 +1,371 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNDI4MTIwNzQ=,motifStack plot goes higher than 2 bits.,CLOSED,2018-07-19T17:00:09Z,2020-10-13T13:26:28Z,2020-10-13T13:26:28Z,"I'm having an issue where the `motifStack` function is returning a plot that goes higher than 2 bits. Is there a fix for this? Or is my matrix incorrectly formatted? Is it possible to customize/rescale the y axis of the plot?
+
+## Reproducible example:
+
+[m01.meme](https://gist.github.com/snystrom/1efd452be39b9ad5d4fc81c6f2dd256a)
+
+```{r}
+motif_file <- ""m01.meme""
+meme.pwm <- importMatrix(motif_file)
+
+motifStack(meme.pwm$GAGAGMR)
+```
+
+![motifStack plot](https://user-images.githubusercontent.com/17264973/42958292-37fa81f6-8b53-11e8-87b0-b4d44ed3cf36.png)
+",snystrom,https://github.com/jianhong/motifStack/issues/1
+MDU6SXNzdWU0Njg1MDA0OTA=,Can you teach me how to color the background by TF family,CLOSED,2019-07-16T07:48:00Z,2019-07-16T08:12:17Z,2019-07-16T08:12:17Z,,mayupsc,https://github.com/jianhong/motifStack/issues/2
+MDU6SXNzdWU2MzUxNjc2NjE=,Error exporting motifPiles in PDF ,CLOSED,2020-06-09T07:04:53Z,2020-06-09T07:19:40Z,2020-06-09T07:19:40Z,,plbngl,https://github.com/jianhong/motifStack/issues/3
+MDU6SXNzdWU2NDA4NjY0Nzc=,the plot function can not combine with R layout,CLOSED,2020-06-18T02:51:49Z,2023-06-28T11:17:59Z,2023-06-28T11:17:59Z,"hi I am trying to plot a barplot under the sequence logo generated using the plot function by dividing the plot using layout, it worked fine with the old version. but now it is not working. Is there anything changed in the new version? thanks!",huijfeng,https://github.com/jianhong/motifStack/issues/4
+MDU6SXNzdWU3MTY5NTgxNDM=,couple issues for RNA motifs,CLOSED,2020-10-08T01:45:03Z,2023-06-28T11:17:42Z,2023-06-28T11:17:42Z,"I think your software is really cool. I just had a couple of questions for making a sequence logo stack plot for RNA sequences.
+
+1. I was wondering how to prevent reverse complementation when using the `motifStack` function. Since RNA is stranded and already in a fixed orientation,  the reverse complementing is a problem.
+2. I get the following  error when I try to make the  ""T""  a ""U"" `rownames(test)[4] <- ""U""`
+
+
+> Error in .normargPfm(x) : 
+>   invalid PFM 'x': row names must be in 'DNA_ALPHABET'
+",nmukherjee,https://github.com/jianhong/motifStack/issues/5
+MDU6SXNzdWU4Mzk5MzcxOTM=,How to save a Pam list to file,CLOSED,2021-03-24T17:03:55Z,2023-06-28T11:17:15Z,2023-06-28T11:17:15Z,"Hi,
+
+there seems to be no indication on how to save a list of Pam generated with motif stack.
+I am currently merging several motifs using motif stack which I would like then to export to a file to be used with other tools.
+Is there an unbuilt function to do so?
+
+Thanks
+
+",fgualdr,https://github.com/jianhong/motifStack/issues/6
+MDU6SXNzdWU4NjcxNjg5OTU=,Numbers instead of nucleotides,CLOSED,2021-04-26T00:55:38Z,2021-04-26T00:58:01Z,2021-04-26T00:58:01Z,"Hello! When I try to run the examples in the vignette, my plots have numbers instead of nucleotides:
+
+```R
+library(motifStack)
+pcm <- read.table(file.path(find.package(""motifStack""), 
+                            ""extdata"", ""bin_SOLEXA.pcm""))
+pcm <- pcm[,3:ncol(pcm)]
+rownames(pcm) <- c(""A"",""C"",""G"",""T"")
+motif <- new(""pcm"", mat=as.matrix(pcm), name=""bin_SOLEXA"")
+##pfm object
+#motif <- pcm2pfm(pcm)
+#motif <- new(""pfm"", mat=motif, name=""bin_SOLEXA"")
+plot(motif)
+```
+
+gives me this plot:
+
+[figure.pdf](https://github.com/jianhong/motifStack/files/6373573/figure.pdf)
+
+Any idea what could be causing this? Thanks so much!
+
+This is with:
+
+motifStack_1.34.0 ",roryk,https://github.com/jianhong/motifStack/issues/7
+MDU6SXNzdWU5MzY5OTQ3NTQ=,"Could not find function ""clusterMotifs""",CLOSED,2021-07-05T11:27:30Z,2021-07-08T21:24:26Z,2021-07-08T21:24:26Z,"Dear Jianhong, thanks very much for developing 'motifStack' which helped me a lot. I got a small issue: When I working on linux system, there is no function 'clusterMotifs' in motifStack_1.32.0 when I check it by ls(""package:motifStack""). This function [hc <- clusterMotifs(pfms)] is really important for me. Could you please give me some solutions? Many thanks.
+> sessionInfo()
+R version 4.0.5 (2021-03-31)
+Platform: x86_64-conda-linux-gnu (64-bit)
+Running under: Debian GNU/Linux 10 (buster)
+
+> packageVersion(""motifStack"")
+[1] ‘1.32.0
+
+> ls(""package:motifStack"")
+ [1] ""addBlank""                       ""browseMotifs""                  
+ [3] ""browseMotifsOutput""             ""colorset""                      
+ [5] ""DNAmotifAlignment""              ""format""                        
+ [7] ""frequence""                      ""geom_motif""                    
+ [9] ""GeomMotif""                      ""getIC""                         
+[11] ""getRankedUniqueMotifs""          ""highlightCol""                  
+[13] ""importMatrix""                   ""matrixReverseComplement""       
+[15] ""mergeMotifs""                    ""motifCircos""                   
+[17] ""motifCloud""                     ""motifGrob""                     
+[19] ""motifPiles""                     ""motifSignature""                
+[21] ""motifStack""                     ""nodelist""                      
+[23] ""pcm2pfm""                        ""pfm2pwm""                       
+[25] ""plot""                           ""plotAffinityLogo""              
+[27] ""plotMotifLogo""                  ""plotMotifLogoA""                
+[29] ""plotMotifLogoStack""             ""plotMotifLogoStackWithTree""    
+[31] ""plotMotifOverMotif""             ""plotMotifStackWithPhylog""      
+[33] ""plotMotifStackWithRadialPhylog"" ""plotXaxis""                     
+[35] ""plotYaxis""                      ""readPCM""                       
+[37] ""renderbrowseMotifs""             ""reorderUPGMAtree""              
+[39] ""sigColor""                       ""signatures""                    
+[41] ""trimMotif""                     
+
+",yl-lu,https://github.com/jianhong/motifStack/issues/8
+I_kwDOBhDjic47dHGR,method argument of matAlign is ignored,CLOSED,2021-09-15T20:23:51Z,2021-09-20T14:33:05Z,2021-09-20T14:33:05Z,"I just found this package today, and looks like it has some nice useful functionality.  I found a small--and probably easy to fix--problem in one of the functions:
+
+matalign function has an argument `method`.  If the user sets this to ""Needleman-Wunsch"" it has no effect, and the default SW method is used.  This appears to be because the `method` argument is not passed to the downstream function `compareProfiles`",bpolacco,https://github.com/jianhong/motifStack/issues/9
+I_kwDOBhDjic47dZZQ,Would be nice if matalign checked for compatible matrices,CLOSED,2021-09-15T22:11:07Z,2021-09-20T14:38:30Z,2021-09-20T14:38:30Z,"It appears that matalign assumes the pfm/pcm have the same row structure (same number of rows and labels in the same order). Depending on how a pfm/pcm is constructed this may not always be true.  I ran into this with AA motifs with code similar to this (with oversimplified motifs) that relied on `Biostrings::consensusMatrix` to construct my pfm matrices: 
+
+```
+motifs <- list( c( ""SLQRSDSSQPMLL""), c(""QPMLLNTPAPVPP"" ), c(""AGTPIDSSQPMLL"", ""SLQRSDSSQPMLL"" ))
+
+pfms <- lapply(motifs, function(m)new(""pfm"", Biostrings::consensusMatrix(m, as.prob = TRUE), name = m[[1]]))
+motifStack::motifStack(pfms, layout = ""tree"") 
+# alignment quietly fails except for some numerous but mysterious warnings
+``` 
+![image](https://user-images.githubusercontent.com/47793553/133516396-872ae05d-41ac-4199-b2ee-78c43579f685.png)
+
+
+I can fix this (once I recognized the problem) as below, but it would be a nice feature of your method to check its assumptions of equivalent matrix rows and maybe order (when row names are present).
+
+```
+fullAAConsensusMatrix <- function(seqs){
+  aaLetters <- c(""A"", ""C"", ""D"", ""E"", ""F"", ""G"", ""H"", ""I"", ""K"", ""L"", ""M"", ""N"", ""P"", ""Q"", ""R"", ""S"", ""T"", ""V"", ""W"", ""Y"")
+  cm <- Biostrings::consensusMatrix(seqs, as.prob = TRUE )
+  missingAA <- setdiff(aaLetters, rownames(cm))
+  if (length(missingAA) > 0){
+    missingRows <- matrix(0, nrow = length(missingAA), ncol = ncol(cm), dimnames = list(missingAA, NULL) )
+    cm <- rbind (cm, missingRows)
+  }
+  # enforce consistent order:
+  return (cm[aaLetters,])
+}
+
+pfms <- lapply(motifs, function(m)new(""pfm"", fullAAConsensusMatrix(m ), name = m[[1]]))
+motifStack::motifStack(pfms, layout = ""tree"")
+
+```
+![image](https://user-images.githubusercontent.com/47793553/133516446-ae354777-b867-4044-aca9-2a9fe2bb1212.png)
+
+Thanks again!",bpolacco,https://github.com/jianhong/motifStack/issues/10
+I_kwDOBhDjic5LJSUp,"Error in pfms[[getPFMid(pfms, .name, rcpostfix = rcpostfix)]]",CLOSED,2022-06-04T12:00:46Z,2022-06-04T13:13:51Z,2022-06-04T13:13:50Z,"I'm following the vignette [plot a sequence logo cloud](https://www.bioconductor.org/packages/devel/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html#plot_a_sequence_logo_cloud), the example works. Trying the same with my motifs fails at the `motifSignature` function with error:
+```
+Error in pfms[[getPFMid(pfms, .name, rcpostfix = rcpostfix)]] : 
+  attempt to select less than one element in get1index
+```
+I went down the `motifSignature` and `getPFMid` code but couldn't solve it within a reasonable time. Please, advice, code to reproduce:
+[pfms1.RData](https://drive.google.com/file/d/1uKzYXonOEYs-Jy3_RHA_THwQayuVWAby/view?usp=sharing)
+````{r}
+library(motifStack)
+load(file = ""pfms1.RData"")
+pfms1 <- motifs_all[1:10]
+## use matalign to calculate the distances of motifs
+hc <- clusterMotifs(pfms1)
+## convert the hclust to phylog object
+library(ade4)
+phylog1 <- ade4::hclust2phylog(hc)
+## reorder the pfms1 by the order of hclust
+leaves <- names(phylog1$leaves)
+pfms1 <- pfms1[leaves]
+## extract the motif signatures
+motifSig <- motifSignature(pfms1, phylog1, cutoffPval=0.0001, min.freq=1)
+````
+",mdozmorov,https://github.com/jianhong/motifStack/issues/11
+I_kwDOBhDjic5p-9JT,"In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中",OPEN,2023-06-28T03:30:16Z,2023-06-28T11:16:49Z,,"我画正常的图没有问题，但是画圆的图就会格式错误，报warning
+警告信息：
+1: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+2: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+3: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+4: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+5: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+6: In grid.Call.graphics(C_setviewport, vp, TRUE) : 无法修剪至旋转了的視窗中
+.......
+图片画出来格式也很乱
+
+
+",NatureGate,https://github.com/jianhong/motifStack/issues/12
+I_kwDOBhDjic51OaSv,Incorrect clustering result in clusterMotifs function,OPEN,2023-10-28T19:20:22Z,2023-11-01T12:21:27Z,,"Hi Jianhong, thanks for developing motifStack which helps me a lot.
+Recently, I want to cluster a list of motifs using motifStack. But when I replaced the test data with the `motifs` mentioned earlier in the [tutorial](https://jianhong.github.io/workshop2020/articles/motifStack.html#plot-motifs-with-ggplot2), I found that the clustering results were not correct. My running environment is `R 4.3.1`, and the motifStack version is `1.44.1`. The code is as follows:
+```R
+motifs <- importMatrix(dir(path, ""*.pcm"", full.names = TRUE),
+                       format = ""pcm"", to = ""pcm"")
+hc <- clusterMotifs(motifs)
+## convert the hclust to phylog object
+library(ade4)
+phylog <- hclust2phylog(hc)
+## reorder the pfms by the order of hclust
+leaves <- names(phylog$leaves)
+motifs <- motifs[leaves]
+## create a list of pfm objects
+#motifs <- mapply(motifs, names(motifs),
+#               FUN=function(.pfm, .name){
+#                 new(""pcm"",mat=.pfm, name=.name)})
+## extract the motif signatures
+motifSig <- motifSignature(motifs, phylog, cutoffPval = 0.0001, min.freq=1)
+
+
+sig <- signatures(motifSig)
+## get the group color for each signature
+gpCol <- sigColor(motifSig)
+
+library(RColorBrewer)
+color <- brewer.pal(12, ""Set3"")
+## plot the logo stack with pile style.
+motifPiles(phylog=phylog, pfms=motifs, pfms2=sig,
+            col.tree=rep(color, each=5),
+            col.leaves=rep(rev(color), each=5),
+            col.pfms2=gpCol,
+            r.anno=c(0.02, 0.03, 0.04),
+            col.anno=list(sample(colors(), 50),
+                          sample(colors(), 50),
+                          sample(colors(), 50)),
+            motifScale=""logarithmic"",
+            plotIndex=TRUE)
+```
+The out plot displayed as below:
+![image](https://github.com/jianhong/motifStack/assets/20716042/04c3d557-a45d-4ca5-89d6-545a0375dc03)
+As seen from the plot, the ""bin_SOLEXA"" and ""fkh_NAR"" were clustered into `cluster2` which should be composed of ""bin_SOLEXA"", ""slp1_SOLEXA"" and ""FoxP_SOLEXA"".
+I think it was due to the incorrect clustering of the `clusterMotifs` that led to the subsequent visualization errors. Perhaps the result is correct, just because I did not use motifStack correctly. If that's the case, how can I cluster correctly by using motifStack? Thank you in advance.
+
+Feng",CrazyHsu,https://github.com/jianhong/motifStack/issues/13
+I_kwDOBhDjic513Zdr,Shrink the size?,OPEN,2023-11-04T18:20:09Z,2023-11-06T13:18:51Z,,"This is a really cool package. Exactly what I have been looking for.
+
+I am trying to plot a tree of my motifs.
+
+However, I have around 60 motifs. They can't fit on the page and the motifs get overlayed on top of each other. Is there a way to reduce the size?
+
+Thanks",TheRaspberryFox,https://github.com/jianhong/motifStack/issues/14
+I_kwDOBhDjic52_NbM,图片中motif名称后面的RC是什么意思,CLOSED,2023-11-16T08:00:56Z,2024-01-03T15:18:55Z,2024-01-03T15:18:54Z,"
+![微信图片_20231116160012](https://github.com/jianhong/motifStack/assets/58165829/24590681-dc2f-4c28-acbb-954459722304)
+
+图片中motif名称后面的RC是什么意思，是有什么特殊含义吗？",ilead-cong,https://github.com/jianhong/motifStack/issues/15
+I_kwDOBhDjic559Z5n,import format ,CLOSED,2023-12-18T09:22:17Z,2023-12-20T03:14:21Z,2023-12-20T03:14:21Z,"Hi, jianhong
+
+Thank you for developing the convenient motif analysis software. 
+Unfortunately, I had some problems with it.
+Does the Motif sequence format support the matrix output by homer software? The format is as follows (is the proportion of four types of bases) :
+![image](https://github.com/jianhong/motifStack/assets/132361149/e0c6fceb-debf-4d8d-b898-978758a11fea)
+
+Is there a recommended way to convert the format if not supported",sijiali-0107,https://github.com/jianhong/motifStack/issues/16
+I_kwDOBhDjic5695im,Orientation of motifs in motif stack and reorder function,OPEN,2024-01-02T22:57:44Z,2024-01-03T18:32:34Z,,"Hi. 
+This is a really nice program that is very helpful!
+I encountered a problem when plotting motif stacks. I am plotting a stack of four motifs and it appears that two of the motifs are aligned in reverse complement (X45.CCATGGWAAC.STREME.45(RC) and X46.GTYTCCARGCAAC.STREME.46(RC)). Is there any way to control this behavior? 
+
+Also, I was trying the reorder=FALSE option, but it seems to be ignored. If I understand correctly, also the example in the vignette is not reordered. 
+
+Thank you very much for your help!
+Sylvia
+
+Here is the code I was running:
+stack <- importMatrix(file, format = ""meme"", to = ""auto"") 
+
+    pdf(filepdf)
+    motifStack(stack, layout=""stack"", ncex=1.0)
+    dev.off()
+
+file:
+MEME version 5
+ALPHABET= ACGT
+strands: + -
+Background letter frequencies
+A 0.29 C 0.21 G 0.21 T 0.29
+MOTIF 4-GTTGCCATGGWRACH STREME-4
+letter-probability matrix: alength= 4 w= 15 nsites= 659 P= 2.7e-026
+ 0.082198 0.001786 0.907603 0.008413
+ 0.015933 0.053041 0.000019 0.931008
+ 0.086979 0.000019 0.012391 0.900612
+ 0.196402 0.019460 0.722892 0.061245
+ 0.001793 0.804956 0.017135 0.176115
+ 0.000026 0.728050 0.000019 0.271905
+ 0.924867 0.003554 0.005972 0.065606
+ 0.115558 0.000019 0.040669 0.843754
+ 0.107723 0.000019 0.892232 0.000026
+ 0.010630 0.000019 0.976953 0.012398
+ 0.386124 0.173752 0.080460 0.359664
+ 0.581881 0.009567 0.309282 0.099270
+ 0.869282 0.058436 0.050715 0.021566
+ 0.046630 0.713959 0.022437 0.216974
+ 0.386819 0.281182 0.084277 0.247722
+MOTIF 7-GTTGCCAAG STREME-7
+letter-probability matrix: alength= 4 w= 9 nsites= 543 P= 1.1e-013
+ 0.010812 0.044045 0.847239 0.097904
+ 0.002233 0.000114 0.030790 0.966863
+ 0.003935 0.000114 0.008779 0.987172
+ 0.018448 0.000114 0.981280 0.000158
+ 0.005615 0.964675 0.007337 0.022373
+ 0.007216 0.742456 0.000114 0.250214
+ 0.799901 0.004931 0.000114 0.195054
+ 0.787863 0.000114 0.075139 0.136884
+ 0.013519 0.003264 0.979083 0.004134
+MOTIF 45-CCATGGWAAC STREME-45
+letter-probability matrix: alength= 4 w= 10 nsites= 81 P= 4.0e-002
+ 0.000616 0.998321 0.000446 0.000616
+ 0.014952 0.700160 0.000446 0.284442
+ 0.970726 0.000446 0.000446 0.028382
+ 0.000616 0.000446 0.000446 0.998491
+ 0.055628 0.000446 0.943309 0.000616
+ 0.000616 0.000446 0.998321 0.000616
+ 0.430116 0.000446 0.000446 0.568991
+ 0.836743 0.000446 0.000446 0.162365
+ 0.998491 0.000446 0.000446 0.000616
+ 0.000616 0.998321 0.000446 0.000616
+MOTIF 46-GTYTCCARGCAAC STREME-46
+letter-probability matrix: alength= 4 w= 13 nsites= 28 P= 3.6e-001
+ 0.256751 0.050844 0.691913 0.000492
+ 0.135646 0.000356 0.000356 0.863641
+ 0.023311 0.575655 0.000356 0.400677
+ 0.100537 0.133751 0.000356 0.765356
+ 0.000492 0.998660 0.000356 0.000492
+ 0.023311 0.975840 0.000356 0.000492
+ 0.998795 0.000356 0.000356 0.000492
+ 0.340588 0.000356 0.658564 0.000492
+ 0.000492 0.000356 0.931963 0.067189
+ 0.000492 0.998660 0.000356 0.000492
+ 0.942628 0.000356 0.000356 0.056660
+ 0.965447 0.000356 0.000356 0.033840
+ 0.000492 0.998660 0.000356 0.000492
+[Issue.pdf](https://github.com/jianhong/motifStack/files/13814452/Issue.pdf)
+
+",sneumann1979,https://github.com/jianhong/motifStack/issues/17
+I_kwDOBhDjic6HzmM2,importMatrix of MEME file without w= and nsites= values in letter-probability string crashes,OPEN,2024-05-03T21:28:43Z,2024-05-22T22:46:56Z,,"### Hello,
+
+the MEME version we use doesn't genertare the w= and nsites= so 
+
+`mportMatrix(..., format=""meme"")
+Error in (mat.fr + 1):(mat.fr + as.numeric(w)) : NA/NaN argument
+In addition: Warning message:
+In FUN(X[[i]], ...) : NAs introduced by coercion`
+
+does not work. Per the MEME standard, the length could be ` can be derived from the matrix if they are not specified, provided there is an empty line following the letter probability matrix` [https://meme-suite.org/meme/meme_5.5.4/doc/meme-format.html]
+ and the nsites default to 20 if not specified....
+
+Is this voluntary that your implementation needs w= and nsites= to work ?
+
+What we have as data:
+
+```MEME version 5.5.3
+
+ALPHABET= ACGU
+
+strands: +
+
+MOTIF group0 group0
+
+letter-probability matrix: alength= 4
+0.2423856687440365	0.2423856687440365	0.27284299376789045	0.2423856687440365
+0.22685969217988056	0.22685969217988056	0.3194209234603583	0.22685969217988056
+0.21926418154603855	0.34220745536188435	0.21926418154603855	0.21926418154603855
+0.2116735308861708	0.2116735308861708	0.36497940734148765	0.2116735308861708
+0.20400140355966154	0.3879957893210154	0.20400140355966154	0.20400140355966154
+0.19624139432687643	0.41127581701937077	0.19624139432687643	0.19624139432687643
+0.1884194109033729	0.1884194109033729	0.1884194109033729	0.43474176728988123
+0.17289070590064243	0.17289070590064243	0.48132788229807266	0.17289070590064243
+0.1651631759627908	0.1651631759627908	0.1651631759627908	0.5045104721116277
+0.5046694234925583	0.16511019216914724	0.16511019216914724	0.16511019216914724
+0.17231399749328336	0.14126798752631473	0.5451500274540871	0.14126798752631473
+0.11638505693861528	0.14527656898549268	0.11638505693861528	0.6219533171372769
+0.0847707907081765	0.7456876278754705	0.0847707907081765	0.0847707907081765
+0.05277970708083049	0.8109948507705643	0.08344573506777464	0.05277970708083049
+0.022012491592590694	0.8741967112188684	0.022012491592590694	0.08177830559595012
+0.8744016653645654	0.08170998754738446	0.02194417354402503	0.02194417354402503
+0.01448287640318191	0.01448287640318191	0.8967855567870948	0.07424869040654133
+0.0	1.0	0.0	0.0
+0.001445661444688523	0.001445661444688523	0.001445661444688523	0.9956630156659344
+0.794535180236837	0.16826237019703663	0.01860122478306317	0.01860122478306317
+0.02622808218529049	0.9213157534441285	0.02622808218529049	0.02622808218529049
+0.04948716677801554	0.04948716677801554	0.04948716677801554	0.8515384996659534
+0.11133056406688091	0.6973952980662635	0.08117797469100574	0.11009616317584983
+0.12750647131948215	0.09735388194360697	0.6777857647933039	0.09735388194360697
+0.15026844489399413	0.12011585551811896	0.609499844069768	0.12011585551811896
+0.15032502939641434	0.15032502939641434	0.5490249118107569	0.15032502939641434
+0.45926561782286185	0.18024479405904603	0.18024479405904603	0.18024479405904603
+0.2034975511030523	0.2034975511030523	0.3895073466908431	0.2034975511030523
+0.22683171378041145	0.22683171378041145	0.3195048586587657	0.22683171378041145
+0.242316306685997	0.27305107994200906	0.242316306685997	0.242316306685997```
+
+Thanks.
+",Julie-Cardin,https://github.com/jianhong/motifStack/issues/18
+I_kwDOBhDjic6QuMgk,Question about the plotMotifStackWithPhylog,CLOSED,2024-07-24T16:36:22Z,2024-07-26T06:20:53Z,2024-07-26T06:20:53Z,"Hello, thanks for developing this functional tools!
+Here I met some problems while using motifstack to plot motifs with `layout=""phylog""` or `layout=""radialPhylog""`. It seems that motifstack will automatically reverse complement the motifs, which didn't meet my expectations. I checked the manual but can't find how to stop the automatically RC. I wonder that is it possible to do that?
+Thank you!",yanyew,https://github.com/jianhong/motifStack/issues/19

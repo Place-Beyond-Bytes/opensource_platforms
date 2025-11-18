@@ -1,0 +1,105 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3OTYwNTI0Mjg=,Error: $ operator is invalid for atomic vectors,OPEN,2021-01-28T14:23:25Z,2021-01-28T21:44:10Z,,"Hi @stjude,
+
+I've got the following error:
+step3. parsing raw counts...Error: $ operator is invalid for atomic vectors
+
+Any clue?
+
+```r
+> sessionInfo()
+R version 3.6.1 (2019-07-05)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Scientific Linux 7.9 (Nitrogen)
+
+Matrix products: default
+BLAS:   /usr/local/software/spack/spack-0.11.2/opt/spack/linux-rhel7-x86_64/gcc-5.4.0/r-3.6.1-zrytncqvsnw5h4dl6t6njefj7otl4bg
+4/rlib/R/lib/libRblas.so
+LAPACK: /usr/local/software/spack/spack-0.11.2/opt/spack/linux-rhel7-x86_64/gcc-5.4.0/r-3.6.1-zrytncqvsnw5h4dl6t6njefj7otl4bg
+4/rlib/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C               LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8    LC_PAPER=en_GB.UTF-8       LC_NAME=C
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+ [1] ChIPseqSpikeInFree_1.2.4    GenomicAlignments_1.22.1    Rsamtools_2.2.3             Biostrings_2.54.0
+ [5] XVector_0.26.0              SummarizedExperiment_1.16.1 DelayedArray_0.12.2         BiocParallel_1.20.1
+ [9] matrixStats_0.55.0          Biobase_2.44.0              GenomicRanges_1.38.0        GenomeInfoDb_1.22.0
+[13] IRanges_2.20.2              S4Vectors_0.24.3            BiocGenerics_0.32.0         nvimcom_0.9-106
+[17] data.table_1.12.8           colorout_1.2-2
+
+loaded via a namespace (and not attached):
+[1] zlibbioc_1.32.0        lattice_0.20-38        tools_3.6.1            grid_3.6.1             Matrix_1.2-17
+[6] GenomeInfoDbData_1.2.2 bitops_1.0-6           RCurl_1.98-1.1         compiler_3.6.1
+```",sung,https://github.com/stjude/ChIPseqSpikeInFree/issues/5
+MDU6SXNzdWU4Njk3OTQ5NTM=,singleEnd = FALSE for ChIPseqSpikeInFree wrapper script,OPEN,2021-04-28T10:31:55Z,2022-01-14T10:14:23Z,,"Hi,
+
+I was wondering if you could help me clarify the processing of paired end data. 
+I've noticed that while you can set singleEnd =FALSE argument for the CountRawReads() function, it is not possible with the wrapper function, which then by default treats the data as single end.
+
+I did try to run functions on their own, but it then stops at the parsing step giving the error:
+ooops: you need to change metadata file **\n
+
+Thank you for your help!
+
+Monica",MoniDR,https://github.com/stjude/ChIPseqSpikeInFree/issues/6
+MDU6SXNzdWU5MzYwMDM0MjY=,Endpoints for slope calculation?,OPEN,2021-07-02T18:53:42Z,2021-09-27T21:16:58Z,,"Hi! I'm just starting to use this tool and was wondering - how are the X and Y coordinates of the two points used for slope calculation determined? I tried running the program twice, first on a given set of samples, and next on a smaller subset of the first set, and got noticeably different X/Y coordinates and scaling factors for the same samples, which was confusing to me. 
+",amwa,https://github.com/stjude/ChIPseqSpikeInFree/issues/7
+I_kwDOCiSHO85DnJse,An Error,OPEN,2022-02-12T17:31:24Z,2022-02-12T17:31:42Z,,"Hello, thisi is really a good tool for chipseq. However,  there  is problem in the source that it return an Error like below. The 'result' in the source code only occur once at the last line. Is it a Bug? Thank you.
+
+![微信图片_20220213012643](https://user-images.githubusercontent.com/87462884/153721552-6cde01c9-33bf-4e85-a7e2-72545c839dfd.png)
+![微信图片_20220213012649](https://user-images.githubusercontent.com/87462884/153721568-3d1b032c-dfbd-414a-a9c0-bb28560adf46.png)
+",ryrl9703,https://github.com/stjude/ChIPseqSpikeInFree/issues/8
+I_kwDOCiSHO85JX089,Error in result[[njob]] <- value :,OPEN,2022-05-10T11:00:14Z,2022-05-10T11:00:14Z,,"Hi I have the following error when trying to run:
+
+step1. loading metadata file...
+        [--done--]
+
+step2. counting reads...
+        This step could take some time. Please be patient...
+        Following file will be used to generate sliding windows: hg38.chrom.sizes
+        warn: exclude small contigs [n=0]
+        start: 2022-05-10 11:28:16
+        Error in result[[njob]] <- value :
+  attempt to select less than one element in OneIndex
+In addition: Warning message:
+In parallel::mccollect(wait = FALSE, timeout = 1) :
+  1 parallel job did not deliver a result
+",AGunnell77,https://github.com/stjude/ChIPseqSpikeInFree/issues/9
+I_kwDOCiSHO85UWkt0,Normalization factor vs. scale factor,OPEN,2022-10-19T15:38:07Z,2022-10-24T18:33:55Z,,"Hello, 
+
+The SF in the output file (test_SF.txt) is scale factor and DGEList function in edgeR needs normalization factors. So I think the 
+norm.factors should be 1/SF.
+
+> dge <- DGEList(counts = counts, group = GROUP, norm.factors = SF)
+
+should be:
+
+> dge <- DGEList(counts = counts, group = GROUP, norm.factors = 1/SF)
+
+And in the part: What happens if 100% complete loss is expected? You just used 1/SF. This is a little confusing. 
+
+Would you please clarify this issue?
+
+Thanks",yuhuihui2011,https://github.com/stjude/ChIPseqSpikeInFree/issues/10
+I_kwDOCiSHO85dXbwL,normalized bigwigs,OPEN,2023-02-01T16:27:18Z,2023-09-14T11:32:20Z,,"Hi,
+thank you for the useful tool! I just have one question on this part:
+**3.pseudo-code for generation of bigwig files from a bed file
+libSize=`cat sample1.bed|wc -l`
+scale=15000000/($libSize*$SF)
+genomeCoverageBed -bg -scale $scale -i sample1.bed  -g mm9.chromSizes > sample1.bedGraph
+bedGraphToBigWig sample1.bedGraph mm9.chromSizes sample1.bw**
+ 
+I am not sure about the origin of this parameter 15000000. I would appreciate if you could explain why it was chosen.
+
+Thank you!
+",MariaRosariaNucera,https://github.com/stjude/ChIPseqSpikeInFree/issues/11
+I_kwDOCiSHO86J2MBg,using for normalization,OPEN,2024-05-23T11:36:55Z,2024-05-23T11:36:55Z,,"Hi.
+If I have an experiment with two different antibodies, one (anti-A) showing a lower signal in western blot, and the other (anti-B) not showing much change, could I use ChIPseqSpikeInFree for data collected from both antibodies, or should I only use it for anti-A? Both antibodies target H3.
+
+Thank you for your help.",polya18,https://github.com/stjude/ChIPseqSpikeInFree/issues/12

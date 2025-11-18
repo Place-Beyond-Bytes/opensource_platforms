@@ -1,0 +1,111 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjEzNDcxMQ==,"Error with Weblogo on Ubuntu13.10, Python 2.7.5+, WebLogo 3.4",CLOSED,2014-06-20T02:02:51Z,2014-06-23T20:24:40Z,2014-06-23T20:24:40Z,"margaret@Margaret-Cylon:~/Programs/EXTREME-2.0.0/ExampleFiles$ python ../src/EXTREME.py GM12878_NRSF_ChIP.fasta GM12878_NRSF_ChIP_shuffled.fasta GM12878_NRSF_ChIP.wm 1
+Started at:
+Thu Jun 19 18:53:27 2014
+Using initial motif guess cluster1
+Adding 0.0 pseudocounts and normalizing
+Getting background model
+Getting subsequences
+Getting indicator matrices
+Scanning sequence with current PWM guess
+Guessing 752 sites
+Maximum number of sites not specified, so setting it to 3760
+Try 1
+Using a fudge factor of 1.0
+Initial step size of 0.05
+Running Online EM algorithm...
+KLD: 0.000734412151199
+KLD threshold not met. Doing another pass
+KLD: 1.85297210012e-06
+KLD threshold not met. Doing another pass
+KLD: 6.90740024157e-08
+KLD threshold met on pass 3
+Finding number of motif sites
+Found 1419 sites
+Motif has an acceptable number of sites
+Calculating log E-value
+Log E-value: -11589.8017606
+Using PWM with log EV: -11589.8017606
+Erasing motif from positive sequences
+Erased 1393 sites from the positive sequences
+Erasing motif from negative sequences
+Erased 36 sites from the negative sequences
+Motif 1 had a fraction of 7.8e-003
+Motif 1 had an E-value of 4.1e-5034
+Saving motif as a png...
+Traceback (most recent call last):
+  File ""../src/EXTREME.py"", line 801, in <module>
+    main()
+  File ""../src/EXTREME.py"", line 774, in main
+    outputMotif(theta_motif, theta_background_matrix, lambda_motif, logev, k, outpre)
+  File ""../src/EXTREME.py"", line 654, in outputMotif
+    png_formatter(data, forma, fout)
+TypeError: png_formatter() takes exactly 2 arguments (3 given)
+
+Looks like with a problem with calling Weblogo. I am using the provided datasets and instructions (https://github.com/uci-cbcl/EXTREME)
+",margiezilla,https://github.com/uci-cbcl/EXTREME/issues/1
+MDU6SXNzdWU0MDk4NDEyMQ==,run_consensus_clusering_using_wm.pl fails to generate clusters in some cases,CLOSED,2014-08-23T20:32:43Z,2014-08-26T01:11:18Z,2014-08-26T01:11:18Z,"For some sets of input sequences, the clustering step (handled by `run_consensus_clusering_using_wm.pl`) is failing without any warning -- only an empty output file is generated.
+
+Here is an example input file:
+
+```
+https://gist.github.com/khughitt/393ad7824d407f849162
+```
+
+Which was built from a 2M FASTA file containing 32,456 500bp sequences. This was tested using the recommended clustering threshold of 0.3.
+
+For other similar sets of input sequences, I am able to run through the entire pipeline and generate a list of consensus motifs, so the issue has something to do with the set up input sequences. For this particular problem, the empty files results for 4/10 sets of sequences.
+
+I tried rerunning the perl script with similar results, and no warnings/errors generated at any point.
+
+**System info**:
+
+```
+EXTREME revision ee505249e630508c99dd87b3985d834bd0b4b6cc
+
+java version ""1.7.0_65""
+OpenJDK Runtime Environment (IcedTea 2.5.1) (Arch Linux build 7.u65_2.5.1-8-x86_64)
+OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+
+perl 5, version 20, subversion 0 (v5.20.0) built for x86_64-linux-thread-multi
+
+Python 2.7.8
+```
+
+If you aren't able to reproduce the issue using the above .words file, let me know and I can post a file containing the input sequences.
+",khughitt,https://github.com/uci-cbcl/EXTREME/issues/2
+MDU6SXNzdWUxNzAwNTY3NzM=,"""duplicate symbols for architecture x86_64"" when compiling on mac os x (10.11.6)",CLOSED,2016-08-09T00:31:32Z,2016-08-09T16:18:01Z,2016-08-09T16:18:00Z,"Hi,
+
+When trying to run `python setup.py build` on mac os x v10.11.6, I'm getting several duplicate symbols errors:
+
+``` bash
+gcc -bundle -undefined dynamic_lookup -Wl,-F. -arch x86_64 build/temp.macosx-10.11-intel-2.7/memewrapper.o build/temp.macosx-10.11-intel-2.7/llr.o build/temp.macosx-10.11-intel-2.7/likelihood.o -o build/lib.macosx-10.11-intel-2.7/meme.so
+duplicate symbol _exp_table in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/llr.o
+duplicate symbol _log_table in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/llr.o
+duplicate symbol _NO_STATUS in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/llr.o
+duplicate symbol _exp_table in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/likelihood.o
+duplicate symbol _log_table in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/likelihood.o
+duplicate symbol _NO_STATUS in:
+    build/temp.macosx-10.11-intel-2.7/memewrapper.o
+    build/temp.macosx-10.11-intel-2.7/likelihood.o
+ld: 6 duplicate symbols for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+error: command 'gcc' failed with exit status 1
+```
+
+any idea what could be causing this? are there environment settings or and configuration that needs to be added to `setup.py`?
+",themantalope,https://github.com/uci-cbcl/EXTREME/issues/4
+MDU6SXNzdWUzODQ0NjYzMTc=,fasta-dinucleotide-shuffle.py generates empty file,CLOSED,2018-11-26T19:00:06Z,2018-11-27T00:26:15Z,2018-11-27T00:26:15Z,"Hello, 
+
+I'm trying to familiarize myself with the EXTREME algorithm as I am a Bioinformatics graduate student & this is one of the algorithms we are focusing on for a research project. However, when I run the 'python ../src/fasta-dinucleotide-shuffle.py -f GM12878_NRSF_ChIP.fasta > GM12878_NRSF_ChIP_shuffled.fasta' command from the README my GM12878_NRSF_ChIP_shuffled.fasta file is empty. I am running the command within a Anaconda3 prompt using a Python 2.7 environment. Any help would be greatly appreciated & please let me know if you need more details to help
+",JayGatsby91,https://github.com/uci-cbcl/EXTREME/issues/5

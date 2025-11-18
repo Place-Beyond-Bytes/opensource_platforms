@@ -1,0 +1,65 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFCi2ZM5EkMSU,split_bam.py fails to sort output exogenous bam file (broken header),OPEN,2022-02-25T11:26:13Z,2024-07-01T06:42:45Z,,"Dear developers, thanks for creating this very useful package.
+I am encountering a problem when using your `split_bam.py` script.
+
+The script runs well and it is able to output the final `report.txt` as well as the unsorted and sorted bams for `both` and `human` reads. For the `exogenous` reads it is only able to output the unsorted bam file, while the sorting step fails and the following error is prompted by `samtools`:
+
+```
+[main_samview] fail to read the header from ""<SAMLPLE_NAME>_exogenous.sorted.bam"".
+```
+
+It seems that when splitting the merged bam file something goes wrong with the compilation of the exogenous reads.
+
+Is it possible to fix the issue?",lucananni93,https://github.com/liguowang/spiker/issues/1
+I_kwDOFCi2ZM5XE7gr,"Error message from split_bam.py ""TypeError: an integer is required""",CLOSED,2022-11-23T03:12:51Z,2022-11-25T02:59:38Z,2022-11-25T02:59:38Z,"Hi, I ran the command shown on the [website](https://spiker.readthedocs.io/en/latest/walkthrough.html#map-reads-to-the-composite-reference-genome):
+
+> split_bam.py --threads=8 -i Input.sorted.bam -o Input &
+
+Then got a error message as follows:
+
+> Traceback (most recent call last):
+>   File ""/home/petitming/miniconda3/envs/python3/bin/split_bam.py"", line 231, in <module>
+>     main()
+>   File ""/home/petitming/miniconda3/envs/python3/bin/split_bam.py"", line 228, in main
+>     divided_bam(bam_file = options.bam_file, outfile = options.out_prefix, q_cut= options.map_qual, chr_prefix= options.chr_prefix, threads = options.n_thread)
+>   File ""/home/petitming/miniconda3/envs/python3/bin/split_bam.py"", line 184, in divided_bam
+>     aligned_read.reference_id = lookup_refid(human_header, read1_chr)
+>   File ""pysam/libcalignedsegment.pyx"", line 1252, in pysam.libcalignedsegment.AlignedSegment.reference_id.__set__
+>   File ""pysam/libcalignmentfile.pyx"", line 509, in pysam.libcalignmentfile.AlignmentHeader.is_valid_tid
+> TypeError: an integer is required
+
+My python version is Python 3.6.15.
+Is is possible to fix the issue?
+Thank you so much!",petitmingchang,https://github.com/liguowang/spiker/issues/2
+I_kwDOFCi2ZM5XxM9d,Can I run the spiker.py to call peaks using control sample without spike-in read?,CLOSED,2022-12-02T08:45:54Z,2022-12-06T02:18:42Z,2022-12-06T02:18:42Z,"I have two files, an Input.bam for control and an H3K27ac.bam for calling peaks.
+My case is that only the H3K27ac.bam contains spike-in reads but Input.bam does not.
+I already used split_bam.py to separate reads for H3K27ac.bam.
+Can I still use spiker.py to call peaks?
+If yes, what scaling factor should I set for the control file?
+Thank you so much for the help!",petitmingchang,https://github.com/liguowang/spiker/issues/3
+I_kwDOFCi2ZM5jf2K-,CUT&Tag,CLOSED,2023-04-15T10:04:05Z,2023-11-24T02:08:14Z,2023-11-24T02:08:14Z,"Hi, 
+
+Thanks a lot for providing such a powerful tool for us! Recently we performed CUT&Tag experiments and I wondered whether this pipeline could be used to analyze CUT&Tag data?
+
+Hao",ccmeth,https://github.com/liguowang/spiker/issues/4
+I_kwDOFCi2ZM5liW_8,The number of peak called by spiker.py is less than macs2,CLOSED,2023-05-10T09:33:38Z,2023-05-10T16:05:59Z,2023-05-10T16:05:59Z,"Hi,
+
+Thanks for developing a great tool to analyze ChIP-seq data with spike-in. I compared the peak numbers obtained by spiker.py and MACS2, but I found that the number of peaks called by spiker.py is less than MACS2, even though I chose scale factors that were almost equal to 1. However, the lost peaks are real enrichment in IGV. My codes are listed below:
+
+`spiker.py -t S2-0_S16.bam -c ../C-Input_S13.bam -g mm --cleanup --spikeIn --csf 1.0001 --tsf 0.9999 -o ../../peaks/after_spike/S2-0_raw 2> ../../peaks/after_spike/log`
+
+`macs2 callpeak -c ../C-Input_S13.rmdup.bam -t S2-0_S16.rmdup.bam -f BAM -B -g mm -n S2-0_S16 --outdir ../../peaks/ 2> macs2.log`
+
+And the peak numbers are:
+
+- 36957 for MACS2
+- 26524 for spiker
+
+The lost peaks in igv as example:
+![560064e8e719d892a794099b72a0d75](https://github.com/liguowang/spiker/assets/62579143/3669a969-26a7-4d8e-9e2b-26e3e745e7b9)
+
+Thank you!",liaomeimei,https://github.com/liguowang/spiker/issues/5
+I_kwDOFCi2ZM53voPv,H2Av antibody for Drosophila,OPEN,2023-11-24T02:08:03Z,2023-11-24T21:27:54Z,,"Hi developers,
+
+Thanks a lot for providing a powerful tool to analyze spike-in chip-seq data. In your paper, I noticed that you always use only one antibody (such as histone modification), however, recently we performed spike-in chip-seq experiment using two antibodies, one (transcription factor) for human, and the other (H2Av, drosophila-specific antibody) for drosophila. Hence, I wondered whether Spiker could be utilized to analyze our data.
+",ccmeth,https://github.com/liguowang/spiker/issues/6

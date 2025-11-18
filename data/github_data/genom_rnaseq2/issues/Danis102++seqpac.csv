@@ -1,0 +1,394 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2MDczNTQ2NjY=,Adding argument for color palettes,CLOSED,2020-04-27T08:44:30Z,2020-09-15T09:13:33Z,2020-09-15T09:13:33Z,"Hi, 
+
+I was thinking that it could be nice to add an argument to plotting functions for what color palette to use in the graphs (using your rgb_vec_sports as standard if nothing else is specified)
+If you think it's a good idea I can have a look at adding it!
+
+Signe",signeisacson,https://github.com/Danis102/seqpac/issues/2
+MDU6SXNzdWU3MTE3NjUxNjQ=,Test_issue,CLOSED,2020-09-30T08:58:42Z,2020-09-30T10:00:32Z,2020-09-30T10:00:32Z,Testa issues,Danis102,https://github.com/Danis102/seqpac/issues/6
+MDU6SXNzdWU3MTYzNzk4Nzg=,Error messages in Windows (that won't mess up the code but may be fixed for aesthetic reasons),CLOSED,2020-10-07T09:55:11Z,2021-03-24T08:39:31Z,2021-03-24T08:39:31Z,"Running make_counts in Windows causes following error;
+ITACT4KW is the name of my computer 
+""Warning message:
+In for (v in val) { :
+  closing unused connection 3 (<-ITACT4KW.ad.liu.se:11297)""
+
+Running make_anno in Windows will make data.table to run on 2 threads instead of the 1 demanded by user in function. 
+
+Running map_reanno in Windows will throw out error like this;
+""Warning messages:
+1: In file.remove(fls_full[!fls %in% drs]) :
+  cannot remove file 'C:/Users/sigsk47/Documents/PhD/R/Genomes/test/anno_mis0.fa', reason 'Permission denied'
+2: In file.remove(fls_full[!fls %in% drs]) :
+  cannot remove file 'C:/Users/sigsk47/Documents/PhD/R/Genomes/test/anno_mis1.fa', reason 'Permission denied'""
+",signeisacson,https://github.com/Danis102/seqpac/issues/8
+MDU6SXNzdWU3MjI0NTgzMzQ=,Error messages in Linux environment,CLOSED,2020-10-15T15:50:43Z,2021-03-24T08:38:43Z,2021-03-24T08:38:43Z,"**map_reanno:** 
+When running 2 or more mismatches, this error pops up. Not present in 1 or 0, where it runs smoothly
+
+> |--- Found 5 bowtie file(s) with hits and 0 without.
+>   |--- Import and reorganize Ensembl.outError in data.table::fread(files[k], header = FALSE, select = c(1, 8),  : 
+>   Column number 8 (select[2]) is out of range [1,ncol=2]
+",signeisacson,https://github.com/Danis102/seqpac/issues/9
+MDU6SXNzdWU3MjMzMjM0Nzk=,simplify_reanno,CLOSED,2020-10-16T15:31:07Z,2021-04-06T15:55:57Z,2021-04-06T15:55:57Z,"When user puts in hierarchy with a name not present in ""original biotypes"", this is set to """" in search terms (row 116 in code). This makes it so that everything that has not already been assigned something, becomes assigned that particular biotype. See pic for example
+![image](https://user-images.githubusercontent.com/63866910/96278059-5006b680-0fd5-11eb-9b90-83f727d41e99.png)
+",signeisacson,https://github.com/Danis102/seqpac/issues/10
+MDU6SXNzdWU3MjU1MjkwNTc=,PAC_norm,CLOSED,2020-10-20T12:21:25Z,2021-04-06T15:54:24Z,2021-04-06T15:54:24Z,The row names are lost when running the rlog function (row names in pac$norm$rlog). I cannot figure out how to change this since rlogTransformation is a DEseq2 function and has no options regarding this.,lovisaor,https://github.com/Danis102/seqpac/issues/11
+MDU6SXNzdWU3MjU2NjU5MDM=,PAC_deseq - main_factor,CLOSED,2020-10-20T14:46:51Z,2020-10-29T12:53:41Z,2020-10-29T12:53:41Z,Should default instead be the last factor provided in model? (since design = model),lovisaor,https://github.com/Danis102/seqpac/issues/12
+MDU6SXNzdWU3NDA3ODM5NDg=,add_reanno,CLOSED,2020-11-11T13:54:13Z,2021-04-06T15:53:41Z,2021-04-06T15:53:40Z,"Windows environment
+
+When running add_reanno without PAC merging, a file is created where mis0_bio contains all unique biotypes/searchterms (35 unique in this case). But when add_reanno is ran with PAC-merge, the mis0_bio only contains a few of the search terms (in my case only 3) and Anno$mis0 instead has all search terms. 
+This would be ok, but when adding hierarchy with simplify_reanno, that functions searches for ""mis0_bio"" unless other is noted with target_column, so if one is not aware of this and leaves target_column=NULL, simplify_reanno will not work  ",signeisacson,https://github.com/Danis102/seqpac/issues/14
+MDU6SXNzdWU3NDA5NzIxNDc=,merging PAC with TRUE/FALSE or as value,OPEN,2020-11-11T18:17:16Z,2021-04-07T11:08:32Z,,"In some functions (like PAC_summary), merging with PAC is a true/false vector, whilst in other functions (like add_reanno) you provide the PAC list you want to merge with as a value. 
+Maybe decide on one way and keep it constant for all functions?",signeisacson,https://github.com/Danis102/seqpac/issues/15
+MDU6SXNzdWU3NzIwMTI0NDI=,General fixes for code,OPEN,2020-12-21T09:32:07Z,2021-04-06T15:49:41Z,,"**Unified expressions throughout**
+In PAc_summary, it's called ""colors"", but in most other plot functions it's called ""colvec"". Decide on one and use that through all functions for concerted names of similar vectors
+
+**Plot y-axis**
+Fun.y is deprecated. Use fun instead. Have fixed that in some graphs I've come across in my fork, but think this is global for all plots unfortuantely. Easily fixed though
+
+**PAC_stackbar**
+When using anno_target, the total amount of reads (called tot_cnts) are not updated per the anno-filtering, resulting in white blocks of NA in the final graph. ",signeisacson,https://github.com/Danis102/seqpac/issues/16
+MDU6SXNzdWU4MTE4MTI2OTU=,PAC_mapper does not accept ref,CLOSED,2021-02-19T08:24:47Z,2021-04-06T15:22:10Z,2021-04-06T15:22:10Z,"Running PAC_mapper throws
+
+`Error in file.exists(ref) : invalid 'file' argument`
+
+when using Biostrings to read in ref.
+
+`ref <- Biostrings::readDNAStringSet(""C:/Users/sigsk47/Documents/PhD/R/Genomes/Drosophila_melanogaster/tRNA/tRNA.fa"")`
+
+Running with file location instead, as
+
+`ref<-""C:/Users/sigsk47/Documents/PhD/R/Genomes/Drosophila_melanogaster/tRNA/tRNA.fa"")`
+
+starts the reanno flow, but soon throws error message; 
+
+`map_tRNA <- PAC_mapper2(PAC_dn, ref=ref, mapper=""reanno"", threads=1, mismatches = 0, report_string = TRUE)
+
+Reading reference from file ...
+
+R internal mapping using the Rbowtie package was specified.
+This package uses bowtie version bowtie.exeversion1.2.2.
+If you need a newer version, please install Bowtie manually
+outside R and then use option type='external'.
+
+
+******************************************************
+|--- Mismatch 0 started at 09:19:04
+|--- Bowtie mapping:
+   |---> reference...
+
+ Error: '\U' used without hex digits in character string starting ""'C:\U"" `
+
+Strangely, this does not happen in the normal reanno-flow. Adding double dash ""\\"" instead of ""/"" does not fix this error. ",signeisacson,https://github.com/Danis102/seqpac/issues/17
+MDU6SXNzdWU4MjA4NDEzNDU=,PAC_deseq,CLOSED,2021-03-03T07:35:20Z,2021-04-06T15:21:16Z,2021-04-06T15:21:16Z,"Running latest version of main causes error with PAC_deseq
+`
+""Error: 'summary.DESeqResults' is not an exported object from 'namespace:DESeq2' `
+
+Earliest working version I have saved and can try in S_branch works just fine, so the issue have been introduced in between those. May just be printing the summary in ""cat(DESeq2::summary.DESeqResults(res_DESeq2))"" that is a bug, but as it throws error it breaks the function. ",signeisacson,https://github.com/Danis102/seqpac/issues/18
+MDU6SXNzdWU4Mjg4NDk2MzI=,Example Data,CLOSED,2021-03-11T07:10:26Z,2021-03-31T09:05:21Z,2021-03-31T09:05:20Z,"Need to rerun the ""sample PCA"" - ""drosophila_sRNA_pac.Rdata"" through everything again and update that file. RIght now it e.g has ""Length"" instead of ""Size"" in Anno",signeisacson,https://github.com/Danis102/seqpac/issues/19
+MDU6SXNzdWU4MzE3ODY3ODc=,make_counts cannot reach make_trim internally on Windows,CLOSED,2021-03-15T13:00:14Z,2021-03-31T09:06:58Z,2021-03-31T09:06:58Z,"make_counts fails in calling make_trim when trimming=""seqpac"" on windows with error message 
+
+""Error in { : task 1 failed - ""Input/Output
+  no input files found
+  dirPath: C:/BaseSpace/trimmade/Index11_S5_L001_R1_001.trim.fastq.gz
+  pattern: character(0)"" 
+
+In this example, I ran the Supplementary code as follows;
+
+
+```
+input = ""C:/Users/sigsk47/Desktop/seqpactest/ena_files/""
+output = ""C:/Users/sigsk47/Desktop/seqpactest/out/""
+counts_seq  <- make_counts(input, threads=1, parse=parse, type=""fastq"",
+                           trimming=""seqpac"", plot=TRUE, evidence=c(experiment=2, sample=1))
+```
+
+But, as you can see, the dirPath in the error message is not my input, but rather an old fastq file from last time I ran make_trim on a whole other dataset.
+Running the make_trim on its own and then running make_counts with trimming=NULL works flawlessly.
+
+```
+input = ""C:/Users/sigsk47/Desktop/seqpactest/out/""
+counts_seq  <- make_counts(input, threads=1, parse=parse, type=""fastq"",
+                           trimming=NULL, plot=TRUE, evidence=c(experiment=2, sample=1))
+```",signeisacson,https://github.com/Danis102/seqpac/issues/20
+MDU6SXNzdWU4NDYzMTE5NTQ=,PAC_mapper in Windows,CLOSED,2021-03-31T09:47:52Z,2021-04-06T15:20:45Z,2021-04-06T15:20:45Z,"Unsure if this is Windows related issue, but running PAC_mapper with mapper=""reanno"" says that "" Error in do.call(""rbind"", strsplit(nams, ""\\d_\\(""))[, 2] : 
+  subscript out of bounds "" in PAC file with ~500 sequences from fly.
+
+The error stems from row 209 ,""strnd_ref <- do.call(""rbind"", strsplit(nams, ""\\d_\\(""))[,2]""
+Running the code with commenting the whole ""if(sum(type_test1, type_test2) == 2 ){"" and keeping the ""else"" part makes the code run fine. Didn't want to remove this part of the script as I was unsure of the reason for the if-statement. ",signeisacson,https://github.com/Danis102/seqpac/issues/22
+MDU6SXNzdWU4NTIyODg0NTI=,Add option to merge lanes from sequencing,CLOSED,2021-04-07T11:01:24Z,2021-08-20T10:29:59Z,2021-08-20T10:29:59Z,"When downloading FASTQ-files from BaseSpace Downloader, files does not automatically merge together from lanes. We should add lane merge prior to counts in make_counts, to make the trimming and counts flow streamlined for some Windows users.  
+",signeisacson,https://github.com/Danis102/seqpac/issues/23
+MDU6SXNzdWU4NTIyOTM1NDM=,Add option to merge PAC files,OPEN,2021-04-07T11:07:43Z,2021-04-07T11:07:43Z,,"Giving the user the possibility to merge PAC files easily with a function may facilitate in making comparisons between different datasets e.g. 
+Take into consideration that different pac objects have not been run trough the same evidence filter. Some type of filtering should either be done after merge, or be prompted to the user.",signeisacson,https://github.com/Danis102/seqpac/issues/24
+MDU6SXNzdWU4Njk2NDkwNTQ=,PAC_mapper,OPEN,2021-04-28T08:15:41Z,2021-06-24T15:02:09Z,,"PAC_mapper with mapper=""reanno"" throws error:
+```
+Error in do.call(""rbind"", strsplit(nams, ""\\d_\\(""))[, 2] : 
+  subscript out of bounds
+```
+
+tried running a few parts of splt_x list at random but couldn't find any that was TRUE in ""(sum(type_test1, type_test2) == 2)"" to test the error in closer detail. 
+
+PAC_mapper with mapper=""vmatch"" works. 
+
+
+code ran:
+
+```
+
+pac_t<-PAC_filter(pac_m, anno_target = list(""Biotypes_mis0"", c(""tRNA"", ""Mt_tRNA"")))
+
+ref<-""C:/Users/sigsk47/Documents/PhD/R/Genomes/Drosophila_melanogaster/Drosophila_melanogaster/tRNA/tRNA/tRNA.fa""
+
+map_o<-PAC_mapper(pac_t, ref=ref, N_up=""NNN"", N_down = ""NNN"", mapper=""reanno"", mismatches=0, threads=2, report_string=TRUE)
+
+```
+
+reference have Bowtie indexes",signeisacson,https://github.com/Danis102/seqpac/issues/28
+MDU6SXNzdWU5MTAzMjA1MzU=,Vignette,OPEN,2021-06-03T09:49:06Z,2021-06-03T09:49:06Z,,"row 1381 ""# Only miRNA (Oops, heavy T-bias on 1st nt; are they piRNA?)"" 
+That should be miRNA and not piRNA, right?",lovisaor,https://github.com/Danis102/seqpac/issues/29
+MDU6SXNzdWU5MTE0ODA2NTA=,PAC_sizedist - include a user defined limit for ggplot2's scale_y_continuous,CLOSED,2021-06-04T13:02:26Z,2021-08-20T10:32:19Z,2021-08-20T10:32:19Z,"In order to easily detect between sample differences.
+",lovisaor,https://github.com/Danis102/seqpac/issues/30
+MDU6SXNzdWU5MTI2MTYyMzU=, invalid class “SRFilterResult” object: ,CLOSED,2021-06-06T04:38:44Z,2021-08-20T10:30:20Z,2021-08-20T10:30:20Z,"I would appreciate if you could look at the following issues that I encountered during my analysis:
+
+## Comman used
+path_to_fastq <- system.file(""extdata"", package = ""seqpac"", mustWork = TRUE)
+count_list <- make_counts(input=path_to_fastq, type = ""fastq"", trimming=""seqpac"", 
+                          parse=""default_neb"")
+
+## Error
+Identifying unique sequences in trimmed fastq files ...Error in { :
+  task 1 failed - ""error in evaluating the argument 'object' in selecting a method for function 'sread': Input/Output
+  file(s):
+    /tmp/Rtmp5BnlP2/seqpac//Stage1_Batch1_Inx3_S3.trim.fastq.gz
+  message: IncompatibleTypes
+  message: error in evaluating the argument 'i' in selecting a method for function '[': invalid class “SRFilterResult” object: superclass ""Mnumeric"" not defined in the environment of the object's class""
+
+",JIBINJOHNV,https://github.com/Danis102/seqpac/issues/31
+I_kwDODSuZLs47nfkg,No method for coercing this S4 class to a vector,OPEN,2021-09-19T04:54:00Z,2021-09-20T14:44:17Z,,"Could you please look in to the error. Details below
+
+pac_master <- make_PAC(pheno=pheno, anno=NULL, counts=count_list$counts)
+names(pac_master)
+[1] ""Pheno""  ""Anno""   ""Counts""
+
+lapply(pac_master, head)
+Error in as.list.default(X) : 
+  no method for coercing this S4 class to a vector
+",JIBINJOHNV,https://github.com/Danis102/seqpac/issues/33
+I_kwDODSuZLs47vbJJ,Error after trimming,CLOSED,2021-09-21T11:33:54Z,2021-09-22T08:00:54Z,2021-09-22T08:00:54Z,"Hi,
+
+I am getting the following error. I have tried the tool from the master and dev branches.
+
+```git
+Started at  2021-09-21 12:50:22   
+
+Input type was set to fastq. The following fastq files were found in the path: 
+[1]  ""../data/rmUMI//SRR13129036.fastq.gz"" ""../data/rmUMI//SRR13129037.fastq.gz"" ""../data/rmUMI//SRR13129038.fastq.gz"" 
+[4] ""../data/rmUMI//SRR13129039.fastq.gz"" ""../data/rmUMI//SRR13129040.fastq.gz"" ""../data/rmUMI//SRR13129041.fastq.gz"" 
+[7] ""../data/rmUMI//SRR13129042.fastq.gz"" ""../data/rmUMI//SRR13129043.fastq.gz""  
+
+Seqpac trimming using the make_trim function was specified. 
+--- Temporary trimmed fastq are stored in:  /tmp/Rtmpq4N0Ii/seqpac/ 
+--- Unless moved, these will be removed when system restarts. 
+--- Please run 'make_trim' separately for more storage options.  
+
+Checking trimming memory usage with benchmarkme... 
+--- Input will use >80% of availble cores(16/16). 
+--- Heavy trimming processes needs approx. x10 the fastq file size available in RAM memory. 
+--- Worst scenario maximum system burden is estimated to 19.9 GB of approx. 122 GB RAM available. 
+--- Trimming check passed.  
+
+Now entering the parallel trimming loop (R may stop respond) ... 
+(progress may be followed in: /tmp/Rtmpq4N0Ii/seqpac/)  
+
+Identifying unique sequences in trimmed fastq files ...Error in { :    
+task 1 failed - ""error in evaluating the argument 'object' in selecting a method for function 
+'sread': Input/Output   file(s):  
+   /tmp/Rtmpq4N0Ii/seqpac//SRR13129036.trim.fastq.gz  
+ message: IncompatibleTypes   
+message: error in evaluating the argument 'i' in selecting a method for function '[':
+ invalid class “SRFilterResult” 
+object: superclass ""Mnumeric"" not defined in the environment of the object's class""
+```
+
+```R
+> sessionInfo()
+R version 4.0.4 (2021-02-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 16.04.7 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/atlas-base/atlas/libblas.so.3.0
+LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
+
+locale:
+ [1] LC_CTYPE=de_DE.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=de_DE.UTF-8     LC_MONETARY=de_DE.UTF-8   
+ [6] LC_MESSAGES=en_US.utf8     LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] seqpac_0.99.0
+
+loaded via a namespace (and not attached):
+  [1] bitops_1.0-7           fs_1.5.0               Rfastp_1.0.0           shortRNA_0.4.1         usethis_2.0.1         
+  [6] devtools_2.4.2         doParallel_1.0.16      httr_1.4.2             rprojroot_2.0.2        GenomeInfoDb_1.26.7   
+ [11] data.tree_1.0.0        tools_4.0.4            utf8_1.2.2             R6_2.5.1               DBI_1.1.1             
+ [16] BiocGenerics_0.36.1    lazyeval_0.2.2         colorspace_2.0-2       seqTools_1.24.0        withr_2.4.2           
+ [21] tidyselect_1.1.1       prettyunits_1.1.1      processx_3.5.2         compiler_4.0.4         cli_3.0.1             
+ [26] desc_1.3.0             plotly_4.9.4.1         scales_1.1.1           RSeqAn_1.10.0          callr_3.7.0           
+ [31] stringr_1.4.0          digest_0.6.27          rmarkdown_2.11         R.utils_2.10.1         benchmarkmeData_1.0.4 
+ [36] XVector_0.30.0         Rsubread_2.4.3         pkgconfig_2.0.3        htmltools_0.5.2        sessioninfo_1.1.1     
+ [41] fastmap_1.1.0          htmlwidgets_1.5.4      rlang_0.4.11           rstudioapi_0.13        generics_0.1.0        
+ [46] qckitfastq_1.6.0       jsonlite_1.7.2         dplyr_1.0.7            R.oo_1.24.0            RCurl_1.98-1.5        
+ [51] magrittr_2.0.1         GenomeInfoDbData_1.2.4 Matrix_1.3-4           Rcpp_1.0.7             munsell_0.5.0         
+ [56] S4Vectors_0.28.1       fansi_0.5.0            lifecycle_1.0.0        R.methodsS3_1.8.1      stringi_1.5.3         
+ [61] yaml_2.2.1             zlibbioc_1.36.0        pkgbuild_1.2.0         plyr_1.8.6             grid_4.0.4            
+ [66] parallel_4.0.4         crayon_1.4.1           lattice_0.20-44        Biostrings_2.58.0      knitr_1.34            
+ [71] ps_1.6.0               pillar_1.6.2           GenomicRanges_1.42.0   rjson_0.2.20           codetools_0.2-18      
+ [76] reshape2_1.4.4         stats4_4.0.4           pkgload_1.2.2          glue_1.4.2             evaluate_0.14         
+ [81] rcartocolor_2.0.0      data.table_1.14.0      remotes_2.4.0          foreach_1.5.1          vctrs_0.3.8           
+ [86] testthat_3.0.4         gtable_0.3.0           purrr_0.3.4            tidyr_1.1.3            benchmarkme_1.0.7     
+ [91] assertthat_0.2.1       cachem_1.0.6           ggplot2_3.3.5          xfun_0.26              viridisLite_0.4.0     
+ [96] tibble_3.1.4           iterators_1.0.13       memoise_2.0.0          IRanges_2.24.1         ellipsis_0.3.2 
+```",dktanwar,https://github.com/Danis102/seqpac/issues/34
+I_kwDODSuZLs476QL6,Vignette not clear,CLOSED,2021-09-23T08:00:30Z,2022-02-01T17:26:53Z,2022-02-01T17:26:53Z,"Hi,
+
+https://github.com/Danis102/seqpac/blob/master/vignettes/seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.md#44-the-reannotation-workflow
+
+The vignette before ""The reannotation workflow"" is clear, whereas not after that. For example, the alignment part is missing.",dktanwar,https://github.com/Danis102/seqpac/issues/35
+I_kwDODSuZLs5LFHBN,Suggestions,OPEN,2022-06-03T08:41:28Z,2022-06-03T08:41:28Z,,"Thanks for the great tool. For a greater portability and accessibility of the tool, I have some suggestions.
+
+Please add:
+
+1. Dockerfile and DockerHub image
+2. Nextflow support -> integration into nf-core/smrnaseq pipeline
+3. A wrapper script to run the full pipeline with default parameters
+4. License information
+
+Thank you.",bounlu,https://github.com/Danis102/seqpac/issues/36
+I_kwDODSuZLs5PhebU,Building vignettes fail ufter update,OPEN,2022-08-10T07:05:49Z,2022-08-10T07:05:49Z,,"After the last updates, building the vignettes fail as below:
+
+```
+> devtools::install_github(repo = ""Danis102/seqpac"",
++                          dependencies = TRUE,
++                          build_manual = TRUE,
++                          build_vignettes = TRUE)
+Downloading GitHub repo Danis102/seqpac@HEAD
+✔  checking for file ‘/private/var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T/Rtmpi2uo0P/remotesbdd6dc6b062/Danis102-seqpac-b53534e/DESCRIPTION’ ...
+─  preparing ‘seqpac’:
+✔  checking DESCRIPTION meta-information ...
+─  installing the package to build vignettes
+E  creating vignettes (37.9s)
+   --- re-building ‘seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd’ using rmarkdown
+   Welcome to seqpac.
+   Please, cite 'Skog et al. 2021, bioRxiv'
+   
+   Attaching package: 'seqpac'
+   
+   The following objects are masked from 'package:base':
+   
+       norm, summary
+   
+   
+   Input type was set to untrimmed fastq.
+   The following fastq files were found in the path:
+   [1] ""/var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T//RtmprXT01Q/seqpac_temp/fq1.fastq.gz""
+   [2] ""/var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T//RtmprXT01Q/seqpac_temp/fq2.fastq.gz""
+   [3] ""/var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T//RtmprXT01Q/seqpac_temp/fq3.fastq.gz""
+   
+   Seqpac trimming using the make_trim function was specified.
+   --- Temporary trimmed fastq are stored in:  /var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T//RtmprXT01Q/seqpac/
+   --- Unless moved, these will be removed when system restarts.
+   --- Please run 'make_trim' separately for more storage options.
+   
+   Default trimming:   
+   ----------------------------------------------
+   adapt_3: 
+   AGATCGGAAGAGCACACGTCTGAACTCCA 
+        type       min  mismatch 
+   ""soft_rm""      ""10""     ""0.1"" 
+   ----------------------------------------------
+   poly G: 
+          type         min    mismatch 
+   ""hard_trim""        ""20""       ""0.1"" 
+   ----------------------------------------------
+   size filter:
+   min max 
+    14  70 
+   ----------------------------------------------
+   quality filter:
+   threshold   percent 
+        20.0       0.8 
+   ----------------------------------------------
+   
+   Now entering the parallel trimming loop (R may stop respond) ...
+   (progress may be followed in: /var/folders/d4/89wwgrcn7j70w9m7n2pwxgr00000gp/T//RtmprXT01Q/seqpac/)
+   Done trimming
+   
+   Identifying unique sequences in trimmed fastq files ...
+   Compiling unique sequences ...
+   Making a count table with sequences appearing in at least 2 independent samples ...
+   Finalizing at  2022-08-10 15:03:35 
+   Quitting from lines 278-284 (seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd) 
+   Quitting from lines 278-284 (seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd) 
+   Error: processing vignette 'seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd' failed with diagnostics:
+   invalid connection
+   --- failed re-building ‘seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd’
+   
+   SUMMARY: processing the following file failed:
+     ‘seqpac_-_A_guide_to_sRNA_analysis_using_sequence-based_counts.Rmd’
+   
+   Error: Vignette re-building failed.
+   Execution halted
+Error: Failed to install 'seqpac' from GitHub:
+  ! System command 'R' failed
+```",bounlu,https://github.com/Danis102/seqpac/issues/37
+I_kwDODSuZLs5T8cEE,long indices .ebwtl,OPEN,2022-10-13T19:58:18Z,2022-10-13T19:58:18Z,,"Hi, great tool - Any suggestions how to get it to work with a large reference database though (Bowtie index .ebwtl) - normally you'd add --large-index to the command line.  
+",cybokat,https://github.com/Danis102/seqpac/issues/38
+I_kwDODSuZLs5apYE6,PAC_deseq error when using  pheno_target,OPEN,2023-01-05T14:00:42Z,2023-02-16T17:02:33Z,,"Hello,
+
+I obtain the following error using pheno_target even when using the sample data:
+
+`> PAC_deseq(pac,model= ~stage + batch, pheno_target=list(""batch""), threads=2)'`
+
+`using pre-existing size factors
+estimating dispersions
+gene-wise dispersion estimates: 2 workers
+Error in h(simpleError(msg, call)) : 
+  error in evaluating the argument 'args' in selecting a method for function 'do.call': $ operator is invalid for atomic vectors`
+How can I work around this?
+
+Thank you. ",Glfrey,https://github.com/Danis102/seqpac/issues/39
+I_kwDODSuZLs59vrmT,Error in basename(fls) : object 'fls' not found,CLOSED,2024-01-31T09:26:01Z,2024-02-05T09:46:49Z,2024-02-05T09:46:49Z,"Hello,
+First of all, thank you for the library.
+While creating the count table at the beginning of the tool, I get the error ""Error in basename(fls): object 'fls' not found"".
+The pipeline I use is ""devtools::install_github(""Danis102/seqpac"", dependencies=TRUE)
+library(seqpac)
+
+#FASTQ FILES
+fastq <- list.files(path = ""/archive/yildize/alotaibi_lab/smrnaseq/Elf5_KD/unzipdata"", pattern = ""fastq"", all.files = FALSE,
+                     full.names = TRUE)
+
+#PAC OBJECT
+count_list <- make_counts(input=fastq, trimming=""NULL"", threads=4,
+                           parse=""default_neb"")
+"". I'm new to these issues, so I'm sorry for this simple question. Thank you in advance for your help.",kittyBS,https://github.com/Danis102/seqpac/issues/41
+I_kwDODSuZLs5-Zsfm,No Hit and undefined columns,CLOSED,2024-02-06T12:30:15Z,2024-02-06T20:04:36Z,2024-02-06T20:04:36Z,"Hello,
+I'm having some problems with the analysis;
+1. When I start the analysis with my trimmed samples, it does not detect any hits with the tRNA and miRNA I indexed in the analysis.
+2. How can I index multiple tRNA fasta files as a single reference?
+3. How can I make this classification for miRNA in the ""Hierarchical classification with simplify_reanno"" step?
+4. In the ""Simple stacked bars and pie charts"" section, in the PAC_stackbar(pac, anno_target=list(""Biotypes_mis0"")) code, there is ""Error in `[.data.frame`(PAC$Anno, , anno_target[[1]]) :
+   I can't get past the ""undefined columns selected"" error.
+
+I'm adding my codes and reference data to help you. Thank you in advance for your help.
+The reference data I used is from https://ncrnainfo-my.sharepoint.com/personal/sports_ncrna_info/_layouts/15/guestaccess.aspx?docid=0833653a140eb47f098267d7a23d3b63c&authkey=Ab8aoYC8paqFI2yRabIo7Ok
+[seqpac.txt](https://github.com/Danis102/seqpac/files/14179478/seqpac.txt)
+[sample.txt](https://github.com/Danis102/seqpac/files/14179504/sample.txt)
+
+
+
+
+
+",kittyBS,https://github.com/Danis102/seqpac/issues/42

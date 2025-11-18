@@ -1,0 +1,45 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIrwU_s56iCOc,Conda install conflicts,OPEN,2023-12-25T15:18:48Z,2023-12-25T15:23:58Z,,"I am using Mamba to try and install the BioConda packages listed in the Readme.
+Unfortunately, I get the following error message:
+```
+Could not solve for environment specs
+The following packages are incompatible
+├─ samtools 1.11**  is not installable because it requires
+│  └─ htslib >=1.11,<1.20.0a0  but there are no viable options
+│     ├─ htslib 1.11 would require
+│     │  └─ libdeflate >=1.6,<1.20.0a0 , which conflicts with any installable versions previously reported;
+│     ├─ htslib [1.11|1.12|1.13|1.14] would require
+│     │  └─ libdeflate >=1.7,<1.20.0a0 , which conflicts with any installable versions previously reported;
+│     ├─ htslib 1.14 would require
+│     │  └─ libdeflate >=1.9,<1.20.0a0 , which conflicts with any installable versions previously reported;
+│     ├─ htslib [1.14|1.15|1.15.1] would require
+│     │  └─ libdeflate >=1.10,<1.20.0a0 , which conflicts with any installable versions previously reported;
+│     ├─ htslib [1.15.1|1.16|1.17] would require
+│     │  └─ libdeflate >=1.13,<1.20.0a0 , which conflicts with any installable versions previously reported;
+│     └─ htslib [1.17|1.18|1.19] would require
+│        └─ libdeflate >=1.18,<1.20.0a0 , which conflicts with any installable versions previously reported;
+├─ ucsc-bigwigaverageoverbed 366**  is installable with the potential options
+│  ├─ ucsc-bigwigaverageoverbed 366 would require
+│  │  └─ openssl >=1.0.2o,<1.0.3a , which can be installed;
+│  └─ ucsc-bigwigaverageoverbed 366 would require
+│     └─ openssl >=1.0.2p,<1.0.3a , which can be installed;
+└─ ucsc-wigtobigwig 357**  is not installable because there are no viable options
+   ├─ ucsc-wigtobigwig 357 would require
+   │  └─ openssl >=1.1.0,<=1.1.1 , which conflicts with any installable versions previously reported;
+   └─ ucsc-wigtobigwig 357 would require
+      └─ mysql-connector-c >=6.1.11,<6.1.12.0a0 , which conflicts with any installable versions previously reported.
+```
+The Conda environment I'm using is freshly created and blank.
+I get no conflict by removing versions from the install command.
+Would this have any impact on downstream processes?
+Thank you.",gitMakeCoffee,https://github.com/broadinstitute/pbs-analysis/issues/3
+I_kwDOIrwU_s56wAkS,XY rescaling,CLOSED,2023-12-29T11:43:53Z,2024-02-08T14:18:42Z,2024-02-08T09:45:28Z,"The RescaleBinnedFiles.R file contains the following condition to detect male samples:
+```
+# is this a male sample?
+  if('chrX' %in% bin_df$chr & mean(bin_df$counts[bin_df$chr == 'chrY'])/mean(bin_df$counts[bin_df$chr == 'chrX']) > 0.5)
+```
+If I understand correctly, it means that chrY in male samples would have at least 50% of the coverage of chrX. This takes into account the whole chromosomes X and Y. 
+Given the size difference between chrX and chrY, have you tried thresholds other than 0.5 ?
+How does this function behave regarding pseudo autosomal regions, especially given the previous mappability rescaling step?
+Is this condition valid for both input samples and epitope samples? 
+Thank you.",gitMakeCoffee,https://github.com/broadinstitute/pbs-analysis/issues/5

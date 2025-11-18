@@ -1,0 +1,108 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0NjgxMTk5Ng==,Inconsistant SAM flags,CLOSED,2014-10-25T13:29:33Z,2014-10-25T18:01:37Z,2014-10-25T18:01:37Z,"For PE data, and when using bwa + samtools, some small percent of the read pairs have mutually contradictory flags.   One read's flag says that both reads are mapped, and the other says something different.
+
+Specific example from D. yakuba line CY20A:
+1:0:31742004:0  81      7678    1598    23      76M     =       1626    -48     ACTGAGCTTCCGGTCCTCTCTAGTTTATGGGCTCTCAAAGGGGACATATAATGAAAATTAACCATAACAAGTTGGG    7CECBCDCDFCFFEHHEHFFHFHH;HHHHHHHHFHHHHHHHHHHGHHHEHHHFHHHHHHHHHHHHHHHHHHHHHHH    XT:A:U  NM:i:1  SM:i:23 AM:i:23 X0:i:1  X1:i:1  XM:i:1  XO:i:0  XG:i:0  MD:Z:58A17      XA:Z:3523,+544,76M,2;
+1:0:31742004:1  165     7678    1626    37      76M     =       1598    48      GGGCTCTCAAAGGGGACATATAATGAAAATTAACCATAACAAGTTGGGAATTATTTGTCAAAGTAATGGATATAAG    HHHHHHHHHHHHHHHHHHHHGHFHHHFHHHHHHHHHHHHHHFGFHGHHF>GG?GBAEC/CDAD?D9DEDC?DEBEF    XT:A:U  NM:i:2  SM:i:37 AM:i:23 X0:i:1  X1:i:0  XM:i:2  XO:i:0  XG:i:0  MD:Z:30A44A0
+
+81 = !mate unmapped && !query unmapped
+165 = query_unmapped  && !mate_unmapped
+
+In this case, if the first read is processed first, then the pair will be viewed as mapped/mapped.  If the second is processed first, the pair will be rejected.
+
+This is a bug, and the bwa_bam_to_mapfiles step should check the SAM flag of BOTH reads in a pair.
+",molpopgen,https://github.com/molpopgen/pecnv/issues/1
+MDU6SXNzdWU0OTI5NjI3Mg==,dev branch: output positions,CLOSED,2014-11-18T21:33:33Z,2014-11-18T22:40:08Z,2014-11-18T22:40:08Z,"Output positions are 0 offset.  Need to change to 1.
+",molpopgen,https://github.com/molpopgen/pecnv/issues/2
+MDU6SXNzdWU0OTI5NjM2Mg==,dev branch: over-counting support,CLOSED,2014-11-18T21:34:22Z,2014-11-19T00:19:46Z,2014-11-19T00:19:46Z,"teclust is over-counting the support on each strand when there is a bam file + a TE annotation file.
+",molpopgen,https://github.com/molpopgen/pecnv/issues/3
+MDU6SXNzdWU0OTc2Mzg4Nw==,TE input file should be BED format,CLOSED,2014-11-22T00:12:23Z,2014-11-25T00:59:41Z,2014-11-25T00:59:41Z,"See title
+",molpopgen,https://github.com/molpopgen/pecnv/issues/4
+MDU6SXNzdWU0OTc2MzkxNg==,Output formats,CLOSED,2014-11-22T00:13:05Z,2014-11-25T00:59:49Z,2014-11-25T00:59:49Z,"Should be pebed format.
+",molpopgen,https://github.com/molpopgen/pecnv/issues/5
+MDU6SXNzdWU0OTgwMTkyMQ==,BEDPE output should contain a sample label in name field,CLOSED,2014-11-22T19:23:53Z,2014-11-25T00:59:59Z,2014-11-25T00:59:59Z,"Will be addressed in 0.1.5
+",molpopgen,https://github.com/molpopgen/pecnv/issues/6
+MDU6SXNzdWU1NDY5OTY2Mg==,Coupla typos in Readme.md,CLOSED,2015-01-18T15:25:56Z,2015-01-18T16:28:15Z,2015-01-18T16:28:15Z,"Trying to wrap my head around the extra output fields from teclust, I think you have two errors:
+
+```
+minus (int) = the number of read pairs on the right-hand side/minus strand of the event. In total, columns 2 and 3 are the ""coverage"" in support of this event
+```
+
+That should read 'columns 1 and 2.'
+
+Also in the final line you repeat 'pfirst' and 'plast' when you mean 'mfirst' and 'mlast' since it's the minus strand.
+",sammyjava,https://github.com/molpopgen/pecnv/issues/7
+MDU6SXNzdWU1NTE4MTE5Mw==,Error parsing xtra field data on line 91 of teclust_phrapify.cc,CLOSED,2015-01-22T17:16:57Z,2015-01-23T00:28:56Z,2015-01-23T00:28:56Z,"I've run a modified version of run_TEtest_data.sh to use my own data rather than the downloaded example data, and teclust runs fine until the -p option kicks in, at which it throws the above error and puts nothing in /phrapdir. I'd like to get the fastas to assemble contigs with phrap or another tool. I don't actually have phrap yet, but I don't think that's the issue in teclust_phrapify.cc. Here's the output:
+
+```
+sam> ./run_pecnv.sh
+Input file name is set to 'infile'
+Reference file name is set to 'AGPv3.fa'
+bwa is /usr/local/bin/bwa
+samtools is /usr/bin/samtools
+pecnv is /usr/local/bin/pecnv
+Rscript is /usr/bin/Rscript
+pecnv_insert_qtile is /usr/local/bin/pecnv_insert_qtile
+Making output directory pecnv_output
+Using default ulimit
+clustering div
+clustering par
+clustering ul
+Error parsing xtra field data on line 91 of teclust_phrapify.cc
+parallel is /usr/bin/parallel
+which: no phrap in (/usr/lib/jvm/java/bin:/usr/local/ncbi/sra-tools/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin)
+Cannot find phrap in your user's PATH
+sam>
+```
+
+And here's the script I'm running (this is actually on an eight-core machine, so the defaults are correct):
+
+```
+sam> cat run_pecnv.sh 
+#!/usr/bin/env bash
+
+CPU=4
+PHRAPCPU=8
+
+command_exists () {
+    type ""$1"" &> /dev/null ;
+}
+
+##Run the pecnv pipeline
+pecnv.sh  -i infile -r AGPv3.fa -c $CPU
+
+##Get the 99th quantile of the insert size distribution
+u99=`pecnv_insert_qtile pecnv_output/pecnv_bamfile.mdist.gz 0.99`
+
+##Run teclust
+pecnv teclust -b pecnv_output/pecnv_bamfile_sorted.bam -t TE_18-Dec-2014.blastn.positions.bed -o teclust_output.gz -u pecnv_output/pecnv_bamfile.um_u.csv.gz -m pecnv_output/pecnv_bamfile.um_m.csv.gz -i $u99 -p phrapdir
+
+##If we have the right stuff on the system, assemble in parallel using phrap
+CANASSEMBLE=1
+for needed in parallel phrap
+do
+    PM=`which $needed`
+    if [ -z ${PM} ]
+    then
+        >&2 echo ""Cannot find $needed in your user's PATH""
+        CANASSEMBLE=0
+    else
+        echo ""$needed is $PM""
+    fi
+done
+
+if [ $CANASSEMBLE -eq 1 ]
+then
+    find phrapdir -name ""*.fasta"" | parallel --jobs $PHRAPCPU --timeout 300 ""phrap {} -vector_bound 0 -forcelevel 10 -minscore 10 -minmatch 10 -new_ace 2> {}.stderr > {}.stdout""
+fi
+sam> 
+```
+
+Appreciate any tips!
+",sammyjava,https://github.com/molpopgen/pecnv/issues/8
+MDU6SXNzdWU1Njk2MTU2NQ==,config.h not generated,CLOSED,2015-02-08T18:27:02Z,2015-02-10T16:50:43Z,2015-02-10T16:50:43Z,"The package should generate a config.h via ./configure
+",molpopgen,https://github.com/molpopgen/pecnv/issues/9
+MDU6SXNzdWU2NTI4NTM4NA==,Binary file portability,CLOSED,2015-03-30T19:39:40Z,2015-03-31T11:38:49Z,2015-03-31T11:38:49Z,"We've noticed the following issue:
+
+When running the test script run_test_data.sh, everything works well except on our cluster with a BeeGFS file system.  On the cluster, the binary files generated by ""pecnv process"" are not properly read back in by ""pecnv cnvclust"".  The result is that the output files from the latter step are empty.  I think that I've fixed this, and am currently testing the test script from the beginning on the cluster.
+",molpopgen,https://github.com/molpopgen/pecnv/issues/10

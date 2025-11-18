@@ -1,0 +1,91 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOEl6-A85aMRnS,ProteinBERT-RBP model not posted?,CLOSED,2022-12-28T21:07:48Z,2023-01-23T19:24:54Z,2023-01-21T16:04:26Z,"Hi @Wenhao-Jin,
+
+I am wondering if there is a model posted in release assets that I am not seeing? I cannot find ""ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl"" in this or the proteinBERT repo. 
+
+If I am reading correctly, I can use your model without training my own?
+
+
+Seemingly unrelated, it HydRa2_predict may be looking for a file outside of your environment. ""/home/wjin/projects/RBP_pred/RBP_identification/Data/protVec_100d_3grams.csv""
+
+```
+HydRa2_predict --seq_dir sequences --proteinBERT_modelfile ModelFile.pkl --outdir out -n H01 --no-PIA --no-PPA
+
+  File ""/opt/conda/envs/HydRa/bin/HydRa2_predict"", line 5, in <module>
+    from HydRa.HydRa2_0_predict import call_main
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/HydRa/__init__.py"", line 1, in <module>
+    from .models import *
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/HydRa/models/__init__.py"", line 2, in <module>
+    from .Sequence_class import Protein_Sequence_Input5, Protein_Sequence_Input5_2, Protein_Sequence_Input5_noSS, Protein_Sequence_Input5_2_noSS
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/HydRa/models/Sequence_class.py"", line 13, in <module>
+    BioVec_weights=pd.read_table('/home/wjin/projects/RBP_pred/RBP_identification/Data/protVec_100d_3grams.csv', sep='\t', header=None, index_col=0)
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/util/_decorators.py"", line 311, in wrapper
+    return func(*args, **kwargs)
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/io/parsers/readers.py"", line 777, in read_table
+    return _read(filepath_or_buffer, kwds)
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/io/parsers/readers.py"", line 575, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/io/parsers/readers.py"", line 932, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/io/parsers/readers.py"", line 1216, in _make_engine
+    self.handles = get_handle(  # type: ignore[call-overload]
+  File ""/opt/conda/envs/HydRa/lib/python3.8/site-packages/pandas/io/common.py"", line 786, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: '/home/wjin/projects/RBP_pred/RBP_identification/Data/protVec_100d_3grams.csv'
+```
+
+
+Thanks!
+",umasstr,https://github.com/Wenhao-Jin/HydRA/issues/1
+I_kwDOEl6-A850XECL,PPI_feature_generation get_PPI_features and get_PPI_feature_vec,OPEN,2023-10-19T12:59:36Z,2023-10-19T17:11:53Z,,"Unfortunately these functions are incredibly slow making the tools hard to use with PPI and PPA data. Here is a proposed change to that increases speed on order of magnitudes compared to the original implementation using python sets and removing unnecessary computations and loops in loops.
+
+
+`
+  def get_PPI_features(prot, G, RBP_set, PPI_1stNBs=None,num_cut=5):
+      NBhood1_total=set(G.subgraph(PPI_1stNBs).nodes()) if PPI_1stNBs else set(G.neighbors(prot))
+      NBhood2_total=set()
+      NBhood3_total=set()
+  
+      for nb1 in NBhood1_total:
+          NBhood2_total.update(G.neighbors(nb1))
+      NBhood2_total = NBhood2_total - {prot}
+      for nb2 in NBhood2_total:
+          NBhood3_total.update(set(G.neighbors(nb2)))
+      NBhood3_total = NBhood3_total - NBhood2_total - NBhood1_total - {prot}
+  
+      RBP1=len(NBhood1_total.intersection(RBP_set))
+      RBP2=len(NBhood2_total.intersection(RBP_set))
+      RBP3=len(NBhood3_total.intersection(RBP_set))
+      NB1=max(0.01,len(NBhood1_total))
+      NB2=max(0.01,len(NBhood2_total))
+      NB3=max(0.01,len(NBhood3_total))
+  
+      return {'Protein_name':prot, 
+              'RBP_neighbor_counts':RBP1, 
+              '1st_neighbor_counts':NB1, 
+              'RBP_2nd_neighbor_counts':RBP2, 
+              '2nd_neighbor_counts':NB2, 
+              'RBP_3rd_neighbor_counts':RBP3, 
+              '3rd_neighbor_counts':NB3, 
+              'primary_RBP_ratio':RBP1/NB1, 
+              'secondary_RBP_ratio':RBP2/NB2, 
+              'tertiary_RBP_ratio':RBP3/NB3, 
+              'RBP_flag': prot in RBP_set,
+              'Reliability': (1 if NB1>num_cut else -1)}
+  
+  def get_PPI_feature_vec(prot, G, RBP_set, num_cut=5, PPI_1stNBs=None):
+      #print(prot)
+      PPI_features=get_PPI_features(prot, G, RBP_set, PPI_1stNBs,num_cut)
+      return np.array([PPI_features[k] for k in ['primary_RBP_ratio','secondary_RBP_ratio','tertiary_RBP_ratio','Reliability']])
+ `",StrohD,https://github.com/Wenhao-Jin/HydRA/issues/2
+I_kwDOEl6-A8536ScG,How to get the FDR score when predict some new proteins without labels? ,CLOSED,2023-11-27T08:37:05Z,2024-10-09T22:00:44Z,2024-10-09T21:59:04Z,"Hi, I have some questions when I read your paper. Your paper had produced an ensemble model method to improve model performance by compute the FDR score. I want to know how get the FDR score when I just predict some new proteins and I don't know the labels?",Violet969,https://github.com/Wenhao-Jin/HydRA/issues/3
+I_kwDOEl6-A86IhhvT,TabError: inconsistent use of tabs and spaces in indentation,OPEN,2024-05-10T22:35:38Z,2024-05-10T22:39:45Z,,"It seems like some lines are using spaces while others are using tab for indent
+
+https://github.com/Wenhao-Jin/HydRA/blob/e1528b295b1284c5434314892e9611fc31674c84/HydRa/HydRa2_0_predict.py#L300-L301",byee4,https://github.com/Wenhao-Jin/HydRA/issues/4
+I_kwDOEl6-A86ZbbiB,Missing Annotation track in the Occlusion map,OPEN,2024-10-08T20:06:57Z,2024-10-10T20:50:05Z,,"Hi,
+
+HydRA is failing to add annotation track to the occlusion map. I am using the parameters and annotation file as recommended. Could you help me fix this issue?
+
+Many thanks,
+Bandana
+",K-bandana,https://github.com/Wenhao-Jin/HydRA/issues/5

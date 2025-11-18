@@ -1,0 +1,258 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIRvU-85i1dvP,"All reads (read, startread, endread) were 0 after calculating read information at Step 5",CLOSED,2023-04-07T00:00:21Z,2023-04-08T02:17:04Z,2023-04-08T02:17:04Z,"Hi Nakul,
+
+Thanks for developing this wonderful tool and congratulations on your recent paper on Nature genetics.
+I am using your pipeline to analyze my data. I can not move a further step after calculating read information at the Step 5. All read counts were 0 in the filter_read_stats.txt as attached. An error at the next step after running filterReadCandidates.R was listed as follows.
+
+""[mliu63@c720 gtffiles]$ Rscript /home/mliu63/data-jwang8/mliu63/TEProf2Paper/bin/filterReadCandidates.R
+
+Attaching package: ‘Xmisc’
+
+The following object is masked from ‘package:base’:
+
+    dir.exists
+
+[1] ""Arguments""
+[1] ""Read Support Minimum in 1 File: 10""
+[1] ""PE Chimeric Read Support: 1""
+[1] ""Exonization Percentage Maximum: 0.15""
+[1] ""Distance Upstream TE must be from start of reference transcript: 2500""
+Warning message:
+In max(filter_combined_table_final_stat[filter_combined_table_final_stat$uniqid ==  :
+  no non-missing arguments to max; returning -Inf
+Error in if (row1$strand == ""+"") { :
+  missing value where TRUE/FALSE needed
+Calls: apply -> FUN -> chooseTopIsoform
+Execution halted""
+
+Would you please give any suggestions? Thanks very much in advance.
+
+Best regards,
+
+Mingming
+
+[filter_read_stats.txt.txt](https://github.com/twlab/TEProf2Paper/files/11175105/filter_read_stats.txt.txt)
+",ptnaimelmm,https://github.com/twlab/TEProf2Paper/issues/1
+I_kwDOIRvU-85jt7N6,Applied to Long-read Sequencing Data,CLOSED,2023-04-18T12:07:27Z,2023-05-16T13:44:52Z,2023-05-16T13:44:52Z,"Hi there,
+
+I planned to use the pipeline for pacbio long-reads sequencing data. I have mapped the data using minimap2. Can I apply TEProf2 to TE finding? Thx in advance :)
+
+Jianning",Edison19991109,https://github.com/twlab/TEProf2Paper/issues/2
+I_kwDOIRvU-85koTaa,no out_put in rmskhg38_annotate_gtf_update_test_tpm.py process,CLOSED,2023-04-28T10:10:56Z,2023-05-01T10:49:46Z,2023-05-01T10:46:08Z,"Hi ，I am new to TEanalysis but i am keen to learn more about it . I would like to apply TEProf2 to analysis my data .  
+My input data preprocess with the following command:
+##align with STAR
+STAR --genomeDir Path/to/genome_index --readFilesIn /Path/to/RNA.fq.gz --outFileNamePrefix rep1 --sjdbScore 2 --runThreadN 8 --readFilesCommand zcat --outSAMtype BAM SortedByCoordinate --winAnchorMultimapNmax 100 --outFilterMultimapNmax 100
+## filter and assemble
+samtools view -q 255 -h rnaseq.fastqAligned.sortedByCoord.out.bam | stringtie - -o rnaseq.fastqAligned.sortedByCoord.out.gtf -m 100 -c 1
+##then annotate gtf
+rmskhg38_annotate_gtf_update_test_tpm.py <gtffile> <argumentfile.txt>*
+In this step, all the path in argument.txt  were all correct. there are no error in this teps but the outputfiles were all empty.
+I also using samtool view -bS /sort to process the bam file before filter and assemble but i still got the empy output files without error.
+
+so I would like to ask for help or any advices?
+
+thanks
+chen
+",mechealeth,https://github.com/twlab/TEProf2Paper/issues/3
+I_kwDOIRvU-85ko4ly,Add Excel file output after Step 10,OPEN,2023-04-28T12:05:49Z,2023-04-28T12:05:49Z,,"Even if users do not want to use the pipeline for quantification, it would be helpful for them to annotate transcripts. This is especially true for those wanting to do long-read sequencing analysis. ",nakul2234,https://github.com/twlab/TEProf2Paper/issues/4
+I_kwDOIRvU-85ko6J4,Remove dependency on Xmisc,OPEN,2023-04-28T12:10:36Z,2023-04-28T12:10:36Z,,"It has been removed from CRAN, and though there is a workaround, in the future the archive may not be there. ",nakul2234,https://github.com/twlab/TEProf2Paper/issues/5
+I_kwDOIRvU-85liF5m,Reproducing results for 5'CAGE data ,OPEN,2023-05-10T08:58:10Z,2023-05-10T21:01:38Z,,"Hi there
+
+First of all thank you for your work on publishing the code and pipeline. 
+
+I was wondering if you could share more details on how you have processed your data. 
+I have downloaded the data you generated for COV413A cell line and processed it according to your pipeline. Of course, some additional preprocessing steps were necessary, including generating individual fastq files from interleaved format, running STAR and STRINGTIE. 
+These are the candidate transcripts you recover (Supplementary Table 9 filtered on COV413A): 
+
+<html xmlns:v=""urn:schemas-microsoft-com:vml""
+xmlns:o=""urn:schemas-microsoft-com:office:office""
+xmlns:x=""urn:schemas-microsoft-com:office:excel""
+xmlns=""http://www.w3.org/TR/REC-html40"">
+
+<head>
+
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content=""Microsoft Excel 15"">
+<link id=Main-File rel=Main-File
+href=""file:///C:/Users/naba/AppData/Local/Temp/msohtmlclip1/01/clip.htm"">
+<link rel=File-List
+href=""file:///C:/Users/naba/AppData/Local/Temp/msohtmlclip1/01/clip_filelist.xml"">
+<!--[if !mso]>
+
+<![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:""\,"";
+	mso-displayed-thousand-separator:""\."";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+td
+	{padding:0px;
+	mso-ignore:padding;
+	color:black;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Calibri, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl66
+	{font-weight:700;}
+-->
+
+</style>
+</head>
+
+<body link=""#0563C1"" vlink=""#954F72"">
+
+
+
+Transcript   ID | Class | Family | Subfam | Chr TE | Start TE | End TE | Location TE | Gene | Splice Target | Strand | Cell Line | CAGE TPM
+-- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- | --
+TCONS_00027238 | DNA | hAT-Charlie | MER1B | chr12 | 130340312 | 130340636 | intron_1 | PIWIL1 | exon_2 | + | COV413A | 0,396505544
+TCONS_00034780 | LINE | L1 | L1PA2 | chr14 | 71842964 | 71848996 | Intergenic | RGS6 | exon_2 | + | COV413A | 3,105960093
+TCONS_00055478 | LINE | L1 | L1PA2 | chr18 | 34552378 | 34558395 | Intergenic | DTNA | exon_2 | + | COV413A | 0,660842573
+TCONS_00086600 | LINE | L1 | L1PA2 | chr3 | 58842154 | 58848179 | Intergenic | FAM3D | exon_2 | - | COV413A | 0,396505544
+TCONS_00098838 | LINE | L1 | L1PA2 | chr5 | 102671229 | 102677260 | Intergenic | SLCO6A1 | exon_2 | - | COV413A | 0,72692683
+TCONS_00103663 | LINE | L1 | L1PB1 | chr6 | 7347074 | 7349650 | intron_8 | CAGE1 | exon_9 | - | COV413A | 0,396505544
+TCONS_00107032 | LINE | L1 | L1HS | chr7 | 12497211 | 12500000 | Intergenic | AC005281.1 | exon_2 | + | COV413A | 0,72692683
+TCONS_00107035 | LINE | L1 | L1HS | chr7 | 12497211 | 12500000 | Intergenic | AC005281.1 | exon_5 | + | COV413A | 0,72692683
+TCONS_00107037 | LINE | L1 | L1HS | chr7 | 12497211 | 12500000 | Intergenic | SCIN | exon_2 | + | COV413A | 0,72692683
+TCONS_00116734 | LINE | L1 | L1PA2 | chr8 | 66949103 | 66955119 | intron_3 | TCF24 | exon_4 | - | COV413A | 0,660842573
+TCONS_00119408 | LINE | L1 | L1PA2 | chr9 | 94089082 | 94095103 | intron_4 | PTPDC1 | exon_5 | + | COV413A | 0,330421286
+TCONS_00070187 | LTR | ERV1 | LTR7 | chr2 | 38086114 | 38086512 | Intergenic | CYP1B1 | exon_2 | - | COV413A | 15,92630601
+TCONS_00074167 | LTR | ERV1 | LTR2B | chr20 | 15985767 | 15986246 | intron_13 | MACROD2 | exon_14 | + | COV413A | 0,396505544
+TCONS_00089490 | LTR | ERV1 | LTR2B | chr4 | 37546188 | 37546669 | intron_1 | C4orf19 | exon_2 | + | COV413A | 0,859095345
+TCONS_00105271 | LTR | ERVL | LTR18A | chr6 | 79313214 | 79313548 | Intergenic | HMGN3 | exon_1 | - | COV413A | 2,841623064
+TCONS_00016149 | SINE | Alu | AluY | chr10 | 101729855 | 101730163 | Intergenic | FBXW4 | exon_1 | - | COV413A | 0,991263859
+TCONS_00016150 | SINE | Alu | AluY | chr10 | 101729855 | 101730163 | Intergenic | FBXW4 | exon_2 | - | COV413A | 0,991263859
+TCONS_00030551 | SINE | Alu | AluJo | chr12 | 121847358 | 121847535 | intron_9 | HPD | exon_10 | - | COV413A | 0,330421286
+TCONS_00041268 | SINE | Alu | AluY | chr15 | 51603584 | 51603891 | intron_1 | DMXL2 | exon_2 | - | COV413A | 1,652106432
+
+
+
+</body>
+
+</html>
+
+
+
+
+I recover these - sorry for the truncated output. 
+![image](https://github.com/twlab/TEProf2Paper/assets/28644965/137cd208-27aa-42bb-92ed-ed669a7d1afa)
+
+I have used the hg38 reference genome and gtf, your reference data download and and your pre-defined arguments.txt. 
+I hope we together can get to the bottom of why I don't recover any of the same TE chimers as you. 
+
+Best regards
+Nanna 
+",nannabarnkob,https://github.com/twlab/TEProf2Paper/issues/6
+I_kwDOIRvU-85l1fH6,no '.stats' out put in step5--Calculate Read Information,CLOSED,2023-05-13T08:41:39Z,2023-05-24T07:57:57Z,2023-05-24T07:57:57Z,"Hi,
+I used ./filterreadcommands.txt to run the command but there are no '.stats' files outut, the result show as follow:
+
+`./filterreadcommands.txt: line 1: ./filterreadstats/MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.stats: No such file or directory
+./filterreadcommands.txt: line 2: ./filterreadstats/MIR_38707752_ACTN4_intron_5_ACTN4_exon_7_38647670--C2NEA-6c5ac35dae_c.stats: No such file or directory
+./filterreadcommands.txt: line 3: ./filterreadstats/MIRc_189863925_TP63_intron_2_TP63_exon_4_189789660--C2NEA-75b63f12f5_c.stats: No such file or directory
+./filterreadcommands.txt: line 4: ./filterreadstats/MIRb_77482007_SEPT9_intron_3_SEPT9_exon_5_77281410--C2NEA-2b309823f7_c.stats: No such file or directory
+./filterreadcommands.txt: line 5: ./filterreadstats/AluSx_170359313_SKIL_intron_1_SKIL_exon_3_170357726--C2NEA-29cd8ee3ce_c.stats: No such file or directory
+./filterreadcommands.txt: line 6: ./filterreadstats/MIRb_32221596_None_None_None_EIF3I_exon_1_32222370--C2NEA-242e0f38cd_c.stats: No such file or directory
+./filterreadcommands.txt: line 7: ./filterreadstats/L1PA2_116718497_MET_intron_2_MET_exon_3_116672392--C2NEA-1380aee480_c.stats: No such file or directory
+./filterreadcommands.txt: line 8: ./filterreadstats/AluSp_70404720_CTTN_intron_1_CTTN_exon_3_70398404--C2NEA-64eb5edaf6_c.stats: No such file or directory
+`
+and my input filterreadcommands.txt show as follow:
+
+`samtools view -q 255 -h -f 2 -F 4 /home/xxxx/TEProF2/data/bam/test/C2NEA-29cd8ee3ce_c.bam chr5:151660096-151688326 > MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.sam ; samtools view -q 255 -f 2 -F 4 /home/xxxx/TEProF2/data/bam/test/C2NEA-29cd8ee3ce_c.bam chr5:151687169-151687326 | cut -f1  | sort | uniq > MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_cIDs.txt ; cat <(samtools view -H MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.sam) <(grep -w -F -f MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_cIDs.txt MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.sam) | samtools sort -n -m 1G - | bedtools bamtobed -bedpe -i stdin 2>/dev/null | /home/xxxx/TEProF2/TEProf2Paper-main/bin/rmsk_annotate_bedpe_speed.py chr5,151687169,151687326 151671573,151671694,151667467,151667600,151673129,151673216,151666510,151667466,151676132,151676201,151666361,151666509,151686865,151687165,151676202,151686864,151669664,151669784,151667601,151669663,151663600,151664086,151673217,151674611,151671695,151673128,151674675,151676131,151669785,151671572,151664087,151664235,151674612,151674674,151664236,151666360,151661096,151663599 - None 1 > ./filterreadstats/MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.stats ; rm MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_c.sam ; rm MIR3_151687169_None_None_None_SPARC_exon_1_151661096--C2NEA-29cd8ee3ce_cIDs.txt`
+
+I had no idea how to solve this problem, so i would like to ask for help !
+
+many thanks
+chen",mechealeth,https://github.com/twlab/TEProf2Paper/issues/7
+I_kwDOIRvU-85odpoS,UnsatisfiableError during conda installation,CLOSED,2023-06-12T12:00:44Z,2023-06-14T16:43:06Z,2023-06-14T16:43:06Z,"Hi, I am using conda version 23.5.0. I downloaded the script TEProf2.yml from github and try to run it as recommended:
+
+```
+conda env create -f TEProf2.yml
+```
+Unfortunatly I run into a lot of conflicts and finally UnsatisfiableError. In the end I get the message 'Your installed version is: 2.28' but I cannot activate the enviroment since it has not been created. 
+
+Please have a look at the output from conda attached. How can we solve these issues?
+
+Best,
+Christian
+[TEProf2_conda_issue.txt](https://github.com/twlab/TEProf2Paper/files/11722697/TEProf2_conda_issue.txt)
+
+
+",ChristianRohde,https://github.com/twlab/TEProf2Paper/issues/8
+I_kwDOIRvU-85s80CQ,Inconsistent script naming in usage guide of readme.md,OPEN,2023-07-30T10:14:51Z,2023-07-30T10:14:51Z,,"Great job, but I had a small problem running pipline.
+According to the guide ,the script run in that translated RNA sequence portion are translatePart1. R, translatePart2. R, respectively. 
+But in the bin folder, the scripts are named translationPart1. R, translationPart2. R.",gawxyz,https://github.com/twlab/TEProf2Paper/issues/9
+I_kwDOIRvU-85ubQck,How to get raw reads counts for final all TE-chimeric transcripts in different samples?,CLOSED,2023-08-16T07:04:54Z,2023-12-20T12:14:40Z,2023-12-20T12:14:40Z,"Dear professors,
+      Thank you for your outstanding work! Now I have got the  All TE-derived Alternative Isoforms Statistics.xlsx and  allCandidateStatistics.tsv for many samples from three different stages. I want to do transcript differential analysis between different stages.  However, we can only find TPM available for downstream analysis. I wonder if you could help to provide the solutions? Can we use tools like featureCounts or HTSeq, with annotated transcripts information in  All TE-derived Alternative Isoforms Statistics.xlsx, align the reads from each sample's BAM file to annotated transcripts, and calculate the raw read count for each transcript?
+      Looking forward to your reply sincerely.
+",31474molly,https://github.com/twlab/TEProf2Paper/issues/10
+I_kwDOIRvU-855Isik,"rmskhg38_annotate_gtf_update_test_tpm.py ValueError: invalid literal for int() with base 10: '1,transcript_id'",CLOSED,2023-12-08T09:43:00Z,2023-12-20T12:15:53Z,2023-12-20T12:15:53Z,"Hi sir,
+  Thank you to develop the powerful tool,I have a question,I currently have bam files that have been mapped using STAR and run string got the gtf files. the format like this:
+head PD1-to-CTLA4_Aligned.sortedByCoord.out.gtf
+chr1    StringTie       transcript      14978   15907   1000    -       .       gene_id ""STRG.1""; transcript_id ""STRG.1.1""; cov ""1.641618""; FPKM ""0.303210""; TPM ""0.745735"";
+chr1    StringTie       exon    14978   15038   1000    -       .       gene_id ""STRG.1""; transcript_id ""STRG.1.1""; exon_number ""1""; cov ""1.278689"";
+chr1    StringTie       exon    15796   15907   1000    -       .       gene_id ""STRG.1""; transcript_id ""STRG.1.1""; exon_number ""2""; cov ""1.839286"";
+chr1    StringTie       transcript      16959   17243   1000    -       .       gene_id ""STRG.2""; transcript_id ""STRG.2.1""; cov ""3.268518""; FPKM ""0.603702""; TPM ""1.484784"";
+chr1    StringTie       exon    16959   17055   1000    -       .       gene_id ""STRG.2""; transcript_id ""STRG.2.1""; exon_number ""1""; cov ""3.525773"";
+chr1    StringTie       exon    17233   17243   1000    -       .       gene_id ""STRG.2""; transcript_id ""STRG.2.1""; exon_number ""2""; cov ""1.000000"";
+chr1    StringTie       transcript      17316   17659   1000    -       .       gene_id ""STRG.3""; transcript_id ""STRG.3.1""; cov ""6.261682""; FPKM ""1.156545""; TPM ""2.844484"";
+chr1    StringTie       exon    17316   17368   1000    -       .       gene_id ""STRG.3""; transcript_id ""STRG.3.1""; exon_number ""1""; cov ""9.886792"";
+
+but when I run rmskhg38_annotate_gtf_update_test_tpm.py, some errors happened 
+Traceback (most recent call last):
+  File ""/TEProf2Paper/bin/rmskhg38_annotate_gtf_update_test_tpm.py"", line 661, in <module>
+    firstintronanno = annotateintron(chromosome, exon1end, exonstarts[1], strand)
+  File ""/TEProf2Paper/bin/rmskhg38_annotate_gtf_update_test_tpm.py"", line 166, in annotateintron
+    intronnums.append(int(i[3].split(""; "")[8].split("" "")[1]))
+ValueError: invalid literal for int() with base 10: '1,transcript_id'
+
+but a few file could run well, I do not know why it wrong. Hope you could help me!
+
+Regards,
+Song",songlyzz,https://github.com/twlab/TEProf2Paper/issues/11
+I_kwDOIRvU-8552KKU,Test data for verification purposes?,CLOSED,2023-12-15T19:07:22Z,2024-02-08T10:31:39Z,2024-02-08T10:31:39Z,"Hi all, thank you so much for sharing such an extraordinary pipeline. I am trying to set it up on my own environment however I would like to be able to verify it works as expected on a small dataset with expected outputs. Is there such a dataset that was perhaps used during development that we may be able to use as well? Thank you!",WesleyRosales,https://github.com/twlab/TEProf2Paper/issues/12
+I_kwDOIRvU-85-kN_W,Exonization of TE ,CLOSED,2024-02-07T16:30:20Z,2024-06-22T19:39:32Z,2024-06-22T19:39:32Z,"Hello, 
+
+I am aware that TEProf2 identifies TE-gene chimeric transcripts where TEs are mainly serving as promoters. I was wondering if TEProf2 has the capacity to identify transcripts where TEs are serving as cassette exons or inserted in to introns and then transcribed as the form of retained intron transcripts. Thank you!",bshim181,https://github.com/twlab/TEProf2Paper/issues/13
+I_kwDOIRvU-86FHMZn,Step 11: how to design treatment group versus control,CLOSED,2024-04-09T11:45:27Z,2024-06-22T19:39:09Z,2024-06-22T19:39:09Z,"Hi nakul:
+  I am using TEProf2 to find TE promoter with different group, but when I run step 11: Quantification processing, sample identification, and final table creation (finalStatisticsOutput.R <options>) , I am confused  how to set -e <ext_treatment> (default: ''): The label in the treatment file names that will identify them. Whether I only need to add the treatment name, meanwhile which name before step is correct to load here?
+  And if I have four groups in total samples, do I need to rerun step 1 to 11 for Designated samples.
+Best Wishes,
+Song.",songlyzz,https://github.com/twlab/TEProf2Paper/issues/14
+I_kwDOIRvU-86IdAKR,How to visualize the candidate TE-gene transcripts,CLOSED,2024-05-10T08:54:12Z,2024-06-22T19:38:57Z,2024-06-22T19:38:57Z,"Hello, 
+
+I was wondering how to visualize a candidate TE-gene transcripts, just like you showed in the  paper ?
+<img width=""928"" alt=""image"" src=""https://github.com/twlab/TEProf2Paper/assets/70944124/293d26d7-5f5d-4fc6-bdc6-b6ba668532a6"">
+
+Could you please share the code ?
+Thank you ! ",Ting-PKU,https://github.com/twlab/TEProf2Paper/issues/15
+I_kwDOIRvU-86JC1gm,How to filter the GTEX normal sample？,CLOSED,2024-05-16T02:51:21Z,2024-05-16T02:52:22Z,2024-05-16T02:52:22Z,,songlyzz,https://github.com/twlab/TEProf2Paper/issues/16
+I_kwDOIRvU-86JC3L7,How to filter the GTEX normal samples?,OPEN,2024-05-16T02:59:26Z,2024-06-22T21:44:41Z,,"Hi nakul:
+  Recently, I used the TEprof2 to find some interesting TE-gene chimeric transcripts. But I suspect it may happen in noramal tissue. The STEP12 write ""In the case of our publication, we filtered based on presence in TCGA normal samples and GTEx normal samples in choosing the candidate transcripts."" 
+  Could you please teach me how to do this step? 
+
+Sincerely,
+Song",songlyzz,https://github.com/twlab/TEProf2Paper/issues/17
+I_kwDOIRvU-86KxvMn,New Gencode Version ,CLOSED,2024-05-31T17:30:46Z,2024-06-04T14:22:08Z,2024-06-04T14:22:08Z,"Hi, I have a question that was mostly answered elsewhere (#11). However, I was wondering if it would be possible to update the input files in order to get around this issue. In other words, if I followed the steps you outlined in the README, and create the new reference files with my version of gencode would the pipeline work? Or is it a requirement to use the v25 version of gencode?  
+Thanks so much! ",mpizzagalli777,https://github.com/twlab/TEProf2Paper/issues/18
+I_kwDOIRvU-86dcSjZ,CPC2 Translation of the transcripts,OPEN,2024-11-07T15:48:29Z,2024-12-16T13:46:38Z,,,hhtiantt,https://github.com/twlab/TEProf2Paper/issues/19

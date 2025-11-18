@@ -1,0 +1,42 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU0MTE4NzM1Nzg=,"AttributeError, plot_expression_across_chromosomes.py",CLOSED,2019-02-19T11:19:43Z,2020-02-12T17:41:31Z,2019-02-27T20:15:12Z,"Hi,
+
+I am trying to run the following:
+
+> ```python plot_expression_across_chromosomes.py Homo_sapiens.GRCh38.88.chr.gtf data.tsv  --columns 1,9,4 --exp_desig ko --base_desig in```
+
+I get:
+>    Reading annotation file and getting data on genes and chromosomes...plot_expression_across_chromosomes.py:569: FutureWarning: read_table is deprecated, use read_csv instead, passing sep='\t'.
+  annotaton_file, header=None, names=col_names_to_apply, comment='#')
+sys:1: DtypeWarning: Columns (0) have mixed types. Specify dtype option on import or set low_memory=False.
+Information for 58137 genes parsed...Traceback (most recent call last):
+  File ""plot_expression_across_chromosomes.py"", line 611, in <module>
+    chromosomes_in_roman_num = not bool(len([s for s in seqname_set if s.isdigit()]) > len(seqname_set)/2) #checks if most chromosomes seem to be digits and says they are roman numerals if that is false
+**AttributeError: 'int' object has no attribute 'isdigit'**
+
+Here is the beginning of **Homo_sapiens.GRCh38.88.chr.gtf:**
+
+> !genome-build GRCh38.p10
+#!genome-version GRCh38
+#!genome-date 2013-12
+#!genome-build-accession NCBI:GCA_000001405.25
+#!genebuild-last-updated 2017-01
+1	havana	gene	11869	14409	.	+	.	gene_id ""ENSG00000223972""; gene_version ""5""; gene_name ""DDX11L1""; gene_source ""havana""; gene_biotype ""transcribed_unprocessed_pseudogene""; havana_gene ""OTTHUMG00000000961""; havana_gene_version ""2"";
+1	havana	transcript	11869	14409	.	+	.	gene_id ""ENSG00000223972""; gene_version ""5""; transcript_id ""ENST00000456328""; transcript_version ""2""; gene_name ""DDX11L1""; gene_source ""havana""; gene_biotype ""transcribed_unprocessed_pseudogene""; havana_gene ""OTTHUMG00000000961""; havana_gene_version ""2""; transcript_name ""DDX11L1-002""; transcript_source ""havana""; transcript_biotype ""processed_transcript""; havana_transcript ""OTTHUMT00000362751""; havana_transcript_version ""1""; tag ""basic""; transcript_support_level ""1"";
+
+Here is the beginning of **data.tsv**, processed as [here](https://gist.github.com/fomightez/87bbf42b53ba001329785b44e8f652f8):
+
+> 
+
+> gene	baseMean	log2FoldChange	FoldChange	lfcSE	stat	pvalue	padj	rel_fix
+ENSG00000000003	3466.722148	0.134468968	1.097688699	0.175182735	0.767592582	0.442729271	0.787106136	1
+ENSG00000000005	0.355448459	0.273834201	1.209016724	2.440359486	0.112210599	0.910656425	NA	1
+
+Also, running time is quite long.. 
+- data.tsv __3.3MB__ 
+- Homo_sapiens.GRCh38.88.chr.gtf __1.4GB__
+
+Thank you
+
+",estyholt,https://github.com/fomightez/sequencework/issues/1
+MDU6SXNzdWU1NTMwODU0MDA=,Getting karyotype file for Candida,OPEN,2020-01-21T19:38:06Z,2020-01-22T01:29:46Z,,Running Candida_albicans genome UCSC chrom.sizes to get the url did not yield any result to be used. How can I use this tool for a yeast genome not on ucsc browser?,emmannaemeka,https://github.com/fomightez/sequencework/issues/2

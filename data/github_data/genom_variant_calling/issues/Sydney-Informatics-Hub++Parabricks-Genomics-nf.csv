@@ -1,0 +1,112 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOKDNCPM6AU-oj,Process: check inputs,CLOSED,2024-02-25T23:05:15Z,2024-02-25T23:23:03Z,2024-02-25T23:23:03Z,"**Description:** Build a process to query the user provided input samplesheet, validate fq files, and extract metadata from read headers (flowcell, lane). 
+
+**Activities**
+- [x] Find/build python script to query relevant details of samplesheet 
+- [x] Write functioning process module 
+- [x] Integrate with workflow and test 
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/2
+I_kwDOKDNCPM6AVAAB,Process: index fasta,CLOSED,2024-02-25T23:20:07Z,2024-02-25T23:23:03Z,2024-02-25T23:23:03Z,"**Description:** Build a process for bwa to index the provided reference file only if it doesn't already exist in the basedir of the provided fasta. 
+
+**Activities**
+
+- [x] Write functioning process module
+- [x]  Integrate with the workflow with if/else loop in `main.nf` 
+- [x] Add a log message to say when process isnt run because index exists 
+
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/3
+I_kwDOKDNCPM6AVATx,Code base: test data,CLOSED,2024-02-25T23:23:42Z,2024-04-30T04:51:46Z,2024-04-30T04:51:46Z,"Add some small test data to the codebase for quick testing. Currently working with data from nf-core/sarek, stored in [`test/`](https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/tree/9ac17b9a01c4d1e541f881bda9e1980a3ce1b8e6/test). 
+
+Contains: 
+
+- 3 fq pairs 
+- samplesheet (paths relevant to er01)
+- chr21 reference fasta 
+- README 
+
+Before closing this ticket, need to update README to contain:
+1. Cleaned samplesheet
+2. Instructions for fixing samplesheet fq paths relative to own test environment",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/4
+I_kwDOKDNCPM6AVDi1,Process: pbrun fq2bam,CLOSED,2024-02-26T00:00:37Z,2024-03-03T22:35:13Z,2024-03-03T22:35:13Z,"**Description:** Build a process to run parabricks fq2bam for mapping of fqs to output bam file per sample.  
+
+**Activities**
+- [x] Find solution for collecting multiple fq pairs per sample
+- [x] Write functioning process module 
+- [x] Integrate with workflow and test 
+
+**Requires**
+
+- Check inputs process to capture one fq pair per row",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/5
+I_kwDOKDNCPM6Ao8Mv,Process: validate fasta input,CLOSED,2024-02-28T06:29:17Z,2024-03-30T07:42:32Z,2024-03-30T07:42:32Z,Indexing with BWA doesn't guarantee that the fasta is correctly formatted. Need a process to validate formatting required for BWA as Parabricks' error reporting is misleading. ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/6
+I_kwDOKDNCPM6BZaNd,Process: deepvariant,CLOSED,2024-03-06T08:30:15Z,2024-03-06T08:33:57Z,2024-03-06T08:33:57Z,"**Description:** Build a process to run parabricks deepvariant for short variant calling for bam file per sample to generate gvcf file.  
+
+**Activities**
+- [x] Write functioning process module 
+- [x] Integrate with workflow and test 
+
+**Requires**
+
+- Bam output by fq2bam",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/8
+I_kwDOKDNCPM6BaViD,Process: joint genotype,CLOSED,2024-03-06T10:30:29Z,2024-03-06T10:53:00Z,2024-03-06T10:53:00Z,"**Description:** Build a process to run glnexus for joint genotyping of all samples to generate a single cohort vcf. 
+
+**Activities**
+- [x] Write functioning glnexus process module 
+- [x] Write functioning bcf > vcf process module 
+- [x] Integrate with workflow and test 
+
+**Requires**
+
+- Individual gvcfs output by pbrun_deepvariant",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/10
+I_kwDOKDNCPM6BaYEc,Configure execution for Gadi,CLOSED,2024-03-06T10:36:00Z,2024-12-12T22:56:24Z,2024-12-12T22:56:24Z,Configure resources allocations per process. ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/11
+I_kwDOKDNCPM6Bo0ut,Process: bam metrics,CLOSED,2024-03-07T22:51:12Z,2024-03-08T05:43:11Z,2024-03-08T05:43:11Z,"**Description:** Build a process to run Parabrick's implelentation of [GATK collectWGSMetrics](https://docs.nvidia.com/clara/parabricks/4.0.1/documentation/tooldocs/man_bammetrics.html#man-bammetrics) for assessing bams output by fq2bam. 
+
+**Activities**
+
+- [x] Write functioning process module
+- [x]  Integrate with the workflow ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/13
+I_kwDOKDNCPM6BqWxE,Process: annotate variants,CLOSED,2024-03-08T06:28:04Z,2024-03-26T23:59:43Z,2024-03-26T23:59:42Z,"**Description:** Annotate SNVs and indels with VEP. Requires a process to download of vep_cache for specified assembly if it doesn't already exist and a later process to annotate with offline cache. 
+
+**Activities**
+
+- [x] Write functioning download process module
+- [ ] Write functioning annotate process module
+- [ ]  Integrate with the workflow with if/else loop in `main.nf` 
+- [ ] Add if/else and a log to only run if VEP params specified and if cache doesn't already exist
+
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/15
+I_kwDOKDNCPM6DtJXo,Documentation: README,CLOSED,2024-03-27T01:45:38Z,2024-04-30T04:12:18Z,2024-04-30T04:12:18Z,Write the user guide following [BioCommons workflow doc guidelines](https://github.com/AustralianBioCommons/doc_guidelines/blob/master/documentation_templates/workflows.md),georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/17
+I_kwDOKDNCPM6ESp0Z,MultiQC report,CLOSED,2024-04-02T03:26:15Z,2024-04-02T03:28:35Z,2024-04-02T03:27:46Z,"Add QC summary and reporting. Include fastqc for users sake, merged into multiqc. Todo make optional run fastq only parameter for pipeline. ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/21
+I_kwDOKDNCPM6ESp1H,Issues templates,CLOSED,2024-04-02T03:26:18Z,2024-04-02T03:27:34Z,2024-04-02T03:26:35Z,"Set up forms for bug reports and feature requests, as per https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/22
+I_kwDOKDNCPM6HVH-o,Add integration with Seqera platform with `nextflow.schema` ,OPEN,2024-04-30T04:11:30Z,2024-04-30T04:11:30Z,,"### Description of feature
+
+Use `nf-core schema build` to create a graphical schema editor for the seqera platform interface. See [here](https://docs.seqera.io/platform/23.4.0/pipeline-schema/overview) for docs. ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/24
+I_kwDOKDNCPM6JL_2W, glnexus resources,CLOSED,2024-05-17T01:10:41Z,2024-05-20T07:08:11Z,2024-05-20T07:08:11Z,"### Description of feature
+
+Process 'glnexus_joint_call' is assigned to local executor in the Gadi config. Is this correct? Please provide some resource usage examples from real data. ",calizilla,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/30
+I_kwDOKDNCPM6ON_W1,Parabricks 4.3.1-1 failed,CLOSED,2024-07-02T11:41:28Z,2024-07-19T01:52:02Z,2024-07-19T01:52:02Z,"### Description of the bug
+
+I want to use Parabricks to align methylation sequencing data, but I encounter the following error:cudaGetDevice() failed in geting device ID. Status: system not yet initialized, exiting
+<img width=""829"" alt=""屏幕截图 2024-07-02 180210"" src=""https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/assets/108064090/23697d6e-db87-44bb-a49e-d64079c4e45f"">
+
+
+### Command that you ran and terminal output
+
+```console
+pbrun fq2bam_meth --ref hg38.fa --in-fq ../fq2bam_test/SRR13749850_1.fastq.gz ../fq2bam_test/SRR13749850_1.fastq.gz --out-ba SRR13749850.bam --num-gpus 1
+```
+
+
+### Relevant files
+
+_No response_",YettaWang,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/31
+I_kwDOKDNCPM6bwPsc,Minimap2 in new parabricks version,CLOSED,2024-10-25T05:30:49Z,2024-11-04T23:17:49Z,2024-11-04T23:17:49Z,"### Description of feature
+
+Dear Georgie,
+
+The most recent version of Parabricks includes Minimap2, and I need to run simple Minimap jobs, but I am having trouble using Parabricks on Gadi. Rather than a request for a feature, could you kindly provide some instructions or recommendations on how to achieve this?
+
+I was trying to understand the logic behind your pipeline, but I can't find where you're calling or defining the ""singularity run..."" instruction. This would be my first time trying to run GPU-accelerated analysis. Is there something I’m not understanding about using Parabricks?
+
+Thank you so much for your kind assistance.
+Jesús (BABS, UNSW)",xuxocast,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/33
+I_kwDOKDNCPM6jI8Se,Integrate nf-test into parabricks-genomics,OPEN,2024-12-12T22:55:43Z,2024-12-12T23:01:01Z,,Integrated unit testing with https://www.nf-test.com/,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Parabricks-Genomics-nf/issues/34

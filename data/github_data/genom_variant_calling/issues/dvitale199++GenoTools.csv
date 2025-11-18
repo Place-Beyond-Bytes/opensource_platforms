@@ -1,0 +1,442 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFCTyk8475HrD,Option to keep samples in at specific steps,CLOSED,2021-09-22T22:27:57Z,2021-10-14T23:10:46Z,2021-10-14T23:10:46Z,"**Is your feature request related to a problem? Please describe.**
+People would like to be able to keep related samples in until post-imputation. This is not supported in the current workflows.
+
+**Describe the solution you'd like**
+Each step could have a flag which allows outlier samples at a specific step to remain in the genotype data such as:
+`related_prune(prune=False)`
+in which the related samples would be found but not pruned.
+This would require an indicator in the output QC metrics .h5 file for whether or not they were pruned
+
+**Describe alternatives you've considered**
+
+1. May want to implement `prune` flag in related_prune() only to keep simple for now. 
+2. Another option is to split related/duplicated into two separate steps (`related_prune()` and `duplicated_prune()`) and incorporate the flag
+3. The most complicated option would be to overhaul the workflow to make it so that outliers are only reported in each step and not pruned, and then pruned on the back-end
+
+**Additional context**
+Eventually, this is something that would probably have to happen for each QC step. 
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/5
+I_kwDOFCTyk8475I12,Generate GWAS and PRS summary statistics,CLOSED,2021-09-22T22:37:27Z,2021-10-04T15:23:34Z,2021-10-04T15:23:34Z,"**Is your feature request related to a problem? Please describe.**
+No existing workflow for post-QC/imputation summary statistics
+
+**Describe the solution you'd like**
+Create a new set of functions in `GenoTools.GWAS.gwas'  called `assoc()` , `clump()`, and `prs()` to run an association and prs pipeline for QC'd and imputed genotypes. These functions should meet the following requirements:
+
+1. implemented with Plink2 (allows for --linear/--logistic)
+2. can be run for binary or continuous traits
+3. can be customized for different clumping intervals
+4. captures important metrics such as lambda (genomic inflation) for output 
+5. methods combined into a workflow called run_gwas_pipeline.py in main GenoTools dir
+
+**Describe alternatives you've considered**
+None
+
+**Additional context**
+None
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/6
+I_kwDOFCTyk8475Jua,Manhattan Plot,OPEN,2021-09-22T22:44:38Z,2023-12-16T00:38:10Z,,"**Is your feature request related to a problem? Please describe.**
+Need plotting method for summary statistics
+
+**Describe the solution you'd like**
+A clean, interactive manhattan plot implemented in plotly. zooming, snp selection would be great!
+
+**Describe alternatives you've considered**
+None
+
+**Additional context**
+None
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/7
+I_kwDOFCTyk849Nfwo,Ancestry distribution by sex or onset,CLOSED,2021-10-15T00:31:56Z,2023-02-09T19:03:55Z,2023-02-09T19:03:55Z,"**Is your feature request related to a problem? Please describe.**
+It would be helpful to visualize ancestry distribution by sex and/or disease onset (young vs late) for the count on streamlit app.
+",ines570,https://github.com/dvitale199/GenoTools/issues/12
+I_kwDOFCTyk849ttrn,sex_prune() with missing x chromosome,CLOSED,2021-10-25T17:31:02Z,2023-11-02T22:10:36Z,2023-11-02T22:10:36Z,"**Describe the bug**
+No method to check if chrx/chr23 exists before running step
+
+**To Reproduce**
+run sex_prune() without available 23 chrom. error not caught
+
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/14
+I_kwDOFCTyk8499nm1,Liftover,OPEN,2021-10-29T13:22:01Z,2021-10-29T13:25:22Z,,"**Is your feature request related to a problem? Please describe.**
+Automated liftover between hg19/hg38 given a list of positions
+
+**Describe the solution you'd like**
+Store liftover and chain files in GenoTools (if possible). liftover(snp_df, from_build, to_build) where snp_df has columns 'chr', 'start', 'end', 'snp_id' (start and end can be pos and pos+1 respectively if not using ranges. snp_id can be any snp identifier like rsid)
+
+**Describe alternatives you've considered**
+None
+
+**Additional context**
+Example here: https://github.com/dvitale199/twas/blob/main/1_liftover.ipynb
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/15
+I_kwDOFCTyk8499rN0,Substitue sklearn PCA method for existing flashPCA ,CLOSED,2021-10-29T13:37:07Z,2022-02-25T22:12:10Z,2022-02-25T22:12:10Z,"**Is your feature request related to a problem? Please describe.**
+flashPCA is cumbersome to install and results in extra code in the ancestry module. 
+
+**Describe the solution you'd like**
+remove all methods requiring flashPCA and replace with sklearn.Decomposition.PCA() and insert directly into gridsearch for ancestry model
+
+**Describe alternatives you've considered**
+None
+
+**Additional context**
+This is very important to make GenoTools useable on any system
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/16
+I_kwDOFCTyk85FV-qu,Missing common snps between reference and new genotypes in Ancestry.ancestry.get_raw_files(),CLOSED,2022-03-09T01:34:40Z,2022-05-05T20:09:30Z,2022-05-05T20:09:30Z,"**Describe the bug**
+
+Error below thrown when trying to use Ancestry.ancestry.train_umap_classifier(). This is caused by a feature being dropped by SimpleImputer due to all NA values
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-26-a8a569c20ccf> in <module>()
+     86 
+     87 raw_geno = pd.concat([geno_ids, geno_snps], axis=1)
+---> 88 raw_geno.columns = col_names
+     89 raw_geno['label'] = 'new'
+     90 
+
+4 frames
+/usr/local/lib/python3.7/dist-packages/pandas/core/internals/base.py in _validate_set_axis(self, axis, new_labels)
+     56         elif new_len != old_len:
+     57             raise ValueError(
+---> 58                 f""Length mismatch: Expected axis has {old_len} elements, new ""
+     59                 f""values have {new_len} elements""
+     60             )
+
+ValueError: Length mismatch: Expected axis has 3441 elements, new values have 3442 elements
+
+**To Reproduce**
+NA
+
+**Expected behavior**
+Only matching snps should be used for this method
+
+**Screenshots**
+NA
+
+**Desktop (please complete the following information):**
+google colab
+
+**Additional context**
+this is an issue with sklearn.impute.SimpleImputer() dropping features which have all NAs. 
+
+potential solution:
+prune for --geno before finding common snps
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/18
+I_kwDOFCTyk85Hif1g,GWAS.gwas.munge() failing due to missing 'se' column,CLOSED,2022-04-11T16:29:54Z,2022-05-05T20:11:45Z,2022-05-05T20:11:45Z,"**Describe the bug**
+'se' column is not found in linear association output
+
+**To Reproduce**
+run on continuous phenotype
+
+**Expected behavior**
+expect to find 'se' column during munging
+
+**Screenshots**
+<img width=""1037"" alt=""Screen Shot 2022-04-11 at 12 28 50 PM"" src=""https://user-images.githubusercontent.com/24816003/162787024-f5220816-ca8d-48ad-9f5b-11a49fe230fb.png"">
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/20
+I_kwDOFCTyk85IZkSu,GWAS.gwas.prs plink2 does not produce .profile with chr:pos:a1:a2 snp format,CLOSED,2022-04-25T15:11:53Z,2023-11-02T22:09:57Z,2023-11-02T22:09:56Z,"**Describe the bug**
+""Warning: 6201014 --score file entries were skipped due to missing variant IDs."" thrown when running with snps list chr:pos:a1:a2 in plink2. works just fine with plink1.9
+
+**To Reproduce**
+python run_gwas_pipeline.py using snp list like: chr:pos:a1:a2
+
+**Expected behavior**
+snps read by --score and produce .profile
+
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
+**Desktop (please complete the following information):**
+google colab
+
+**Additional context**
+this is definitely a plink2 issue. will submit a bug report on plink side but we need a temp workaround here
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/21
+I_kwDOFCTyk85Qcknj,scree plot for ancestry method,OPEN,2022-08-24T15:50:15Z,2022-08-24T15:50:15Z,,"
+we would like to output eigenvalues and create a scree plot
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/29
+I_kwDOFCTyk85dKg1_,Add --ancestry handle ,CLOSED,2023-01-30T19:06:48Z,2023-11-02T22:11:58Z,2023-11-02T22:11:58Z,"This pipeline is so computationally intensive, it would be useful if we could specifically select what ancestry or ancestries to select to output. ",cwarlysolsberg,https://github.com/dvitale199/GenoTools/issues/41
+I_kwDOFCTyk85l7k-P,Bypass case/control requirements,CLOSED,2023-05-15T13:33:09Z,2023-11-02T22:12:27Z,2023-11-02T22:12:27Z,"Would be great to have an official way to bypass the case/control requirements, i.e. if you're QCing a cohorts that is all cases or all controls. Mat and I came up with a temporary fix, but others might want this feature as well",kristin-dt,https://github.com/dvitale199/GenoTools/issues/50
+I_kwDOFCTyk85m3hox,ancestry.py high-LD exclusion region,CLOSED,2023-05-25T13:27:16Z,2023-05-25T15:33:50Z,2023-05-25T15:33:50Z,"In ancestry.py
+line 69     --exclude range ref_data/hg19_exclusion_regions.txt
+Should it be hg38 regions?
+",zihhuafang,https://github.com/dvitale199/GenoTools/issues/53
+I_kwDOFCTyk851ug7l,relatedness degree added to relatedness output,CLOSED,2023-11-02T22:15:42Z,2023-11-21T17:32:03Z,2023-11-21T17:32:02Z,"**Is your feature request related to a problem? Please describe.**
+related/duplicated degrees are not included in the .related output
+
+**Describe the solution you'd like**
+add duplicated, first, second, third, etc labels in the output .related file
+
+**Describe alternatives you've considered**
+none
+
+**Additional context**
+it currently requires extra steps after relatedness to get the degree
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/104
+I_kwDOFCTyk8528PnW,ref_labels added as PHENO1 in ref panel,OPEN,2023-11-15T20:20:55Z,2023-11-15T20:21:15Z,,"**Is your feature request related to a problem? Please describe.**
+currently have a separate reference panel labels file. labels should add these directly to the reference genotypes
+
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/115
+I_kwDOFCTyk853uOoD,--gwas fails to build output dict when not run in full pipeline,CLOSED,2023-11-23T17:24:19Z,2023-11-28T15:56:13Z,2023-11-28T15:56:13Z,"**Describe the bug**
+when running `genotools --bfile <geno path> --out <out path> --gwas ... ` without ancestry, genotools fails to build the output dictionary with the following error
+
+Traceback (most recent call last):
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/bin/genotools"", line 8, in <module>
+    sys.exit(handle_main())
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/__main__.py"", line 162, in handle_main
+    metrics_df, pruned_df, gwas_df = build_metrics_pruned_df(metrics_df=metrics_df, pruned_df=pruned_df, gwas_df=gwas_df, dictionary=out_dict)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/pipeline.py"", line 231, in build_metrics_pruned_df
+    tmp_gwas_df = pd.DataFrame({'value':[value], 'metric':[metric], 'ancestry':[ancestry_label]})
+UnboundLocalError: local variable 'ancestry_label' referenced before assignment
+
+**suggested solution**
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/121
+I_kwDOFCTyk853uPQA,"PCA failing for n_components must be between 0 and min(n_samples,n_features) with large sample/snp number",CLOSED,2023-11-23T17:26:53Z,2023-11-28T15:55:54Z,2023-11-28T15:55:54Z,"**Describe the bug**
+ValueError: n_components=50 must be between 0 and min(n_samples, n_features)=13 with svd_solver='full'
+
+when running with ~500k snps and 6k samples
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/122
+I_kwDOFCTyk855n40R,containerized predictions fail due to permissions in the container,OPEN,2023-12-13T21:32:57Z,2023-12-13T21:32:57Z,,"**Describe the bug**
+when attempting to run containerized predictions, a user with an unknown OS encountered the following error:
+
+```
+Getting Common SNPs
+
+/usr/local/lib/python3.10/dist-packages/genotools/utils.py:404: DtypeWarning: Columns (0) have mixed types. Specify dtype option on import or set low_memory=False.
+
+  bim1 = pd.read_csv(f'{geno_path1}.bim', sep='\t', header=None)
+
+Traceback (most recent call last):
+
+  File ""/usr/local/bin/genotools"", line 8, in <module>
+
+    sys.exit(handle_main())
+
+  File ""/usr/local/lib/python3.10/dist-packages/genotools/__main__.py"", line 152, in handle_main
+
+    out_dict = execute_pipeline(run_steps_list, ordered_steps, args_dict['geno_path'], args_dict['out'], samp_qc=samp_qc, var_qc=var_qc, ancestry=ancestry, assoc=assoc, args=args_dict, tmp_dir=tmp_dir)
+
+  File ""/usr/local/lib/python3.10/dist-packages/genotools/pipeline.py"", line 128, in execute_pipeline
+
+    out_dict[step] = steps_dict[step]()
+
+  File ""/usr/local/lib/python3.10/dist-packages/genotools/ancestry.py"", line 1103, in run_ancestry
+
+    trained_clf, pred = self.get_containerized_predictions(
+
+  File ""/usr/local/lib/python3.10/dist-packages/genotools/ancestry.py"", line 681, in get_containerized_predictions
+
+    X_test.to_csv(f'{container_dir}/X_test.txt', sep='\t', index=False)
+
+  File ""/usr/local/lib/python3.10/dist-packages/pandas/core/generic.py"", line 3772, in to_csv
+
+    return DataFrameRenderer(formatter).to_csv(
+
+  File ""/usr/local/lib/python3.10/dist-packages/pandas/io/formats/format.py"", line 1186, in to_csv
+
+    csv_formatter.save()
+
+  File ""/usr/local/lib/python3.10/dist-packages/pandas/io/formats/csvs.py"", line 240, in save
+
+    with get_handle(
+
+  File ""/usr/local/lib/python3.10/dist-packages/pandas/io/common.py"", line 859, in get_handle
+
+    handle = open(
+
+PermissionError: [Errno 13] Permission denied: '/usr/local/lib/python3.10/dist-packages/genotools/container/X_test.txt'
+```
+
+**To Reproduce**
+Steps to reproduce the behavior (NA if not applicable). Can include commands that were run:
+user attempted to run:
+```
+genotools \
+--pfile /path/to/genotypes/for/qc \
+--out /path/to/qc/output \
+--ancestry \
+--ref_panel /path/to/reference/panel \
+--ref_labels /path/to/reference/ancestry/labels \
+--all_sample \
+--all_variant
+--container
+```
+**Expected behavior**
+predictions should be assigned via a model that is copied over to the container
+
+**Desktop (please complete the following information):**
+ - OS: 
+ - Version 1.0.0
+- Python version: 3.10
+
+**Additional context**
+This is expected to be a result of processes being run in an hpc system that does not have docker available. the --singularity option should solve this if singularity is available on the system, otherwise user will have to train a new model locally using the base command:
+
+
+```
+genotools \
+--pfile /path/to/genotypes/for/qc \
+--out /path/to/qc/output \
+--ancestry \
+--ref_panel /path/to/reference/panel \
+--ref_labels /path/to/reference/ancestry/labels \
+--all_sample \
+--all_variant
+```
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/141
+I_kwDOFCTyk857QdA7,combine covars with PCs if --covars and --pca called,OPEN,2024-01-05T19:15:44Z,2024-01-05T19:15:45Z,,"Currently, --covars and --pca used together results in defaulting to covars. we want to be able to run --pca and concat the pcs with the existing covars
+
+**Describe the solution you'd like**
+add method to check if covars contains PCs already (just in case) and then generate pcs, and merge with input covars to use in the association",dvitale199,https://github.com/dvitale199/GenoTools/issues/153
+I_kwDOFCTyk857rJhV,.linear not captured in run_gwas() for linear phenotypes,CLOSED,2024-01-10T18:08:29Z,2024-04-25T19:54:05Z,2024-04-25T19:54:05Z,"**Describe the bug**
+run_gwas fails to run the lambda calculation if it is not case/control
+
+**Expected behavior**
+
+1. automatically detect type of phenotype OR add args for ""linear""/""logistic""
+2. .linear file should be captured and lambdas calculated for that. lambda1000 should not be calculated due to no cases/controls
+
+something like this:
+
+```
+if os.path.isfile(f'{self.out_path}.PHENO1.glm.linear'):
+
+            # calculate inflation
+            gwas_df = pd.read_csv(f'{self.out_path}.PHENO1.glm.linear', sep='\s+', dtype={'#CHROM': str})
+
+            # add pruning step here (pre lambdas)
+            gwas_df_add = gwas_df.loc[gwas_df.TEST=='ADD']
+
+            # calculate inflation
+            lambda_dict = self.calculate_inflation(gwas_df_add.P, normalize=False)
+
+metrics_dict = {
+                'lambda': lambda_dict['metrics']['inflation'],
+                'lambda1000': np.nan,
+                'cases': np.nan,
+                'controls': np.nan
+                }
+```
+
+**Screenshots**
+<img width=""904"" alt=""Screenshot 2024-01-10 at 11 00 20 AM"" src=""https://github.com/dvitale199/GenoTools/assets/24816003/837f7c6c-26b0-430e-907b-de10009de9a8"">
+
+**Additional context**
+pipeline should be updated accordingly to account for new arguments if necessary
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/157
+I_kwDOFCTyk85-xVfQ,KeyError: 'FID' when merging for labeled_pruned_df,CLOSED,2024-02-09T10:31:14Z,2024-03-28T17:02:12Z,2024-03-28T17:02:12Z,"**Describe the bug**
+Version:  1.0.1
+Command used:
+`genotools --bfile amppd_v4/amppd_ancenstry --out amppd_v4/ancenstry --ref_panel run_model/ref_panel --ref_labels run_model/ref_panel_ancestry_updated.txt  --geno   --hwe 1e-10   --ancestry`
+
+Error:
+>Running: geno with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_ancestry_AAC and output: /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_AAC_geno
+Running: hwe with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_AAC_geno and output: amppd_v4/ancenstry_AAC
+Running: geno with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_ancestry_FIN and output: /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_FIN_geno
+Running: hwe with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_FIN_geno and output: amppd_v4/ancenstry_FIN
+Running: geno with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_ancestry_MDE and output: /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_MDE_geno
+Running: hwe with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_MDE_geno and output: amppd_v4/ancenstry_MDE
+Running: geno with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_ancestry_AFR and output: /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_AFR_geno
+Running: hwe with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_AFR_geno and output: amppd_v4/ancenstry_AFR 
+Running: geno with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_ancestry_SAS and output: /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_SAS_geno
+Running: hwe with input /net/beegfs-hpc/work/fangz/GP2/GenoTools/amppd_v4/.gy8guo0c_tmp/ancenstry_SAS_geno and output: amppd_v4/ancenstry_SAS
+Traceback (most recent call last):
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/bin/genotools"", line 8, in <module>
+    sys.exit(handle_main())
+             ^^^^^^^^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/genotools/__main__.py"", line 202, in handle_main
+    labeled_pruned_df = pruned_df.merge(labels[['FID','IID','label']], how='left', on=['FID','IID'])
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/pandas/core/frame.py"", line 10805, in merge
+    return merge(
+           ^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 170, in merge
+    op = _MergeOperation(
+         ^^^^^^^^^^^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 794, in __init__
+    ) = self._get_merge_keys()
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/pandas/core/reshape/merge.py"", line 1310, in _get_merge_keys
+    left_keys.append(left._get_label_or_level_values(lk))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/net/beegfs-hpc/home/fangz/miniforge3/envs/GenoTools/lib/python3.12/site-packages/pandas/core/generic.py"", line 1910, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'FID'
+
+Not sure why SAS failed, but there were samples and variants in ancenstry_SAS pfiles.
+-rw-r--r-- 1 fangz 4.7M Feb  8 21:35 ancenstry_SAS.pvar
+-rw-r--r-- 1 fangz  418 Feb  8 21:35 ancenstry_SAS.psam
+-rw-r--r-- 1 fangz 737K Feb  8 21:35 ancenstry_SAS.pgen
+
+Doesn't seem to have a step failed based on the logs.
+I attached all the logs generated from genotools here.
+[amppd_ancenstry.log](https://github.com/dvitale199/GenoTools/files/14220601/amppd_ancenstry.log)
+[ancenstry_all_logs.log](https://github.com/dvitale199/GenoTools/files/14220602/ancenstry_all_logs.log)
+[ancenstry_cleaned_logs.log](https://github.com/dvitale199/GenoTools/files/14220604/ancenstry_cleaned_logs.log)",zihhuafang,https://github.com/dvitale199/GenoTools/issues/162
+I_kwDOFCTyk86D2rIp,Failure to read pvar in upfront_check if it came from a vcf with header rows '##',CLOSED,2024-03-28T01:04:27Z,2024-03-28T16:03:37Z,2024-03-28T16:03:37Z,"**Describe the bug**
+Failure to read pvar in upfront_check if it came from a vcf with header rows '##'
+
+**To Reproduce**
+convert a vcf to pgen and then try to run pipeline
+
+**Expected behavior**
+when reading pvar, '##' columns should be skipped
+
+**Screenshots**
+Traceback (most recent call last):
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/bin/genotools"", line 8, in <module>
+    sys.exit(handle_main())
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/__main__.py"", line 116, in handle_main
+    args_dict = upfront_check(args_dict['geno_path'], args_dict)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/utils.py"", line 119, in upfront_check
+    var = pd.read_csv(f'{geno_path}.pvar', sep = '\s+', low_memory = False)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/pandas/io/parsers/readers.py"", line 912, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/pandas/io/parsers/readers.py"", line 583, in _read
+    return parser.read(nrows)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/pandas/io/parsers/readers.py"", line 1704, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/pandas/io/parsers/c_parser_wrapper.py"", line 239, in read
+    data = self._reader.read(nrows)
+  File ""pandas/_libs/parsers.pyx"", line 796, in pandas._libs.parsers.TextReader.read
+  File ""pandas/_libs/parsers.pyx"", line 884, in pandas._libs.parsers.TextReader._read_rows
+  File ""pandas/_libs/parsers.pyx"", line 861, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File ""pandas/_libs/parsers.pyx"", line 2029, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: Expected 1 fields in line 3, saw 4
+
+
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/169
+I_kwDOFCTyk86D8jUH,Adjust gwas module to allow for any phenotype (not just PHENO1),OPEN,2024-03-28T16:49:52Z,2024-03-28T16:49:52Z,,"**Describe the bug**
+gwas fails when trying to run with a phenotype that's not PHENO1
+
+**To Reproduce**
+attempt to run gwas with a column that is anything but PHENO1
+
+**Expected behavior**
+should be able to accept any phenotype column header
+
+**Screenshots**
+    sys.exit(handle_main())
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/__main__.py"", line 117, in handle_main
+    args_dict = upfront_check(args_dict['geno_path'], args_dict)
+  File ""/gpfs/gsfs12/users/vitaled2/.venv/lib/python3.10/site-packages/genotools/utils.py"", line 125, in upfront_check
+    raise KeyError(f'{geno_path}.psam is missing PHENO1 column. Even if no PHENO1 information is present, GenoTools requires a PHENO1 column.')
+
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/172
+I_kwDOFCTyk86G1iU8,min sample error catching for --ld ,OPEN,2024-04-24T21:03:58Z,2024-04-25T19:55:14Z,,"**Is your feature request related to a problem? Please describe.**
+when running --ld with <50 samples, the process fails. It is slightly difficult to judge what the issue is in this case
+
+**Describe the solution you'd like**
+up-front checks for sample N with loud warnings for insufficient size for --ld
+",dvitale199,https://github.com/dvitale199/GenoTools/issues/178
+I_kwDOFCTyk86IO1IV,Problem with temporary files,CLOSED,2024-05-08T13:21:11Z,2024-05-14T10:22:00Z,2024-05-09T17:35:25Z,"Problem temporary files
+
+I am trying to use genotools pipeline to impute ancestry and perform qc on variants and subjects as it follows: 
+
+`genotools --pfile /home/user/jojo/A --out /home/user/jojo/ --ref_panel /opt/tools/GenoTools/ref_panel/1kg_30x_hgdp_ashk_ref_panel --ancestry --ref_labels /opt/tools/GenoTools/ref_panel/1kg_30x_hgdp_ashk_ref_panel_labels.txt  --subset_ancestry EUR  --related True --prune_related False --prune_duplicated --all_sample True --all_variant
+`
+Appartly genotools stops working as it searches for file ""/home/utente/jojo/A_EUR"".
+Should genotools search for it among temporary files?
+Am I missing something?
+
+Thank you for your time!",gdejana,https://github.com/dvitale199/GenoTools/issues/180

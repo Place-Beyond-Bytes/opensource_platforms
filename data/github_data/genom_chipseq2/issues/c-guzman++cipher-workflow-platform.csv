@@ -1,0 +1,539 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyNTY3MzY0Mjg=,Error when I try to use this package,CLOSED,2017-09-11T15:05:48Z,2017-09-11T16:19:18Z,2017-09-11T16:19:18Z,"I try to use this recipe. This is the error when I try to install singularity:
+
+
+```
+Python 2.7.13 :: Continuum Analytics, Inc.
+creating default environment...
+installation finished.
++ /opt/anaconda2/bin/conda install -c r r-base=3.3.2 r-essentials=1.5.2 r-devtools=1.12.0
+Fetching package metadata .......
+CondaIndexError: Invalid index file: https://repo.continuum.io/pkgs/r/linux-64/repodata.json.bz2: couldn't find end of stream
+
+ABORT: Aborting with RETVAL=255
+
+```",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/1
+MDU6SXNzdWUyNTY3NTYxMjc=,error n run  tutorial ,CLOSED,2017-09-11T16:03:19Z,2017-09-11T17:17:38Z,2017-09-11T17:17:38Z,"This is the comand that I use:
+
+```
+ nextflow run cipher.nf -with-singularity cipher.img --mode  chip --config  example_data/config.txt --fa /mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa --gtf  /mnt/working_directory/Homo_sapiens.GRCh38.79.gtf --lib s --readLen 75
+N E X T F L O W  ~  version 0.25.7
+Launching `cipher.nf` [golden_becquerel] - revision: 553a48b852
+
+                 RUN INFORMATION               
+===============================================
+
+mode:				chip
+config:				/opt/cipher-workflow-platform-master/example_data/config.txt
+fasta:				/mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa
+gtf:				/mnt/working_directory/Homo_sapiens.GRCh38.79.gtf
+library:			s
+read-length:			75
+
+subsampled:			false
+
+clumpify:			true
+bbduk:				true
+fastqc:				true
+multiqc:			true
+mapping:			true
+bamcoverage:			true
+downstream_analysis		true
+
+threads:			1
+
+aligner:			bbmap
+===============================================
+
+[warm up] executor > local
+WARN: Access to undefined parameter `macs_g` -- Initialise it to a default value eg. `params.macs_g = some_value`
+WARN: Access to undefined parameter `epic_egs` -- Initialise it to a default value eg. `params.epic_egs = some_value`
+[22/abd8fe] Submitted process > calculate_egs
+[80/e14b8c] Submitted process > clumpify (2)
+[5f/7b7bcb] Submitted process > fetch_chrom_sizes
+[25/e28a56] Submitted process > create_mapping_index
+[f6/e92ae8] Submitted process > clumpify (1)
+ERROR ~ Error executing process > 'clumpify (2)'
+
+Caused by:
+  Process `clumpify (2)` terminated with an error exit status (1)
+
+Command executed:
+
+  clumpify.sh -Xmx12g in=Input.500k_reads.fastq.gz out=Input_Rep1.clumped.fq.gz
+  echo 'clumpify.sh -Xmx12g in=Input.500k_reads.fastq.gz out=Input_Rep1.clumped.fq.gz' > clumpify_parameters_Input_Rep1.txt
+
+Command exit status:
+  1
+
+Command output:
+  #
+  # There is insufficient memory for the Java Runtime Environment to continue.
+  # Native memory allocation (mmap) failed to map 4294967296 bytes for committing reserved memory.
+  # An error report file with more information is saved as:
+  # hs_err_pid24105.log
+
+Command error:
+  openjdk version ""1.8.0_121""
+  OpenJDK Runtime Environment (Zulu 8.20.0.5-linux64) (build 1.8.0_121-b15)
+  OpenJDK 64-Bit Server VM (Zulu 8.20.0.5-linux64) (build 25.121-b15, mixed mode)
+  java -ea -Xmx12g -Xms12g -cp /opt/anaconda2/opt/bbmap-37.17/current/ clump.Clumpify -Xmx12g in=Input.500k_reads.fastq.gz out=Input_Rep1.clumped.fq.gz
+  OpenJDK 64-Bit Server VM warning: INFO: os::commit_memory(0x00000006c0000000, 4294967296, 0) failed; error='Cannot allocate memory' (errno=12)
+
+Work dir:
+  /opt/cipher-workflow-platform-master/work/80/e14b8c1c8954af880c6eed4b5e2bd1
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+ -- Check '.nextflow.log' file for details
+
+
+```
+
+Any suggestion ?Thanks so much!!!",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/2
+MDU6SXNzdWUyNTY3ODIzMjI=,Problems on centos 7.0 on tutorial,CLOSED,2017-09-11T17:28:27Z,2017-09-22T15:38:16Z,2017-09-22T15:38:16Z,"I nhave run the tutotial with a machine with 38 G RAM. This is the error:
+
+```
+[maurizio@localhost cipher-workflow-platform-master]$ nextflow run -qs 1 cipher.nf -with-singularity cipher.img --mode  chip --config  example_data/config.txt --fa /mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa --gtf  /mnt/working_directory/Homo_sapiens.GRCh38.79.gtf --lib s --readLen 75 
+N E X T F L O W  ~  version 0.25.7
+Launching `cipher.nf` [peaceful_wright] - revision: 553a48b852
+
+                 RUN INFORMATION               
+===============================================
+
+mode:				chip
+config:				/opt/cipher-workflow-platform-master/example_data/config.txt
+fasta:				/mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa
+gtf:				/mnt/working_directory/Homo_sapiens.GRCh38.79.gtf
+library:			s
+read-length:			75
+
+subsampled:			false
+
+clumpify:			true
+bbduk:				true
+fastqc:				true
+multiqc:			true
+mapping:			true
+bamcoverage:			true
+downstream_analysis		true
+
+threads:			1
+
+aligner:			bbmap
+===============================================
+
+[warm up] executor > local
+WARN: Access to undefined parameter `macs_g` -- Initialise it to a default value eg. `params.macs_g = some_value`
+WARN: Access to undefined parameter `epic_egs` -- Initialise it to a default value eg. `params.epic_egs = some_value`
+[84/32d701] Submitted process > fetch_chrom_sizes
+[cc/7d8cf9] Submitted process > create_mapping_index
+ERROR ~ Error executing process > 'fetch_chrom_sizes'
+
+Caused by:
+  Process `fetch_chrom_sizes` terminated with an error exit status (255)
+
+Command executed:
+
+  samtools faidx Homo_sapiens.GRCh38.rel79.cdna.all.fa
+  awk -v OFS='	' '{print $1, $2}' Homo_sapiens.GRCh38.rel79.cdna.all.fa.fai > chromSizes.txt
+
+Command exit status:
+  255
+
+Command output:
+  (empty)
+
+Command error:
+  ERROR  : There was an error binding the path /mnt/working_directory: No such file or directory
+  ABORT  : Retval = 255
+  
+
+Work dir:
+  /opt/cipher-workflow-platform-master/work/84/32d70163845cfea7382093e0b7e80f
+
+Tip: you can try to figure out what's wrong by changing to the process work dir and showing the script file named `.command.sh`
+
+ -- Check '.nextflow.log' file for details
+WARN: Access to undefined parameter `epic_gn` -- Initialise it to a default value eg. `params.epic_gn = some_value`
+
+Workflow completed on: Mon Sep 11 19:21:18 CEST 2017
+Execution status: Failed
+Workflow Duration: 2s
+
+Submit issues/requests on GitHub or e-mail cag104@ucsd.edu
+
+WARN: Killing pending tasks (1)
+[maurizio@localhost cipher-workflow-platform-master]$ nextflow run -qs 1 cipher.nf -with-singularity cipher.img --mode  chip --config  example_data/config.txt --fa /mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa --gtf  /mnt/working_directory/Homo_sapiens.GRCh38.79.gtf --lib s --readLen 75 
+N E X T F L O W  ~  version 0.25.7
+Launching `cipher.nf` [goofy_sax] - revision: 553a48b852
+^C
+
+                 RUN INFORMATION               
+===============================================
+
+mode:				chip
+config:				/opt/cipher-workflow-platform-master/example_data/config.txt
+fasta:				/mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa
+gtf:				/mnt/working_directory/Homo_sapiens.GRCh38.79.gtf
+library:			s
+read-length:			75
+
+subsampled:			false
+
+clumpify:			true
+bbduk:				true
+fastqc:				true
+multiqc:			true
+mapping:			true
+bamcoverage:			true
+downstream_analysis		true
+
+threads:			1
+
+aligner:			bbmap
+===============================================
+
+[warm up] executor > local
+WARN: Access to undefined parameter `macs_g` -- Initialise it to a default value eg. `params.macs_g = some_value`
+WARN: Access to undefined parameter `epic_egs` -- Initialise it to a default value eg. `params.epic_egs = some_value`
+^COne more CTRL+C to force exit
+^X^Z
+[1]+  Stopped                 nextflow run -qs 1 cipher.nf -with-singularity cipher.img --mode chip --config example_data/config.txt --fa /mnt/working_directory/Homo_sapiens.GRCh38.rel79.cdna.all.fa --gtf /mnt/working_directory/Homo_sapiens.GRCh38.79.gtf --lib s --readLen 75
+[maurizio@localhost cipher-workflow-platform-master]$ nextflow run -qs 1 cipher.nf -with-singularity cipher.img --mode  chip --config  example_data/config.txt --fa /mnt/mpwork/Homo_sapiens.GRCh38.rel79.cdna.all.fa --gtf  /mnt/mpwork/Homo_sapiens.GRCh38.79.gtf --lib s --readLen 75 
+N E X T F L O W  ~  version 0.25.7
+Launching `cipher.nf` [irreverent_heisenberg] - revision: 553a48b852
+
+                 RUN INFORMATION               
+===============================================
+
+mode:				chip
+config:				/opt/cipher-workflow-platform-master/example_data/config.txt
+fasta:				/mnt/mpwork/Homo_sapiens.GRCh38.rel79.cdna.all.fa
+gtf:				/mnt/mpwork/Homo_sapiens.GRCh38.79.gtf
+library:			s
+read-length:			75
+
+subsampled:			false
+
+clumpify:			true
+bbduk:				true
+fastqc:				true
+multiqc:			true
+mapping:			true
+bamcoverage:			true
+downstream_analysis		true
+
+threads:			1
+
+aligner:			bbmap
+===============================================
+
+[warm up] executor > local
+WARN: Access to undefined parameter `macs_g` -- Initialise it to a default value eg. `params.macs_g = some_value`
+WARN: Access to undefined parameter `epic_egs` -- Initialise it to a default value eg. `params.epic_egs = some_value`
+[3c/23bb16] Submitted process > clumpify (2)
+[68/a6be70] Submitted process > fetch_chrom_sizes
+[4a/658c93] Submitted process > calculate_egs
+WARN: Access to undefined parameter `epic_gn` -- Initialise it to a default value eg. `params.epic_gn = some_value`
+[5a/3d8943] Submitted process > clumpify (1)
+ERROR ~ Error executing process > 'calculate_egs'
+
+Caused by:
+  Process `calculate_egs` terminated with an error exit status (1)
+
+Command executed:
+
+  epic-effective -r 75 -n 1 Homo_sapiens.GRCh38.rel79.cdna.all.fa > egs_file.txt
+  Rscript /opt/cipher-workflow-platform-master/bin/process_epic_effective_output.R egs_file.txt
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Temporary directory: /tmp/ (File: effective_genome_size, Log level: INFO, Time: Mon, 11 Sep 2017 17:22:51 )
+  File analyzed: Homo_sapiens.GRCh38.rel79.cdna.all.fa (File: effective_genome_size, Log level: INFO, Time: Mon, 11 Sep 2017 17:22:51 )
+  Genome length: 281103479 (File: effective_genome_size, Log level: INFO, Time: Mon, 11 Sep 2017 17:22:51 )
+  /bin/sh: 1: jellyfish: not found
+  /bin/sh: 1: jellyfish: not found
+  Traceback (most recent call last):
+    File ""/opt/anaconda2/bin/epic-effective"", line 38, in <module>
+      effective_genome_size(fasta, read_length, nb_cpu, tmpdir)
+    File ""/opt/anaconda2/lib/python2.7/site-packages/epic/scripts/effective_genome_size.py"", line 56, in effective_genome_size
+      shell=True)
+    File ""/opt/anaconda2/lib/python2.7/subprocess.py"", line 219, in check_output
+      raise CalledProcessError(retcode, cmd, output=output)
+  subprocess.CalledProcessError: Command 'jellyfish stats /tmp/Homo_sapiens.GRCh38.rel79.cdna.all.fa.jf' returned non-zero exit status 127
+  rm: cannot remove '/tmp/Homo_sapiens.GRCh38.rel79.cdna.all.fa.jf': No such file or directory
+
+Work dir:
+  /opt/cipher-workflow-platform-master/work/4a/658c9372f835ad9d2a6ccd3bfe857a
+
+Tip: when you have fixed the problem you can continue the execution appending to the nextflow command line the option `-resume`
+
+ -- Check '.nextflow.log' file for details
+
+Workflow completed on: Mon Sep 11 19:22:52 CEST 2017
+Execution status: Failed
+Workflow Duration: 42.8s
+
+Submit issues/requests on GitHub or e-mail cag104@ucsd.edu
+
+WARN: Killing pending tasks (1)
+
+```",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/3
+MDU6SXNzdWUyNTczMjY0NDA=,Error when we prepare singularity machine,CLOSED,2017-09-13T10:08:26Z,2017-09-14T08:45:02Z,2017-09-13T15:44:34Z,"Here you can see the error I obtain when I try to bootstrap the machine with last git
+
+```
+Creating file system within image
+Image is done: cipher.img
+[root@localhost cipher-workflow-platform]#  singularity bootstrap cipher.img Singularity
+Sanitizing environment
+Building from bootstrap definition recipe
+Adding base Singularity environment to container
+Docker image path: index.docker.io/library/ubuntu:16.04
+ERROR Improperly formed manifest, layers or fsLayers must be present
+[root@localhost cipher-workflow-platform]# git log
+commit e4280c935a7dc37b3769daf858f2fb1ce2d8c4ce
+Author: Carlos Guzman <carlos@Carloss-MacBook-Pro.local>
+Date:   Mon Sep 11 11:02:11 2017 -0700
+
+    Added jellyfish to Singularity image
+
+commit 042e25f220417823b7efedb78a2af28ef51de727
+Author: Carlos Guzman <carlos@Carloss-MacBook-Pro.local>
+Date:   Mon Sep 11 08:41:15 2017 -0700
+
+
+```",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/4
+MDU6SXNzdWUyNTc5NjYzMDg=,Error on bamCoverage,CLOSED,2017-09-15T08:38:21Z,2017-12-15T02:07:19Z,2017-12-15T02:07:19Z,"I try to install in another machine  cipher-workflow. When  try to run the example files I have now this other error:
+
+
+```
+Sep-14 22:22:47.869 [Task submitter] INFO  nextflow.Session - [30/e5e179] Submit
+ted process > mapping_bowtie2 (2)
+Sep-14 22:22:47.874 [Actor Thread 19] DEBUG nextflow.Session - <<< barrier arriv
+e (process: post_fastqc)
+Sep-14 22:23:09.901 [Task monitor] DEBUG n.processor.TaskPollingMonitor - !! exe
+cutor local > tasks to be completed: 1 -- pending tasks are shown below
+~> TaskHandler[id: 12; name: mapping_bowtie2 (2); status: RUNNING; exit: -; erro
+r: -; workDir: /home/centos/cipher-workflow-platform/work/30/e5e17934b2b587b54f5
+4daa676cd09]
+Sep-14 22:24:08.389 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task c
+ompleted > TaskHandler[id: 12; name: mapping_bowtie2 (2); status: COMPLETED; exi
+t: 0; error: -; workDir: /home/centos/cipher-workflow-platform/work/30/e5e17934b
+2b587b54f54daa676cd09]
+Sep-14 22:24:08.390 [Task submitter] INFO  nextflow.Session - [58/80b5fd] Submit
+ted process > multiqc
+Sep-14 22:24:08.400 [Actor Thread 21] DEBUG nextflow.Session - <<< barrier arriv
+e (process: mapping_bowtie2)
+Sep-14 22:24:08.407 [Actor Thread 24] DEBUG nextflow.Session - <<< barrier arriv
+e (process: merge_bams)
+Sep-14 22:24:08.411 [Actor Thread 29] WARN  nextflow.processor.TaskProcessor - I
+nput tuple does not match input set cardinality declared by process `bamCoverage
+` -- offending value: [Input, Input_Rep1, /home/centos/cipher-workflow-platform/
+work/85/0da34454d38c168eb38075e88ef71b/Input_Rep1.sorted.mapped.bam, control1, i
+nput, /home/centos/cipher-workflow-platform/work/85/0da34454d38c168eb38075e88ef7
+1b/Input_Rep1.sorted.mapped.bam.bai]
+Sep-14 22:24:13.007 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task c
+ompleted > TaskHandler[id: 13; name: multiqc; status: COMPLETED; exit: 0; error:
+ -; workDir: /home/centos/cipher-workflow-platform/work/58/80b5fdf66e9d4df840071
+1beeb4976]
+Sep-14 22:24:13.008 [Task submitter] INFO  nextflow.Session - [25/2418bb] Submit
+ted process > estimate_fragment_size (1)
+Sep-14 22:24:13.012 [Actor Thread 24] DEBUG nextflow.Session - <<< barrier arriv
+e (process: multiqc)
+Sep-14 22:24:59.465 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task c
+ompleted > TaskHandler[id: 14; name: estimate_fragment_size (1); status: COMPLET
+ED; exit: 0; error: -; workDir: /home/centos/cipher-workflow-platform/work/25/24
+18bbb5884f168b703c9607e39ecd]
+Sep-14 22:24:59.509 [Task submitter] INFO  nextflow.Session - [fe/2d68b3] Submit
+ted process > bamCoverage (1)
+Sep-14 22:24:59.518 [Task submitter] DEBUG n.processor.TaskPollingMonitor - %% e
+xecutor local > tasks in the submission queue: 1 -- tasks to be submitted are sh
+own below
+~> TaskHandler[id: 16; name: bamCoverage (2); status: NEW; exit: -; error: -; wo
+rkDir: /home/centos/cipher-workflow-platform/work/d9/a0c3f7a4eb6d4a9a464518e132e
+51a]
+Sep-14 22:24:59.519 [Actor Thread 21] DEBUG nextflow.Session - <<< barrier arriv
+e (process: estimate_fragment_size)
+Sep-14 22:24:59.523 [Actor Thread 21] DEBUG nextflow.Session - <<< barrier arriv
+e (process: narrow_peak_calling_NI)
+Sep-14 22:25:00.167 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task c
+ompleted > TaskHandler[id: 15; name: bamCoverage (1); status: COMPLETED; exit: 1
+; error: -; workDir: /home/centos/cipher-workflow-platform/work/fe/2d68b3d00b4a8
+215b73c4bba7a948a]
+Sep-14 22:25:00.169 [Task submitter] INFO  nextflow.Session - [d9/a0c3f7] Submit
+ted process > bamCoverage (2)
+Sep-14 22:25:00.194 [Task monitor] ERROR nextflow.processor.TaskProcessor - Erro
+r executing process > 'bamCoverage (1)'
+
+Caused by:
+  Process `bamCoverage (1)` terminated with an error exit status (1)
+
+Command executed:
+
+  bamCoverage -b input.1 -o Input.RPKMnorm.bw -of bigwig -bs 50 -p 1 --normalize
+UsingRPKM --smoothLength 100 -e 150 --centerReads 2> Input.bamcoverage_report.tx
+t
+  echo 'bamCoverage -b input.1 -o Input.RPKMnorm.bw -of bigwig -bs 50 -p 1 --nor
+malizeUsingRPKM --smoothLength 100 -e 150 --centerReads' > bamcoverage_parameter
+s_Input.txt
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Work dir:
+  /home/centos/cipher-workflow-platform/work/fe/2d68b3d00b4a8215b73c4bba7a948a
+
+Tip: you can try to figure out what's wrong by changing to the process work dir 
+and showing the script file named `.command.sh`
+Sep-14 22:25:00.196 [Task monitor] DEBUG nextflow.Session - Session aborted -- C
+ause: Process `bamCoverage (1)` terminated with an error exit status (1)
+Sep-14 22:25:00.245 [main] DEBUG nextflow.Session - Session await > all process 
+finished
+Sep-14 22:25:00.246 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< ba
+rrier arrives (monitor: local)
+Sep-14 22:25:00.246 [main] DEBUG nextflow.Session - Session await > all barriers
+ passed
+Sep-14 22:25:00.288 [main] WARN  n.processor.TaskPollingMonitor - Killing pendin
+g tasks (1)
+Sep-14 22:25:00.317 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Sep-14 22:25:00.328 [main] DEBUG nextflow.script.ScriptRunner - > Execution comp
+lete -- Goodby
+```
+What can I do?",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/5
+MDU6SXNzdWUyNTk4NDI0MjU=,Error executing process  'narrow_peak_calling_NI' in atac mode,CLOSED,2017-09-22T14:57:28Z,2017-10-15T07:58:37Z,2017-10-15T07:58:37Z,"
+here is the log:
+ERROR ~ Error executing process > 'narrow_peak_calling_NI (1)'
+
+Caused by:
+  Process `narrow_peak_calling_NI (1)` terminated with an error exit status (127)
+
+Command executed:
+
+  null
+
+Command exit status:
+  127
+
+Command output:
+  (empty)
+
+Command error:
+  .command.sh: line 2: null: command not found
+
+===================================
+
+here is the .command.sh:
+#!/bin/bash -ue
+null
+
+",shenscore,https://github.com/c-guzman/cipher-workflow-platform/issues/6
+MDU6SXNzdWUyNjAwMjU5MTE=,error on clumpify,CLOSED,2017-09-23T17:48:06Z,2017-09-28T21:44:09Z,2017-09-28T21:44:09Z,"I create a directory  for run the wrkflow:
+I have this error:
+```
+nextflow run -qs 5 /home/centos/cipher-workflow-platform/cipher.nf --with-singularity /home/centos/cipher-workflow-platform/cipher.img --mode  chip --config  config.txt --fa /home/centos/reference_2/Hg38_genocode_prymary_kariotypic.fa --gtf  /home/centos/reference_2/gencode.v25.basic.annotation.gtf  --lib s --readLen 75 --macs_g hs --epic_gn hg38 --aligner bowtie2 --bamcoverage false --clumpify true
+
+Sep-23 17:42:40.173 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Sep-23 17:42:40.175 [main] DEBUG nextflow.Session - >>> barrier register (process: multiqc)
+Sep-23 17:42:40.179 [Task submitter] INFO  nextflow.Session - [12/e64d57] Submitted process > fetch_chrom_sizes
+Sep-23 17:42:40.182 [Task submitter] INFO  nextflow.Session - [f4/b2763e] Submitted process > clumpify (2)
+Sep-23 17:42:40.183 [Task submitter] INFO  nextflow.Session - [aa/35d79c] Submitted process > clumpify (4)
+Sep-23 17:42:40.186 [Task submitter] INFO  nextflow.Session - [ca/7a51e1] Submitted process > create_mapping_index
+Sep-23 17:42:40.187 [Task submitter] INFO  nextflow.Session - [bf/9ff2b7] Submitted process > clumpify (1)
+Sep-23 17:42:40.191 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > multiqc -- maxForks: 16
+Sep-23 17:42:40.220 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Sep-23 17:42:40.220 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Sep-23 17:42:40.221 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Sep-23 17:42:40.222 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: clumpify (2); status: COMPLETED; exit: 127; e
+rror: -; workDir: /home/centos/PROVA/work/f4/b2763e74d2f23260126fb7c41a4fa3]
+Sep-23 17:42:40.222 [main] DEBUG nextflow.Session - >>> barrier register (process: estimate_fragment_size)
+Sep-23 17:42:40.224 [Task submitter] INFO  nextflow.Session - [59/13f32b] Submitted process > clumpify (3)
+Sep-23 17:42:40.236 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > estimate_fragment_size -- maxForks: 16
+Sep-23 17:42:40.263 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'clumpify (2)'
+
+Caused by:
+  Process `clumpify (2)` terminated with an error exit status (127)
+
+Command executed:
+
+  clumpify.sh -Xmx12g in=MB_HDAC_me3_S4_R1_001.fastq.gz out=HDAC27ac_S4_Rep2.clumped.fq.gz
+  echo 'clumpify.sh -Xmx12g in=MB_HDAC_me3_S4_R1_001.fastq.gz out=HDAC27ac_S4_Rep2.clumped.fq.gz' > clumpify_parameters_HDAC27ac_S4_Rep2.txt
+
+Command exit status:
+  127
+
+Command output:
+  (empty)
+
+Command error:
+  .command.sh: line 2: clumpify.sh: command not found
+
+Work dir:
+  /home/centos/PROVA/work/f4/b2763e74d2f23260126fb7c41a4fa3
+
+Tip: when you have fixed the problem you can continue the execution appending to the nextflow command line the option `-resume`
+Sep-23 17:42:40.268 [Task monitor] DEBUG nextflow.Session - Session aborted -- Cause: Process `clumpify (2)` terminated with an error exit status (127)
+Sep-23 17:42:40.306 [Task monitor] DEBUG nextflow.Session - Unexpected error dumping DGA status
+java.util.ConcurrentModificationException: null
+	at java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:719)
+	at java.util.LinkedHashMap$LinkedEntryIterator.next(LinkedHashMap.java:752)
+	at java.util.LinkedHashMap$LinkedEntryIterator.next(LinkedHashMap.java:750)
+```
+",bioinfo-dirty-jobs,https://github.com/c-guzman/cipher-workflow-platform/issues/7
+MDU6SXNzdWUyNjU2NjAwNzg=,set threads=12 but still submit single cpu job to the cluster ,OPEN,2017-10-16T06:34:54Z,2017-10-16T17:12:16Z,,"Do I need to add 'cpus=12' to the nextflow configure file?
+But this may cause all jobs with a requirement of 12 logic cpus.",shenscore,https://github.com/c-guzman/cipher-workflow-platform/issues/8
+MDU6SXNzdWUyNjU5NjU2OTE=,ERROR ~ Error executing process > 'merge_bams (2)',CLOSED,2017-10-17T01:38:06Z,2017-12-15T02:07:37Z,2017-12-15T02:07:37Z,"ERROR ~ Error executing process > 'merge_bams (2)'
+
+Caused by:
+  No signature of method: java.lang.String.sort() is applicable for argument types: () values: []
+Possible solutions: drop(int), tr(java.lang.CharSequence, java.lang.CharSequence), wait(), size(), strip(), size()
+",shenscore,https://github.com/c-guzman/cipher-workflow-platform/issues/9
+MDU6SXNzdWUyNzU1ODE3NjM=,RNA-seq --aligner not working - error,CLOSED,2017-11-21T04:28:22Z,2017-12-15T02:08:41Z,2017-12-15T02:08:41Z,"Just installed cipher, looks really neat and exactly what my group needs for straightforward analysis. However, I just tried running it for the first time on a GEO dataset and encountered this odd error, even though I set the --alinger in the ommand to star (and tried others, non worked):
+
+ nextflow run /opt/main.nf --mode rna --config ./path/to/cfog --fasta ./ --gtf /path/to/gtf --lib s --readLen 50 --strandInfo frFirstStrand --expInfo ./DMSO_exp_config.txt --aligner star --threads 20
+N E X T F L O W  ~  version 0.25.1
+Launching `/opt/main.nf` [small_easley] - revision: b095c773ef
+WARN: Access to undefined parameter `analysis` -- Initialise it to a default value eg. `params.analysis = some_value`
+ERROR ~ --aligner should be one of the following: bbmap, bowtie2, bwa, hisat2, star
+
+ -- Check '.nextflow.log' file for details
+
+Nothing helpful in the logs. Any idea? Why isn't it recognizing the flag chosing star?
+",dshechter,https://github.com/c-guzman/cipher-workflow-platform/issues/10
+MDU6SXNzdWUyOTAxNzUwNjY=,Atac-Seq,OPEN,2018-01-20T08:11:33Z,2018-05-13T21:35:18Z,,"Hi,
+
+Thanks for this pipeline. 
+
+I was trying to use it on atac-seq data. I got the following error message: 
+`Caused by:  Process bamCoverage (1) terminated with an error exit status (127) Command executed:  null` 
+Checking at the code I found that there is no options for atac seq in this process.
+I added it line 1016 this way: `if (params.mode == ""chip"" || params.mode == ""dnase"" || params.mode == ""atac"") `
+However I am not sure this is correct.
+
+By the way I think the provided example (H3K4me3.500k) lacks instruction: what command to launch? I guess it is chip seq but in which organism? Including the corresponding gtf and fasta file could be nice. 
+
+Thanks,
+Jerome
+
+",jsalignon,https://github.com/c-guzman/cipher-workflow-platform/issues/11
+MDU6SXNzdWUyOTA2MTk3OTQ=,resample,OPEN,2018-01-22T21:22:52Z,2018-01-23T07:01:45Z,,"Hi,
+I found out that the subsample process is pretty slow. I have tried the reformat.sh function to subsample 155M PE reads in just 100 PE reads and it takes more than 15 minutes on my local machine. I guess the function is scanning the entire file to keep representative sequences. But is it really necessary? Couldn't we just take the first N reads of the file? 
+I have replaced this function by a very simple script below that takes seconds, that just takes the first N reads. 
+`lineNb = Math.round(params.subsampled_reads * 4)`
+```
+gunzip -c ${read1} | head -${lineNb} > ${id}_R1.subsampled.fq
+gzip ${id}_R1.subsampled.fq
+gunzip -c ${read2} | head -${lineNb} > ${id}_R2.subsampled.fq
+gzip ${id}_R2.subsampled.fq
+```
+Best,
+Jerome
+```",jsalignon,https://github.com/c-guzman/cipher-workflow-platform/issues/12

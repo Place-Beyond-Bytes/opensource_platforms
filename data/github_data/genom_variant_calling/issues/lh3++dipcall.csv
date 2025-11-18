@@ -1,0 +1,219 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU3MDEwODcyMTQ=,Interpretation of empty prefix.dip.vcf.gz,CLOSED,2020-09-14T13:11:59Z,2020-10-17T14:47:59Z,2020-10-17T14:47:58Z,"The final output of dipcall includes two files: prefix.dip.vcf.gz and prefix.dip.bed. A raw variant call is made in the VCF if a non-reference allele is observed in any alignments >=50kb and mapped with mapping quality >=5.
+
+So if `prefix.dip.vcf.gz` is empty (has no variants), then given the example below,
+
+    /genetics/elbers/dipcall.kit/run-dipcall -t 75 prefix miniasm.corr.ratatosk.035.fasta \
+    GCA_003401745.1_ASM340174v1_genomic.fna_upper.diploid.haplotype0.fasta.gz \
+    GCA_003401745.1_ASM340174v1_genomic.fna_upper.diploid.haplotype1.fasta.gz > miniasm.corr.ratatosk.035.mak
+
+`miniasm.corr.ratatosk.035.fasta` does not have non-reference alleles in the high confidences areas of `prefix.dip.bed`?",jelber2,https://github.com/lh3/dipcall/issues/1
+MDU6SXNzdWU3MDkwNTYwOTY=,Reducing alignment size,CLOSED,2020-09-25T16:03:54Z,2020-09-25T20:43:52Z,2020-09-25T20:43:52Z,"Hi 
+
+From the README:
+
+""A raw variant call is made in the VCF if a non-reference allele is observed in any alignments >=50kb and mapped with mapping quality >=5.""
+
+Is it possible to have an option to reduce the alignment length like in paftools call -L?
+
+Thanks",malmarri,https://github.com/lh3/dipcall/issues/2
+MDU6SXNzdWU4MjMxMTI3OTg=,License information missing,CLOSED,2021-03-05T13:52:56Z,2021-03-24T13:28:13Z,2021-03-23T13:29:36Z,"Hi again, @lh3!
+
+In the same vein as https://github.com/lh3/unimap/issues/5 :
+I'd like to package up dipcall for Bioconda, but I couldn't find any license information in the repository.
+Would it be possible for you to add a license file here?
+
+Cheers,
+Marcel",mbargull,https://github.com/lh3/dipcall/issues/4
+MDU6SXNzdWU4NjgzODMzNjY=,Can this software be used to identify the SV of Maize？,CLOSED,2021-04-27T02:38:03Z,2021-04-27T02:50:24Z,2021-04-27T02:50:24Z,"Hello，I want to use dipcall to identify the variation of Maize. I only have a refrence fasta and a assemblies fasta which used to identify the variation. I don't have pat.fa and mat.fa, how shoud I do to got them?",z1242099843,https://github.com/lh3/dipcall/issues/5
+I_kwDODKpXkM49xM_V,Can dipcall extend to the polyploidy plant genome ? ,OPEN,2021-10-26T13:34:14Z,2021-10-26T15:17:35Z,,"Hi, @lh3 
+
+`Dipcall` is designed for the diploidy, can I use the rule in the makefile for handling a plant tetraploidy genome?
+
+``` bash
+
+# mapping
+for hap in `seq 1 4`
+do
+    dipcall/dipcall.kit/minimap2 -c --paf-no-hit -xasm20 --cs -t16 DM4.chr.fasta query.${hap}.fa 2> query.${hap}.paf.gz.log | gzip > query.${hap}.paf.gz
+    dipcall/dipcall.kit/minimap2 -a -xasm20 --cs -t16 ref.fasta query.${hap}.fa 2> query.${hap}.sam.gz.log | gzip > query.${hap}.sam.gz
+    gzip -dc query.${hap}.paf.gz | sort -k6,6 -k8,8n | dipcall/dipcall.kit/k8 dipcall/dipcall.kit/paftools.js call - 2> ${hap}.${hap}.var.gz.vst | gzip > query.${hap}.
+var.gz
+    dipcall/dipcall.kit/k8 dipcall/dipcall.kit/dipcall-aux.js samflt query.${hap}.sam.gz | dipcall/dipcall.kit/samtools sort -m4G --threads 4 -o query.${hap}.bam -
+    gzip -dc query.${hap}.var.gz | grep ^R | cut -f2- > query.${hap}.bed
+done
+
+# joint calling
+dipcall/dipcall.kit/bedtk isec -m query.hap1.bed query.hap2.bed query.hap3.bed query.hap4.bed > query.dip.bed
+dipcall/dipcall.kit/htsbox pileup -q5 -evcf ref.fasta query.hap1.bam query.hap2.bam query.hap3.bam query.hap4.bam | dipcall/dipcall.kit/htsbox bgzip > query.pair.vcf.gz
+``` 
+I do get a vcf with four haplotype variation. Would you mind give some advice for this usage? Is it invalid in any step?
+
+![image](https://user-images.githubusercontent.com/20680150/138889585-a5aa01bb-1aa6-4a52-827f-a43d758398c4.png)
+",baozg,https://github.com/lh3/dipcall/issues/6
+I_kwDODKpXkM5C5pcV,no documentation for bedtk isec -m flag used in making confident regions bed for females,OPEN,2022-02-02T21:32:01Z,2022-02-02T21:32:01Z,,"[Line 119 in run-dipcall](https://github.com/lh3/dipcall/blob/master/run-dipcall#:~:text=push(%40mak%2C%20q%7B%09%24(ROOT)/bedtk%20isec%20%2Dm%20%24%5E%20%3E%20%24%40%7D)%3B) makes the confident regions bed file for females and uses the command `bedtk isec -m` but to my knowledge there's no documentation for the `-m` flag in bedtk isec.
+",juniper-lake,https://github.com/lh3/dipcall/issues/7
+I_kwDODKpXkM5E_3MA,Possible error outputting complex variants,OPEN,2022-03-02T19:18:37Z,2022-03-02T19:18:37Z,,"As we've been working towards assembly-based benchmarks for GIAB, I think we've encountered an issue with dipcall a number of times now. In particular, when the alignment in the bam file correctly has an insertion immediately before a deletion (representing a complex variant), the dip.vcf file will sometimes have only the insertion but not the deletion. An example of this is at chrX:69,487,386-69,487,425 on GRCh38 in this image from the HPRC assembly of HG002 with dipcallv0.3 (assembly, bams, and vcf at https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/HPRC-HG002.cur.20211005/). There are similar issues at chrX:27,361,826-27,361,865, chrX:40,208,433-40,208,472, and chrX:69,404,760-69,404,799. Let me know if you have any questions, and thank you for developing this really useful tool!
+<img width=""1022"" alt=""Screen Shot 2022-03-02 at 12 18 50 PM"" src=""https://user-images.githubusercontent.com/2439798/156432279-8a3e981e-1190-4ee1-9667-857b92fb856b.png"">
+",jzook,https://github.com/lh3/dipcall/issues/8
+I_kwDODKpXkM5KBkjg,Running dipcall for partially-phased assemblies?,CLOSED,2022-05-19T15:04:14Z,2022-06-03T18:11:25Z,2022-06-03T18:11:25Z,"Hi, I have a pair of [partially-phased assemblies](https://lh3.github.io/2021/04/17/concepts-in-phased-assemblies) for a sample, generated with minimap2, and wonder if these can be used as input for dipcall.
+
+I have run this program with these two assembly files, assuming randomly one as paternal and the other as maternal (since they are not really phased). Wonder if this is the reason why the resultant VCF file is empty.
+
+    run-dipcall  prefix  reference.fa   assembly.bp.hap1.c_tg.fa assembly.bp.hap2.c_tg.fa  > prefix.mak
+    make -j2 -f prefix.mak
+
+I am assuming here that the samples is females as well, but it is not. Not sure if that could affect as well. What is the PAR.bed input file for males? cannot fin this in the documentation.
+
+Thanks
+",elcortegano,https://github.com/lh3/dipcall/issues/9
+I_kwDODKpXkM5Ql5h9,Interpretation of bed files,OPEN,2022-08-26T11:02:35Z,2022-08-26T13:25:39Z,,"```
+$ cat prefix.dip.bed | awk 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}'
+2823519412
+$ cat prefix.hap1.bed | awk 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}'
+2690214366
+$ cat prefix.hap2.bed | awk 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}'
+2817991873
+```
+
+As per the documentation: The `prefix.dip.bed` file gives the confident regions. A base is included in the BED if 1) it is covered by one >=50kb alignment with mapQ>=5 from **each** parent and 2) it is not covered by other >=10kb alignments in **each** parent. Based on this, shouldn't the length of intervals in `prefix.dip.bed` be lower than `prefix.hap1.bed` and `prefix.hap2.bed`, i.e., should `prefix.dip.bed` have been intersection of the two haplotype-specific bed files?
+
+Please suggest what is the relationship between these three bed files.",cjain7,https://github.com/lh3/dipcall/issues/10
+I_kwDODKpXkM5SiCc0,How to extract the inversions from the dipcall results?,CLOSED,2022-09-24T12:19:49Z,2022-09-24T15:03:03Z,2022-09-24T15:02:58Z,"Dear @lh3 ,
+
+After running `dipcall`, it will generate a file named `${pre}.dip.vcf.gz`. All the genetic variants including SNVs, Indels, and SVs are all deposited in this VCF file. I know i can separate these variants according the length of the reference allele and alternative allele. However, i do not know  to extract the inversions from this VCF file?
+
+Looking forward to your reply, thanks.
+
+Sincerely yours,
+Zheng zhuqing",biozzq,https://github.com/lh3/dipcall/issues/11
+I_kwDODKpXkM5a81sk,Using winnowmap,CLOSED,2023-01-09T16:15:10Z,2023-01-09T16:27:13Z,2023-01-09T16:27:13Z,"Attempted to run dipcall using winnowmap (by passing `-W repetitive_k15.txt`) and saw the following error in `dipcall.hap1.paf.gz.log`:
+```
+[M::mm_idx_gen::0.003*1.15] reading downweighted kmers
+ERROR: input list of k-mers and winnowmap parameter k are inconsistent
+```
+My repetitive_kmer file is of the form:
+```
+CGGAATTGAATGGAA	18274
+CTCAAAAACAAAAAA	4552
+CGGAATTGAATGGAA	12469
+...
+```
+Unless there is a way to pass a value for k to dipcall, what value of k does dipcall anticipate? I did not see it listed in the documentation, or in the error message. I know `k=15` is the default for winnowmap, which is why I tried that first.",steven-solar,https://github.com/lh3/dipcall/issues/12
+I_kwDODKpXkM5k2Yoi,Interpretation of dipcall vcf file,CLOSED,2023-05-02T08:15:32Z,2023-05-02T11:58:16Z,2023-05-02T11:58:16Z,"Dear @lh3,
+Thank you for great tools. 
+
+I have phased human genome (using trio data) assembly generated from hifiasm. I have generated dipcall results by aligning hap1 and hap2 assemblies to CHM13 genome. Below are the results of filter column-
+```
+5134326 .
+   5318 DIPY
+ 144669 GAP1
+    548 GAP1;DIPY
+  14048 GAP1;HET2
+ 159554 GAP2
+  48065 HET1
+  87672 HET1;GAP2
+  17434 HET1;HET2
+  34374 HET2
+``` 
+May I know how to interpret these results in terms of assembly quality? ",nirvana693,https://github.com/lh3/dipcall/issues/13
+I_kwDODKpXkM5yyPzM,Interpretation of N's in the VCF,OPEN,2023-10-04T09:22:03Z,2023-10-04T10:33:04Z,,"I'm seeing N's in my dipcall v0.3 vcf where there are not Ns in the reference. 
+
+The variants lie within the high confidence bedfile. 
+
+Any idea what could be going wrong? 
+
+```
+tabix prefix.dip.vcf.gz chr1:62784-64408
+chr1    62784   .       G       A       30      .       .       GT:AD   1|1:0,2
+chr1    62915   .       G       A       30      .       .       GT:AD   1|1:0,2
+chr1    63003   .       C       T       30      .       .       GT:AD   1|1:0,2
+chr1    63015   .       A       AAAT    30      .       .       GT:AD   1|1:0,2
+chr1    64401   .       N       A       30      .       .       GT:AD   1|1:0,2
+chr1    64402   .       N       C       30      .       .       GT:AD   1|1:0,2
+chr1    64403   .       N       C       30      .       .       GT:AD   1|1:0,2
+chr1    64404   .       N       A       30      .       .       GT:AD   1|1:0,2
+chr1    64405   .       N       A       30      .       .       GT:AD   1|1:0,2
+chr1    64406   .       N       T       30      .       .       GT:AD   1|1:0,2
+chr1    64407   .       N       G       30      .       .       GT:AD   1|1:0,2
+chr1    64408   .       N       C       30      .       .       GT:AD   1|1:0,2
+
+samtools faidx ref.fa.gz chr1:62784-64408
+>chr1:62784-64408
+GACTGTTACAGGTTCCAGCAGGATAACTGGGTGGAAATGAGTTTGGTTTCACTTAGTCTC
+TCTAAAGAGAAAGCAAGTTGGTAGACTAATACCTAATAAAAGCAAAGCTGCCAACAATTG
+AAATTGCCTGGGCTGCTCTGTGTGTCCCACATGCATGGGTGTGGGTGCCAGTGTGTGTGC
+GTGTGTGCATGCATGTGCATGTGTGTTGGGATAGAGTGGCAAGAAAATGGGAAATAAGAA
+TGTTCAGTCCATAGCCCTTCATTATAAAAAGGTGAGCTGTAATAAATACTAGTGCCACAT
+TTAGCCAAAACTTTACTCCAGCCAAAGGTGATATTTTCATGATAACATCCTGTGATTGCT
+TTGTTCTTCGTCTTTTATGTTCTTCCTAGATGGGCTCAGAACATACAAGAATTAAGTACA
+CATCTTATTTTCCAGTGATAATGCTACCGGCAAATTCTGTTGTTTGTATAAACATCAGCC
+ATGTTTATATAACTAAACTAGTGTTTTGTTTTGTCAATTCAGCAAGAAATTAGACCACAT
+GGTGGCTTAATGCTGCATTGATTTGGCTATCAATTTGTTTTCACTTTTCTGCAAAATATT
+TAATACATTATTAAATTGAATTATGCTGATGCCACAGTTGTTCTTATCTCAATTGTCTTA
+AAATTCATTTAATTTTTTTTTCCTTTGGTTTCATTATTCAAATTTTAACTTCAGTTCTCA
+ACATTTTATCTGATGGAAGAGATGGAGTCCATTACTAAGGACTCCATTGTGCTCCATCAT
+GCCAGAGTTGTAAAATAGATCTTTTAAAGGAAATTTACTGTGATTTTTTTCTATTTAAGA
+GCTTCCTCTCCAGTTGAGCATGTAAGAAAATTATACCAGGAGAATACAGTAAACTCTATG
+AGGCAAGCTATAAACATGTAGCATTGTGATTAGGGCTGGTTCTCCTTCTAGAGACATGGT
+AGGATTGCAATTTCATACCATCCTTGAAGTTAGAGAGAGCCACGTGACTCATTTAGCCAA
+TGAACTGTGAGCAGAATGACATGTCACTTCCAGCAGAAGCTTTAAGAATCTGAGAGACAT
+TCATACGTTTTCCATGTGCTGTAGCCTTATACCCAAAGCCTGGGTCCCAAGTGACCATGA
+CAGGCAGAGCTCCCTGTTGAGCCACAGAGATTTAGAGAATGGCTGTTAACACAGCATAAT
+CCAGCCCATCCTGACTAATCTGATATTAACATGTATAATAAAGAATTCTATCAATGCTGA
+GGGAAGATGATTAGTTAAGGTCCTAGGTTGCAAGTCTCAAAACCTCTTCTAAGGATTGTA
+GACAGGAAATTAAATGACTTCTAGTCCCTAGAGTTCCCAATCTCCTACCATCCCATCCTA
+ATATGACAGAAGTAATTCCTGAGTTGCTTCTGAAACCAGAGCTTCCCTCAGAACCCTTAG
+CCTGCCAGATGGCTTCTTGGAGAGCCCTCACTCACTTTTCTCCTTCTGCTATTGCTGCTC
+ATTCATTCCAGCTTTTAAAAATTCATCTTTATCCAGGAACCTCGCTTCTAGAAAAGTCAT
+ACAGGTGCTTCCAGGAGGCTACATGGGCACCCATATTTTTCTAGCCACTTTCATTAGACC
+AATGC
+
+printf ""chr1\t62784\t64408\n"" | bedtools intersect -a prefix.dip.bed -wa -b -
+chr1    2810    216558
+```
+Looking in IGV, the transition to the dense block of variants with ref Ns is not due to the start of a new alignment - and the variants with N as reference are not supported by the haplotype specific assembly to ref alignments. 
+
+![igv_screenshot_dipcall](https://github.com/lh3/dipcall/assets/13199663/5d84f9c5-b142-4819-a60c-93108f7222af)
+
+
+
+",mwykes,https://github.com/lh3/dipcall/issues/14
+I_kwDODKpXkM6Krd1k,Genotype in the vcf output,OPEN,2024-05-30T22:50:09Z,2024-05-30T22:50:09Z,,"Hi, I have two calls at pos1 and pos2. The last columns are the following
+
+pos1: . . GT:AD 1|0:1,1
+pos2: . . GT:AD 1|0:1,1
+
+The VAF of the call at pos1 from the read-based variant calling is 0.9; at pos2 -- 0.4.
+
+Could you explain how to read the last column? I saw the header but was confused about why they had the same genotype but different zygosity.",daggoo,https://github.com/lh3/dipcall/issues/15
+I_kwDODKpXkM6b1u-3,Missed diploid regions,OPEN,2024-10-25T16:20:35Z,2024-10-28T19:20:14Z,,"Hi @lh3,
+
+I'm building an assembly-based small variant truth set for NA12878, leveraging assemblies from across the CEPH pedigree and validating inheritance patterns in eight third-generation family members. The method identifies diploid regions consistently across the family, and I'm using Dipcall to generate variants within these high-confidence regions. However, a few issues have come up:
+
+*Missed heterozygous regions*: Dipcall seems to miss clearly heterozygous regions in some diploid areas (see screenshot). This pattern leads to a ~10-fold increase in false-negative SNV calls compared to HiFi read-based variant calling (see attached xlsx). Is there a way to enable forced calling on all covered positions?
+
+*Alignment parameters*: Are there recommended alignment settings to prevent splitting reads across small clusters of variants? Currently, I’m using the default parameters (see screenshot for example).
+
+*Suggestions for optimal variant calls*: Any additional recommendations for improving small variant calling quality with Dipcall would be greatly appreciated.
+
+Thanks very much for your insights!
+
+--Zev
+
+[benchmark-against-giab.xlsx](https://github.com/user-attachments/files/17524889/benchmark-against-giab.xlsx)
+<img width=""1418"" alt=""Screenshot 2024-10-24 at 9 04 34 PM"" src=""https://github.com/user-attachments/assets/e0fede65-235d-4a22-9e3d-b970c9502a40"">
+
+<img width=""577"" alt=""Screenshot 2024-10-25 at 9 16 21 AM"" src=""https://github.com/user-attachments/assets/f0552e51-ff2e-44be-bdb5-1871aa72ddb1"">
+",zeeev,https://github.com/lh3/dipcall/issues/16
+I_kwDODKpXkM6iI8y2,accuracy of truth and following benchmark,OPEN,2024-12-05T12:15:42Z,2024-12-05T12:17:41Z,,"Hi there,
+
+I'm working with a non-model plant species (white lupine) for which I'm doing some benchmark tests comparing `GATK` and `DV` after pangenome alignment with `Giraffe`.
+
+The idea is to select the best caller for subsequent population/domestication analyses for the species; however, it appears that for both tools _recall_, _precision_ and _F1_ are extremely low... So, I wonder what might be affecting this, and if by any chance the benchmark tool, `hap.py`, might be involved in all this.
+
+The reference for this species is AMIGA, and I changed the chromosome notation in the reference to match the **chr** format for one because of #1 but also because it appears to be the standard notation expected by `hap.py`. For non-standard/chromosome contigs I use the `chrUn_` notation as in the GRCh38 human reference.
+
+Lastly, the two assemblies for the individual I have built the truth from have been generated with HiFi+Hi-C (relative coverage of 50.90× and 130.16×) with `hifiasm`, scaffolded with `RagTag` and curated with `JuicerTool`.
+
+If helpful I can post some stats (`assembly-stats`, `compleasm` and `Merqury`) for those as well as the values for all metrics. Let me know, thanks!",Overcraft90,https://github.com/lh3/dipcall/issues/17

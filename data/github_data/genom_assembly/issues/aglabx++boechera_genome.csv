@@ -1,0 +1,58 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHPSWtc5IelKt,**Basic server skills**,CLOSED,2022-04-26T13:39:21Z,2022-06-19T10:36:56Z,2022-06-19T10:29:02Z,"Instruction - https://docs.google.com/document/d/17qgOThkl8KD2XEOOxZJv7ETOYKK8N60ZFXbAbllQ00c/edit
+
+- [x] Generate SSH-key
+- [x] Connect to the server
+- [x] Install jupyter notebook on server
+- [x] Run jupyter notebook in screen (it's the Linux tool)
+- [x] Connect server with you computer with tonnel",zilov,https://github.com/aglabx/boechera_genome/issues/1
+I_kwDOHPSWtc5I4UM9,**Конвертировать HiFi риды из BAM в FASTQ**,CLOSED,2022-05-02T10:25:31Z,2022-06-19T10:29:13Z,2022-06-19T10:29:13Z,"Тул: https://github.com/PacificBiosciences/bam2fastx
+Файлы: два файла BAM в папке /media/eternus1/data/plants/boechera_falcata/raw_reads/hifi
+Аутпут: положи в папку /media/eternus1/data/plants/boechera_falcata/users/burdaeva/hifi_fastq
+
+Не забудь: добавить команду, которая успешно конвертировала файлы в ноутбук этого репозитория (файл [boechera_assembly_lab_journal.ipynb](https://github.com/aglabx/boechera_genome/blob/main/boechera_assembly_lab_journal.ipynb))
+
+Кратенькая теория: риды HiFi на данный момент самая крутая технология которая существует, длина ридов более 10 Kbp. компания нам прислала риды в формате двоичного кода выравнивания BAM. Этот формат занимает меньше места => его удобнее передавать между серверами. Но для сборки этот формат не подходит, сборщики требуют формат fasta или fastq. Для этого мы делаем этот шаг.",zilov,https://github.com/aglabx/boechera_genome/issues/2
+I_kwDOHPSWtc5I4Vk9,Протестировать как будешь вносить изменения на гитхаб,CLOSED,2022-05-02T10:32:20Z,2022-06-19T10:29:08Z,2022-06-19T10:29:08Z,"Нужно:
+1) Склонировать репозитория на сервер
+2) В юпитере, который открыт на сервере открыть файл boechera_assembly_lab_journal.ipynb
+3) Добавить несколько новых строк в файл и сохранить его
+4) С помощью git запушить (загрузить) изменения в репозиторий (смотри лекцию в карточке 'Лекции')",zilov,https://github.com/aglabx/boechera_genome/issues/3
+I_kwDOHPSWtc5MDnrU,Проверить качество ридов с помощью FASTQC,CLOSED,2022-06-19T10:28:25Z,2022-07-16T14:58:47Z,2022-07-16T14:58:47Z,"Мануал к тулу найдешь сама, на ютубе есть куча видео которые объячнят как с ним работать и как интерпретировать результаты.
+
+Задача - файлы html для каждого файла ридов, которые выдает fastqc добавить в репозиторий в папку fastqc. 
+
++ напиши хорошие у нас риды или нет и почему в юпитер",zilov,https://github.com/aglabx/boechera_genome/issues/6
+I_kwDOHPSWtc5MDoDs,Построить гистограмму к-меров с помощью GenomeScope,CLOSED,2022-06-19T10:35:46Z,2022-08-09T20:17:59Z,2022-07-16T14:58:45Z,"Для этого:
+- [ ] Сольешь оба файла ридов которые у нас есть в один
+- [ ] Запустишь Jellyfish count чтобы посчитать все к-меры
+- [ ] Запустишь Jellyfish histo чтобы построить распределение к-меров
+- [ ] Запустишь Genomescope чтобы получить график распределения к-меров
+- [ ] В юпитер внесешь команды для всех шагов и описание графика (значения пиков на графике, где покрытие генома, какая нетерозиготность, где находятся повторы на графике)
+
+Задача - положить график который выдаст genomescope  в папку genomescope в репозиторий.
+
+Теория по кмерному анализу -https://en.wikipedia.org/wiki/K-mer, https://youtu.be/DyZvATM9Hr8, https://bioinfologics.github.io/post/2018/09/17/k-mer-counting-part-i-introduction/",zilov,https://github.com/aglabx/boechera_genome/issues/7
+I_kwDOHPSWtc5MDoW_,Построить Smudgeplot,CLOSED,2022-06-19T10:41:40Z,2022-07-16T14:58:34Z,2022-07-16T14:58:34Z,"В построение графика пригодятся файлы Jellyfish и GenomeScope, команды для построения в репозитории тула https://github.com/KamilSJaron/smudgeplot
+
+- [ ] построить график
+- [ ] описание графика в юпитер, какая у нас плоидность генома
+
+Задача положить график в папку genomescope в репозитории",zilov,https://github.com/aglabx/boechera_genome/issues/8
+I_kwDOHPSWtc5N5KKl,Сборка генома,OPEN,2022-07-16T14:59:06Z,2022-07-16T15:15:53Z,,"Собирать геном будем несколькими сборщиками, так как часто сборки могут сильно отличаться друг от друга и не всегда один сборщик дает лучший результат.
+
+Список сборщиков:
+1) LJA (https://github.com/AntonBankevich/LJA)
+2) Hifiasm
+3) Canu
+4) Falcon
+5) Поискать новые статьи с новыми сборщиками для HiFi ридов
+
+* Не все сборщики дают гаплоидную сборку, поэтому для ее получения нужно будет использовать дополнительные тулы (например https://github.com/dfguan/purge_dups)
+
+Для каждой сборки нужно будет сделать контроль качества, от включает в себя два шага:
+1) Статистический с помощью QUAST
+2) Биолого-статистический c помощью BUSCO (база данных тут /media/eternus1/nfs/projects/shared/databases/busco)
+Метрики обоих тулов и их смысл можешь найти в их статьях
+
+Статистику по каждой сборке нужно будет внести [вот в эту табличку](https://docs.google.com/spreadsheets/d/1FeYK-oIFX5Gjc8w9Y93YdnkQcxDknQ_PTg7Af2crN4g/edit?usp=sharing), она пойдет у нас в статью как бенчмарк приложений для сборки геномов растений.",zilov,https://github.com/aglabx/boechera_genome/issues/11

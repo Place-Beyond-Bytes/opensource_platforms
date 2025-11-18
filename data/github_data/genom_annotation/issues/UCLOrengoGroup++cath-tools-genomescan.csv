@@ -1,0 +1,107 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyMzM2NDQzNTE=,progress display,CLOSED,2017-06-05T16:39:26Z,2017-06-06T16:19:30Z,2017-06-06T16:19:30Z,"It would be useful to have the percentage progress displayed while the job is running, particularly for large jobs!",greglv93,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/1
+MDU6SXNzdWUyNDU3MTkwMTg=,explain difference between conditional/independent evalue,CLOSED,2017-07-26T13:18:11Z,2019-02-26T15:44:40Z,2019-02-26T15:44:40Z,,sillitoe,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/6
+MDU6SXNzdWUyNDU3MjA2Mzg=,get cath-resolve-hits compiling on Mac,CLOSED,2017-07-26T13:23:44Z,2017-07-31T11:58:10Z,2017-07-31T11:58:10Z,,sillitoe,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/7
+MDU6SXNzdWUyNDU3MjM3OTQ=,add domain hmm library as well as funfams,OPEN,2017-07-26T13:34:14Z,2017-07-26T13:34:14Z,,,sillitoe,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/8
+MDU6SXNzdWU0MjUyNTk2OTE=,Improving efficiency by setting hmmsearch --cpu 1 and running cath-genomescan.pl in parallel,CLOSED,2019-03-26T07:14:04Z,2019-03-29T14:49:29Z,2019-03-29T14:49:29Z,"Hello, 
+
+Thank you so much for cath-tools-genomescan, I've found it very useful so far.  
+
+I was running `cath-genomscan.pl` on all of the genes predicted in my metagenome samples. It was taking quite a while, mostly due to `hmmsearch`, which despite the default behavior to use all available cpus usually only uses a few.  I wanted to figure out how to parallelize it and came up with this strategy. 
+
+1) added an argument to `hmmsearch` in `cath-genomescan.pl` to only use 1 cpu (`'--cpu 1'`)
+2) split my amino acid fasta files into the number of cpus I wanted to use (in this case 48)
+3) wrote the `cath-genomescan.pl` commands for each of the sub files to a text file
+4) submitted that text file to be run in parallel (cpus=48)
+
+This seemed to work pretty well and got the results I was looking for very quickly.  I of course had to clean up some intermediate files and parse/aggregate the results into single files.  I figured I'd share the strategy.  Not sure how easily it can be implemented for `cath-genomescan.pl`, but at least providing an argument to set the number of cpus used by `hmmsearch` could be helpful.  
+
+Here is the nasty bash code I used inside a loop over my directories.  Tried to clean up a little to make it easier to read.
+```
+#get the headers from the faa file 
+      grep ""^>"" min1000_faa > min1000_faa_headers.txt
+#split into 48 chunks
+      split --number=l/48 min1000_faa_headers.txt --additional-suffix=_headers_split
+#remove the leading "">"" from the headers 
+      sed -i 's/>//g' *_headers_split
+#for each of the header chunks 
+      for i in *_headers_split;
+      do
+#use pullseq to get the aa sequences for each chunk (https://github.com/bcthomas/pullseq)
+        pullseq -i $min1000_faa -n $i > $i.faa
+#append the cath-genomescan.pl command for that chunk to a text file
+        echo ""/path/to/cath-tools-genomescan/apps/cath-genomescan.pl -i $PWD/$i.faa -l path/to/cath-tools-genomescan/data/funfam-hmm3.lib -o $PWD/$i.faa.out"" >> cath_genomescan_cluster_commands.txt
+      done
+#now send the cath-genomescan.pl commands to parallel with 48 cpus and pipe to qsub to submit to the cluster 
+echo ""parallel -j48 < $PWD/cath_genomescan_cluster_commands.txt"" | qsub -V -N cath_${sample}
+```
+
+Cheers, 
+Alex",alexdthomas,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/12
+MDU6SXNzdWU0MjYyNDY4OTA=,retrieve_FunFam_aln_GO_anno_CATH-API.pl: No such file or directory,CLOSED,2019-03-28T01:02:25Z,2019-04-02T12:02:12Z,2019-04-02T12:02:11Z,"Hello again, 
+
+Following the example here (https://github.com/UCLOrengoGroup/cath-tools-genomescan) to get the EC numbers and GO terms for a CATH FunFam model. With the test data, when I run `./apps/retrieve_FunFam_aln_GO_anno_CATH-API.pl 2.40.50.140/FF/58874 v4_1_0` in my project directory I get the following error `-bash: ./apps/retrieve_FunFam_aln_GO_anno_CATH-API.pl: No such file or directory`. 
+
+Looking at `retrieve_FunFam_aln_GO_anno_CATH-API.pl` this makes sense, since on line 34 it seems to have a 'results' directory hardcoded to be in the parent directory of the current directory.  It also seems to be looking for `*.sto.aln` and `*.GO.anno` files there that I can't figure out where they would have been produced.  
+
+On line 42 it does seem to construct a correct url to download the stockholm alignment file for the given FunFam and this file does contain the EC and GO metadata (as well as other useful information).  
+
+As I have run `cath-genomescan.pl` on all of the proteins predicted in my metagenome, it seemed very inefficient for me and the CATH API server to query the server for the redundant set of CATH FunFams, so I generated a non-redundant list and downloaded all of the stockholm files for those.  I've been working on parsing out the metadata I am interested in, but keep hitting little text formatting and things I wasn't expecting...
+
+Maybe I'm just incapable of finding it, but Is here is a table somewhere on the FTP (ftp://orengoftp.biochem.ucl.ac.uk/cath/releases/latest-release/) that has the CATH superfamily IDs, FunFam IDs, and associated ECs and GOs (maybe even accessions, definitions, descriptions, but that could be a bit much...)?  It would be really useful for users and might save some unnecessary traffic downloading thousands of alignments just to get the metadata.  I noticed in several publications (DOI 10.1093/nar/gkv488, 10.1093/bioinformatics/btv398) that the ability to connect FunFams to ECs is a feature of the FunFams, I've just had a hard time doing it efficiently and programmatically.  
+
+Thanks, 
+Alex",alexdthomas,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/13
+MDU6SXNzdWU1MzkwOTAwNDc=,improve handling of discontinuous domains ,CLOSED,2019-12-17T14:10:24Z,2019-12-17T14:29:53Z,2019-12-17T14:29:53Z,"See discussion here:
+
+https://github.com/UCLOrengoGroup/cath-tools/issues/71
+
+
+",sillitoe,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/15
+MDU6SXNzdWU2MzYxNzI5MzA=,Add snakemake pipeline,OPEN,2020-06-10T11:34:22Z,2020-06-10T11:34:22Z,,"We want to encapsulate the process of scanning sequences against FunFam HMMs into a simple workflow, eg [snakemake](https://snakemake.readthedocs.io/en/stable/).
+
+Steps:
+1. clone repo
+1. create new branch
+1. create directory with snakemake pipeline
+1. add / change documention
+1. create pull request (PR) of your new branch against master
+1. code review
+1. merge to master
+",sillitoe,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/16
+MDU6SXNzdWU2MzY5NjI1MjY=,Can't connect to www.cathdb.info:80,OPEN,2020-06-11T12:10:47Z,2020-06-11T17:53:52Z,,"Hi,
+
+Apparently from my cluster I cannot reach the web to retrive GO terms:
+
+`500 Can't connect to www.cathdb.info:80 (Temporary failure in name resolution) at /mnt/storage/home/tk19812/scratch/software/cath-tools-genomescan/apps/retrieve_FunFam_aln_GO_EC_anno_CATH-API.pl line 66.`
+
+Would be possible to download the database? of is it too large?
+
+Thanks a lot
+Francesco",francicco,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/17
+MDU6SXNzdWU4NDA2MzM4MTQ=,Funfams database compatibility problem with hmmsearch,OPEN,2021-03-25T07:11:38Z,2021-09-23T15:26:51Z,,"Hi,
+
+While i can resolve this issue for myself, i'd like to point out that the hmmsearch part of the pipeline doesn't work with the latest funfams database. The first line is incompatible with hmmsearch. I refer to funfams in my protein function prediction pipeline and it would be great if i can direct users directly to your download of the latest funfams without adding an extra step in the installation process. I fixed it by just replacing the funfams v4.3 header with that of v4.2.
+
+Kind regards,
+
+Maarten",mreijnders,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/18
+I_kwDOBWbuuM4-zLnQ,GO annotation,OPEN,2021-11-15T12:21:39Z,2021-11-15T12:21:39Z,,"Hi,
+
+Do all the GO terms listed in the GO annotation file belong to the query gene?
+Or do I have to select one among the lines listed in the file?
+
+Cheers
+F
+",francicco,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/19
+I_kwDOBWbuuM6FUjZ2,Error encountered when running Cath-resolve-hits.macos,OPEN,2024-04-11T01:48:33Z,2024-04-11T01:48:33Z,,"Hi,
+
+I have set up the environment index the library and trying to run a the genomescan with test fast file.
+Things look fine till there is an error says ! Error: encountered an error when running command /Users/kunmiao/myproject/apps/../bin/cath-resolve-hits.macos. 
+
+Followed by STDERR: Can't exec ""/Users/kunmiao/myproject/apps/../bin/cath-resolve-hits.macos"": Permission denied at ./apps/cath-genomescan.pl line 172.
+
+can you comment on this? (BTW I installed a macOS version of HMMER. Could that be causing the problem?)
+
+Thanks,
+House",housemiao,https://github.com/UCLOrengoGroup/cath-tools-genomescan/issues/20

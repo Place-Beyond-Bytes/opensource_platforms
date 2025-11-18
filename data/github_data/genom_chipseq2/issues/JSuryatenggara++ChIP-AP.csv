@@ -1,0 +1,411 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOFaL_Jc5BT5YR,Checking for suite requirements issue,CLOSED,2022-01-06T22:05:20Z,2022-01-07T18:45:04Z,2022-01-07T18:45:04Z,"Hi,
+First, thank you for developing ChIP-AP. I installed it on our University Cluster computer with the OS Red Hat Enterprise Linux 8. When I run the following command -
+(python3_chipap) [xxx]$ ./chipap.py --mode single --ref hg38 --genome PATH/genomes --output PATH/output --setname xxx --sample_table PATH/xxx_samp_table.txt --custom_setting_table PATH/chip_ap_default_seetings_table.txt --fcmerge --goann --pathann --deltemp --thread 24 --run
+
+The tool exits with the following messages -
+Please make sure Genrich.py is installed, in PATH, and marked as executable
+Please make sure fold_change_calculator.py is installed, in PATH, and marked as executable
+Please make sure IDR_integrator.py is installed, in PATH, and marked as executable
+Please make sure peak_caller_stats_calculator.py is installed, in PATH, and marked as executable
+Please make sure GO_annotator.py is installed, in PATH, and marked as executable
+Please make sure pathway_annotator.py is installed, in PATH, and marked as executable
+Please make sure meme_sequence_extractor.py is installed, in PATH, and marked as executable
+
+I confirm that these python programs are marked as executable. Also, chipap.py and these scripts are in the same directory. Could you please let me know what I did wrong here?
+
+Thank you in advance.
+",RM83,https://github.com/JSuryatenggara/ChIP-AP/issues/1
+I_kwDOFaL_Jc5CRLlS,Missing Gene annotations and De novo motifs,CLOSED,2022-01-23T07:40:15Z,2022-01-28T16:44:19Z,2022-01-28T16:44:18Z,"Hi,
+I run ChIP-AP on your given data set (SALL4; GSE172355) using the following command. I am not getting gene annotations (Entrez id, gene name, gene description, etc.) in the output file [setname]_all_peaks_annotated.tsv. I used the default settings table. Please suggest what I am missing here.
+
+[xxx]$ ./chipap.py --mode single --ref hg38 --genome PATH/genomes --output PATH/output --setname xxx --sample_table PATH/xxx_samp_table.txt --custom_setting_table PATH/chip_ap_default_seetings_table.txt --fcmerge --goann --pathann --deltemp --thread 24 --run
+
+Also, the following two files were not generated. 
+Output  : 24_homer_motif_enrichment / ... / homerResults.html
+          24_homer_motif_enrichment / ... / knownResults.html
+
+For De novo motifs, what do I need to add in the above command?
+
+Thank you in advance.",RM83,https://github.com/JSuryatenggara/ChIP-AP/issues/2
+I_kwDOFaL_Jc5FTlOJ,[BUG] GEM settings,CLOSED,2022-03-08T15:00:19Z,2022-03-25T04:34:40Z,2022-03-25T04:34:40Z,"Thanks for massive work to put together all this code.
+I found a bug in the GEM scripts, it actually does not take the ""--thread"" from the input.
+
+This is my command:
+`chipap.py \
+--mode single \
+--peak narrow \
+--chipR1 /srv/ngs/analysis/nando/chipseq.test/SRR502538.fastq \
+--ctrlR1 /srv/ngs/analysis/nando/chipseq.test/SRR502027.fastq \
+--genome /srv/ngs/analysis/nando/references/Homo_sapiens/chipap/genomes/ \
+--output SHSY5Y_GATA3 \
+--setname SHSY5Y_GATA3 \
+--ref hg19 \
+--thread 16`
+
+
+However in the GEM script I find the flag ""--t 8.0"" which outputs a java error:
+
+`java -jar /srv/ngs/analysis/nando/anaconda3/envs/chipap/share/java/gem-2.7-0/gem.jar -Xmx10G --k_min 8 --k_max 12 --t 8.0 --d /srv/ngs/analysis/nando/references/Homo_sapiens/chipap/genomes/GEM/Read_Distribution_default.txt --g /srv/ngs/analysis/nando/references/Homo_sapiens/chipap/genomes/GEM/hg19.chrom.sizes --genome /srv/ngs/analysis/nando/references/Homo_sapiens/chipap/genomes/GEM/hg19_Chr_FASTA --s 2864785220 --expt /srv/ngs/analysis/nando/chipseq.test/SHSY5Y_GATA3/SHSY5Y_GATA3/08_results/SHSY5Y_GATA3_chip_rep1.bam --ctrl /srv/ngs/analysis/nando/chipseq.test/SHSY5Y_GATA3/SHSY5Y_GATA3/08_results/SHSY5Y_GATA3_ctrl_rep1.bam --f SAM --out /srv/ngs/analysis/nando/chipseq.test/SHSY5Y_GATA3/SHSY5Y_GATA3/12_gem_peak_calling/SHSY5Y_GATA3_GEM
+`
+
+Another (minor) bug is that the master script looks for a ""default_settings_table.tsv"" while in the genome compressed archive the file is named ""default_settings_table.tsv""
+
+Hope this helps.
+Thanks!",nandobonf,https://github.com/JSuryatenggara/ChIP-AP/issues/3
+I_kwDOFaL_Jc5F3Rwl,Java error on clumpify.sh,CLOSED,2022-03-17T09:15:10Z,2022-08-11T00:35:52Z,2022-08-11T00:35:52Z,"Thanks for the great work and congrats for the publication!
+
+I get the below error at **deduplication** step with `clumpify.sh`:
+
+```
+clumpify.sh in=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R1.fq.gz in2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R2.fq.gz out=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R1.deduped.fq.gz out2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R2.deduped.fq.gz dedupe spany addcount
+java -ea -Xmx29634m -Xms29634m -cp /opt/conda/opt/bbmap-38.96-1/current/ clump.Clumpify in=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R1.fq.gz in2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R2.fq.gz out=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R1.deduped.fq.gz out2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R2.deduped.fq.gz dedupe spany addcount
+Executing clump.Clumpify [in=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R1.fq.gz, in2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R2.fq.gz, out=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R1.deduped.fq.gz, out2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R2.deduped.fq.gz, dedupe, spany, addcount]
+Version 38.96
+
+Read Estimate:          76989622
+Memory Estimate:        37323 MB
+Memory Available:       23248 MB
+Set groups to 17
+Executing clump.KmerSplit [in1=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R1.fq.gz, in2=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/00_raw_data/47_chip_rep1_R2.fq.gz, out=/var/www/html/csingsportal/results/47/cfa5301358/ChIP-AP/47/02_deduplicating/47_chip_rep1_R1.deduped_clumpify_p1_temp%_38a82dce5d02aeb2.fq.gz, out2=, groups=17, ecco=false, addname=f, shortname=f, unpair=false, repair=f, namesort=f, ow=true, dedupe]
+
+Reset INTERLEAVED to false because paired input files were specified.
+Set INTERLEAVED to false
+Exception in thread ""main"" java.lang.NoSuchMethodError: java.lang.Process.isAlive()Z
+	at dna.Data.testExecute(Data.java:1829)
+	at dna.Data.BGZIP(Data.java:1517)
+	at fileIO.ReadWrite.getGZipInputStream(ReadWrite.java:1024)
+	at fileIO.ReadWrite.getInputStream(ReadWrite.java:848)
+	at fileIO.ByteFile1.open(ByteFile1.java:330)
+	at fileIO.ByteFile1.<init>(ByteFile1.java:100)
+	at fileIO.ByteFile2$BF1Thread.<init>(ByteFile2.java:237)
+	at fileIO.ByteFile2.open(ByteFile2.java:215)
+	at fileIO.ByteFile2.<init>(ByteFile2.java:86)
+	at fileIO.ByteFile.makeByteFile(ByteFile.java:35)
+	at fileIO.ByteFile.makeByteFile(ByteFile.java:27)
+	at stream.FastqReadInputStream.<init>(FastqReadInputStream.java:59)
+	at stream.ConcurrentReadInputStream.getReadInputStream(ConcurrentReadInputStream.java:116)
+	at stream.ConcurrentReadInputStream.getReadInputStream(ConcurrentReadInputStream.java:69)
+	at clump.KmerSplit.process(KmerSplit.java:284)
+	at clump.KmerSplit.main(KmerSplit.java:52)
+	at clump.Clumpify.runOnePass_v2(Clumpify.java:403)
+	at clump.Clumpify.process(Clumpify.java:275)
+	at clump.Clumpify.main(Clumpify.java:47)
+```
+
+Then the remaining steps of the pipeline also fail due to the missing file.
+
+Could you please help me understand the issue and how to fix it?",bounlu,https://github.com/JSuryatenggara/ChIP-AP/issues/4
+I_kwDOFaL_Jc5Rf8Tv,Several problems with ChIP-AP,CLOSED,2022-09-09T06:03:33Z,2022-09-13T06:53:51Z,2022-09-13T06:50:02Z,"I encountered 5 problems with ChIP-AP 5.3:
+
+1) In chipap_installer.py there is a line
+`conda_dir = '{}/anaconda3'.format(conda_file.split('/anaconda3/')[0])`<br>
+It will work only if the anaconda installation folder is named ""anaconda3"". Mine was /home/shelkmike/Work/Tools/Anaconda/ , so I had to edit chipap_installer.py
+
+2) After running chipap_installer.py , the following error of anaconda occured:
+`ResolvePackageNotFound:`
+` - r-base==3.2.2=0`<br>
+I had to edit chipap_env_linux.yml and replace 
+`  - r-base=3.2.2=0`
+with
+ ` - r`
+
+3) On https://github.com/JSuryatenggara/ChIP-AP/wiki/Virtual-Machine-Installation-Guide there is a link to a virtual machine https://www.dropbox.com/s/4d3adb6ckof5rti/ChIP-AP_Ubuntu_LTS2004.vhd , but this file has been removed from Dropbox.
+
+4) In chipap.py there is a line
+`script_version = '5.1'`
+even though the actual version is 5.3 . This makes chipap.py to print ""Newer version of chipap.py is available on our github"" when run.
+
+5) When run, ChIP-AP printed
+`The number of ChIP replicates (2) do not equal to control replicates (1).
+Do you accept this? (Y/N)`<br>
+Please, make ChIP-AP capable of non-interactive behavior. When running on a computing cluster with a job scheduler like PBS, it is impossible to run interactive programs.",shelkmike,https://github.com/JSuryatenggara/ChIP-AP/issues/5
+I_kwDOFaL_Jc5SknU8,[ASK] Can the pipeline run without control data?,CLOSED,2022-09-26T02:49:08Z,2022-09-26T03:00:42Z,2022-09-26T03:00:42Z,"The ChIP-seq data I have does not contain control datasets. As far as I know, peak calling can proceed without control group. So can this pipeline run without control? If so, how should I edit the sample table file? Thanks.",h4rvey-g,https://github.com/JSuryatenggara/ChIP-AP/issues/6
+I_kwDOFaL_Jc5TXtSN,Java out of memory error,CLOSED,2022-10-06T03:33:58Z,2022-10-08T10:49:57Z,2022-10-08T10:49:57Z,"The process stuck on FastQC and produced a bunch of error logs. It seems to be an out of memory error, but I can't find the parameter to limit memory.
+[hs_err_pid135815.log](https://github.com/JSuryatenggara/ChIP-AP/files/9720907/hs_err_pid135815.log)
+",h4rvey-g,https://github.com/JSuryatenggara/ChIP-AP/issues/7
+I_kwDOFaL_Jc5WvA7j,"The file ""saccer3.chrom.sizes"" should be named ""sacCer3.chrom.sizes"" [BUG]",CLOSED,2022-11-18T13:55:01Z,2022-11-28T22:00:49Z,2022-11-28T22:00:48Z,"When ChIP-AP is used for Saccharomyces cerevisiae, an error happens:
+`Please make sure GEM sacCer3 chromosome sizes reference file ""sacCer3.chrom.sizes"" exists`
+
+To fix this, I had to rename ""saccer3.chrom.sizes"" to ""sacCer3.chrom.sizes"" both in the folder genomes/GEM and in the folder genomes/chrom.sizes",shelkmike,https://github.com/JSuryatenggara/ChIP-AP/issues/8
+I_kwDOFaL_Jc5iG3Tp,[REQUEST] Ability to use custom genome,CLOSED,2023-03-29T14:43:16Z,2023-04-08T05:13:31Z,2023-04-08T05:13:31Z,"It is mentioned in the documentation that the ability to use custom genome will be added soon but I couldn't able to locate the tutorial for the same in the wiki. Please let me know how to add a custom genome for analysis. 
+",mohang13,https://github.com/JSuryatenggara/ChIP-AP/issues/9
+I_kwDOFaL_Jc5i3atN,[ASK] Filtering of Blacklisted Region,CLOSED,2023-04-07T11:15:28Z,2023-04-08T05:13:44Z,2023-04-08T05:13:44Z,"Hi, may I know if ChIP-AP filters/removes blacklisted regions before peak calling?
+",Shaylee-96,https://github.com/JSuryatenggara/ChIP-AP/issues/10
+I_kwDOFaL_Jc5i5buZ,[REQUEST] Mapper based on read length,CLOSED,2023-04-07T21:33:20Z,2023-04-10T14:52:51Z,2023-04-10T14:52:50Z,"Hi. I was trying to do peak calling by ChIP AP on a published data. Later on, I found that the AvgSpotLen for a datasest is too short (36). The aligner in this pipeline is 'bwa', which is great for >70bp. So, the mapped read percentage was very low for this particular datasets. 
+
+I think assigning a mapper based on sequence read length in fastq will be a great help for analyzing the any published datasets (previous or new).
+
+I have tried to use bowtie1 for my datasets with L>50, and it worked great. 
+
+",Ajeet1699,https://github.com/JSuryatenggara/ChIP-AP/issues/11
+I_kwDOFaL_Jc5i5fGg,[ASK],CLOSED,2023-04-07T21:51:09Z,2023-04-23T22:41:30Z,2023-04-23T22:41:30Z,"I am getting error at IDR step.
+
+idr -s mm10_all_peaks_calculated.narrowPeak GEM_IDR_input.narrowPeak -o GEM_IDR_output.tsv --input-file-type narrowPeak --rank signal.value --use-nonoverlapping-peaks
+
+Traceback (most recent call last):
+  File ""/home/u249048/.conda/envs/chip_myenv/bin/idr"", line 10, in <module>
+    idr.idr.main()
+  File ""/home/u249048/.conda/envs/chip_myenv/lib/python3.7/site-packages/idr/idr.py"", line 900, in main
+    useBackwardsCompatibleOutput=args.use_old_output_format)
+  File ""/home/u249048/.conda/envs/chip_myenv/lib/python3.7/site-packages/idr/idr.py"", line 487, in write_results_to_file
+    merged_peak, IDR, localIDR, output_file_type, signal_type)
+  File ""/home/u249048/.conda/envs/chip_myenv/lib/python3.7/site-packages/idr/idr.py"", line 348, in build_idr_output_line_with_bed6
+    rv.append( ""%i"" % min(x.start for x in m_pk.pks[key]))
+ValueError: min() arg is an empty sequence
+
+Is I am doing anything wrong? ",Ajeet1699,https://github.com/JSuryatenggara/ChIP-AP/issues/12
+I_kwDOFaL_Jc5olsPC,[ASK] VIRTUAL MACHINE AND SERVER DOWN,CLOSED,2023-06-13T11:55:34Z,2023-06-13T13:24:17Z,2023-06-13T13:24:17Z,"Thank you for making such a great tool.
+
+I have tried the virtual machine link and it does not work (https://www.dropbox.com/s/5pm0lcf3gl616oy/ChIP-AP_Ubuntu_LTS2004.vhd)
+I have tried the web server link and it does not work (https://csibioinfo.nus.edu.sg/csingsportal/login/home.php)
+
+Are these services no longer available?
+
+Thanks
+
+",H1889,https://github.com/JSuryatenggara/ChIP-AP/issues/13
+I_kwDOFaL_Jc5otvl5,[ASK] Can Chip-AP perform differential peak analysis? ,CLOSED,2023-06-14T12:43:01Z,2023-06-14T16:06:03Z,2023-06-14T16:05:31Z,"Hi again, 
+I have read chip-ap documentation and I am not sure if Chip-ap can perform differential peak analysis using bdgdiff or diffbind or something like that.
+Best and thanks for the help
+",H1889,https://github.com/JSuryatenggara/ChIP-AP/issues/14
+I_kwDOFaL_Jc5rjmxY,[ASK]Could not install ChIP-AP in windows10 WSL,CLOSED,2023-07-14T08:59:20Z,2023-07-21T07:44:39Z,2023-07-21T07:44:39Z,"Hi! Thanks for developing ChIP-AP. I tried to install ChIP-AP in win10 WSL, but failed. Following is the detail. How should I deal with it?
+```
+(base) xy@DESKTOP-ILQK2F5:~/tools/chipap/chipap_installation$ ./chipap_installer.py
+Anaconda directory is /home/xy/anaconda3
+Do you want to install ChIP-AP in a specific environment? (Y/N) Y
+Please type in the name of your ChIP-AP environment: chipap
+ChIP-AP will be installed in chipap environment. Press ENTER to continue
+Traceback (most recent call last):
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 16, in __call__
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main.py"", line 70, in main_subshell
+    p = generate_parser()
+        ^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/conda_argparse.py"", line 65, in generate_parser
+    p = ArgumentParser(
+        ^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/conda_argparse.py"", line 152, in __init__
+    self._subcommands = context.plugin_manager.get_hook_results(""subcommands"")
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/base/context.py"", line 502, in plugin_manager
+    from ..plugins.manager import get_plugin_manager
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/__init__.py"", line 3, in <module>
+    from .hookspec import hookimpl  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/hookspec.py"", line 9, in <module>
+    from .types import CondaSolver, CondaSubcommand, CondaVirtualPackage
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/types.py"", line 7, in <module>
+    from ..core.solve import Solver
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/solve.py"", line 41, in <module>
+    from .index import _supplement_index_with_system, get_reduced_index
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/index.py"", line 22, in <module>
+    from .package_cache_data import PackageCacheData
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/package_cache_data.py"", line 421
+    # At this point, we can assume the package tarbal
+                                                     ^
+IndentationError: expected an indented block after 'except' statement on line 420
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/xy/anaconda3/bin/conda"", line 13, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main.py"", line 129, in main
+    return conda_exception_handler(main, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 376, in conda_exception_handler
+    return_value = exception_handler(func, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 19, in __call__
+    return self.handle_exception(exc_val, exc_tb)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 75, in handle_exception
+    return self.handle_unexpected_exception(exc_val, exc_tb)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 88, in handle_unexpected_exception
+    self.print_unexpected_error_report(error_report)
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 159, in print_unexpected_error_report
+    from .cli.main_info import get_env_vars_str, get_main_info_str
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main_info.py"", line 15, in <module>
+    from ..core.index import _supplement_index_with_system
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/index.py"", line 22, in <module>
+    from .package_cache_data import PackageCacheData
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/package_cache_data.py"", line 421
+    # At this point, we can assume the package tarbal
+                                                     ^
+IndentationError: expected an indented block after 'except' statement on line 420
+find: ‘/home/xy/anaconda3/envs/chipap’: No such file or directory
++ perl '/home/xy/anaconda3/envs/chipap/share/homer*/.//configureHomer.pl' -install hg38
+Can't open perl script ""/home/xy/anaconda3/envs/chipap/share/homer*/.//configureHomer.pl"": No such file or directory
+
+
+
+
+
+(base) xy@DESKTOP-ILQK2F5:~/tools/chipap/chipap_installation$ ./chipap_installer.py
+Anaconda directory is /home/xy/anaconda3
+Do you want to install ChIP-AP in a specific environment? (Y/N) N
+ChIP-AP will be installed in base environment. Press ENTER to continue
+Traceback (most recent call last):
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 16, in __call__
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main.py"", line 70, in main_subshell
+    p = generate_parser()
+        ^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/conda_argparse.py"", line 65, in generate_parser
+    p = ArgumentParser(
+        ^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/conda_argparse.py"", line 152, in __init__
+    self._subcommands = context.plugin_manager.get_hook_results(""subcommands"")
+                        ^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/base/context.py"", line 502, in plugin_manager
+    from ..plugins.manager import get_plugin_manager
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/__init__.py"", line 3, in <module>
+    from .hookspec import hookimpl  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/hookspec.py"", line 9, in <module>
+    from .types import CondaSolver, CondaSubcommand, CondaVirtualPackage
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/plugins/types.py"", line 7, in <module>
+    from ..core.solve import Solver
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/solve.py"", line 41, in <module>
+    from .index import _supplement_index_with_system, get_reduced_index
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/index.py"", line 22, in <module>
+    from .package_cache_data import PackageCacheData
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/package_cache_data.py"", line 421
+    # At this point, we can assume the package tarbal
+                                                     ^
+IndentationError: expected an indented block after 'except' statement on line 420
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/home/xy/anaconda3/bin/conda"", line 13, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main.py"", line 129, in main
+    return conda_exception_handler(main, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 376, in conda_exception_handler
+    return_value = exception_handler(func, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 19, in __call__
+    return self.handle_exception(exc_val, exc_tb)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 75, in handle_exception
+    return self.handle_unexpected_exception(exc_val, exc_tb)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 88, in handle_unexpected_exception
+    self.print_unexpected_error_report(error_report)
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/exception_handler.py"", line 159, in print_unexpected_error_report
+    from .cli.main_info import get_env_vars_str, get_main_info_str
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/cli/main_info.py"", line 15, in <module>
+    from ..core.index import _supplement_index_with_system
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/index.py"", line 22, in <module>
+    from .package_cache_data import PackageCacheData
+  File ""/home/xy/anaconda3/lib/python3.11/site-packages/conda/core/package_cache_data.py"", line 421
+    # At this point, we can assume the package tarbal
+                                                     ^
+IndentationError: expected an indented block after 'except' statement on line 420
++ perl '/home/xy/anaconda3/share/homer*/.//configureHomer.pl' -install hg38
+^[[ACan't open perl script ""/home/xy/anaconda3/share/homer*/.//configureHomer.pl"": No such file or directory
+
+```
+
+Best,
+Seager",Ci-TJ,https://github.com/JSuryatenggara/ChIP-AP/issues/15
+I_kwDOFaL_Jc5_X27U,[BUG] genomes.zip is an invalid zip file,CLOSED,2024-02-15T16:29:30Z,2024-02-19T18:45:32Z,2024-02-19T01:47:21Z,"**Describe the bug**
+I've downloaded the genomes.zip file from the dropbox link several times and have gotten a error while extracting the file each time:
+Archive:  genomes.zip
+warning [genomes.zip]:  16401620869 extra bytes at beginning or within zipfile
+  (attempting to process anyway)
+error [genomes.zip]:  start of central directory not found;
+  zipfile corrupt.
+
+The md5 checksum of my file is 61ca6319bd37945b1c8a4092eab52586.  Can you confirm that this checksum is correct?
+
+**To Reproduce**
+Steps to reproduce the behavior:
+1. $ wget https://www.dropbox.com/s/ioqd3hwdahh9xon/genomes.zip?e=1
+2. $ unzip 'genomes.zip?e=1' #ERROR
+3. $ mv 'genomes.zip?e=1' genomes.zip
+4. $ unzip genomes.zip #ERROR
+",lentaing,https://github.com/JSuryatenggara/ChIP-AP/issues/16
+I_kwDOFaL_Jc6L0b0e,How to point to custom genome,CLOSED,2024-06-11T08:45:00Z,2024-07-05T09:07:41Z,2024-07-05T09:07:40Z,"hello, thank you for making such a fantastic tool.
+I have already tested it with yeast and it works perfectly.
+However now I have to use it with my custom genome. I have followed the instructions to generate the files as indicated in the guide. I have placed them in a directory but I get an error:
+
+
+Checking for suite requirements
+Please make sure bbduk adapter sequences reference fasta file ""adapter.fa"" exists, inside folder named ""bbmap"", inside your genome directory folder
+Example: [YOUR GENOME DIRECTORY]/bbmap/adapters.fa
+Please make sure bwa aligner genome reference fasta file ""hg38.fa"" exists, inside folder named ""bwa"", inside your genome directory folder
+Example: [YOUR GENOME DIRECTORY]/bwa/hg38.fa
+Please make sure GEM default read distribution reference file ""Read_Distribution_default.txt"" exists, inside folder named ""GEM"", inside your genome directory folder
+Example: [YOUR GENOME DIRECTORY]/GEM/Read_Distribution_default.txt
+Please make sure GEM hg38 chromosome sizes reference file ""hg38.chrom.sizes"" exists, inside folder named ""GEM"", inside your genome directory folder
+Example: [YOUR GENOME DIRECTORY]/GEM/hg38.chrom.sizes
+Please make sure GEM genome reference FOLDER ""hg38_Chr_FASTA"" exists (containing multiple individual fasta files for every chromosome), inside folder named ""GEM"", inside your genome directory folder
+Example: [YOUR GENOME DIRECTORY]/GEM/hg38_Chr_FASTA/
+Exiting suite
+
+I have checked all the required files and they are ok.
+
+
+My question is: is it necessary to put in the path the name of the custom genome?
+
+
+My genome is called crassa.fa and this is my command:
+
+chipap.py --mode single --peak narrow --output /media/yomismo/Datos/CHIPSEQ_RNASEQ/CHIPSEQ --setname DARK_CONTROL --genome /media/yomismo/Datos/CHIPSEQ_RNASEQ/CHIPSEQ/CHIP_AP_GENOME/ --custom_setting_table /media/yomismo/Datos/CHIPSEQ_RNASEQ/CHIPSEQ/setting_table.tsv --fcmerge --homer_motif union --meme_motif union --deltemp --thread 32 --run --chipR1 dark_1.fastq.gz dark_2.fastq.gz --ctrlR1 INPUT.fastq.gz
+
+
+This is my genome folder:
+
+
+├── bbmap
+│   └── adapters.fa
+├── bwa
+│   ├── crassa.fa
+│   ├── crassa.fa.amb
+│   ├── crassa.fa.ann
+│   ├── crassa.fa.bwt
+│   ├── crassa.fa.fai
+│   ├── crassa.fa.pac
+│   └── crassa.fa.sa
+└── GEM
+    ├── crassa_Chr_FASTA
+    │   ├── NC_026501.1.fa
+    │   ├── NC_026502.1.fa
+    │   ├── NC_026503.1.fa
+    │   ├── NC_026504.1.fa
+    │   ├── NC_026505.1.fa
+    │   ├── NC_026506.1.fa
+    │   ├── NC_026507.1.fa
+    │   ├── NC_026614.1.fa
+    │   ├── NW_011929459.1.fa
+    │   ├── NW_011929460.1.fa
+    │   ├── NW_011929461.1.fa
+    │   ├── NW_011929462.1.fa
+    │   ├── NW_011929463.1.fa
+    │   ├── NW_011929464.1.fa
+    │   ├── NW_011929465.1.fa
+    │   ├── NW_011929466.1.fa
+    │   ├── NW_011929467.1.fa
+    │   ├── NW_011929468.1.fa
+    │   ├── NW_011929469.1.fa
+    │   ├── NW_011929470.1.fa
+    │   └── NW_011929471.1.fa
+    ├── crassa.chrom.sizes
+    ├── Read_Distribution_BP.txt
+    ├── Read_Distribution_ChIP-exo.txt
+    ├── Read_Distribution_CLIP.txt
+    └── Read_Distribution_default.txt
+
+4 directories, 34 files
+
+Thanks",H1889,https://github.com/JSuryatenggara/ChIP-AP/issues/17
+I_kwDOFaL_Jc6ONZqL,[ASK],CLOSED,2024-07-02T10:31:24Z,2024-07-07T22:07:36Z,2024-07-07T22:07:36Z,"Are the blacklisted regions removed before peak calling or after? If they are removed before peak calling, is there a way to customise it as to not being removed before peak calling. As I am also interested in those blacklisted regions. A quick reply is appreciated.",ams134,https://github.com/JSuryatenggara/ChIP-AP/issues/18

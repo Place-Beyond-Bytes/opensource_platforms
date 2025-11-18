@@ -1,0 +1,87 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNDEwNjI3NDE=,What is this multiqc_yaml file?,CLOSED,2018-07-13T15:28:23Z,2018-08-15T19:35:56Z,2018-08-15T19:35:56Z,"https://github.com/shenlab-sinai/NGS-Data-Charmer/blob/e91e49e87aac92e216ed2a94569931de9113f9a3/config.yaml#L8
+
+It's better to provide an example of this yaml file. Or, where to obtain it?",lishen,https://github.com/shenlab-sinai/NGS-Data-Charmer/issues/1
+MDU6SXNzdWUzNDEwNjQ0MDQ=,Need better explanation of aligner and its index,CLOSED,2018-07-13T15:33:03Z,2018-08-15T19:33:45Z,2018-08-15T19:33:45Z,"https://github.com/shenlab-sinai/NGS-Data-Charmer/blob/e91e49e87aac92e216ed2a94569931de9113f9a3/config.yaml#L10
+
+Since different aligners have different input arguments, it's better to provide some explanation of this index key. For example, shall I provide a path to the basename of the genome index, or a path to the folder where the index files are located? ",lishen,https://github.com/shenlab-sinai/NGS-Data-Charmer/issues/2
+MDU6SXNzdWUzNDEwNjU5NjI=,Hard-coded CPU cores,CLOSED,2018-07-13T15:37:38Z,2018-08-15T20:30:47Z,2018-08-15T20:30:47Z,"https://github.com/shenlab-sinai/NGS-Data-Charmer/blob/e91e49e87aac92e216ed2a94569931de9113f9a3/run_snakemake.sh#L2
+
+It's better to add an input argument for the number of CPU cores to the shell script.",lishen,https://github.com/shenlab-sinai/NGS-Data-Charmer/issues/3
+MDU6SXNzdWUzNDEwNjc4MzY=,Blank alignment key,CLOSED,2018-07-13T15:42:45Z,2018-08-15T19:50:02Z,2018-08-15T19:50:02Z,"https://github.com/shenlab-sinai/NGS-Data-Charmer/blob/e91e49e87aac92e216ed2a94569931de9113f9a3/config.yaml#L5
+
+Does the pipeline support only one aligner at the moment? What is this `alignment` key suppose to do? Better be explicit than implicit.",lishen,https://github.com/shenlab-sinai/NGS-Data-Charmer/issues/4
+I_kwDOBpwWOc6BTmr5,OpenBLAS blas_thread_init: pthread_create: Resource temporarily unavailable,OPEN,2024-03-05T14:35:49Z,2024-03-05T16:51:04Z,,"When I try to run the `run_snakemake_cluster.sh`, I am given this error noted in the traceback. It happens sometimes when using multithreading in Python + OpenBLAS, and occurs specifically upon a NumPy import called by BioPython when importing `Bio.SeqIO` in line 6 of the `Snakefile`.
+
+```py
+(ngs_data_charmer) -bash-4.2$ sh run_snakemake_cluster.sh 
+OpenBLAS blas_thread_init: pthread_create failed for thread 67 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 68 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 69 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 70 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 71 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 72 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 73 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 74 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 75 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 76 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 77 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 78 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 79 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 80 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 81 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 82 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 83 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 84 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 85 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 86 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 87 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 88 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 89 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 90 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 91 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 92 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 93 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 94 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+OpenBLAS blas_thread_init: pthread_create failed for thread 95 of 96: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 256 current, 512 max
+KeyboardInterrupt in file /sc/arion/projects/KennyComputational/Molly_Processed/miR-206 Pcp2-Cre HITS-CLIP/Snakefile, line 6.
+  File ""/sc/arion/projects/KennyComputational/Molly_Processed/miR-206 Pcp2-Cre HITS-CLIP/Snakefile"", line 6, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/Bio/SeqIO/__init__.py"", line 377, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/Bio/Align/__init__.py"", line 29, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/numpy/__init__.py"", line 130, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/numpy/__config__.py"", line 4, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/numpy/core/__init__.py"", line 24, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/numpy/core/multiarray.py"", line 10, in <module>
+  File ""/sc/arion/work/cattoa01/miniconda3/envs/ngs_data_charmer/lib/python3.10/site-packages/numpy/core/overrides.py"", line 8, in <module>
+  File ""<frozen importlib._bootstrap>"", line 216, in _lock_unlock_module
+run_snakemake_cluster.sh: line 14: 290741 Segmentation fault      snakemake --snakefile Snakefile -j 499 --cluster-config cluster.json --cluster ""bsub     -P {cluster.allocation}     -q {cluster.queue}     -n {cluster.tasks}     -R {cluster.resources}     -W {cluster.walltime}     -J {cluster.jobname}     -o {cluster.output}     -e {cluster.error}""
+```",adamcatto,https://github.com/shenlab-sinai/NGS-Data-Charmer/issues/6

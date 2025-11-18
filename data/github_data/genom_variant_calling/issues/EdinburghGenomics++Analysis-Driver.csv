@@ -1,0 +1,932 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5MDA3MzgwMQ==,Initial refactor,CLOSED,2015-06-22T11:24:17Z,2015-06-22T15:45:32Z,2015-06-22T15:45:32Z,"The code seems functional, but could use a bit of a refactor:
+- Docstrings for functions, etc (easy-ish)
+- PEP8 conformation (easy)
+- Python 3 (easy)
+- Discuss moving to an object-oriented design (a bit more complex)
+- A bit of documentation on how to set up a development/production environment would be good too.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/1
+MDU6SXNzdWU5MTI2Nzk4Mg==,Add variant calling with BCBio,CLOSED,2015-06-26T14:38:48Z,2015-07-03T13:13:42Z,2015-07-03T13:13:42Z,"There's some code for writing a BCBio PBS script to run variant calling with GATK, but it's not yet used. Need to figure out how to correctly call BCBio and add this after the fastqc stage
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/3
+MDU6SXNzdWU5Mjg3NDg0NA==,Configuration improvements,CLOSED,2015-07-03T13:22:23Z,2015-07-09T11:52:38Z,2015-07-09T11:52:38Z,"At the moment, the Process Trigger has a config.sh file and the Analysis Driver has a config.py file. These configs contain file paths and running configurations. These two configs should be merged into a single .yaml file. Places to store this include:
+- one level above the Analysis Driver and Process Trigger. This assumes that they are both in the same directory.
+- in the home directory, e.g. '~/.analysis_driver.config'
+- in a place described by an environment variable, e.g. '$ANALYSISDRIVERCONFIG'
+
+The config should be outside of version control, so that each user/environment can have its own configuration. There should, however, be an example config in the Git repo for reference and (future) unit testing.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/5
+MDU6SXNzdWU5Mjg3NzYxMw==,Rewrite,CLOSED,2015-07-03T13:34:44Z,2015-09-01T11:40:18Z,2015-09-01T11:40:18Z,"As discussed last week, we'll want to do a complete rewrite of the software once we have an initial version deployed and running. Reasons for this include:
+- We will understand the code better if we've written it ourselves, rather than maintaining EPCC's
+- It will be easier/cleaner to extend (further processing, LIMS integration, etc.)
+- We may want to merge the Analysis Driver with the Process Trigger
+- The code is not platform-agnostic (development, test and production environments may treat bash commands differently)
+- The current code is not properly unit tested
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/6
+MDU6SXNzdWU5Mzc3MjE1Ng==,get the length of the barcode from the samplesheet instead of the runparameters.xml,CLOSED,2015-07-08T12:05:38Z,2015-07-23T10:56:15Z,2015-07-23T10:56:15Z,"the barcode length seems to be hardcoded in the machine recipe which mean we can't change it.
+to ensure that the demultiplexing happens properly we need to retrieve the barcode length from the samplesheet instead of the runparameters.xml  
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/7
+MDU6SXNzdWU5NDAzMDc2MQ==,Unit testing,CLOSED,2015-07-09T12:09:54Z,2015-07-23T10:48:26Z,2015-07-23T10:48:26Z,"The code from EPCC was not properly unit tested. This will be implemented along with the refactor of the AnalysisDriver (complete rewrite or gradual refactor).
+- pytest
+- coverage and profiling would be good too
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/9
+MDU6SXNzdWU5NDI3NDg0Ng==,BCBio project generation template,CLOSED,2015-07-10T10:18:44Z,2015-07-21T09:22:08Z,2015-07-21T09:22:08Z,"At the moment, the AnalysisDriver runs:
+
+```
+bcbio_nextgen.py -w template gatk-variant ...
+```
+
+We should use a local template .yaml - gives us more control over what is run
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/10
+MDU6SXNzdWU5NTQwMjI3OQ==,BCBio parallelisation,CLOSED,2015-07-16T10:18:34Z,2017-01-13T10:53:52Z,2017-01-13T10:53:52Z,"At the moment, single BCBio jobs are passed to qsub. We should instead try to use BCBio's resource manager integration. We should also pass in a .csv of samples, so we can have a single BCBio process for the whole run.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/11
+MDU6SXNzdWU5Njc4Njc3MQ==,Docstrings,CLOSED,2015-07-23T10:58:11Z,2015-08-05T21:23:27Z,2015-08-05T21:23:27Z,"Add docstrings to all functions/methods in analysis_driver
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/13
+MDU6SXNzdWU5NzA3NjQ5Nw==,Data feedback to sequencers,CLOSED,2015-07-24T15:23:40Z,2015-08-06T12:47:03Z,2015-08-06T12:47:03Z,"bcl2fastq creates some extra files, which need to be synced back to the  sequencers' RDF mount. A test rsync should reveal which files need transferred. We can either call rsync through subprocess or pick out specific files to transfer.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/15
+MDU6SXNzdWU5NzY4MTcyNA==,BCBioCSVWriter._find_fastqs breaks if any non-folders are in the fastq/run_id/sample_project folder,CLOSED,2015-07-28T11:27:20Z,2015-08-05T21:23:27Z,2015-08-05T21:23:27Z,"Caused by .DS_Store files when someone visits the folder in the OS X Finder. Add a check to only return directories in the input dir.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/16
+MDU6SXNzdWU5ODMzOTg2Nw==,implements job arrays,CLOSED,2015-07-31T08:14:14Z,2015-08-06T12:45:40Z,2015-08-06T12:45:40Z,"Several steps would benefit from using job arrays instead of single jobs
+- fastqc is running as a single job multithreaded: this should be changed to a job array
+- bcbio is running as multiple independent jobs: this should be change to a job array 
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/17
+MDU6SXNzdWU5ODM0MDQ2Mw==,bcbio jobs should run in parallel with fastqc,CLOSED,2015-07-31T08:18:40Z,2015-08-06T12:46:34Z,2015-08-06T12:46:34Z,"bcbio only depends on the fastq file being created.
+It does not need to wait for fastqc to be finished before it starts
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/18
+MDU6SXNzdWU5ODM0NDc2Mw==,Add notification system on run finished and run failed,CLOSED,2015-07-31T08:47:53Z,2015-09-14T14:38:20Z,2015-09-14T14:38:20Z,"We need to be able to notify <something> when certain event happen
+typically the event would be analysis_driver start, finished, failed.
+The notification method and recipient will change over time so we should be flexible on that part
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/19
+MDU6SXNzdWU5ODM3MTkyMg==,Test new bcl2fastq and support for new samplesheet format,CLOSED,2015-07-31T11:26:48Z,2015-08-18T16:11:09Z,2015-08-18T16:11:09Z,"We need to test the new bcl2fastq to make sure that the output directory structure is still the same.
+We also need to change our samplesheet parser to support the new headers.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/20
+MDU6SXNzdWU5OTE0OTE1MA==,analysis-driver stuck in infinite loop if fastqc job fail,CLOSED,2015-08-05T08:17:56Z,2015-08-19T10:54:14Z,2015-08-19T10:54:14Z,"Relying on the fastqc.complete file to appear means that deamonized analysis-driver job will stick around in an infinite loop until the file appear or they're killed.
+if fastqc.complete file fails to appear, there is no process to allow analysis-driver to exit gracefully.
+We should check the status of the job and get a return code instead of relying on touched file.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/22
+MDU6SXNzdWU5OTE0OTI1NA==,bcl2fastq runs out of memory,CLOSED,2015-08-05T08:18:49Z,2015-08-18T16:09:53Z,2015-08-18T16:09:53Z,"We should increase the memory used by bcl2fastq to 32G in the pbs job
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/23
+MDU6SXNzdWU5OTQyOTYzOQ==,Monitoring executed jobs,CLOSED,2015-08-06T13:04:14Z,2015-08-19T12:43:02Z,2015-08-19T12:43:02Z,"At the moment, the pipeline performs `qsub` on a pre-written script. For each sub-job, we should spawn a new thread that monitors the job (local or cluster command) for its duration before completing.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/24
+MDU6SXNzdWU5OTc0MDM3NQ==,the copy of data back to the raw folder creates subfolders,CLOSED,2015-08-07T22:23:49Z,2015-08-19T12:43:02Z,2015-08-19T12:43:02Z,"150723_E00306_0025_BHCHK3CCXX in my raw test folder contains a dir called 150723_E00306_0025_BHCHK3CCXX which in turn contains a dir called 150723_E00306_0025_BHCHK3CCXX and so on...
+I think it's the rsync of data back to the raw folder that create those subfolder
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/25
+MDU6SXNzdWUxMDA1NzQ1MDU=,Script writer modularity,CLOSED,2015-08-12T15:48:29Z,2015-08-19T12:43:02Z,2015-08-19T12:43:02Z,"At the moment, the bcl2fastq/fastqc/bcbio writers are specific to PBS. We should instead have a PBS base class and bcl2fastq/fastqc/bcbio helper classes that return string Bash commands. This should make it easier to port to other grid engines.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/26
+MDU6SXNzdWUxMDEzNzM1Mjk=,bcbio creates too many jobs ,CLOSED,2015-08-17T09:02:14Z,2015-08-25T20:21:03Z,2015-08-25T20:21:03Z,"bcbio jobs create 64 jobs where only 8 were expected:
+
+``` bash
+less /scratch/U008/edingen/jobs/150803_E00328_0017_BHCCV2CCXX/bcbio_jobs.pbs | grep '150803_E00328_0017_BHCCV2CCXX' | cut -d ')' -f 2  | wc -l 
+64
+less /scratch/U008/edingen/jobs/150803_E00328_0017_BHCCV2CCXX/bcbio_jobs.pbs | grep '150803_E00328_0017_BHCCV2CCXX' | cut -d ')' -f 2 | sort -u | wc -l 
+8
+```
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/27
+MDU6SXNzdWUxMDE0MDAzMDc=,Sample sheet validation,CLOSED,2015-08-17T11:26:42Z,2015-12-07T11:47:35Z,2015-12-07T11:47:35Z,"We should check SampleSheet.csv at the start of the pipeline. If invalid, fail straight away. If valid, read into a DataStore object for parsing
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/28
+MDU6SXNzdWUxMDE2OTA3MDQ=,ClusterExecutor.run logging blocks until PBS job completed,CLOSED,2015-08-18T16:03:59Z,2016-06-09T12:35:56Z,2016-06-09T12:35:56Z,"At line 48, self.proc.stdout.readline() hangs, meaning that the job ID is not logged until it's completed
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/29
+MDU6SXNzdWUxMDE5NDMyNDE=,Output of data to /PROCESSED,CLOSED,2015-08-19T16:41:57Z,2015-09-14T14:38:20Z,2015-09-14T14:38:20Z,"We should write the relevant outputs from BCBio to an appropriate directory
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/31
+MDU6SXNzdWUxMDIxMzU0ODk=,Restructure logging,CLOSED,2015-08-20T13:09:17Z,2015-08-24T13:28:21Z,2015-08-24T13:28:21Z,"The current dictConfig setup is starting to get a bit messy with all the modifications we're trying to put in (quiet/debug modes, dynamic log files, etc). We can set up most of the logging programatically, and use the config to add any additional logging streams that the user may want.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/32
+MDU6SXNzdWUxMDI3Mzc5OTU=,bcbio runs with all merged fastq files instead of the the ones  specific to a sample,CLOSED,2015-08-24T08:34:43Z,2015-08-24T22:23:31Z,2015-08-24T22:23:31Z,"See the file 
+/scratch/U008/edingen/jobs/150701_E00328_0010_AH3KGFCCXX/samples_10015TA0001L05/config/samples_10015TA0001L05.yaml
+ for an example
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/33
+MDU6SXNzdWUxMDMwMzk2MTI=,Fastq file passed to bcbio are not the merged ones,CLOSED,2015-08-25T14:51:52Z,2015-09-07T08:35:17Z,2015-09-07T08:35:17Z,"But they're the input of the merge
+I think bcbio_prepare_samples should return the merged files it generates so they can be passed to bcbio
+https://github.com/EdinburghGenomics/Analysis-Driver/blob/master/analysis_driver/driver.py#L149
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/36
+MDU6SXNzdWUxMDMyMzA3ODU=,Quiet mode,CLOSED,2015-08-26T10:18:21Z,2015-09-07T08:35:17Z,2015-09-07T08:35:17Z,"We should add a `--quiet` flag that turns off the stdout logger, so we can run the pipeline through cron without redirecting to a file or `/dev/null`
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/38
+MDU6SXNzdWUxMDQ1MDYxNzY=,Add multiple thread to bcl2fastq ,CLOSED,2015-09-02T15:21:41Z,2015-09-07T11:49:32Z,2015-09-07T11:49:32Z,"Need change the number of thread to bcl2fastq we provide 12 cpu in the pbs script but do not change the default number of thread in bcl2fastq command 
+Let's put it to 8 for each 
+-r 8 -d 8 -p 8 -w 8
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/40
+MDU6SXNzdWUxMDUxODIyNTM=,Read configurations more robustly,CLOSED,2015-09-07T09:33:02Z,2015-12-11T15:04:09Z,2015-12-11T15:04:09Z,"At the moment, there is no validation of file paths. For example, if the path to an executable is wrong, `executor.proc` is set to `None`, hanging/breaking `self.proc.wait`. We should check the config file at the start of the run that all file paths are valid.
+(The configuration should still be agnostic to what it contains)
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/41
+MDU6SXNzdWUxMDUxODgzMTQ=,bcl2fastq hits walltime when multiple runs are active,CLOSED,2015-09-07T10:11:44Z,2015-09-07T11:45:08Z,2015-09-07T11:45:08Z,"When running three pipelines simultaneously, bcl2fastq slows down and hits the walltime. Rather than threading, this is probably due to the read/write speed on the RDF mount. We may need to revert to rsync-ing the data across to `/scratch`, as in #40. In the meantime, we should increase bcl2fastq's walltime to 32 hours
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/42
+MDU6SXNzdWUxMDU1NzU0Njk=,SMTP errors in EmailNotification,CLOSED,2015-09-09T11:10:56Z,2015-09-14T14:38:20Z,2015-09-14T14:38:20Z,"The connection to the email relay server doesn't seem particularly reliable, sometimes resulting in timeouts or 'connection refused' errors.
+
+Possible solutions:
+- `pass` if there is an error in EmailNotification._send_mail (not ideal, presumably)
+- have the class try to reconnect a certain number of times
+- try a different relay server
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/43
+MDU6SXNzdWUxMDYwNDg5OTY=,Re-add ability to use intermediate directory,CLOSED,2015-09-11T16:44:14Z,2015-09-14T14:38:20Z,2015-09-14T14:38:20Z,"The RDF mount (at least at the moment) is too slow for multiple jobs. We should re-implement the ability to rsync the data over to /scratch for processing
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/44
+MDU6SXNzdWUxMDYzNjU5NDE=,Driver crashes if no 'handlers' present in logging configuration,CLOSED,2015-09-14T15:23:22Z,2015-09-30T13:02:49Z,2015-09-30T13:02:49Z,"For the moment, we should just have a blank entry in in the config, i.e:
+
+```
+    logging:
+      handlers:
+```
+
+The fix itself should just be a case of changing line 97 of client.py from
+
+``` python
+    if cfg['logging']['handlers']:
+```
+
+to
+
+``` python
+    if cfg['logging'].get('handlers')
+```
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/46
+MDU6SXNzdWUxMDY1MzM2ODg=,More informative notifications,CLOSED,2015-09-15T11:10:43Z,2016-05-26T11:01:14Z,2016-05-26T11:01:14Z,"Now that we have basic notifications, we should add more detail. This may include:
+- stack traces if something breaks
+- more run information
+- time stamps?
+- relevant environment variables
+
+We will also want as few notifications as possible, i.e, only if something goes wrong.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/47
+MDU6SXNzdWUxMDY1Mzk4MTI=,.triggerignore file,CLOSED,2015-09-15T11:51:41Z,2015-09-30T13:02:49Z,2015-09-30T13:02:49Z,"The Analysis Driver treats any directory present in the input data dir as a dataset. We should be able to add a .triggerignore file to the input dataset directory telling it what is not a dataset and should be ignored.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/48
+MDU6SXNzdWUxMDY1OTc0MDI=,Misleading stack trace if ClusterExecutor can't find qsub,CLOSED,2015-09-15T16:42:56Z,2015-09-16T13:45:58Z,2015-09-16T13:45:58Z,"Because the class runs in another thread, the KeyError from not finding cfg['qsub'] is lost, and the fault is caught in ClusterExecutor.join as 'Invalid parameters passed to self.proc'. We should initialise the object with a path to qsub (or sh or whatever) and validate at that point before `threading.Thread.__init__` is called.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/49
+MDU6SXNzdWUxMDc2Nzg1MTc=,Transferring datasets don't show up in --report,CLOSED,2015-09-22T09:43:58Z,2015-09-22T09:59:12Z,2015-09-22T09:59:12Z,,mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/50
+MDU6SXNzdWUxMDc5MDg1Mzc=,Rsync efficiency,CLOSED,2015-09-23T12:24:15Z,2015-12-11T15:08:33Z,2015-12-11T15:08:33Z,"At the moment, if an intermediate_dir is specified, all dataset is automatically synced from the RDF to the intermediate. There's a fair amount of data that's not needed by the run, e.g Logs, Thumbnail_Images, etc. so if we exclude these from the rsync, we would free up some space in /scratch and also reduce the delay before the pipeline starts.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/51
+MDU6SXNzdWUxMDc5MTIxMDg=,PhiX mode,CLOSED,2015-09-23T12:50:58Z,2015-09-30T13:02:49Z,2015-09-30T13:02:49Z,"If a PhiX run (with no sample sheet or barcodes) is supplied, the pipeline breaks in various places. We should make the pipeline able to accommodate PhiX validation runs cleanly, either through a --phix flag or by detecting the absence of a sample sheet. In this case, barcode validation should not be performed, and a fake sample sheet should be written out for bcl2fastq.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/52
+MDU6SXNzdWUxMDk0NjQ4NDg=,Executor overhaul,CLOSED,2015-10-02T10:06:44Z,2015-12-09T11:06:23Z,2015-12-09T11:06:23Z,"The usage of the Executor classes is a bit complex at the moment. An ideal situation would be:
+- build up a list of Bash commands
+- call, e.g, executor.execute(bash_commands, cluster=True, block=False)
+- if cluster == True, then use PBSWriter/ClusterExecutor
+  - if len(bash_commands) > 1, then write a  job array
+
+We should also consolidate the Threaded exception-catching from quality_control.GenotypeValidation
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/55
+MDU6SXNzdWUxMDk0NjUyNjE=,Integration tests,CLOSED,2015-10-02T10:09:09Z,2017-04-20T20:49:40Z,2017-04-20T20:49:40Z,"We should have some tests that can be run on the cluster to test BCBio, PBS, etc. A couple of test datasets would be good too.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/56
+MDU6SXNzdWUxMTA2Mjk3NDk=,Output file discovery,CLOSED,2015-10-09T10:19:32Z,2015-10-23T12:09:05Z,2015-10-23T12:09:05Z,"At the moment, the pipeline iterates through sample IDs and expects to find specific files in specific places. This enforces consistency, but breaks easily if a file name configuration is wrong, and the code for it is not very clear.
+1. We should use `glob.glob` to be more lenient with file names (e.g, `-ready-bam.bai` vs `-ready.bam.bai`)
+2. We should discover/transfer all files that are there, then check that we have everything we expected.
+3. At the moment, the driver returns a non-zero exit status if there are missing output files. Should this be the case (since the transfer of files was technically successful)?
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/58
+MDU6SXNzdWUxMTA5NTM1MzE=,Stage modularity,CLOSED,2015-10-12T11:06:32Z,2017-05-15T13:03:15Z,2017-05-15T13:03:15Z,"At the moment, the pipeline runs end-to-end, regardless of whether it has already done some stages. We should explicitly split up the pipeline into stages, allowing it to track/reset progress. This way we won't, e.g, need to rerun the rsync or bcl2fastq if we only need to run BCBio.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/59
+MDU6SXNzdWUxMTA5NTU2OTQ=,Automatic cleanup,CLOSED,2015-10-12T11:26:13Z,2016-06-21T14:10:45Z,2016-06-21T14:10:45Z,"If all processing stages run successfully, we should have the pipeline remove the intermediate files (fastqs, vcfs, bams, etc.). Otherwise, it should notify that some manual cleanup/re-running will be needed. This will be dependent on #58 and #59.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/60
+MDU6SXNzdWUxMTMwMTI3Njc=,Split up data output stage,CLOSED,2015-10-23T12:50:11Z,2015-12-07T17:05:42Z,2015-12-07T17:05:42Z,"This will be dependent on #58. Data output should consist of 3 stages:
+- find the output files in the jobs folder (this is the complicated bit)
+- calculate MD5 checksums for the output files and write the results alongside each file
+  - we should use job execution rather than run it on the main node
+  - we should distinguish between outputs and QC
+- transfer to the output directory
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/63
+MDU6SXNzdWUxMTUwNDg0NjY=,PBS executor walltime,CLOSED,2015-11-04T13:06:39Z,2015-12-11T15:08:48Z,2015-12-11T15:08:48Z,"It turns out that the wall time is not a mandatory parameter of PBS and it has been hurting us multiple time now.
+We should remove it altogether unless there is a good reason to have it for a specific step.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/67
+MDU6SXNzdWUxMTY3NDY5Mjk=,Failed runs can be detected as valid,CLOSED,2015-11-13T11:00:09Z,2016-03-25T14:01:24Z,2016-03-25T14:01:24Z,"When sequencing runs are failed the RTAcomplete.txt might be added to the run folder and processed as if it was successful.
+Before processing the run we should query the LIMS to make sure the run is successfully finished
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/68
+MDU6SXNzdWUxMjA5NzYxMTA=,Quality control: compare genotyping ,CLOSED,2015-12-08T10:12:44Z,2016-02-09T16:17:15Z,2016-02-09T16:17:15Z,"most of the process is in place already but we need to fetch the genotype from the LIMS to perform the comparison
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/71
+MDU6SXNzdWUxMjA5NzYyOTQ=,Quality control: Sex check,CLOSED,2015-12-08T10:13:40Z,2016-01-25T14:53:53Z,2016-01-25T14:53:53Z,"Make a call on the individual's sex and compare it from the value found in the LIMS
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/72
+MDU6SXNzdWUxMjA5NzY0MjI=,Quality control: Contamination check,CLOSED,2015-12-08T10:14:35Z,2016-04-08T07:59:27Z,2016-04-08T07:59:27Z,"We should run verify bam ID without prior to get an estimate of the purity of the sample
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/73
+MDU6SXNzdWUxMjA5ODExNzE=,Add force option to to force start a process that is not ready,CLOSED,2015-12-08T10:43:39Z,2015-12-11T15:08:55Z,2015-12-11T15:08:55Z,"The sample processing require that the dataset has enough data to be processed.
+We need an options to force start the analysis to bypass this requirement.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/74
+MDU6SXNzdWUxMjA5ODE1NTE=,support for remote filesystem for input_dir and output_dir (rsync),CLOSED,2015-12-08T10:46:07Z,2015-12-15T14:57:59Z,2015-12-15T14:57:59Z,"The CIFS server can become overloaded when accessed by too many processes.
+We need to allow the output_dir and potentially the input_dir to be on remote file systems. 
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/75
+MDU6SXNzdWUxMjA5OTQ0NjI=,retrieve run information from the reporting app rest API,CLOSED,2015-12-08T12:13:22Z,2016-01-27T14:49:57Z,2016-01-27T14:49:57Z,"When starting sample dataset we need to get information about them from the reporting app REST API instead of the json files. 
+We should also only take into account the runs that have been reviewed.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/76
+MDU6SXNzdWUxMjA5OTUxNTc=,Support job submission to archer,CLOSED,2015-12-08T12:18:26Z,2016-07-08T16:23:34Z,2016-07-08T16:23:34Z,"Archer has a lot of processing power that we could use but it does not support long running jobs or processes detached from their ssh session
+We need a specialise executor that can send jobs to a remote cluster and monitor the results.
+We would need to resolve #59 and potentially #29 before.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/77
+MDU6SXNzdWUxMjEwMDMyODk=,Check species of the sample before starting and only process human with the variant calling pipeline,CLOSED,2015-12-08T13:13:01Z,2015-12-14T17:13:58Z,2015-12-14T17:13:58Z,"All other species should go through a separate pipeline that will merge the fastqs run some QC and deliver it in project.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/78
+MDU6SXNzdWUxMjEwNjA4NDM=,LIMS connection error,CLOSED,2015-12-08T17:45:29Z,2017-04-20T20:53:06Z,2017-04-20T20:53:06Z,"Sometimes when running variant calling, the `clarity` module fails to connect to the dev instance of the LIMS, crashing the pipeline. It usually happens when the LIMS hasn't been accessed for a long time.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/79
+MDU6SXNzdWUxMjU5MjkyNjA=,Standalone invoking of Run- and SampleCrawlers,CLOSED,2016-01-11T12:07:20Z,2016-01-14T12:06:40Z,2016-01-14T12:06:40Z,"We should have another entry script to do just the Rest API push for a given run or sample
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/84
+MDU6SXNzdWUxMjY0MjQ3Njc=,Flag a finished run for review in the LIMS,CLOSED,2016-01-13T14:06:22Z,2017-08-09T08:48:26Z,2017-08-09T08:48:26Z,"When a run is finished and processed, it should be reviewed and only then be used for sample processing.
+Analysis driver should move the Flowcell in the LIMS from the AUTOMATED - Sequence workflow to the Run review workflow.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/86
+MDU6SXNzdWUxMjcyNTg3ODI=,Analysis driver defaults to species = homo sapience if LIMS is unavailable,CLOSED,2016-01-18T16:12:19Z,2016-03-02T11:43:47Z,2016-03-02T11:43:47Z,"We should change that to raise an AnalysisDriverError
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/87
+MDU6SXNzdWUxMjc0MjA3MTA=,Filter very low quality reads and report the results consistently with Conversion.xml file,CLOSED,2016-01-19T11:01:01Z,2016-03-15T16:28:47Z,2016-03-15T16:28:47Z,"Some of the reads we sequence end up being so low in quality that they a no chance of being useful at all. We should remove them from the raw dataset before they're passed on to the Sample processing pipeline.
+We should filter the reads that have mean quality lower than 10
+Count how many reads, bases, and base quality are filtered 
+The resulting fastq files will be used as raw data and we need to record in a file how much data is left in each fastq files
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/88
+MDU6SXNzdWUxMjc0MjEzOTU=,Rsync command do not update all files,CLOSED,2016-01-19T11:05:20Z,2016-03-02T11:43:47Z,2016-03-02T11:43:47Z,"Had a strange situation where rsync of a sample folder to the/PROCESSED folder did not update a file.
+I'm blaming the --size-only option in our rsync command at the moment but don't have hard evidence.
+We need to make sure the rsync update all files when necessary by checking also timestamp.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/89
+MDU6SXNzdWUxMjc0NDkyMTU=,Remove the default data threshold from the Sample processing,CLOSED,2016-01-19T13:42:40Z,2016-03-02T11:43:47Z,2016-03-02T11:43:47Z,"It has been decided that if the information from the LIMS is missing or unavailable we should fail and notify rather than use the default value
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/90
+MDU6SXNzdWUxMjc0NjkwNzc=,Cross species contamination check,CLOSED,2016-01-19T15:20:41Z,2016-03-14T15:33:15Z,2016-03-14T15:33:15Z,"We need to check if the data match the expected species from the LIMS
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/91
+MDU6SXNzdWUxMjkyMDM4NTk=,rest_communication refactor,CLOSED,2016-01-27T16:50:12Z,2016-03-03T14:32:50Z,2016-03-03T14:32:50Z,"Since the Rest API doesn't give any stack traces if something fails, rest_communication should log its own debug messages if something fails unexpectedly.
+
+The module should also be moved to the top level under `analysis_driver`, and calls elsewhere in the app should go through it rather than `requests`.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/94
+MDU6SXNzdWUxMzIzNzg1MTY=,Yield reported to the reporting app still contains the Adapter bases ,CLOSED,2016-02-09T10:09:33Z,2016-02-10T12:01:28Z,2016-02-10T12:01:28Z,"The yield parsed from the conversion xml and passed on to the reporting app does not account for the bases that have been removed in the adapter trimming stage.
+We need to calculate the nb bases and nb bases Q30 before and output that to file before sending the results to the reporting app.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/97
+MDU6SXNzdWUxMzI5Mzk4MTE=,expand the genotype validation to compare the sample to the plate,CLOSED,2016-02-11T10:45:01Z,2016-03-15T16:29:17Z,2016-03-15T16:29:17Z,"The genotype validation in itself is not enough as we need to assess if another sample would match just as well.
+We need to run the comparison with all the other samples on the plate the current sample originated from.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/99
+MDU6SXNzdWUxMzQwOTc1MDM=,Perform batch call to REST API for sample/run report,CLOSED,2016-02-16T21:10:10Z,2016-05-03T10:10:38Z,2016-05-03T10:10:38Z,"There is no need to run each sample/run api call independently, both the reporting-app and the LIMS API support batch call.
+We'll need to refactor the Datasets and scanner a bit to get this to work
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/102
+MDU6SXNzdWUxMzQ4MDkxOTI=,Datasets are not storing pid in the Reporting App,CLOSED,2016-02-19T09:01:10Z,2016-03-24T11:57:20Z,2016-03-24T11:57:20Z,"Dataset are storing the pid when the process starts, however they don't seem to store them or retrieve them from the REST API.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/103
+MDU6SXNzdWUxMzQ4MjExNzg=,Data deletion tier 1,CLOSED,2016-02-19T09:55:08Z,2016-02-24T13:34:12Z,2016-02-24T13:34:12Z,"We need to implement the first tier of data deletion. It will consist of:
+- checking that a run is finished has been processed and been reviewed.
+- delete the bcl files (Data directory), Logs and Thumbnail images
+- archive the run folder (store it in a subfolder)
+- patch the run process to change the status to deleted.
+
+We also need to implement a check in Analysis driver to not process a deleted run. 
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/104
+MDU6SXNzdWUxMzczMDIwMTE=,Logging refactor,CLOSED,2016-02-29T16:30:44Z,2016-04-01T14:20:57Z,2016-04-01T14:20:57Z,"We should set up logging more cleanly, as done in EdinburghGenomics/Reporting-App. All log files should have headers, and modules like `clarity` and `rest_communication` should not log errors during, e.g, `analysis_driver --report`.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/109
+MDU6SXNzdWUxMzc4NDY0MjE=,Coverage/callable bases calculation,CLOSED,2016-03-02T11:23:31Z,2016-04-19T15:09:18Z,2016-04-19T15:09:18Z,"BCBio reports a median coverage in one of its file but it is in some case very inaccurate.
+We should run the coverage calculation ourselves after bcbio is done and also add it to the QC pipeline.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/110
+MDU6SXNzdWUxMzc4NTYxODg=,Automatic review,CLOSED,2016-03-02T12:02:42Z,2016-07-08T16:24:28Z,2016-07-08T16:24:28Z,"We need to implement automatic review of runs and samples.
+The review process should check for specific metrics with hard coded/configurable threshold.
+It should review positively if all the threshold passed and report otherwise.
+Automatic run review:
+- processing finished
+- Run yield > 960G
+- Run %Q30 > 75%
+- each lane pass filter >50%
+- unexpected barcodes <10%
+
+Automatic sample review:
+- processing finished
+- yield > 120G
+- yield Q30>95G
+- mapping rate > 90%
+- coverage > expected coverage (yield 95G=30X)
+- duplicate rate < 35%
+- gender check match or unknown for provided gender
+- genotype validation mismatch < 5, nocall<10
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/111
+MDU6SXNzdWUxMzgxMjU4MTk=,Increase time of cleanup sleep,CLOSED,2016-03-03T09:31:47Z,2016-03-03T11:37:16Z,2016-03-03T11:37:16Z,"Occasionally samples fail on the cleanup step because it started cleaning up while things were still being written to the folder. Increase the time from 20 to e.g. 120.
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/112
+MDU6SXNzdWUxMzgxNjA0OTk=,Prepare data delivery ,CLOSED,2016-03-03T12:11:59Z,2016-03-25T14:35:41Z,2016-03-25T14:35:41Z,"To streamline and secure data delivery we need to automate it, here are the step the script should take
+- Check review status on REST API
+- Check delivery status on LIMS
+- create project folder in delivered dir 
+- create dated batch folder in project folder
+- move the sample data from projects to batch folder:
+  - *_R{1,2}.fastq.gz
+  - *_R{1,2}.fastq.gz.md5
+  - *_R{1,2}_fastqc.html
+    # if present:
+    - *.bam
+    - *.bam.md5
+    - *.bam.bai
+    - *.bam.bai.md5
+    - *.vcf.gz
+    - *.vcf.gz.md5
+    - *.vcf.gz.tbi
+    - *.vcf.gz.tbi.md5
+    - *.g.vcf.gz
+    - *.g.vcf.gz.md5
+    - *.g.vcf.gz.tbi
+    - *.g.vcf.gz.tbi.md5
+- mark the sample as delivered in the LIMS
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/114
+MDU6SXNzdWUxMzg0NDg5NTg=,Specific exit statuses,CLOSED,2016-03-04T11:19:51Z,2016-03-15T14:39:27Z,2016-03-15T14:39:27Z,"At the moment, the pipeline returns an exit status of 9 if there is a stacktrace. We should have a mapping of different exit statuses depending on what has gone wrong.
+
+We should be able to tell from the exit status whether:
+- the run/sample is a test (e.g, PhiX with no sample sheet)
+- the run was marked as failed in the Lims
+
+This should help us with automatically aborting runs as in #68
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/115
+MDU6SXNzdWUxMzg0NTE0NzI=,Any unignored directory in the input dir gets processed,CLOSED,2016-03-04T11:30:34Z,2016-05-03T10:10:38Z,2016-05-03T10:10:38Z,"E.g, if someone creates an empty directory in the input location, it will be treated as a BCL dataset. We should check whether the correct subdirectories are present (Data, InterOp, Logs, etc.) before the `Dataset` object is created.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/116
+MDU6SXNzdWUxMzg5NDYwMTE=,Deletion of data fails when one of the deleted folder is missing,CLOSED,2016-03-07T10:35:01Z,2016-03-23T08:53:57Z,2016-03-23T08:53:57Z,"When a run is failed or aborted some directories are missing and the deletion fails.
+We need to make the move of these directories conditional of their existence.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/117
+MDU6SXNzdWUxMzg5NjE2MDY=,Show --test option in send_data,CLOSED,2016-03-07T11:58:21Z,2016-03-10T13:33:00Z,2016-03-10T13:33:00Z,"The ---test option is available in send_data.py but it isn't displayed when calling send_data.py -h
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/118
+MDU6SXNzdWUxMzk1NDM2NjM=,Data deletion tier 2,CLOSED,2016-03-09T10:54:04Z,2016-03-23T08:53:57Z,2016-03-23T08:53:57Z,"We need to implement the second tier of data deletion.
+This involves:
+- Check that a sample has been marked as useable and delivered (REST API)
+- Check that the sample has been delivered on the LIMS
+- Retrieve the run_elements associated with this sample
+- Find that fastq files and delete them
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/121
+MDU6SXNzdWUxNDA5NjA0MzI=,Add support for runs with no barcode read,CLOSED,2016-03-15T12:36:47Z,2016-03-25T14:37:02Z,2016-03-25T14:37:02Z,"Some Sequencing runs won't have a barcode read as each lane have only one barcode.
+We need to build support for processing these type of runs. This involves:
+- Demultiplexing, run_info/Samplesheet check, demultiplexing command
+- Storing the run elements in the reporting app (currently assume it has a barcode)
+- Processing samples (retrieving the fastq files)
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/127
+MDU6SXNzdWUxNDA5OTc4OTA=,Compatibility with new cluster,CLOSED,2016-03-15T14:59:25Z,2016-06-15T12:51:19Z,2016-06-15T12:51:18Z,"This will include:
+- [x] Slurm ScriptWriter
+- [ ] revisit #11 (BCBio supports Slurm)
+- [x] config refs for data rsyncing
+- [ ] data delivery
+- [ ] LDAP for access to Lims, Rest API, etc.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/128
+MDU6SXNzdWUxNDExMTU5Nzk=,Calculate Het to hom ratio,CLOSED,2016-03-15T22:21:36Z,2016-09-30T15:39:25Z,2016-09-30T15:39:25Z,"Het to hom ratio can be used to estimate contamination.
+A ratio >2 can indicate a potential contamination by a different (same species sample)
+We can calculate the het/hom ratio from the vcf file.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/129
+MDU6SXNzdWUxNDEyNDE5NjU=,Rsync command updates every files,CLOSED,2016-03-16T11:16:53Z,2016-03-16T16:03:47Z,2016-03-16T16:03:46Z,"related to #89 
+Rsync now update all file regardless of size and timestamp.
+the behaviour we want is: if timestamp is newer or size different then update otherwise don't.
+That should be unit tested
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/130
+MDU6SXNzdWUxNDM1NDEzMTY=,Requeue of sample after Run,CLOSED,2016-03-25T16:57:15Z,2017-01-13T10:59:25Z,2017-01-13T10:59:25Z,"When a run finishes sample that don't have enough coverage should be requeued automatically.
+Need to query Cathlene to see which workflow.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/136
+MDU6SXNzdWUxNDQ4NjQzNzM=,AsanaNotification,CLOSED,2016-03-31T11:13:04Z,2016-05-24T10:24:41Z,2016-05-24T10:24:41Z,"We should add a Notification class which if something goes wrong:
+- [ ] creates an Asana ticket in the right project if it doesn't exist, otherwise retrieves it
+- [ ] comments on it
+
+This should allow us to assign failed runs to each person and comment on them, rather than reply to email notifications. There's an [API interface](https://github.com/Asana/python-asana) developed by the Asana team we should be able to use.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/138
+MDU6SXNzdWUxNDgwMDIwMjc=,Provide number of reads mapped uniquely to reference ,CLOSED,2016-04-13T09:31:06Z,2016-04-13T11:19:02Z,2016-04-13T11:19:02Z,"Species contamination check provides % unmapped to focal species but not number of reads mapped uniquely to focal species. Need to provide this as well to give more information in case there is a mixup.
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/141
+MDU6SXNzdWUxNDk0MjIzMzI=,Data deletion tier 3,CLOSED,2016-04-19T10:49:48Z,2016-10-12T09:40:22Z,2016-10-12T09:40:22Z,"We need to:
+- check the Rest API for samples that have been reviewed and delivered
+- check the Lims for samples where the most recent EG Data Release 1.0 is more than 3 months ago
+- delete delivered_projects/project_id/release_date/sample_id
+
+There will eventually be a user-notification step in the Lims. Once this is in, check that the sample has been through this.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/146
+MDU6SXNzdWUxNTEwOTI1MTQ=,Store species aliases localy,CLOSED,2016-04-26T10:00:26Z,2016-05-24T07:55:48Z,2016-05-24T07:55:48Z,"Recently efetch and esearch from NCBI have been often unavailable.
+We should setup a local repository of species aliases that we would populate with any new alias we encounter.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/148
+MDU6SXNzdWUxNTE2Mzg5MDE=,linking file in variant calling and qc pipeline is messy,CLOSED,2016-04-28T13:18:02Z,2017-05-15T13:03:59Z,2017-05-15T13:03:59Z,"At the moment the variant calling pipeline uses the linking method to locate bcbio and some QC file and place them in the final directory. after the linking step some other QC steps are placing more file in the final directory using various mechanism.
+The QC pipeline is different because the all file are generated before the linking method is called.
+
+The two solutions are starting to diverge significantly and we should bring them back together.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/149
+MDU6SXNzdWUxNTM0ODMyMjc=,--reset is crashing on when sync is called,CLOSED,2016-05-06T15:58:35Z,2016-05-10T07:52:40Z,2016-05-10T07:52:40Z,"I pull master in branch laneduprate and wanted to run some test.
+but when I reset a run on ultra it crashed with the following error
+
+``` python
+Traceback (most recent call last):
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/bin/edingen_analysis_driver.py"", line 10, in <module>
+    sys.exit(analysis_driver.client.main())
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/analysis_driver/client.py"", line 38, in main
+    scanner.get_dataset(d).reset()
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/analysis_driver/dataset.py"", line 57, in reset
+    self.most_recent_proc.change_status(DATASET_REPROCESS)
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/analysis_driver/dataset.py"", line 237, in change_status
+    self.update_entity(status=status)
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/analysis_driver/dataset.py"", line 234, in update_entity
+    self.sync()
+  File ""/home/U008/tcezard/Applications/Analysis-Driver/dev/analysis_driver/dataset.py"", line 230, in sync
+    raise RestCommunicationError('Sync failed: ' + str(patch_content))
+analysis_driver.exceptions.RestCommunicationError: Sync failed: {'_links': {'self': {'title': 'analysis_driver_proc', 'href': 'analysis_driver_procs/run_150723_E00306_0025_BHCHK3CCXX_25_03_2016_15:01:03'}}, 'end_date': '25_03_2016_18:13:54', 'pid': 0, '_id': '56f552af3df5b1fb11da1dc7', '_etag': 'e5f3ccb9e59a2f498880e78526d3930ecc31fd6f', '_updated': '25_03_2016_18:13:54', 'status': 'reprocess', 'dataset_type': 'run', '_created': '25_03_2016_15:01:03', 'dataset_name': '150723_E00306_0025_BHCHK3CCXX', 'stages': [{'exit_status': 0, 'date_started': '25_03_2016_15:01:03', 'date_finished': '25_03_2016_15:03:19', 'stage_name': 'transfer'}, {'exit_status': 0, 'date_started': '25_03_2016_15:03:19', 'date_finished': '25_03_2016_15:03:19', 'stage_name': 'setup'}, {'exit_status': 0, 'date_started': '25_03_2016_15:03:20', 'date_finished': '25_03_2016_15:08:50', 'stage_name': 'bcl2fastq'}, {'exit_status': 0, 'date_started': '25_03_2016_15:08:50', 'date_finished': '25_03_2016_15:23:35', 'stage_name': 'sickle_filter'}, {'exit_status': 0, 'date_started': '25_03_2016_15:23:35', 'date_finished': '25_03_2016_15:30:18', 'stage_name': 'fastqc'}, {'exit_status': 0, 'date_started': '25_03_2016_15:23:35', 'date_finished': '25_03_2016_15:49:42', 'stage_name': 'seqtk_fqchk'}, {'exit_status': 0, 'date_started': '25_03_2016_15:23:35', 'date_finished': '25_03_2016_15:57:37', 'stage_name': 'md5sum'}, {'exit_status': 0, 'date_started': '25_03_2016_15:57:43', 'date_finished': '25_03_2016_18:13:54', 'stage_name': 'data_transfer'}]}
+```
+
+looking into it a bit more it seems that the PATCH failed due to unexpected fields in the most_recent_proc
+
+``` python
+{""_status"": ""ERR"", ""_issues"": {
+""_updated"": ""unknown field"",
+ ""_created"": ""unknown field"", 
+""_etag"": ""unknown field"", 
+""_id"": ""unknown field"", 
+""_links"": ""unknown field""
+}}. Status code 422. Reason: UNPROCESSABLE ENTITY
+```
+
+Could you look into it?
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/153
+MDU6SXNzdWUxNTUwNDc1Mzg=,Make samples originating from notusable runs/lanes visible using analysisdriver,CLOSED,2016-05-16T14:58:02Z,2016-05-16T15:35:42Z,2016-05-16T15:35:42Z,"When a lane of a run is marked as notusable and reviewed as failed, running analysisdriver --sample --report-all does not show the sample.
+
+Making samples like this visible will be useful for run review and identifying samples needing to be repeated.
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/154
+MDU6SXNzdWUxNTUwNTg5Nzc=,Enable identification of notusable samples,CLOSED,2016-05-16T15:50:59Z,2016-05-24T10:59:53Z,2016-05-24T10:59:53Z,"When marking the lane of a run as unuseable, if the sample within that lane is not pooled, it appears in analysisdriver --sample --report-all without the run name.
+
+Including the run name in such samples in the sample report can help better identify all samples which need repeating.
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/156
+MDU6SXNzdWUxNTcyMDQyNDM=,release the split fastq file instead of the merged one,CLOSED,2016-05-27T13:15:53Z,2016-07-08T16:25:11Z,2016-07-08T16:25:11Z,"This would be a new feature the would:
+- not keep the merged fastq file in processed folder.
+- when releasing copy the split fastq files and corresponding md5 to the delivered_projects
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/160
+MDU6SXNzdWUxNTc0OTIzMTI=,Cleanup still occurs when variant calling fails,CLOSED,2016-05-30T12:20:45Z,2016-06-21T14:10:45Z,2016-06-21T14:10:45Z,"`driver._output_data` doesn't take any prior exit statuses into account, so cleanup always happens unless something goes wrong in the data output. This means that we sometimes can't see what has gone wrong because the job folder has been deleted, along with the logs.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/161
+MDU6SXNzdWUxNjIxMjEyOTY=,Non-bcbio variant calling,CLOSED,2016-06-24T10:41:17Z,2016-07-08T16:25:33Z,2016-07-08T16:25:32Z,"We need to add a non-human GATK haplotype pipeline that doesn't go through BCBio.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/170
+MDU6SXNzdWUxNjIxNTA2Mjc=,"Asana notification: when a run fail for the second time, need to open the task again",CLOSED,2016-06-24T13:49:44Z,2016-06-24T15:32:18Z,2016-06-24T15:32:17Z,"At the moment the task stay closed if it had been close making it difficult to see what has happened
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/171
+MDU6SXNzdWUxNjMzNjU2MDg=,General contamination detection,CLOSED,2016-07-01T10:19:14Z,2017-01-13T10:55:06Z,2017-01-13T10:55:06Z,"There is a growing need to be able to detect the origin (species) of DNA we sequenced without relying on having the reference available.
+Our first option is to sample 1000 reads from the raw data and blast them against NT.
+At the moment we will not run this QC every time  but might add a test for mapping rate and only run it if it is low (<70%). 
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/172
+MDU6SXNzdWUxNjQ1NjY0NDc=,report %bases covered at different thresholds,CLOSED,2016-07-08T16:22:18Z,2016-09-27T20:16:44Z,2016-09-27T20:16:44Z,"Report base covered at 5, 15, 30X
+Calculate the 5, 25, 50, 75, 95 percentiles
+Upload all to the database.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/176
+MDU6SXNzdWUxNjQ2NTI2NzQ=,record and write out all software versions,CLOSED,2016-07-09T06:18:05Z,2016-08-03T10:55:36Z,2016-08-03T10:55:36Z,"We need to create a parsable record of all software version that were used during the analysis and make it part of the final output
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/177
+MDU6SXNzdWUxNjgwNTQ3ODQ=,Retrieve actual library id from Lims and upload to Reporting-app,CLOSED,2016-07-28T09:44:32Z,2017-04-20T20:52:36Z,2017-04-20T20:52:36Z,"We have had a few instances where more than one libraries were created out of one sample.
+We need to be able to support these cases.
+The first step is to record the actual library id which means finding it in the LIMS.
+The code bellow should work but we need to confirm that it will work in every case
+
+``` python
+def get_library_id(sample_name):
+    sample = get_sample(sample_name)
+    if not sample:
+        return None
+    artifacts = connection().get_artifacts(
+            sample_name=sample.name,
+            type='Analyte',
+            process_type='AUTOMATED - Clean Up ALP'
+    )
+    if not artifacts:
+        return None
+    return artifacts[0].udf.get('Raw Library ID')
+```
+
+Then we should upload this to Reporting app database in sample endpoint
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/180
+MDU6SXNzdWUxNjgyNzg5NzU=,Calculate early estimate of duplicate and mapping rate at run,CLOSED,2016-07-29T08:49:45Z,2018-02-22T10:02:32Z,2017-11-15T13:54:32Z,"There is a growing need for early assessment of some metrics through alignment at the run level.
+This assessment needs to be as fast as possible and still fairly accurate.
+One option is to explore the possibility of mapping all the reads to the target genome.
+This would give us an early estimate of:
+- mapping rate
+- well duplicates
+- we could extrapolate the coverage assuming there isn't much more library duplicates.
+
+We should first test this method before implementing
+(See CR359)
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/181
+MDU6SXNzdWUxNzMwNTMwNTA=,replace sickle filter step,CLOSED,2016-08-24T20:41:42Z,2016-10-19T14:24:35Z,2016-10-19T14:24:35Z,"sickle filter step's purpose is to remove the read that are too short and discard the associated pair in the fastq file.
+although it does work for this, that's not it's intended purpose and it is very slow. 
+We should find a faster way to perform this task 
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/182
+MDU6SXNzdWUxNzMzOTU5Mzg=,parser and add %adapter as reported by bcl2fastq,CLOSED,2016-08-26T08:16:38Z,2016-11-03T13:30:44Z,2016-11-03T13:30:44Z,"bcl2fastq reports the bases trimmed by the adapter filter in Stats/AdapterTrimming.txt.
+We should parse the file are report adapter bases removed to reporting app
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/183
+MDU6SXNzdWUxODI0Nzg0ODU=,Load the Samplesheet at the beginning of the run,CLOSED,2016-10-12T09:33:08Z,2017-04-20T20:47:08Z,2017-04-20T20:47:08Z,"The samplesheet get loaded to the reporting app only when the run is finished. It would be beneficial to have it loaded at the beginning of the run.
+We need to create a run process  that takes Run with no AnalysisDriver status and upload the Samplesheet and set the status to 'new'
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/188
+MDU6SXNzdWUxODM5NzU2ODk=,Calculate Evenness score and upload to Reporting-App,CLOSED,2016-10-19T14:20:43Z,2016-11-07T14:15:26Z,2016-11-07T14:15:26Z,"The Evenness score is formally defined in http://www.nature.com/jhg/journal/v61/n7/full/jhg201621a.html?cookies=accepted
+
+In the supplementary document they define Evenness scove E using R code
+
+``` R
+C=round(mean(D))
+D2=D[D<=C]
+E=1-(length(D2)-sum(D2)/C)/length(D)
+```
+
+Where D is a vector of number representing the coverage at every bases.
+We need to translate that function into python and calculate evenness base on the coverage histogram we obtain from samtools depth.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/191
+MDU6SXNzdWUxODUwNTY0OTI=,add --kill or --stop option to analysis driver,CLOSED,2016-10-25T08:54:40Z,2016-11-18T14:12:59Z,2016-11-18T14:12:59Z,"I'd like to have an option to stop a process from analysis driver.
+analysis driver would identify the process from the REST API with its PID and send a signal SIGTERM (15) to the pid.
+The running analysis driver would then catch that signal and cleanly exit:
+- stop all executor jobs
+- set its status to failed in the REST API.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/193
+MDU6SXNzdWUxODcwMjAwNzc=,Support multiple genome per species,CLOSED,2016-11-03T10:16:53Z,2017-03-06T10:03:51Z,2017-03-06T10:03:51Z,"We need to be able to support more than one genome per species.
+The config will have to be change to add a level in the references section
+We need to create a new UDF to specify which genome should be used and a default in case the UDF is missing.
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/195
+MDU6SXNzdWUxODcwMjQ2MDA=,Support multiple Analysis type ,CLOSED,2016-11-03T10:38:40Z,2016-12-15T11:44:19Z,2016-12-15T11:44:19Z,"There is a new requirement that we can use [freebayes](https://github.com/ekg/freebayes) for variant calling instead of GATK.
+Implementing that within bcbio is straightforward as it is just a simple config change but since we also need to support it outside of bcbio we should think of a way of supporting other (potentially multiple per sample) analysis types",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/196
+MDU6SXNzdWUxODcwNDAyNzY=,Replace samblaster with biobambam2,CLOSED,2016-11-03T11:57:02Z,2016-11-09T16:26:17Z,2016-11-09T16:26:17Z,"Samblaster has had issues with genomes that contains many contigs and more recently with the goat genome for no apparent reason.
+We'll replace samblaster for the duplicate marking by [biobambam2 bamsormadup](https://github.com/gt1/biobambam2) which has the advantage of being multithreaded, generating a bam file, sorting it and generating the index in one pass.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/197
+MDU6SXNzdWUxODcyOTYxNTk=,Create a Project process in Analysis Driver,CLOSED,2016-11-04T10:12:16Z,2016-12-16T16:33:03Z,2016-12-16T16:33:03Z,"the same way we run Run and Sample processes we need to define a Project process that will gather metrics from the sample that have been a finished already. 
+This imply that we will add and AnalysisDriver Process in the Project objet in the reporting app.
+The trigger for this Project process is not clear yet but will likely be either:
+ - Appearance of a new sample
+or  
+ - Completion of the last sample.
+ ",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/198
+MDU6SXNzdWUxODcyOTY5MTU=,Calculate relatedness across project ,CLOSED,2016-11-04T10:16:18Z,2017-03-06T10:02:58Z,2017-03-06T10:02:58Z,"We need to add a new QC that will calculate the relatedness of samples. We will run it across project but might also run it across any set of sample.
+The input files will be gvcf files and we will generate joint vcf file with GATK and calculate relatedness (vcftools or others)
+ ",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/199
+MDU6SXNzdWUxODc1ODU1Njc=,Run Samtools stats,CLOSED,2016-11-06T20:12:51Z,2017-02-24T15:24:00Z,2017-02-24T15:24:00Z,"We should run samtools stats instead of bamtools stats and change the parsers accordingly.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/201
+MDU6SXNzdWUxODc5NDYyNjA=,Implement a pipeline for variant calling without using GATK,CLOSED,2016-11-08T09:51:01Z,2016-11-08T11:47:23Z,2016-11-08T11:47:23Z,"We can use bcbio at the moment with this configuration:
+https://github.com/chapmanb/bcbio-nextgen/blob/master/config/templates/freebayes-variant.yaml",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/202
+MDU6SXNzdWUxOTM3Nzc4NTE=,Add validation step at the end of the Run processing,OPEN,2016-12-06T13:54:10Z,2018-01-15T11:01:26Z,,"We need to make sure the data generated by the Run process is valid.
+We can run something as simple as ```gzip -t ``` or validate the fastq format with FastqValidator or validate the number of reads by making sure we have exactly the number of reads that are expected using
+ - number of reads Conversion file
+ - number of reads removed in the Adapter filtering 
+ - number of reads remove in fastqfilterer steps
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/209
+MDU6SXNzdWUyMDI4Mjc5MTk=,determine if a run is complete before starting the demultiplexing,CLOSED,2017-01-24T14:09:40Z,2017-03-31T14:08:59Z,2017-03-31T14:08:59Z,"When the data copy fails between the sequencer and our storage, some bcl files ends up being corrupted. bcl2fastq fails and we need to identify all the offending bcls by running bcl2fastq wit ```--ignore-missing-bcl```.
+This is a very slow process and in order to gain some time we should check that all the bcl files are there and valid.
+In order to do that we can only read the bcl files header [see example](https://github.com/EdinburghGenomics/well_duplicates/blob/master/bcl_direct_reader.py#L187) which should be relatively fast
+We then can report all the corrupted files and raise an error
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/215
+MDU6SXNzdWUyMDU1NzMzNDQ=,Integrate new version of well duplicates,CLOSED,2017-02-06T12:45:30Z,2019-05-22T22:00:06Z,2019-05-22T22:00:06Z,"The newest commit of Well duplicate changed the format of the output and add a more accurate estimation of duplicate rate.
+We need to download and test this new version and update the parser accordingly",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/217
+MDU6SXNzdWUyMDY3OTIyMzc=,Data archiving at the end of the processing,CLOSED,2017-02-10T13:09:47Z,2017-03-02T11:39:33Z,2017-03-02T11:39:33Z,"Archiving the data stored in runs and project folder is currently the responsibility of Robinhood.
+We're in the process of retiring Robinhood so we need to implement the arching ourselves.
+The copy of the data to tape is actually handled by DMF  so the only thing we need to run is the registration of each file to DMF using:
+```lfs hsm_archive```
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/219
+MDU6SXNzdWUyMDkxOTMwODM=,Support for multiple version of tools,CLOSED,2017-02-21T16:11:51Z,2017-08-10T09:19:35Z,2017-08-10T09:19:35Z,"We want to be able to update our tools while still guaranteeing that samples from a project will be run with a specific stable set of tools.
+We need to be able to associate a set of tools (config file) and a workflow (analysis_driver version) with a project. The config file and analysis_driver version will be retrieved before analysis driver starts.
+
+One option would be to split Analysis-Driver in two: 
+ - Process manager on one side
+ - Pipeline runner on the other
+
+Another option would be to add a wrapper script around AnalysisDriver to select the version to run.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/222
+MDU6SXNzdWUyMDk0MDgzMzE=,contamination_blast failure is not causing Analysis driver error,CLOSED,2017-02-22T10:14:41Z,2017-02-28T11:56:43Z,2017-02-28T11:56:43Z,,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/223
+MDU6SXNzdWUyMTExMDUxODI=,Sample sheet parsing,CLOSED,2017-03-01T14:56:59Z,2017-04-12T11:44:16Z,2017-04-12T11:44:16Z,"In Seqlab 2, some of the sample sheet columns have changed:
+
+- Sample_ID and Sample_Name have swapped roles
+- Index and Index2 are no longer capitalised
+- Project_Name no longer needs to be converted to Sample_Project
+
+Some of the fuzzy logic for locating columns can probably be removed as well, since our sample sheet format is fairly stable now.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/228
+MDU6SXNzdWUyMTQ0MTgyODY=,test and integrate bcl2fastq2.20,CLOSED,2017-03-15T15:02:14Z,2019-01-29T14:42:52Z,2019-01-29T14:42:52Z,"Download bcl2fast 2.19 from
+https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html
+The basic behaviour seems but the stats seems to have changed. That might require some change in the parsers",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/231
+MDU6SXNzdWUyMTUzODcyMTY=,Add support for any focal species in Fastq screen reporting,CLOSED,2017-03-20T11:03:22Z,2017-03-29T09:17:11Z,2017-03-29T09:17:11Z,"In the fastq screen parser there is a requirement that the species of interest (focal species) be in the database for any reporting to happen.
+We should still report the fastqscreen output as it provides information regardless of the focal species.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/232
+MDU6SXNzdWUyMTk4NTcyMDI=,Family confirmation,CLOSED,2017-04-06T10:44:06Z,2017-06-21T08:52:42Z,2017-06-21T08:52:42Z,"As part of the project process we'll add a check for family information.
+If it is available we will create a ped file for the family and run peddy to check that the vcf matches the family information provided.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/237
+MDU6SXNzdWUyMjAzMjM2MDM=,--stop is not working anymore,CLOSED,2017-04-07T20:43:28Z,2017-05-15T13:01:18Z,2017-05-15T13:01:18Z,"Not sure why but it appears that signal 10 is not being caught in Analysis driver.
+Maybe this is due to Luigi ...
+Signal 15 however is still being caught and kills the application as expected.
+Either figure out how to fix signal 10 or use 15 in --stop",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/238
+MDU6SXNzdWUyMjA2ODM2MTY=,Error handling cleanup,CLOSED,2017-04-10T15:34:33Z,2017-05-15T13:01:18Z,2017-05-15T13:01:18Z,"Luigi does some of its own Exception catching, meaning the `except Exception` block in analysis_driver.client never gets reached. Apart from being a bit untidy, it also means we haven't been getting crash reports since the latest version of the pipeline was put into production.
+
+We should hook crash reports and stage failure notifications into `Stage.run` (since multiple concurrent stages could conceivably break in a single run), but leave pipeline failure notifications as they are in `client`.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/239
+MDU6SXNzdWUyMjI2NjAxNDg=,Bcl validation spawns too many jobs,CLOSED,2017-04-19T08:33:10Z,2017-04-19T15:26:04Z,2017-04-19T15:26:04Z,"When bcl validation is performed for a large number of cycles it creates a SLURM script that contains too many tasks (no more than a 1000) there is also a limit on the size of the script which means we should also limit the number of character we use in large scripts.
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/240
+MDU6SXNzdWUyMjU2NDgwNDM=,Record % of callable bases,CLOSED,2017-05-02T10:00:32Z,2019-05-22T21:59:51Z,2019-05-22T21:59:51Z,"BCBio generates a `sort-callable.bed` file, but we should make this uniform across all pipelines.
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/245
+MDU6SXNzdWUyMjg5Nzk2NDE=,Split Dataset and Pipeline run data,OPEN,2017-05-16T10:07:41Z,2017-05-16T10:07:41Z,,"The Dataset is quite big now, and is serving two purposes - managing data (species, run elements, etc.), and managing the pipeline run (notifications, exceptions, etc.). We should split the pipeline functionality off into a new class, e.g. `PipelineRun`.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/249
+MDU6SXNzdWUyMjk2Mjc0MDg=,Add test for RunCrawler when rundir is provided,CLOSED,2017-05-18T10:42:02Z,2017-06-13T13:19:34Z,2017-06-13T13:19:34Z,The Run crawler is only partially tested and would benefit from having test that provide the rundir.,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/251
+MDU6SXNzdWUyMzE4Njc3NTQ=,Samtools depth step uses sort which writes to /tmp,CLOSED,2017-05-28T13:06:36Z,2017-05-29T22:12:48Z,2017-05-29T22:12:48Z,"Sometime /tmp is full which causes it to crash
+Need to specify `samtools sort -T temp folder` to fix it",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/254
+MDU6SXNzdWUyMzE5NTUyNTU=,GATK writes to /tmp,CLOSED,2017-05-29T08:14:50Z,2017-05-29T22:12:48Z,2017-05-29T22:12:48Z,Change the behaviour by specifying `java -Djava.io.tmpdir=<tmp_dir>`,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/255
+MDU6SXNzdWUyMzE5NzIzMDc=,Multiprocessing and stage handling,CLOSED,2017-05-29T09:30:27Z,2017-06-08T09:49:13Z,2017-06-08T09:49:13Z,"- We're getting unprocessable entities in calls to `MostRecentProc.start_stage`, where a call to GET returns something, causing it to do a PATCH on the stage with `""date_finished"":null`, which the schema rejects.
+- We're getting a lot of calls to `GET analysis_driver_stages?where={""date_finished"":null}` in `Dataset.running_stages`
+- We're only seeing one stage at a time in the app stage report. This seems to be caused by calling `start_stage` (which consists of multiple GETs and PATCHes) in concurrent Processes, therefore overwriting the analysis_driver_proc's list of stages
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/256
+MDU6SXNzdWUyMzI5MTgwNzg=,Recording data processed in the analysis driver proc,CLOSED,2017-06-01T15:27:02Z,2018-04-24T10:57:10Z,2018-04-24T10:57:10Z,"https://github.com/EdinburghGenomics/Reporting-App/pull/109 introduced the possibility of adding a source of the data to analysis driver proc. We should store there:
+ - The list of run element id for sample process
+ - The list of sample id for Project process",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/260
+MDU6SXNzdWUyMzc4MTQyNzY=,Remove duplicated unmapped reads after bcbio,CLOSED,2017-06-22T11:27:17Z,2017-09-20T13:35:47Z,2017-09-20T13:35:47Z,"Bcbio duplicate the unmapped read after Indel realignment.
+We need to remove the duplicated reads from the bam file after the bcbio process is finished.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/263
+MDU6SXNzdWUyNDAzODAyNjA=,Keep original fastq files upon tile filtering and read trimming,CLOSED,2017-07-04T10:30:04Z,2017-08-28T13:53:30Z,2017-08-28T13:53:30Z,"If we use `--trim_r1/2` and/or `--remove_tiles` during fastq filtering, we should not do this to the files in-place - instead, we should keep the originals. This will result in data duplication in some lanes, but will be much simpler than [keeping filtered/trimmed reads in the filterer itself](https://github.com/EdinburghGenomics/Fastq-Filterer/issues/11).
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/265
+MDU6SXNzdWUyNDEzMDUxNDk=,Project process data output is missing MD5s,CLOSED,2017-07-07T15:49:22Z,2017-09-15T15:56:31Z,2017-09-15T15:56:31Z,"`projects.Output` is missing MD5 checking. There's also some code duplication between this and sample output. #262 will make `transfer_data.create_output_links` generic, so should be able to use that.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/267
+MDU6SXNzdWUyNDIwNDM4Mzc=,Support for user prepared library,CLOSED,2017-07-11T13:17:01Z,2017-09-22T09:15:16Z,2017-09-22T09:15:16Z,"There is a planned to support user prepared library in the near future.
+At the moment these libraries would come with no barcode which mean they will only be sequenced as non-pooling.
+There is [one line](https://github.com/EdinburghGenomics/Analysis-Driver/blob/master/analysis_driver/dataset.py#L269) that requires a barcode to be present.
+We should remove this requirement and check for other places where the user prepared library could break the current assumption.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/268
+MDU6SXNzdWUyNTA2NTI0OTA=,Generic DataOutput,OPEN,2017-08-16T14:43:03Z,2019-03-28T09:22:30Z,,"Data output is currently coded in projects, run processing and in common as SampleDataOutput - these could be rewritten to be more generic.",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/274
+MDU6SXNzdWUyNTIyNzQyOTI=,Test All Pipelines,CLOSED,2017-08-23T13:02:58Z,2018-01-08T12:54:25Z,2018-01-08T12:54:25Z,"Only two pipelines are tested currently, the rest ought to be as well.",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/276
+MDU6SXNzdWUyNTk4MDE3ODY=,Version of java tools cannot be determined in cron,CLOSED,2017-09-22T12:39:56Z,2019-03-25T11:34:11Z,2019-03-25T11:34:11Z,"When extracting the version of GATK, Fastqc, or RTG, AnalysisDriver need access to java application.
+When running it on a terminal java is provided by the environment (`.bashrc`) but when running from cron, java is not available hence the version cannot be resolved.
+A workaround can be implemented to add the java environment in cron by preceding the command with a `source`, however a better solution might be found.
+
+This also highlighted that:
+ - Integration tests could not pick this up as they do not run on cron
+ - When tool versioning fails it does not mark the process as fail as it was never started. (tools version resolution happens before `dataset.start`)",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/279
+MDU6SXNzdWUyNjAxMTU4Mjk=,Trigger Run/Sample review at the end of the Run/Sample process,CLOSED,2017-09-24T21:03:16Z,2018-02-22T09:56:02Z,2017-12-11T10:26:27Z,"The Automatic Run/Sample review now happens directly in the REST API.
+We will trigger it after the QC has been uploaded in both Run and sample process.
+See CR427",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/280
+MDU6SXNzdWUyNjA1NDI0MDE=,Error in link creation does not raise exception,CLOSED,2017-09-26T08:51:29Z,2017-12-18T11:15:25Z,2017-12-18T11:15:25Z,"Failure to find files makes link creation raises an error, but does not crash pipeline. Should raise an exception if files not found.",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/281
+MDU6SXNzdWUyNjA1NTAxMTc=,output_files.yaml is lazily loaded into Analysis driver code,CLOSED,2017-09-26T09:15:38Z,2018-06-26T15:27:25Z,2018-06-26T15:27:25Z,"output_files.yaml is loaded when `OutputFileConfiguration` is created which can happen at the end of the process. This can result in discrepancy between the code/config loaded at the beginning of the process and the output_files.yaml loaded at the end in cases where a new version of analysis driver is deployed.
+We could use a singleton of OutputFileConfiguration to fix this.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/282
+MDU6SXNzdWUyNjQ2NjI5NzY=,Missing analysis_driver_procs from runs,CLOSED,2017-10-11T17:00:07Z,2018-12-14T15:35:33Z,2018-12-14T15:35:33Z,"In dataset.py, `initialise_entity` is trying to patch the run with the new analysis_driver_proc at a time that the run does not yet exist. The run is created by the RunCrawler at the end of the pipeline, which doesn't help much when the dataset is trying to patch it at the start. This means we're missing embedded pipeline processes. We should do something to initialise container entities (runs, samples, projects) at the start of the pipeline.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/284
+MDU6SXNzdWUyNjk5NTgyNTQ=,Sample processing should use yield instead of yield Q30,CLOSED,2017-10-31T13:29:40Z,2018-02-22T09:57:39Z,2018-01-03T15:30:04Z,"To be consistent with the rest of the review process the requirement for a sample to be ready will be changed to: 
+ - Yield useable > Require yield
+ - %Q30 > 75%
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/286
+MDU6SXNzdWUyNzIyMTU5MzU=,Sample status detailed flag not working correctly,CLOSED,2017-11-08T14:22:37Z,2017-11-09T09:43:23Z,2017-11-09T09:43:23Z,"In [sample_status.py](https://github.com/EdinburghGenomics/Reporting-App/blob/master/rest_api/limsdb/queries/sample_status.py) the way the 'detailed' flag is selected does not work properly:
+
+```python
+detailed = bool(request.args.get('detailed', False))
+```
+
+If 'true' or 'false' is set as the detailed arg, it will always return true due to the conversion into boolean.
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/289
+MDU6SXNzdWUyNzIyMzQ5MDk=,Detailed flag in sample status gives inconsistent results in some fields,CLOSED,2017-11-08T15:16:14Z,2017-11-09T09:52:47Z,2017-11-09T09:52:47Z,"In [sample_status.py](https://github.com/EdinburghGenomics/Reporting-App/blob/master/rest_api/limsdb/queries/sample_status.py) selecting (True) or deselecting (False, default) uses differing numbers of steps that have completed.
+
+The steps retrieved when the detailed option is used include steps that precede 'Receive Sample', whereas when detailed=False, Recieve Sample is the first step.
+
+Started_date uses the first step to calculate when a sample was started, wrongly assuming that sample receipt is always the first step, therefore when detailed is set to True, the started date is set to a date before sample receipt, and is therefore not accurate.
+
+This should be fixed to accurately calculate the date a sample was started on.
+
+
+
+",katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/290
+MDU6SXNzdWUyNzM0ODM1NDM=,Repeated stage running,CLOSED,2017-11-13T16:05:11Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,"Sometimes we want to be able to run stages, e.g. crawlers, multiple times in the pipeline, which at the moment requires the definition of a new class. This can be made easier by making `__stagename__` a Parameter. We should also add something to the pipeline build tests to ensure no two stages have the same stagename.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/291
+MDU6SXNzdWUyNzQ1MDg2OTI=,More verbose comparisons in integration tests,CLOSED,2017-11-16T13:04:35Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,"At the moment in integration tests, we have no record of the observed/expected data in successful comparisons. We should either log the contents of the config or verbosely log each comparison.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/292
+MDU6SXNzdWUyNzQ4MDgxNzA=,Resume option does not work,CLOSED,2017-11-17T09:49:54Z,2018-02-26T16:00:29Z,2018-02-26T16:00:29Z,"I've tried to us the `--resume` option on analysis driver and it does not work at the moment.
+ - Running `--resume` does not change the `analysis_driver_procs`'s status to resume.
+ - After manually changing the  `analysis_driver_procs`'s status to resume manually it is not picked up and restarted by the pipeline.
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/293
+MDU6SXNzdWUyNzUyOTExNjQ=,Integration test: Create new repo for integretion test datasets.,OPEN,2017-11-20T09:41:31Z,2017-11-22T09:26:28Z,,"Looking into github policies we should be able to upload the stripped down dataset and maybe the full size as it would not breech github policy.
+see https://help.github.com/articles/working-with-large-files/ and  https://help.github.com/articles/conditions-for-large-files/
+This would potentially allow us to version the md5/qc associated with the results alongside.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/294
+MDU6SXNzdWUyNzU2ODc0Nzk=,Run element mapping crash because the picard temp dir is not set,CLOSED,2017-11-21T12:03:32Z,2017-11-22T09:37:30Z,2017-11-22T09:37:30Z,It should just be a matter of setting it with `-Djava.io.tmpdir`,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/295
+MDU6SXNzdWUyNzYzNDc4Mjk=,Upload required yield/yield Q30/coverage to the reporting app,CLOSED,2017-11-23T11:50:23Z,2018-02-22T10:07:40Z,2017-11-27T10:53:19Z,Require updated version of EGCG-core,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/297
+MDU6SXNzdWUyODA5NTU5OTY=,Support for multiple type of insert size,CLOSED,2017-12-11T09:58:03Z,2018-02-26T21:35:33Z,2018-02-26T21:35:32Z,"Currently having multiple type of insert size will result in a pipeline crash.
+This is due to this line
+https://github.com/EdinburghGenomics/Analysis-Driver/blob/7d54ecd899d1a58c707005f7ea4f4262e8fc1f19/analysis_driver/reader/mapping_stats_parsers.py#L192
+Because we sometime do get other type of insert size we need to add support for each one and be able to report on their existence on the reporting app.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/301
+MDU6SXNzdWUyODIzOTExNDQ=,Step in the LIMS not finishing,CLOSED,2017-12-15T10:56:51Z,2017-12-20T16:08:39Z,2017-12-20T16:08:39Z,"The Sample Processing step triggered by the LimsNotification does not get finished.
+We need to identify why and fix it
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/304
+MDU6SXNzdWUyODI4Njg0NDg=,Extend QC to calculate variant calling for non human,CLOSED,2017-12-18T12:49:58Z,2018-04-16T07:47:14Z,2018-04-16T07:47:14Z,"This would allow us to calculate new metrics:
+ - ti/tv ratio
+ - het/hom ratio
+and upload them to the reporting app.
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/305
+MDU6SXNzdWUyODcxMzI3NTU=,GATK GenotypeGVCFs memory ,CLOSED,2018-01-09T15:42:12Z,2018-02-09T11:52:02Z,2018-02-09T11:52:02Z,GenotypeGVCFs requires different amount of memory for different number of samples in project process - need to change memory in command depending on number of samples,katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/307
+MDU6SXNzdWUyODc0OTMwMTQ=,Project process is_ready bug,CLOSED,2018-01-10T16:20:37Z,2018-01-22T16:08:09Z,2018-01-22T16:08:09Z,The conditions for being ready are incorrect in project dataset - currently check whether the number of samples quoted is more than number of samples processed - should be number of samples processed more than or equal to number of samples quoted.,katieemelianova,https://github.com/EdinburghGenomics/Analysis-Driver/issues/308
+MDU6SXNzdWUyOTA0NTAxMTU=,Extract interop metrics,CLOSED,2018-01-22T12:33:16Z,2018-03-06T13:58:21Z,2018-03-06T13:58:21Z,"Several metrics need to be extracted from the interop to be uploaded to the reporting app for review.
+These can be extracted from the time the run is completed see CR628 for thelist of metric to extract.
+Most metrics can be extracted using the interop reader binary call ""summary""
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/310
+MDU6SXNzdWUyOTA0NTM0MDI=,Remove all usage of aggregate endpoints,CLOSED,2018-01-22T12:46:11Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,"the aggregate endpoint will be deprecated in future release of Reporting app.
+We should switch all usage to the aggregated sub field in the Eve endpoints",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/311
+MDU6SXNzdWUyOTMyMzY2NDg=,Data threshold is set in the DatasetScanner,CLOSED,2018-01-31T17:02:36Z,2018-02-01T12:36:50Z,2018-02-01T12:36:50Z,"In SampleDataset, the data thresholds for status ready has changed to used required yield.
+However it was also set in the dataset scanner which means that it is still uses the required yield Q30
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/315
+MDU6SXNzdWUyOTM1NDIwNzA=,Integration test: add empty sample,CLOSED,2018-02-01T14:05:10Z,2019-05-22T21:57:08Z,2019-05-22T21:57:08Z,In the integration tests the rest api only contains sample with data. We should have other samples to make sure that they do not prevent the processing of the expected sample,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/317
+MDU6SXNzdWUyOTUwNjQ4NzM=,Fix travis build,CLOSED,2018-02-07T09:32:37Z,2018-02-07T10:37:36Z,2018-02-07T10:37:36Z,"The travis build is failing all the time on python3.4 and it seem to happen because pip downloads the wrong interop library.
+```
+Collecting interop (from -r requirements.txt (line 9))
+  Downloading interop-1.1.3-cp34-cp34m-manylinux1_x86_64.whl (3.9MB)
+```
+where the `requirements.txt`  states 
+```
+-f https://github.com/Illumina/interop/releases/tag/v1.0.25
+interop
+```",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/320
+MDU6SXNzdWUyOTgyNjY2ODQ=,Evaluate and possibly implement standardised pipeline ,OPEN,2018-02-19T12:58:10Z,2018-02-19T12:58:10Z,,"see:
+https://github.com/CCDG/Pipeline-Standardization/blob/4d614859df2f559c25d86c746e23787422252102/PipelineStandard.md
+
+They provide specific on how to implement GATK best practice pipeline and it should be realively easy to use them to implement a new variant detection pipeline for human.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/324
+MDU6SXNzdWUzMDc2MTI3ODA=,Scanner reliability,OPEN,2018-03-22T11:56:15Z,2018-03-24T07:01:59Z,,"At the moment, we sometimes see two datasets kicked off at the same time, probably because of lag in the dataset scan. We should:
+- [ ] Add some logging to the scanner so we can see everything being run
+  - This should be set up independently of the (dataset-specific) pipeline logging
+- [ ] Decouple the scan from the pipeline processing so there is always a single scanning process
+  - This would mean the core pipeline is run with something like `analysis_driver --sample <sample_id>`
+  - The status manipulation (reset, resume, etc.) could be moved somewhere else
+",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/325
+MDU6SXNzdWUzMTI1NzU3MTY=,Handle error in asana notification,CLOSED,2018-04-09T15:23:21Z,2018-05-01T14:12:52Z,2018-05-01T14:12:52Z,"There has been few instances of ConnectionTimeout on Asana API which could be caused by their server being too slow or our query taking too long.
+In any case, when it occurs during a failure the asana task is created and because the resulting exception is not handled the status of the pipeline is not changed.
+We need to make sure our queries are not taking too long and handle error in notification so that if one fails the other one can still be notified.
+
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/327
+MDU6SXNzdWUzMjI5NzAyMjY=,Resumable stages,OPEN,2018-05-14T20:32:14Z,2018-05-14T20:32:23Z,,"Some stages are not supporting resume often because they move file around or delete there input.
+fastqfilterer is one example.
+We should
+ - [ ] identify all non resumable stages 
+ - [ ] never resume a process starting with these stages
+It is a bit complex because the non resumable stage will have to act on the previous stage's target.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/328
+MDU6SXNzdWUzMjY5NjIwMjk=,Remove Phix from raw data,CLOSED,2018-05-28T09:33:24Z,2018-06-01T15:15:59Z,2018-06-01T15:15:59Z,"The RunProcessing pipeline need to be able to remove reads identified as Phix and remove them from the raw data.
+We will align the reads to the phix genome to identify and remove them from the raw data after bcl2fastq using [FastqFilterer](https://github.com/EdinburghGenomics/Fastq-Filterer) after [this issue](https://github.com/EdinburghGenomics/Fastq-Filterer/issues/12) has been addressed.
+
+CR840",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/329
+MDU6SXNzdWUzMjY5NjgxOTY=,Remove Phix reads from processed data,CLOSED,2018-05-28T09:53:40Z,2018-06-01T15:15:59Z,2018-06-01T15:15:59Z,"Some fastq files still contains Phix reads.
+We need to remove the Phix reads by identifying them and filtering the fastq file.
+then we need to rerun the run processing QC and update the run metrics on the reporting app 
+CR840",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/330
+MDU6SXNzdWUzMjg2NjU3OTc=,g.vcf file generated in non human variant call is not output ,CLOSED,2018-06-01T21:26:18Z,2018-06-04T09:48:16Z,2018-06-04T09:48:16Z,"bug introduced in #319 
+It is not in prod yet so it should be fix before next version is release.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/332
+MDU6SXNzdWUzMjk4MzI3Mzc=,Analysis Driver Process doesn't record start_date,CLOSED,2018-06-06T11:46:14Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,"Reporting app schema defines a `start_date` for `analysis_driver_proc` but it is not populated by Analysis Driver.
+The start date should be set on the pipeline start but not on resume.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/334
+MDU6SXNzdWUzMzA1ODEyMTI=,Aborted sequencing runs are failing,CLOSED,2018-06-08T09:16:05Z,2018-12-10T23:50:14Z,2018-12-10T23:50:14Z,They should be marked as aborted and have the cleanup and Automatic run review performed.,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/335
+MDU6SXNzdWUzMzA5NDQ3ODg=,genotype gvcf takes too much memory for genomes with many contigs,CLOSED,2018-06-10T06:39:36Z,2018-06-13T13:43:28Z,2018-06-13T13:43:28Z,"Solution include:
+ - reducing the number of contigs in genomes
+ - increasing the amount of memory available
+ - split the genome in pieces when processing 
+
+It might be that changing the indexing from GATK builting to tabix might help as well. 
+EDIT:
+It also seems that lustre prevent the use of the GATK builtin index. using tabix index seems then required
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/336
+MDU6SXNzdWUzMzI0NTM4MjQ=,Separate Integration test references from the production ones  ,OPEN,2018-06-14T15:30:28Z,2018-06-17T20:14:59Z,,"currently the  fastqscreen databases, reference genomes and blast databases are shared making integration test outcome change based on change in production.
+We should avoid as much as possible having any dependency on production.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/339
+MDU6SXNzdWUzMzMyMTU2MDE=,force overwrite in bgzip and Tabix steps,CLOSED,2018-06-18T10:35:15Z,2018-10-04T14:45:44Z,2018-10-04T14:45:44Z,"At the moment bgzip and tabix are set to not overwrite their respective output file.
+We should change this behaviour to always overwrite.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/340
+MDU6SXNzdWUzNDEwMDg3NjI=,Trio checking tries to process incompatible projects,CLOSED,2018-07-13T12:56:20Z,2018-10-19T12:39:02Z,2018-10-19T12:39:02Z,"At the moment, the project pipeline runs completed projects indiscriminately, including non-human projects with only fastqs generated. We should fix this.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/341
+MDU6SXNzdWUzNDY5ODk4MTc=,Memory allocation for indel realignment,CLOSED,2018-08-02T12:28:06Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,Memory should be increased 32 GB.,mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/342
+MDU6SXNzdWUzNDk1OTM1NzE=,Deterministic file checksums in integration tests,CLOSED,2018-08-10T17:16:02Z,2018-09-26T15:34:28Z,2018-09-26T15:34:28Z,"#292 will introduce integration testing via EGCG-Core, which runs the tests inside a uniquely-named temp folder. This means that any output files containing file paths will be non-deterministic, meaning that it will be impossible to check for expected MD5s. During MD5 checks, we could possibly:
+
+- read the file in chunks
+- in each chunk, remove any instances of the temp file path (i.e. the working directory), or replace it with a placeholder
+- pipe the result into MD5",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/343
+MDU6SXNzdWUzNTI0NjczNjk=,Replace GATK base variant calling with faster alternative in QC,CLOSED,2018-08-21T09:54:46Z,2019-05-24T09:35:58Z,2019-05-24T09:35:58Z,"The variant call QC steps for poorly annotated genome is taking a long time to finish.
+Alternative tools are samtools/freebayes which would be much faster. ",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/344
+MDU6SXNzdWUzNTM4MzU4MjU=,Project process: batch samples when more than 30 are processed together,CLOSED,2018-08-24T15:46:29Z,2019-11-19T11:18:26Z,2019-11-19T11:18:26Z,Use CombineGVCFs to create batch of GVCF until you have less than 30 then run GenotypeGVCF. ,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/345
+MDU6SXNzdWUzNTc5OTQzOTI=,Replace GATK with samtools when doing Variant detection and filtering for QC pipeline,CLOSED,2018-09-07T09:39:44Z,2018-09-07T10:08:23Z,2018-09-07T10:08:23Z,"The QC pipeline run through a lot of genome that have large number of scaffold.
+This cause the pipeline to become very slow.
+Replace GATK with samtools that is not affected by this issue. ",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/346
+MDU6SXNzdWUzNjExOTg5MTA=,Force overwrite when in fastq merge step,CLOSED,2018-09-18T08:48:51Z,2018-10-04T14:45:55Z,2018-10-04T14:45:55Z,"When fastq files are merged at the start of the sample pipeline, bcbio will not run the merge step if the output files exist",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/348
+MDU6SXNzdWUzNjE2MzYyMTc=,Run GCbias detection tools on Run processing,CLOSED,2018-09-19T08:31:02Z,2019-01-15T11:05:37Z,2019-01-15T11:05:37Z,"Calculation of the GC bias can be achieved by running Picard CollectGcBiasMetrics tools.
+but other tools exists https://deeptools.readthedocs.io/en/develop/content/tools/computeGCBias.html
+
+We will need a score to characterise the GC bias. 
+Picard provide two: 
+ - GC dropouts
+ - AT dropouts
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/349
+MDU6SXNzdWUzNjU0NTc1NTI=,Run crawler crashes if the insert size metric is missing,CLOSED,2018-10-01T13:19:05Z,2018-10-19T12:39:02Z,2018-10-19T12:39:02Z,"If the insert size in orientation FR is missing the RunCrawler will crash with KeyError.
+https://github.com/EdinburghGenomics/Analysis-Driver/blob/b635c498126bf374f2774438db3c1ea04663176b/analysis_driver/report_generation/run_crawler.py#L342
+Adding an if allows it to upload the information available.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/352
+MDU6SXNzdWUzNjk0NzY4NTk=,Config cleanup,CLOSED,2018-10-12T09:43:20Z,2019-03-25T11:34:10Z,2019-03-25T11:34:10Z,"- [x] At the moment, data output uses the config `sample -> delivery_dest`, when it could just use `delivery -> dest` like everything else.
+- [x] We might be able to remove `delivery_source` and use `sample -> output_dir`
+- [x] It might also be a good idea to remove the config merging",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/355
+MDU6SXNzdWUzNzA2NzE0NjE=,picard Markduplicate reports inacurate optical duplicate,CLOSED,2018-10-16T15:31:19Z,2019-02-07T11:09:36Z,2019-02-07T11:09:36Z,We need to update to the newer version of Picard as it seems a lot more accurate especially when the PCR duplicate rate is high.,tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/356
+MDU6SXNzdWUzNzE5NjY2MjM=,Early alignment during run processing ,CLOSED,2018-10-19T13:50:52Z,2019-01-21T10:54:38Z,2019-01-21T10:54:38Z,"Alignment during run processing could be done before the end of the run which would allows the demultiplexing to be performed faster.
+This will involve 
+- early demultiplexing step with 50 bases of R1 and 50 bases of R2
+- alignment of the reads as is currently
+- insert size and duplicate calculation
+
+Validation should look at the QC obtained previously and ensure results are similar in value
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/357
+MDU6SXNzdWUzODAyNzcxNDQ=,Trio checking for projects with more than 25 samples,CLOSED,2018-11-13T15:22:19Z,2019-03-25T11:34:10Z,2019-03-25T11:34:10Z,"At the moment `ProjectDataset.samples_processed` doesn't depaginate, so projects with more than 25 samples don't get picked up without being forced.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/358
+MDU6SXNzdWUzODM1NDkwODk=,SSL error when when multiple stages start at the same time,CLOSED,2018-11-22T14:02:49Z,2018-11-23T11:34:18Z,2018-11-23T11:34:18Z,"This is an issue with rest_communication
+see https://github.com/EdinburghGenomics/EGCG-Core/issues/91",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/359
+MDU6SXNzdWUzODM4MDIyNTc=,Incomplete Luigi processing ,CLOSED,2018-11-23T12:09:36Z,2019-04-02T12:52:11Z,2019-04-02T12:52:11Z,"A sample gave the following log message:
+
+```
+===== Luigi Execution Summary =====
+
+Scheduled 14 tasks of which:
+* 4 ran successfully:
+    - [successful stages]
+* 10 were left pending, among these:
+    * 10 was not granted run permission by the scheduler:
+        - [unstarted stages]
+        ...
+
+This progress looks :| because there were tasks that were not granted run permission by the scheduler
+
+===== Luigi Execution Summary =====
+```
+
+This still gave a successful exit status from `luigi.run`, so the pipeline finished with exit status 0 but missing QC data. We should find the cause of this and see if there's a way of catching it.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/361
+MDU6SXNzdWUzODY5MTcyMTE=,Ensure all files have been transferred before starting run processing,CLOSED,2018-12-03T17:11:22Z,2019-05-01T15:25:55Z,2019-05-01T15:25:55Z,"In some cases, some bcl files were missing at the beginning of the Run processing due to the transfer lagging behind. 
+We should check that all the file are present and if they're not add another 5 mins wait.
+
+Related to issues documented in NC163.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/363
+MDU6SXNzdWUzODkyMjQxNDA=,Spam reduction,CLOSED,2018-12-10T10:02:37Z,2019-03-25T11:34:10Z,2019-03-25T11:34:10Z,"At the moment, the messages that the pipeline logs are very verbose. We should review the logging and notifications, remove stuff we don't use and potentially add things we want to see.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/365
+MDU6SXNzdWUzOTEwNzA3OTk=,Species/Genomes in the reporting app ,CLOSED,2018-12-14T11:19:44Z,2019-05-02T13:49:50Z,2019-05-02T13:49:50Z," - [x] Migrate from using a list of species/genomes from the config to using the ones stored in the reporting app. 
+ - [x] Store the genome used during sample processing in analysis_driver_procs
+ - [x] Enforce the the project whitelist, i.e. only process a sample if the project ID is in the whitelist, or the whitelist is missing.
+ - [x] Remove support for ""known_indels"" in the genome reference data
+
+Validation ID: VB8",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/367
+MDU6SXNzdWU0MDE3MzY0MDQ=,Rapid processing pipeline,CLOSED,2019-01-22T12:13:28Z,2019-05-21T12:55:12Z,2019-05-21T12:55:12Z,"This will use Dragen to process a non-pooled run from BCL to Bam/VCF:
+
+- This will be in addition to normal run/sample processing. The slow data will be used for QC and comparison.
+- Top-ups as introduced in #69 will not be supported - this would defeat the point of rapid processing.
+- Data will be processed and delivered with minimal review, none of which will be manual.
+  - If automated checks fail, then we stop.
+
+The pipeline will need to:
+
+- [x] Wait until sequencing is complete
+- [x] Pick up a signal that rapid processing should be run on whatever lanes in the run.
+  - Lims UDF from samples via RunDataset._run_elements_from_lims
+  - We may have to merge lanes later for 60/90X
+- [x] Check the Dragen usage quota to ensure that it can be run
+- [x] Write a sample sheet compatible with Dragen
+- [x] Run Dragen using `job_queue=...` in executor
+  - [x] Will need to check whether Dragen can run multiple processes at once. If not, then figure out how to enforce that only one Dragen job runs at a time.
+  - We may need to monitor Dragen licence usage - manually or via executor
+- [x] Extract run and sample QC from Dragen's metrics
+- [x] Call automatic_review on Reporting-App to populate `rapid_processing_useable` and `rapid_processing_reviewed`
+- [x] If review fails, then stop
+  - Fail the pipeline?
+- [x] Output rapid data to a separate `rapid_samples` subdir in the project folder to avoid file conflicts
+- [x] Also link to delivered_projects as per data delivery
+- [x] Notify that samples have finished rapid processing
+  - push to a rapid_processing_complete field in `samples` 
+
+This will require the changes in EGCG-Core addressing EdinburghGenomics/EGCG-Core#97.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/372
+MDU6SXNzdWU0MDMyNDg5MTA=,Upload genome_used,CLOSED,2019-01-25T17:17:38Z,2019-05-08T10:50:03Z,2019-05-08T10:50:03Z,"In sample processing, we should upload the genome used when the sample starts processing.",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/373
+MDU6SXNzdWU0MDU4OTQ2NzE=,SampleProcess start criteria should include coverage,CLOSED,2019-02-01T22:14:43Z,2019-04-22T12:57:22Z,2019-04-22T12:57:22Z,"The Sample processing pipeline only starts when the required yield is meeting the expected yield.
+We often need to force sample to start because they do not meet the required yield but have enough coverage.
+We should change the criteria to be 
+ - yield > required yield
+or
+ - coverage > required coverage
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/374
+MDU6SXNzdWU0MDcyMzY4Njc=,record version of tools used,CLOSED,2019-02-06T13:32:07Z,2019-05-08T10:50:03Z,2019-05-08T10:50:03Z,"At the moment we record the version of all the tools available is written to a yaml file at the end of the pipeline. As more tools gets added to the configuration file the number of tools in the yaml file will grow even if they are not used in the pipeline that ran.
+We should record in the toolset the tool used in a particular run and only output these tool versions to the yaml files
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/376
+MDU6SXNzdWU0MDk3Mjc5MDk=,Implement variant calling pipeline with GATK4,CLOSED,2019-02-13T10:17:35Z,2019-05-24T09:35:57Z,2019-05-24T09:35:57Z,"New variant calling pipeline following best practice document from GATK
+https://software.broadinstitute.org/gatk/best-practices/",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/377
+MDU6SXNzdWU0MTA3MDI0Nzc=,EGCG-Core#99 compatibility,CLOSED,2019-02-15T10:30:29Z,2019-05-08T10:50:03Z,2019-05-08T10:50:03Z,"EdinburghGenomics/EGCG-Core#99 will no longer include script parameter defaults if arguments are omitted. We should ensure all calls to `executor` are either local or set sensible defaults for CPU and memory, otherwise they will be set to Slurm defaults of 1 CPU and all available memory.
+
+- common.py/bcbio_prepare_samples",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/379
+MDU6SXNzdWU0MTA3NDYxNTU=,IDT library prep,CLOSED,2019-02-15T12:23:28Z,2019-05-08T10:50:03Z,2019-05-08T10:50:03Z,"The LIMS now supports IDT library prep adaptors as well as Illumina TruSeq. This breaks the regex in `RunDataset._run_elements_from_lims` because the reagent labels are different:
+
+```
+    run_element[ELEMENT_BARCODE] = match.group(3)                                                                                 
+AttributeError: 'NoneType' object has no attribute 'group'
+```",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/380
+MDU6SXNzdWU0MTE4OTc2Njg=,interop metrics parser should not pass NaN,CLOSED,2019-02-19T12:23:01Z,2019-05-08T10:50:03Z,2019-05-08T10:50:03Z,"the interop summary can sometime output NaN in place of a value in its output.
+The presence of NaN will make the JSON invalid so we need to avoid uploading these values.
+The parser will be changed to replace NaN in the file with no entry being uploaded.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/381
+MDU6SXNzdWU0MTk5NDU0MDE=,Searching for current cycle when they do not exist yet breaks ,CLOSED,2019-03-12T11:54:01Z,2019-03-18T16:40:36Z,2019-03-18T16:40:36Z,"We should check that the cycles exist then take the last one or return 0
+see:
+https://github.com/EdinburghGenomics/Analysis-Driver/blob/096af2f460317f81de749c5de256b8e338a9b83b/analysis_driver/pipelines/demultiplexing.py#L241",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/382
+MDU6SXNzdWU0MjE4NTE3NjU=,non deterministic samplesheet,CLOSED,2019-03-16T20:56:55Z,2019-03-18T17:13:51Z,2019-03-18T17:13:51Z,"When bcl2fastq is run multiple time accros multiple run, the samplesheet is generated several times and the sample can be ordered differently in the different version.
+That can result in inconsitent naming in the fastq files and/or duplicate fastq.
+We should either:
+ - make the order of the run element deterministic
+ - load the samplesheet files if it exists rather than generate it
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/385
+MDU6SXNzdWU0MzA1MDg3OTA=,Change AnalysisDriver pipelines into class,CLOSED,2019-04-08T15:14:56Z,2019-11-19T11:18:37Z,2019-11-19T11:18:37Z,"The pipeline are currently modules but they should be classes.
+That would allow us to use inheritance to extend pipelines.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/390
+MDU6SXNzdWU0Mzg1OTczNzA=,Limit the use of LIMS REST API,CLOSED,2019-04-30T04:15:06Z,2019-11-19T11:18:53Z,2019-11-19T11:18:52Z,"The usage of LIMS REST API is difficult to test integration tests because we do not have a test LIMS. Our integration tests mock all interaction with the LIMS which means any change is hazardous.
+We should limit the use of calls to the LIMS REST API and when it is necessary we should refactor the code so it is only used in one place.
+ ",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/394
+MDU6SXNzdWU0NDAwNDcxNTY=,Identify opened files which are not being closed,CLOSED,2019-05-03T13:30:58Z,2019-09-27T13:00:52Z,2019-09-27T13:00:52Z,"This issue arises from the run processing failure of 190429_E00375_0442_AHYW3WCCXY on 2nd May 2019. An OS error was reported, ""Too many files open"". 
+
+The goal of this issue is to refactor the code of any opened files in analysis driver to ensure they are being closed after use and to reduce the chance of the mentioned OS error from occurring again.",lukbut,https://github.com/EdinburghGenomics/Analysis-Driver/issues/395
+MDU6SXNzdWU0NDIyMjcyMTY=,Filter out adapter before mapping reads to the genome in run processing,CLOSED,2019-05-09T13:07:12Z,2019-11-19T11:19:05Z,2019-11-19T11:19:04Z,"The mapping rate reported in the run processing can be inaccurate because the adapters have not been removed.
+We should add a fastq filterer step to remove adapter before moving on to alignment.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/396
+MDU6SXNzdWU0NDc1NDkyMTA=,Unmarked sample that have been successfully processed,OPEN,2019-05-23T09:37:08Z,2019-11-11T11:07:42Z,,"When sample processing complete the sample should be reviewed.
+To be appearing in the sample to review page, its useable status needs to be: `not marked`
+When the processing finishes successfully, the sample's useable field should be set to `not marked`.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/397
+MDU6SXNzdWU0NDc1NTIyNzE=,Rename gender to sex,CLOSED,2019-05-23T09:43:18Z,2019-06-24T13:16:55Z,2019-06-24T13:16:55Z,"See:
+
+- EdinburghGenomics/Reporting-App#205
+- EdinburghGenomics/EGCG-Core#104
+- EdinburghGenomics/clarity_scripts#96",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/398
+MDU6SXNzdWU0NDkyMTE4NDM=,Dragen updates,OPEN,2019-05-28T11:18:52Z,2019-05-28T11:18:52Z,,"We need to:
+
+- Update Dragen - this will include moving some parameters to the sample sheet
+- Extract the Dragen version somehow and upload it
+- add `--bcl-use-bases-mask` to the command run",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/401
+MDU6SXNzdWU0NTUyNjM0MTA=,See if VQSR results can be improved or remove comment in GATK4 pipeline,OPEN,2019-06-12T14:56:51Z,2019-06-12T14:56:51Z,,"Some commented out code was left in the Human GATK4 variant call pipeline because at the moment VQSR under performed during validation.
+We should explore how this can be improved and if it can't the commented out code should be removed.
+Same could be done on the dragen pipeline",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/403
+MDU6SXNzdWU0NjAzMjU5MjA=,Fix IDT barcode parser,CLOSED,2019-06-25T09:55:31Z,2019-07-03T08:39:35Z,2019-07-03T08:39:35Z,"The IDT barcodes have a double space in their name which was not detected before.
+We need to support it.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/405
+MDU6SXNzdWU0NjUxOTk3MjM=,Support for GATK3.8,CLOSED,2019-07-08T11:18:13Z,2019-08-14T13:36:42Z,2019-08-14T13:36:41Z,"Temporary request to support GATK3.8 so we will add a new toolset for non-human variant calling and release in a separate tag.
+This will be reverted in the subsequent version.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/408
+MDU6SXNzdWU0NjkyMDc3NjY=,Split bcl2fastq job,CLOSED,2019-07-17T13:54:07Z,2019-11-19T11:17:47Z,2019-11-19T11:17:46Z,"bcl2fastq can be run on single lane which mean the job can be made considerably faster by splitting it over multiple process.
+This should only involve adding an option to the bcl2fastq command to specify the lane and iterate over each lane.
+We need to ensure the result do not change the fastq files.",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/411
+MDU6SXNzdWU0ODgwNjE0NDY=,fastqc fails silently,CLOSED,2019-09-02T08:19:21Z,2019-09-10T15:37:23Z,2019-09-10T15:37:23Z,"By default fastqc uses a temp directory that is located in /tmp. In some cases this directory does not have enough space to host the html output which makes fastqc fails.
+Despite the failure, fastqc still reports a 0 exist status.
+We should:
+ - Change the temp directory in the fastqc command line to a directory in the job folder.
+ - Ensure that the html and zip output exists at the end of the command and return non 0 exist if they don't.
+",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/415
+MDU6SXNzdWU0OTIxNDc3Mzc=,demultiplexing of single sample in pooling run,CLOSED,2019-09-11T10:21:03Z,2019-11-19T11:20:06Z,2019-11-19T11:20:05Z,"When a pooling run is processed, if a single sample is on a lane it will be demultiplexed with the provided barcode and the undetermined fastq will be lost.
+
+We need to allow this case to be processed as non pooling. 
+This is linked to #411 because the lanes need to be processed separately",tcezard,https://github.com/EdinburghGenomics/Analysis-Driver/issues/417
+MDU6SXNzdWU0OTQxMTk5MzQ=,"Stage modularity, round 2",OPEN,2019-09-16T15:24:20Z,2019-09-24T13:58:55Z,,"At the moment, pipelines are split into stages but handling of intermediate files is messy and it's hard to modify pipelines. It would be better if:
+
+- stages take generic parameters for input/output files, not predetermined file paths
+- file paths are defined by the Pipeline object, or whatever the stages are being used by
+- no wildcards - part from date-stamped files in BCBio, we should know what every file will be called
+  - this might make output_files.yaml redundant
+- checks for whether a stage should run uses presence of a reporting app stage is used as well as presence of files, not instead
+
+We should also be able to mock a dataset, patch `executor`, run a pipeline and assert what all the bash commands were.
+
+We should also make Stage objects as lightweight as possible, ideally removing their access to Dataset - see #395 for reasons why.
+
+This might be a good opportunity to look at [sciluigi](https://github.com/pharmbio/sciluigi)",mwhamgenomics,https://github.com/EdinburghGenomics/Analysis-Driver/issues/418

@@ -1,0 +1,83 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGyao2M5GJvn-,Work with Bismark?,CLOSED,2022-03-22T15:28:56Z,2022-12-16T10:36:04Z,2022-12-16T10:36:04Z,"Hello!
+
+This package/script is great considering how poor SNP calling algorithms are on BS-seq libraries. Just wondering, does this also work on Bismark generated aligned bam files? Also, I am assuming this works on both directional or non-directional bisulfite libraries. 
+
+I am currently using BCFtools after modifying the aligned BAM file (using python script) and do not end up with any alternative allele calls on bismark generated bam files? Can provide you the exact commands I am using if needed.
+
+Cheers, 
+R",rbpisupati,https://github.com/bio15anu/revelio/issues/1
+I_kwDOGyao2M5QIy16,AttributeError: 'dict' object has no attribute 'to_dict',CLOSED,2022-08-19T13:58:57Z,2022-12-15T12:36:39Z,2022-12-15T12:36:39Z,"Hi, thank you so much for sharing this tool. I am very interested in using your script to get a masked.bam file to use it for subsequent variant calling analysis. 
+
+I already try the two different commands.
+
+I obtained the calmd.bam output file when I run the samtools calmd -b command, but I did not obtain the masked.bam file. 
+
+And when I runned : ./revelio.py -f genome.fa input.bam masked.bam
+
+I obtained this error:
+
+Traceback (most recent call last):
+  File ""./revelio.py"", line 445, in <module>
+    main(args.inbam,args.outbam,args.QUALITY,args.THREADS,args.temp,args.fasta)
+  File ""./revelio.py"", line 94, in main
+    header = original.header.to_dict()
+AttributeError: 'dict' object has no attribute 'to_dict'
+
+
+Many thanks in advance for your help
+
+",nelia89,https://github.com/bio15anu/revelio/issues/2
+I_kwDOGyao2M5ZTlV6,"BS-Seeker2 alignments produce ""almost"" empty bam files after masking",CLOSED,2022-12-15T12:02:43Z,2022-12-21T16:50:54Z,2022-12-21T13:54:40Z,"Dear Adam,
+
+Currently, I am trying to use Revelio to mask bam files obtained after the alignment of the WGBS read by Bsseaker2. I tried both ways to run Revelio (creating the proper MD tags and using the reference genome directly). However, in both ways, the generated bam files are substantially smaller than the original bam files (the log files generated for all the bam files show that the program successfully ran). Additionally, when I run the variant calling pipeline the vcf files generated are empty. I tried to run Revelio on ""raw"" bam files, sorted by position, sorted by position with duplicates removed using both possibilities (creating the proper MD tags and using the reference genome directly) and I always got the same results. Would you have any suggestions about how to fix this issue? Thank you very much. ",pablobio,https://github.com/bio15anu/revelio/issues/3
+I_kwDOGyao2M5kqeA5,invalid cross-device link error and possible fix,CLOSED,2023-04-28T16:51:13Z,2024-04-22T16:07:22Z,2024-04-22T16:07:22Z,"Hi, 
+
+Thanks for your work on this tool, the method is a nice advancement!  
+
+I was running revelio on an HPC and received this error, which is related to the temp directory being a different disk.  I think this issue may affect others working on computing clusters.
+
+```
+Traceback (most recent call last):                                                                                                                                                                                   │···············
+  File ""revelio.py"", line 445, in <module>                                                                                                                                       │···············
+    main(args.inbam,args.outbam,args.QUALITY,args.THREADS,args.temp,args.fasta)                                                                                                                                      │···············
+  File ""revelio.py"", line 119, in main                                                                                                                                           │···············
+    if isinstance(bam, str): os.replace(bam, OUT)                                                                                                                                                                    │···············
+OSError: [Errno 18] Invalid cross-device link: '/sge_tmp/1284423.1.all.q/tmp02t88d1k/tmpg1oql8sc' -> 'sample1.masked.bam' 
+```
+
+I tested a fix for this error, which works for me: using shutil.move instead of os.replace. Here is an explanation from the [shutil.move documentation](https://docs.python.org/3/library/shutil.html#shutil.move): 
+""If the destination is on the current filesystem, then os.rename() is used. Otherwise, src is copied to dst using copy_function and then removed.""
+
+I couldn't open a PR, but here is the minor change I made:
+
+```
+ import argparse, tempfile, resource, os
+ import pysam
+ from array import array
++import shutil
+ 
+ 
+ ££££££££££££££££££
+@@ -116,8 +117,8 @@ def main(BAM,OUT,QUALITY,THREADS=1,TEMP=None,FASTA=None):
+        pool.join()
+ 
+        £ output the final file
+-       if isinstance(bam, str): os.replace(bam, OUT)
+-       else: os.replace(bam[0], OUT)
++       if isinstance(bam, str): shutil.move(bam, OUT)
++       else: shutil.move(bam[0], OUT)
+```
+If you think this is appropriate perhaps consider this modification.
+
+Best,
+Laura",lnblum,https://github.com/bio15anu/revelio/issues/4
+I_kwDOGyao2M6Ghp96,Allele frequencies skewed by masking,OPEN,2024-04-22T16:24:19Z,2024-04-25T08:03:38Z,,"Hello,
+
+I've been using your Revelio with Freebayes to call variants on methylation libraries.  We were able to get good agreement between our methylated libraries and benchmarking variant dataset.  I'm trying to understand the implications for calculating allele frequencies.  I've attached an example of a C->T mutation below, that is heterozygous with roughly half-and-half allele frequencies in the truth set.  We call it correctly as a heterozygous C->T, with counts of 3 (alt) and 24 (reference) with an allele frequency of ~0.1. This is because the C's on the positive strand are not masked but the Ts are.  In this case it seems that it makes sense to calculate the allele frequency only with the ""negative"" alignments.
+
+I'm just curious if you considered these types of scenarios in your development and what reasoning you came to. 
+Thank you!
+Laura
+<img width=""1308"" alt=""Screenshot 2024-04-22 at 12 12 54 PM"" src=""https://github.com/bio15anu/revelio/assets/51452159/11c40df9-3ad1-4549-9533-12e0b7daa6b4"">
+",lnblum,https://github.com/bio15anu/revelio/issues/5

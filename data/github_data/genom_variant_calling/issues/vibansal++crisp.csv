@@ -1,0 +1,1896 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxMDA2MzU2MjY=,Segmentation fault,OPEN,2015-08-12T21:04:11Z,2023-07-04T12:34:39Z,,"I'm getting a segmentation fault when I run CRISP. I read in the FAQ.md:
+
+```
+***Common sources of Errors while running CRISP***
+
+If you get a segmentation fault while running CRISP, try to compile CRISP from the source code 
+on your system.
+```
+
+...which is confusing, since you don't provide any precompiled binaries. I compiled from the source code that I cloned from GitHub.
+",etwatson,https://github.com/vibansal/crisp/issues/1
+MDU6SXNzdWUxNjQ5OTQ3NDI=,VCF Failing Validations,CLOSED,2016-07-12T05:03:41Z,2019-10-16T16:53:38Z,2019-10-16T16:53:38Z,"Im hitting some issues with validating VCFs from CRISP with GATK and VCFtools validators. This seems to be a simple whitespace issue.
+
+```
+[12:36][cfljam@aklbld31:PoolSeq (master)] $ vcf-validator ./CRISP/CHR26.CRISP.vcf.gz
+The column QUAL is empty at CHR26:253.
+Wrong number of fieldsin ./CRISP/CHR26.CRISP.vcf.gz; expected 13, got 14. The offending line was:
+[CHR26  253     .       A       G               0       PASS    NP=4;DP=65,34;VT=SNV;CT=0.0;QVpf=-48.4;QVpr=-18.9;VP=4;MQ=0,0,0,101       GT:AF:ADf:ADr   0/0:0.467:10,8:6,6      0/0:0.375:8,6:7,3       0/0:0.345:13,8:6,2      0/0:0.500:5,7:3,1]
+
+
+ at /software/bioinformatics/vcftools-0.1.14/share/perl5/Vcf.pm line 172, <__ANONIO__> line 19.
+        Vcf::throw('Vcf4_0=HASH(0x2295d60)', 'Wrong number of fieldsin ./CRISP/CHR26.CRISP.vcf.gz; expected...') called at /software/bioinformatics/vcftools-0.1.14/share/perl5/Vcf.pm line 505
+```
+
+This appears to be simple matter  of a double tab between ALT and QUAL fields.
+
+```
+
+zcat ./CRISP/CHR1.CRISP.vcf.gz | grep -v ""^##"" | cat -t | head -n 3
+#CHROM^IPOS^IID^IREF^IALT^IQUAL^IFILTER^IINFO^IFORMAT^Ialign/pool1.merged.dedup.relign.RG.bam^Ialign/pool2.merged.dedup.relign.RG.bam^Ialign/pool3.merged.dedup.relign.RG.bam^Ialign/pool4.merged.dedup.relign.RG.bam
+CHR1^I24^I.^IG^IA^I^I12^IPASS^INP=4;DP=75,77;VT=SNV;CT=-1.3;QVpf=-26.4;QVpr=-22.5;VP=4;MQ=1,1,3,151^IGT:AF:ADf:ADr^I0/0:0.157:26,3:17,5^I0/0:0.286:10,5:10,3^I0/0:0.385:8,9:16,6^I0/0:0.147:12,2:17,3
+CHR1^I45^I.^IG^IA^I^I19^IPASS^INP=4;DP=74,91;VT=SNV;CT=-2.0;QVpf=-36.1;QVpr=-19.5;VP=3;MQ=1,1,2,167^IGT:AF:ADf:ADr^I0/0:0.375:19,10:16,11^I0/0:0.222:7,5:14,1^I0/0:0.229:13,7:24,4^I0/0:0.059:11,2:21,0
+```
+",cfljam,https://github.com/vibansal/crisp/issues/2
+MDU6SXNzdWUyNTMyNjgzNjQ=,trouble with running crisp,OPEN,2017-08-28T09:00:16Z,2017-08-28T09:00:16Z,,"I had sequencing two exome pools,one with 25 normal persons ,and another with 31 patients, 
+I see crisp could deal with different pools size 
+so I create a file  bam.txt as follows:
+./H/pe_realign_recal.bam PS=50
+./I/pe_realign_recal.bam PS=62
+my running command is:
+CRISP --bams bams.txt --ref ucsc.hg19.fasta --VCF crisp2.vcf  --bed S07604514_Regions_V6.bed > variantcalls.log
+but I got wrong result ,
+poolsizes are variable and read from file: 50...805553272
+finished reading bam file indexes 
+reading chromosome chrM offset 6 # targeted bases on chrom is 0/16571 
+processing 144 reads left in queue for chrom chrM...cleaning read queue from prev chrom
+.....finished processing reads for chrom chrM
+reading chromosome chr1 offset 16915 # targeted bases on chrom is 6066056/249250621 
+.....processed 1000000 reads QSIZE:14 chr1:6544493:6544643 variants called 0
+.....processed 2000000 reads QSIZE:807 chr1:16458385:16458535 variants called 0
+.....processed 3000000 reads QSIZE:196 chr1:23101464:23101614 variants called 0
+.....processed 4000000 reads QSIZE:118 chr1:32670269:32670419 variants called 0
+
+How can I solve this problem?
+",lixuenan,https://github.com/vibansal/crisp/issues/3
+MDU6SXNzdWUzMDI3NDE3MzE=,Vcf output,CLOSED,2018-03-06T15:17:41Z,2018-06-06T19:09:04Z,2018-06-06T19:09:04Z,"Hi!
+CRISP seemed like a nice tool so I used it for a very small dataset. It gives good results, but the trouble begins when I try using the vcf file in sorting/filtering tools such as bcftools. I cannot index it, the error message reads ""truncated"".
+ ""bcftools index Refsvariantcalls.VCF
+   index: the input is probably truncated, use -f to index anyway: Refsvariantcalls.VCF""
+
+Upon inspection, it seems the header and the INFO and FORMAT fields don't agree much. Some variables are in the header but not used anymore, which would be okay, but this also occurs the other way around.
+Could you please have a look?
+
+In the header AND used in variants list:
+INFO: NP, DP, CT
+FORMAT: GT, AF, ADf, ADr
+
+In the header but not used:
+INFO: MQ, HP
+FORMAT: MLAC, ADb
+
+Used in main variants list BUT not in the header (I think this is what caused the error message)
+INFO: VT, MQS, FLANKSEQ
+FORMAT: DP (although this one is defined in the INFO, but I guess it should be defined again)
+
+Another issue is the main part of the file, the format coulmn reads GT:AF:DP:ADf:ADr, which would mean there should be 5 fields, but here are 6 different fields in the result for each sample, like this: 
+GT:AF:DP:ADf:ADr	0/0:0.002:5110:5120:3747,6:1355,2
+The last two values are ADf and ADr, was is the one before?
+
+I am not a programmer and/or not skilled enough to change it myself in the source code, would it be possible to implement it soon(ish)? 
+Thanks!
+Mathilde
+
+
+",PopGenHamburg,https://github.com/vibansal/crisp/issues/4
+MDU6SXNzdWUzMTUxNzYzMTY=,output for MLAC tag in vcf,CLOSED,2018-04-17T18:20:59Z,2020-12-14T00:00:15Z,2020-12-14T00:00:15Z,"It seems CRISP isn't outputting the MLAC tag for all entries in the vcf.
+
+Here are 3 sample lines from an output vcf. 
+
+```
+MT      2363    .       T       TC      151701  PASS    NP=2;DP=4583,3688,0;VT=INSERTION;CT=-inf;VP=2;VF=EMpass;AC=40;AF=1.00000;EMstats=15170.12:-6776.05;HWEstats=-0.0;MQS=0,0,33,9581;HP=1;FLANKSEQ=actcaaccta:TC:tccggttgta MLAC:GQ:DP:ADf:ADr      20:602:4583:86,2047:78,1785     20:610:5031:114,2336:77,1748    
+II      153847  .       C       T       822     LowDepth        NP=2;DP=31,33,0;VT=SNV;CT=nan;VP=2;VF=EMpass;AC=23;AF=0.55953;EMstats=82.24:-40.87;HWEstats=-0.0;MQS=0,0,1,71;FLANKSEQ=aatgaaagct:C:tacacgaaag  MLAC:GQ:DP:ADf:ADr      11:1:40:7,9:9,9 12:0:32:7,8:5,10        
+II	858506	.	G	A	696	LowDepth	NP=2;DP=13,26,0;VT=SNV;CT=-inf;VP=1;VF=EMpass;AC=25;AF=0.61958;EMstats=69.65:-18.63;HWEstats=-0.0;MQS=0,0,0,44;FLANKSEQ=aagcgtgctc:G:agactgaaag	MLAC:GQ:DP:ADf:ADr	17:0:24:0,7:0,15	.:0:20:6,0:9,2
+```
+
+Notice that for the last entry, last sample (last column) reads
+```
+.:0:20:6,0:9,2
+```
+so the MLAC tag has a ""."" where I was expecting an integer. Anyway I can get an integer for *all* MLAC tags?
+
+Much thanks!",bfairkun,https://github.com/vibansal/crisp/issues/5
+MDU6SXNzdWUzMjg1NDkzMjI=,interpreting vcf file from CRISP,CLOSED,2018-06-01T14:49:24Z,2018-12-13T17:29:45Z,2018-12-13T17:29:45Z,"Hi,
+I have difficulty understanding the meaning of some of the fields, as either they are not described or their values do not correspond with their description. For instance, I don't understand why DP has three values and why the FILTER field has a numerical value of zero (instead of pass or fail) in some sites.
+Could you please explain the meaning of the following fields and their values- filed (example value): CT (-3.1); DP (7432, 7321, 1056); VF (Emfail), FILTER (0).
+Also, why does CRISP not produce any GT information for any of the pools. The absence of a GT info field has made my output VCF unreadable by several other scripts.
+I would really appreciate your assistance with these as I am running out of time for my dissertation.
+Thank you. ",mbxao3,https://github.com/vibansal/crisp/issues/6
+MDU6SXNzdWUzOTA1ODM1MDE=,compilation error in ubuntu,CLOSED,2018-12-13T09:13:54Z,2018-12-13T17:29:09Z,2018-12-13T17:29:09Z,"During compilation, I got the output shown below. I searched the error in the forums and found this [question](https://stackoverflow.com/questions/46827433/g-compile-error-rodata-can-not-be-used-when-making-a-shared-object-recomp), which suggested that my gcc was trying to make Position Independent Executables. After adding the option `-no-pie` to the Makefiles, the compilation worked. But I don't know if that's a good idea. 
+
+This was the original output, with some warnings and errors:
+
+    make -C samtools all 
+    make[1]: Entering directory '/path/to/crisp/samtools'
+    make[2]: Entering directory '/path/to/crisp/samtools'
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam.c -o bam.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_import.c -o bam_import.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_index.c -o bam_index.o
+    bam_index.c: In function ‘bam_index_load_core’:
+    bam_index.c:330:2: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+      fread(magic, 1, 4, fp);
+      ^~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:337:2: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+      fread(&idx->n, 4, 1, fp);
+      ^~~~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:350:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+       fread(&size, 4, 1, fp);
+       ^~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:353:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+        fread(&key, 4, 1, fp);
+        ^~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:357:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+        fread(&p->n, 4, 1, fp);
+        ^~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:361:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+        fread(p->list, 16, p->n, fp);
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:371:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+       fread(&index2->n, 4, 1, fp);
+       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+    bam_index.c:375:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+       fread(index2->offset, index2->n, 8, fp);
+       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_pileup.c -o bam_pileup.o
+    bam_pileup.c: In function ‘resolve_cigar2’:
+    bam_pileup.c:75:9: warning: variable ‘is_head’ set but not used [-Wunused-but-set-variable]
+      int k, is_head = 0;
+             ^~~~~~~
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_lpileup.c -o bam_lpileup.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_md.c -o bam_md.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. faidx.c -o faidx.o
+    faidx.c: In function ‘fai_load’:
+    faidx.c:277:5: warning: this ‘else’ clause does not guard... [-Wmisleading-indentation]
+         else
+         ^~~~
+    faidx.c:280:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘else’
+      if (fp == 0) {
+      ^~
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_sort.c -o bam_sort.o
+    In file included from bam_sort.c:9:0:
+    bam_sort.c:309:26: warning: ‘bam1_lt’ is static but used in inline function ‘__ks_insertsort_sort’ which is not static
+     KSORT_INIT(sort, bam1_p, bam1_lt)
+                              ^
+    ksort.h:148:25: note: in definition of macro ‘KSORT_INIT’
+        for (j = i; j > s && __sort_lt(*j, *(j-1)); --j) {   \
+                             ^~~~~~~~~
+    bam_sort.c:53:27: warning: ‘heap_lt’ is static but used in inline function ‘__ks_insertsort_heap’ which is not static
+     KSORT_INIT(heap, heap1_t, heap_lt)
+                               ^
+    ksort.h:148:25: note: in definition of macro ‘KSORT_INIT’
+        for (j = i; j > s && __sort_lt(*j, *(j-1)); --j) {   \
+                             ^~~~~~~~~
+    ar -csru libbam.a bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o knetfile.o bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o
+    ar: `u' modifier ignored since `D' is the default (see `U')
+    make[2]: Leaving directory '/path/to/crisp/samtools'
+    make[2]: Entering directory '/path/to/crisp/samtools/bcftools'
+    make[2]: Nothing to be done for 'lib'.
+    make[2]: Leaving directory '/path/to/crisp/samtools/bcftools'
+    make[2]: Entering directory '/path/to/crisp/samtools/misc'
+    make[2]: Nothing to be done for 'lib'.
+    make[2]: Leaving directory '/path/to/crisp/samtools/misc'
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_tview.c -o bam_tview.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_plcmd.c -o bam_plcmd.o
+    gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2bcf.c -o bam2bcf.o
+    gcc -g -Wall -O2  -o samtools bam_tview.o bam_plcmd.o sam_view.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o kaln.o bam2bcf.o bam2bcf_indel.o errmod.o sample.o cut_target.o phase.o bam2depth.o -Lbcftools  libbam.a -lbcf -lcurses  -lm -lz
+    /usr/bin/ld: sam_view.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam_rmdup.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam_rmdupse.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam_mate.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam_stat.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam_color.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bamtk.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam2bcf_indel.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: sample.o: relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: cut_target.o: relocation R_X86_64_32S against `.data' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: phase.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bam2depth.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(bgzf.o): relocation R_X86_64_32S against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(bam_aux.o): relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(sam.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(bedidx.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(knetfile.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(sam_header.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(bam_reheader.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(kprobaln.o): relocation R_X86_64_32S against `.bss' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(bam_cat.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: libbam.a(razf.o): relocation R_X86_64_32S against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bcftools/libbcf.a(bcf.o): relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: bcftools/libbcf.a(bcfutils.o): relocation R_X86_64_32S against `.rodata' can not be used when making a PIE object; recompile with -fPIC
+    /usr/bin/ld: final link failed: Nonrepresentable section on output
+    collect2: error: ld returned 1 exit status
+    Makefile:44: recipe for target 'samtools' failed
+    make[1]: *** [samtools] Error 1
+    make[1]: Leaving directory '/path/to/crisp/samtools'
+    Makefile:10: recipe for target 'all' failed
+    make: *** [all] Error 2
+",IgnasiLucas,https://github.com/vibansal/crisp/issues/7
+MDU6SXNzdWUzOTE1NTk1MjU=,why can't find AF field for each sample,CLOSED,2018-12-17T05:05:39Z,2019-02-15T19:53:04Z,2019-02-15T19:53:04Z,"the output VCF body:
+`
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  A60_DSW65985-V_HTG27CCXY_L7_all A70_DSW65986-V_HTG27CCXY_L7_all
+
+scf7180000003150|quiver 10520   .       A       G       301     LowDepth        NP=2;DP=4,4,0;VT=SNV;CT=0.0;VP=1;VF=EMpass;AC=200;AF=0.99931;EMstats=30.17:-16.33;HWEstats=-0.0;MQS=0,0,0,9;FLANKSEQ=cggagtgaga:A:gattcgaact    AC:GQ:DP:ADf:ADr:ADb    .:12:7:0,4:0,2:0,0      .:12:2:0,0:0,2:0,0
+
+scf7180000003150|quiver 10530   .       T       C       337     LowDepth        NP=2;DP=3,5,1;VT=SNV;CT=0.0;VP=1;VF=EMpass;AC=200;AF=0.99947;EMstats=33.77:-16.72;HWEstats=-0.0;MQS=0,0,0,9;FLANKSEQ=agattcgaac:T:tccggcccct    AC:GQ:DP:ADf:ADr:ADb    .:13:7:0,3:0,3:0,0      .:13:2:0,0:0,2:0,0
+""A60A70.vcf"" 1544965L, 392577535C 
+`
+There are two samples, but AF field only appears in INFO, why can't I find AF in FORMAT for each sample?",Yiguan,https://github.com/vibansal/crisp/issues/8
+MDU6SXNzdWU0MTA4NTIxODk=,"Number of reads, allele count and allele frequency",CLOSED,2019-02-15T16:41:49Z,2019-02-15T18:00:54Z,2019-02-15T18:00:54Z,"Hello,
+I'm having trouble making sense of some of the information fields from the vcf output. In this example:
+
+2L      4602    .       G       A       182     LowDepth        NP=24;DP=45,0,0;VT=SNV;CT=-0.0;VP=0;VF=EMpass;AC=651;AF=0.17108;EMstats=18.22:-0.30;HWEstats=-0.0;MQS=0,0,6,39;FLANKSEQ=gacagaggaa:G:cagaacagat AC:GQ:DP:ADf:ADr:ADb    .:0:0:0,0:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:2:1,1:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0
+       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:2:1,1:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:1:1,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:0:0,0:0,0:0,0       .:0:3:3,0:0,0:0,0       .:0:5:2,3:0,0:0,0       .:0:13:11,2:0,0:0,0     .:0:13:12,1:0,0:0,0
+
+The number of reads is 45 (field 'DP', there are only forward reads in this example).
+The allele count is 651 (field 'AC')
+And the allele frequency is 0.17108 (field 'AF')
+
+The thing is, I counted the reference and alternate alleles from all 24 pools in my example and there are 37 reference and 8 alternate, which would mean the frequency of alternate alleles would be 8/37=0.216216...
+
+So why is allele frequency 0.17108? And where does that huge 651 value in allele count come from? I'm assuming my understanding of how allele frequency is calculated here is deeply flawed (I guess AC is used in AF's calculation, but I don't know how) and that's why I can't understand this output, would you mind explaining this for me?
+
+Thanks a lot! Awesome tool, by the way.",abofinal,https://github.com/vibansal/crisp/issues/9
+MDU6SXNzdWU0MTA5MTExNDc=,FLANKSEQ is padded with non-printable characters when variant is near the edge,CLOSED,2019-02-15T19:27:11Z,2019-10-16T16:52:43Z,2019-10-16T16:52:43Z,"It seems that when a variant is near the beginning or maybe also the end of a chromosome or contig, some non-printable characters get included in the flanking sequence reported by the FLANKSEQ field in the INFO column. This makes the subsequent processing of the vcf file difficult. For example, grep complains that the file is binary and stops processing it.",IgnasiLucas,https://github.com/vibansal/crisp/issues/10
+MDU6SXNzdWU0MTYxMTM4MTI=,Variant Quality and Variant Pools,CLOSED,2019-03-01T13:56:41Z,2019-10-16T16:53:20Z,2019-10-16T16:53:20Z,"Hello again! This tool is doing wonders for analyzing the pools I'm working with, so I would thank you if you could solve another doubt I have interpreting the output file.
+
+About the quality field in the output, my samples vary greatly between qualities with a minimum value of 20 (most variants are in the 20-200 range approximately) and some reach maximum values several orders of magnitude greater (~800,000 for example). Something similar happens in other examples from a few papers, but I couldn't get much information from there.
+
+We can assume all of the variants from the output passed CRISP's tests. Is there a great difference between low quality variants and huge, out-the-charts quality variants?
+
+Also, I'm very interested in keeping low-frequency variants in my pools. Is the quality value dependant on allele frequency somehow? As in, the lower the frequency, the lower the quality?
+
+Again, very great work with CRISP, I hope you can answer my questions!
+
+Greetings,
+~Ramón",abofinal,https://github.com/vibansal/crisp/issues/11
+MDU6SXNzdWU0Mjc5MDE5Mzk=,What parameters should be used for unknown number of samples in a pool?,CLOSED,2019-04-01T20:39:52Z,2019-10-16T16:53:07Z,2019-10-16T16:53:07Z,"What parameters would be best to use for a population with an unknown sample size (likely very large).  I did not setup the experiment but this is with bacteria where we didn't streak out and select a single colony, therefore being basically just a population of the bacteria.",Buuntu,https://github.com/vibansal/crisp/issues/12
+MDU6SXNzdWU1MDM0OTA3MjY=,Missing Data,CLOSED,2019-10-07T14:31:07Z,2019-10-16T16:52:56Z,2019-10-16T16:52:56Z,"Dear Vikas Bansal, 
+
+I ran CRISP with the following command:
+
+CRISP --bams ${LIST_OF_BAMS} --ref ${FASTAREF} --regions ${REGIONS} --poolsize 50 --perms 50000 --mmq 10 --minc 3 \
+--EM 1 --VCF ${FILE_CODE}_snps_and_indels_pt${SLURM_ARRAY_TASK_ID}.vcf > variantcalls_pt${SLURM_ARRAY_TASK_ID}.log
+
+However, of the total 172696 variants detected, only 29973 does not have 100% of missing data. When I filtered for 40% of missing data, it returned only 6567 variants.
+
+Why CRISP is calling a lot of missing variants, but reads are covering that particular position (example below for SNP: Chla_rei_1_19528)?
+
+Thank you!
+
+Example:
+
+# CRISP raw output:
+
+1       19528   Chla_rei_1_19528        G       C       6186    LowDepth        NP=38;DP=485,301,12;VT=SNV;CT=-0.4;VP=36;VF=EMpass;AC=500;AF=0.26742;EMstats=618.69:-245.27;HWEstats=0.0;MQS=0,0,0,1097;FLANKSEQ=aaccttcact:G:ccatcgtcgc        AC:GQ:DP:ADf:ADr:ADb    .:0:50:16,5:9,4:0,1     .:0:33:13,3:7,2:0,0     .:0:28:11,4:6,3:0,0     .:0:43:11,6:13,2:0,0    .:0:20:7,3:4,0:0,0
+      .:0:43:16,8:6,1:0,0     .:0:30:16,1:3,2:1,0     .:0:15:3,2:3,2:0,0      .:0:23:7,1:8,3:0,1
+
+
+# CRISP converted output (using convert_pooled_vcf.py):
+
+1       19528   Chla_rei_1_19528        G       C       6186    LowDepth        NP=38;DP=485,301,12;VT=SNV;CT=-0.4;VP=36;VF=EMp
+ass;AC=500;AF=0.26742;EMstats=618.69:-245.27;HWEstats=0.0;MQS=0,0,0,1097;FLANKSEQ=aaccttcact:G:ccatcgtcgc        GT:GQ:DP:ADf:A
+Dr:ADb    ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:50:16,5:9,4:0,1
+   ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:33:13,3:7,2:0,0   ././
+./././././././././././././././././././././././././././././././././././././././././././././././.:0:28:11,4:6,3:0,0   ./././././.
+/./././././././././././././././././././././././././././././././././././././././././././.:0:43:11,6:13,2:0,0  ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:20:7,3:4,0:0,0    ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:43:16,8:6,1:0,0   ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:30:16,1:3,2:1,0   ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:15:3,2:3,2:0,0    ./././././././././././././././././././././././././././././././././././././././././././././././././.:0:23:7,1:8,3:0,1",mullerbsf,https://github.com/vibansal/crisp/issues/13
+MDU6SXNzdWU1MDU1OTI4OTI=,Allele Balance ,OPEN,2019-10-11T01:48:47Z,2019-10-23T00:46:29Z,,"Dear Vikas Bansal,
+
+I am trying to estimate the allele balance for each sample genotyped with CRISP. Is there a way to obtain that information from the output? 
+
+For example, from a total of 100 reads supporting the call, a heterozygous sample might have 80 reads to the reference allele and 20 reads to the alternative allele. 
+
+From the FORMAT field, I see the following options: GT:GQ:DP:ADf:ADr:ADb. The total depth seems to be included, but it is not clear to me how to obtain how many of these reads were relative to each allele.
+
+Thank you!",mullerbsf,https://github.com/vibansal/crisp/issues/14
+MDU6SXNzdWU1MTAxNDUwNTA=,Depth fields,CLOSED,2019-10-21T17:31:20Z,2019-10-21T22:28:46Z,2019-10-21T22:28:46Z,"Dear Bansal,
+
+I am still confused about some of the results, as often they seem to not add up. Take the examples below that I retrieved from a representative marker:
+
+FORMAT: GT:GQ:DP:ADf:ADr:ADb
+
+SAMPLE 1: 0/0/0/1/1:0:18:2,3:4,1:0,0
+SAMPLE 2: 0/0/1/1/1:3:25:2,9:4,3:0,0
+
+It seems like the total depth is 18 and 25, respectively. The sums of the ADf, ADr and ADb fields, however, are not equal to the total depth.
+
+I appreciate your attention.
+Best regards, 
+Barbara.",mullerbsf,https://github.com/vibansal/crisp/issues/15
+MDU6SXNzdWU1MzM2NzQ5NDA=,Segfault and wrong chromosome offset while using --region argument,CLOSED,2019-12-06T00:26:35Z,2019-12-07T02:14:01Z,2019-12-07T01:19:33Z,"1. The first problem is Segmentation fault which has been reported in 2015. It seems that Segfault happened stochastically in my case since sometimes it appears right after the command is entered, and sometimes it showed up after ~20-30 mins run. 
+
+2. Because Segfault doesn't always happen right after the run, so I'm trying to resolve this by using --region argument and that brings up the second problem: before chromosome four everything works fine, but when entering ""--region V"", instead of reading read chromosome five but it jumps to chromosome X (in the .vcf and .log file); and ""--region X"" actually reads mitochondria DNA (C. elegans genome, I-V, X, +MtDNA). Here's the command line and result when I use --region IV, --region V, --region X ,and --MtDNA.
+
+```
+--region IV:
+./CRISP-genotypes --bams bamlist.txt  --ref Caenorhabditis_elegans.WBcel235.dna.toplevel.fa --VCF VariantsCall.vcf --leftalign 1 --EM 1 **--regions IV** > variantcalls.log
+
+insertions and deletions in reads will be left justified w.r.t. reference sequence (limited evaluation) 
+
+EM algorithm will be used for estimating genotypes and calling variants
+
+CRISP options: QVoffset 33 min_base_quality 13 min_mapping_score 20 max_permutations 20000 poolsize 2 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.0
+
+reading fasta index file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.fai ... fasta file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa has 7 chromosomes/contigs
+
+processing 6 bamfiles: eba3609e4ffc4b38839905c3701e70ac.sorted.bam ..... a4b213a41072415db4e36c7c929a5124.sorted.bam 
+
+poolsizes are variable and read from file: 36...440
+reading bam file index: eba3609e4ffc4b38839905c3701e70ac.sorted.bam.bai **region 3:0-536870912**
+reading bam file index: a4b213a41072415db4e36c7c929a5124.sorted.bam.bai **region 3:0-536870912**
+finished reading bam file indexes 
+reading **chromosome IV offset 44871489** 
+.....processed 1000000 reads QSIZE:2600 IV:103394:103545 variants called 26
+.....processed 2000000 reads QSIZE:3041 IV:212012:212163 variants called 81
+.....processed 3000000 reads QSIZE:2540 IV:320242:320393 variants called 190
+```
+
+```
+--region V:
+./CRISP-genotypes --bams bamlist.txt  --ref Caenorhabditis_elegans.WBcel235.dna.toplevel.fa --VCF VariantsCall.vcf --leftalign 1 --EM 1 **--regions V** > variantcalls.log
+
+insertions and deletions in reads will be left justified w.r.t. reference sequence (limited evaluation) 
+
+EM algorithm will be used for estimating genotypes and calling variants
+
+CRISP options: QVoffset 33 min_base_quality 13 min_mapping_score 20 max_permutations 20000 poolsize 2 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.0
+
+reading fasta index file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.fai ... fasta file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa has 7 chromosomes/contigs
+
+processing 6 bamfiles: eba3609e4ffc4b38839905c3701e70ac.sorted.bam ..... a4b213a41072415db4e36c7c929a5124.sorted.bam 
+
+poolsizes are variable and read from file: 36...440
+reading bam file index: eba3609e4ffc4b38839905c3701e70ac.sorted.bam.bai **region 5:0-536870912**
+reading bam file index: a4b213a41072415db4e36c7c929a5124.sorted.bam.bai **region 5:0-536870912**
+finished reading bam file indexes 
+reading **chromosome X offset 83929913** 
+.....processed 1000000 reads QSIZE:4273 V:103732:103883 variants called 13
+.....processed 2000000 reads QSIZE:2603 V:210786:210937 variants called 13
+.....processed 3000000 reads QSIZE:68388 V:266051:266202 variants called 13
+```
+
+```
+--region X:
+./CRISP-genotypes --bams bamlist.txt  --ref Caenorhabditis_elegans.WBcel235.dna.toplevel.fa --VCF VariantsCall.vcf --leftalign 1 --EM 1 **--regions X** > variantcalls.log
+
+insertions and deletions in reads will be left justified w.r.t. reference sequence (limited evaluation) 
+
+EM algorithm will be used for estimating genotypes and calling variants
+
+CRISP options: QVoffset 33 min_base_quality 13 min_mapping_score 20 max_permutations 20000 poolsize 2 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.0
+
+reading fasta index file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.fai ... fasta file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa has 7 chromosomes/contigs
+
+processing 6 bamfiles: eba3609e4ffc4b38839905c3701e70ac.sorted.bam ..... a4b213a41072415db4e36c7c929a5124.sorted.bam 
+
+poolsizes are variable and read from file: 36...440
+reading bam file index: eba3609e4ffc4b38839905c3701e70ac.sorted.bam.bai **region 6:0-536870912**
+reading bam file index: a4b213a41072415db4e36c7c929a5124.sorted.bam.bai **region 6:0-536870912**
+finished reading bam file indexes 
+reading **chromosome MtDNA offset 101944233** 
+reference base  at position MtDNA:13794 is ambiguous, site will be ignored, provide reference fasta file with bases in [ACTGN] to call variants at these sites
+reference base  at position MtDNA:13795 is ambiguous, site will be ignored, provide reference fasta file with bases in [ACTGN] to call variants at these sites
+reference base  at position MtDNA:13796 is ambiguous, site will be ignored, provide reference fasta file with bases in [ACTGN] to call variants at these sites
+```
+
+```
+--regions MtDNA
+ ./CRISP-genotypes --bams bamlist.txt  --ref Caenorhabditis_elegans.WBcel235.dna.toplevel.fa --VCF VariantsCall.vcf --leftalign 1 --EM 1 **--regions XMtDNA** > variantcalls.log
+
+insertions and deletions in reads will be left justified w.r.t. reference sequence (limited evaluation) 
+
+EM algorithm will be used for estimating genotypes and calling variants
+ 
+
+CRISP options: QVoffset 33 min_base_quality 13 min_mapping_score 20 max_permutations 20000 poolsize 2 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.0
+
+reading fasta index file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.fai ... fasta file Caenorhabditis_elegans.WBcel235.dna.toplevel.fa has 7 chromosomes/contigs
+
+processing 6 bamfiles: eba3609e4ffc4b38839905c3701e70ac.sorted.bam ..... a4b213a41072415db4e36c7c929a5124.sorted.bam 
+
+poolsizes are variable and read from file: 36...440
+reading bam file index: eba3609e4ffc4b38839905c3701e70ac.sorted.bam.bai region 4:0-536870912
+reading bam file index: a4b213a41072415db4e36c7c929a5124.sorted.bam.bai region 4:0-536870912
+finished reading bam file indexes 
+reading chromosome V offset 62656939 
+.....processed 1000000 reads QSIZE:48301 MtDNA:5292:5444 variants called 0
+.....processed 2000000 reads QSIZE:44379 MtDNA:10965:11116 variants called 0
+processing 10883 reads left in queue for chrom V.....cleaning read queue from prev chrom
+finished processing reads for chrom V 
+
+CRISP has finished processing bam files: total reads processed 2331662 total variants called 0 
+```
+
+```
+samtools view -H sorted.bam 
+@HD	VN:1.3	SO:coordinate
+@SQ	SN:I	LN:15072434
+@SQ	SN:II	LN:15279421
+@SQ	SN:III	LN:13783801
+@SQ	SN:IV	LN:17493829
+@SQ	SN:MtDNA	LN:13794
+@SQ	SN:V	LN:20924180
+@SQ	SN:X	LN:17718942
+@RG	ID:2898842525	LB:CEAG-EMS-JPY-02-lib1	PL:ILLUMINA	PU:HF5NTCCXY.5	SM:CEAG-EMS-JPY-02
+@RG	ID:2898995713	LB:CEAG-EMS-JPY-02-lib1	PL:ILLUMINA	PU:HFKHHCCXY.2	SM:CEAG-EMS-JPY-02
+```",THYeh44,https://github.com/vibansal/crisp/issues/16
+MDU6SXNzdWU1ODUxODg4OTg=,what is ADb(ADf ADr) tag?,CLOSED,2020-03-20T16:31:44Z,2020-03-24T05:06:27Z,2020-03-24T05:06:27Z,"I thought the tag ADb was removed from the generated VCF file, before I use the latest version of CRISP and view the content of REMADE. However, there still exists tag ADb in the format column of the VCF. I would like to know what's the difference between ADb and ADf and ADr, and whether summing all of the ADf, ADr and ADb or just summing of the ADf and ADr, when I count the ref alleles or alt alleles for a site per pool. In addition, are the number of reads in tag AD(f,r,b) filterd, such as the mapping quality < 20(default) will be discard?",ChinJCheung,https://github.com/vibansal/crisp/issues/18
+MDU6SXNzdWU1OTAwMzMzMTU=,CRISP.binary: corrupted double-linked list ,CLOSED,2020-03-30T06:38:05Z,2024-06-12T05:50:55Z,2020-12-23T13:33:51Z,"When I run on some chromosomes with the following errors, some chromosomes are OK，so why?
+
+*** glibc detected *** CRISP.binary: corrupted double-linked list: 0x000000000d1a3380 ***
+======= Backtrace: =========
+/lib64/lib/libc.so.6(+0x72516)[0x2b890e8cf516]
+/lib64/lib/libc.so.6(+0x73f8c)[0x2b890e8d0f8c]
+/lib64/lib/libc.so.6(cfree+0x6c)[0x2b890e8d422c]
+CRISP.binary[0x40c1a4]
+CRISP.binary[0x42df53]
+CRISP.binary[0x42e7c8]
+CRISP.binary[0x42eb31]
+/lib64/lib/libc.so.6(__libc_start_main+0xfd)[0x2b890e87c0bd]
+CRISP.binary[0x402149]
+...
+...
+======= Memory map: ========
+00400000-00450000 r-xp 00000000 00:16 593902178                          /mnt/data/zhangwenjing/softwar
+0064f000-00651000 rw-p 0004f000 00:16 593902178                          /mnt/data/zhangwenjing/softwar
+00765000-0b9e3000 rw-p 00000000 00:00 0                                  [heap]
+3c43800000-3c43820000 r-xp 00000000 08:01 10337                          /lib64/ld-2.12.so
+3c43a1f000-3c43a20000 r--p 0001f000 08:01 10337                          /lib64/ld-2.12.so
+3c43a20000-3c43a21000 rw-p 00020000 08:01 10337                          /lib64/ld-2.12.so
+3c43a21000-3c43a22000 rw-p 00000000 00:00 0
+...
+...
+7fff6f774000-7fff6f775000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+/var/spool/torque/mom_priv/jobs/14172-2.scxyhpc.jmu.edu.cn.SC: line 73: 57906 Aborted                 $
+",ChinJCheung,https://github.com/vibansal/crisp/issues/19
+MDU6SXNzdWU2NDMxNzgwODc=,Segmentation fault for a specific chromosome,CLOSED,2020-06-22T15:42:31Z,2024-10-11T16:38:14Z,2024-10-11T16:38:14Z,"Dear Vikas Bansal, 
+
+I ran CRISP using --regions by chromosome with the following options:
+CRISP --bams ${LIST_OF_BAMS} --ref ${FASTAREF} --regions ${REGIONS} --poolsize 10 --perms 100000 --mmq 10 --minc 3 \
+--EM 1 --VCF ${FILE_CODE}_snps_and_indels_pt${SLURM_ARRAY_TASK_ID}.vcf > ${FILE_CODE}_variantcalls_pt${SLURM_ARRAY_TASK_ID}.log
+
+Everything ran normally (chr1-3, and chr5-10), except for one chromosome (chr4) that I am getting the ""Segmentation fault"" issue.
+
+I found this here https://github.com/vibansal/crisp/issues/16. However, I used the same alignment (bam) and genome files (fa) that I used in BWA, GATK, and CRISP. It is so weird that I ran it in an array and all other chromosomes worked. 
+
+All the time that I tried to rerun it for chr4, I have the same issue in the same position (53323257) in this chromosome:
+
+Chr4    53323257        .       T       C       207     LowMQ10;LowDepth        NP=2;DP=15,12,0;VT=SNV;CT=-inf;VP=1;VF=EMpass;AC=6;AF=0.34092;EMstats=20.76:-11.10;HWEstats=-0.0;MQS=2,9,8,42;FLANKSEQ=gaatacttct:T:cacatgggga  AC:GQ:DP:ADf:ADr:ADb    0:2:25:11,0:9,0:0,0     6:1:36:0,4:0,3:
+
+Could you please help me to identify the possible problem?
+
+Thank you!
+Barbara.",mullerbsf,https://github.com/vibansal/crisp/issues/20
+MDU6SXNzdWU3MTY1MDA0NTI=,Installation Error,CLOSED,2020-10-07T12:49:49Z,2020-10-07T16:33:26Z,2020-10-07T15:38:38Z,"I have an issue installing the CRISP in ubuntu 16.04.5 LTS. I get the following message when I execute `make all` in the main directory
+
+```
+make -C samtools all
+make[1]: Entering directory '/home/ubuntu/git/crisp/samtools'
+make[2]: Entering directory '/home/ubuntu/git/crisp/samtools'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sam_header.c -o sam_header.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_reheader.c -o bam_reheader.o
+bam_reheader.c: In function ‘bam_reheader’:
+bam_reheader.c:11:16: warning: variable ‘old’ set but not used [-Wunused-but-set-variable]
+  bam_header_t *old;
+                ^
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. kprobaln.c -o kprobaln.o
+kprobaln.c: In function ‘kpa_glocal’:
+kprobaln.c:78:21: warning: variable ‘is_diff’ set but not used [-Wunused-but-set-variable]
+  int bw, bw2, i, k, is_diff = 0, is_backward = 1, Pr;
+                     ^
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_cat.c -o bam_cat.o
+ar -csru libbam.a bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o knetfile.o bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+make[2]: Leaving directory '/home/ubuntu/git/crisp/samtools'
+make[2]: Entering directory '/home/ubuntu/git/crisp/samtools/bcftools'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcf.c -o bcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. vcf.c -o vcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcfutils.c -o bcfutils.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. prob1.c -o prob1.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. em.c -o em.o
+em.c: In function ‘bcf_em1’:
+em.c:174:12: warning: variable ‘n2’ set but not used [-Wunused-but-set-variable]
+  int i, n, n2;
+            ^
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. kfunc.c -o kfunc.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. kmin.c -o kmin.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. index.c -o index.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. fet.c -o fet.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. mut.c -o mut.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcf2qcall.c -o bcf2qcall.o
+ar -csru libbcf.a bcf.o vcf.o bcfutils.o prob1.o em.o kfunc.o kmin.o index.o fet.o mut.o bcf2qcall.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+make[2]: Leaving directory '/home/ubuntu/git/crisp/samtools/bcftools'
+make[2]: Entering directory '/home/ubuntu/git/crisp/samtools/misc'
+make[2]: Nothing to be done for 'lib'.
+make[2]: Leaving directory '/home/ubuntu/git/crisp/samtools/misc'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_tview.c -o bam_tview.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_plcmd.c -o bam_plcmd.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sam_view.c -o sam_view.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_rmdup.c -o bam_rmdup.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_rmdupse.c -o bam_rmdupse.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_mate.c -o bam_mate.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_stat.c -o bam_stat.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_color.c -o bam_color.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bamtk.c -o bamtk.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. kaln.c -o kaln.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2bcf.c -o bam2bcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2bcf_indel.c -o bam2bcf_indel.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. errmod.c -o errmod.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sample.c -o sample.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. cut_target.c -o cut_target.o
+cut_target.c: In function ‘main_cut_target’:
+cut_target.c:137:36: warning: variable ‘lastpos’ set but not used [-Wunused-but-set-variable]
+  int c, tid, pos, n, lasttid = -1, lastpos = -1, l, max_l;
+                                    ^
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. phase.c -o phase.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2depth.c -o bam2depth.o
+gcc -g -Wall -O2  -o samtools bam_tview.o bam_plcmd.o sam_view.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o kaln.o bam2bcf.o bam2bcf_indel.o errmod.o sample.o cut_target.o phase.o bam2depth.o -Lbcftools  libbam.a -lbcf -lcurses  -lm -lz
+make[1]: Leaving directory '/home/ubuntu/git/crisp/samtools'
+mkdir -p include bin;
+make -C . new
+make[1]: Entering directory '/home/ubuntu/git/crisp'
+gcc -Wall -D_GNU_SOURCE -c parsebam/readfasta.c -o include/readfasta.o
+parsebam/readfasta.c: In function ‘read_fastaheader’:
+parsebam/readfasta.c:62:33: warning: unused variable ‘length’ [-Wunused-variable]
+  int i=0,j=0,c=0,c1=0,k=0; char length[64];
+                                 ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/bamsreader.c -o include/bamsreader.o
+parsebam/bamsreader.c: In function ‘free_read_queue’:
+parsebam/bamsreader.c:97:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/bamsreader.c: In function ‘allocate_mem_heap’:
+parsebam/bamsreader.c:121:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/variant.c -o include/variant.o
+In file included from parsebam/variant.c:29:0:
+parsebam/process_indel_variant.c: In function ‘print_indel_haplotypes’:
+parsebam/process_indel_variant.c:215:53: warning: unused variable ‘ol’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                                     ^
+parsebam/process_indel_variant.c:215:41: warning: unused variable ‘op’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                         ^
+parsebam/process_indel_variant.c:215:33: warning: unused variable ‘ep’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                 ^
+parsebam/process_indel_variant.c:215:16: warning: unused variable ‘offset’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                ^
+parsebam/process_indel_variant.c:215:6: warning: unused variable ‘base’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+      ^
+In file included from parsebam/variant.c:30:0:
+parsebam/init_variant.c: In function ‘initialize_variant’:
+parsebam/init_variant.c:111:24: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+  variant->refbase = BTI[variant->refb]; // what if this is IUPAC ambig. base 
+                        ^
+parsebam/init_variant.c:106:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,p=0,q=0; 
+          ^
+parsebam/variant.c: In function ‘advance_read’:
+parsebam/variant.c:61:15: warning: unused variable ‘i’ [-Wunused-variable]
+  int op=0,l=0,i=0;
+               ^
+parsebam/variant.c: In function ‘calculate_allelecounts’:
+parsebam/variant.c:248:80: warning: implicit declaration of function ‘realign_read’ [-Wimplicit-function-declaration]
+    if (INDEL_REALIGNMENT ==2 && bcall->realigned ==0 && bcall->mismatches > 0) realign_read(bamfiles_data,j,bcall,reflist);
+                                                                                ^
+parsebam/variant.c:304:17: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+      ibase = BTI[base]; bcall->allele = ibase+offset;
+                 ^
+parsebam/variant.c:233:6: warning: unused variable ‘i’ [-Wunused-variable]
+  int i=0; int reads=0; int j=0; int ar=0;
+      ^
+parsebam/variant.c:231:43: warning: unused variable ‘allelematch’ [-Wunused-variable]
+  int offset=0; double ep; int allele; int allelematch=0; int bin=0;
+                                           ^
+parsebam/variant.c:231:31: warning: unused variable ‘allele’ [-Wunused-variable]
+  int offset=0; double ep; int allele; int allelematch=0; int bin=0;
+                               ^
+parsebam/variant.c:228:12: warning: unused variable ‘base_m’ [-Wunused-variable]
+  char base,base_m; uint8_t strand,randomstrand=0;
+            ^
+parsebam/variant.c:227:33: warning: variable ‘indelalleles’ set but not used [-Wunused-but-set-variable]
+  int insertions =0,deletions =0,indelalleles=0;
+                                 ^
+In file included from parsebam/variant.c:29:0:
+parsebam/process_indel_variant.c: In function ‘calculate_indel_ambiguity’:
+parsebam/process_indel_variant.c:92:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/process_indel_variant.c: In function ‘print_indel_haplotypes’:
+parsebam/process_indel_variant.c:230:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+In file included from parsebam/variant.c:30:0:
+parsebam/init_variant.c: In function ‘initialize_variant’:
+parsebam/init_variant.c:132:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/variant.c: In function ‘calculate_allelecounts’:
+parsebam/variant.c:276:5: warning: ‘bcall_mate’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     evaluate_OPE_readpair(bcall,bcall_mate,variant,&strand,&randomstrand,&quality);
+     ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/allelecounts.c -o include/allelecounts.o
+In file included from parsebam/allelecounts.c:8:0:
+parsebam/calculatelikelihoods.c: In function ‘compute_GLLs’:
+parsebam/calculatelikelihoods.c:46:16: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+    allele = BTI[bcall->sequence[bcall->l1+bcall->delta]]; 
+                ^
+parsebam/allelecounts.c: In function ‘print_variantreads’:
+parsebam/allelecounts.c:23:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0;
+          ^
+parsebam/allelecounts.c: In function ‘calculate_uniquereads’:
+parsebam/allelecounts.c:45:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,reads=0; *unique =1; *middle = 0;
+          ^
+parsebam/allelecounts.c:44:6: warning: unused variable ‘UFLAG’ [-Wunused-variable]
+  int UFLAG=1;
+      ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c FET/chisquare.c -o include/chisquare.o
+FET/chisquare.c: In function ‘chi2pvalue’:
+FET/chisquare.c:21:43: warning: unused variable ‘statistic’ [-Wunused-variable]
+  double statisticjoint[2] = {0,0}; double statistic[2]={0,0}; double statisticf[2]={0,0},statisticr[2]={0,0};
+                                           ^
+gcc -Wall -D_GNU_SOURCE -c FET/contables.c -o include/contables.o
+FET/contables.c: In function ‘fetsided’:
+FET/contables.c:102:9: warning: unused variable ‘ptable’ [-Wunused-variable]
+  double ptable = ncr(r1,c1) + ncr(r2,c2); double DEN= ncr(r1+r2,c1+c2);
+         ^
+FET/contables.c: In function ‘pvalue_contable_iter_stranded’:
+FET/contables.c:265:36: warning: variable ‘deltac’ set but not used [-Wunused-but-set-variable]
+  double clra =0, clranew=0; double deltac=0; double DOF = size-1;
+                                    ^
+gcc -Wall -D_GNU_SOURCE -Iparsebam -Isamtools -c crisp/newcrispcaller.c -o include/newcrispcaller.o
+In file included from crisp/newcrispcaller.c:17:0:
+crisp/../FET/chisquare-stratified.c: In function ‘chi2pvalue_stratified’:
+crisp/../FET/chisquare-stratified.c:18:9: warning: unused variable ‘statnew’ [-Wunused-variable]
+  double statnew[2]={0,0},pairwisestat[2]={0,0};
+         ^
+crisp/../FET/chisquare-stratified.c:16:37: warning: unused variable ‘SF’ [-Wunused-variable]
+  double pvalue[3] = {0,0,0}; double SF,RUGF;
+                                     ^
+crisp/../FET/chisquare-stratified.c:16:9: warning: unused variable ‘pvalue’ [-Wunused-variable]
+  double pvalue[3] = {0,0,0}; double SF,RUGF;
+         ^
+In file included from crisp/newcrispcaller.c:17:0:
+crisp/../FET/chisquare-stratified.c: In function ‘chi2pvalue_stratified_pivotsample’:
+crisp/../FET/chisquare-stratified.c:90:43: warning: unused variable ‘statistic’ [-Wunused-variable]
+  double statisticjoint[2] = {0,0}; double statistic[2]={0,0}; double statisticf[2]={0,0},statisticr[2]={0,0};
+                                           ^
+In file included from crisp/crispEM.c:24:0,
+                 from crisp/newcrispcaller.c:18:
+crisp/../FET/lowcovFET.c: In function ‘pvalue_lowcoverage’:
+crisp/../FET/lowcovFET.c:25:39: warning: unused variable ‘num’ [-Wunused-variable]
+  int i=0,j=0,offset=0; int den=0; int num=0;
+                                       ^
+crisp/../FET/lowcovFET.c:25:28: warning: unused variable ‘den’ [-Wunused-variable]
+  int i=0,j=0,offset=0; int den=0; int num=0;
+                            ^
+crisp/../FET/lowcovFET.c: In function ‘pvalue_lowcoverage_stranded’:
+crisp/../FET/lowcovFET.c:161:9: warning: unused variable ‘sstat’ [-Wunused-variable]
+  double sstat =0; 
+         ^
+In file included from crisp/crispEM.c:33:0,
+                 from crisp/newcrispcaller.c:18:
+crisp/LRstatistic.c: In function ‘calculate_likelihood_EM’:
+crisp/LRstatistic.c:8:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,K=0,iter=0; 
+              ^
+crisp/LRstatistic.c: In function ‘calculate_LRstatistic’:
+crisp/LRstatistic.c:60:9: warning: unused variable ‘pcombined1’ [-Wunused-variable]
+  double pcombined1 = calculate_likelihood_EM(variant,allele1,allele2,allele3,p,&dataLL1,E01,E10,5);
+         ^
+In file included from crisp/newcrispcaller.c:18:0:
+crisp/crispEM.c: In function ‘calculate_pooled_likelihoods_snp’:
+crisp/crispEM.c:109:14: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+    base = BTI[bcall->sequence[bcall->l1+bcall->delta]]; 
+              ^
+crisp/crispEM.c: In function ‘calculate_genotypes’:
+crisp/crispEM.c:148:22: warning: variable ‘sbgenotype’ set but not used [-Wunused-but-set-variable]
+  int bestgenotype =0,sbgenotype =0; 
+                      ^
+crisp/crispEM.c: In function ‘EMmethod’:
+crisp/crispEM.c:226:29: warning: unused variable ‘convergence_delta’ [-Wunused-variable]
+  int maxiter = 1000; double convergence_delta = 0.01; int exitloop =0;
+                             ^
+crisp/crispEM.c:217:9: warning: unused variable ‘LLrefsub’ [-Wunused-variable]
+  double LLrefsub=0,LLrefadd=0;
+         ^
+crisp/crispEM.c:215:40: warning: unused variable ‘LLnullb’ [-Wunused-variable]
+  double LLtotal =0,LLnullf=0,LLnullr=0,LLnullb=0;
+                                        ^
+crisp/crispEM.c:214:57: warning: unused variable ‘deltar’ [-Wunused-variable]
+  double pnew=0,pnewf=0,pnewr=0,pnewb=0; double deltaf=0,deltar=0; double Lf=0,Lr=0,Lj=0,Lb=0;
+                                                         ^
+crisp/crispEM.c: In function ‘compute_GLL_pooled’:
+crisp/crispEM.c:381:10: warning: unused variable ‘pvalue’ [-Wunused-variable]
+   double pvalue = calculate_LRstatistic(variant,allele1,allele2,allele3,p_EM,E01,E10); 
+          ^
+In file included from crisp/newcrispcaller.c:26:0:
+crisp/newcrispprint.c: In function ‘print_VCF_genotypes_diploid’:
+crisp/newcrispprint.c:136:18: warning: unused variable ‘coverage’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+                  ^
+crisp/newcrispprint.c:136:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+              ^
+crisp/newcrispprint.c: In function ‘print_VCF_genotypes_pooled_full’:
+crisp/newcrispprint.c:188:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+              ^
+crisp/newcrispprint.c: In function ‘print_pooledvariant’:
+crisp/newcrispprint.c:435:4: warning: format not a string literal and no format arguments [-Wformat-security]
+    fprintf(vfile,filter_strings[varfilters[i]]); if (i < variant->varalleles-1) fprintf(vfile,"",""); 
+    ^
+crisp/newcrispprint.c:387:7: warning: unused variable ‘FILTER’ [-Wunused-variable]
+  char FILTER[1024]; int filters = 0; //strcpy(FILTER,""\0"");
+       ^
+In file included from crisp/newcrispcaller.c:27:0:
+crisp/pooledFET.c: In function ‘FETpvalue_indels’:
+crisp/pooledFET.c:136:17: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+    if (j ==0) R = variant->indcounts[i][allele1] + variant->indcounts[i][allele2] + variant->indcounts_binned[i][allele3]; 
+                 ^
+In file included from crisp/newcrispcaller.c:28:0:
+crisp/poolstats.c: In function ‘calculate_pool_statistics’:
+crisp/poolstats.c:8:55: warning: unused variable ‘i’ [-Wunused-variable]
+  int spools =0; int variantpools =0; int a=0; int r=0,i=0; int varpool =0; int uniquess =0; int middle = 0;
+                                                       ^
+crisp/poolstats.c:8:51: warning: unused variable ‘r’ [-Wunused-variable]
+  int spools =0; int variantpools =0; int a=0; int r=0,i=0; int varpool =0; int uniquess =0; int middle = 0;
+                                                   ^
+crisp/poolstats.c:7:9: warning: unused variable ‘p’ [-Wunused-variable]
+  double p=0; double pvstrand[variant->samples]; double pvallow[4] = {0.0,0.0,0.0,0.0};
+         ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘call_genotypes’:
+crisp/oldcrispmethod.c:17:20: warning: unused variable ‘Er’ [-Wunused-variable]
+  double Ef =0.001, Er=0.001;
+                    ^
+crisp/oldcrispmethod.c:14:9: warning: variable ‘sum’ set but not used [-Wunused-but-set-variable]
+  double sum =0;
+         ^
+crisp/oldcrispmethod.c:9:32: warning: unused variable ‘r’ [-Wunused-variable]
+  int variants =0; int a=0; int r=0,i=0;
+                                ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘pooled_variantcaller’:
+crisp/oldcrispmethod.c:157:25: warning: unused variable ‘pvaluelog’ [-Wunused-variable]
+  int variants=0; double pvaluelog = variant->ctpval[variant->varalleles];  
+                         ^
+crisp/oldcrispmethod.c:134:33: warning: unused variable ‘potentialvar’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                                 ^
+crisp/oldcrispmethod.c:134:24: warning: unused variable ‘sample’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                        ^
+crisp/oldcrispmethod.c:134:19: warning: unused variable ‘pv’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                   ^
+crisp/oldcrispmethod.c:134:14: warning: unused variable ‘al’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+              ^
+crisp/oldcrispmethod.c:134:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+          ^
+crisp/newcrispcaller.c: In function ‘evaluate_variant’:
+crisp/newcrispcaller.c:113:25: warning: suggest parentheses around comparison in operand of ‘&’ [-Wparentheses]
+    else if (FAST_FILTER ==1 & variant->ctpval[variant->varalleles] >= -3 && variant->ploidy[0] > 2 && hplength >= 8 && (p[0]/K) <= 0.1) return 0;
+                         ^
+crisp/newcrispcaller.c:40:45: warning: unused variable ‘N’ [-Wunused-variable]
+  double p1=0,p2=0,ep; double C1=0,C2=0,C3=0,N=0;
+                                             ^
+crisp/newcrispcaller.c:40:19: warning: unused variable ‘ep’ [-Wunused-variable]
+  double p1=0,p2=0,ep; double C1=0,C2=0,C3=0,N=0;
+                   ^
+crisp/newcrispcaller.c: In function ‘output_allele_counts’:
+crisp/newcrispcaller.c:137:87: warning: unused variable ‘allele4’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                                                                       ^
+crisp/newcrispcaller.c:137:63: warning: unused variable ‘allele3’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                                               ^
+crisp/newcrispcaller.c:137:39: warning: unused variable ‘allele2’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                       ^
+crisp/newcrispcaller.c:137:15: warning: unused variable ‘allele1’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+               ^
+crisp/newcrispcaller.c: In function ‘newCRISPcaller’:
+crisp/newcrispcaller.c:184:88: warning: unused variable ‘allele4’ [-Wunused-variable]
+  int allele=0, allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=-1;
+                                                                                        ^
+crisp/newcrispcaller.c:183:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,al=0,potentialvar=0,is_variant =0,variantpools=0;
+          ^
+In file included from crisp/newcrispcaller.c:27:0:
+crisp/pooledFET.c: In function ‘chi2pvalue_variant’:
+crisp/pooledFET.c:259:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘calculate_chernoff_stats’:
+crisp/oldcrispmethod.c:217:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/bamread.c -o include/bamread.o
+In file included from parsebam/bamread.c:6:0:
+parsebam/../indels/left_align_indels.c: In function ‘left_align_indels’:
+parsebam/../indels/left_align_indels.c:8:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,op=0,l=0,l1=0,l2=0,j1=0,j2=0,op_prev = 0,l_prev =0;
+          ^
+parsebam/bamread.c: In function ‘parse_cigar’:
+parsebam/bamread.c:12:34: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,t=0, l1=0,l2=0; int l=0,j=0;
+                                  ^
+In file included from parsebam/bamread.c:6:0:
+parsebam/../indels/left_align_indels.c: In function ‘left_align_indels’:
+parsebam/../indels/left_align_indels.c:55:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -DPICALL=3 -Iparsebam -Isamtools -g -O2 include/readfasta.o include/variant.o include/allelecounts.o include/bamsreader.o include/newcrispcaller.o include/chisquare.o include/contables.o include/bamread.o -lm readmultiplebams.c -o bin/CRISP.binary -Lsamtools -lbam -lz
+In file included from readmultiplebams.c:11:0:
+indels/generate_candidate_indels.c: In function ‘extract_indel_reads’:
+indels/generate_candidate_indels.c:143:17: warning: unused variable ‘j’ [-Wunused-variable]
+         int i=0,j=0,op=0,l=0,flag=0, l1=0,l2=0;
+                 ^
+In file included from readmultiplebams.c:12:0:
+indels/realignment.c: In function ‘realign_read’:
+indels/realignment.c:415:87: warning: unused variable ‘ss’ [-Wunused-variable]
+  int alignments =0; int rlflag =0; int best = -1; int bestscore[2] = {-100,100};  int ss=0;
+                                                                                       ^
+In file included from readmultiplebams.c:61:0:
+variantcalls.c: In function ‘callvariants’:
+variantcalls.c:137:6: warning: unused variable ‘i’ [-Wunused-variable]
+  int i=0, k=0,reads=0; 
+      ^
+In file included from readmultiplebams.c:56:0:
+optionparser.c: In function ‘parse_bamfilenames’:
+optionparser.c:154:3: warning: ignoring return value of ‘fgets’, declared with attribute warn_unused_result [-Wunused-result]
+   fgets(buffer,4096,fp); 
+   ^
+optionparser.c: In function ‘optparser’:
+optionparser.c:274:4: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+    fscanf(fp,""%d\n"",&options->phenotypes[i]); 
+    ^
+In file included from readmultiplebams.c:61:0:
+variantcalls.c: In function ‘update_error_table’:
+variantcalls.c:41:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+make[1]: Leaving directory '/home/ubuntu/git/crisp'
+#make -C . crisp
+#make -C . indel
+```",virenar,https://github.com/vibansal/crisp/issues/21
+MDU6SXNzdWU3NTEwNTIwODM=,.vcf contains extra tab,CLOSED,2020-11-25T18:57:02Z,2022-04-25T23:31:31Z,2022-04-25T23:31:31Z,"Hello vibansal,
+
+I have generated a .vcf using crisp. I was then curious to load that file in vcfR. However, when I tried this, apparently there is an extra tab in the rows with SNP information. This prevents one from loading the .vcf using the vcfR package.
+
+There are easy work arounds, but I thought this might be of interest to developers.
+
+Thank you,
+Jeremiah  ",jwbusch0,https://github.com/vibansal/crisp/issues/22
+MDU6SXNzdWU3NjU0MTM0NTM=,convert_pooled_VCF,OPEN,2020-12-13T14:01:30Z,2020-12-14T20:08:58Z,,"Hello,
+I'm encountering an issue with trying to run  the ""convert_pooled_VCF.py"" script, specifically with the third argument (pool size).
+Example:
+~/crisp/scripts/convert_pooled_vcf.py tularosa_pass.vcf bamlist 30 > pass.vcf
+pool sizes: []
+
+I'm unsure if I am at fault or if there is an issue with the argument parser. 
+Please advise, thank you!
+",Andrew-N-Black,https://github.com/vibansal/crisp/issues/23
+MDU6SXNzdWU4NjEwMjk4NTk=,Poolsize = 1,CLOSED,2021-04-19T08:08:32Z,2021-04-20T20:16:29Z,2021-04-20T20:16:29Z,"Hello, Can CRISP be used to call variants in 1000 homozygous samples? So multi-sample but a pool size of 1. I know pool size influences the maf cutoff but I feel like the method should still be OK to use. CRISP is a lot faster in calling SNPs compared to other approaches for 1000 samples. The calls for the sites I have looked at exactly match variant calling with other approaches and Sanger based confirmation. Thanks! Arun.",arunkumarramesh,https://github.com/vibansal/crisp/issues/24
+I_kwDOAKeELs489yuK,Installation error. does not seem to compile right,CLOSED,2021-10-11T15:09:48Z,2021-10-11T15:12:22Z,2021-10-11T15:12:22Z,"After download from github, execute make all in crisp directory does not make an executable file CRISP. Compilation not going correct, but i am not seeing the error. Full log below, please advice?
+
+Ubuntu@server:/home/administrator/Documents/Software/crisp/crisp$ make all
+make -C samtools all
+make[1]: Entering directory '/home/administrator/Documents/Software/crisp/crisp/samtools'
+make[2]: Entering directory '/home/administrator/Documents/Software/crisp/crisp/samtools'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bgzf.c -o bgzf.o
+bgzf.c: In function ‘bgzf_close’:
+bgzf.c:630:8: warning: variable ‘count’ set but not used [-Wunused-but-set-variable]
+    int count, block_length = deflate_block(fp, 0);
+        ^~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. kstring.c -o kstring.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_aux.c -o bam_aux.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam.c -o bam.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_import.c -o bam_import.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sam.c -o sam.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_index.c -o bam_index.o
+bam_index.c: In function ‘bam_index_load_core’:
+bam_index.c:330:2: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+  fread(magic, 1, 4, fp);
+  ^~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:337:2: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+  fread(&idx->n, 4, 1, fp);
+  ^~~~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:350:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+   fread(&size, 4, 1, fp);
+   ^~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:353:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+    fread(&key, 4, 1, fp);
+    ^~~~~~~~~~~~~~~~~~~~~
+bam_index.c:357:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+    fread(&p->n, 4, 1, fp);
+    ^~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:361:4: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+    fread(p->list, 16, p->n, fp);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:371:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+   fread(&index2->n, 4, 1, fp);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+bam_index.c:375:3: warning: ignoring return value of ‘fread’, declared with attribute warn_unused_result [-Wunused-result]
+   fread(index2->offset, index2->n, 8, fp);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_pileup.c -o bam_pileup.o
+bam_pileup.c: In function ‘resolve_cigar2’:
+bam_pileup.c:75:9: warning: variable ‘is_head’ set but not used [-Wunused-but-set-variable]
+  int k, is_head = 0;
+         ^~~~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_lpileup.c -o bam_lpileup.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_md.c -o bam_md.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. razf.c -o razf.o
+razf.c: In function ‘razf_flush’:
+razf.c:221:3: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+   write(rz->x.fpw, rz->outbuf, RZ_BUFFER_SIZE - rz->stream->avail_out);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:234:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, rz->outbuf, RZ_BUFFER_SIZE - rz->stream->avail_out);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c: In function ‘_razf_write’:
+razf.c:201:3: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+   write(rz->x.fpw, rz->outbuf, RZ_BUFFER_SIZE - rz->stream->avail_out);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c: In function ‘razf_close’:
+razf.c:804:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, &rz->in, sizeof(int64_t));
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:805:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, &rz->out, sizeof(int64_t));
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:808:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, &v64, sizeof(int64_t));
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:810:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, &v64, sizeof(int64_t));
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c: In function ‘razf_end_flush’:
+razf.c:258:4: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+    write(rz->x.fpw, rz->outbuf, RZ_BUFFER_SIZE - rz->stream->avail_out);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c: In function ‘save_zindex’:
+razf.c:96:12: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+  if(is_be) write(fd, &rz->index->size, sizeof(int));
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:99:3: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+   write(fd, &v32, sizeof(uint32_t));
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:106:2: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+  write(fd, rz->index->bin_offsets, sizeof(int64_t) * v32);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+razf.c:107:2: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+  write(fd, rz->index->cell_offsets, sizeof(int32_t) * rz->index->size);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. faidx.c -o faidx.o
+faidx.c: In function ‘fai_load’:
+faidx.c:277:5: warning: this ‘else’ clause does not guard... [-Wmisleading-indentation]
+     else
+     ^~~~
+faidx.c:280:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘else’
+  if (fp == 0) {
+  ^~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bedidx.c -o bedidx.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. knetfile.c -o knetfile.o
+In file included from knetfile.c:46:0:
+knetfile.c: In function ‘kftp_send_cmd’:
+knetfile.h:9:32: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+ #define netwrite(fd, ptr, len) write(fd, ptr, len)
+                                ^~~~~~~~~~~~~~~~~~~
+knetfile.c:236:2: note: in expansion of macro ‘netwrite’
+  netwrite(ftp->ctrl_fd, cmd, strlen(cmd));
+  ^~~~~~~~
+knetfile.c: In function ‘khttp_connect_file’:
+knetfile.h:9:32: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result [-Wunused-result]
+ #define netwrite(fd, ptr, len) write(fd, ptr, len)
+                                ^~~~~~~~~~~~~~~~~~~
+knetfile.c:415:2: note: in expansion of macro ‘netwrite’
+  netwrite(fp->fd, buf, l);
+  ^~~~~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_sort.c -o bam_sort.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sam_header.c -o sam_header.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_reheader.c -o bam_reheader.o
+bam_reheader.c: In function ‘bam_reheader’:
+bam_reheader.c:11:16: warning: variable ‘old’ set but not used [-Wunused-but-set-variable]
+  bam_header_t *old;
+                ^~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. kprobaln.c -o kprobaln.o
+kprobaln.c: In function ‘kpa_glocal’:
+kprobaln.c:78:21: warning: variable ‘is_diff’ set but not used [-Wunused-but-set-variable]
+  int bw, bw2, i, k, is_diff = 0, is_backward = 1, Pr;
+                     ^~~~~~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_cat.c -o bam_cat.o
+ar -csru libbam.a bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o knetfile.o bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+make[2]: Leaving directory '/home/administrator/Documents/Software/crisp/crisp/samtools'
+make[2]: Entering directory '/home/administrator/Documents/Software/crisp/crisp/samtools/bcftools'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcf.c -o bcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. vcf.c -o vcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcfutils.c -o bcfutils.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. prob1.c -o prob1.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. em.c -o em.o
+em.c: In function ‘bcf_em1’:
+em.c:174:12: warning: variable ‘n2’ set but not used [-Wunused-but-set-variable]
+  int i, n, n2;
+            ^~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. kfunc.c -o kfunc.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. kmin.c -o kmin.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. index.c -o index.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. fet.c -o fet.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. mut.c -o mut.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I.. -I. bcf2qcall.c -o bcf2qcall.o
+ar -csru libbcf.a bcf.o vcf.o bcfutils.o prob1.o em.o kfunc.o kmin.o index.o fet.o mut.o bcf2qcall.o
+ar: `u' modifier ignored since `D' is the default (see `U')
+make[2]: Leaving directory '/home/administrator/Documents/Software/crisp/crisp/samtools/bcftools'
+make[2]: Entering directory '/home/administrator/Documents/Software/crisp/crisp/samtools/misc'
+make[2]: Nothing to be done for 'lib'.
+make[2]: Leaving directory '/home/administrator/Documents/Software/crisp/crisp/samtools/misc'
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_tview.c -o bam_tview.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_plcmd.c -o bam_plcmd.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sam_view.c -o sam_view.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_rmdup.c -o bam_rmdup.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_rmdupse.c -o bam_rmdupse.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_mate.c -o bam_mate.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_stat.c -o bam_stat.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam_color.c -o bam_color.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bamtk.c -o bamtk.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. kaln.c -o kaln.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2bcf.c -o bam2bcf.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2bcf_indel.c -o bam2bcf_indel.o
+bam2bcf_indel.c: In function ‘bcf_call_add_rg’:
+bam2bcf_indel.c:32:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (r = p; *r && *r != '\t' && *r != '\n'; ++r); lp = r - p;
+    ^~~
+bam2bcf_indel.c:32:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (r = p; *r && *r != '\t' && *r != '\n'; ++r); lp = r - p;
+                                                      ^~
+bam2bcf_indel.c:33:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (r = q; *r && *r != '\t' && *r != '\n'; ++r); lq = r - q;
+    ^~~
+bam2bcf_indel.c:33:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (r = q; *r && *r != '\t' && *r != '\n'; ++r); lq = r - q;
+                                                      ^~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. errmod.c -o errmod.o
+errmod.c: In function ‘errmod_cal’:
+errmod.c:79:8: warning: self-comparison always evaluates to false [-Wtautological-compare]
+  if (m > m) return -1;
+        ^
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. sample.c -o sample.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. cut_target.c -o cut_target.o
+cut_target.c: In function ‘main_cut_target’:
+cut_target.c:137:36: warning: variable ‘lastpos’ set but not used [-Wunused-but-set-variable]
+  int c, tid, pos, n, lasttid = -1, lastpos = -1, l, max_l;
+                                    ^~~~~~~
+cut_target.c: In function ‘process_cns.isra.1’:
+cut_target.c:96:2: warning: assuming signed overflow does not occur when assuming that (X + c) < X is always false [-Wstrict-overflow]
+  for (i = 0, s = -1; i <= l; ++i) {
+  ^~~
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. phase.c -o phase.o
+gcc -c -g -Wall -O2  -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1 -I. bam2depth.c -o bam2depth.o
+gcc -g -Wall -O2  -o samtools bam_tview.o bam_plcmd.o sam_view.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o kaln.o bam2bcf.o bam2bcf_indel.o errmod.o sample.o cut_target.o phase.o bam2depth.o -Lbcftools  libbam.a -lbcf -lcurses  -lm -lz
+make[1]: Leaving directory '/home/administrator/Documents/Software/crisp/crisp/samtools'
+mkdir -p include bin;
+make -C . new
+make[1]: Entering directory '/home/administrator/Documents/Software/crisp/crisp'
+gcc -Wall -D_GNU_SOURCE -c parsebam/readfasta.c -o include/readfasta.o
+parsebam/readfasta.c: In function ‘read_fastaheader’:
+parsebam/readfasta.c:88:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[c] == ' ' || buffer[c] == '\t') c++;  j= c;
+   ^~~~~
+parsebam/readfasta.c:88:55: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[c] == ' ' || buffer[c] == '\t') c++;  j= c;
+                                                       ^
+parsebam/readfasta.c:89:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[c] != ' ' && buffer[c] != '\t') c++; reflist->lengths[i] = 0;
+   ^~~~~
+parsebam/readfasta.c:89:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[c] != ' ' && buffer[c] != '\t') c++; reflist->lengths[i] = 0;
+                                                      ^~~~~~~
+parsebam/readfasta.c:95:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[c] == ' ' || buffer[c] == '\t') c++; j=c;  // move to next character that is not space or tab
+   ^~~~~
+parsebam/readfasta.c:95:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[c] == ' ' || buffer[c] == '\t') c++; j=c;  // move to next character that is not space or tab
+                                                      ^
+parsebam/readfasta.c:96:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[c] != ' ' && buffer[c] != '\t') c++; reflist->offsets[i]  = 0;
+   ^~~~~
+parsebam/readfasta.c:96:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[c] != ' ' && buffer[c] != '\t') c++; reflist->offsets[i]  = 0;
+                                                      ^~~~~~~
+parsebam/readfasta.c:62:33: warning: unused variable ‘length’ [-Wunused-variable]
+  int i=0,j=0,c=0,c1=0,k=0; char length[64];
+                                 ^~~~~~
+parsebam/readfasta.c: In function ‘read_bedfile’:
+parsebam/readfasta.c:257:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c; while (buffer[c] != ' ' && buffer[c] != '\t') c++; e = c;
+   ^~~~~
+parsebam/readfasta.c:257:53: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c; while (buffer[c] != ' ' && buffer[c] != '\t') c++; e = c;
+                                                     ^
+parsebam/readfasta.c:258:3: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   for (i=s;i<e;i++) chrom[i-s] = buffer[i]; chrom[i-s] = '\0';
+   ^~~
+parsebam/readfasta.c:258:45: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   for (i=s;i<e;i++) chrom[i-s] = buffer[i]; chrom[i-s] = '\0';
+                                             ^~~~~
+parsebam/readfasta.c:260:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c; while (buffer[c] != ' ' && buffer[c] != '\t') c++; e = c;
+   ^~~~~
+parsebam/readfasta.c:260:53: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c; while (buffer[c] != ' ' && buffer[c] != '\t') c++; e = c;
+                                                     ^
+parsebam/readfasta.c:263:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c;
+   ^~~~~
+parsebam/readfasta.c:263:53: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c;
+                                                     ^
+parsebam/readfasta.c:264:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[c] != ' ' && buffer[c] != '\t' && buffer[c] != '\n' && isdigit(buffer[c])) c++; e = c;
+   ^~~~~
+parsebam/readfasta.c:264:97: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[c] != ' ' && buffer[c] != '\t' && buffer[c] != '\n' && isdigit(buffer[c])) c++; e = c;
+                                                                                                 ^
+parsebam/readfasta.c:270:4: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+    while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c;
+    ^~~~~
+parsebam/readfasta.c:270:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+    while(buffer[c] == ' ' || buffer[c] == '\t') c++; s = c;
+                                                      ^
+parsebam/readfasta.c:271:4: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+    while (buffer[c] != ' ' && buffer[c] != '\t' && buffer[c] != '\n') c++; e = c;
+    ^~~~~
+parsebam/readfasta.c:271:76: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+    while (buffer[c] != ' ' && buffer[c] != '\t' && buffer[c] != '\n') c++; e = c;
+                                                                            ^
+parsebam/readfasta.c:274:5: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+     for (i=s;i<e;i++) annotation[i-s] = buffer[i]; annotation[i-s] = '\0';
+     ^~~
+parsebam/readfasta.c:274:52: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+     for (i=s;i<e;i++) annotation[i-s] = buffer[i]; annotation[i-s] = '\0';
+                                                    ^~~~~~~~~~
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/bamsreader.c -o include/bamsreader.o
+parsebam/bamsreader.c: In function ‘free_read_queue’:
+parsebam/bamsreader.c:97:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/bamsreader.c: In function ‘allocate_mem_heap’:
+parsebam/bamsreader.c:121:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/variant.c -o include/variant.o
+In file included from parsebam/variant.c:29:0:
+parsebam/process_indel_variant.c: In function ‘identify_indelalleles’:
+parsebam/process_indel_variant.c:155:3: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   for (i=0;i<alleles;i++) free(indelalleles[i].bases); free(indelalleles);
+   ^~~
+parsebam/process_indel_variant.c:155:56: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   for (i=0;i<alleles;i++) free(indelalleles[i].bases); free(indelalleles);
+                                                        ^~~~
+parsebam/process_indel_variant.c:198:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<alleles;i++) free(indelalleles[i].bases); free(indelalleles);
+  ^~~
+parsebam/process_indel_variant.c:198:55: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<alleles;i++) free(indelalleles[i].bases); free(indelalleles);
+                                                       ^~~~
+parsebam/process_indel_variant.c: In function ‘print_indel_haplotypes’:
+parsebam/process_indel_variant.c:215:53: warning: unused variable ‘ol’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                                     ^~
+parsebam/process_indel_variant.c:215:41: warning: unused variable ‘op’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                         ^~
+parsebam/process_indel_variant.c:215:33: warning: unused variable ‘ep’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                                 ^~
+parsebam/process_indel_variant.c:215:16: warning: unused variable ‘offset’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+                ^~~~~~
+parsebam/process_indel_variant.c:215:6: warning: unused variable ‘base’ [-Wunused-variable]
+  int base; int offset=0; double ep; int op = 0; int ol=0; int i=0;
+      ^~~~
+In file included from parsebam/variant.c:30:0:
+parsebam/init_variant.c: In function ‘initialize_variant’:
+parsebam/init_variant.c:111:24: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+  variant->refbase = BTI[variant->refb]; // what if this is IUPAC ambig. base
+                        ^
+parsebam/init_variant.c:106:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,p=0,q=0;
+          ^
+parsebam/init_variant.c: In function ‘init_poolsizes’:
+parsebam/init_variant.c:140:17: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+                 for (i=0;i<options->bamfiles;i++) variant->ploidy[i] = options->POOLSIZE; variant->varpoolsize = 0;
+                 ^~~
+parsebam/init_variant.c:140:91: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+                 for (i=0;i<options->bamfiles;i++) variant->ploidy[i] = options->POOLSIZE; variant->varpoolsize = 0;
+                                                                                           ^~~~~~~
+parsebam/init_variant.c:155:17: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+                 for (i=0;i<options->bamfiles;i++) variant->ploidy[i] = 2;  variant->varpoolsize =0;
+                 ^~~
+parsebam/init_variant.c:155:76: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+                 for (i=0;i<options->bamfiles;i++) variant->ploidy[i] = 2;  variant->varpoolsize =0;
+                                                                            ^~~~~~~
+parsebam/variant.c: In function ‘advance_read’:
+parsebam/variant.c:61:15: warning: unused variable ‘i’ [-Wunused-variable]
+  int op=0,l=0,i=0;
+               ^
+parsebam/variant.c: In function ‘calculate_allelecounts’:
+parsebam/variant.c:248:80: warning: implicit declaration of function ‘realign_read’; did you mean ‘print_read’? [-Wimplicit-function-declaration]
+    if (INDEL_REALIGNMENT ==2 && bcall->realigned ==0 && bcall->mismatches > 0) realign_read(bamfiles_data,j,bcall,reflist);
+                                                                                ^~~~~~~~~~~~
+                                                                                print_read
+parsebam/variant.c:304:17: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+      ibase = BTI[base]; bcall->allele = ibase+offset;
+                 ^
+parsebam/variant.c:233:6: warning: unused variable ‘i’ [-Wunused-variable]
+  int i=0; int reads=0; int j=0; int ar=0;
+      ^
+parsebam/variant.c:231:43: warning: unused variable ‘allelematch’ [-Wunused-variable]
+  int offset=0; double ep; int allele; int allelematch=0; int bin=0;
+                                           ^~~~~~~~~~~
+parsebam/variant.c:231:31: warning: unused variable ‘allele’ [-Wunused-variable]
+  int offset=0; double ep; int allele; int allelematch=0; int bin=0;
+                               ^~~~~~
+parsebam/variant.c:228:12: warning: unused variable ‘base_m’ [-Wunused-variable]
+  char base,base_m; uint8_t strand,randomstrand=0;
+            ^~~~~~
+parsebam/variant.c:227:33: warning: variable ‘indelalleles’ set but not used [-Wunused-but-set-variable]
+  int insertions =0,deletions =0,indelalleles=0;
+                                 ^~~~~~~~~~~~
+In file included from parsebam/variant.c:29:0:
+parsebam/process_indel_variant.c: In function ‘calculate_indel_ambiguity’:
+parsebam/process_indel_variant.c:92:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/process_indel_variant.c: In function ‘print_indel_haplotypes’:
+parsebam/process_indel_variant.c:230:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+In file included from parsebam/variant.c:30:0:
+parsebam/init_variant.c: In function ‘initialize_variant’:
+parsebam/init_variant.c:132:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+parsebam/variant.c: In function ‘calculate_allelecounts’:
+parsebam/variant.c:276:5: warning: ‘bcall_mate’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+     evaluate_OPE_readpair(bcall,bcall_mate,variant,&strand,&randomstrand,&quality);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/allelecounts.c -o include/allelecounts.o
+In file included from parsebam/allelecounts.c:8:0:
+parsebam/calculatelikelihoods.c: In function ‘compute_GLLs’:
+parsebam/calculatelikelihoods.c:46:16: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+    allele = BTI[bcall->sequence[bcall->l1+bcall->delta]];
+                ^
+parsebam/allelecounts.c: In function ‘print_variantreads’:
+parsebam/allelecounts.c:23:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0;
+          ^
+parsebam/allelecounts.c: In function ‘calculate_uniquereads’:
+parsebam/allelecounts.c:45:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,reads=0; *unique =1; *middle = 0;
+          ^
+parsebam/allelecounts.c:44:6: warning: unused variable ‘UFLAG’ [-Wunused-variable]
+  int UFLAG=1;
+      ^~~~~
+gcc -Wall -D_GNU_SOURCE -Isamtools -c FET/chisquare.c -o include/chisquare.o
+FET/chisquare.c: In function ‘chi2pvalue’:
+FET/chisquare.c:56:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Ef[0] >=0.999) Ef[0] = 0.999; if (Ef[1] >=0.999) Ef[1] = 0.999;
+  ^~
+FET/chisquare.c:56:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Ef[0] >=0.999) Ef[0] = 0.999; if (Ef[1] >=0.999) Ef[1] = 0.999;
+                                    ^~
+FET/chisquare.c:57:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Er[0] >=0.999) Er[0] = 0.999; if (Er[1] >=0.999) Er[1] = 0.999;
+  ^~
+FET/chisquare.c:57:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Er[0] >=0.999) Er[0] = 0.999; if (Er[1] >=0.999) Er[1] = 0.999;
+                                    ^~
+FET/chisquare.c:21:43: warning: unused variable ‘statistic’ [-Wunused-variable]
+  double statisticjoint[2] = {0,0}; double statistic[2]={0,0}; double statisticf[2]={0,0},statisticr[2]={0,0};
+                                           ^~~~~~~~~
+gcc -Wall -D_GNU_SOURCE -c FET/contables.c -o include/contables.o
+FET/contables.c: In function ‘fetsided’:
+FET/contables.c:102:9: warning: unused variable ‘ptable’ [-Wunused-variable]
+  double ptable = ncr(r1,c1) + ncr(r2,c2); double DEN= ncr(r1+r2,c1+c2);
+         ^~~~~~
+FET/contables.c: In function ‘pvalue_contable_iter_stranded’:
+FET/contables.c:265:36: warning: variable ‘deltac’ set but not used [-Wunused-but-set-variable]
+  double clra =0, clranew=0; double deltac=0; double DOF = size-1;
+                                    ^~~~~~
+gcc -Wall -D_GNU_SOURCE -Iparsebam -Isamtools -c crisp/newcrispcaller.c -o include/newcrispcaller.o
+In file included from crisp/newcrispcaller.c:17:0:
+crisp/../FET/chisquare-stratified.c: In function ‘chi2pvalue_stratified’:
+crisp/../FET/chisquare-stratified.c:40:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Ef[0] >=0.999) Ef[0] = 0.999;  if (Er[0] >=0.999) Er[0] = 0.999; if (Eb[0] >=0.999) Eb[0] = 0.999;
+  ^~
+crisp/../FET/chisquare-stratified.c:40:37: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Ef[0] >=0.999) Ef[0] = 0.999;  if (Er[0] >=0.999) Er[0] = 0.999; if (Eb[0] >=0.999) Eb[0] = 0.999;
+                                     ^~
+In file included from crisp/newcrispcaller.c:17:0:
+crisp/../FET/chisquare-stratified.c:18:9: warning: unused variable ‘statnew’ [-Wunused-variable]
+  double statnew[2]={0,0},pairwisestat[2]={0,0};
+         ^~~~~~~
+crisp/../FET/chisquare-stratified.c:16:37: warning: unused variable ‘SF’ [-Wunused-variable]
+  double pvalue[3] = {0,0,0}; double SF,RUGF;
+                                     ^~
+crisp/../FET/chisquare-stratified.c:16:9: warning: unused variable ‘pvalue’ [-Wunused-variable]
+  double pvalue[3] = {0,0,0}; double SF,RUGF;
+         ^~~~~~
+In file included from crisp/newcrispcaller.c:17:0:
+crisp/../FET/chisquare-stratified.c: In function ‘chi2pvalue_stratified_pivotsample’:
+crisp/../FET/chisquare-stratified.c:129:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Ef[0] >=0.999) Ef[0] = 0.999; if (Ef[1] >=0.999) Ef[1] = 0.999;
+  ^~
+crisp/../FET/chisquare-stratified.c:129:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Ef[0] >=0.999) Ef[0] = 0.999; if (Ef[1] >=0.999) Ef[1] = 0.999;
+                                    ^~
+crisp/../FET/chisquare-stratified.c:130:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Er[0] >=0.999) Er[0] = 0.999; if (Er[1] >=0.999) Er[1] = 0.999;
+  ^~
+crisp/../FET/chisquare-stratified.c:130:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Er[0] >=0.999) Er[0] = 0.999; if (Er[1] >=0.999) Er[1] = 0.999;
+                                    ^~
+crisp/../FET/chisquare-stratified.c:131:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (Eb[0] >=0.999) Eb[0] = 0.999; if (Eb[1] >=0.999) Eb[1] = 0.999;
+  ^~
+crisp/../FET/chisquare-stratified.c:131:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (Eb[0] >=0.999) Eb[0] = 0.999; if (Eb[1] >=0.999) Eb[1] = 0.999;
+                                    ^~
+crisp/../FET/chisquare-stratified.c:90:43: warning: unused variable ‘statistic’ [-Wunused-variable]
+  double statisticjoint[2] = {0,0}; double statistic[2]={0,0}; double statisticf[2]={0,0},statisticr[2]={0,0};
+                                           ^~~~~~~~~
+In file included from crisp/crispEM.c:24:0,
+                 from crisp/newcrispcaller.c:18:
+crisp/../FET/lowcovFET.c: In function ‘pvalue_lowcoverage’:
+crisp/../FET/lowcovFET.c:47:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<maxcoverage+1;i++) bincounts[i] = 0; for (i=0;i<size;i++) bincounts[atable[i].N]++;
+  ^~~
+crisp/../FET/lowcovFET.c:47:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<maxcoverage+1;i++) bincounts[i] = 0; for (i=0;i<size;i++) bincounts[atable[i].N]++;
+                                                  ^~~
+crisp/../FET/lowcovFET.c:25:39: warning: unused variable ‘num’ [-Wunused-variable]
+  int i=0,j=0,offset=0; int den=0; int num=0;
+                                       ^~~
+crisp/../FET/lowcovFET.c:25:28: warning: unused variable ‘den’ [-Wunused-variable]
+  int i=0,j=0,offset=0; int den=0; int num=0;
+                            ^~~
+crisp/../FET/lowcovFET.c: In function ‘pvalue_lowcoverage_stranded’:
+crisp/../FET/lowcovFET.c:161:9: warning: unused variable ‘sstat’ [-Wunused-variable]
+  double sstat =0;
+         ^~~~~
+crisp/../FET/lowcovFET.c: In function ‘pvalue_lowcoverage_stranded1’:
+crisp/../FET/lowcovFET.c:312:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (sstat[1] < sstat[0]) sstat[3] +=1; if (sstat[2] < sstat[0]) sstat[4] +=1;
+   ^~
+crisp/../FET/lowcovFET.c:312:42: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (sstat[1] < sstat[0]) sstat[3] +=1; if (sstat[2] < sstat[0]) sstat[4] +=1;
+                                          ^~
+In file included from crisp/crispEM.c:33:0,
+                 from crisp/newcrispcaller.c:18:
+crisp/LRstatistic.c: In function ‘calculate_likelihood_EM’:
+crisp/LRstatistic.c:39:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (pnew < MINP) pnew= MINP; if (1.0-pnew <=MINP) pnew = 1.0-MINP;
+   ^~
+crisp/LRstatistic.c:39:32: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (pnew < MINP) pnew= MINP; if (1.0-pnew <=MINP) pnew = 1.0-MINP;
+                                ^~
+crisp/LRstatistic.c:8:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,K=0,iter=0;
+              ^
+crisp/LRstatistic.c: In function ‘calculate_LRstatistic’:
+crisp/LRstatistic.c:60:9: warning: unused variable ‘pcombined1’ [-Wunused-variable]
+  double pcombined1 = calculate_likelihood_EM(variant,allele1,allele2,allele3,p,&dataLL1,E01,E10,5);
+         ^~~~~~~~~~
+In file included from crisp/newcrispcaller.c:18:0:
+crisp/crispEM.c: In function ‘calculate_pooled_likelihoods_snp’:
+crisp/crispEM.c:109:14: warning: array subscript has type ‘char’ [-Wchar-subscripts]
+    base = BTI[bcall->sequence[bcall->l1+bcall->delta]];
+              ^
+crisp/crispEM.c: In function ‘calculate_genotypes’:
+crisp/crispEM.c:148:22: warning: variable ‘sbgenotype’ set but not used [-Wunused-but-set-variable]
+  int bestgenotype =0,sbgenotype =0;
+                      ^~~~~~~~~~
+crisp/crispEM.c: In function ‘EMmethod’:
+crisp/crispEM.c:254:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+     if (j==0) LLnull += temp; if (j==0) LLnullf += tempf; if (j==0) LLnullr += tempr;
+     ^~
+crisp/crispEM.c:254:31: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+     if (j==0) LLnull += temp; if (j==0) LLnullf += tempf; if (j==0) LLnullr += tempr;
+                               ^~
+crisp/crispEM.c:299:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (pnew < MINP) pnew= MINP; if (1.0-pnew <=MINP) pnew = 1.0-MINP;
+   ^~
+crisp/crispEM.c:299:32: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (pnew < MINP) pnew= MINP; if (1.0-pnew <=MINP) pnew = 1.0-MINP;
+                                ^~
+crisp/crispEM.c:300:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (pnewf < MINP) pnewf= MINP; if (1.0-pnewf <=MINP) pnewf = 1.0-MINP;
+   ^~
+crisp/crispEM.c:300:34: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (pnewf < MINP) pnewf= MINP; if (1.0-pnewf <=MINP) pnewf = 1.0-MINP;
+                                  ^~
+crisp/crispEM.c:301:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (pnewr < MINP) pnewr= MINP; if (1.0-pnewr <=MINP) pnewr = 1.0-MINP;
+   ^~
+crisp/crispEM.c:301:34: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (pnewr < MINP) pnewr= MINP; if (1.0-pnewr <=MINP) pnewr = 1.0-MINP;
+                                  ^~
+crisp/crispEM.c:302:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   if (pnewb < MINP) pnewb= MINP; if (1.0-pnewb <=MINP) pnewb = 1.0-MINP;
+   ^~
+crisp/crispEM.c:302:34: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   if (pnewb < MINP) pnewb= MINP; if (1.0-pnewb <=MINP) pnewb = 1.0-MINP;
+                                  ^~
+crisp/crispEM.c:226:29: warning: unused variable ‘convergence_delta’ [-Wunused-variable]
+  int maxiter = 1000; double convergence_delta = 0.01; int exitloop =0;
+                             ^~~~~~~~~~~~~~~~~
+crisp/crispEM.c:217:9: warning: unused variable ‘LLrefsub’ [-Wunused-variable]
+  double LLrefsub=0,LLrefadd=0;
+         ^~~~~~~~
+crisp/crispEM.c:215:40: warning: unused variable ‘LLnullb’ [-Wunused-variable]
+  double LLtotal =0,LLnullf=0,LLnullr=0,LLnullb=0;
+                                        ^~~~~~~
+crisp/crispEM.c:214:57: warning: unused variable ‘deltar’ [-Wunused-variable]
+  double pnew=0,pnewf=0,pnewr=0,pnewb=0; double deltaf=0,deltar=0; double Lf=0,Lr=0,Lj=0,Lb=0;
+                                                         ^~~~~~
+crisp/crispEM.c: In function ‘compute_GLL_pooled’:
+crisp/crispEM.c:381:10: warning: unused variable ‘pvalue’ [-Wunused-variable]
+   double pvalue = calculate_LRstatistic(variant,allele1,allele2,allele3,p_EM,E01,E10);
+          ^~~~~~
+In file included from crisp/newcrispprint.c:11:0,
+                 from crisp/newcrispcaller.c:26:
+crisp/crisp_header_options.c: In function ‘print_sampleids’:
+crisp/crisp_header_options.c:9:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (options->bamfilelist[i][s] != '/' && s >0) s--; s++;  // go backwards to find first '/' character
+   ^~~~~
+crisp/crisp_header_options.c:9:58: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (options->bamfilelist[i][s] != '/' && s >0) s--; s++;  // go backwards to find first '/' character
+                                                          ^
+In file included from crisp/newcrispcaller.c:26:0:
+crisp/newcrispprint.c: In function ‘print_VCF_first_5cols’:
+crisp/newcrispprint.c:54:3: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   for (j=1;j<longestdel;j++) fprintf(vfile,""%c"",variant->itb[variant->alleles[k]][j]); fprintf(vfile,""\t"");
+   ^~~
+crisp/newcrispprint.c:54:88: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   for (j=1;j<longestdel;j++) fprintf(vfile,""%c"",variant->itb[variant->alleles[k]][j]); fprintf(vfile,""\t"");
+                                                                                        ^~~~~~~
+In file included from crisp/newcrispcaller.c:26:0:
+crisp/newcrispprint.c: In function ‘print_VCF_genotypes_diploid’:
+crisp/newcrispprint.c:136:18: warning: unused variable ‘coverage’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+                  ^~~~~~~~
+crisp/newcrispprint.c:136:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+              ^
+crisp/newcrispprint.c: In function ‘print_VCF_genotypes_pooled_full’:
+crisp/newcrispprint.c:205:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (j=0;j<variant->ploidy[i];j++) fprintf(vfile,""./""); fprintf(vfile,"".:0:."");
+    ^~~
+crisp/newcrispprint.c:205:60: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (j=0;j<variant->ploidy[i];j++) fprintf(vfile,""./""); fprintf(vfile,"".:0:."");
+                                                            ^~~~~~~
+crisp/newcrispprint.c:221:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (j=0;j<variant->ploidy[i];j++) fprintf(vfile,""./""); fprintf(vfile,"".:0:."");
+    ^~~
+crisp/newcrispprint.c:221:60: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (j=0;j<variant->ploidy[i];j++) fprintf(vfile,""./""); fprintf(vfile,"".:0:."");
+                                                            ^~~~~~~
+crisp/newcrispprint.c:187:14: warning: unused variable ‘k’ [-Wunused-variable]
+  int i=0,j=0,k=0,coverage=0,bidir=0;
+              ^
+crisp/newcrispprint.c: In function ‘print_pooledvariant’:
+crisp/newcrispprint.c:387:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (MQflag >0) filters++; if (variant->strandpass > 0 && EMflag ==0) filters++; else if (lowcoverage ==1) filters++;
+  ^~
+crisp/newcrispprint.c:387:28: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (MQflag >0) filters++; if (variant->strandpass > 0 && EMflag ==0) filters++; else if (lowcoverage ==1) filters++;
+                            ^~
+crisp/newcrispprint.c:434:4: warning: format not a string literal and no format arguments [-Wformat-security]
+    fprintf(vfile,filter_strings[varfilters[i]]); if (i < variant->varalleles-1) fprintf(vfile,"","");
+    ^~~~~~~
+crisp/newcrispprint.c:386:7: warning: unused variable ‘FILTER’ [-Wunused-variable]
+  char FILTER[1024]; int filters = 0; //strcpy(FILTER,""\0"");
+       ^~~~~~
+In file included from crisp/newcrispcaller.c:27:0:
+crisp/pooledFET.c: In function ‘FETpvalue_variant’:
+crisp/pooledFET.c:58:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (k=0;k<R;k++) table_index[j][offset+k] =i; offset += R;
+    ^~~
+crisp/pooledFET.c:58:51: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (k=0;k<R;k++) table_index[j][offset+k] =i; offset += R;
+                                                   ^~~~~~
+crisp/pooledFET.c:95:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<12;i++) free(table_index[i]); free(table_index);
+  ^~~
+crisp/pooledFET.c:95:43: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<12;i++) free(table_index[i]); free(table_index);
+                                           ^~~~
+crisp/pooledFET.c:96:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<variant->samples;i++) free(newtable[i]); free(newtable);
+  ^~~
+crisp/pooledFET.c:96:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<variant->samples;i++) free(newtable[i]); free(newtable);
+                                                      ^~~~
+crisp/pooledFET.c: In function ‘FETpvalue_indels’:
+crisp/pooledFET.c:136:17: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+    if (j ==0) R = variant->indcounts[i][allele1] + variant->indcounts[i][allele2] + variant->indcounts_binned[i][allele3];
+                 ^
+crisp/pooledFET.c:138:4: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+    for (k=0;k<R;k++) table_index[j][offset+k] =i; offset += R;
+    ^~~
+crisp/pooledFET.c:138:51: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+    for (k=0;k<R;k++) table_index[j][offset+k] =i; offset += R;
+                                                   ^~~~~~
+crisp/pooledFET.c:161:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<2;i++) free(table_index[i]); free(table_index);
+  ^~~
+crisp/pooledFET.c:161:42: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<2;i++) free(table_index[i]); free(table_index);
+                                          ^~~~
+crisp/pooledFET.c:162:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<variant->samples;i++) free(newtable[i]); free(newtable);
+  ^~~
+crisp/pooledFET.c:162:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<variant->samples;i++) free(newtable[i]); free(newtable);
+                                                      ^~~~
+In file included from crisp/newcrispcaller.c:28:0:
+crisp/poolstats.c: In function ‘calculate_pool_statistics’:
+crisp/poolstats.c:8:55: warning: unused variable ‘i’ [-Wunused-variable]
+  int spools =0; int variantpools =0; int a=0; int r=0,i=0; int varpool =0; int uniquess =0; int middle = 0;
+                                                       ^
+crisp/poolstats.c:8:51: warning: unused variable ‘r’ [-Wunused-variable]
+  int spools =0; int variantpools =0; int a=0; int r=0,i=0; int varpool =0; int uniquess =0; int middle = 0;
+                                                   ^
+crisp/poolstats.c:7:9: warning: unused variable ‘p’ [-Wunused-variable]
+  double p=0; double pvstrand[variant->samples]; double pvallow[4] = {0.0,0.0,0.0,0.0};
+         ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘call_genotypes’:
+crisp/oldcrispmethod.c:17:20: warning: unused variable ‘Er’ [-Wunused-variable]
+  double Ef =0.001, Er=0.001;
+                    ^~
+crisp/oldcrispmethod.c:14:9: warning: variable ‘sum’ set but not used [-Wunused-but-set-variable]
+  double sum =0;
+         ^~~
+crisp/oldcrispmethod.c:9:32: warning: unused variable ‘r’ [-Wunused-variable]
+  int variants =0; int a=0; int r=0,i=0;
+                                ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘pooled_variantcaller’:
+crisp/oldcrispmethod.c:192:4: warning: this ‘else’ clause does not guard... [-Wmisleading-indentation]
+    else variant->alleles[variant->varalleles] = allele1; variant->nvariants[variant->varalleles] = variants;
+    ^~~~
+crisp/oldcrispmethod.c:192:58: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘else’
+    else variant->alleles[variant->varalleles] = allele1; variant->nvariants[variant->varalleles] = variants;
+                                                          ^~~~~~~
+crisp/oldcrispmethod.c:157:25: warning: unused variable ‘pvaluelog’ [-Wunused-variable]
+  int variants=0; double pvaluelog = variant->ctpval[variant->varalleles];
+                         ^~~~~~~~~
+crisp/oldcrispmethod.c:134:33: warning: unused variable ‘potentialvar’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                                 ^~~~~~~~~~~~
+crisp/oldcrispmethod.c:134:24: warning: unused variable ‘sample’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                        ^~~~~~
+crisp/oldcrispmethod.c:134:19: warning: unused variable ‘pv’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+                   ^~
+crisp/oldcrispmethod.c:134:14: warning: unused variable ‘al’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+              ^~
+crisp/oldcrispmethod.c:134:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,al=0,pv=0,sample=0,potentialvar=0;
+          ^
+crisp/newcrispcaller.c: In function ‘evaluate_variant’:
+crisp/newcrispcaller.c:113:25: warning: suggest parentheses around comparison in operand of ‘&’ [-Wparentheses]
+    else if (FAST_FILTER ==1 & variant->ctpval[variant->varalleles] >= -3 && variant->ploidy[0] > 2 && hplength >= 8 && (p[0]/K) <= 0.1) return 0;
+             ~~~~~~~~~~~~^~~
+crisp/newcrispcaller.c:40:45: warning: unused variable ‘N’ [-Wunused-variable]
+  double p1=0,p2=0,ep; double C1=0,C2=0,C3=0,N=0;
+                                             ^
+crisp/newcrispcaller.c:40:19: warning: unused variable ‘ep’ [-Wunused-variable]
+  double p1=0,p2=0,ep; double C1=0,C2=0,C3=0,N=0;
+                   ^~
+crisp/newcrispcaller.c: In function ‘output_allele_counts’:
+crisp/newcrispcaller.c:137:87: warning: unused variable ‘allele4’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                                                                       ^~~~~~~
+crisp/newcrispcaller.c:137:63: warning: unused variable ‘allele3’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                                               ^~~~~~~
+crisp/newcrispcaller.c:137:39: warning: unused variable ‘allele2’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+                                       ^~~~~~~
+crisp/newcrispcaller.c:137:15: warning: unused variable ‘allele1’ [-Wunused-variable]
+  int allele=0,allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=maxvec[3].al;
+               ^~~~~~~
+crisp/newcrispcaller.c: In function ‘newCRISPcaller’:
+crisp/newcrispcaller.c:184:88: warning: unused variable ‘allele4’ [-Wunused-variable]
+  int allele=0, allele1 = maxvec[0].al, allele2 = maxvec[1].al, allele3 = maxvec[2].al, allele4=-1;
+                                                                                        ^~~~~~~
+crisp/newcrispcaller.c:183:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,al=0,potentialvar=0,is_variant =0,variantpools=0;
+          ^
+In file included from crisp/newcrispcaller.c:27:0:
+crisp/pooledFET.c: In function ‘chi2pvalue_variant’:
+crisp/pooledFET.c:259:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+In file included from crisp/newcrispcaller.c:29:0:
+crisp/oldcrispmethod.c: In function ‘calculate_chernoff_stats’:
+crisp/oldcrispmethod.c:217:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -Isamtools -c parsebam/bamread.c -o include/bamread.o
+In file included from parsebam/bamread.c:6:0:
+parsebam/../indels/left_align_indels.c: In function ‘left_align_indels’:
+parsebam/../indels/left_align_indels.c:8:10: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,j=0,op=0,l=0,l1=0,l2=0,j1=0,j2=0,op_prev = 0,l_prev =0;
+          ^
+parsebam/bamread.c: In function ‘parse_cigar’:
+parsebam/bamread.c:12:34: warning: unused variable ‘j’ [-Wunused-variable]
+  int i=0,t=0, l1=0,l2=0; int l=0,j=0;
+                                  ^
+parsebam/bamread.c: In function ‘get_read_bamfile’:
+parsebam/bamread.c:111:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<c->l_qname;i++) read->readid[i] = b->data[i]; read->readid[i]= '\0';
+  ^~~
+parsebam/bamread.c:111:59: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<c->l_qname;i++) read->readid[i] = b->data[i]; read->readid[i]= '\0';
+                                                           ^~~~
+parsebam/bamread.c:123:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<b->core.l_qseq;i++) read->sequence[i] = bam_nt16_rev_table[bam1_seqi(sequence,i)]; read->sequence[i] = '\0';
+  ^~~
+parsebam/bamread.c:123:96: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<b->core.l_qseq;i++) read->sequence[i] = bam_nt16_rev_table[bam1_seqi(sequence,i)]; read->sequence[i] = '\0';
+                                                                                                ^~~~
+parsebam/bamread.c:124:2: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+  for (i=0;i<b->core.l_qseq;i++) read->quality[i] = (char)(quality[i]+33); read->quality[i] = '\0';
+  ^~~
+parsebam/bamread.c:124:75: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  for (i=0;i<b->core.l_qseq;i++) read->quality[i] = (char)(quality[i]+33); read->quality[i] = '\0';
+                                                                           ^~~~
+In file included from parsebam/bamread.c:6:0:
+parsebam/../indels/left_align_indels.c: In function ‘left_align_indels’:
+parsebam/../indels/left_align_indels.c:55:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+gcc -Wall -D_GNU_SOURCE -DPICALL=3 -Iparsebam -Isamtools -g -O2 include/readfasta.o include/variant.o include/allelecounts.o include/bamsreader.o include/newcrispcaller.o include/chisquare.o include/contables.o include/bamread.o -lm readmultiplebams.c -o bin/CRISP.binary -Lsamtools -lbam -lz
+In file included from readmultiplebams.c:11:0:
+indels/generate_candidate_indels.c: In function ‘extract_indel_reads’:
+indels/generate_candidate_indels.c:143:17: warning: unused variable ‘j’ [-Wunused-variable]
+         int i=0,j=0,op=0,l=0,flag=0, l1=0,l2=0;
+                 ^
+In file included from readmultiplebams.c:12:0:
+indels/realignment.c: In function ‘realign_read’:
+indels/realignment.c:415:87: warning: unused variable ‘ss’ [-Wunused-variable]
+  int alignments =0; int rlflag =0; int best = -1; int bestscore[2] = {-100,100};  int ss=0;
+                                                                                       ^~
+In file included from readmultiplebams.c:56:0:
+optionparser.c: In function ‘parse_bamfilenames’:
+optionparser.c:158:3: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   for (k=s;k<j;k++) options->bamfilelist[i][k-s] = buffer[k]; options->bamfilelist[i][k-s] ='\0';
+   ^~~
+optionparser.c:158:63: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   for (k=s;k<j;k++) options->bamfilelist[i][k-s] = buffer[k]; options->bamfilelist[i][k-s] ='\0';
+                                                               ^~~~~~~
+optionparser.c:162:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[j] == ' ' || buffer[j] == '\t') j++; s = j; // empty spaces
+   ^~~~~
+optionparser.c:162:54: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[j] == ' ' || buffer[j] == '\t') j++; s = j; // empty spaces
+                                                      ^
+optionparser.c:181:3: warning: this ‘while’ clause does not guard... [-Wmisleading-indentation]
+   while (buffer[j]  != '\t' && buffer[j] != '\n' && buffer[j] !=' ') j++; e = j;
+   ^~~~~
+optionparser.c:181:75: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘while’
+   while (buffer[j]  != '\t' && buffer[j] != '\n' && buffer[j] !=' ') j++; e = j;
+                                                                           ^
+optionparser.c:183:3: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+   for (k=s;k<e;k++) options->sampleids[i][k-s] = buffer[k]; options->sampleids[i][k-s] ='\0';
+   ^~~
+optionparser.c:183:61: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+   for (k=s;k<e;k++) options->sampleids[i][k-s] = buffer[k]; options->sampleids[i][k-s] ='\0';
+                                                             ^~~~~~~
+In file included from readmultiplebams.c:61:0:
+variantcalls.c: In function ‘callvariants’:
+variantcalls.c:137:6: warning: unused variable ‘i’ [-Wunused-variable]
+  int i=0, k=0,reads=0;
+      ^
+readmultiplebams.c: In function ‘multisampleVC’:
+readmultiplebams.c:133:6: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+      if (INDEL_REALIGNMENT >=1) clean_indel_lists(bamfiles_data,bamfiles,-1); current_position = 0;
+      ^~
+readmultiplebams.c:133:79: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+      if (INDEL_REALIGNMENT >=1) clean_indel_lists(bamfiles_data,bamfiles,-1); current_position = 0;
+                                                                               ^~~~~~~~~~~~~~~~
+readmultiplebams.c:134:6: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]
+      for(j=0;j<bamfiles;j++) bamfiles_data[j].last=NULL; last =0;
+      ^~~
+readmultiplebams.c:134:58: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+      for(j=0;j<bamfiles;j++) bamfiles_data[j].last=NULL; last =0;
+                                                          ^~~~
+readmultiplebams.c: In function ‘main’:
+readmultiplebams.c:258:2: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  if (read_fastaheader(options->fastafile,&reflist) == -1)  return -1;  strcpy(reflist.fastafile,options->fastafile);
+  ^~
+readmultiplebams.c:258:72: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  if (read_fastaheader(options->fastafile,&reflist) == -1)  return -1;  strcpy(reflist.fastafile,options->fastafile);
+                                                                        ^~~~~~
+In file included from readmultiplebams.c:56:0:
+optionparser.c: In function ‘parse_bamfilenames’:
+optionparser.c:154:3: warning: ignoring return value of ‘fgets’, declared with attribute warn_unused_result [-Wunused-result]
+   fgets(buffer,4096,fp);
+   ^~~~~~~~~~~~~~~~~~~~~
+optionparser.c: In function ‘optparser’:
+optionparser.c:274:4: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+    fscanf(fp,""%d\n"",&options->phenotypes[i]);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from readmultiplebams.c:61:0:
+variantcalls.c: In function ‘update_error_table’:
+variantcalls.c:41:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+make[1]: Leaving directory '/home/administrator/Documents/Software/crisp/crisp'
+#make -C . crisp
+#make -C . indel
+",tvdwbar,https://github.com/vibansal/crisp/issues/25
+I_kwDOAKeELs5Cj9Gm,CRISP calling variants outside of the specified bed file,CLOSED,2022-01-27T20:46:37Z,2022-04-25T23:31:04Z,2022-04-25T23:31:03Z,"Hi,
+I'm attempting to run CRISP on all chromosomes separately before concatenating into a final VCF file but it doesn't seem to be skipping over the regions not contained in the bed file.
+
+For example, 2.bed contains this:
+
+```
+LG2	0	16089512
+```
+
+yet the crisp_2.vcf contains calls from outside of this region:
+
+```
+LG1	3536	.	G	A	3797	LowMQ20;LowDepth	NP=96;DP=86,81,110;VT=SNV;CT=-5.4;VP=20;VF=EMpass;AC=4388;AF=0.75512;EMst
+```
+
+Here is the top of the logfile:
+
+```
+`CRISP options: QVoffset 33 min_base_quality 20 min_mapping_score 20 max_permutations 20000 poolsize 60 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.
+0
+
+reading fasta index file apis_c_l_genome.fa.fai ... fasta file apis_c_l_genome.fa has 177 chromos
+omes/contigs
+
+read 1 intervals from bedfile 2.bed
+
+processing 96 bamfiles: A_100.bam ..... /A_D3.bam 
+
+poolsize for each sample is 60 
+finished reading bam file indexes 
+reading chromosome LG1 offset 5 # targeted bases on chrom is 0/27754200 
+##CRISP_command CRISP.binary --bams full_bam_list.txt --ref apis_c_l_genome.fa --poolsize 60 --bed 2.bed --VCF crisp_2.vcf --qvoffset 33 --mbq 20 --mmq 20 --minc 5
+```
+`
+
+Here is the SLURM script 
+
+```
+#!/bin/sh 
+#SBATCH --job-name=""CRISP""
+#SBATCH --output=CRISP%A_%a.log
+#SBATCH --array=1-17
+
+CRISP.binary \
+--bams full_bam_list.txt \
+--ref c_l_genome/apis_c_l_genome.fa \
+--poolsize 60 \
+--bed ""$SLURM_ARRAY_TASK_ID"".bed \
+--VCF crisp_""$SLURM_ARRAY_TASK_ID"".vcf \
+--qvoffset 33 \
+--mbq 20 \
+--mmq 20 \
+--minc 5 
+```
+
+",SSmith-NUIG,https://github.com/vibansal/crisp/issues/26
+I_kwDOAKeELs5HvXZJ,Issues with --bed option,CLOSED,2022-04-13T17:40:20Z,2022-11-04T17:34:35Z,2022-11-04T17:34:35Z,"Hi,
+
+I'm trying to run CRISP for a subset of known polymorphic sites using the --bed option, and while the programme seems to accept all input files without issues, for some reason it's not being able to call any variant at all.
+
+These are the first four lines of the tab-separated bed-file:
+`2L      73868   73869`
+`2L      86449   86450`
+`2L      462386  462387`
+`2L      466451  466452`
+
+And these are the first few lines of the .log:
+*******************************************
+CRISP options: QVoffset 33 min_base_quality 13 min_mapping_score 20 max_permutations 20000 poolsize 160 CT-pvalue-thresh -3.5 QV-pvalue-thresh -5.0
+
+reading fasta index file /share/rdata/ramon.pouso/reference/indexed_reference/dmel-all-chromosome-r6.14.fasta.fai ... fasta file /share/rdata/ramon.pouso/reference/indexed_reference/dmel-all-chromosome-r6.14.fasta has 1870 chromosomes/contigs
+
+read 8040 intervals from bedfile /share/rdata/ramon.pouso/counts/sites_missing_from_gen140_fixed_in_gen140.autosomes.bed
+
+processing 44 bamfiles: /share/rdata/ramon.pouso/POOLS/gen0-40/gen0-40/4separate/multi_autosomic/BT20_new_gen20_bwa_iso_rmdup_mq30_rg_multirealigned_autosomic.bam ..... /share/rdata/ramon.pouso/POOLS/gen140/gen140/5processed/autosomic_isolated/sample19_gen140_bwa_iso_rmdup_mq30_rg_multirealigned_autosomic.bam 
+
+poolsize for each sample is 160 
+finished reading bam file indexes 
+reading chromosome 2L offset 189 # targeted bases on chrom is 2448/23513712 
+.....processed 1000000 reads QSIZE:7774 2L:39863:39964 variants called 0
+.....processed 2000000 reads QSIZE:7522 2L:77681:77782 variants called 0
+.....processed 3000000 reads QSIZE:7067 2L:110616:110717 variants called 0
+.....processed 4000000 reads QSIZE:6988 2L:144446:144547 variants called 0
+.....processed 5000000 reads QSIZE:7783 2L:178149:178250 variants called 0
+.....processed 6000000 reads QSIZE:6303 2L:214691:214792 variants called 0
+.....processed 7000000 reads QSIZE:7322 2L:249779:249880 variants called 0
+.....processed 8000000 reads QSIZE:6634 2L:285603:285704 variants called 0
+.....processed 9000000 reads QSIZE:5725 2L:320753:320854 variants called 0
+.....processed 10000000 reads QSIZE:7135 2L:368829:368930 variants called 0
+*******************************************
+
+Why is it not working? The target sites have been confirmed to be SNPs using CRISP in a previous whole-genome run with fewer samples. 
+
+I've tried several things (such as removing the optional columns from the .bed file, using larger intervals, I've even added .bai files for all .bam files just in case), but nothing seems to help.
+
+Thank you very much in advance.
+
+Best,
+
+Daniel.",Arynio,https://github.com/vibansal/crisp/issues/27
+I_kwDOAKeELs5NpiCD,installation problems,OPEN,2022-07-12T23:55:26Z,2022-07-12T23:55:26Z,,"Hi, I'm naive to the programming and having problems installing crips. Please help!
+My environment is Macbook M1. Xcode installed. samtools installed.
+##
+(base) thyeh@THs-MacBook-Pro crisp-master % make all   
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -C samtools all
+make[2]: Nothing to be done for `lib'.
+make[2]: Nothing to be done for `lib'.
+make[2]: Nothing to be done for `lib'.
+gcc -g -Wall -O2  -o samtools bam_tview.o bam_plcmd.o sam_view.o bam_rmdup.o bam_rmdupse.o bam_mate.o bam_stat.o bam_color.o bamtk.o kaln.o bam2bcf.o bam2bcf_indel.o errmod.o sample.o cut_target.o phase.o bam2depth.o -Lbcftools  libbam.a -lbcf -lcurses  -lm -lz
+ld: can't write output file: samtools for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [samtools] Error 1
+make: *** [all] Error 2
+##
+
+Thank you in advance!",THYeh44,https://github.com/vibansal/crisp/issues/28
+I_kwDOAKeELs5Q6or0,VCF format showing as version 4.0,CLOSED,2022-08-31T16:01:01Z,2024-10-09T23:45:19Z,2024-10-09T23:45:19Z,"Hi,
+After supplying CRISP with a bamfile list which contains PS= the output VCF says that it is VCF format 4.0
+This has prevented picard update sequence dictionary from running correctly as it requires a GT field in versions prior to 4.1.
+The fix was editing the VCF format line in the crisp VCFs to be  ##fileformat=VCFv4.2
+
+Just thought I'd flag that for you",SSmith-NUIG,https://github.com/vibansal/crisp/issues/29
+I_kwDOAKeELs5Q-Q_u,Feature request: AD field in VCF output,OPEN,2022-09-01T09:02:20Z,2022-09-01T16:59:14Z,,"Hi,
+The VCF output currently has ADr and ADf, a combined AD field would be very useful to potentially have CRISP VCF be compatible with the poolfstat package in R.
+
+Edit: I've written a python script to add an AD field and related counts to the VCF and it is now being accepted by poolfstat.
+If the results I obtain are the same as when I use a mpileup then this could make CRISP a really useful tool for these kinds of pool-seq studies as the mpileup file is 2.5T in size whereas a crisp VCF is 14G in size.",SSmith-NUIG,https://github.com/vibansal/crisp/issues/30
+I_kwDOAKeELs5RZgu8,Is it possible to use CRISP to working with low coverage WGS data?,CLOSED,2022-09-08T06:55:27Z,2022-11-04T17:30:33Z,2022-11-04T17:30:33Z,"Hi, 
+I'm trying to call indel from many low coverage WGS data from many individuals. I guess I can improve indel calling sensitivity if I treat them as pool-seq. Is it fine to use CRISP to work with such data? If yes, how should I specify parameter '--bam'? I guessed --bam received a bam file contains pooled reads, so I should merge all my individual bams into one bam?",raksasa,https://github.com/vibansal/crisp/issues/31
+I_kwDOAKeELs5VBM4j,Linker error on Linux,OPEN,2022-10-27T23:30:25Z,2024-10-09T23:45:40Z,,"GCC 12.2.0 is unable to link objects due to multiple definitions of symbols.
+
+[build.log](https://github.com/vibansal/crisp/files/9883678/build.log)
+",mys721tx,https://github.com/vibansal/crisp/issues/33

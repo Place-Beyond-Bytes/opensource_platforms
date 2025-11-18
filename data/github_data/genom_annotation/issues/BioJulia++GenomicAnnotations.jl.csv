@@ -1,0 +1,684 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjcyMzQyOTk=,Error tagging new release,CLOSED,2018-10-05T14:24:40Z,2018-10-05T14:34:48Z,2018-10-05T14:34:48Z,"The REQUIRE file could not be found.
+cc: @kdyrhage",attobot,https://github.com/BioJulia/GenomicAnnotations.jl/issues/1
+MDU6SXNzdWUzNjcyMzYwMjc=,Error tagging new release,CLOSED,2018-10-05T14:28:50Z,2018-10-05T14:34:48Z,2018-10-05T14:34:48Z,"The REQUIRE file could not be found.
+cc: @kdyrhage",attobot,https://github.com/BioJulia/GenomicAnnotations.jl/issues/2
+MDU6SXNzdWU3NDk1Nzg1NDg=,TagBot trigger issue,CLOSED,2020-11-24T10:26:36Z,2024-11-22T18:49:37Z,2020-11-24T10:26:36Z,"This issue is used to trigger TagBot; feel free to unsubscribe.
+
+If you haven't already, you should update your `TagBot.yml` to include issue comment triggers.
+Please see [this post on Discourse](https://discourse.julialang.org/t/ann-required-updates-to-tagbot-yml/49249) for instructions and more details.
+
+If you'd like for me to do this for you, comment `TagBot fix` on this issue.
+I'll open a PR within a few hours, please be patient!
+",JuliaTagBot,https://github.com/BioJulia/GenomicAnnotations.jl/issues/5
+MDU6SXNzdWU4NDk2MjIzODA=,Error when loading genebank file from NCBI,CLOSED,2021-04-03T09:46:31Z,2021-04-06T11:19:18Z,2021-04-06T09:44:52Z,"Hello,
+I have downloaded a genebank file from NCBI (https://www.ncbi.nlm.nih.gov/nuccore/NC_022898.1?report=genbank then send to -> file -> GeneBank (full))
+
+I then try to open the file using 
+```julia
+gbff = readgbk(""sequence.gb"")
+```
+but get an error:
+```
+ERROR: ArgumentError: invalid index: nothing of type Nothing
+Stacktrace:
+ [1] to_index(i::Nothing)
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/indices.jl:273
+
+ [2] to_index(A::Array{SubString{String},1}, i::Nothing)
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/indices.jl:250
+
+ [3] to_indices
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/indices.jl:301 [inlined]
+
+ [4] to_indices
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/indices.jl:298 [inlined]
+
+ [5] getindex
+   @ ~/julia-1.3.1/bin/../share/julia/base/abstractarray.jl:981 [inlined]
+
+ [6] parseheader(header::String)
+   @ GenomicAnnotations.GenBank ~/.julia/packages/GenomicAnnotations/gigUo/src/GenBank/reader.jl:58
+
+ [7] parsechromosome!(stream::TranscodingStreams.TranscodingStream{TranscodingStreams.Noop,IOStream}, record::GenomicAnnotations.Record{Gene})
+   @ GenomicAnnotations.GenBank ~/.julia/packages/GenomicAnnotations/gigUo/src/GenBank/reader.jl:227
+
+ [8] tryread!
+   @ GenomicAnnotations.GenBank ~/.julia/packages/GenomicAnnotations/gigUo/src/GenBank/reader.jl:49 [inlined]
+
+ [9] iterate
+   @ GenomicAnnotations.GenBank ~/.julia/packages/GenomicAnnotations/gigUo/src/GenBank/reader.jl:42 [inlined]
+
+[10] _collect(cont::UnitRange{Int64}, itr::GenomicAnnotations.GenBank.Reader{TranscodingStreams.TranscodingStream{TranscodingStreams.Noop,IOStream}}, ::Base.HasEltype, isz::Base.SizeUnknown)
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/array.jl:572
+
+[11] collect
+   @ Base ~/julia-1.3.1/bin/../share/julia/base/array.jl:560 [inlined]
+
+[12] readgbk(input::String)
+   @ GenomicAnnotations ~/.julia/packages/GenomicAnnotations/gigUo/src/utils.jl:65
+
+[13] top-level scope
+   @ REPL[15]:1
+```
+
+It should get noted that if I download the GeneBank file instead (no ""(full)""), then I can load it (but there's not much actual content in it).",TorkelE,https://github.com/BioJulia/GenomicAnnotations.jl/issues/7
+I_kwDOB7QJcs5Ae-W-,GzipDecompressorStream not defined,CLOSED,2021-12-16T07:31:34Z,2021-12-17T00:23:27Z,2021-12-17T00:23:27Z,"Hi, I'm trying to open a `.gbff.gz` file and I'm getting the following error:
+```Julia
+julia> readgbk(joinpath(DATA_DIR, ""genome.gbff.gz""))
+ERROR: UndefVarError: GzipDecompressorStream not defined
+Stacktrace:
+ [1] open(#unused#::Type{GenomicAnnotations.GenBank.Reader}, input::String)
+   @ GenomicAnnotations.GenBank ~/.julia/packages/GenomicAnnotations/aGEUx/src/GenBank/reader.jl:31
+ [2] readgbk(input::String)
+   @ GenomicAnnotations ~/.julia/packages/GenomicAnnotations/aGEUx/src/utils.jl:65
+ [3] top-level scope
+   @ REPL[5]:1
+```
+Any help would be much appreciated. Thanks!",jowch,https://github.com/BioJulia/GenomicAnnotations.jl/issues/8
+I_kwDOB7QJcs5S0YMJ,Can GenomicAnnotations.jl deal with multi-exon genes?,CLOSED,2022-09-28T14:25:48Z,2024-06-14T13:34:16Z,2024-06-14T13:34:16Z,"Hi, I'm trying converting a genbank file to a gff with the package, however it fails. For example, one gene is as below:
+Input: Screenshot 1;  https://www.ncbi.nlm.nih.gov/nuccore/7525012
+![Screen Shot 2022-09-28 at 10 30 09 pm](https://user-images.githubusercontent.com/22763795/192807573-fed20b22-3e61-4b28-8008-a5a0356703c1.png)
+
+Code: Screenshot 2
+![Screen Shot 2022-09-28 at 10 36 05 pm](https://user-images.githubusercontent.com/22763795/192807808-3a581704-2804-4437-912f-a6306ff96e9e.png)
+
+Output: Screenshot 3
+<img width=""1345"" alt=""Screen Shot 2022-09-28 at 10 37 43 pm"" src=""https://user-images.githubusercontent.com/22763795/192808233-2cf2d089-4fc4-45a6-8644-ded221a8bd73.png"">
+
+As shown, the CDS in the gff output doesn't have an intron between the two exons. CDS sequences extracted based on these kinds of coordinates must be wrong. Thank you!",Xiao-Zhong,https://github.com/BioJulia/GenomicAnnotations.jl/issues/9
+I_kwDOB7QJcs5r6nXN,Having location field in genes,CLOSED,2023-07-18T19:00:39Z,2024-01-03T09:29:28Z,2023-09-01T08:03:08Z,"Hi all
+
+This package is so great! I was wondering if there is any way to fetch the `location` out of the `gbk.genes` field. Currently we can get all the fields that start with the `/` in the record:
+
+```
+gbk.genes[end]
+
+     CDS             47738..47944
+                     /db_xref=""GeneID:2703534""
+                     /locus_tag=""lambdap79""
+                     /codon_start=1
+                     /transl_table=11
+                     /product=""hypothetical protein""
+                     /protein_id=""NP_597782.1""
+                     /translation=""MNKEQSADDPSVDLIRVKNMLNSTISMSYPDVVIACIEHKVSLE
+                     AFRAIEAALVKHDNNMKDYSLVVD""
+                     /note=""Predicted by GeneMark""
+```
+
+I want to be able to get the location qualifier `47738..47944` encoded later as a `UnitRange{Int64}` --> `47738:47944`. Is this a feature we can have in `GenomicAnnotations` (or already have)? 
+
+Best.",camilogarciabotero,https://github.com/BioJulia/GenomicAnnotations.jl/issues/11
+I_kwDOB7QJcs5u05-t,[Feature Request] Support for GTF format!,CLOSED,2023-08-21T13:21:13Z,2024-11-22T07:27:12Z,2024-11-22T07:27:12Z,"Thank you for your hard work on this package! 
+However, I have noticed that the current version does not support the basic format of GTF, while it already supports GFF3. Would it be possible to add support for GTF in the future? 
+Thank you!",yang-dongxu,https://github.com/BioJulia/GenomicAnnotations.jl/issues/12
+I_kwDOB7QJcs5xYUbY,Trouble loading `.gb` file downloaded via benchling,CLOSED,2023-09-19T04:51:19Z,2023-09-20T19:30:04Z,2023-09-20T08:25:29Z,"I'm trying to parse a `.gb` file that I exported via Benchling (it shouldn't make a difference), but for some reason `readgbk` just keeps running without ever ending. BioPython parses the file, so I assume the file is encoded correctly. I'm attaching the file below. Thanks in advance! Really appreciate the package
+
+```
+LOCUS       pAC03_(pQJ6_w/_mOrange 10073 bp ds-DNA     circular     17-SEP-2023
+DEFINITION  .
+FEATURES             Location/Qualifiers
+     primer          596..615
+                     /label=""oLAC01""
+                     /note=""sequence: GATTCATTAATGCAGCTGGC""
+                     /ApEinfo_revcolor=""#d59687""
+                     /ApEinfo_fwdcolor=""#d59687""
+     primer          621..642
+                     /label=""oQJ70""
+                     /note=""sequence: CGCGTAGCCTGTCAGAAATTGA""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     primer          621..642
+                     /label=""oQJ70""
+                     /note=""sequence: CGCGTAGCCTGTCAGAAATTGA""
+                     /ApEinfo_revcolor=""#f7977a""
+                     /ApEinfo_fwdcolor=""#f7977a""
+     misc_feature    621..1698
+                     /label=""lacZ upstream""
+                     /ApEinfo_revcolor=""#ffef86""
+                     /ApEinfo_fwdcolor=""#ffef86""
+     3'UTR           672..690
+                     /label=""KS1469""
+                     /ApEinfo_revcolor=""#b1ff67""
+                     /ApEinfo_fwdcolor=""#b1ff67""
+     primer          801..819
+                     /label=""oLAC22""
+                     /note=""sequence: AAGTAGCAGTGAAAGCCAA""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     3'UTR           824..849
+                     /label=""KS584""
+                     /ApEinfo_revcolor=""#b1ff67""
+                     /ApEinfo_fwdcolor=""#b1ff67""
+     misc_feature    824..849
+                     /label=""KS584\""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    923..942
+                     /label=""KS281\""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     primer          951..971
+                     /label=""oLAC19""
+                     /note=""sequence: AACACATAACCCTGCAGTAAG""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     primer          1033..1053
+                     /label=""oLAC09""
+                     /note=""sequence: AGTAGCTTCAAGCCATGAATC""
+                     /ApEinfo_revcolor=""#d59687""
+                     /ApEinfo_fwdcolor=""#d59687""
+     primer          1196..1213
+                     /label=""oLAC23""
+                     /note=""sequence: CAACTTGGCTAGAACCGG""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     primer          1479..1498
+                     /label=""oQY48""
+                     /note=""sequence: CACCATTATGATGGCAATCG""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     misc_feature    1573..1595
+                     /label=""p1""
+                     /ApEinfo_revcolor=""#b1ff67""
+                     /ApEinfo_fwdcolor=""#b1ff67""
+     misc_feature    complement(1678..1698)
+                     /label=""pr""
+                     /ApEinfo_revcolor=""#84b0dc""
+                     /ApEinfo_fwdcolor=""#84b0dc""
+     misc_feature    1699..1733
+                     /label=""BBa_J23119""
+                     /ApEinfo_revcolor=""#75c6a9""
+                     /ApEinfo_fwdcolor=""#75c6a9""
+     misc_feature    1734..1767
+                     /label=""FRT""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     misc_feature    1768..1787
+                     /label=""pf""
+                     /ApEinfo_revcolor=""#f8d3a9""
+                     /ApEinfo_fwdcolor=""#f8d3a9""
+     misc_feature    1785..1819
+                     /label=""kanR promoter""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     primer          1815..1840
+                     /label=""oLAC30""
+                     /note=""sequence: TTTAAATACTGTAGAAAAGAGGAAGG""
+                     /ApEinfo_revcolor=""#f58a5e""
+                     /ApEinfo_fwdcolor=""#f58a5e""
+     misc_feature    1834..1839
+                     /label=""RBS""
+                     /ApEinfo_revcolor=""#c6c9d1""
+                     /ApEinfo_fwdcolor=""#c6c9d1""
+     CDS             1850..2644
+                     /label=""KanR""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    2626..2648
+                     /label=""KS445\""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     misc_feature    complement(2627..2644)
+                     /label=""ACM205\""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    2657..2678
+                     /label=""KS518\""
+                     /ApEinfo_revcolor=""#b1ff67""
+                     /ApEinfo_fwdcolor=""#b1ff67""
+     misc_feature    complement(2657..2678)
+                     /label=""KS464\""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     3'UTR           2666..2717
+                     /label=""terminator""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    2676..2695
+                     /label=""ACM300\""
+                     /ApEinfo_revcolor=""#c6c9d1""
+                     /ApEinfo_fwdcolor=""#c6c9d1""
+     misc_feature    complement(2720..2739)
+                     /label=""KS325\""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     misc_feature    2720..2759
+                     /label=""KS635\""
+                     /ApEinfo_revcolor=""#d6b295""
+                     /ApEinfo_fwdcolor=""#d6b295""
+     misc_feature    complement(2720..2759)
+                     /label=""KS661\""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     primer          2729..2747
+                     /label=""oLAC32""
+                     /note=""sequence: CTCTCCTGAGTCCCACAAT""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     primer          complement(2729..2747)
+                     /label=""oLAC31""
+                     /note=""sequence: ATTGTGGGACTCAGGAGAG""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     misc_feature    2740..2759
+                     /label=""KS644\""
+                     /ApEinfo_revcolor=""#75c6a9""
+                     /ApEinfo_fwdcolor=""#75c6a9""
+     misc_feature    2750..2760
+                     /label=""ACM325\""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    complement(2750..2760)
+                     /label=""ACM324\""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     primer          2929..2948
+                     /label=""oLAC04""
+                     /note=""sequence: CACTCCCGTTCTGGATAATG""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     primer          complement(2929..2948)
+                     /label=""oLAC33""
+                     /note=""sequence: CATTATCCAGAACGGGAGTG""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     misc_feature    3000..3005
+                     /label=""-35 box""
+                     /ApEinfo_revcolor=""#75c6a9""
+                     /ApEinfo_fwdcolor=""#75c6a9""
+     promoter        3000..3028
+                     /label=""tac promoter""
+                     /ApEinfo_revcolor=""#75c6a9""
+                     /ApEinfo_fwdcolor=""#75c6a9""
+     misc_feature    3006..3021
+                     /label=""Ptac""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     misc_feature    3022..3028
+                     /label=""-10 box""
+                     /ApEinfo_revcolor=""#c6c9d1""
+                     /ApEinfo_fwdcolor=""#c6c9d1""
+     misc_binding    3032..3054
+                     /label=""LacO""
+                     /ApEinfo_revcolor=""#84b0dc""
+                     /ApEinfo_fwdcolor=""#84b0dc""
+     misc_feature    3094..3127
+                     /label=""FRT""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     misc_feature    3170..3175
+                     /label=""RBS?""
+                     /ApEinfo_revcolor=""#f8d3a9""
+                     /ApEinfo_fwdcolor=""#f8d3a9""
+     misc_feature    3181..3891
+                     /label=""mTFP""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     primer          3805..3824
+                     /label=""oLAC05""
+                     /note=""sequence: CACGACAAGGACTACAACAA""
+                     /ApEinfo_revcolor=""#c6c9d1""
+                     /ApEinfo_fwdcolor=""#c6c9d1""
+     misc_feature    3911..3927
+                     /label=""Hairpin - terminator""
+                     /ApEinfo_revcolor=""#f8d3a9""
+                     /ApEinfo_fwdcolor=""#f8d3a9""
+     misc_feature    3963..3981
+                     /label=""Hairpin (less likely) - terminator""
+                     /ApEinfo_revcolor=""#d6b295""
+                     /ApEinfo_fwdcolor=""#d6b295""
+     misc_feature    4068..4196
+                     /label=""BBa_B0015""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     misc_feature    4224..4257
+                     /label=""FRT""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     misc_feature    complement(4263..4280)
+                     /label=""pr""
+                     /ApEinfo_revcolor=""#b1ff67""
+                     /ApEinfo_fwdcolor=""#b1ff67""
+     primer          4277..4298
+                     /label=""oLAC18""
+                     /note=""sequence: AGGAcaagagacaggatactag""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    4281..4304
+                     /label=""pf""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    4302..4307
+                     /label=""RBS""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     CDS             4313..5023
+                     /label=""mOrange2""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+                     /note=""product: photostable monomeric orange derivative of DsRed fluorescent protein (Shaner et al., 2008) note: mammalian codon-optimized translation: MVSKGEENNMAIIKEFMRFKVRMEGSVNGHEFEIEGEGEGRPYEGFQTAKLKVTKGGPLPFAWDILSPHFTYGSKAYVKHPADIPDYFKLSFPEGFKWERVMNYEDGGVVTVTQDSSLQDGEFIYKVKLRGTNFPSDGPVMQKKTMGWEASSERMYPEDGALKGKIKMRLKLKDGGHYTSEVKTTYKAKKPVQLPGAYIVDIKLDITSHNEDYTIVEQYERAEGRHSTGGMDELYK""
+     primer          4505..4523
+                     /label=""oLAC13""
+                     /note=""sequence: atcctgtcccctcatttca""
+                     /ApEinfo_revcolor=""#84b0dc""
+                     /ApEinfo_fwdcolor=""#84b0dc""
+     primer          4731..4750
+                     /label=""oLAC11""
+                     /note=""sequence: tgatgcagaagaagaccatg""
+                     /ApEinfo_revcolor=""#84b0dc""
+                     /ApEinfo_fwdcolor=""#84b0dc""
+     misc_feature    complement(5011..5037)
+                     /label=""pr""
+                     /ApEinfo_revcolor=""#d59687""
+                     /ApEinfo_fwdcolor=""#d59687""
+     primer          5024..5044
+                     /label=""oLAC26""
+                     /note=""sequence: taattagctgagctCTTCACG""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     misc_feature    5058..5085
+                     /label=""pf""
+                     /ApEinfo_revcolor=""#75c6a9""
+                     /ApEinfo_fwdcolor=""#75c6a9""
+     misc_feature    5065..5070
+                     /label=""RBS""
+                     /ApEinfo_revcolor=""#c6c9d1""
+                     /ApEinfo_fwdcolor=""#c6c9d1""
+     misc_feature    5070..5075
+                     /label=""RBS""
+                     /ApEinfo_revcolor=""#f8d3a9""
+                     /ApEinfo_fwdcolor=""#f8d3a9""
+     CDS             5081..5875
+                     /label=""KanR""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    5857..5879
+                     /label=""KS445\""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     misc_feature    complement(5858..5875)
+                     /label=""ACM205\""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    complement(5860..5882)
+                     /label=""pr""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     primer          5883..5901
+                     /label=""oLAC24""
+                     /note=""sequence: CAAACTGGGGCACAGATAG""
+                     /ApEinfo_revcolor=""#b4abac""
+                     /ApEinfo_fwdcolor=""#b4abac""
+     misc_feature    5883..5903
+                     /label=""pf""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     primer          complement(5895..5913)
+                     /label=""oLAC28""
+                     /note=""sequence: GGGATGGGTACCCTATCTG""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     misc_feature    5932..6154
+                     /label=""From pJA02""
+                     /ApEinfo_revcolor=""#ffef86""
+                     /ApEinfo_fwdcolor=""#ffef86""
+     misc_feature    5993..5993
+                     /label=""C->T""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    5999..6127
+                     /label=""BBa_B0015""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+     misc_feature    6155..7290
+                     /label=""lacZ downstream""
+                     /ApEinfo_revcolor=""#ff9ccd""
+                     /ApEinfo_fwdcolor=""#ff9ccd""
+     misc_feature    complement(6165..6185)
+                     /label=""p2""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     primer          complement(6265..6282)
+                     /label=""oLAC27""
+                     /note=""sequence: AGTTGGCTCTTGCTTTGG""
+                     /ApEinfo_revcolor=""#d59687""
+                     /ApEinfo_fwdcolor=""#d59687""
+     primer          6293..6312
+                     /label=""oLAC25""
+                     /note=""sequence: TTCTGCCATCAGTTGGATTG""
+                     /ApEinfo_revcolor=""#faac61""
+                     /ApEinfo_fwdcolor=""#faac61""
+     primer          6492..6509
+                     /label=""oQJ39""
+                     /note=""sequence: AGGTTAGTCATCGCCTGT""
+                     /ApEinfo_revcolor=""#85dae9""
+                     /ApEinfo_fwdcolor=""#85dae9""
+     primer          6969..6987
+                     /label=""oLAC16""
+                     /note=""sequence: GGATCAGAAACATCGCTGA""
+                     /ApEinfo_revcolor=""#f58a5e""
+                     /ApEinfo_fwdcolor=""#f58a5e""
+     primer          complement(7270..7290)
+                     /label=""oQJ71""
+                     /note=""sequence: TGTTGAACAAGCGTCATGGCT""
+                     /ApEinfo_revcolor=""#f7977a""
+                     /ApEinfo_fwdcolor=""#f7977a""
+     primer          complement(7270..7290)
+                     /label=""oQJ71""
+                     /note=""sequence: TGTTGAACAAGCGTCATGGCT""
+                     /ApEinfo_revcolor=""#c7b0e3""
+                     /ApEinfo_fwdcolor=""#c7b0e3""
+     misc_feature    7431..8291
+                     /label=""AmpR""
+                     /ApEinfo_revcolor=""#b7e6d7""
+                     /ApEinfo_fwdcolor=""#b7e6d7""
+ORIGIN
+        1 GTTATTTCTT GATGTCTCTG ACCAGACACC CATCAACAGT ATTATTTTCT CCCATGAAGA
+       61 CGGTACGCGA CTGGGCGTGG AGCATCTGGT CGCATTGGGT CACCAGCAAA TCGCGCTGTT
+      121 AGCGGGCCCA TTAAGTTCTG TCTCGGCGCG TCTGCGTCTG GCTGGCTGGC ATAAATATCT
+      181 CACTCGCAAT CAAATTCAGC CGATAGCGGA ACGGGAAGGC GACTGGAGTG CCATGTCCGG
+      241 TTTTCAACAA ACCATGCAAA TGCTGAATGA GGGCATCGTT CCCACTGCGA TGCTGGTTGC
+      301 CAACGATCAG ATGGCGCTGG GCGCAATGCG CGCCATTACC GAGTCCGGGC TGCGCGTTGG
+      361 TGCGGATATC TCGGTAGTGG GATACGACGA TACCGAAGAC AGCTCATGTT ATATCCCGCC
+      421 GTCAACCACC ATCAAACAGG ATTTTCGCCT GCTGGGGCAA ACCAGCGTGG ACCGCTTGCT
+      481 GCAACTCTCT CAGGGCCAGG CGGTGAAGGG CAATCAGCTG TTGCCCGTCT CACTGGTGAA
+      541 AAGAAAAACC ACCCTGGCGC CCAATACGCA AACCGCCTCT CCCCGCGCGT TGGCCGATTC
+      601 ATTAATGCAG CTGGCACGAC CGCGTAGCCT GTCAGAAATT GATCGGTCGA TAGGCTGTCA
+      661 CCTAAGGCAT TTTGCAGCAA GGGAAGAACC ACATGACCGC CACCAAACAC TAAGCTTCCT
+      721 GCTTGGAAGA AATGGCCAAA CAACTCAACC AGCGGTGAGC TTGCAGCCAA GAGCGGCAGC
+      781 CCGAGTAATA AACTTGCAAA AAGTAGCAGT GAAAGCCAAG AGGGGCTGAA CGTGGTTGTC
+      841 GAAAATGACT GTTGTGGTGC CAAGCGGGCT TGGCCAACGA AAGCGGCGAT CAGAAGGACC
+      901 GCAAACTGAG TGATGAGACC GGGAGCTAAC GTAATCGCAA CCGCAGTCAG AACACATAAC
+      961 CCTGCAGTAA GGCGTTGCTG ACAAAAATTG CGATACATGG TTAAACAAGC ATCGGCCACC
+     1021 ACTATGATCG CGAGTAGCTT CAAGCCATGA ATCATTTGTT CAAACAGTGG GGTATCAAGG
+     1081 AGATGGCTGC TTAGCCCCGC GAGCAGCAGC ATGATGAGCA CGGAGGGAAG GGTAAAACCG
+     1141 AGAAACGCTG CCCAAGCGCC AGCCAGACCA CCACGATGAT AACCAATCGC AAAACCAACT
+     1201 TGGCTAGAAC CGGGGCCAGG AAGGAACTGG CTCAGTGCCA CAAATTGTGC ATATTCTTGC
+     1261 TCGCTAACCC AGCGTAATTT CTCAACAAAG GTGTGGCGAA AGTAACCTAT ATGTGCGGCT
+     1321 GGCCCACCAA AACTCACCCA TCCGAGAGCA AAAAAAGTTC TAAAAATCGT TAGCATAATG
+     1381 ATCTGAAGTC ATCCGTAATC AATGGAAGGT CAACATCCGT AGGAGCATAG GTTATGGAGA
+     1441 GTCAAAGCGC AGAACAACTC CGAATGTGTA AAAAATTACA CCATTATGAT GGCAATCGTA
+     1501 TGAATCGATT CAGAAATAGA AAAATTGGGT CAATATCGAC CTCTATTTAA ATTGTGGAAA
+     1561 CGTTTACACA ATTGGTGAGT GGTTCACAGA ATCGGTGTTT GAAAGTTTGT TAGACTTTTT
+     1621 TGCATCTGCA GCATGTCATC ATTCCTATTC AAAGCTGCGA ATCTTATTGA ATGACTTCTT
+     1681 TACTCCTCGG CTTGAGGGtt gacagctagc tcagtcctag gtataatgct agcgaagttc
+     1741 ctattctcta gaaagtatag gaacttcCGA AGCTGGGGAT CCGTTTGATT TTTAATGGAT
+     1801 AATGTGATAT AATCTTTAAA TACTGTAGAA AAGAGGAAGG AAATAATAAA TGGCTAAAAT
+     1861 GAGAATATCA CCGGAATTGA AAAAACTGAT CGAAAAATAC CGCTGCGTAA AAGATACGGA
+     1921 AGGAATGTCT CCTGCTAAGG TATATAAGCT GGTGGGAGAA AATGAAAACC TATATTTAAA
+     1981 AATGACGGAC AGCCGGTATA AAGGGACCAC CTATGATGTG GAACGGGAAA AGGACATGAT
+     2041 GCTATGGCTG GAAGGAAAGC TGCCTGTTCC AAAGGTCCTG CACTTTGAAC GGCATGATGG
+     2101 CTGGAGCAAT CTGCTCATGA GTGAGGCCGA TGGCGTCCTT TGCTCGGAAG AGTATGAAGA
+     2161 TGAACAAAGC CCTGAAAAGA TTATCGAGCT GTATGCGGAG TGCATCAGGC TCTTTCACTC
+     2221 CATCGACATA TCGGATTGTC CCTATACGAA TAGCTTAGAC AGCCGCTTAG CCGAATTGGA
+     2281 TTACTTACTG AATAACGATC TGGCCGATGT GGATTGCGAA AACTGGGAAG AAGACACTCC
+     2341 ATTTAAAGAT CCGCGCGAGC TGTATGATTT TTTAAAGACG GAAAAGCCCG AAGAGGAACT
+     2401 TGTCTTTTCC CACGGCGACC TGGGAGACAG CAACATCTTT GTGAAAGATG GCAAAGTAAG
+     2461 TGGCTTTATT GATCTTGGGA GAAGCGGCAG GGCGGACAAG TGGTATGACA TTGCCTTCTG
+     2521 CGTCCGGTCG ATCAGGGAGG ATATCGGGGA AGAACAGTAT GTCGAGCTAT TTTTTGACTT
+     2581 ACTGGGGATC AAGCCTGATT GGGAGAAAAT AAAATATTAT ATTTTACTGG ATGAATTGTT
+     2641 TTAGGACGTC GCCGGCGGCA TCAAATAAAA CGAAAGGCTC AGTCGAAAGA CTGGGCCTTT
+     2701 CGTTTTATCT GTTGTTTGTC GGTGAACGCT CTCCTGAGTC CCACAATAAG CCAGAGAGCC
+     2761 GGTGTCAACG TAAATGCATG CCGCTTCGCC TTCGCGCGCG AATTGCAAGC TGATCCGGGC
+     2821 TTATCGACTG CACGGTGCAC CAATGCTTCT GGCGTCAGGC AGCCATCGGA AGCTGTGGTA
+     2881 TGGCTGTGCA GGTCGTAAAT CACTGCATAA TTCGTGTCGC TCAAGGCGCA CTCCCGTTCT
+     2941 GGATAATGTT TTTTGCGCCG ACATCATAAC GGTTCTGGCA AATATTCTGA AATGAGCTGT
+     3001 TGACAATTAA TCATCGGCTC GTATAATGTG TGGAATTGTG AGCGGATAAC AATTTCACAC
+     3061 AGGAAACAGC CTCGACAGGC CTAGGAATTC AGGgaagttc ctattctcta gaaagtatag
+     3121 gaacttcAGT GTGGGGTCTG CCTCGACAGG CCTAGGAATT CAGGAGCTAA GGAAGCTAAA
+     3181 ATGGTGAGCA AGGGCGAGGA GACCACAATG GGCGTAATCA AGCCCGACAT GAAGATCAAG
+     3241 CTGAAGATGG AGGGCAACGT GAATGGCCAC GCCTTCGTGA TCGAGGGCGA GGGCGAGGGC
+     3301 AAGCCCTACG ACGGCACCAA CACCATCAAC CTGGAGGTGA AGGAGGGAGC CCCCCTGCCC
+     3361 TTCTCCTACG ACATTCTGAC CACCGCGTTC GCCTACGGCA ACAGGGCCTT CACCAAGTAC
+     3421 CCCGACGACA TCCCCAACTA CTTCAAGCAG TCCTTCCCCG AGGGCTACTC TTGGGAGCGC
+     3481 ACCATGACCT TCGAGGACAA GGGCATCGTG AAGGTGAAGT CCGACATCTC CATGGAGGAG
+     3541 GACTCCTTCA TCTACGAGAT ACACCTCAAG GGCGAGAACT TCCCCCCCAA CGGCCCCGTG
+     3601 ATGCAGAAGA AGACCACCGG CTGGGACGCC TCCACCGAGA GGATGTACGT GCGCGACGGC
+     3661 GTGCTGAAGG GCGACGTCAA GCACAAGCTG CTGCTGGAGG GCGGCGGCCA CCACCGCGTT
+     3721 GACTTCAAGA CCATCTACAG GGCCAAGAAG GCGGTGAAGC TGCCCGACTA TCACTTTGTG
+     3781 GACCACCGCA TCGAGATCCT GAACCACGAC AAGGACTACA ACAAGGTGAC CGTTTACGAG
+     3841 AGCGCCGTGG CCCGCAACTC CACCGACGGC ATGGACGAGC TGTACAAGTA AGGATCCGGT
+     3901 GATTGATTGA GCAAGCTTTA TGCTTGTAAA CCGTTTTGTG AAAAAATTTT TAAAATAAAA
+     3961 AAGGGGACCT CTAGGGTCCC CAATTACTAG CCAGCGGCCG GCTGTTTTGG CGGATGAGAG
+     4021 AAGATTTTCA GCCTGATACA GATTAAATCA GAACGCAGAA GCGGTCTcca ggcatcaaat
+     4081 aaaacgaaag gctcagtcga aagactgggc ctttcgtttt atctgttgtt tgtcggtgaa
+     4141 cgctctctac tagagtcaca ctggctcacc ttcgggtggg cctttctgcg tttataGATA
+     4201 AAACAGAATT TGCCTGGCGG CAGgaagttc ctattctcta gaaagtatag gaacttcAAA
+     4261 CAGCCTCGAC AGGCCTAGGA caagagacag gatactagtg gaggaagaaa aaatggtgag
+     4321 caagggcgag gagaataaca tggccatcat caaggagttc atgcgcttca aggtgcgcat
+     4381 ggagggctcc gtgaacggcc acgagttcga gatcgagggc gagggcgagg gccgccccta
+     4441 cgagggcttt cagaccgcta agctgaaggt gaccaagggt ggccccctgc ccttcgcctg
+     4501 ggacatcctg tcccctcatt tcacctacgg ctccaaggcc tacgtgaagc accccgccga
+     4561 catccccgac tacttcaagc tgtccttccc cgagggcttc aagtgggagc gcgtgatgaa
+     4621 ctacgaggac ggcggcgtgg tgaccgtgac ccaggactcc tccctgcagg acggcgagtt
+     4681 catctacaag gtgaagctgc gcggcaccaa cttcccctcc gacggccccg tgatgcagaa
+     4741 gaagaccatg ggctgggagg cctcctccga gcggatgtac cccgaggacg gtgccctgaa
+     4801 gggcaagatc aagatgaggc tgaagctgaa ggacggcggc cactacacct ccgaggtcaa
+     4861 gaccacctac aaggccaaga agcccgtgca gctgcccggc gcctacatcg tcgacatcaa
+     4921 gttggacatc acctcccaca acgaggacta caccatcgtg gaacagtacg aacgcgccga
+     4981 gggccgccac tccaccggcg gcatggacga gctgtacaag taataattag ctgagctCTT
+     5041 CACGTGAGAC GTCAACCAGA AAAGAGGAAG GAAATAATAA ATGGCTAAAA TGAGAATATC
+     5101 ACCGGAATTG AAAAAACTGA TCGAAAAATA CCGCTGCGTA AAAGATACGG AAGGAATGTC
+     5161 TCCTGCTAAG GTATATAAGC TGGTGGGAGA AAATGAAAAC CTATATTTAA AAATGACGGA
+     5221 CAGCCGGTAT AAAGGGACCA CCTATGATGT GGAACGGGAA AAGGACATGA TGCTATGGCT
+     5281 GGAAGGAAAG CTGCCTGTTC CAAAGGTCCT GCACTTTGAA CGGCATGATG GCTGGAGCAA
+     5341 TCTGCTCATG AGTGAGGCCG ATGGCGTCCT TTGCTCGGAA GAGTATGAAG ATGAACAAAG
+     5401 CCCTGAAAAG ATTATCGAGC TGTATGCGGA GTGCATCAGG CTCTTTCACT CCATCGACAT
+     5461 ATCGGATTGT CCCTATACGA ATAGCTTAGA CAGCCGCTTA GCCGAATTGG ATTACTTACT
+     5521 GAATAACGAT CTGGCCGATG TGGATTGCGA AAACTGGGAA GAAGACACTC CATTTAAAGA
+     5581 TCCGCGCGAG CTGTATGATT TTTTAAAGAC GGAAAAGCCC GAAGAGGAAC TTGTCTTTTC
+     5641 CCACGGCGAC CTGGGAGACA GCAACATCTT TGTGAAAGAT GGCAAAGTAA GTGGCTTTAT
+     5701 TGATCTTGGG AGAAGCGGCA GGGCGGACAA GTGGTATGAC ATTGCCTTCT GCGTCCGGTC
+     5761 GATCAGGGAG GATATCGGGG AAGAACAGTA TGTCGAGCTA TTTTTTGACT TACTGGGGAT
+     5821 CAAGCCTGAT TGGGAGAAAA TAAAATATTA TATTTTACTG GATGAATTGT TTTAGGACGT
+     5881 CGCAAACTGG GGCACAGATA GGGTACCCAT CCCTCAAGCC GAGCCCCATG CGCTGTTTTG
+     5941 GCGGATGAGA GAAGATTTTC AGCCTGATAC AGATTAAATC AGAACGCAGA AGCGGTCTcc
+     6001 aggcatcaaa taaaacgaaa ggctcagtcg aaagactggg cctttcgttt tatctgttgt
+     6061 ttgtcggtga acgctctcta ctagagtcac actggctcac cttcgggtgg gcctttctgc
+     6121 gtttataGAT AAAACAGAAT TTGCCTGGCG GCAGCCCACA ATAAGCCAGA GAGCCTTAAG
+     6181 GCTCTCTTTT TTGTGCCACG CTGTCGCGGC GAACGATGGT GGGCGAAAAG ATCATCGGAT
+     6241 CATTTTCACG CGGTGCATCG GTTGCCAAAG CAAGAGCCAA CTGAGTGGCT TTTTCTGCCA
+     6301 TCAGTTGGAT TGGGTAACGC ACGGTCGTCA GGCGTGGGCG TAAGTAGCGC GAAATCAGGG
+     6361 CATCGTCAAA ACCAATCACT GAGACATGTT CAGGAACCGA ATGCCCATTT TCCTCAAGTA
+     6421 CCAACAGGGC TCCAGCGGCC ATATTGTCGT TGTAAGCGAC CACTGCGGTA AAAGGCAGTG
+     6481 ATTTCACCAG TAGGTTAGTC ATCGCCTGTT CGCCGCCTTC ACTGTCTGGG CTGGCTTTTT
+     6541 CAATATAGCT GCTGCTTAGG GTGATGCCAT GTTCGTTCAA GGCTTGTTGA TAGCCCGCAA
+     6601 TACGCTGATC GGCATCCTCA ATTTGATGAG AGGAGCTGAT GCAAGCAATG TTTCTATGTC
+     6661 CTTGACGGAT GAGAAAATCG GTTGCTAAAT AAGCACCTTT CTGGTTGTCG AGTGAAATAC
+     6721 AGCGATCGGC GAGCTGAGGA ATATGGCGAT TGATCAACAC CAGCGTTTTT ACCTCGTTGG
+     6781 CGTACTCAAT CAGCTCTTCA TTGGGAAGCG CTTTGGAGTG GATGACCAGT GCATCACAGC
+     6841 GGCTGTTGAT GAGCAGTTCC AGCGCGCGGC GCTCTTCTTC CGCTCGGTGG TAGCCGTTGC
+     6901 CGATCAGCAA ATGTTTTCCT TCGCGGTGGG CGACAGTGTC GACGGCTTTG ACTAAAGTTC
+     6961 CAAAGAAGGG ATCAGAAACA TCGCTGACCA AGACCCCTAT GGTATTGGTG CTTTGATTGA
+     7021 CTAAAGCGCG AGCCGCGGCG TTCGGACGAT AGCCGAGTTT GTGCATCGCA CTGGTCACCG
+     7081 TATCAATCGA GGCTTGGCTG GCTTTCGGGG ATTTGTTGAT GACGCGTGAA ACCGTTGCCA
+     7141 CAGATACACC GGCTTCACGT GCTACGTCTT TTATGGTTGC CATAAGATTC CTTCTCTATC
+     7201 ACAGGCGCAA TAGTAGCGCT CCCTGTGAAA ACAGCGCAAT TGTAACTGAG TACATAAGAG
+     7261 TGAATTGTGA GCCATGACGC TTGTTCAACA CAGAAGGCCA TCCTGACGGA TGGCCTTTTT
+     7321 GCGTTTCTAC AAACTCTTTT TGTTTATTTT TCTAAATACA TTCAAATATG TATCCGCTCA
+     7381 TGAGACAATA ACCCTGATAA ATGCTTCAAT AATATTGAAA AAGGAAGAGT ATGAGTATTC
+     7441 AACATTTCCG TGTCGCCCTT ATTCCCTTTT TTGCGGCATT TTGCCTTCCT GTTTTTGCTC
+     7501 ACCCAGAAAC GCTGGTGAAA GTAAAAGATG CTGAAGATCA GTTGGGTGCA CGAGTGGGTT
+     7561 ACATCGAACT GGATCTCAAC AGCGGTAAGA TCCTTGAGAG TTTTCGCCCC GAAGAACGTT
+     7621 TTCCAATGAT GAGCACTTTT AAAGTTCTGC TATGTGGCGC GGTATTATCC CGTGTTGACG
+     7681 CCGGGCAAGA GCAACTCGGT CGCCGCATAC ACTATTCTCA GAATGACTTG GTTGAGTACT
+     7741 CACCAGTCAC AGAAAAGCAT CTTACGGATG GCATGACAGT AAGAGAATTA TGCAGTGCTG
+     7801 CCATAACCAT GAGTGATAAC ACTGCGGCCA ACTTACTTCT GACAACGATC GGAGGACCGA
+     7861 AGGAGCTAAC CGCTTTTTTG CACAACATGG GGGATCATGT AACTCGCCTT GATCGTTGGG
+     7921 AACCGGAGCT GAATGAAGCC ATACCAAACG ACGAGCGTGA CACCACGATG CCTACAGCAA
+     7981 TGGCAACAAC GTTGCGCAAA CTATTAACTG GCGAACTACT TACTCTAGCT TCCCGGCAAC
+     8041 AATTAATAGA CTGGATGGAG GCGGATAAAG TTGCAGGACC ACTTCTGCGC TCGGCCCTTC
+     8101 CGGCTGGCTG GTTTATTGCT GATAAATCTG GAGCCGGTGA GCGTGGGTCT CGCGGTATCA
+     8161 TTGCAGCACT GGGGCCAGAT GGTAAGCCCT CCCGTATCGT AGTTATCTAC ACGACGGGGA
+     8221 GTCAGGCAAC TATGGATGAA CGAAATAGAC AGATCGCTGA GATAGGTGCC TCACTGATTA
+     8281 AGCATTGGTA ACTGTCAGAC CAAGTTTACT CATATATACT TTAGATTGAT TTAAAACTTC
+     8341 ATTTTTAATT TAAAAGGATC TAGGTGAAGA TCCTTTTTGA TAATCTCATG ACCAAAATCC
+     8401 CTTAACGTGA GTTTTCGTTC CACTGAGCGT CAGACCCCGT AGAAAAGATC AAAGGATCTT
+     8461 CTTGAGATCC TTTTTTTCTG CGCGTAATCT GCTGCTTGCA AACAAAAAAA CCACCGCTAC
+     8521 CAGCGGTGGT TTGTTTGCCG GATCAAGAGC TACCAACTCT TTTTCCGAAG GTAACTGGCT
+     8581 TCAGCAGAGC GCAGATACCA AATACTGTCC TTCTAGTGTA GCCGTAGTTA GGCCACCACT
+     8641 TCAAGAACTC TGTAGCACCG CCTACATACC TCGCTCTGCT AATCCTGTTA CCAGTGGCTG
+     8701 CTGCCAGTGG CGATAAGTCG TGTCTTACCG GGTTGGACTC AAGACGATAG TTACCGGATA
+     8761 AGGCGCAGCG GTCGGGCTGA ACGGGGGGTT CGTGCACACA GCCCAGCTTG GAGCGAACGA
+     8821 CCTACACCGA ACTGAGATAC CTACAGCGTG AGCTATGAGA AAGCGCCACG CTTCCCGAAG
+     8881 GGAGAAAGGC GGACAGGTAT CCGGTAAGCG GCAGGGTCGG AACAGGAGAG CGCACGAGGG
+     8941 AGCTTCCAGG GGGAAACGCC TGGTATCTTT ATAGTCCTGT CGGGTTTCGC CACCTCTGAC
+     9001 TTGAGCGTCG ATTTTTGTGA TGCTCGTCAG GGGGGCGGAG CCTATGGAAA AACGCCAGCA
+     9061 ACGCGGCCTT TTTACGGTTC CTGGCCTTTT GCTGGCCTTT TGCTCACATG TTCTTTCCTG
+     9121 CGTTATCCCC TGATTCTGTG GATAACCGTA TTACCGCCTT TGAGTGAGCT GATACCGCTC
+     9181 GCCGCAGCCG AACGACCGAG CGCAGCGAGT CAGTGAGCGA GGAAGCGGAA GAGCGCCTGA
+     9241 TGCGGTATTT TCTCCTTACG CATCTGTGCG GTATTTCACA CCGCATATGG TGCACTCTCA
+     9301 GTACAATCTG CTCTGATGCC GCATAGTTAA GCCAGTATAC ACTCCGCTAT CGCTACGTGA
+     9361 CTGGGTCATG GCTGCGCCCC GACACCCGCC AACACCCGCT GACGCGCCCT GACGGGCTTG
+     9421 TCTGCTCCCG GCATCCGCTT ACAGACAAGC TGTGACCGTC TCCGGGAGCT GCATGTGTCA
+     9481 GAGGTTTTCA CCGTCATCAC CGAAACGCGC GAGGCAGCAG ATCAATTCGC GCGCGAAGGC
+     9541 GAAGCGGCAT GCATTTACGT TGACACCATC GAATGGTGCA AAACCTTTCG CGGTATGGCA
+     9601 TGATAGCGCC CGGAAGAGAG TCAATTCAGG GTGGTGAATG TGAAACCAGT AACGTTATAC
+     9661 GATGTCGCAG AGTATGCCGG TGTCTCTTAT CAGACCGTTT CCCGCGTGGT GAACCAGGCC
+     9721 AGCCACGTTT CTGCGAAAAC GCGGGAAAAA GTGGAAGCGG CGATGGCGGA GCTGAATTAC
+     9781 ATTCCCAACC GCGTGGCACA ACAACTGGCG GGCAAACAGT CGTTGCTGAT TGGCGTTGCC
+     9841 ACCTCCAGTC TGGCCCTGCA CGCGCCGTCG CAAATTGTCG CGGCGATTAA ATCTCGCGCC
+     9901 GATCAACTGG GTGCCAGCGT GGTGGTGTCG ATGGTAGAAC GAAGCGGCGT CGAAGCCTGT
+     9961 AAAGCGGCGG TGCACAATCT TCTCGCGCAA CGCGTCAGTG GGCTGATCAT TAACTATCCG
+    10021 CTGGATGACC AGGATGCCAT TGCTGTGGAA GCTGCCTGCA CTAATGTTCC GGC
+//
+```",adityanprasad,https://github.com/BioJulia/GenomicAnnotations.jl/issues/13
+I_kwDOB7QJcs6arGW3,Type piracy of Base breaks package in 1.11,CLOSED,2024-10-17T14:54:45Z,2024-10-17T16:26:34Z,2024-10-17T16:15:36Z,"This package defines this method:
+```
+function Base.getproperty(genes::AbstractArray{G, 1}, name::Symbol) where {G <: AbstractGene}
+   ....
+```
+This is piracy, since both `AbstractArray` and `AbstractGene` is implemented in Base, and breaks the package in Julia 1.11.
+It may seem like it shouldn't be piracy since you explicitly only overrode `AbstractArray{<:AbstractGene}`, and this package owns `AbstractGene`. And indeed, this piracy should not be able to break code unrelated to this package.
+The problem is that this package relies on existing methods for `AbstractArray` working, such as `getproperty`. When this method is overwritten, then any code that used `getproperty` for `AbstractArray{<:AbstractGene}` breaks, which includes basic Base code.
+
+The solution is to stop pirating Base here.",jakobnissen,https://github.com/BioJulia/GenomicAnnotations.jl/issues/14
+I_kwDOB7QJcs6eCHoP,gffstring merges multi-position features,CLOSED,2024-11-12T07:53:33Z,2024-11-12T09:17:57Z,2024-11-12T09:17:56Z,"julia> test_locus = Join([ClosedSpan(1:10), ClosedSpan(20:30)])
+join(1..10,20..30)
+julia> test_locus.position isa Vector
+false
+julia> typeof(test_locus.position)
+Base.Iterators.Flatten{Base.Generator{Vector{SpanLocus{ClosedSpan}}, GenomicAnnotations.var""#24#25""}}
+
+Thus 'if locus(gene).position isa Vector' in gffstring() fails and the feature is written to the .gff file as a single span from 1:30
+This messes up CDS features with introns, for example.
+Is this a bug, or am I creating my Joins wrongly?",ian-small,https://github.com/BioJulia/GenomicAnnotations.jl/issues/15
+I_kwDOB7QJcs6eLgvr,gffstring can still merge reverse strand multi-position loci,CLOSED,2024-11-13T01:19:06Z,2024-11-13T16:40:58Z,2024-11-13T16:40:58Z,"Thanks for the very rapid fix, but it's not quite complete. 'if locus(gene) isa Union{Join, Order}' fails for loci constructed as Complement(Join([Locus, Locus])). I can work round this by constructing all such features as Join([Complement(Locus), Complement(Locus)]) (in which case everything works perfectly as far as I can see), but you might not want to rely on features always being constructed that way.",ian-small,https://github.com/BioJulia/GenomicAnnotations.jl/issues/16
+I_kwDOB7QJcs6eMP-J,gffstring mishandles transpliced genes,CLOSED,2024-11-13T03:26:06Z,2024-11-14T11:32:46Z,2024-11-14T11:29:12Z,"'locus(gene).strand' in gffstring assumes all positions in the locus are on the same strand, which is not true for trans-spliced genes, e.g. join(11056..11919,complement(94283..95886)) is a valid GenBank locus that can now be faithfully represented using your much-appreciated rewrite of GenomicAnnotations.Locus, but which is rendered as 
+gene	11056	11919	.	+
+gene	94283	95886	.	+
+by GFF.gffstring() ",ian-small,https://github.com/BioJulia/GenomicAnnotations.jl/issues/17
+I_kwDOB7QJcs6eOLXB,minor issues with headers,CLOSED,2024-11-13T07:30:23Z,2024-11-13T15:26:00Z,2024-11-13T15:25:59Z,"Records can be created with empty headers:
+Record{Gene}() = Record{Gene}("""", dna"""", """", Gene[], DataFrame(), false)
+but 'if chrs[1].header[1:15] == ""#gff-version 3\n""' in printgff() errors with an empty header (or even on one with less than 15 chars)
+What's more, the equality fails even with a valid gff3 header as it should be testing for '##gff-version 3' according to the spec.
+I would suggest this be changed to
+if isempty(chrs[1].header)) || ~startswith(chrs[1].header, ""##gff-version 3"")
+
+A question, not an issue as such. Is the ultimate intention to have some sort of cross-format Header structure for metadata? At the moment, it is not very clear how to transfer metadata from one format to another, or how to efficiently create headers from scratch.",ian-small,https://github.com/BioJulia/GenomicAnnotations.jl/issues/18
+I_kwDOB7QJcs6f7MtL,Sequence section of .gbk output is non-standard?,CLOSED,2024-11-22T12:48:41Z,2024-11-22T18:14:21Z,2024-11-22T18:14:21Z,"I'm now using GenomicAnnotations.jl in [Chloe](https://github.com/ian-small/Chloe.jl), so thanks for your efforts in making that possible.
+I'm just passing on an observation from a user about the .gbk output that it generates:
+'[Scanner.py](https://github.com/biopython/biopython/blob/master/Bio/GenBank/Scanner.py) of BioPython raises a malformed sequence error apparently due to improper indentation of the sequence. Adding a single space to each line of the sequence entry at the bottom of the file removes that error.'
+It seems that the sequence part of the .gbk files generated by GenomicAnnotations.jl have fewer spaces at the start of the line than files from GenBank. I'm not sure what the official spec is.
+",ian-small,https://github.com/BioJulia/GenomicAnnotations.jl/issues/19

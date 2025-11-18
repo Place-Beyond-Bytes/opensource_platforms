@@ -1,0 +1,87 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOGZriIM5LQAg-,command readGAlignments (step 4 create_master_table wtc11) takes very long ,CLOSED,2022-06-06T22:10:29Z,2023-04-18T16:12:22Z,2023-04-18T16:12:22Z,"Hi, I have been trying to reproduce the variant-calling benchmark analysis from your preprint (https://doi.org/10.1101/2022.02.08.479579 ), but when I get to step 4, more specifically the command ""ReadGAlignments"" it seems to be a very computationally-intensive step. Running on 8-cores and 24 Gb of memory, it still takes does not complete after 16 hrs. 
+
+I was just wondering if this sounds right, or if I missed something. 
+I got all the VCF files and bam files from the Zenodo repository https://zenodo.org/record/6332914  
+
+These are the first lines of the R script ` mt_wtc11_allMethods_v7.R`
+```
+METHOD_NAMES <- c(""dv"", ""dv_s"", ""dv_s_fc"",
+                  ""c3"", ""c3_s"", ""c3_s_fc"", ""c3_mix"",
+                  ""gatk_s"", ""nc_s"")
+
+# name of the dataset used with the methods to validate
+METHOD_DATASET_NAME <- ""isoSeq""
+# VCF files
+
+METHOD_VCF_FILES <- c(
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-deepvariant-dv-deepvariant_calls_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-deepvariant-dv_sncr-deepvariant_calls_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-deepvariant-dv_sncr_fc-deepvariant_calls_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-clair3-c3-pileup_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-clair3-c3_sncr-pileup_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-clair3-c3_sncr_fc-pileup_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-clair3-mix-pileup_pass_mix_norep.recode.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-gatk-isoSeq_wtc11.recal_pass.vcf.gz"",
+  ""3_call_variants/wtc11/wtc11-variant_calling_from_isoseq-nanocaller-nc_sncr-variant_calls.final.vcf.gz""
+)
+# BAM of the data
+METHOD_BAM_FILE <- ""3_call_variants/wtc11/1_before_variant_calling/wtc11-data_manipulation-aln_s.bam""
+
+### ground-truth
+# name
+TRUTH_NAME <- ""allen""
+# name of the dataset used to generate the ground-truth
+TRUTH_DATASET_NAME <- ""shortRead""
+# VCF file
+TRUTH_VCF_FILE <- ""2_generate_ground_truth/wtc11/ground_truth/3546dc62_AH77TTBBXX_DS-229105_GCCAAT_recalibrated_subsetChromosomes_pass.vcf.gz""
+
+# BAM file
+# downloaded by script /home/vbarbo/project_2021/projects/lrRNAseqVariantCalling/1_download_data/wtc11/not_filtered_ground_truth_vcf/wtc11_vcf.sh
+TRUTH_BAM_FILE <- ""1_download_data/wtc11/84773251_trimmed.AH77TTBBXX_DS-229105_GCCAAT.sorted.rg.final.bam""
+
+### variables
+MAX_DIST_FROM_SPLICE_SITE <- 20
+THREADS <- 30
+GENOME_REF_FILE <- ""1_download_data/reference/GRCh38.p13_all_chr.fasta""
+```
+
+and this is the line that takes a long time:
+`
+method_bam   <- readGAlignments(METHOD_BAM_FILE)
+`
+
+Thank you! ",giovanniquinones,https://github.com/vladimirsouza/lrRNAseqVariantCalling/issues/3
+I_kwDOGZriIM5jvHx0,Variant calling with Nanopore cDNA-seq?,CLOSED,2023-04-18T14:49:52Z,2024-02-15T18:42:48Z,2024-02-15T18:42:47Z,"Hi I have Nanopore PCR cDNA-seq data from PromethION (very deeply sequenced), that I would like to study allelic expression. I want to use these reads to do variant calling first (since the lack of genomic data), could I use the same pipeline that used for Nanopore direct RNA-seq here?
+
+Many thanks!
+Best,
+CW",CWYuan08,https://github.com/vladimirsouza/lrRNAseqVariantCalling/issues/4
+I_kwDOGZriIM5z-u7D,Requesting the filtered ground-truth variants,CLOSED,2023-10-16T18:16:28Z,2024-12-15T15:04:27Z,2024-12-15T15:04:27Z,"Hi,
+    Thanks for the useful variant calling tool for long-read RNA sequencing data. Since the entire tool and the evaluation process are developed in R language, it may be difficult for users who are not familiar with R language. Could you please release the ground-truth variants of WTC-11 dataset (filtered by short-read variant density and short-read coverage)? So that we don't have to download the huge short-read bam and run the time-consuming steps to calculate the bam's depth.
+
+Best,
+Neng",huangnengCSU,https://github.com/vladimirsouza/lrRNAseqVariantCalling/issues/5
+I_kwDOGZriIM6LzRfd,Error when running DeepVariant,CLOSED,2024-06-11T06:05:48Z,2024-06-11T20:42:32Z,2024-06-11T20:42:32Z,"Hi lrRNAseqVariantCalling team,
+
+I have gone throught the steps of SplitNCigarReads and flagCorrection.r. When trying to call variants using DeepVariant, I came across the following error mesage.
+
+```
+2024-06-11 01:56:30.095375: F deepvariant/allelecounter.cc:204] Check failed: offset + len <= read.aligned_quality_size() (1 vs. 0)
+Fatal Python error: Aborted
+
+Current thread 0x00002b8bf9b76b80 (most recent call first):
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/com_google_deepvariant/deepvariant/make_examples_core.py"", line 2040 in candidates_in_region
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/com_google_deepvariant/deepvariant/make_examples_core.py"", line 1734 in process
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/com_google_deepvariant/deepvariant/make_examples_core.py"", line 2838 in make_examples_runner
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/com_google_deepvariant/deepvariant/make_examples.py"", line 224 in main
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/absl_py/absl/app.py"", line 258 in _run_main
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/absl_py/absl/app.py"", line 312 in run
+  File ""/tmp/Bazel.runfiles_4uwuinr3/runfiles/com_google_deepvariant/deepvariant/make_examples.py"", line 234 in <module>
+parallel: This job failed:
+```
+
+It seems to be related to a [similar issue](https://github.com/google/deepvariant/issues/270), where the base quality is missing. Could you advise on this issue?
+
+Thanks.
+",alanlamsiu,https://github.com/vladimirsouza/lrRNAseqVariantCalling/issues/6

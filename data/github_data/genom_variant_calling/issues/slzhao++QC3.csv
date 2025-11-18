@@ -1,0 +1,171 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU2ODUxMjQ1Nw==,Error while running QC3: vcf QC,OPEN,2015-04-14T22:11:44Z,2016-01-29T15:41:49Z,,"Hello,
+
+I was testing out the ""vcf QC"" module with out test VCF data, and I am getting the following errors:
+
+Use of uninitialized value $allele1 in string ne at...
+Argument ""."" isn't numeric in addition (+) at..
+Use of uninitialized value $allele1 in numeric gt (>) at...
+
+Any comments??
+
+Thanks,
+
+Shalabh
+
+P.S. The VCF file is multi-sample VCF.
+",shalabhsuman,https://github.com/slzhao/QC3/issues/1
+MDU6SXNzdWUxMDYzNTEzNTg=,Bug report,OPEN,2015-09-14T14:16:32Z,2015-09-15T18:03:43Z,,"vcfSummary.pm can not parse my vcf file properly. Command: perl qc3.pl -m v -i test.vcf -o my-out-dir. It always gives a lot of errors like ""Use of uninitialized value ... ..."", then causes R functions crash (non-numeric values passed to numeric variables ...). Please let me know if you need my test.vcf to do debug, thanks!
+",shanj-github,https://github.com/slzhao/QC3/issues/2
+MDU6SXNzdWUxMTQ4NjcwMTg=,tags for different releases ?,OPEN,2015-11-03T17:27:26Z,2015-11-05T04:34:48Z,,"it would be nice if you tag the releases so it's easier to download the desired version. You can see an example here:
+https://github.com/samtools/samtools/releases
+
+And here the documentation:
+https://help.github.com/articles/creating-releases/
+",pescobar,https://github.com/slzhao/QC3/issues/3
+MDU6SXNzdWUxMzkwNzM2NzA=,Does QC3 work on mpileup/VarScan vcf files?,OPEN,2016-03-07T19:41:47Z,2016-03-08T22:16:13Z,,"When I ran QC3 on my exome vcf files generated through mpileup/VarScan, the consistency tables is showing very high (>0.9) for all sample pairs, meaning all samples are contaminated with each other as per your documentation.
+
+Run command : 
+
+`samtools mpileup -l illumina.bed -f genome.fa mySample_sorted_dedup.exome.bam | VarScan mpileup2cns --variants 1 --output-vcf 1 -strand-filter 0 --min-avg-qual 25 > mySample_sorted_dedup.exome.vcf`
+
+Perhaps this has to do something with the VCF format, Here is an example of VCF for one sample.Can you tell if QC3 works with this format and if and what modification should I do.
+
+@##fileformat=VCFv4.1
+## source=VarScan2
+## INFO=<ID=ADP,Number=1,Type=Integer,Description=""Average per-sample depth of bases with Phred score >= 25"">
+## INFO=<ID=WT,Number=1,Type=Integer,Description=""Number of samples called reference (wild-type)"">
+## INFO=<ID=HET,Number=1,Type=Integer,Description=""Number of samples called heterozygous-variant"">
+## INFO=<ID=HOM,Number=1,Type=Integer,Description=""Number of samples called homozygous-variant"">
+## INFO=<ID=NC,Number=1,Type=Integer,Description=""Number of samples not called"">
+## FILTER=<ID=str10,Description=""Less than 10% or more than 90% of variant supporting reads on one strand"">
+## FILTER=<ID=indelError,Description=""Likely artifact due to indel reads at this position"">
+## FORMAT=<ID=GT,Number=1,Type=String,Description=""Genotype"">
+## FORMAT=<ID=GQ,Number=1,Type=Integer,Description=""Genotype Quality"">
+## FORMAT=<ID=SDP,Number=1,Type=Integer,Description=""Raw Read Depth as reported by SAMtools"">
+## FORMAT=<ID=DP,Number=1,Type=Integer,Description=""Quality Read Depth of bases with Phred score >= 25"">
+## FORMAT=<ID=RD,Number=1,Type=Integer,Description=""Depth of reference-supporting bases (reads1)"">
+## FORMAT=<ID=AD,Number=1,Type=Integer,Description=""Depth of variant-supporting bases (reads2)"">
+## FORMAT=<ID=FREQ,Number=1,Type=String,Description=""Variant allele frequency"">
+## FORMAT=<ID=PVAL,Number=1,Type=String,Description=""P-value from Fisher's Exact Test"">
+## FORMAT=<ID=RBQ,Number=1,Type=Integer,Description=""Average quality of reference-supporting bases (qual1)"">
+## FORMAT=<ID=ABQ,Number=1,Type=Integer,Description=""Average quality of variant-supporting bases (qual2)"">
+## FORMAT=<ID=RDF,Number=1,Type=Integer,Description=""Depth of reference-supporting bases on forward strand (reads1plus)"">
+## FORMAT=<ID=RDR,Number=1,Type=Integer,Description=""Depth of reference-supporting bases on reverse strand (reads1minus)"">
+## FORMAT=<ID=ADF,Number=1,Type=Integer,Description=""Depth of variant-supporting bases on forward strand (reads2plus)"">
+## FORMAT=<ID=ADR,Number=1,Type=Integer,Description=""Depth of variant-supporting bases on reverse strand (reads2minus)"">
+# CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  mySample1
+
+chrM    8702    .       G       A       .       PASS    ADP=49;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:65:49:0:48:97.96%:1.554E-28:0:35:0:0:21:27
+chrM    9378    .       G       A       .       PASS    ADP=68;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:78:68:0:68:100%:1.6809E-40:0:35:0:0:38:30
+chrM    9541    .       C       T       .       PASS    ADP=53;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:61:53:0:53:100%:1.5943E-31:0:35:0:0:5:48
+chrM    10399   .       G       A       .       PASS    ADP=72;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:84:72:0:72:100%:6.7558E-43:0:35:0:0:39:33
+chrM    10820   .       G       A       .       PASS    ADP=72;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:91:72:0:71:98.61%:2.6835E-42:0:35:0:0:37:34
+chrM    10874   .       C       T       .       PASS    ADP=86;WT=0;HET=0;HOM=1;NC=0    GT:GQ:SDP:DP:RD:AD:FREQ:PVAL:RBQ:ABQ:RDF:RDR:ADF:ADR    1/1:255:95:86:0:85:98.84%:1.0935E-50:0:35:0:0:31:54
+
+Thank you!
+",rrt8,https://github.com/slzhao/QC3/issues/4
+MDU6SXNzdWUxNTI5OTQ4MjU=,samtools depth does not output positions with zero coverage,OPEN,2016-05-04T12:03:15Z,2016-05-05T07:40:18Z,,"This means that the estimated coverage can be biased, as the zeros are not counted when calculating the mean/median coverage? `samtools depth` now offers an option (`-a`) to resolve this so it should be straightforward:
+https://github.com/samtools/samtools/issues/374
+",mfoll,https://github.com/slzhao/QC3/issues/5
+MDU6SXNzdWUxNTM3MjQ3NDY=,QC3 on bam - error on IonTorrent exome sequencing,CLOSED,2016-05-09T08:17:56Z,2016-05-15T11:56:21Z,2016-05-13T13:58:40Z,"Hi Shilin,
+
+Very interesting tool with usefull applications!
+I am trying to run QC3 on a group of 2 bam files from IonTorrent (TP53 sequencing, single end, aligned with tmap.)
+This is the corresponding command line:
+
+```
+perl ~/Documents/GitHub_repos/QC3/qc3.pl -m b -i bamTestList -o test_qc3 -r ~/Documents/Models/regressions/somatic_regressions_CIRC/BAMSurgeon/Patrice_LUSC_ctDNA_controls/Bedfile_LUSC_TP53_Exon2_11_200614_sm.bed -t 6
+```
+
+And this is the output I get:
+
+```
+[Mon May  9 10:00:22 2016] Start bam summary for bamTestList
+[Mon May  9 10:00:23 2016] Load target region file '/home/delhommet/Documents/Models/regressions/somatic_regressions_CIRC/BAMSurgeon/Patrice_LUSC_ctDNA_controls/Bedfile_LUSC_TP53_Exon2_11_200614_sm.bed'
+[Mon May  9 10:00:23 2016] No gtf file
+[Mon May  9 10:00:23 2016] Read bam file and write out
+[Mon May  9 10:00:23 2016] Thread 1 started
+[Mon May  9 10:00:23 2016] Thread 1 processing /home/delhommet/Documents/Models/regressions/somatic_regressions_CIRC/BAMSurgeon/Patrice_LUSC_ctDNA_mutated/BAM/MLT00BUU.bam
+[Mon May  9 10:00:23 2016] Thread 2 started
+[Mon May  9 10:00:23 2016] Thread 2 processing /home/delhommet/Documents/Models/regressions/somatic_regressions_CIRC/BAMSurgeon/Patrice_LUSC_ctDNA_mutated/BAM/MLT00BUY.bam
+[Mon May  9 10:00:24 2016] Thread 3 started
+[Mon May  9 10:00:24 2016] Thread 4 started
+[Mon May  9 10:00:24 2016] Thread 5 started
+[Mon May  9 10:00:25 2016] Thread 6 started
+Use of uninitialized value in join or string at /home/delhommet/Documents/GitHub_repos/QC3/source/bamSummary.pm line 715.
+[Mon May  9 10:00:26 2016] Thread 1 finished
+Use of uninitialized value in join or string at /home/delhommet/Documents/GitHub_repos/QC3/source/bamSummary.pm line 715.
+[Mon May  9 10:00:29 2016] Thread 2 finished
+[Mon May  9 10:00:29 2016] Thread 3 finished
+[Mon May  9 10:00:29 2016] Thread 4 finished
+[Mon May  9 10:00:29 2016] Thread 5 finished
+[Mon May  9 10:00:29 2016] Thread 6 finished
+[Mon May  9 10:00:30 2016] Finish bam summary!
+[Mon May  9 10:00:30 2016] Something wrong in plotting figure. Please check the bamSummary.rLog file!
+HTML::Template::param() : attempt to set parameter 'figureloop1' with a scalar - parameter is not a TMPL_VAR! at /home/delhommet/Documents/GitHub_repos/QC3/source/makeReport.pm line 70.
+```
+
+associated to this `bamSummary.rLog` file:
+
+```
+Error in kruskal.test.default(rawData[, x], rawData[, y]) : 
+  all observations are in the same group
+Calls: plot_dataFrame -> kruskal.test -> kruskal.test.default
+Execution halted
+```
+
+I think the problem is when you recover the `lane` for a bam:
+This is the first line of one of my bams without the header:
+
+```
+1SJ61:08208:09540   16  chr1    1333369 55  11S62M  *   0   0   TGAAGTCTCATGGAAGCCAGCCCCAGCGCGACCCGCCACAGCGCACTGTCCTCACTGGAGCCCCTGCCCTTCC   :;7<<=<<<<=9=9=>9?>>7>><<<==<<<8>=>9888=<<;<;<?=<8<<;=>>9A<808889<7?<9<7<   ZP:B:f,0.00833928,0.00465518,3.077e-06  ZA:i:73 ZG:i:147    ZB:i:30 ZC:B:i,147,147,1,0  ZM:B:s,262,-28,246,4,-2,258,30,274,14,212,0,230,254,0,4,26,240,242,526,-46,498,288,184,214,242,494,6,458,-18,4,736,272,-6,232,-18,1026,8,6,198,14,252,474,2,4,244,276,22,18,242,28,318,188,2,24,428,222,16,32,12,30,240,242,250,18,186,0,0,300,0,-22,198,272,48,236,244,254,-18,4,32,34,168,-20,510,2,32,218,696,6,244,-2,22,-8,196,32,310,254,14,-22,-32,288,8,12,220,98,192,70,4,988,-4,-2,244,52,240,4,470,10,10,220,12,-22,446,10,2,10,446,250,2,4,286,-8,46,292,28,206,-26,238,24,6,-30,44,270,44,262,22,418,278,38,398,300,244,0,202,58,2,0,36,496,62,232,46,92,212,212   ZF:i:25 RG:Z:1SJ61.IonXpress_074    PG:Z:tmap   MD:Z:60A1   NM:i:1  AS:i:58 XM:i:62 XA:Z:map4-1 XS:i:19
+```
+
+The first field contains only three arguments (`instrument`, `runNumber`, `flowcell`) and so `lane` will be `NA` and this is not managed by your R script `rFunctions.R`, am I right?
+
+Thanks in advance!
+",tdelhomme,https://github.com/slzhao/QC3/issues/6
+MDU6SXNzdWUxOTA4MzQ0MjA=,QC3 VCF Error ,OPEN,2016-11-21T21:00:29Z,2016-11-26T17:11:44Z,,"Hello,
+
+I am running QC3 on a VCF file with 1 sample, I am using the following command 
+perl /srv/persistent/bliu2/tools/QC3/qc3.pl -m v -i $inputFile -o $outputDir
+
+And I am getting the following error: 
+Error in FUN(X[[i]], ...) : 
+  only defined on a data frame with all numeric variables
+Calls: showConsistence ... col_by_value -> seq -> Summary.data.frame -> lapply -> FUN
+Execution halted
+
+It seems like this error originates from a piece of R code. However, I could not pin down where the error originates exactly. Could you provide some guidance on debugging? Any information will be highly appreciated! 
+",boxiangliu,https://github.com/slzhao/QC3/issues/11
+MDU6SXNzdWUyMTMzMzA3Mjg=,"can't write Permission denied at /home/bg/soft/QC3/source/makeReport.pm line 55, <TEMP> line 91.",OPEN,2017-03-10T12:39:03Z,2018-10-30T14:39:27Z,,"Hello.
+There is a strange place in your `makeReport.pm`, line 55:
+`open TEMPRESULT, "">$templateName.temp"" or die ""can't write $!"";`
+`$templateName` - is a full filename of `template/report_tmpl_fastq.tmpl` file, that may be installed in some place, where simple user do not have write access.
+I'd appreciate if you fix this, please...",serge2016,https://github.com/slzhao/QC3/issues/12
+MDU6SXNzdWUyMTMzMzIxMTc=,Resume from last success step,OPEN,2017-03-10T12:46:17Z,2017-03-14T06:07:45Z,,"It would be great, if the qc3.pl could check whether something is already done or not.",serge2016,https://github.com/slzhao/QC3/issues/13
+MDU6SXNzdWUyMTMzNDA1MTE=,"Not clear from the readme, that samplenames MUST be different!",OPEN,2017-03-10T13:26:47Z,2017-03-15T07:00:52Z,,"The program crashes if there are identical samplenames in the input file (2nd column).
+It is very strange, because as I understand, this software does support PE reads.",serge2016,https://github.com/slzhao/QC3/issues/14
+MDU6SXNzdWUyMzkwMjg3OTE=,"Running QC3 on VCF without ""Allelic Depth"" (AD) field",OPEN,2017-06-28T01:36:56Z,2017-06-28T02:45:51Z,,"I received the error:
+
+`Can't find GT or AD in vcf file!`
+
+while trying to run VCF QC, so it appears that this tool currently requires Allelic Depth to be in the FORMAT field. Is there a way to run VCF QC without this information in the VCF?",N/A,https://github.com/slzhao/QC3/issues/15
+I_kwDOALH4NM49eezg,Error: Can't find GT or AD in vcf file!,OPEN,2021-10-20T13:16:55Z,2021-10-21T07:19:15Z,,"Hi,
+
+I executed a command: 
+perl qc3.pl -m v -i input.txt -o .
+
+I tried it first with my vcf file in the input.txt file and it failed with error:
+""Use of uninitialized value in split at  source/vcfSummary.pm line 172, <READ> line 1.
+Can't find GT or AD in vcf file!""
+I tried with file in input.txt suggested in the manual as a test file: CV-7261.vcf.top40000.txt and it failed again. ",michal-zawada,https://github.com/slzhao/QC3/issues/16
+I_kwDOALH4NM5FgQcw,Where can i download test samples. download Link is not active,OPEN,2022-03-11T07:17:20Z,2022-03-11T07:17:20Z,,"Hi,
+
+Where can i download test samples. download Link is not active.",Kiran936,https://github.com/slzhao/QC3/issues/17
+I_kwDOALH4NM5FygWw,Perl packages not available,CLOSED,2022-03-16T11:04:29Z,2022-03-22T06:13:56Z,2022-03-22T06:13:56Z,"The following perl packages are not available in CPAN:
+ fail source::bamSummary 
+ fail source::fastqSummary 
+ fail source::makeReport 
+ fail source::vcfSummary",Hatoonli,https://github.com/slzhao/QC3/issues/18

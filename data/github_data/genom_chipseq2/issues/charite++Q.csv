@@ -1,0 +1,183 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWU5NDczODA5MA==,404 error for link,CLOSED,2015-07-13T14:46:18Z,2015-07-14T15:55:09Z,2015-07-14T15:55:09Z,"Hi!
+congrats for the tool!!!!
+I was trying to look information how to use it, but cannot find it inside github.
+I tried to go to http://compbio.charite.de/Q/, but gives me 404 error.
+
+It would be great some quick start here! willing to test it.
+",lpantano,https://github.com/charite/Q/issues/1
+MDU6SXNzdWU5NTY0MTI5NA==,"""Trying to open BAM file and ZLIB is not available!""",CLOSED,2015-07-17T11:41:32Z,2015-07-21T12:31:47Z,2015-07-21T12:31:47Z,"Hi,
+We've tried installing and running ""Q"" in two different Ubuntu systems,
+and in both cases configure/make/makeinstall runs smoothly
+but then when we try to run it with ""-t afile.bam"" and ""-o somefolder"" , we get the following error:
+
+""
+ERROR: Trying to open BAM file and ZLIB is not available!
+ERROR: Could not open <MY_FILE_NAME>.bam !
+ERROR: Function 'ReadAlignmentFile' failed !""
+""
+
+It looks like a problem with seqan but I don't know what I could do to fix it, any ideas?
+",PanosFirmpas,https://github.com/charite/Q/issues/2
+MDU6SXNzdWUxMDAwNzIwMjM=,boost files missing,CLOSED,2015-08-10T13:55:21Z,2015-09-18T18:21:59Z,2015-09-18T18:21:59Z,"The readme file says that all of the boost dependencies are found in src/boost, but the folder
+seems to be missing.
+
+Could you please just tell which files are necessary?
+
+Cheers!
+
+Vedran Franke
+",frenkiboy,https://github.com/charite/Q/issues/3
+MDU6SXNzdWUxMDIyMzYwMDc=,"Compiles but report Error ""ERROR: Trying to open BAM file and ZLIB is not available!""",CLOSED,2015-08-20T21:00:15Z,2015-09-18T18:22:49Z,2015-09-18T18:00:18Z,"First didn't complies, then installed libbz2. There is lib/libbz2.a and include/bzlib.h under /home/user/opt/libbz2/
+
+./configure --prefix=/home/user/opt/Q-2015-v1 --libdir=/home/user/opt/libbz2/lib
+
+then replace
+
+LIBS = -lgomp -lbz2
+
+with
+
+LIBS = -lgomp -lbz2  -L/home/user/opt/libbz2/lib
+
+make
+make install
+
+both complies
+
+But 
+
+/home/user/opt/Q-2015-v1/Q --treatment-sample T.bam --control-sample INPUT.bam --out-prefix test -pc 6
+
+will report
+
+ERROR: Trying to open BAM file and ZLIB is not available!
+ERROR: Could not open T.bam !
+ERROR: Function 'ReadAlignmentFile' failed !
+
+tried 
+
+make CFLAGS=-DSEQAN_HAS_ZLIB=1
+
+or 
+
+add
+# ifndef SEQAN_HAS_ZLIB
+# define SEQAN_HAS_ZLIB 1
+# endif
+
+to
+
+src/seqan/core/include/seqan/stream.h
+
+both complied success but reported same error
+
+I seems have zlib that there are 
+
+libz.a  libz.so  libz.so.1  libz.so.1.2.5
+
+under /home/user/opt/zlib-1.2.5/lib and /home/user/opt/zlib-1.2.5/lib is in my $LD_LIBRARY_PATH
+
+Anything else I can try?
+
+Thanks!
+",xubeisi,https://github.com/charite/Q/issues/4
+MDU6SXNzdWUxMDY3MTU5MDY=,Find no enriched regions,CLOSED,2015-09-16T07:30:28Z,2015-09-18T17:58:15Z,2015-09-18T17:58:15Z,"Hi,
+
+I ran Q on two data sets. For one of them I got results which may be reasonable (I need to look at the details) but for the other one (which is actually a much better quality data) I got no peaks at all. If I run Q with default options it estimates the average fragment length to be 1 (it prints 2^32+1)  but even when I provided the average fragment length it still has not found a single peak (even though there are hundreds of very reliable ones). The original data was paired ends and I thought that this could have created the problem (even though I do not know why) so I kept only the first mate in every pair (and so the strand is random) but it did not help.
+Any idea why this happens (and is there any way to avoid this)? I can upload my file (and control - it makes no difference).
+
+Thank you in advance,
+Moshe.
+",MosheOlshansky,https://github.com/charite/Q/issues/5
+MDU6SXNzdWUxMTU5MjQ3NzY=,Corrupt memory,CLOSED,2015-11-09T17:24:38Z,2015-11-15T14:17:51Z,2015-11-13T12:32:23Z,"Though I can successfully execute Q on the BAM file suggested in the Tutorial (http://charite.github.io/Q/tutorial.html), the program crashes on my own BAM file. I'm on CentOS.
+
+```
+(DK)[dkelley@dkelley01 data]$ Q -p 4 -t foxa2_hepg2.bam -wbt -o foxa2_hepg2
+*** glibc detected *** Q: double free or corruption (!prev): 0x000000000e2e4080 ***
+======= Backtrace: =========  
+[0x4f83b2]
+[0x4fae4f]
+[0x431a02]
+[0x424948]
+[0x4ce0db]
+[0x400449]
+======= Memory map: ========  
+00400000-005c5000 r-xp 00000000 00:18 10795374991                        /n/home03/dkelley/bin/Q
+007c4000-007c7000 rw-p 001c4000 00:18 10795374991                        /n/home03/dkelley/bin/Q
+007c7000-007e3000 rw-p 00000000 00:00 0
+019c9000-13753000 rw-p 00000000 00:00 0                                  [heap]
+2adc35494000-2adc36495000 rw-p 00000000 00:00 0
+2adc36495000-2adc36496000 ---p 00000000 00:00 0
+2adc36496000-2adc36696000 rw-p 00000000 00:00 0
+2adc36696000-2adc36697000 ---p 00000000 00:00 0
+2adc36697000-2adc36897000 rw-p 00000000 00:00 0
+2adc36897000-2adc36898000 ---p 00000000 00:00 0
+2adc36898000-2adc36a98000 rw-p 00000000 00:00 0
+2adc37496000-2adc39497000 rw-p 00000000 00:00 0
+2adc3c000000-2adc3c10e000 rw-p 00000000 00:00 0
+2adc3c10e000-2adc40000000 ---p 00000000 00:00 0
+2adc44000000-2adc4411f000 rw-p 00000000 00:00 0
+2adc4411f000-2adc48000000 ---p 00000000 00:00 0
+2adc4c000000-2adc4f14d000 rw-p 00000000 00:00 0
+2adc4f14d000-2adc50000000 ---p 00000000 00:00 0
+2adc50000000-2adc55002000 rw-p 00000000 00:00 0
+7fffcbc39000-7fffcbc52000 rw-p 00000000 00:00 0                          [stack]
+7fffcbe00000-7fffcbe01000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+Aborted
+```
+
+The BAM file was obtained using the following command.
+
+```
+bowtie2 -U ENCFF000PIT.fastq.gz -x bowtie2/hg19 | samtools view -q 3 -bS - | samtools sort -T foxa2_hepg2_sort -O bam -o foxa2_hepg2.bam -
+```
+
+I'd be happy to send the BAM file if that would help. Thanks for any help you can provide!
+",davek44,https://github.com/charite/Q/issues/6
+MDU6SXNzdWUxMjEwMDY2NTA=,"Remove chrN_random,ChrUn,chrM reads before using Q",CLOSED,2015-12-08T13:31:33Z,2015-12-11T12:57:44Z,2015-12-11T12:57:44Z,"Hi, 
+Is it necessary for peak calling of histone modifications ChIP-seq data to remove the mapped reads on chrN_random, ChrUn and chrM before running Q?
+
+Thank you!
+",CTLife,https://github.com/charite/Q/issues/7
+MDU6SXNzdWUxMjgzNzE2ODQ=,Errors for some samples,CLOSED,2016-01-24T04:30:04Z,2016-02-23T13:53:57Z,2016-02-23T13:53:57Z,"H3K4me3 peaks in Mouse (mm10) or C.elegans (WBcel235) are identified by using Q  v1.3.0 with default parameters (except for -wbt, -wbc), but there is a error for some samples, such as: 
+### Error in `Q': double free or corruption (!prev): 0x00000000055ac290 **\*            ,  9-Q-run1-1.sh: line 14:  6190 Aborted          (core dumped)
+
+Although this error doesn't affect the results, but I guess that you want to figure it out in next version of Q.
+
+BTW:  my H3K4me3 ChIP-seq data is paired-end (by Illumina HiSeq X Ten)  and sorted BAM files based on genomic positions are the values of --treatment-sample and  --control-sample.
+
+File 9-Q-run1-1.sh is available:
+https://github.com/CTLife/TEMP/blob/master/peakCallerQ/9-Q-run1-1.sh 
+",CTLife,https://github.com/charite/Q/issues/8
+MDU6SXNzdWUyNDc4NTk4NzY=,Control sample,OPEN,2017-08-03T23:05:29Z,2017-08-03T23:05:29Z,,"Dear Q,
+
+We are planning to use ChIP-Nexus and analyze Q-Nexus program.
+
+Do we need to use control sample? I saw the psuedo-control in your publication.
+Is it work with real control sample?
+
+Regards,
+
+Won",wyim-pgl,https://github.com/charite/Q/issues/9
+MDU6SXNzdWUyNzA5OTYwMTE=,Adapter file format?,CLOSED,2017-11-03T14:26:08Z,2017-11-06T10:18:04Z,2017-11-06T10:18:04Z,"Hi:
+
+Following the Q nexus manual, I created an adapter file, `adapters.fa`, which looks like
+
+>adapter1
+AGATCGGAAGAGCACACGTCTGGATCCACGACGCTCTTCC
+>adapter2
+GATCGGAAGAGCACACGTCTGGATCCACGACGCTCTTCC
+>adapter3
+ATCGGAAGAGCACACGTCTGGATCCACGACGCTCTTCC
+>adapter4
+
+However, when I try to use this adapter file with flexcat, I get the following message:
+
+End for adapter ""adapter1"" not specified, adapter will be ignored.
+End for adapter ""adapter2"" not specified, adapter will be ignored.
+End for adapter ""adapter3"" not specified, adapter will be ignored.
+End for adapter ""adapter4"" not specified, adapter will be ignored.
+
+I'm not understanding what format flexcat is expecting for the adapter file. Any feedback is very appreciated!",ChiWPak,https://github.com/charite/Q/issues/10

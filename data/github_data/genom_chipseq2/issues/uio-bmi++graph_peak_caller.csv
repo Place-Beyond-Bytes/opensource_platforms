@@ -1,0 +1,269 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUyOTI5MzAwNDQ=,Converting from ob numpy graph to dict-base graph,CLOSED,2018-01-30T20:41:36Z,2018-03-05T16:38:13Z,2018-03-05T16:38:13Z,This should be possible. Required for creating linear map since edges/nodes will be added/removed.,ivargr,https://github.com/uio-bmi/graph_peak_caller/issues/1
+MDU6SXNzdWUzOTAyODM0ODg=,Understanding max_paths.intervalcollection structure,CLOSED,2018-12-12T15:41:50Z,2018-12-13T20:14:46Z,2018-12-13T20:14:46Z,"Hello everyone!
+I've performed the same analysis as the one in this link:
+ 
+[(https://github.com/uio-bmi/graph_peak_caller/wiki/Graph-based-ChIP-seq-tutorial)]
+
+Now, I don't understand very much what each row of a max_paths.intervalcollection file contains.
+Can you please help me? I'm attaching one of them in case you need it!
+
+[chr4_max_paths.intervalcollection.zip](https://github.com/uio-bmi/graph_peak_caller/files/2672476/chr4_max_paths.intervalcollection.zip)
+
+Thank you in advance and sorry if there are errors in this issue!",RicciAle,https://github.com/uio-bmi/graph_peak_caller/issues/3
+MDU6SXNzdWU0MDMyODYzMTk=, Graph peak caller and MACS2 - Different peak numbers ,CLOSED,2019-01-25T18:52:34Z,2019-01-26T21:47:17Z,2019-01-26T21:47:17Z,"Hi,
+
+We generated graph genomes from NA12878 variant calls and alligned histone ChIP-seq reads.
+
+We also succesfully called H3K4me1 peaks using both MACS2 and Graph Peak caller. However, I notice that Graph Peak Caller calls approximatively 30 000 fewer peaks than MACS2.
+
+I tried to match the parameters as best as I could, using the same fragment length (265 bp), the same genome size, the same control sample.
+
+I also ran MACS2 without any extra argument (generates background model, calls narrow peaks).
+
+I still get ~137 000 peaks from MACS2 and only 106 000 peaks from Graph Peak Caller.
+
+Could you provide me with any clues as to why this might happen? Is there a way I am supposed to run MACS2 to get similar results to Graph Peak Caller?
+
+My thanks,
+Cristian Groza
+Bourque Lab, McGill University",cgroza,https://github.com/uio-bmi/graph_peak_caller/issues/4
+MDU6SXNzdWU0Mzc5MjEzNTQ=,Issues with chromosome splitting and shift estimation,CLOSED,2019-04-27T08:32:27Z,2019-04-28T18:09:53Z,2019-04-28T15:13:02Z,"Good morning,
+I'm trying to use split_vg_json_reads_into_chromosomes on the file created with the following code: 
+
+`vg filter -r 0.95 -s 2.0 -q 60 -fu mapped.gam > filtered.gam`
+
+It comes from the mapping of the raw reads of the isogenic replicate 1 in ENCSR000DUB of ENCODE to the human genome graphs you've put the link to, and it seems like the command reaches roughly chromosome 7 instead of splitting into all the chromosomes.
+
+Moreover, if i try to use estimate_shift in order to have the fragment length, which is necessary for the peak calling, I get this error:
+
+`2019-04-27 09:53:17,472, DEBUG: Interval Intv((1173002:9), (1173006:3), [1173002, 1173003, 1173005, 1173006], Graph, lc=86) is not valid interval in graph`
+`2019-04-27 09:53:17,473, ERROR: Found an alignment not compatible with the graph that was used. Are you sure alignments/intervals are mapped to the same graph that was used? Turn on debuging with --verbose 2 to see full log.`
+
+What shall I do in order to fix this right?
+Thank you in advance and please tell me if I didn't make myself clear!",RicciAle,https://github.com/uio-bmi/graph_peak_caller/issues/5
+MDU6SXNzdWU0NTAzNjYxNzA=,Any way to render the peaks on top of a graph?,OPEN,2019-05-30T15:30:15Z,2019-06-03T10:07:17Z,,"Hi,
+It is already possible with vg to visualize graph alingments onto the graph itself. Do you know of any way of taking the peak annotations produced by Graph Peak Caller and including them
+in the same graph alignemnt visualization?
+
+In your paper, you show how a peak can lay on top of a path:
+https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=info:doi/10.1371/journal.pcbi.1006731.g001
+
+This is essentially what I am trying to reproduce.
+
+My thanks.",cgroza,https://github.com/uio-bmi/graph_peak_caller/issues/6
+MDU6SXNzdWU1MzY0MDQ3NDM=,Peak calling with ATAC-seq data,OPEN,2019-12-11T14:26:18Z,2020-03-04T12:35:36Z,,"Hello,
+I've got a question. I would like to try your software to perform peak calling, but instead of using Chip-seq data I woul like to use it on ATAC-seq data. 
+Do you think it is possible? If so, are there any settings that should be used?
+Thank you in advance,
+
+Andrea",RenzoTale88,https://github.com/uio-bmi/graph_peak_caller/issues/8
+MDU6SXNzdWU3MDE5Nzg0NTY=,Error in creating linear map when in ATAC-seq mode ,OPEN,2020-09-15T14:26:36Z,2024-08-08T17:14:53Z,,"Hi, 
+I am trying the graph_peak_caller in ATAC-seq mode as you suggested in #8 . I am following the pipeline in vg to construct the variation graph. I worked on the mouse genome, in which case 21 graphs for each chromosome was created. But I still expensed the same kinds of error as shown in #8, in the creating learn map step for most of the chromosomes (only Chr9, ChrX and ChrY work fine) :
+
+`[peter.huang@node070 peak]$ graph_peak_caller callpeaks -a True -g /secondary/projects/immunograph/vg/scripts/indexGCSA/graphs/chr1.nobg -s /secondary/projects/immunograph/vg/results/gam/10B_L000_Interleaves_chr1.json -n """" -f 150 -r 50 -p True -u $unique_reads -G 2500000000
+2020-09-15 10:09:25,605, INFO: Sample files: ['/secondary/projects/immunograph/vg/results/gam/10B_L000_Interleaves_chr1.json']
+2020-09-15 10:09:25,605, INFO: Using graphs: ['/secondary/projects/immunograph/vg/scripts/indexGCSA/graphs/chr1.nobg']
+2020-09-15 10:09:25,605, INFO: Will use sequence graphs. ['/secondary/projects/immunograph/vg/scripts/indexGCSA/graphs/chr1.nobg.sequences']
+2020-09-15 10:09:25,605, INFO: Using graphs from data directory /secondary/projects/immunograph/vg/scripts/indexGCSA/graphs
+2020-09-15 10:09:25,605, INFO: Will use [''] as extra experiments names for each run, based on graph file names.If only running on single graph, this should be empty.
+2020-09-15 10:09:25,608, WARNING: Did not find linear map for  for graph /secondary/projects/immunograph/vg/scripts/indexGCSA/graphs/chr1.nobg. Will create.
+2020-09-15 10:09:25,608, WARNING: Did not find linear map for  for graph /secondary/projects/immunograph/vg/scripts/indexGCSA/graphs/chr1.nobg. Will create.
+2020-09-15 10:09:29,838, INFO: Getting topologically sorted nodes
+2020-09-15 10:09:29,839, INFO: 0 nodes processed
+2020-09-15 10:09:29,839, INFO: Finding starts and ends
+2020-09-15 10:09:29,839, INFO: 0 nodes processed
+Traceback (most recent call last):
+  File ""/secondary/projects/triche/tools/anaconda2/envs/r_env/bin/graph_peak_caller"", line 11, in <module>
+    load_entry_point('graph-peak-caller', 'console_scripts', 'graph_peak_caller')()
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 39, in main
+    run_argument_parser(sys.argv[1:])
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 679, in run_argument_parser
+    args.func(args)
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/callpeaks_interface.py"", line 182, in run_callpeaks2
+    create_linear_map(graph, linear_map_name)
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/util.py"", line 6, in create_linear_map
+    linear_map = LinearMap.from_graph(ob_graph)
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/control/linearmap.py"", line 106, in from_graph
+    starts = cls.find_starts(graph, node_ids)
+  File ""/secondary/projects/triche/Peter/tools/graph_peak_caller/graph_peak_caller/control/linearmap.py"", line 134, in find_starts
+    max_dists[j] = max(cur_dist, max_dists[j])
+IndexError: index -21804899 is out of bounds for axis 0 with size 3`
+
+In #8, you suggest that the error may be caused by a disconnected graph. But because I was using vg, I doubt that is the case, although I am not so sure about it. I wonder how you manage to find the disconnection in graph as you comment in #8 : 
+
+"" For instance, node 133450827 has an edge going to 135833768, but these two nodes don't have any other edges to any nodes, so they are isolated together."" 
+
+And also, I wonder if you any further suggestions about this error. Thank you so much!
+
+Best,
+Peter
+
+@ttriche",huangyizR,https://github.com/uio-bmi/graph_peak_caller/issues/9
+MDU6SXNzdWU3MjkxNDA2MTM=,Graph peak caller returns negative node ids,CLOSED,2020-10-25T23:30:25Z,2020-11-11T18:36:45Z,2020-11-11T18:36:45Z,"Hi,
+I am having a strange error with graph_peak_caller when calling create_linear_map:
+The command is:
+```graph_peak_caller create_linear_map -g graphs/chr20.nobg```
+``` 
+INFO:root:Using sequencegraph graphs/chr20.nobg.sequences
+2020-10-25 19:16:51,355, INFO: Getting topologically sorted nodes
+2020-10-25 19:16:51,356, INFO: 0 nodes processed
+2020-10-25 19:16:51,356, INFO: Finding starts and ends
+2020-10-25 19:16:51,357, INFO: 0 nodes processed
+Traceback (most recent call last):
+  File ""/home/cgroza/.local/bin/graph_peak_caller"", line 11, in <module>
+    sys.exit(main())
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/command_line_interface.py"", line 36, in main
+    run_argument_parser(sys.argv[1:])
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/command_line_interface.py"", line 673, in run_argument_parser
+    args.func(args)
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/preprocess_interface.py"", line 79, in create_linear_map_interface
+    create_linear_map(graph, out_name)
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/util.py"", line 6, in create_linear_map
+    linear_map = LinearMap.from_graph(ob_graph)
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/control/linearmap.py"", line 107, in from_graph
+    starts = cls.find_starts(graph, node_ids)
+  File ""/home/cgroza/.local/lib/python3.7/site-packages/graph_peak_caller/control/linearmap.py"", line 137, in find_starts
+    max_dists[j] = max(cur_dist, max_dists[j])
+IndexError: index -246491878 is out of bounds for axis 0 with size 2 
+```
+
+What could be causing this error? This is a graph generated with the latest version of `vg construct`.
+I attached  the chr20.vg file to this Dropbox link:
+https://www.dropbox.com/s/jgxby6pkwa5xywi/chr20.vg?dl=0
+
+Any guidance would be greatly appreciated!",cgroza,https://github.com/uio-bmi/graph_peak_caller/issues/10
+MDU6SXNzdWU3OTYxNTcwNTU=,create_ob_graph failure,OPEN,2021-01-28T16:24:49Z,2021-01-28T23:46:05Z,,"Hello, I would like to ask your advice on creating a offset-based graph using the create_ob_graph.
+I wonder if you could guide how to resolve the error below. The input json for the create_ob_graph is from a vg file that is converted from a gfa file created by minigraph.
+
+
+```
+2021-01-28 01:43:03,592, INFO: Setting sequences using vg json graph graph_p.json
+Traceback (most recent call last):
+  File ""graph_peak_caller"", line 8, in <module>
+    sys.exit(main())
+  File ""graph_peak_caller/command_line_interface.py"", line 36, in main
+    run_argument_parser(sys.argv[1:])
+  File ""graph_peak_caller/command_line_interface.py"", line 673, in run_argument_parser
+    args.func(args)
+  File ""graph_peak_caller/preprocess_interface.py"", line 67, in create_ob_graph
+    sequence_graph.set_sequences_using_vg_json_graph(args.vg_json_file_name)
+  File ""offsetbasedgraph/sequencegraph.py"", line 71, in set_sequences_using_vg_json_graph
+    self.set_sequence(int(node_object[""id""]), node_object[""sequence""])
+  File ""offsetbasedgraph/sequencegraph.py"", line 94, in set_sequence
+    assert node_size == len(sequence), ""Invalid sequence. Does not cover whole node""
+AssertionError: Invalid sequence. Does not cover whole node
+```",byoo,https://github.com/uio-bmi/graph_peak_caller/issues/11
+I_kwDOBfurec5aDuqC,create_ob_graph,CLOSED,2022-12-26T12:54:01Z,2023-03-15T11:47:58Z,2023-03-15T11:47:58Z,"Hi!
+
+I'm following the [pipeline](https://github.com/uio-bmi/graph_peak_caller/wiki/Building-you-own-graphs-from-scratch-preparing-them-for-Graph-Peak-Caller) to create the ob-graphs for each chromosome separately. When I was running `graph_peak_caller create_ob_graph index/1.json`, the following error occurred:
+
+> <frozen importlib._bootstrap>:228: RuntimeWarning: scipy._lib.messagestream.MessageStream size changed, may indicate binary incompatibility. Expected 56 from C header, got 64 from PyObject
+2022-12-26 18:48:04,351, INFO: Creating obgraph (graph and sequencegraph)
+2022-12-26 18:48:04,351, INFO: Creating ob graph from json file
+2022-12-26 19:12:28,226, WARNING: Node id 1 is not int. Converting to int when creating graph.
+2022-12-26 19:12:28,226, WARNING: Node id 1 is not int. Converting to int when creating graph.
+2022-12-26 19:12:49,112, INFO: Min node: 1, Max node: 64099746
+2022-12-26 19:12:49,112, INFO: Reading from json
+2022-12-26 19:45:28,785, INFO: Creating numpy adj lists
+2022-12-26 19:50:26,056, INFO: Writing ob graph to file
+2022-12-26 19:50:26,057, INFO: Saving to numpy format
+2022-12-26 19:52:54,918, INFO: Graph saved to index/1.nobg
+2022-12-26 19:52:54,918, INFO: Creating sequence graph
+Traceback (most recent call last):
+  File ""/share/home/miniconda3/bin/graph_peak_caller"", line 33, in <module>
+    sys.exit(load_entry_point('graph-peak-caller', 'console_scripts', 'graph_peak_caller')())
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 39, in main
+    run_argument_parser(sys.argv[1:])
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 679, in run_argument_parser
+    args.func(args)
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/preprocess_interface.py"", line 61, in create_ob_graph
+    sequence_graph_v2 = obg.SequenceGraphv2.create_empty_from_ob_graph(ob_graph)
+  File ""/share/home/miniconda3/lib/python3.9/site-packages/offsetbasedgraph/sequencegraphv2.py"", line 46, in create_empty_from_ob_graph
+    sequence_array = np.array([""X"" * size for size in ob_graph.blocks._array], dtype=str)
+numpy.core._exceptions._ArrayMemoryError: Unable to allocate 15.3 TiB for an array with shape (64099747,) and data type <U65507
+
+This is just a pan-genome graph of one of the chromosomes, created according to the [cactus-minigraph pipeline](https://github.com/ComparativeGenomicsToolkit/cactus/blob/master/doc/pangenome.md). If my understanding is correct, it seems that my graph is too complicated for numpy to create such a large data array?
+
+If this is indeed the reason, how can I run this step successfully?
+
+Looking forward to your reply.
+
+Yumin",sdws1983,https://github.com/uio-bmi/graph_peak_caller/issues/12
+I_kwDOBfurec5eEjc0,"assert not unfinished, unfinished error",OPEN,2023-02-09T16:54:18Z,2024-08-08T17:12:31Z,,"Hi,
+
+I'm trying to run graph_peak_caller on a ATAC-seq data which is aligned to a single test chromosome graph which was generated with the PGGB pipeline. After aligning the raw data to the graph using `vg map`, when I try to run `graph_peak_caller callpeaks -g ch19.nobg -s alignments.json`, I see the following:
+
+```
+DEBUG:matplotlib:$HOME=/home/fieldp
+DEBUG:matplotlib:CONFIGDIR=/home/fieldp/.config/matplotlib
+DEBUG:matplotlib:matplotlib data path: /home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/matplotlib/mpl-data
+DEBUG:matplotlib:loaded rc file /home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/matplotlib/mpl-data/matplotlibrc
+DEBUG:matplotlib:matplotlib version 3.0.0
+DEBUG:matplotlib:interactive is False
+DEBUG:matplotlib:platform is linux
+DEBUG:matplotlib:loaded modules: ['scipy.ndimage._ni_label', 'graph_peak_caller.logging_config', 'scipy.integrate._quad_vec', '_stat', 'builtins', 'graph_peak_caller.multiplegraphscallpeaks', 'ctypes._endian', 'concurrent.futures._base', 'scipy.version', 'email', 'asyncio.base_events', 'json', 'types', 'numpy.lib.arrayterator', 'numpy.core.getlimits', 'typing.re', 'zlib', 'scipy.sparse.linalg.eigen.lobpcg', 'scipy.optimize._spectral', 'Bio.SeqIO.PirIO', 'scipy.optimize._differentialevolution', 'scipy.integrate._quadpack', 'scipy.sparse.linalg.eigen.arpack._arpack', 'scipy.sparse.csc', 'ctypes', 'graph_peak_caller.peakcollection', 'scipy.linalg.linalg_version', 'scipy.linalg.cython_blas', 'scipy.linalg._fblas', 'scipy.sparse.extract', '_compression', 'matplotlib.cbook.deprecation', '_codecs', 'numpy.matrixlib', 'numpy.random._common', 'asyncio.streams', 'heapq', 'graph_peak_caller.linear_filter', 'inspect', 'scipy.integrate.quadrature', 'scipy.spatial.qhull', 'google.protobuf.internal.encoder', 'pyparsing', 'async_generator._util', 'matplotlib._color_data', 'scipy.linalg._procrustes', 'graph_peak_caller.control.linearintervals', 'numpy.lib.stride_tricks', '_frozen_importlib', 'scipy.interpolate._bsplines', 'google.protobuf.internal.enum_type_wrapper', 'scipy.fft._pocketfft.helper', 'signal', '_warnings', 'stream.release', 'graph_peak_caller.shiftestimation', 'graph_peak_caller.reporter', 'offsetbasedgraph.indexedinterval', 'graph_peak_caller.custom_exceptions', 'offsetbasedgraph.vcfmap', 'numpy.core._dtype', 'numpy.core.shape_base', 'scipy.sparse.csr', 'scipy.linalg._solve_toeplitz', 'numpy.lib.function_base', 'six.moves', 'sre_compile', 'scipy.fft._helper', 'scipy.optimize._lsq.bvls', 'numpy.version', 'xml.sax.saxutils', 'Bio.GenBank.Scanner', '_elementtree', 'numpy.random._bounded_integers', 'scipy.integrate._ode', 'scipy.optimize.slsqp', 'google.protobuf.descriptor_pb2', 'struct', 'xml.dom.minidom', 'xml.sax._exceptions', 'scipy.special._logsumexp', 'numpy.lib.npyio', 'google.protobuf.internal', '_multiprocessing', 'scipy.optimize._lsq.dogbox', 'scipy.sparse.linalg.eigen.lobpcg.lobpcg', 'scipy.optimize._differentiable_functions', 'unittest.suite', 'warnings', 'numpy.random._pickle', 'xml.etree.cElementTree', 'functools', 'pyexpat.errors', 'urllib.response', 'scipy.optimize.nonlin', 'scipy.interpolate', 'mpl_toolkits', 'scipy.special._ellip_harm_2', 'posixpath', 'google.protobuf.internal.python_message', 'asyncio.log', 'numpy.linalg.lapack_lite', 'numpy.polynomial.hermite', 'scipy.spatial._voronoi', 'scipy.spatial.distance', '_random', 'scipy.integrate._ivp.ivp', 'scipy.interpolate.rbf', 'scipy.interpolate._cubic', 'numpy.ma', 'scipy.optimize.linesearch', 'asyncio.tasks', 'typing.io', '_functools', 'numpy.random._mt19937', 'asyncio.subprocess', 'scipy.fft', 'scipy.sparse.linalg.eigen', 'async_generator', 'scipy.integrate._ivp.lsoda', 'email.feedparser', 'scipy.optimize.zeros', '_hashlib', 'xml.etree.ElementPath', 'scipy.ndimage.measurements', 'scipy.spatial._hausdorff', 'scipy.spatial._plotutils', 'stat', '_cython_0_29_19', 'numpy.polynomial.chebyshev', 'pwd', 'graph_peak_caller.callpeaks', 'scipy.linalg._decomp_polar', 'offsetbasedgraph', 'scipy.optimize._minimize', 'shutil', '_posixsubprocess', 'numpy.core.records', 'scipy.spatial.transform.rotation', 'scipy.sparse.linalg.isolve', 'numpy.core._methods', 'scipy.sparse.bsr', 'scipy.optimize._remove_redundancy', 'numpy.core.numerictypes', 'email.encoders', 'ntpath', 'scipy._lib._uarray._backend', 'scipy.sparse.linalg.interface', 'Bio.SeqIO.IgIO', 'scipy.optimize._trlib', '_ni_label', 'token', 'graph_peak_caller.postprocess', 'scipy.optimize._linprog_util', 'numpy.random._generator', 'xml.dom.xmlbuilder', 'scipy._lib.messagestream', 'email._parseaddr', '_collections_abc', 'scipy.sparse.csgraph._matching', 'scipy.optimize._shgo', 'scipy.integrate._ivp.dop853_coefficients', 'google.protobuf.internal.decoder', 'numpy.lib.shape_base', 'google.protobuf.descriptor', 'scipy._lib.doccer', 'numpy.testing._private.utils', '_bz2', 'scipy.spatial._spherical_voronoi', 'scipy.special._ufuncs_cxx', 'numpy.polynomial.polyutils', 'pyvg.conversion', 'Bio.SeqIO.GckIO', 'stream', 'email.iterators', 'scipy.optimize._trustregion_constr.canonical_constraint', 're', 'scipy.sparse.linalg.isolve.lgmres', 'asyncio.protocols', '_weakrefset', 'scipy.constants', 'numpy.core._add_newdocs', 'scipy.optimize._trustregion_constr.qp_subproblem', 'numpy._pytesttester', 'scipy.special.orthogonal', 'scipy._lib._threadsafety', 'scipy.optimize.optimize', 'Bio.SeqIO.SnapGeneIO', 'xml.dom.domreg', 'scipy.integrate._ivp.common', 'scipy.fft._pocketfft.realtransforms', 'scipy.optimize._trustregion_constr', 'numpy.core.memmap', 'scipy.optimize._lsq.trf', '_bisect', 'scipy._lib.uarray', 'scipy.stats._distn_infrastructure', 'http.client', 'sre_parse', 'scipy.integrate._bvp', 'cycler', 'scipy.sparse.csgraph._flow', 'encodings.latin_1', 'scipy.optimize._linprog', 'scipy.interpolate._bspl', 'scipy._distributor_init', '_cython_0_29_13', 'numpy.linalg._umath_linalg', 'scipy.optimize.moduleTNC', 'scipy.linalg.lapack', 'numpy.core._asarray', 'gettext', '_compat_pickle', 'scipy.optimize._linprog_simplex', 'select', 'scipy.sparse._csparsetools', 'socket', 'scipy.optimize.lbfgsb', 'scipy.stats._binned_statistic', 'google.protobuf.internal.containers', 'numpy.core.fromnumeric', 'scipy.integrate._ivp', 'numpy.core.arrayprint', 'matplotlib._version', 'Bio.SeqIO', 'importlib.machinery', 'scipy.linalg.decomp_schur', 'scipy.optimize._lsap_module', 'scipy.sparse.linalg.isolve._iterative', 'urllib.request', 'numpy.lib.nanfunctions', 'scipy.sparse.csgraph._traversal', 'scipy.optimize._linprog_ip', 'encodings.unicode_escape', 'scipy.misc.common', 'Bio.SeqIO.SeqXmlIO', 'scipy.integrate.quadpack', 'scipy.linalg._sketches', 'email.message', 'asyncio.futures', 'pyvg.util', 'graph_peak_caller.intervals', 'importlib.abc', 'asyncio.coroutines', 'offsetbasedgraph.multipathinterval', 'scipy.optimize._numdiff', '_datetime', 'xml.dom.NodeFilter', 'json.scanner', 'numpy.fft._pocketfft', '_io', 'scipy.fft._pocketfft', 'Bio.SwissProt', 'graph_peak_caller.postprocess.graphs', 'encodings.utf_8', 'numpy.ctypeslib', 'scipy.optimize._cobyla', 'numpy.core._dtype_ctypes', 'scipy.optimize._trustregion_constr.tr_interior_point', 'numpy.lib.format', 'scipy.interpolate.fitpack', 'Bio.Align._aligners', '_heapq', 'scipy._lib._version', 'Bio.SeqIO.SffIO', 'offsetbasedgraph.regionpath', 'quopri', 'numpy.lib.scimath', '_signal', 'difflib', 'atexit', 'enum', 'Bio', 'scipy.sparse.linalg.isolve.iterative', 'google.protobuf.internal.wire_format', 'scipy.optimize._nnls', 'numpy.lib.utils', 'json.encoder', 'email.utils', 'xml.sax.handler', 'base64', 'Bio.GenBank', 'Bio.Sequencing.Phd', 'scipy.special.specfun', 'graph_peak_caller.analysis', 'scipy.spatial.transform', 'scipy.linalg.misc', 'scipy.spatial.transform._rotation_groups', 'fnmatch', 'graph_peak_caller.util', 'scipy.sparse.linalg.eigen.arpack', 'numpy', 'Bio.Alphabet.IUPAC', 'Bio.SeqIO.AceIO', 'scipy.integrate.lsoda', 'graph_peak_caller.eventsorter', 'numpy.lib.arraypad', 'scipy.special._ellip_harm', 'Bio.SeqIO.TabIO', 'numpy.lib.histograms', 'scipy.ndimage.fourier', 'scipy.sparse.csgraph._shortest_path', 'scipy.sparse.linalg.isolve.lsqr', 'scipy.optimize.minpack2', 'Bio.SeqIO.PhdIO', 'selectors', 'scipy.stats.mstats', 'offsetbasedgraph.graph', 'scipy.spatial._procrustes', 'scipy.sparse.csgraph._laplacian', 'scipy.sparse.linalg._norm', 'scipy.constants.constants', 'gzip', 'scipy.optimize._shgo_lib.sobol_seq', 'numpy.fft.helper', 'scipy._lib._testutils', 'scipy.optimize.tnc', 'scipy.linalg.flinalg', 'numpy.random._bit_generator', 'scipy.sparse.csgraph', 'email.parser', 'offsetbasedgraph.graphwithreversals', 'scipy._lib.decorator', 'scipy.sparse.linalg', 'collections.abc', 'scipy.sparse._matrix_io', 'scipy.stats._distr_params', 'numpy.core.einsumfunc', 'asyncio.locks', 'scipy.optimize._linprog_rs', 'scipy.special.spfun_stats', 'concurrent.futures', 'graph_peak_caller.postprocess.subgraphanalyzer', 'numpy.random', 'graph_peak_caller.command_line_interface', 'numpy.ma.extras', 'pyexpat', 'numpy.random._sfc64', 'numpy.fft', 'scipy.fft._basic', 'scipy.optimize._hessian_update_strategy', 'scipy.optimize._trustregion_exact', 'encodings.aliases', 'traceback', 'numpy.polynomial.laguerre', 'scipy.stats.statlib', 'numpy._distributor_init', 'unittest.runner', 'multiprocessing.context', 'scipy.sparse.linalg.isolve.minres', 'tokenize', 'codecs', 'scipy.optimize._trustregion_constr.projections', 'importlib._bootstrap', 'os', 'sysconfig', 'numpy.lib._version', 'scipy._lib._numpy_compat', 'scipy.optimize._root_scalar', 'Bio.SeqIO.Interfaces', 'weakref', 'scipy.sparse.dia', 'array', 'scipy.interpolate.interpnd', 'scipy._lib.deprecation', 'errno', 'scipy.optimize._zeros', 'email.base64mime', 'scipy.sparse.linalg._expm_multiply', 'scipy.ndimage.morphology', 'numpy.core._multiarray_umath', 'graph_peak_caller.analysis.nongraphpeaks', 'json.decoder', 'encodings.raw_unicode_escape', 'scipy.linalg._solvers', 'scipy.optimize._group_columns', 'http', 'numpy.lib.ufunclike', '_locale', 'scipy.sparse.coo', 'scipy.sparse.construct', 'unittest.util', 'scipy.interpolate._fitpack_impl', 'numpy.dual', '_bootlocale', 'uu', 'scipy.optimize.cobyla', 'urllib.error', 'scipy.optimize._lsq.least_squares', 'numpy.linalg.linalg', 'graph_peak_caller.mindense', 'graph_peak_caller.sample.sparsegraphpileup', 'graph_peak_caller', 'contextlib', 'Bio._py3k', 'pyvg.vgobjects', 'scipy.stats.stats', 'asyncio.sslproto', 'google.protobuf.reflection', 'google.protobuf.internal.well_known_types', 'scipy.interpolate.fitpack2', 'scipy.stats.mstats_basic', 'Bio.File', 'graph_peak_caller.postprocess.indel_scores', '_ast', 'google.protobuf.text_encoding', 'Bio.SeqIO.PdbIO', 'unittest.loader', 'Bio.Data.SCOPData', 'scipy.optimize._trustregion', 'numpy.compat', 'scipy.optimize._lsq.trf_linear', '_operator', 'scipy.sparse.linalg.isolve._gcrotmk', 'scipy.sparse.csgraph._tools', 'xml.etree.ElementTree', 'numpy.core._ufunc_config', 'Bio.SeqIO.UniprotIO', 'concurrent.futures.thread', 'opcode', 'scipy.sparse', 'numpy.testing._private.nosetester', '_lzma', '_sre', '_socket', 'scipy.integrate._dop', 'scipy.optimize._trustregion_constr.report', 'calendar', 'scipy.fft._pocketfft.pypocketfft', 'graph_peak_caller.postprocess.holecleaner', 'numpy.core._internal', 'scipy.optimize._lsq.common', 'pyvg.alignmentcollection', 'google', 'google.protobuf.descriptor_database', 'xml.dom', 'scipy.optimize._trlib._trlib', 'scipy.linalg.decomp_cholesky', 'sqlite3', 'graph_peak_caller.control', 'scipy.sparse.csgraph._reordering', 'Bio.SeqIO.XdnaIO', 'scipy.linalg', 'scipy.optimize._lsq.givens_elimination', 'google.protobuf', 'scipy.optimize.minpack', 'scipy.optimize.nnls', 'numpy.core.function_base', 'google.protobuf.message_factory', 'numpy.core._type_aliases', '_weakref', 'urllib.parse', 'scipy.integrate._ivp.radau', 'numpy.testing._private.decorators', '_ctypes', 'concurrent.futures.process', 'scipy.integrate._odepack', 'scipy.spatial.ckdtree', 'asyncio.selector_events', 'xml.dom.minicompat', 'offsetbasedgraph.sequencegraph', 'graph_peak_caller.shiftestimation.shift_estimation_multigraph', '__future__', 'Bio.SeqIO.NibIO', 'site', 'scipy.stats.contingency', 'scipy.ndimage._ni_docstrings', 'email.errors', 'scipy.spatial.transform._rotation_spline', 'Bio.SeqRecord', 'scipy._lib', 'Bio.SeqFeature', 'itertools', 'numpy.lib', 'scipy.optimize', 'Bio.SeqIO.InsdcIO', 'scipy.sparse.base', 'scipy.optimize._lsq.lsq_linear', 'argparse', 'numpy.polynomial.hermite_e', 'asyncio.events', 'posix', 'scipy.sparse.sputils', 'scipy.interpolate._fitpack', '_string', 'matplotlib.rcsetup', 'scipy.optimize._trustregion_krylov', 'dis', 'scipy.stats.mvn', 'pyvg', 'scipy.interpolate.polyint', 'scipy.sparse.linalg.isolve.utils', 'google.protobuf.descriptor_pool', 'Bio.SeqIO.SwissIO', 'scipy.stats._multivariate', 'email.charset', 'numpy.core.umath', 'numpy.lib.index_tricks', 'scipy.fft._backend', 'scipy._lib._util', 'Bio.SeqIO.QualityIO', 'numpy.compat._inspect', 'scipy.stats._discrete_distns', 'Bio.Data', 'numpy.core.overrides', 'scipy.ndimage._ni_support', 'email._encoded_words', '_json', 'cython_runtime', 'ssl', 'logging', 'ipaddress', 'scipy.linalg.basic', 'pprint', 'scipy.optimize._lbfgsb', 'scipy._lib.six', 'grp', 'Bio.Sequencing', 'Bio.Data.CodonTable', 'scipy.sparse.csgraph._validation', 'graph_peak_caller.sparsepvalues', 'scipy.special.lambertw', 'numpy.core._string_helpers', 'Bio.GenBank.utils', 'graph_peak_caller.peakfasta', 'tempfile', 'numpy.lib.arraysetops', 'scipy', 'string', 'scipy.optimize._slsqp', 'matplotlib', 'unittest.main', 'multiprocessing', 'distutils.version', '_opcode', '_pickle', 'scipy.optimize._trustregion_dogleg', 'scipy.stats.kde', 'numpy.lib.polynomial', 'Bio.Seq', 'genericpath', 'scipy.linalg._matfuncs_sqrtm', 'pyvg.sequences', 'numpy.testing._private', 'async_generator._version', 'scipy.sparse.linalg.dsolve', 'scipy.optimize._trustregion_ncg', 'time', 'graph_peak_caller.sample', 'scipy._lib._uarray', 'async_generator._impl', 'sys', 'threading', 'hashlib', 'numpy.lib._iotools', 'scipy._lib._ccallback_c', 'scipy.integrate.vode', 'scipy.optimize._trustregion_constr.minimize_trustregion_constr', 'offsetbasedgraph.interval', 'scipy.optimize._constraints', 'graph_peak_caller.shiftestimation.shiftestimation', 'bisect', 'asyncio.base_subprocess', 'google.protobuf.text_format', 'zipimport', 'scipy.integrate._ivp.bdf', 'scipy.optimize._lsap', 'concurrent', 'scipy.sparse.linalg.matfuncs', 'scipy.linalg._flinalg', 'google.protobuf.internal.type_checkers', 'email._policybase', 'textwrap', 'numpy.core', 'scipy.linalg._decomp_ldl', 'urllib', 'keyword', 'locale', 'asyncio.constants', 'scipy.special._comb', 'scipy.linalg.decomp_lu', 'importlib', 'io', 'sqlite3.dbapi2', 'graph_peak_caller.sparsediffs', 'matplotlib.cbook', 'scipy.special._basic', 'scipy.misc.doccer', 'linecache', 'scipy.stats._stats', 'queue', 'asyncio.transports', 'subprocess', 'offsetbasedgraph.sequencegraphv2', 'gc', 'scipy.sparse.linalg.isolve.lsmr', 'random', 'copy', 'Bio.Align', '_frozen_importlib_external', 'sre_constants', 'distutils', 'scipy.constants.codata', 'scipy.special._ufuncs', 'matplotlib.colors', 'numpy.core._multiarray_tests', 'platform', 'graph_peak_caller.haplotyping', 'numpy.random._philox', '__mp_main__', 'scipy.special._spherical_bessel', 'scipy.ndimage', 'graph_peak_caller.postprocess.segmentanalyzer', 'pyvg.vg_pb2', 'numpy.random.mtrand', 'reprlib', 'glob', 'numpy.lib.twodim_base', 'scipy.linalg.cython_lapack', 'Bio.SeqIO.AbiIO', '_sitebuiltins', 'scipy.ndimage.interpolation', 'google.protobuf.symbol_database', 'pathlib', 'scipy.stats._constants', 'xml.sax', '_imp', 'scipy.sparse.lil', 'scipy.linalg._flapack', 'ast', 'scipy.optimize._shgo_lib.triangulation', 'graph_peak_caller.control.linearmap', 'Bio.Sequencing.Ace', 'scipy.linalg.decomp', 'scipy._lib._uarray._uarray', 'google.protobuf.internal.api_implementation', 'numpy.ma.core', 'copyreg', 'marshal', 'scipy.stats._continuous_distns', 'numpy.linalg', 'importlib.util', 'pyfaidx', 'scipy.interpolate._pade', 'graph_peak_caller.analysis.peakscomparer', 'lzma', 'decimal', 'multiprocessing.util', 'graph_peak_caller.summits', 'offsetbasedgraph.directedinterval', 'unittest', 'numpy.testing', 'scipy.stats._hypotests', 'graph_peak_caller.control.linearpileup', 'asyncio.queues', 'scipy.sparse.csgraph._min_spanning_tree', 'scipy.stats.mstats_extras', 'email.quoprimime', 'scipy.stats.distributions', 'math', 'scipy.fft._realtransforms', 'collections', 'xml.sax.xmlreader', 'scipy.integrate.odepack', 'scipy.sparse._sparsetools', 'Bio.SeqIO.FastaIO', 'scipy.sparse.linalg.dsolve.linsolve', 'numpy.core.defchararray', 'Bio.Alphabet', 'scipy.fft._pocketfft.basic', 'scipy.linalg.decomp_svd', 'scipy.integrate._ivp.base', 'scipy.ndimage._nd_image', 'scipy.sparse.linalg.eigen.arpack.arpack', 'scipy.stats._stats_mstats_common', 'scipy.linalg.blas', 'bz2', 'typing', 'pyexpat.model', 'numpy.lib._datasource', 'scipy.stats.morestats', 'matplotlib.fontconfig_pattern', 'scipy.linalg.special_matrices', 'scipy.optimize._minpack', 'numpy.core.numeric', 'scipy.interpolate.ndgriddata', 'scipy.linalg.decomp_qr', 'numpy.core.machar', 'datetime', 'numpy.lib.financial', 'scipy.linalg._decomp_update', 'scipy.interpolate._ppoly', 'scipy.special', 'scipy.linalg.matfuncs', 'numpy.core._exceptions', 'asyncio', 'xml.etree', 'graph_peak_caller.postprocess.reference_based_max_path', 'pickle', 'encodings', 'numbers', 'scipy.sparse.dok', 'importlib._bootstrap_external', 'numpy.__config__', 'scipy.sparse.linalg.dsolve._superlu', 'numpy.matrixlib.defmatrix', 'graph_peak_caller.analysis.analysis_interface', 'scipy.stats._rvs_sampling', 'dateutil._version', 'scipy.optimize._root', 'numpy.random._pcg64', '_collections', 'scipy.interpolate.interpolate', 'scipy.sparse.data', 'scipy.stats', 'unittest.signals', 'scipy.linalg._decomp_qz', 'numpy.polynomial.polynomial', '_thread', 'unittest.result', 'scipy.optimize._lsq', 'numpy.fft._pocketfft_internal', 'scipy.stats._tukeylambda_stats', 'scipy.integrate._ivp.rk', 'numpy.polynomial._polybase', 'scipy.sparse.linalg.dsolve._add_newdocs', 'scipy.spatial.kdtree', 'scipy.misc', 'scipy.linalg._expm_frechet', 'scipy.optimize._basinhopping', 'graph_peak_caller.postprocess.maxpaths', 'google.protobuf.message', 'graph_peak_caller.control.controlgenerator', 'scipy.optimize._shgo_lib', 'scipy.sparse.linalg._onenormest', 'multiprocessing.reduction', 'scipy._lib._ccallback', 'scipy.optimize._trustregion_constr.equality_constrained_sqp', 'asyncio.unix_events', 'abc', 'numpy.lib.type_check', 'numpy.core.multiarray', 'google.protobuf.internal.message_listener', 'multiprocessing.connection', 'Bio._utils', 'six', 'unittest.case', 'numpy.polynomial.legendre', '_sysconfigdata', 'scipy.spatial._distance_wrap', 'xml', 'scipy.sparse.compressed', 'google.protobuf.internal.extension_dict', 'os.path', 'scipy.interpolate.dfitpack', 'scipy.spatial', 'graph_peak_caller.callpeaks_interface', '_decimal', 'binascii', '_sqlite3', 'stream.stream', 'numpy.compat.py3k', 'scipy.ndimage.filters', 'dateutil', 'multiprocessing.process', 'email.header', '_ssl', 'scipy.sparse._index', 'asyncio.compat', 'scipy.integrate', '__main__', 'scipy.optimize._dual_annealing', 'scipy.optimize._bglu_dense', 'numpy.lib.mixins', 'numpy.polynomial', '_struct', 'numpy._globals', 'Bio.Data.IUPACData', 'operator', 'graph_peak_caller.analysis.venn_diagrams', 'scipy.__config__', 'scipy.special.sf_error']
+DEBUG:matplotlib:CACHEDIR=/home/fieldp/.cache/matplotlib
+DEBUG:matplotlib.font_manager:Using fontManager instance from /home/fieldp/.cache/matplotlib/fontlist-v300.json
+DEBUG:matplotlib.pyplot:Loaded backend agg version unknown.
+2023-02-09 11:49:16,960, INFO: Sample files: ['alignments.json']
+2023-02-09 11:49:16,960, INFO: Using graphs: ['ch19.nobg']
+2023-02-09 11:49:16,960, INFO: Will use sequence graphs. ['ch19.nobg.sequences']
+2023-02-09 11:49:16,960, INFO: Using graphs from data directory ./
+2023-02-09 11:49:16,960, INFO: Will use [''] as extra experiments names for each run, based on graph file names.If only running on single graph, this should be empty.
+2023-02-09 11:49:16,960, WARNING: Did not find linear map for  for graph ch19.nobg. Will create.
+2023-02-09 11:49:16,960, WARNING: Did not find linear map for  for graph ch19.nobg. Will create.
+2023-02-09 11:49:17,422, INFO: Getting topologically sorted nodes
+2023-02-09 11:49:17,422, INFO: 0 nodes processed
+Traceback (most recent call last):
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/bin/graph_peak_caller"", line 8, in <module>
+    sys.exit(main())
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/graph_peak_caller/command_line_interface.py"", line 36, in main
+    run_argument_parser(sys.argv[1:])
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/graph_peak_caller/command_line_interface.py"", line 673, in run_argument_parser
+    args.func(args)
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/graph_peak_caller/callpeaks_interface.py"", line 182, in run_callpeaks2
+    create_linear_map(graph, linear_map_name)
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/graph_peak_caller/util.py"", line 6, in create_linear_map
+    linear_map = LinearMap.from_graph(ob_graph)
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/graph_peak_caller/control/linearmap.py"", line 104, in from_graph
+    node_ids = list(graph.get_topological_sorted_node_ids())
+  File ""/home/fieldp/miniconda3/envs/graph_peak_caller/lib/python3.5/site-packages/offsetbasedgraph/graph.py"", line 539, in get_topological_sorted_node_ids
+    assert not unfinished, unfinished
+AssertionError: {190627: 1}
+```
+
+Please let me know if any additional information would be helpful to determine what is going wrong. ",peterdfields,https://github.com/uio-bmi/graph_peak_caller/issues/13
+I_kwDOBfurec5lqu0R,peaks_to_linear error,OPEN,2023-05-11T12:09:53Z,2023-05-11T12:10:29Z,,"Hi,
+
+I'm using `graph_peak_caller` for graph-based ATAC-seq analysis, I followed the tutorial for profiling and all steps worked successfully. But when I finally got the peak file and I'd like to use the `peaks_to_linear` command to get the linear coordinates of the peak, the following error occurred:
+
+```
+$ graph_peak_caller peaks_to_linear 01_max_paths.intervalcollection index/01_linear_pathv2.interval 01 01_linear_peaks.bed
+2023-05-11 20:01:29,104, INFO: Converting peak 0
+Traceback (most recent call last):
+  File ""/share/home/miniconda3/bin/graph_peak_caller"", line 33, in <module>
+    sys.exit(load_entry_point('graph-peak-caller', 'console_scripts', 'graph_peak_caller')())
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 39, in main
+    run_argument_parser(sys.argv[1:])
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/command_line_interface.py"", line 679, in run_argument_parser
+    args.func(args)
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/analysis/analysis_interface.py"", line 384, in peaks_to_linear
+    linear_peaks = peaks.to_approx_linear_peaks(linear_path, args.chromosome)
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/peakcollection.py"", line 249, in to_approx_linear_peaks
+    linear_peaks.append(peak.to_approx_linear_peak(linear_path, chromosome))
+  File ""/share/home/software/graph_peak_caller/graph_peak_caller/peakcollection.py"", line 73, in to_approx_linear_peak
+    first_node = intersecting_nodes[0]
+IndexError: list index out of range
+```
+
+Any suggestions?
+
+Yumin",sdws1983,https://github.com/uio-bmi/graph_peak_caller/issues/14
+I_kwDOBfurec5rnOK3,pip3 version of preprocess_interface.py has incorrect line 84,OPEN,2023-07-14T19:38:29Z,2023-07-14T19:38:29Z,,"pip3 version of preprocess_interface.py returns list, not string:
+reads_base_name = args.vg_json_reads_file_name.split(""."")[0:-1]
+Resulting mismatched types in string concatenation at line 102 cause program to crash.
+This appears to be fixed in the main repository:
+reads_base_name = '.'.join(args.vg_json_reads_file_name.split(""."")[0:-1])
+
+Please release a patch to pip!",adadiehl,https://github.com/uio-bmi/graph_peak_caller/issues/15

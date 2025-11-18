@@ -1,0 +1,791 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxNTQwMTUwNTU=,multivariate_combinatorial_Chromstar error: ,CLOSED,2016-05-10T14:06:10Z,2016-06-08T09:02:38Z,2016-06-08T09:02:37Z,"Hi, 
+I try to find combinatorial chromatin states in my data (in bam format),
+when I run the code below: 
+
+load(file=""experiment_table_dai.RData"")
+library(chromstaR)
+inputfolder <- file.path(dir, 'bam_files')
+outputfolder <- file.path(dir, 'dai_result')
+
+Chromstar(inputfolder, experiment.table=experiment_table_dai,
+          outputfolder=outputfolder, numCPU=10, binsize=1000, mode='full')
+
+Then i got the error: 
+Running multivariate ...Error in { :
+  task 1 failed - ""when the supplied 'seqlengths' vector is named, the names must match the seqnames""
+
+Please help me!
+",biobai,https://github.com/ataudt/chromstaR/issues/1
+MDU6SXNzdWUxNjIzNTE3ODU=,Additional options,CLOSED,2016-06-26T22:43:25Z,2016-08-18T07:45:26Z,2016-08-18T07:45:26Z,"Hej Aaron!
+
+I added two additional options to my fork of chromstaR, one for keeping the posteriors per state (and not only per sample, as already possible) and one for blacklisting certain genomic ranges (i.e. removing overlapping bins before any analysis; this was already partly implemented). If you'd like to add these options to chromstaR I'll happily send you my code/file a pull request.
+
+Something I discovered while studying `bedimport.R`: according to [UCSC](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) 
+
+> the first 100 bases of a chromosome are defined as chromStart=0, chromEnd=100, and span the bases numbered 0-99. 
+
+I.e. (as mentioned in `export.R`) one has to convert half-open zero-based intervals to closed one-based intervals when importing bed files. So shouldn't it instead of
+
+``` R
+ranges=IRanges(start=data[,2]+1, end=data[,3]+1)
+```
+
+in `bedimport.R` rather be
+
+``` R
+ranges=IRanges(start=data[,2]+1, end=data[,3])
+```
+
+?
+",devmotion,https://github.com/ataudt/chromstaR/issues/3
+MDU6SXNzdWUyMjQ0NTg4NjI=,Error in collapseBins,CLOSED,2017-04-26T12:58:15Z,2017-05-27T14:02:19Z,2017-05-27T14:02:19Z,"Dear Aaron,
+
+I have having a problem with chormstaR regarding binning. I have attached the code and my ""cell mark"" file for viewing. It's weird because when I run the same thing on another subset of samples everything runs just fine. Please let me know if there is anything I am doing improperly.
+Thanks very much for your time!
+
+> Chromstar(inputfolder, experiment.table = H3K4me3_H3K27me3_BRAF, outputfolder = outputfolder, mode = 'combinatorial')
+================
+Binning the data
+================
+Obtaining chromosome length information from file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M123-P009_E-downsample.sorted.bam ... 0.14s
+Making fixed-width bins for bin size 1000 ... 2.84s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M123-P009_E-downsample.sorted.bam ... 0.03s
+Counting overlaps for binsize 1000 ... 7.43s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/H3K4me3-BRAF-rep1_binsize1000.RData ... 1.82s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M123-P009_F-downsample.sorted.bam ... 0.19s
+Counting overlaps for binsize 1000 ... 8.6s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/H3K27me3-BRAF-rep1_binsize1000.RData ... 1.83s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M123-P009_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 7.85s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M123-P009_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M137-P008_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 8.55s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M137-P008_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M233-P010_G-downsample.sorted.bam ... 0.18s
+Counting overlaps for binsize 1000 ... 7.56s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M233-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M263-P011_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 7.4s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M263-P011_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M275-P008_G-downsample.sorted.bam ... 0.17s
+Counting overlaps for binsize 1000 ... 8.62s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M275-P008_G-downsample.sorted.bam_binsize1000.RData ... 1.79s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M305-P009_G-downsample.sorted.bam ... 0.18s
+Counting overlaps for binsize 1000 ... 7.35s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M305-P009_G-downsample.sorted.bam_binsize1000.RData ... 1.79s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M306-P008_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 7.83s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M306-P008_G-downsample.sorted.bam_binsize1000.RData ... 1.82s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M357-P010_G-downsample.sorted.bam ... 0.15s
+Counting overlaps for binsize 1000 ... 7.36s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M357-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M409-P011_G-downsample.sorted.bam ... 0.21s
+Counting overlaps for binsize 1000 ... 7.35s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M409-P011_G-downsample.sorted.bam_binsize1000.RData ... 1.78s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M527-P010_G-downsample.sorted.bam ... 0.17s
+Counting overlaps for binsize 1000 ... 7.56s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M527-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.79s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M721-P010_G-downsample.sorted.bam ... 0.15s
+Counting overlaps for binsize 1000 ... 7.12s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M721-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M747-P008_G-downsample.sorted.bam ... 0.2s
+Counting overlaps for binsize 1000 ... 7.99s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M747-P008_G-downsample.sorted.bam_binsize1000.RData ... 1.79s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M749-P010_G-downsample.sorted.bam ... 0.15s
+Counting overlaps for binsize 1000 ... 7.44s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M749-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M762-P008_G-downsample.sorted.bam ... 0.15s
+Counting overlaps for binsize 1000 ... 8.17s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M762-P008_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M806-P011_G-downsample.sorted.bam ... 0.2s
+Counting overlaps for binsize 1000 ... 7.88s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M806-P011_G-downsample.sorted.bam_binsize1000.RData ... 1.79s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M807-P010_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 8.1s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M807-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.81s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M822-P010_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 8.6s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M822-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.84s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M827-P011_G-downsample.sorted.bam ... 0.16s
+Counting overlaps for binsize 1000 ... 7.7s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M827-P011_G-downsample.sorted.bam_binsize1000.RData ... 1.8s
+Reading header from /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample//SKCM-M857-P010_G-downsample.sorted.bam ... 0.21s
+Counting overlaps for binsize 1000 ... 7.4s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M857-P010_G-downsample.sorted.bam_binsize1000.RData ... 1.78s
+========================
+Calling univariate peaks
+========================
+Loading file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/H3K4me3-BRAF-rep1_binsize1000.RData
+Loading data from files ... 0.18s
+Loading input file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M123-P009_G-downsample.sorted.bam_binsize1000.RData
+Loading data from files ... 0.16s
+Correcting read counts for input ... 2.98s
+Fitting Hidden Markov Model ... 129.33s
+Calculating states from posteriors ... 8.02s
+Making segmentation ... 2.69s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/univariate/H3K4me3-BRAF-rep1_binsize1000.RData ... 5.71s
+Plotting to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/PLOTS/univariate-distributions/H3K4me3-BRAF-rep1_binsize1000.RData.pdf ... 4.31s
+Loading file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/H3K27me3-BRAF-rep1_binsize1000.RData
+Loading data from files ... 0.19s
+Loading input file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/binned/SKCM-M123-P009_G-downsample.sorted.bam_binsize1000.RData
+Loading data from files ... 0.13s
+Correcting read counts for input ... 2.64s
+Fitting Hidden Markov Model ... 88.68s
+Calculating states from posteriors ... 10.71s
+Making segmentation ... 2.66s
+Saving to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/univariate/H3K27me3-BRAF-rep1_binsize1000.RData ... 5.63s
+Plotting to file /Volumes/TCGA_CCLE_SKCM/TCGA_CCLE_SKCM_Pipeline_Runs_Apr2017/TCGA_SKCM_FINAL_15million_26samples_downsample_RUN/04aln_downsample/ChromstaR_BRAF/PLOTS/univariate-distributions/H3K27me3-BRAF-rep1_binsize1000.RData.pdf ... 6.05s
+==========================
+Calling multivariate peaks
+==========================
+mode = combinatorial
+----------------
+condition = BRAF
+----------------
+Getting coordinates ... 0.66s
+Extracting read counts ... 21.05s
+Getting combinatorial states ... 3.87s
+Computing pre z-matrix ... 0.02s
+Transfering values into z-matrix ... 18.3s
+Computing inverse of correlation matrix ... 8.15s
+Chromosome = chr1
+HMM: number of states = 4
+HMM: number of bins = 249250
+HMM: maximum number of iterations = 5000
+HMM: maximum running time = none
+HMM: epsilon = 0.01
+HMM: number of experiments = 38
+ Iteration              log(P)             dlog(P)    Time in sec
+         0                -inf                   -              0
+HMM: Precomputing densities ...
+ Iteration              log(P)             dlog(P)    Time in sec
+         0                -inf                   -              4
+         1    -20783058.215488                 inf              4
+         2    -20685646.047420        97412.168068              4
+         3    -20682917.978191         2728.069230              4
+         4    -20682754.553581          163.424610              4
+         5    -20682741.882194           12.671387              4
+         6    -20682740.721312            1.160882              4
+         7    -20682740.603291            0.118021              5
+         8    -20682740.590494            0.012797              5
+         9    -20682740.589034            0.001460              5
+HMM: Convergence reached!
+HMM: Recoding posteriors ...
+Error in collapseBins(df, column2collapseBy = column2collapseBy, columns2average = c(ind.scorecol),  : 
+  NAs in vector 'compare'
+
+##CellMarkFile
+file	mark	condition	replicate	pairedEndReads	controlFiles
+SKCM-M123-P009_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M123-P009_G-downsample.sorted.bam
+SKCM-M137-P008_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M137-P008_G-downsample.sorted.bam
+SKCM-M233-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M233-P010_G-downsample.sorted.bam
+SKCM-M263-P011_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M263-P011_G-downsample.sorted.bam
+SKCM-M275-P008_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M275-P008_G-downsample.sorted.bam
+SKCM-M305-P009_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M305-P009_G-downsample.sorted.bam
+SKCM-M306-P008_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M306-P008_G-downsample.sorted.bam
+SKCM-M357-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M357-P010_G-downsample.sorted.bam
+SKCM-M409-P011_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M409-P011_G-downsample.sorted.bam
+SKCM-M527-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M527-P010_G-downsample.sorted.bam
+SKCM-M721-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M721-P010_G-downsample.sorted.bam
+SKCM-M747-P008_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M747-P008_G-downsample.sorted.bam
+SKCM-M749-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M749-P010_G-downsample.sorted.bam
+SKCM-M762-P008_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M762-P008_G-downsample.sorted.bam
+SKCM-M806-P011_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M806-P011_G-downsample.sorted.bam
+SKCM-M807-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M807-P010_G-downsample.sorted.bam
+SKCM-M822-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M822-P010_G-downsample.sorted.bam
+SKCM-M827-P011_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M827-P011_G-downsample.sorted.bam
+SKCM-M857-P010_E-downsample.sorted.bam	H3K4me3	BRAF	1	FALSE	SKCM-M857-P010_G-downsample.sorted.bam
+SKCM-M123-P009_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M123-P009_G-downsample.sorted.bam
+SKCM-M137-P008_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M137-P008_G-downsample.sorted.bam
+SKCM-M233-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M233-P010_G-downsample.sorted.bam
+SKCM-M263-P011_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M263-P011_G-downsample.sorted.bam
+SKCM-M275-P008_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M275-P008_G-downsample.sorted.bam
+SKCM-M305-P009_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M305-P009_G-downsample.sorted.bam
+SKCM-M306-P008_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M306-P008_G-downsample.sorted.bam
+SKCM-M357-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M357-P010_G-downsample.sorted.bam
+SKCM-M409-P011_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M409-P011_G-downsample.sorted.bam
+SKCM-M527-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M527-P010_G-downsample.sorted.bam
+SKCM-M721-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M721-P010_G-downsample.sorted.bam
+SKCM-M747-P008_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M747-P008_G-downsample.sorted.bam
+SKCM-M749-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M749-P010_G-downsample.sorted.bam
+SKCM-M762-P008_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M762-P008_G-downsample.sorted.bam
+SKCM-M806-P011_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M806-P011_G-downsample.sorted.bam
+SKCM-M807-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M807-P010_G-downsample.sorted.bam
+SKCM-M822-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M822-P010_G-downsample.sorted.bam
+SKCM-M827-P011_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M827-P011_G-downsample.sorted.bam
+SKCM-M857-P010_F-downsample.sorted.bam	H3K27me3	BRAF	1	FALSE	SKCM-M857-P010_G-downsample.sorted.bam",cnova1126,https://github.com/ataudt/chromstaR/issues/5
+MDU6SXNzdWUyMjUxMzk4NjM=,Error in plotFoldEnrichment,CLOSED,2017-04-28T17:07:10Z,2017-05-22T13:47:17Z,2017-05-22T13:47:16Z,"Dear Aaron,
+
+In addition to an issue with binning, I am also having a problem regarding the plotFoldEnrichment function. I have attached both the code and associated plot for both counts and combinations. I am not sure why H3K4me3 is displayed properly on the count-based plot but not on the combination-based plot? 
+Thanks again for you time and assistance!
+
+plotFoldEnrichment(hmm = model, annotation = genes, bp.around.annotation = 15000, what = counts) + ggtitle(""Fold Enichment within Gene Body"") + xlab('Distance from Gene Body in bp')
+
+plotFoldEnrichment(hmm = model, annotation = genes, bp.around.annotation = 15000, what = combinations) + ggtitle(""Fold Enichment within Gene Body"") + xlab('Distance from Gene Body in bp')
+
+![combinationplot](https://cloud.githubusercontent.com/assets/28025716/25539107/2a169c12-2c0b-11e7-948c-0be8b0d0bf09.png)
+![countplot](https://cloud.githubusercontent.com/assets/28025716/25539110/2df351cc-2c0b-11e7-8bd8-93c404e61606.png)
+",cnova1126,https://github.com/ataudt/chromstaR/issues/6
+MDU6SXNzdWUyNTkxNDY0ODU=,Chromstar fails if options(stringsAsFactors=FALSE),CLOSED,2017-09-20T12:33:47Z,2017-09-22T11:42:31Z,2017-09-22T11:42:31Z,"Hi Aaron,
+
+I (and many people that I know of) have got the following option set globally in R:
+
+```r
+options(stringsAsFactors = FALSE)
+```
+
+This makes your line https://github.com/ataudt/chromstaR/blob/00d9c089a90806b032222164c346aa15ce074686/R/combineMultivariates.R#L186
+
+create a `data.frame` that will not convert `character`s to `factor`s.
+
+In turn,
+
+https://github.com/ataudt/chromstaR/blob/00d9c089a90806b032222164c346aa15ce074686/R/combineMultivariates.R#L279
+
+creates an empty `levels` vector and later an all-`NA` `data.frame` that later fails with the cryptic error
+
+> Assigning transition groups ...Error in rowSums(zero.matrix) :
+> 'x' must be an array of at least two dimensions
+
+When creating the data.frame, you should use instead:
+
+```r
+combs.df <- as.data.frame(combs, stringsAsFactors = TRUE)
+```",mschubert,https://github.com/ataudt/chromstaR/issues/7
+MDU6SXNzdWUzNDA3Mjk0OTA=,Running multivariate ...Error in unserialize(socklist[[n]]) : error reading from connection,CLOSED,2018-07-12T17:27:41Z,2019-02-13T19:10:54Z,2019-02-13T19:10:54Z,"Hi, I had a problem running Chromstar that I don't know how to resolve. Could you me please?
+
+My exp table is:
+  file             mark    condition replicate pairedEndReads controlFiles          
+1 CHTH2_nodup.bam  H3K9Ac  DMSO              1 TRUE           CHTH1_nodup.bam 
+2 CHTH3_nodup.bam  H3K27Ac DMSO              1 TRUE           CHTH1_nodup.bam 
+3 CHTH6_nodup.bam  H3K9Ac  TH65              1 TRUE           CHTH5_nodup.bam 
+4 CHTH7_nodup.bam  H3K27Ac TH65              1 TRUE           CHTH5_nodup.bam 
+5 CHTH10_nodup.bam H3K9Ac  DMSO              2 TRUE           CHTH9_nodup.bam 
+6 CHTH11_nodup.bam H3K27Ac DMSO              2 TRUE           CHTH9_nodup.bam 
+7 CHTH14_nodup.bam H3K9Ac  TH65              2 TRUE           CHTH13_nodup.bam
+8 CHTH15_nodup.bam H3K27Ac TH65              2 TRUE           CHTH13_nodup.bam
+
+And the problem is:
+
+> Chromstar(""/work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools"", exp_table,base_dir,binsize = 1000, numCPU = 8, min.mapq = 0, mode = ""full"")
+================
+Binning the data
+================
+Obtaining chromosome length information from file /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH2_nodup.bam ... 0.02s
+Making fixed-width bins for bin size 1000 ... 0.38s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH2_nodup.bam ... 0.01s
+Counting overlaps for binsize 1000 ... 33.31s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K9Ac-DMSO-rep1_binsize1000.RData ... 0.31s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH3_nodup.bam ... 0.01s
+Counting overlaps for binsize 1000 ... 35.51s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K27Ac-DMSO-rep1_binsize1000.RData ... 0.32s
+Making bam-index file ... 34.88s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH6_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 36.28s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K9Ac-TH65-rep1_binsize1000.RData ... 0.32s
+Making bam-index file ... 38.49s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH7_nodup.bam ... 0.03s
+Counting overlaps for binsize 1000 ... 36.58s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K27Ac-TH65-rep1_binsize1000.RData ... 0.32s
+Making bam-index file ... 41s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH10_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 40.67s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K9Ac-DMSO-rep2_binsize1000.RData ... 0.32s
+Making bam-index file ... 38.63s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH11_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 36.16s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K27Ac-DMSO-rep2_binsize1000.RData ... 0.33s
+Making bam-index file ... 41.48s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH14_nodup.bam ... 0.01s
+Counting overlaps for binsize 1000 ... 38.77s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/H3K9Ac-TH65-rep2_binsize1000.RData ... 0.32s
+Making bam-index file ... 45.02s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH15_nodup.bam ... 0.01s
+Counting overlaps for binsize 1000 ... 43.43s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/HKK27Ac-TH65-rep2_binsize1000.RData ... 0.33s
+Making bam-index file ... 35.51s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH1_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 37.01s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/CHTH1_nodup.bam_binsize1000.RData ... 0.32s
+Making bam-index file ... 33.97s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH5_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 35.52s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/CHTH5_nodup.bam_binsize1000.RData ... 0.31s
+Making bam-index file ... 54.98s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH9_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 50.68s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/CHTH9_nodup.bam_binsize1000.RData ... 0.32s
+Making bam-index file ... 54.3s
+Reading header from /work/groups/schisto-th65-chipSeq/bowtie/nodup_samtools/CHTH13_nodup.bam ... 0.02s
+Counting overlaps for binsize 1000 ... 51.69s
+Saving to file /work/groups/schisto-th65-chipSeq/binned/CHTH13_nodup.bam_binsize1000.RData ... 0.32s
+========================
+Calling univariate peaks
+========================
+Setting up parallel execution with 8 threads ... 2.38s
+Univariate peak calling ... 79.36s
+==========================
+Calling multivariate peaks
+==========================
+mode = full
+Getting coordinates ... 0.1s
+Extracting read counts ... 0.87s
+Getting combinatorial states ... 0.6s
+Computing pre z-matrix ... 0.01s
+Transfering values into z-matrix ... 1.19s
+Computing inverse of correlation matrix ... 0.32s
+Setting up parallel multivariate with 8 threads ... 2.66s
+Running multivariate ...Error in unserialize(socklist[[n]]) : error reading from connection
+In addition: Warning message:
+In fixedWidthBins(chrom.lengths = chrom.lengths, chromosomes = conf[[""chromosomes""]],  
+
+
+Thank you for your attention",Lucas-Maciel,https://github.com/ataudt/chromstaR/issues/10
+MDU6SXNzdWUzNDEwMDY2OTA=,Integration with other models or segmentations,CLOSED,2018-07-13T12:49:31Z,2019-02-13T19:12:16Z,2019-02-13T19:12:16Z,"Hi and thank you for the package, I'm going to definitely give it a try. 
+I have a question, is thre any way segmentations coming from other approaches (i.e. ChromHMM) could be integrated in the analysis presented in the vignette?
+I have inherited some segmentations and being able to apply for example the plotEnrichment function would be really interested
+
+Either way, I'm going to use this package into my pipes from now own
+Thank you for your time",josruirod,https://github.com/ataudt/chromstaR/issues/11
+MDU6SXNzdWU0MDY3MDMzODA=,Error at writing browser files,CLOSED,2019-02-05T09:54:34Z,2020-04-01T13:32:08Z,2020-04-01T13:32:08Z,"Hello, 
+
+I've finally been able to make chromstaR work on our servers, but I'm still running into some errors. Here is what is written on my terminal, and at the end the sessionInfo(). I've tried to make the error stopping the program in bold, just copying here (at the step of exporting browser files): 
+**Error in (function (classes, fdef, mtable)  : 
+  unable to find an inherited method for function \u2018seqnames\u2019 for signature \u2018""NULL""\u2019
+Calls: Chromstar ... insertchr -> which -> grepl -> seqnames -> <Anonymous>
+Exécution arrêtée**
+
+Would you have any insights? I'm running this version of R in a conda environment to prevent any problem with already installed packages.
+
+If you can be of any help... Thanks a lot!!
+
+`Rscript /homegalio1/eq_jcl/Leo_OpenBar/chromstaR/chromstaR_launch.R --inputFolder ./BAM --outputFolder ./2019_essai_wrapper_params_bin1000_sep_h3k27me3 --experimentTable ./chromstaR_experiment_table_test.tsv --analysisMode separate --binSize 1000 --numCPU 4`
+
+> Le chargement a nécessité le package : GenomicRanges
+> Le chargement a nécessité le package : stats4
+> Le chargement a nécessité le package : BiocGenerics
+> Le chargement a nécessité le package : parallel
+> 
+> Attachement du package : \u2018BiocGenerics\u2019
+> 
+> The following objects are masked from \u2018package:parallel\u2019:
+> 
+>     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+>     clusterExport, clusterMap, parApply, parCapply, parLapply,
+>     parLapplyLB, parRapply, parSapply, parSapplyLB
+> 
+> The following objects are masked from \u2018package:stats\u2019:
+> 
+>     IQR, mad, sd, var, xtabs
+> 
+> The following objects are masked from \u2018package:base\u2019:
+> 
+>     anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
+>     colnames, colSums, dirname, do.call, duplicated, eval, evalq,
+>     Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
+>     lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
+>     pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,
+>     rowSums, sapply, setdiff, sort, table, tapply, union, unique,
+>     unsplit, which, which.max, which.min
+> 
+> Le chargement a nécessité le package : S4Vectors
+> 
+> Attachement du package : \u2018S4Vectors\u2019
+> 
+> The following object is masked from \u2018package:base\u2019:
+> 
+>     expand.grid
+> 
+> Le chargement a nécessité le package : IRanges
+> Le chargement a nécessité le package : GenomeInfoDb
+> Le chargement a nécessité le package : ggplot2
+> Le chargement a nécessité le package : chromstaRData
+> 
+> Please visit https://github.com/ataudt/chromstaR for the latest bugfixes and features.
+> 
+> 
+> Received :
+>   --inputFolder
+>   ./BAM
+>   --outputFolder
+>   ./2019_essai_wrapper_params_bin1000_sep_h3k27me3
+>   --experimentTable
+>   ./chromstaR_experiment_table_test.tsv
+>   --analysisMode
+>   separate
+>   --binSize
+>   1000
+>   --numCPU
+>   4
+> 
+> [1] ""--inputFolder""
+> [1] ""--outputFolder""
+> [1] ""--experimentTable""
+> [1] ""--analysisMode""
+> [1] ""--binSize""
+> [1] ""conversion""
+> [1] ""double""
+> [1] ""--numCPU""
+> [1] ""conversion""
+> [1] ""double""
+
+> Setting up parallel execution with 4 threads ... 1.19s
+> 
+> Binning the data
+> 
+> Obtaining chromosome length information from file ./BAM/jurkat_WT_H3K27me3_CellSign_9733S_LP1021_bw2align_hg19.sort.bam ... 0.07s
+> Making fixed-width bins for bin size 1000 ... 4.47s
+> Making fixed-width bins for bin size 500 ... 5.54s
+> Binning data ... 234.49s
+> Binning control ... 250.12s
+> 
+> Calling univariate peaks
+> 
+
+> Univariate peak calling ... 297.22s
+
+> Analyzing replicates
+
+> Making segmentation ... 3.82s
+> Saving to file ./2019_essai_wrapper_params_bin1000_sep_h3k27me3/replicates/H3K27me3-Jurkat_binsize1000_stepsize500.RData ... 22.08s
+> Making segmentation ... 3.02s
+> Saving to file ./2019_essai_wrapper_params_bin1000_sep_h3k27me3/replicates/H3K27me3-Xenograft23_binsize1000_stepsize500.RData ... 20.81s
+> Combining replicate HMMs
+> Processing mark-condition 1 ... 5.76s
+> Processing mark-condition 2 ... 5.47s
+> Concatenating mark-conditions ... 10.15s
+> Making combinations ... 11.94s
+> Reassigning levels ... 0.46s
+> Assigning transition groups ... 4.32s
+> Assigning combinatorial states ... 0.24s
+> Transferring counts and posteriors ... 1.36s
+> Making segmentation ... 6.95s
+> Adding differential score ... 0.02s
+> Getting maximum posterior in peaks ... 2.08s
+> Redoing segmentation for each condition separately ... 1.74s
+> Saving to file ./2019_essai_wrapper_params_bin1000_sep_h3k27me3/combined/combined_mode-separate_binsize1000_stepsize500.RData ... 20.61s
+> Plotting read count correlation ... 0.79s
+
+> Exporting browser files
+
+> Writing to file ./2019_essai_wrapper_params_bin1000_sep_h3k27me3/BROWSERFILES/combined_mode-separate_binsize1000_stepsize500_combinations_Jurkat.bed.gz ... 0.46s
+> Writing to file ./2019_essai_wrapper_params_bin1000_sep_h3k27me3/BROWSERFILES/combined_mode-separate_binsize1000_stepsize500_combinations_Xenograft23.bed.gz ... 0.68s
+> **Error in (function (classes, fdef, mtable)  : 
+>   unable to find an inherited method for function \u2018seqnames\u2019 for signature \u2018""NULL""\u2019
+> Calls: Chromstar ... insertchr -> which -> grepl -> seqnames -> <Anonymous>
+> Exécution arrêtée**
+> 
+
+
+`> sessionInfo()`
+
+> R version 3.5.1 (2018-07-02)
+> Platform: x86_64-conda_cos6-linux-gnu (64-bit)
+> Running under: Debian GNU/Linux 8 (jessie)
+> 
+> Matrix products: default
+> BLAS/LAPACK: /homegalio1/eq_jcl/miniconda3/envs/leo_env_R_3_5_1/lib/R/lib/libRblas.so
+> 
+> locale:
+>  [1] LC_CTYPE=fr_FR.UTF-8       LC_NUMERIC=C              
+>  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=fr_FR.UTF-8    
+>  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=fr_FR.UTF-8   
+>  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
+>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+> [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
+> 
+> attached base packages:
+> [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+> [8] methods   base     
+> 
+> other attached packages:
+> [1] chromstaR_1.7.2      chromstaRData_0.99.4 ggplot2_3.1.0       
+> [4] GenomicRanges_1.34.0 GenomeInfoDb_1.18.1  IRanges_2.16.0      
+> [7] S4Vectors_0.20.1     BiocGenerics_0.28.0 
+> 
+> loaded via a namespace (and not attached):
+>  [1] Rcpp_1.0.0                  pillar_1.3.1               
+>  [3] compiler_3.5.1              plyr_1.8.4                 
+>  [5] XVector_0.22.0              bindr_0.1.1                
+>  [7] tools_3.5.1                 iterators_1.0.10           
+>  [9] bitops_1.0-6                zlibbioc_1.28.0            
+> [11] lattice_0.20-38             tibble_2.0.1               
+> [13] gtable_0.2.0                pkgconfig_2.0.2            
+> [15] rlang_0.3.1                 Matrix_1.2-15              
+> [17] foreach_1.4.4               DelayedArray_0.8.0         
+> [19] mvtnorm_1.0-8               bindrcpp_0.2.2             
+> [21] GenomeInfoDbData_1.2.0      stringr_1.3.1              
+> [23] withr_2.1.2                 dplyr_0.7.8                
+> [25] Biostrings_2.50.2           grid_3.5.1                 
+> [27] tidyselect_0.2.5            Biobase_2.42.0             
+> [29] glue_1.3.0                  R6_2.3.0                   
+> [31] BiocParallel_1.16.5         reshape2_1.4.3             
+> [33] purrr_0.3.0                 magrittr_1.5               
+> [35] bamsignals_1.14.0           Rsamtools_1.34.1           
+> [37] matrixStats_0.54.0          GenomicAlignments_1.18.1   
+> [39] codetools_0.2-16            scales_1.0.0               
+> [41] SummarizedExperiment_1.12.0 assertthat_0.2.0           
+> [43] colorspace_1.4-0            stringi_1.2.4              
+> [45] RCurl_1.95-4.11             lazyeval_0.2.1             
+> [47] munsell_0.5.0               doParallel_1.0.14          
+> [49] crayon_1.3.4               
+> ",LeoPioger,https://github.com/ataudt/chromstaR/issues/12
+MDU6SXNzdWU0NjY5OTQxNDQ=,"Error in combining multivariate HMMS (Error in `levels<-`(`*tmp*`, value = as.character(levels)): factor level [8] is duplicated)",CLOSED,2019-07-11T16:31:26Z,2019-07-12T13:38:32Z,2019-07-12T13:38:32Z,"Hi,
+
+I'm running Chromstar in differential mode, but I got stuck with an error during the `Combining multivariate HMMs` step. Below is the error:
+
+```
+===========================
+Combining multivariate HMMs
+===========================
+Processing HMM 1 ... 0.78s
+Processing HMM 2 ... 0.77s
+Processing HMM 3 ... 1.03s
+Processing HMM 4 ... 0.56s
+Processing HMM 5 ... 0.66s
+Processing HMM 6 ... 0.54s
+Concatenating HMMs ... 1.07s
+Making combinations ...Error in `levels<-`(`*tmp*`, value = as.character(levels)) :
+  factor level [8] is duplicated
+Calls: Chromstar ... stateBrewer -> state.brewer -> data.frame -> factor
+In addition: There were 50 or more warnings (use warnings() to see the first 50)
+Execution halted
+```
+I'm not sure what the problem is, but it seems that happens when calling the `combineMultivariates()` function. Within that function I ran the section after ""Making combinations ..."", and it seems that the binary.matrix option of the `stateBrewer()` is the one responsible for the error (I ran the function without it and it was okay)
+
+I leave a Dropbox [link](https://www.dropbox.com/sh/vnlj5z14w9e0rtw/AADZbnWbhEsunQ4EBKw14JAAa?dl=0) to reproduce the error
+
+Thanks",tomszar,https://github.com/ataudt/chromstaR/issues/13
+MDU6SXNzdWU0NzMzNzk1NTk=,"Error in counts[, i1, ] <- hmm$bincounts$counts",CLOSED,2019-07-26T14:12:21Z,2020-10-21T17:52:50Z,2020-10-21T17:52:50Z,"Hi, 
+Thanks for the useful tool.
+
+When I try to combine H3K4me1, H3K27ac and ATAC data, I got an error, see below:
+however, H3K4me1 and H3K27ac is ok, H3K27ac and ATAC also got the error, so I guess it is the ATAC data that is problematic.
+
+:
+............
+............
+Getting coordinates ... 2.31s
+Extracting read counts ...Error in counts[, i1, ] <- hmm$bincounts$counts : 
+  number of items to replace is not a multiple of replacement length
+
+.............
+.............
+
+Looking forward to your reply!
+
+Zorro
+20190726
+",zorrodong,https://github.com/ataudt/chromstaR/issues/14
+MDU6SXNzdWU3MjE2ODMyNjA=,Issue with duplicates on table,CLOSED,2020-10-14T18:25:12Z,2020-10-21T18:20:22Z,2020-10-21T18:20:22Z,"Hi,
+
+I get the following error when trying to run chromstaR on differential mode for chromatin states:
+
+Error in check.experiment.table(exp.table) : 
+  Duplicated IDs detected. Check your experiment.table: K27ac-Ctrl-rep1 (1), K27ac-Ctrl-rep2 (1), K27ac-RAS-rep1 (5), K27ac-RAS-rep2 (5), K4me1-Ctrl-rep1 (1), K4me1-Ctrl-rep2 (1), K4me1-RAS-rep1 (5), K4me1-RAS-rep2 (5)
+
+My table looks like this:
+
+![Screen Shot 2020-10-14 at 2 23 45 PM](https://user-images.githubusercontent.com/49791648/96029593-dfbb3200-0e28-11eb-87f0-546ed7ec28c6.png)
+
+I think all my labels are unique, so I am not sure where the issue is.
+
+This is my session info:
+
+> sessionInfo()
+R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.7
+
+chromstaR version: 1.14.1
+
+
+
+",rm1238,https://github.com/ataudt/chromstaR/issues/15
+MDU6SXNzdWU3MjM0MDA1MDE=,Error when running Differential Mode for chromatin states,CLOSED,2020-10-16T17:24:15Z,2020-10-23T20:21:29Z,2020-10-23T20:21:28Z,"Hello again,
+
+I am trying to run the following command on chromstaR and am getting the following error:
+
+> Chromstar(inputfolder = inputfolder,
+          experiment.table = sampleTable,
+          outputfolder = outputfolder,
+          numCPU = 4,
+          mode= ""differential"",
+          binsize = 200,
+          eps.univariate = 0.01,
+          eps.multivariate = 0.01)
+
+Here is the output with the error (error is highlighted at the end of text):
+
+Setting up parallel execution with 4 threads ... 0.96s
+================
+Binning the data
+================
+Obtaining chromosome length information from file .//EV_K27ac_1_dedup_blacklisted_merge.bam ... 0.03s
+Making fixed-width bins for bin size 200 ... 6.85s
+Making fixed-width bins for bin size 100 ... 14.28s
+Binning data ... 14.07s
+Binning control ... 8.37s
+========================
+Calling univariate peaks
+========================
+Univariate peak calling ... 0.1s
+==========================
+Calling multivariate peaks
+==========================
+mode = differential
+------------
+mark = K27ac
+------------
+------------
+mark = K4me1
+------------
+===========================
+Combining multivariate HMMs
+===========================
+Processing HMM 1 ... 112.32s
+Processing HMM 2 ... 108.74s
+Concatenating HMMs ... 94.04s
+Making combinations ... 124.04s
+Reassigning levels ... 5.19s
+Assigning transition groups ... 28.06s
+Assigning combinatorial states ... 1.55s
+Transferring counts and posteriors ... 5.46s
+Making segmentation ... 165.73s
+Adding differential score ... 0.47s
+Getting maximum posterior in peaks ... 17.1s
+**Redoing segmentation for each condition separately ...Error: subscript contains invalid names**
+
+Any help with how to sort out this issue would be most appreciated.
+
+Ricardo",rm1238,https://github.com/ataudt/chromstaR/issues/16
+MDU6SXNzdWU3MjgxMDMwMzA=,Help in understanding the plot,OPEN,2020-10-23T10:27:39Z,2020-10-23T20:56:48Z,,"
+Hello, 
+I used chromstaR package in our lab. It was easy to use but I need a bit of your help to understand the computational aspect of it. I sincerely thank you for your time.
+
+![image](https://user-images.githubusercontent.com/4059349/96989586-36f68c00-1526-11eb-9139-9dec9bda3709.png)
+
+**I have 5 histone marks and I ran the ""Finding combinatorial chromatin states"" analysis. I obtained the following plot attached below. Being a biologist, I am facing issues to interpret the plot. I have a time-point data for 0hr, 1hr and 6hr of stress in a plant specie and I feel this tool can give interesting result. The above plot is only for the zero hour (no stress).**
+
+1) What does ""from"" and ""to"" mean here biologically ?
+2) Why is the heatmap  asymmetric? Going from A to B and B to A, the probabilities are different ?
+3) Why is the transition probability from going state A to state A not =1 ?
+4) How to I export the values (transition probabilities) used to plot the heatmap ?
+5) Which module should I use to generate the figure below for my data ? If I understand right, it talks about the presence of the classical marks and their combinations ?
+
+![image](https://user-images.githubusercontent.com/4059349/96992217-da956b80-1529-11eb-8450-b229d4758317.png)
+
+",sanchari24,https://github.com/ataudt/chromstaR/issues/17
+MDU6SXNzdWU3OTUwNTY3NDI=,Binning control error,CLOSED,2021-01-27T12:25:14Z,2021-01-27T14:22:20Z,2021-01-27T14:22:19Z,"Hello,
+I am new to using chromstaR and have encountered an error when trying to run task 3 from the manual (finding combinatorial chromatin states). I am using Bioconductor version 3.12 (BiocManager 1.30.10)
+I am running chromstaR on a cluster using a conda environment, my scripts start to run, but then I encounter the following error:
+**Binning control ...Error in { : 
+  task 1 failed - ""/home/data/ChIP/round/bam/SRR948821_22_23_trim20_merged_sorted.bam
+Error in FUN(X[[i]], ...): failed to open SAM/BAM file
+  file: '/home/data/ChIP/round/bam/SRR948821_22_23_trim20_merged_sorted.bam'**
+
+I would like to add, that this file is a control file in my experiment table file. The experiment table file is tab separated and has the following layout:
+file	mark	condition	replicate	pairedEndReads	controlFiles
+SRR948796_97_98_trim20_merged_repeat_sorted.bam	H3K4me3	AGSC	1	FALSE	SRR948821_22_23_trim20_merged_sorted.bam
+SRR948801_02_03_trim20_merged_sorted.bam	H27me3	AGSC	1	FALSE	SRR948821_22_23_trim20_merged_sorted.bam
+SRR948808_09_trim20_merged_sorted.bam	H3K27ac	AGSC	1	FALSE	SRR948821_22_23_trim20_merged_sorted.bam
+SRR948799.2_trim20_sorted.bam	H3K4me3	SC	1	FALSE	SRR948824.2_trim20_sorted.bam
+SRR948804.2_trim20_sorted.bam	H27me3	SC	1	FALSE	SRR948824.2_trim20_sorted.bam
+SRR948810.2_trim20_sorted.bam	H3K27ac	SC	1	FALSE	SRR948824.2_trim20_sorted.bam
+SRR948800.2_trim20_sorted.bam	H3K4me3	ST	1	FALSE	SRR948825.2_trim20_sorted.bam
+SRR948805.2_trim20_sorted.bam	H27me3	ST	1	FALSE	SRR948825.2_trim20_sorted.bam
+SRR948811.2_trim20_sorted.bam	H3K27ac	ST	1	FALSE	SRR948825.2_trim20_sorted.bam
+
+The script did generate some binned data files but no plots.
+
+This is the R code that I am using to read in the experiment table:
+**data <- read.table(""/shared/home/data/ChIP/round/AGSC_SC_ST_experiment_table_tabrepeat.txt"", header=TRUE)
+data <- as.data.frame(data)**
+I apologise if this is not enough information to decipher the issue, I am relatively new to R.
+Any help you could give would be greatly appreciated.",fburden44,https://github.com/ataudt/chromstaR/issues/18
+I_kwDOAsHSGs5Fk9I_,ATAC and Histone marks combinatorial approach,OPEN,2022-03-12T15:19:08Z,2022-03-12T15:19:08Z,,"Hi Aaron,
+
+Have you tried using chromstaR with ATACseq and ChIPseq of standard histone marks together? I was wondering if it is possible to use it in combinatorial approach to find potential regions where there is accessibility and histone marks. Also, how about finding differences between the condition in such integration?
+
+Any input would be appreciated.
+Best
+Swati
+",sdparekh,https://github.com/ataudt/chromstaR/issues/19
+I_kwDOAsHSGs5fXhhO,"Error in df[, 2] : object of type 'closure' is not subsettable",OPEN,2023-02-26T10:22:30Z,2023-02-26T10:23:26Z,,"Hello, 
+I'm new to the chromstaR package. when I tried to run the Chromstar function I got the following error:
+
+```
+> Chromstar(inputfolder, experiment.table=experiment_table_GMHM,assembly = ""mm10"",
++           outputfolder=outputfolder, numCPU=4, binsize=1000, stepsize=500,
++           prefit.on.chr=NULL, chromosomes=NULL,
++           mode='combinatorial')
+Setting up parallel execution with 4 threads ... 0.8s
+================
+Binning the data
+================
+Obtaining chromosome length information from UCSC ... 0s
+Error in df[, 2] : object of type 'closure' is not subsettable
+```
+
+I tried using only a subset of my samples, and also tried specifying 'prefit.on.chr='chr12', chromosomes='chr12'',
+none of which helped.
+
+I'm using BAM files, not bed.
+
+Can you tell me what I'm doing wrong? any help is much appreciated!
+
+Thanks!
+
+this is my session info:
+```
+> sessionInfo()
+R version 4.1.3 (2022-03-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 22621)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=Hebrew_Israel.1255  LC_CTYPE=Hebrew_Israel.1255   
+[3] LC_MONETARY=Hebrew_Israel.1255 LC_NUMERIC=C                  
+[5] LC_TIME=Hebrew_Israel.1255    
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] chromstaR_1.20.2     chromstaRData_1.20.0 ggplot2_3.4.1       
+[4] GenomicRanges_1.46.1 GenomeInfoDb_1.30.1  IRanges_2.28.0      
+[7] S4Vectors_0.32.4     BiocGenerics_0.40.0 
+
+loaded via a namespace (and not attached):
+ [1] SummarizedExperiment_1.24.0 tidyselect_1.2.0           
+ [3] reshape2_1.4.4              lattice_0.20-45            
+ [5] colorspace_2.0-3            vctrs_0.5.2                
+ [7] generics_0.1.3              utf8_1.2.2                 
+ [9] rlang_1.0.6                 pillar_1.8.1               
+[11] glue_1.6.2                  withr_2.5.0                
+[13] DBI_1.1.3                   BiocParallel_1.28.3        
+[15] matrixStats_0.63.0          GenomeInfoDbData_1.2.7     
+[17] foreach_1.5.2               lifecycle_1.0.3            
+[19] plyr_1.8.8                  stringr_1.5.0              
+[21] zlibbioc_1.40.0             MatrixGenerics_1.6.0       
+[23] Biostrings_2.62.0           munsell_0.5.0              
+[25] gtable_0.3.1                mvtnorm_1.1-3              
+[27] codetools_0.2-19            bamsignals_1.26.0          
+[29] Biobase_2.54.0              doParallel_1.0.17          
+[31] parallel_4.1.3              fansi_1.0.3                
+[33] Rcpp_1.0.9                  scales_1.2.1               
+[35] DelayedArray_0.20.0         XVector_0.34.0             
+[37] Rsamtools_2.10.0            stringi_1.7.12             
+[39] dplyr_1.0.10                grid_4.1.3                 
+[41] cli_3.6.0                   tools_4.1.3                
+[43] bitops_1.0-7                magrittr_2.0.3             
+[45] RCurl_1.98-1.9              tibble_3.1.8               
+[47] crayon_1.5.2                pkgconfig_2.0.3            
+[49] Matrix_1.5-3                assertthat_0.2.1           
+[51] rstudioapi_0.14             iterators_1.0.14           
+[53] R6_2.5.1                    GenomicAlignments_1.30.0   
+[55] compiler_4.1.3  
+```",roniweiss12,https://github.com/ataudt/chromstaR/issues/20

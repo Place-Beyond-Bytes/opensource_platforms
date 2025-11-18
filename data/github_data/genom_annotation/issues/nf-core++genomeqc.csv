@@ -1,0 +1,311 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOM2-kEM6Y2CDb,Add ncbigenomedownload module,CLOSED,2024-10-03T15:03:42Z,2024-10-06T20:53:18Z,2024-10-06T20:53:18Z,"The ncbigenomedownload module from nf-core requires a file with a list of accessions, and, therefore, needs a path as input. Excon, which I'm trying to mimic here, requires a value string as input.
+
+To fix this problem, at least temporariIy, I added in ``modules/local/create_path.csv`` a module that creates one file per species which contains one single accession, which is then used as an input by ncbigenomedownload.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/2
+I_kwDOM2-kEM6Y2HBz,Add all the modules,CLOSED,2024-10-03T15:12:48Z,2024-10-23T13:36:31Z,2024-10-23T13:36:30Z,Might be a good idea to add an item per module in the Todo list in the genomeqc plan Project.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/3
+I_kwDOM2-kEM6Y2wGw,Branched channels can't be emitted,OPEN,2024-10-03T16:39:46Z,2024-10-03T16:39:46Z,,"Branched channels can't be emitted. In our case, the input channel with local and ncbi branches needs to be declared in ``workflows/genomeqc.nf``, instead of ``subworkflows/local/utils_nfcore_genomeqc_pipeline/main.nf``.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/4
+I_kwDOM2-kEM6Y2xdO,Add input validation functions to main workflow,CLOSED,2024-10-03T16:43:02Z,2024-10-07T13:53:42Z,2024-10-07T13:53:42Z,"Copy input validation functions to ``workflows/genomeqc.nf``, as main input channel was declated here, instead of ``subworkflows/local/utils_nfcore_genomeqc_pipeline/main.nf``.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/5
+I_kwDOM2-kEM6Y4fKY,Add test data,CLOSED,2024-10-03T20:26:50Z,2024-10-14T14:00:52Z,2024-10-14T14:00:52Z,"We need a small test dataset for the whole pipeline, following nf-core guides. 
+
+I think this could be just two chromosomes (or parts of chromosomes that are orthologous). Could be super small, like 10000bp total. I am pretty sure all the code will work on tiny chromosomes. 
+",chriswyatt1,https://github.com/nf-core/genomeqc/issues/6
+I_kwDOM2-kEM6Y-Nkw,Validate input samplesheet,OPEN,2024-10-04T13:54:58Z,2024-10-25T15:13:57Z,,We need to think a way to validate the input sample sheet using ``validateInputSamplesheet()``. There is an RNAseq input sample sheet validation as example in ``subworkflows/local/utils_nfcore_genomeqc_pipeline/main.nf``.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/8
+I_kwDOM2-kEM6Zf_og,Add BUSCO module,CLOSED,2024-10-09T09:10:22Z,2024-10-10T09:23:20Z,2024-10-10T09:23:20Z,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/9
+I_kwDOM2-kEM6ZrEy8,Add Orthofinder module,CLOSED,2024-10-10T09:23:54Z,2024-10-14T13:52:29Z,2024-10-14T13:52:29Z,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/11
+I_kwDOM2-kEM6Z4sg_,Problems with Orthofinder module,CLOSED,2024-10-11T16:36:51Z,2024-10-14T13:52:01Z,2024-10-14T13:52:01Z,"Can't seem to make orthofinder work. I think it's related to the ""prior run"" folder.
+
+Changing one line solves the issue.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/12
+I_kwDOM2-kEM6aJUKL,Add agat_sp_keep_longest_isoform.pl as local module,CLOSED,2024-10-14T13:55:51Z,2024-10-17T11:16:45Z,2024-10-17T11:16:44Z,Add local module for longest isoform filtering from the [synteny](https://github.com/Eco-Flow/synteny) pipeline.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/14
+I_kwDOM2-kEM6aJUt4,Add GFFREAD module,CLOSED,2024-10-14T13:56:23Z,2024-10-17T11:16:27Z,2024-10-17T11:16:26Z,Add GFFREAD nf-core module.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/15
+I_kwDOM2-kEM6aJhAJ,Plot for the phylogenetic tree plus stats (e.g. BUSCO),CLOSED,2024-10-14T14:15:34Z,2024-10-24T14:49:41Z,2024-10-24T14:49:41Z,"The idea here is to make a phylogenetic tree from the output of ""orthofinder"" (currently, but tree software could change), then add the statistics about each genome to the right (BUSCO, chromosome numbers, etc).
+
+",chriswyatt1,https://github.com/nf-core/genomeqc/issues/16
+I_kwDOM2-kEM6adaN_,Add subworkflows,CLOSED,2024-10-16T10:23:28Z,2024-10-21T08:34:12Z,2024-10-21T08:34:12Z,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/17
+I_kwDOM2-kEM6aeJIZ,GFFREAD does not work with compressed files,CLOSED,2024-10-16T11:34:30Z,2024-10-17T11:16:08Z,2024-10-17T11:16:07Z,"GFFREAD from nf-core cannot deal with compressed files. For now, the nf-core module ``pigz_uncompressed`` is being used to deal with compressed files.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/18
+I_kwDOM2-kEM6arXKw,unknown recognition error type,OPEN,2024-10-17T15:22:32Z,2024-10-21T08:35:23Z,,"I'm getting this error on start up everytime I run the pipeline:
+
+```
+unknown recognition error type: groovyjarjarantlr4.v4.runtime.LexerNoViableAltException
+```
+
+I see Simon mentioned the error [here](https://github.com/Eco-Flow/synteny/issues/11), in the synteny pipeline.
+
+I'll look into it later.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/21
+I_kwDOM2-kEM6arXi7,Add TIDK subworkflow,CLOSED,2024-10-17T15:23:15Z,2024-10-18T13:36:45Z,2024-10-18T13:36:44Z,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/22
+I_kwDOM2-kEM6a04er,Add options to modules.config file,OPEN,2024-10-18T13:41:02Z,2024-10-18T13:41:04Z,,"For each module we should specify the publish directory, as well as other relevant options (e.g., arguments, prefix, etc.).
+
+Add these to the ``modules.config`` file.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/25
+I_kwDOM2-kEM6a2Zhf,Add modules version to workflow,OPEN,2024-10-18T16:33:24Z,2024-10-18T16:33:24Z,,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/27
+I_kwDOM2-kEM6bGP6Q,Genome only mode,CLOSED,2024-10-21T10:36:37Z,2024-10-28T15:44:33Z,2024-10-28T15:44:33Z,Genome + GFF mode separate,chriswyatt1,https://github.com/nf-core/genomeqc/issues/29
+I_kwDOM2-kEM6bGREj,Add busco on chromosome plot,CLOSED,2024-10-21T10:38:50Z,2024-11-06T16:03:39Z,2024-11-06T16:03:19Z,https://gitlab.com/ezlab/busco_protocol,chriswyatt1,https://github.com/nf-core/genomeqc/issues/30
+I_kwDOM2-kEM6bQzwZ,Add AGAT spstatistics and QUAST modules,CLOSED,2024-10-22T09:40:23Z,2024-10-22T09:43:24Z,2024-10-22T09:42:40Z,,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/31
+I_kwDOM2-kEM6bSBnC,Quast doesn't cache every time,CLOSED,2024-10-22T11:39:17Z,2024-11-08T15:08:25Z,2024-11-08T15:08:22Z,"Seems to keep repeating previously done runs with `-resume`
+
+My command:
+
+`nextflow run main.nf -resume -profile docker,test --outdir results`",chriswyatt1,https://github.com/nf-core/genomeqc/issues/33
+I_kwDOM2-kEM6bSDYA,Gitpod config doesn't work,OPEN,2024-10-22T11:41:37Z,2024-10-23T13:47:14Z,,"I get lots of errors using the config. 
+The config is used to reduce the cpu requirements of orthofinder etc, so that it can run. 
+
+But get error:
+
+```
+-[ecoflow/genomeqc] Pipeline completed with errors-
+ERROR ~ Error executing process > 'ECOFLOW_GENOMEQC:GENOMEQC:QUAST (Vespa_velutina)'
+
+Caused by:
+  Process requirement exceeds available CPUs -- req: 6; avail: 4
+```
+
+when -profile gitpod   contains:
+
+```
+process {
+
+    withName: 'ORTHOFINDER' {
+        memory = '30.GB'
+        cpus = 4
+    }
+
+    withName: 'QUAST' {
+        memory = '30.GB'
+        cpus = 4
+    }
+
+}
+```",chriswyatt1,https://github.com/nf-core/genomeqc/issues/34
+I_kwDOM2-kEM6bdYt5,BUSCO fails,OPEN,2024-10-23T10:59:24Z,2024-11-15T11:57:31Z,,"When running ``genomeqc`` on ``assests/samplesheet.csv`` (bees and wasps) BUSCO fails on the SEPP step with this warning message:
+
+```
+Placements failed. Try to rerun increasing the memory or select a lineage manually.
+```
+
+even though 72GB of RAM are being used.
+
+SEPP is being used to automatically infer the lineage database. When the lineage database is explcitly set, BUSCO runs successfully.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/37
+I_kwDOM2-kEM6bda-h,BUSCO runs on longest isoforms,CLOSED,2024-10-23T11:03:07Z,2024-11-18T12:21:24Z,2024-11-18T12:20:46Z,"For now, we are using the longest isoforms for each gene to run BUSCO. Might or might not be the proper way to run it",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/38
+I_kwDOM2-kEM6bfIro,Add MultiQC compatible modules to correct channel,CLOSED,2024-10-23T13:31:22Z,2024-10-30T10:51:03Z,2024-10-30T10:51:03Z,We need to make sure that all the modules that can be sent to MultiQC are,chriswyatt1,https://github.com/nf-core/genomeqc/issues/39
+I_kwDOM2-kEM6bfUKe,Add new module `HITE`,OPEN,2024-10-23T13:44:00Z,2024-10-29T14:14:51Z,,"HITE is already a series of modules (https://github.com/CSU-KangHu/HiTE), but we could add this either as a sub workflow,, or for now just a module with the main command.",chriswyatt1,https://github.com/nf-core/genomeqc/issues/40
+I_kwDOM2-kEM6bfWu4,Add NCBI FCS GX module,OPEN,2024-10-23T13:47:30Z,2024-10-31T00:08:31Z,,Add nf-core module to both ``genome`` only and ``genome_and_annotation`` subworkflows.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/41
+I_kwDOM2-kEM6bfcia,Add `merqury` to pipeline,CLOSED,2024-10-23T13:54:02Z,2024-10-29T16:13:32Z,2024-10-29T16:13:32Z,"Example from Usman: https://github.com/Plant-Food-Research-Open/assemblyqc
+
+Used in genome only mode.  Already an nf-core module
+
+",chriswyatt1,https://github.com/nf-core/genomeqc/issues/42
+I_kwDOM2-kEM6bfesY,Add `Lai` to genome only mode,OPEN,2024-10-23T13:56:27Z,2024-10-24T20:07:27Z,,Add nf-core module for `lai` to genome only mode sub workflow,chriswyatt1,https://github.com/nf-core/genomeqc/issues/43
+I_kwDOM2-kEM6boSX7,Test genome only download runs from NCBI DOWNLOAD,OPEN,2024-10-24T09:41:43Z,2024-10-24T09:41:43Z,,"I think it will be possible to run the pipeline potentially with Genbank accessions (GCA.......).
+
+At the moment, either you supply the genome + annotation manually, or use NCBI DOWNLOAD on a Refseq ID (GCF......) to get the genome and annotation automatically. 
+
+GCA accensions often only link to a genome wihtout a annotation in GFF, but these people may want to run. 
+
+We should test if this is a possible feature to add",chriswyatt1,https://github.com/nf-core/genomeqc/issues/44
+I_kwDOM2-kEM6bpYNe,Modules and tools ideas,OPEN,2024-10-24T11:44:35Z,2024-10-24T11:55:36Z,,"See [genomeqc ideas](https://docs.google.com/spreadsheets/d/11lY3jTASVW8wyn4viIEGu94huaSzH96nxYf6NsfDaWw/edit?gid=0#gid=0) spreadsheet.
+
+### Genome only
+
+- [x] BUSCO. Genome completness. Can be run on ""genome"" only mode (runs Augustus first) or in ""protein"" mode (fasta with protein sequences).
+- [x] QUAST. Assembly contiguity (e.g. N50).
+    - Also accepts GFF as input, but AGAT gives more complete statistics.
+
+- [ ] HITE. Calculation of Transposable element content.
+    - Not in nf-core 
+- [ ] SVbyEye. Structural variation among whole genome assemblies.
+- [x] TIDK. Telomere repeat identification.
+   - Subworkflow
+- [ ] LAI. Continuity of LTR sequences.
+- [ ] NCBI FCS GX. Foreign contamination
+- [ ] Merqury. Phasing assessment
+- [ ] PLOTSR. Chromosome level summary synteny.
+- [ ] MUMMER/DOTPLOT. Sequence level synteny.
+- [ ] TEsorter. Captures TEs in protein domains.
+- [ ] Asmgene. For evaluating gene completeness and duplication.
+- [ ] calN50.js. Calculating N50 and L90
+    - Probably redundant.
+
+### Annotation only
+
+- [x] AGAT. Genome basic statistics (gene length averages, etc).
+- [ ] GenomeTools (Optional?).
+- [ ] pangene. Gene variability using miniprot output.
+- [ ] Liftoff. Lifting annotations
+
+### Genome and Annotation
+
+- [x] Orthofinder. Phylogenetic trees (or a better program, PHY… ).
+- [ ] MCSCanX. Synteny between two genomes (or other program).
+- [ ] GENESPACE. Runs everything that the above does.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/45
+I_kwDOM2-kEM6bqi0-,Add ability to turn off specific modules,OPEN,2024-10-24T13:27:35Z,2024-10-28T10:54:58Z,,"Some modules should be optional. 
+
+We should add conditional flags/params in the pipeline",chriswyatt1,https://github.com/nf-core/genomeqc/issues/46
+I_kwDOM2-kEM6brEo_,Add nf-test,OPEN,2024-10-24T14:21:29Z,2024-10-28T11:27:17Z,,"Once we have a first release pipeline, we need to make sure the nf-test part for whole pipeline is working, and check all the modules (etc).",chriswyatt1,https://github.com/nf-core/genomeqc/issues/48
+I_kwDOM2-kEM6brLCN,Add a tree building method for genome only,OPEN,2024-10-24T14:29:04Z,2024-10-28T11:51:04Z,,"BUSCO protocol potentially may be able to do this. 
+
+It would be great if we could get a tree plot plus stats for all the genome only modules, but start with BUSCO",chriswyatt1,https://github.com/nf-core/genomeqc/issues/49
+I_kwDOM2-kEM6brON_,Logic for variable input types,CLOSED,2024-10-24T14:33:56Z,2024-11-06T17:58:43Z,2024-11-06T17:58:02Z,"It should work for genome only if there are only genome, or genome_annotation if only genomes with annotations. 
+
+But we also need to test how the pipeline deals with mixed input. It run both subworkflows, and potentially all genomes separately.",chriswyatt1,https://github.com/nf-core/genomeqc/issues/50
+I_kwDOM2-kEM6brUCY,Create tube map,OPEN,2024-10-24T14:41:14Z,2024-10-28T11:00:41Z,,"Might change a lot as the pipeline gets developed, but might be worth creating one now",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/51
+I_kwDOM2-kEM6bxKpi,Remove unused bin scripts (from excon),CLOSED,2024-10-25T07:47:17Z,2024-10-25T09:04:04Z,2024-10-25T09:04:04Z,Most the bin is full of things we do not use in this pipeline. It should be cleared out,chriswyatt1,https://github.com/nf-core/genomeqc/issues/52
+I_kwDOM2-kEM6bzQYM,Check linting,OPEN,2024-10-25T11:57:49Z,2024-10-25T11:57:49Z,,Check pipeline linting.,FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/54
+I_kwDOM2-kEM6b08d-,Pipeline fails when running on input_myco_tiny.csv dataset.,OPEN,2024-10-25T14:56:04Z,2024-10-25T15:08:04Z,,"Pipeline fails on BUSCO step when running on testdata.
+
+The problem seems to be related to the ``input_myco_tiny.csv`` dataset.
+
+Choosing ``bacteria_odb10`` as lineage to run BUSCO fixes the issue, but we should probably have a look at other alternatives.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/55
+I_kwDOM2-kEM6b-wNN,Check schema_input.json,OPEN,2024-10-27T22:37:18Z,2024-10-27T22:48:41Z,,"Check 'required' field in ``schema_input.json``, as right now only the 'species' field is mandatory in the samplesheet for input schema validation.
+
+The reason why only 'species' is required right now is that input samplesheet is flexible, meaning it can accept samples with different field information -e.g., a sample can have a RefSeq ID while another sample can have local files.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/56
+I_kwDOM2-kEM6cC9F5,Add meryl count,CLOSED,2024-10-28T10:37:51Z,2024-10-29T16:13:31Z,2024-10-29T16:13:31Z,"#42 merqury requires a meryl kmer db, which needs meryl count, already an nf-core module.
+
+- exmaple: https://github.com/Plant-Food-Research-Open/assemblyqc/blob/main/workflows/assemblyqc.nf
+- meryl module: https://nf-co.re/modules/meryl_count/",stephenturner,https://github.com/nf-core/genomeqc/issues/58
+I_kwDOM2-kEM6cDUiP,Migrate to nf-schema,OPEN,2024-10-28T11:17:19Z,2024-10-28T11:18:45Z,,"Migrate from nf-validation to nf-schema. Check [migration guide](https://nextflow-io.github.io/nf-schema/latest/migration_guide/).
+
+This related to #56.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/59
+I_kwDOM2-kEM6cEbor,add meryl union sum,CLOSED,2024-10-28T13:18:54Z,2024-10-29T16:13:31Z,2024-10-29T16:13:31Z,"#42 merqury requires a meryl kmer db, which needs meryl union sum after count, already an nf-core module.
+
+- exmaple: https://github.com/Plant-Food-Research-Open/assemblyqc/blob/main/workflows/assemblyqc.nf
+- meryl unionsum module: https://nf-co.re/modules/meryl_unionsum/",stephenturner,https://github.com/nf-core/genomeqc/issues/60
+I_kwDOM2-kEM6cEyOP,GFFREAD fails,OPEN,2024-10-28T13:54:23Z,2024-10-28T13:54:23Z,,The pipeline didn't work downloading the arbidopsis thaliana reference genome from ncbi (GCF_000001735.4). ,fperezcobos,https://github.com/nf-core/genomeqc/issues/61
+I_kwDOM2-kEM6cFWnb,Optionally pass in reads,CLOSED,2024-10-28T14:47:44Z,2024-10-29T16:13:32Z,2024-10-29T16:13:32Z,"To run merqury you need reads. Update the workflow to have the ability to pass in reads (skip the process if you don't pass in reads). 
+
+TODO:
+
+- [x] download assemblies in samplesheet used in testdata: https://github.com/nf-core/test-datasets/blob/genomeqc/samplesheet/input_bacteria.csv
+- [x] Simulate pacbio/ONT reads at low coverage from these assemblies -- add those to the tesdata directory in the https://github.com/nf-core/test-datasets/blob/genomeqc/ data dir, submit PR to test-datasets - get Chris or `mahesh-panchal` to review
+- [x] add new column to samplesheet
+- [x] add new info to assets/schema_input.json
+- [x] update `subworkflows/local/utils_nfcore_genomeqc_pipeline/main.nf` `validateInputSamplesheet()` @chriswyatt1 @FernandoDuarteF 
+- [x] update `workflows/genomeqc.nf` to pull fastq from samplesheet into channels
+- [x] adjust downstream process cardinality
+- [x] back to #42 -- check that fastq is not `null` before initiating merqury steps
+- [x] edit test.config profile to turn `params.merqury_skip=false`
+- [x] test with inputs without fastq defined",stephenturner,https://github.com/nf-core/genomeqc/issues/62
+I_kwDOM2-kEM6cOMeb,Add new test_with_merqury profile,CLOSED,2024-10-29T11:32:09Z,2024-10-29T16:13:33Z,2024-10-29T16:13:32Z,"- [ ] Add new test_with_merqury profile that turns `merqury_skip` to false and uses the samplesheet with fastqs
+- [ ] Revert changes to test.config that removes `merqury_skip=false`, and uses the samplesheet without without fastq files
+- [ ] Add new test_with_merqury.conf to import in main nextflow.config",stephenturner,https://github.com/nf-core/genomeqc/issues/67
+I_kwDOM2-kEM6cOMwS,Update README.md with merqury info,CLOSED,2024-10-29T11:32:45Z,2024-10-29T16:13:33Z,2024-10-29T16:13:33Z,"What's merqury, why, and how to run different test profiles
+
+- #67 ",stephenturner,https://github.com/nf-core/genomeqc/issues/68
+I_kwDOM2-kEM6cONzr,Input samplesheet with .meta operator instead of branch by size,OPEN,2024-10-29T11:35:00Z,2024-10-29T11:35:10Z,,"@LaurenHuet  :
+It may be clearer if the input samplesheet used the .meta.gff or .meta.fasta notation, instead of the current:
+
+```
+        .branch {
+            ncbi: it.size() == 2
+            local: it.size() == 3
+        }
+```
+
+As when we add new input columns it will mess things up",chriswyatt1,https://github.com/nf-core/genomeqc/issues/69
+I_kwDOM2-kEM6cQhPc,Extract meryl+merqury subworkflow into modules,OPEN,2024-10-29T15:19:53Z,2024-10-30T09:45:12Z,,"PR #63 brings in changes that allow optionally passing in reads to support quality metrics that require them, such as using kmer counts from raw sequencing data to evaluate accuracy and completeness using Merqury (#42). @GallVp added a nice suggestion in #63 to extract a subworkflow into nf-core/modules that could be used across workflows. 
+
+See also:
+- https://github.com/nf-core/modules/issues/6905 (new subworkflow issue in nf-core/modules -- after this is finished, come back to genomeqc here to use the subworkflow module 
+
+----
+
+Would be great to support the trio mode with parental reads. This is supported by the `assemblyqc` pipeline. Maybe, we can extract a sub workflow, put it on nf-core/modules so that the two pipelines can benefit from shared development. Please see the workflow on the `assemblyqc` repo:
+
+https://github.com/Plant-Food-Research-Open/assemblyqc/blob/cec2728d0785d97e0e9493558c83d83d0b48240e/workflows/assemblyqc.nf#L598-L771
+
+_Originally posted by @GallVp in https://github.com/nf-core/genomeqc/issues/63#issuecomment-2442810796_
+            ",stephenturner,https://github.com/nf-core/genomeqc/issues/71
+I_kwDOM2-kEM6cY4pH,"Merqury inputs should use database+assembly (fasta, not fastq)",CLOSED,2024-10-30T11:24:21Z,2024-11-07T12:05:18Z,2024-11-07T12:05:17Z,"Merqury inputs should include the meryl db (created from reads), and the _assembly_. 
+
+https://github.com/nf-core/genomeqc/blob/5e5f897730524eb771aa574920a42064876f1ea1/modules/nf-core/merqury/merqury/main.nf#L11-L12
+
+Typo in the current implementation that joins to the reads (fasta), not the assembly.
+
+https://github.com/nf-core/genomeqc/blob/5e5f897730524eb771aa574920a42064876f1ea1/workflows/genomeqc.nf#L127-L129
+
+Need to change this to fasta, not fastq.
+
+Also need to change this in the subworkflow nf-core/modules#6905",stephenturner,https://github.com/nf-core/genomeqc/issues/75
+I_kwDOM2-kEM6cf-9d,Using `FASTA_GXF_BUSCO_PLOT ` sub workflow,OPEN,2024-10-31T00:04:43Z,2024-11-22T09:55:39Z,,"Hello Team!
+
+I built a reusable sub workflow for performing BUSCO on genome alone, or on genome and annotation. I have used it in two other pipelines. It is currently sitting in my own modules repo:  https://github.com/GallVp/nxf-components/blob/7188d37139f8dbdfd73cbfb5b0e3f811d1993392/subworkflows/gallvp/fasta_gxf_busco_plot/main.nf#L7
+
+I think we should be sharing this across pipelines. I can submit it to nf-core/modules and add it here. Checking if there is interest here and if there is need to modify it to suite the needs of this pipeline?
+
+- Mentions, @FernandoDuarteF , @chriswyatt1, @stephenturner
+- nf-core issue: https://github.com/nf-core/modules/issues/5584
+- Other pipelines using it:
+  - https://github.com/Plant-Food-Research-Open/assemblyqc/blob/cec2728d0785d97e0e9493558c83d83d0b48240e/workflows/assemblyqc.nf#L442
+  - https://github.com/Plant-Food-Research-Open/genepal/blob/24a8f50e241105b98c88035fd9c2a0cad8ff728f/workflows/genepal.nf#L206",GallVp,https://github.com/nf-core/genomeqc/issues/77
+I_kwDOM2-kEM6c5DIy,Check what needs to be in results,OPEN,2024-11-04T08:48:55Z,2024-11-04T08:48:55Z,,"Currently, the uncompressed ends up in results. There may be more results we don't need to publish",chriswyatt1,https://github.com/nf-core/genomeqc/issues/78
+I_kwDOM2-kEM6dElH1,Run from GCA genome only IDs,OPEN,2024-11-05T11:41:54Z,2024-11-05T11:41:54Z,,We may want to run just from genome only IDs from NCBI,chriswyatt1,https://github.com/nf-core/genomeqc/issues/79
+I_kwDOM2-kEM6dElZc,Run from GTF files (instead of GFF3),OPEN,2024-11-05T11:42:27Z,2024-11-05T11:42:27Z,,Some people may need this feature,chriswyatt1,https://github.com/nf-core/genomeqc/issues/80
+I_kwDOM2-kEM6dFbGV,Make ``GENOME`` and ``GENOME_AND_ANNOTATION`` into workflows,OPEN,2024-11-05T13:17:49Z,2024-11-05T23:57:52Z,,"We should make our two main subworflows (``GENOME`` and ``GENOME_AND_ANNOTATION``) into workflows, as it makes more sense for the structure and modularization of the pipeline (we cannot use subworkflows inside subworflows).
+
+For example, as for now, we would not be able to import the BUSCO subworkflow from #77 inside ``GENOME_AND_ANNOTATION`` subworkflow.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/81
+I_kwDOM2-kEM6dSDAC,Pipeline fails if genome or gff are not gzipped,CLOSED,2024-11-06T17:28:28Z,2024-11-06T22:48:18Z,2024-11-06T22:48:18Z,"There should be a statement to divert non gzipped input directly to gffread, not try to uncompress it. 
+
+
+e.g.
+```
+ERROR ~ Error executing process > 'ECOFLOW_GENOMEQC:GENOMEQC:UNCOMPRESS_GFF (5)'
+
+Caused by:
+  Process `ECOFLOW_GENOMEQC:GENOMEQC:UNCOMPRESS_GFF (5)` terminated with an error exit status (1)
+
+
+Command executed:
+
+  unpigz \
+      -p 2 \
+      -fk \
+       \
+      Polistes_fuscatus.GCF_010416935.1_CU_Pfus_HIC_genomic.fna
+  
+  cat <<-END_VERSIONS > versions.yml
+  ""ECOFLOW_GENOMEQC:GENOMEQC:UNCOMPRESS_GFF"":
+      pigz: $(echo $(pigz --version 2>&1) | sed 's/^.*pigz\w*//' ))
+  END_VERSIONS
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  INFO:    Environment variable SINGULARITYENV_TMP is set, but APPTAINERENV_TMP is preferred
+  INFO:    Environment variable SINGULARITYENV_TMPDIR is set, but APPTAINERENV_TMPDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_TASK_WORKDIR is set, but APPTAINERENV_NXF_TASK_WORKDIR is preferred
+  INFO:    Environment variable SINGULARITYENV_NXF_DEBUG is set, but APPTAINERENV_NXF_DEBUG is preferred
+  unpigz: skipping: Polistes_fuscatus.GCF_010416935.1_CU_Pfus_HIC_genomic.fna does not have compressed suffix
+```
+",chriswyatt1,https://github.com/nf-core/genomeqc/issues/83
+I_kwDOM2-kEM6da4vS,BUSCO fails due to rate limiter,OPEN,2024-11-07T13:41:29Z,2024-11-07T13:41:29Z,,"We should use the subworkflow used in MAG ideally to resolve this: 
+https://github.com/nf-core/mag/blob/master/subworkflows/local/busco_qc.nf
+
+As, we should provide the option to provide a database, so that it doesn't download one for each sample we send through the pipeline. 
+
+This issue was raised here: 
+https://github.com/nf-core/mag/issues/333",chriswyatt1,https://github.com/nf-core/genomeqc/issues/85
+I_kwDOM2-kEM6eDd6A,``BUSCO_IDEOGRAM`` fails when using ``samplesheet.csv``,CLOSED,2024-11-12T10:16:16Z,2024-11-19T10:46:33Z,2024-11-19T10:46:33Z,"The attribute field (9th column) is not consistent between gff files. For this reason BUSCO Ideogram fails when using ``samplesheet.csv`` as input, but works on the test dataset.
+
+The ``busco_create_table_for_plot.R`` script uses ``inner_join()`` to merge both ``full_table.tsv`` from BUSCO and the gff annotation into a single table, based on the first field of the attibute column of the gff. However, this field is not consistent among datasets.
+
+Will have to modify the script or look for alternatives.
+
+_Originally posted by @FernandoDuarteF in https://github.com/nf-core/genomeqc/issues/82#issuecomment-2470128095_
+            ",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/86
+I_kwDOM2-kEM6edq5F,`AGAT_CONVERTSPGXF2GXF` on myriad needs more memory,OPEN,2024-11-14T11:46:04Z,2024-11-14T11:46:04Z,,"When running **genomeqc** on the myriad cluster, I noticed that the process `AGAT_CONVERTSPGXF2GXF` requires more memory for some reason. Changing the label to `process_medium` solves the issue.
+
+On local it runs fine.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/89
+I_kwDOM2-kEM6eeSiZ,ideograms plot all contigs,OPEN,2024-11-14T13:00:54Z,2024-11-21T11:50:49Z,,"It would be great if the ideogram plot only plotted the main ortholoug chromosomes. Else you get images like:
+
+![Image](https://github.com/user-attachments/assets/74baa9e7-01a9-49f3-a1ed-4e08815da954)
+",chriswyatt1,https://github.com/nf-core/genomeqc/issues/90
+I_kwDOM2-kEM6epU5C,Ideograms do not have a key,CLOSED,2024-11-15T10:57:53Z,2024-11-20T14:39:52Z,2024-11-20T14:39:51Z,It would be nice to have a key to explain the colours. ,chriswyatt1,https://github.com/nf-core/genomeqc/issues/91
+I_kwDOM2-kEM6fC7T5,WIP: check `agat_sp_extract_sequences.pl` as an alternative to `GFFREAD`,CLOSED,2024-11-18T12:07:57Z,2024-11-20T14:39:20Z,2024-11-20T14:39:20Z,"I was checking the [BUSCO phylogenomic tree protocol](https://gitlab.com/ezlab/busco_protocol/-/blob/main/support_protocol3/rules/filter_isoforms.smk?ref_type=heads), and I noticed that they use the `agat_sp_extract_sequences.pl` script from **AGAT** to extract the proteins sequences from a filtered gff.
+
+Might be worth trying.
+
+This issue is related to #37.",FernandoDuarteF,https://github.com/nf-core/genomeqc/issues/92
+I_kwDOM2-kEM6fpdca,New feature: Check for overlapping genes in GFF (bedtools intersect),OPEN,2024-11-21T07:55:47Z,2024-11-21T09:02:55Z,,"Another way we discussed to assess annotation quality is to look at overlapping genes, sense and antisense. 
+
+You would expect that similar genomes would have the same rate of these classes, if not, there could have been a technical issue while building the gene annotation. So it is useful to know.",chriswyatt1,https://github.com/nf-core/genomeqc/issues/93

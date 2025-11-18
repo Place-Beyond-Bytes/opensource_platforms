@@ -1,0 +1,402 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUxODA3OTE1MzM=,Running without BQSR,CLOSED,2016-10-04T02:21:59Z,2016-10-19T17:14:21Z,2016-10-19T17:14:21Z,"Is it possible to make the BQSR requirement an option for running genomes that do not have DBSNP? It looks like I could modify the runPrintReads function to do so. Will that have any implication on the subsequent steps?
+
+Disclaimer: I don't have bioinformatic background :)
+
+Thanks, 
+
+Linh
+",linhbngo,https://github.com/biointec/halvade/issues/1
+MDU6SXNzdWUxODE2NzgxNTk=,Unable to compile halvade_upload_tool,CLOSED,2016-10-07T14:07:36Z,2016-10-11T17:01:31Z,2016-10-11T17:01:31Z,"Hi, 
+
+When I run ant inside halvade_upload_tool, I receive the following errors:
+# 
+
+-do-compile:
+    [javac] Compiling 24 source files to /home/lngo/git/halvade/halvade_upload_tool/build/classes
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.7
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/HalvadeUploader.java:48: error: package org.seqdoop.hadoop_bam does not exist
+    [javac] import org.seqdoop.hadoop_bam.BAMInputFormat;
+    [javac]                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/HalvadeUploader.java:49: error: package org.seqdoop.hadoop_bam does not exist
+    [javac] import org.seqdoop.hadoop_bam.FastqOutputFormat;
+    [javac]                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/HalvadeUploader.java:50: error: package org.seqdoop.hadoop_bam does not exist
+    [javac] import org.seqdoop.hadoop_bam.SequencedFragment;
+    [javac]                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/BamRecordMapper.java:8: error: package htsjdk.samtools does not exist
+    [javac] import htsjdk.samtools.SAMRecord;
+    [javac]                       ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/BamRecordMapper.java:12: error: package org.seqdoop.hadoop_bam does not exist
+    [javac] import org.seqdoop.hadoop_bam.SAMRecordWritable;
+    [javac]                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/BamRecordMapper.java:18: error: cannot find symbol
+    [javac] public class BamRecordMapper extends Mapper<LongWritable, SAMRecordWritable, PairedIdWritable, FastqRecord> {
+    [javac]                                                           ^
+    [javac]   symbol: class SAMRecordWritable
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/BamRecordMapper.java:24: error: cannot find symbol
+    [javac]     protected void map(LongWritable key, SAMRecordWritable value, Context context) throws IOException, InterruptedException {
+    [javac]                                          ^
+    [javac]   symbol:   class SAMRecordWritable
+    [javac]   location: class BamRecordMapper
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:14: error: package org.seqdoop.hadoop_bam does not exist
+    [javac] import org.seqdoop.hadoop_bam.SequencedFragment;
+    [javac]                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:19: error: package org.seqdoop.hadoop_bam.FormatConstants does not exist
+    [javac] import org.seqdoop.hadoop_bam.FormatConstants.BaseQualityEncoding;
+    [javac]                                              ^
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:51: error: cannot find symbol
+    [javac]         protected BaseQualityEncoding baseQualityFormat;
+    [javac]                   ^
+    [javac]   symbol:   class BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:53: error: cannot find symbol
+    [javac]         protected SequencedFragment seq = new SequencedFragment();
+    [javac]                   ^
+    [javac]   symbol:   class SequencedFragment
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/HalvadeUploader.java:124: error: cannot find symbol
+    [javac]         FastqOutputFormat.setCompressOutput(job, true);
+    [javac]         ^
+    [javac]   symbol:   variable FastqOutputFormat
+    [javac]   location: class HalvadeUploader
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/HalvadeUploader.java:129: error: cannot find symbol
+    [javac]         job.setInputFormatClass(BAMInputFormat.class);
+    [javac]                                 ^
+    [javac]   symbol:   class BAMInputFormat
+    [javac]   location: class HalvadeUploader
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/BamRecordMapper.java:25: error: cannot find symbol
+    [javac]         SAMRecord sam = value.get();
+    [javac]         ^
+    [javac]   symbol:   class SAMRecord
+    [javac]   location: class BamRecordMapper
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:53: error: cannot find symbol
+    [javac]         protected SequencedFragment seq = new SequencedFragment();
+    [javac]                                               ^
+    [javac]   symbol:   class SequencedFragment
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:65: error: cannot find symbol
+    [javac]                 baseQualityFormat = BaseQualityEncoding.Illumina;
+    [javac]                                     ^
+    [javac]   symbol:   variable BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:67: error: cannot find symbol
+    [javac]                 baseQualityFormat = BaseQualityEncoding.Sanger;
+    [javac]                                     ^
+    [javac]   symbol:   variable BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:95: error: cannot find symbol
+    [javac]             if (baseQualityFormat == BaseQualityEncoding.Sanger) {
+    [javac]                                      ^
+    [javac]   symbol:   variable BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:97: error: cannot find symbol
+    [javac]             } else if (baseQualityFormat == BaseQualityEncoding.Illumina) {
+    [javac]                                             ^
+    [javac]   symbol:   variable BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:99: error: cannot find symbol
+    [javac]                 SequencedFragment.convertQuality(buffer, BaseQualityEncoding.Sanger, baseQualityFormat);
+    [javac]                                                          ^
+    [javac]   symbol:   variable BaseQualityEncoding
+    [javac]   location: class FastqRecordWriter
+    [javac] /home/lngo/git/halvade/halvade_upload_tool/src/be/ugent/intec/halvade/uploader/mapreduce/MyFastqOutputFormat.java:99: error: cannot find symbol
+    [javac]                 SequencedFragment.convertQuality(buffer, BaseQualityEncoding.Sanger, baseQualityFormat);
+    [javac]                 ^
+    [javac]   symbol:   variable SequencedFragment
+    [javac]   location: class FastqRecordWriter
+    [javac] 21 errors
+    [javac] 1 warning
+
+BUILD FAILED
+/home/lngo/git/halvade/halvade_upload_tool/nbproject/build-impl.xml:920: The following error occurred while executing this line:
+/home/lngo/git/halvade/halvade_upload_tool/nbproject/build-impl.xml:260: Compile failed; see the compiler error output for details.
+# 
+
+This does not happen with the halvade_upload_tool from the ddcap halvade repository
+
+Thanks, 
+",linhbngo,https://github.com/biointec/halvade/issues/2
+MDU6SXNzdWUxODM3NzcwODE=,Location of reference files,CLOSED,2016-10-18T19:13:27Z,2016-10-20T20:34:59Z,2016-10-20T20:34:59Z,"# I have the following error:
+
+Log Type: stderr
+Log Upload Time: Tue Oct 18 15:09:56 -0400 2016
+Log Length: 2149
+[2016/10/18 15:09:28 - DEBUG] taskId = attempt_1476193845089_0076_m_000001_0
+[2016/10/18 15:09:28 - DEBUG] task = 1
+[2016/10/18 15:09:28 - DEBUG] Checking for binaries...
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   featureCounts
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   AddOrReplaceReadGroups.jar
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   MarkDuplicates.jar
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   LICENSE.txt
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   bowtie2
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   BuildBamIndex.jar
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   cushaw2
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   CleanSam.jar
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   bowtie2-align-s
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   elprep
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   STAR
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   GenomeAnalysisTK.jar
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   samtools
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   combineVariants.sh
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   bedtools
+[2016/10/18 15:09:28 - DEBUG] F E R NW NS   bwa
+[2016/10/18 15:09:28 - DEBUG] containers left: 31
+[2016/10/18 15:09:28 - DEBUG] paired? true
+[2016/10/18 15:09:28 - DEBUG] reference has been downloaded to local scratch: 2
+[2016/10/18 15:09:28 - DEBUG] running command [./bin.tar.gz/bin/bwa, mem, null.fasta, -p, -t, 2, /dev/stdin]
+[2016/10/18 15:09:28 - DEBUG] process ended with 1
+[2016/10/18 15:09:28 - DEBUG] command not started!: [./bin.tar.gz/bin/bwa, mem, null.fasta, -p, -t, 2, /dev/stdin]
+[PROCESS_ERR][2016/10/18 15:09:28] [E::bwa_idx_load_from_disk] fail to locate the index files
+[2016/10/18 15:09:28 - DEBUG] SAMstream counts 0 records
+[2016/10/18 15:09:28 - DEBUG] writing '@SRR998947.37501 FCD0BGCACXX:1:1101:4128:11684 length=90' to process with state 0
+[2016/10/18 15:09:28 - DEBUG] 0 fastq reads processed
+[2016/10/18 15:09:28 - DEBUG] starting cleanup: closing aligner
+log4j:WARN No appenders could be found for logger (org.apache.hadoop.metrics2.impl.MetricsSystemImpl).
+log4j:WARN Please initialize the log4j system properly.
+# log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+# My configuration file looks like this:
+
+N=30
+M=160
+C=4
+B=""/user/lngo/halvade/bin.tar.gz""
+R=""/user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename""
+I=""/user/lngo/halvade/inEMACE/""
+O=""/user/lngo/halvade/outEMACE/""
+aln=1
+mapmem=32
+redmem=32
+smt
+# skip_bqsr
+# I have checked and confirmed that I have all my reference files located in the directory specified at option 'R':
+
+hdfs dfs -ls /user/lngo/halvade/refEMACE/v3.1/
+Found 8 items
+-rw-r--r--   2 lngo hdfs      99580 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.dict
+-rw-r--r--   2 lngo hdfs  741310076 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta
+-rw-r--r--   2 lngo hdfs      66446 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.amb
+-rw-r--r--   2 lngo hdfs      27956 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.ann
+-rw-r--r--   2 lngo hdfs  732152128 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.bwt
+-rw-r--r--   2 lngo hdfs      23510 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.fai
+-rw-r--r--   2 lngo hdfs  183038012 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.pac
+-rw-r--r--   2 lngo hdfs  366076072 2016-10-18 10:29 /user/lngo/halvade/refEMACE/v3.1/Sbicolor_313_v3.0_rename.fasta.sa
+# 
+
+Do you know what I am missing here?
+
+Thanks, 
+
+Linh
+",linhbngo,https://github.com/biointec/halvade/issues/3
+MDU6SXNzdWUxODQwNDc5NDY=,Null Pointer exception during Halvade pass 2 RNA job,CLOSED,2016-10-19T19:07:06Z,2017-10-13T10:49:45Z,2017-10-13T10:49:45Z,"Hi,
+I am trying to run RNA-seq pipeline and tried with the example dataset given in the manual. The first job completes successfully but fails immediately during second one. Below is the exception stack and logs. Please help resolve the issue. Thanks;
+
+**syslog** 
+
+2016-10-19 14:57:08,084 INFO [main] org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Scheduled snapshot period at 10 second(s).
+2016-10-19 14:57:08,085 INFO [main] org.apache.hadoop.metrics2.impl.MetricsSystemImpl: MapTask metrics system started
+2016-10-19 14:57:08,104 INFO [main] org.apache.hadoop.mapred.YarnChild: Executing with tokens:
+2016-10-19 14:57:08,104 INFO [main] org.apache.hadoop.mapred.YarnChild: Kind: mapreduce.job, Service: job_1470726539245_0036, Ident: (org.apache.hadoop.mapreduce.security.token.JobTokenIdentifier@6ebe8853)
+2016-10-19 14:57:08,267 INFO [main] org.apache.hadoop.mapred.YarnChild: Sleeping for 0ms before retrying again. Got null now.
+2016-10-19 14:57:08,819 INFO [main] org.apache.hadoop.mapred.YarnChild: mapreduce.cluster.local.dir for child: /data/hadoop/nm-local-dir/usercache/hadoopuser/appcache/application_1470726539245_0036
+2016-10-19 14:57:10,227 INFO [main] org.apache.hadoop.conf.Configuration.deprecation: session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-10-19 14:57:11,185 INFO [main] org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter: File Output Committer Algorithm version is 1
+2016-10-19 14:57:11,254 INFO [main] org.apache.hadoop.mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+2016-10-19 14:57:11,734 INFO [main] org.apache.hadoop.mapred.MapTask: Processing split: hdfs://134.68.246.158:9000/user/hadoopuser/halvade-rna/in/halvade_0_1.fq.gz:0+17875086
+2016-10-19 14:57:12,045 INFO [main] org.apache.hadoop.mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+2016-10-19 14:57:12,046 INFO [main] org.apache.hadoop.mapred.MapTask: mapreduce.task.io.sort.mb: 100
+2016-10-19 14:57:12,046 INFO [main] org.apache.hadoop.mapred.MapTask: soft limit at 83886080
+2016-10-19 14:57:12,046 INFO [main] org.apache.hadoop.mapred.MapTask: bufstart = 0; bufvoid = 104857600
+2016-10-19 14:57:12,046 INFO [main] org.apache.hadoop.mapred.MapTask: kvstart = 26214396; length = 6553600
+2016-10-19 14:57:12,100 INFO [main] org.apache.hadoop.mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+2016-10-19 14:57:12,135 INFO [main] org.apache.hadoop.io.compress.zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+2016-10-19 14:57:12,136 INFO [main] org.apache.hadoop.io.compress.CodecPool: Got brand-new decompressor [.gz]
+2016-10-19 14:57:12,257 INFO [main] org.apache.hadoop.conf.Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2016-10-19 14:57:18,439 INFO [main] org.apache.hadoop.mapred.MapTask: Starting flush of map output
+2016-10-19 14:57:18,544 WARN [main] org.apache.hadoop.mapred.YarnChild: Exception running child : java.lang.NullPointerException
+    at java.lang.ProcessBuilder.start(ProcessBuilder.java:1010)
+    at be.ugent.intec.halvade.utils.ProcessBuilderWrapper.startProcess(ProcessBuilderWrapper.java:96)
+    at be.ugent.intec.halvade.tools.STARInstance.loadSharedMemoryReference(STARInstance.java:251)
+    at be.ugent.intec.halvade.hadoop.mapreduce.StarAlignPassXMapper.loadReference(StarAlignPassXMapper.java:90)
+    at be.ugent.intec.halvade.hadoop.mapreduce.StarAlignPassXMapper.setup(StarAlignPassXMapper.java:67)
+    at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:143)
+    at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:787)
+    at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)
+    at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:164)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at javax.security.auth.Subject.doAs(Subject.java:415)
+    at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1657)
+    at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:158)
+
+2016-10-19 14:57:18,556 INFO [main] org.apache.hadoop.mapred.Task: Runnning cleanup for the task
+2016-10-19 14:57:18,564 WARN [main] org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter: Could not delete hdfs://134.68.246.158:9000/user/hadoopuser/halvade-rna/out/halvade/_temporary/1/_temporary/attempt_1470726539245_0036_m_000012_0
+
+**syserr**
+
+[2016/10/19 14:57:12 - DEBUG] taskId = attempt_1470726539245_0036_m_000012_0
+[2016/10/19 14:57:12 - DEBUG] Checking for binaries...
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   MarkDuplicates.jar
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   elprep
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   featureCounts
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   bowtie2-align-s
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   LICENSE.txt
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   bedtools
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   bwa
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   combineVariants.sh
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   samtools
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   bowtie2
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   STAR
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   cushaw2
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   BuildBamIndex.jar
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   AddOrReplaceReadGroups.jar
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   CleanSam.jar
+[2016/10/19 14:57:12 - DEBUG] F E R NW NS   GenomeAnalysisTK.jar
+[2016/10/19 14:57:12 - DEBUG] STAR instance type: 2
+[2016/10/19 14:57:12 - DEBUG] containers left: 0
+[2016/10/19 14:57:12 - DEBUG] paired? true
+[2016/10/19 14:57:12 - DEBUG] reference has been downloaded to local scratch: 1
+[2016/10/19 14:57:12 - DEBUG] ref: null
+[2016/10/19 14:57:12 - DEBUG] Started STAR
+[2016/10/19 14:57:12 - DEBUG] waiting for lock...
+[2016/10/19 14:57:18 - DEBUG] pass 1 reference is still loaded into shared memory, freeing first
+[2016/10/19 14:57:18 - DEBUG] reference has been downloaded to local scratch: 1
+[2016/10/19 14:57:18 - DEBUG] found existing ref: ""/tmp/halvade/m_000014_0-star/""
+[2016/10/19 14:57:18 - DEBUG] Remove ref [/tmp/halvade/m_000014_0-star/] from shared memory.
+[2016/10/19 14:57:18 - DEBUG] running command [./bin.tar.gz/bin/STAR, --genomeDir, /tmp/halvade/m_000014_0-star/, --genomeLoad, Remove]
+[2016/10/19 14:57:18 - DEBUG] process ended with 105
+[2016/10/19 14:57:18 - DEBUG] command not started!: [./bin.tar.gz/bin/STAR, --genomeDir, /tmp/halvade/m_000014_0-star/, --genomeLoad, Remove]
+[2016/10/19 14:57:18 - DEBUG] Load ref [null] to shared memory
+[2016/10/19 14:57:18 - DEBUG] running command [./bin.tar.gz/bin/STAR, --genomeDir, null, --genomeLoad, LoadAndExit]
+[PROCESS_ERR][2016/10/19 14:57:18] 
+[PROCESS_ERR][2016/10/19 14:57:18] EXITING: Did not find the genome in memory, did not remove any genomes from shared memory
+[PROCESS_ERR][2016/10/19 14:57:18] 
+[PROCESS_ERR][2016/10/19 14:57:18] Oct 19 14:57:18 ...... FATAL ERROR, exiting
+",N/A,https://github.com/biointec/halvade/issues/4
+MDU6SXNzdWUxODQ3MzAzMTE=,Loading multiple pairs of fastq files in one halvade run,CLOSED,2016-10-24T01:17:47Z,2017-07-06T12:35:35Z,2017-07-06T12:35:35Z,"Is it possible for HalvadeUploader to process multiple pairs of fastq files into a single halvade/in directory? I am asking this question for the case where we have multiple reads from multiple varieties of a species. All of these varieties will share the same set of reference files, and we wish to perform a comprehensive vcf process on the entire collection. 
+
+Edit: I went back and read the documentation and the source code for HalvadeUpload. If I am to use multiple pairs, the manifest file will be under the following form:
+
+pair1_file1.fastq    pair1_file2.fastq
+pair2_file1.fastq    pair2_file2.fastq
+....
+
+Is this correct?
+
+Thanks, 
+
+Linh 
+",linhbngo,https://github.com/biointec/halvade/issues/5
+MDU6SXNzdWUxODgxODA1NzI=,Could Halvade be installed on a SGE cluster without administrator permissions,CLOSED,2016-11-09T07:12:15Z,2017-03-06T13:52:52Z,2017-03-06T13:52:52Z,Could Halvade be installed on a SGE cluster without administrator permissions？,YingYa,https://github.com/biointec/halvade/issues/6
+MDU6SXNzdWUxODg2MTExMzk=,Overwriting ReadGroup ID,CLOSED,2016-11-10T20:31:47Z,2017-03-06T14:12:41Z,2017-03-06T14:12:40Z,"I am running the options of merging multiple bam files into a single bam file, and it works so far. However, each of the input bam files has its own ReadGroup ID that seems to be overwritten by the default GROUP1 ID. Is there a way to overcome this issue?
+
+Also, does reading from multiple bam files and merge them into a single bam also include sorting?
+
+Thanks, 
+
+Linh",linhbngo,https://github.com/biointec/halvade/issues/7
+MDU6SXNzdWUyMzAyMzk0OTM=,Documentation correction,CLOSED,2017-05-21T18:43:27Z,2017-05-22T14:27:34Z,2017-05-22T14:27:34Z,"Hi, 
+
+The FTP links in the halvade wiki to Broad Institute's FTP server are outdated. There is no longer a 2.8 path, and the links became .../bundle/hg19/...
+
+Thanks, 
+
+Linh
+",linhbngo,https://github.com/biointec/halvade/issues/8
+MDU6SXNzdWUyNDA5NDMyMDg=,GATK 3.7,CLOSED,2017-07-06T12:40:30Z,2017-10-13T10:52:50Z,2017-10-13T10:52:50Z,"Hi, 
+
+With the new release of GATK 3.7 tool, could you provide some comments on whether halvade workflow would still work as intended?
+
+More specifically, am I correct in saying that the Halvade workflow still matches the [current optimal pipeline for SNP calling](https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS&p=2)? This includes the new functionalities of the [HaplotypeCaller](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_gatk_tools_walkers_haplotypecaller_HaplotypeCaller.php) tools and the [joint genotyping tool](https://software.broadinstitute.org/gatk/gatkdocs/3.5-0/org_broadinstitute_gatk_tools_walkers_variantutils_GenotypeGVCFs.php4)
+
+Thanks, 
+
+Linh
+
+",linhbngo,https://github.com/biointec/halvade/issues/9
+MDU6SXNzdWUyNjUxNTQzMDc=,BWA samXe error,CLOSED,2017-10-13T02:54:55Z,2017-11-28T19:15:35Z,2017-11-28T19:15:35Z,"Hi, 
+I am doing DNA sequence and facing BWA samXe. Steps I performed include,
+Preprocessed input files and stored onto HDFS. 
+Prepared the reference data by following the manual. 
+And my config looks like this,
+N=40
+M=190
+C=12
+B=""/user/rnerell/halvade/bin.tar.gz""
+D=""/user/rnerell/halvade/ref_newgatk/dbsnp/dbsnp_138.hg19.vcf""""
+R=""/user/rnerell/halvade/ref/ucsc.hg19""
+I=""/user/rnerell/halvade/in_1/""
+O=""/user/rnerell/halvade/out_newgatk/""
+
+FYI, I am using latest GATK file(3.8) in this run. 
+I have tried using custom arguments CA=""bwa_sampe"" as well. 
+
+[halvade29891.stderr.zip](https://github.com/biointec/halvade/files/1381289/halvade29891.stderr.zip)
+I am attaching the log for you to verify. Please let me know if I am missing something. 
+",rnerell,https://github.com/biointec/halvade/issues/10
+MDU6SXNzdWUyNzc5NDE1MTk=,Haplotypecaller is not defined in the options. ,CLOSED,2017-11-29T23:10:38Z,2017-11-30T19:06:01Z,2017-11-30T19:06:01Z,"I am trying to use Haplotypecaller variant calling tool from GATK. But, when I enabled this option I am getting Unrecognized option issue. I have looked into HalvadeOptions.java and I couldn't find any declaration for this option.  ",rnerell,https://github.com/biointec/halvade/issues/11
+MDU6SXNzdWUyNzc5NzU4NTc=,Problem runnign STAR from bin.tar.gz,OPEN,2017-11-30T02:22:17Z,2018-06-05T20:54:37Z,,"I have obtained the following error while trying to run the halvade RNA. Looks there is an issue when the program tries to run STAR from the bin.tar.gz file on the HDFS 
+
+[2017/11/29 21:12:26 - DEBUG] running command [./bin.tar.gz/bin/STAR, --genomeDir, /tmp/halvade/m_000000_0-star1/, --genomeLoad, LoadAndExit]
+[EXCEPTION] Cannot run program ""./bin.tar.gz/bin/STAR"": error=20, Not a directory
+java.io.IOException: Cannot run program ""./bin.tar.gz/bin/STAR"": error=20, Not a directory
+",nickholz,https://github.com/biointec/halvade/issues/12
+MDU6SXNzdWUzMDIzNjU3Mjc=,"Run RNA-seq pipeline and get ""Unrecognized option: -P""",CLOSED,2018-03-05T16:23:01Z,2018-05-31T19:40:13Z,2018-05-31T19:40:13Z,"Hi,
+
+I was trying to run the RNA-seq pipeline and followed the [recipe](https://github.com/biointec/halvade/wiki/Recipe:-RNA-seq-with-Halvade-on-a-local-Hadoop-cluster). I configured everything in `example.config` as you write in the recipe. 
+
+But when I executed `python runHalvade.py example.config`, it stopped immediately and gave 
+`[2018/03/05 17:06:00 - DEBUG] Unrecognized option: -P`
+in the `halvadePID.stderr`. 
+
+I know this option is for using picard and that's what I want to do. Any idea on what is wrong?
+
+Thank you very much!
+
+Saiyi",SaiyiW,https://github.com/biointec/halvade/issues/13
+MDU6SXNzdWUzMzAzODI2NjA=,Running Halvade on other species,CLOSED,2018-06-07T18:19:07Z,2018-08-29T11:50:10Z,2018-08-29T11:50:10Z,Is it possible to run Halvade on other species? Say dog for example.,evcon131,https://github.com/biointec/halvade/issues/14
+MDU6SXNzdWUzNTAzNzQ1NTE=,Run Halvade without BQSR,OPEN,2018-08-14T10:44:23Z,2018-08-29T12:00:03Z,,"Hello, I have read previous issues about running Halvade without BQSR. I want to confirm that if I want to run Halvade without BQSR, just add "" skip_bqsr"" and needn't add ""-D"" . When I add ""skip_bqsr"" and don't add ""-D"" , the program stops with the information : Missing required option:D",Xiaoah,https://github.com/biointec/halvade/issues/15
+MDU6SXNzdWU0MTgxMTkwMzM=,Unable to compile halvade,OPEN,2019-03-07T04:02:58Z,2019-03-08T12:27:35Z,,"Hi,
+
+When I run ant inside halvade, I receive the following errors:
+
+do-compile:
+    [javac] Compiling 57 source files to /mnt/common/shuibing/tools/halvade/halvade/build/classes
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.7
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:52: error: package org.apache.commons.compress.archivers does not exist
+    [javac] import org.apache.commons.compress.archivers.ArchiveEntry;
+    [javac]                                             ^
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:53: error: package org.apache.commons.compress.archivers.tar does not exist
+    [javac] import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+    [javac]                                                 ^
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:54: error: package org.apache.commons.compress.compressors.gzip does not exist
+    [javac] import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+    [javac]                                                    ^
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:709: error: cannot find symbol
+    [javac]                 TarArchiveInputStream tin = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(matchingFiles[i])));
+    [javac]                 ^
+    [javac]   symbol:   class TarArchiveInputStream
+    [javac]   location: class HalvadeOptions
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:709: error: cannot find symbol
+    [javac]                 TarArchiveInputStream tin = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(matchingFiles[i])));
+    [javac]                                                 ^
+    [javac]   symbol:   class TarArchiveInputStream
+    [javac]   location: class HalvadeOptions
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:709: error: cannot find symbol
+    [javac]                 TarArchiveInputStream tin = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(matchingFiles[i])));
+    [javac]                                                                           ^
+    [javac]   symbol:   class GzipCompressorInputStream
+    [javac]   location: class HalvadeOptions
+    [javac] /mnt/common/shuibing/tools/halvade/halvade/src/be/ugent/intec/halvade/HalvadeOptions.java:710: error: cannot find symbol
+    [javac]                 ArchiveEntry entry = tin.getNextTarEntry();
+    [javac]                 ^
+    [javac]   symbol:   class ArchiveEntry
+    [javac]   location: class HalvadeOptions
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+    [javac] 7 errors
+    [javac] 1 warning
+
+BUILD FAILED
+/mnt/common/shuibing/tools/halvade/halvade/nbproject/build-impl.xml:929: The following error occurred while executing this line:
+/mnt/common/shuibing/tools/halvade/halvade/nbproject/build-impl.xml:269: Compile failed; see the compiler error output for details.",yuaqiang,https://github.com/biointec/halvade/issues/16

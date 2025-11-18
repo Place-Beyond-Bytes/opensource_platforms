@@ -1,0 +1,391 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+MDU6SXNzdWUzNjUyMDA4NjA=,Example for RNAmotifs,CLOSED,2018-09-30T07:28:59Z,2018-10-23T07:06:38Z,2018-10-23T07:06:38Z,"Hello Dr,
+I try to run RNAmotifs with example data NOVA.txt in ""examples"" directory.
+But at last, I can not result like description as follows:  
+######
+Selecting significantly enriched motifs...
+[1] ""NO significant tetrames""
+######
+
+My question is whether the NOVA.txt file did not contain enriched motifs or not?
+",xflicsu,https://github.com/matteocereda/RNAmotifs/issues/1
+I_kwDOAzK-Zs5sqKhq,Issues installing geco++ ,OPEN,2023-07-26T19:04:08Z,2023-08-05T08:01:23Z,,"Hello, 
+
+I'm running into some issues installing GeCo++. Running make on the downloaded source code gives the  following errors: 
+
+```
+/c4/home/derek/bin/geco++-0.1.464/geco/geco_base.h:347:63: error: ‘memset’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+         if ( value==0 ) memset ( i_mem,0,sizeof ( T ) *length );
+```
+
+Let me know if I can provide more information. I'm very much looking forward to running RNAmotifs on my data. 
+
+Thanks, 
+Derek",dbogdano,https://github.com/matteocereda/RNAmotifs/issues/2
+I_kwDOAzK-Zs6De2dD,mm9.download.sh  / python3 / NOVA example / plans for mm39 update ,OPEN,2024-03-25T14:31:35Z,2024-03-25T14:31:35Z,,"Hi,
+I'm really interested to use RNAmotifs to analyze my differential splicing results however I'm encountering a number of issues with your software when trying to run it on the NOVA example.
+
+Let's first start with the mm9.download.sh script. 
+
+- First, the USCS link provided in the 3rd line of the script (i.e. http://hgdownload-test.cse.ucsc.edu/goldenPath/mm9/bigZips/mm9.2bit) is not working
+
+- When replacing this faulty link with a more recent one (i.e. https://hgdownload.soe.ucsc.edu/goldenPath/mm9/bigZips/mm9.2bit), the script is able to download the mm9.2bit file and to convert it to mm9.fasta, as indicated hereafter.
+
+> yann.aubert@crct2121-Ubuntu:/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/m3_light/genomes$ ls -lht mm9
+> total 3,3G
+> -rwxr-xr-x 1 yann.aubert utilisateurs du domaine 2,6G mars  25 14:56 mm9.fasta
+> -rwxr-xr-x 1 yann.aubert utilisateurs du domaine 680M juil. 21  2007 mm9.2bit
+
+ 
+- I tried running this edited mm9.download.sh script with the original 'python' argument, which threw an error since I only have python3 installed.
+- After editing this edited mm9.download.sh script to use python3 instead of the original 'python' argument, I also run into an error. Here is a copy of the script used.
+
+```
+mkdir mm9
+cd mm9
+##wget http://hgdownload-test.cse.ucsc.edu/goldenPath/mm9/bigZips/mm9.2bit -O mm9.2bit
+wget https://hgdownload.soe.ucsc.edu/goldenPath/mm9/bigZips/mm9.2bit -O mm9.2bit
+
+## if not installed downaoload  http://hgdownload.cse.ucsc.edu/admin/exe/twoBitToFa 
+../twoBitToFa mm9.2bit mm9.fasta -noMask
+
+cd ../../
+printf 'import m3_light\nm3_light.fastasplit(""m3_light/genomes/mm9/mm9.fasta"")' | python3
+mv *.string m3_light/genomes/mm9
+rm m3_light/genomes/mm9/mm9.fasta
+rm m3_light/genomes/mm9/mm9.2bit
+``` 
+
+and the copy of the error I ran into.  
+> Résolution de hgdownload.soe.ucsc.edu (hgdownload.soe.ucsc.edu)… 128.114.198.53
+> Connexion à hgdownload.soe.ucsc.edu (hgdownload.soe.ucsc.edu)|128.114.198.53|:443… connecté.
+> requête HTTP transmise, en attente de la réponse… 200 OK
+> Taille : 712923274 (680M)
+> Enregistre : ‘mm9.2bit’
+> 
+> mm9.2bit                                           100%[================================================================================================================>] 679,90M  16,3MB/s    ds 41s     
+> 
+> 2024-03-25 14:56:51 (16,6 MB/s) - ‘mm9.2bit’ enregistré [712923274/712923274]
+> 
+> Traceback (most recent call last):
+>   File ""<stdin>"", line 1, in <module>
+>   File ""/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAMotifs/m3_light/__init__.py"", line 31
+>     print index+1, motif
+>     ^^^^^^^^^^^^^^^^^^^^
+> SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
+> mv: impossible d'évaluer '*.string': Aucun fichier ou dossier de ce nom
+> rm: impossible de supprimer 'm3_light/genomes/mm9/mm9.fasta': Aucun fichier ou dossier de ce nom
+> rm: impossible de supprimer 'm3_light/genomes/mm9/mm9.2bit': Aucun fichier ou dossier de ce nom
+
+As I do not code in Python, I'm having issues sorting out this error. 
+
+Regardless of this error I still tried to run RNAmotifs on the NOVA example that is provided using the following code: 
+
+```
+#!/bin/bash
+
+cd /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs
+
+./RNAmotifs.edit.sh /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs NOVA_regulation NOVA.txt mm9 Mouse 2> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/logs/TEST.log
+
+``` 
+Here's a copy of RNAmotifs.edit.sh
+
+```
+# Configuration
+# --------------------
+
+# Before running this script, please adjust folders (paths) in the r.config and n.config files.
+
+# SET THE ABSOLUTE PATH TO RNAMOTIFS FOLDER
+RNAmotifs=$1 # SET THE ABSOLUTE PATH TO RNAMOTIFS FOLDER
+
+cd $RNAmotifs
+
+export PYTHONPATH=$RNAmotifs
+
+# SET THE NAME OF THE RNAMOTIFS RESULTS FOLDER
+result_dir=$2
+
+# SET THE ABSOLUTE PATH TO SPLICING CHANGE PATH
+splicing_change_infile=$RNAmotifs/TEST/$3
+
+species=$4 # set species
+
+organism=$5 # either ""Mouse"" or ""Human""
+
+p_emp=0.0005
+
+p_fisher=0.1
+
+
+# Run
+# --------------------
+
+N_config=""${RNAmotifs}/TEST/${result_dir}.n.config""
+R_config=""${RNAmotifs}/TEST/${result_dir}.r.config""
+
+# writing gMotifs configuration files
+
+rm $N_config $R_config
+
+if [ ! -f ""$N_config"" ] ; then
+         # if not create the file
+         touch ""$N_config""
+fi
+
+echo ""organism=$organism"" >> $N_config
+echo ""splicing_change_file=$splicing_change_infile"" >> $N_config
+echo ""tetramer_folder=$RNAmotifs/tetramers/$result_dir"" >> $N_config
+echo ""results_folder=$RNAmotifs/results/$result_dir"" >> $N_config
+
+cp $N_config $R_config
+
+echo ""search=N"" >> $N_config
+echo ""search=R"" >> $R_config
+
+cat $N_config
+
+cat $R_config
+
+# prepare non-overlapping regions from splicing file
+
+if [ -e m3_light/regions/$result_dir ] ; then
+	echo ""Dir already present""
+else
+	mkdir m3_light/regions/$result_dir
+fi
+
+python3 m3_light/regions/prepare_regions.py $splicing_change_infile m3_light/regions/$result_dir/overlapping.tab
+
+python3 m3_light/regions/merge_overlapping_regions.py m3_light/regions/$result_dir/overlapping.tab m3_light/regions/$result_dir/$result_dir.tab
+
+rm m3_light/regions/$result_dir/overlapping.tab
+
+
+# find tetramers in the genome
+
+echo ""import m3_light"" > tmp.py
+echo ""m3_light.find_tetramers('${result_dir}', '${species}')"" >> tmp.py
+python3 tmp.py
+rm tmp.py
+
+# move results to tetramers folder
+
+mkdir tetramers
+mkdir tetramers/$result_dir
+mkdir tetramers/$result_dir/r
+mkdir tetramers/$result_dir/nr
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/A* tetramers/$result_dir/nr
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/C* tetramers/$result_dir/nr
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/T* tetramers/$result_dir/nr
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/G* tetramers/$result_dir/nr
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/W* tetramers/$result_dir/r
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/Y* tetramers/$result_dir/r
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/S* tetramers/$result_dir/r
+cp m3_light/results/$result_dir/motifs.final/pth_0.5/R* tetramers/$result_dir/r
+
+
+# counting tetramer occurences in the genome
+
+# couting: count the number of exons with tetramer occurrencies in the region of interest r1,r2,r3
+# tetramer: calculate the positional specific tetramer occurrences along the RNA splicing map
+
+mkdir results
+mkdir results/$result_dir
+./gMotifs/build/tetramer -c $N_config
+./gMotifs/build/counting -c $N_config
+./gMotifs/build/tetramer -c $R_config
+./gMotifs/build/counting -c $R_config
+
+# bootstrap and tetramer selection
+
+cd R
+
+Rscript bootstrap-FDR.R ../results $result_dir 10000
+
+Rscript selection_of_tetramers.R ../results $result_dir 10000 $p_fisher $p_emp
+```
+
+
+Here's a copy of stdout 
+
+> organism=Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=N
+> organism=Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=R
+> Dir already present
+> 
+> organism=Mouse
+> Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=N
+> N
+> Mouse:        1
+> Analysis folder:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/nr/
+> Search RSYW:  N
+> dIRZ:         0.1
+> dIRO:         1
+> inExon:       50
+> inIntron:     200
+> Path SP:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> Path Tetra:   /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/nr/
+> Array rows:   32874
+> 
+> Motif Length: 0
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/nr/STATS.txt
+> Impossible open data file: /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> 
+> organism=Mouse
+> Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=N
+> N
+> Mouse:        1
+> Analysis folder:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/nr/
+> Search RSYW:  N
+> dIRZ:         0.1
+> dIRO:         1
+> inExon:       50
+> inIntron:     200
+> Path SP:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> Path Tetra:   /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/nr/
+> Array rows:   32874
+> 
+> Motif Length: 0
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/nr/tetramers_files.txt
+> Impossible open data file: /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> 
+> organism=Mouse
+> Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=R
+> R
+> Mouse:        1
+> Analysis folder:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/r/
+> Search RSYW:  R
+> dIRZ:         0.1
+> dIRO:         1
+> inExon:       50
+> inIntron:     200
+> Path SP:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> Path Tetra:   /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/r/
+> Array rows:   32874
+> 
+> Motif Length: 0
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/r/STATS.txt
+> Impossible open data file: /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> 
+> organism=Mouse
+> Mouse
+> splicing_change_file=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> tetramer_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation
+> results_folder=/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation
+> search=R
+> R
+> Mouse:        1
+> Analysis folder:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/results/NOVA_regulation/r/
+> Search RSYW:  R
+> dIRZ:         0.1
+> dIRO:         1
+> inExon:       50
+> inIntron:     200
+> Path SP:      /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+> Path Tetra:   /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/r/
+> Array rows:   32874
+> 
+> Motif Length: 0
+> /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/r/tetramers_files.txt
+> Impossible open data file: /mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/TEST/NOVA.txt
+>                                                                               
+> ██████╗  ███╗   ██╗  █████╗  ███╗   ███╗  ██████╗  ████████╗ ██╗ ███████╗ ███████╗    
+> ██╔══██╗ ████╗  ██║ ██╔══██╗ ████╗ ████║ ██╔═══██╗ ╚══██╔══╝ ██║ ██╔════╝ ██╔════╝    
+> ██████╔╝ ██╔██╗ ██║ ███████║ ██╔████╔██║ ██║   ██║    ██║    ██║ █████╗   ███████╗    
+> ██╔══██╗ ██║╚██╗██║ ██╔══██║ ██║╚██╔╝██║ ██║   ██║    ██║    ██║ ██╔══╝   ╚════██║    
+> ██║  ██║ ██║ ╚████║ ██║  ██║ ██║ ╚═╝ ██║ ╚██████╔╝    ██║    ██║ ██║      ███████║    
+> ╚═╝  ╚═╝ ╚═╝  ╚═══╝ ╚═╝  ╚═╝ ╚═╝     ╚═╝  ╚═════╝     ╚═╝    ╚═╝ ╚═╝      ╚══════╝    
+>                                                                               
+> Reading tetramer counts....
+>   |======================================================================| 100%
+> Calculating enrichment....
+>   |======================================================================| 100%
+> Bootstrapping results....
+> ================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================utilisateur     système      écoulé 
+>      11.008       0.056      11.064 
+> Saving results....
+>                                                                               
+> ██████╗  ███╗   ██╗  █████╗  ███╗   ███╗  ██████╗  ████████╗ ██╗ ███████╗ ███████╗    
+> ██╔══██╗ ████╗  ██║ ██╔══██╗ ████╗ ████║ ██╔═══██╗ ╚══██╔══╝ ██║ ██╔════╝ ██╔════╝    
+> ██████╔╝ ██╔██╗ ██║ ███████║ ██╔████╔██║ ██║   ██║    ██║    ██║ █████╗   ███████╗    
+> ██╔══██╗ ██║╚██╗██║ ██╔══██║ ██║╚██╔╝██║ ██║   ██║    ██║    ██║ ██╔══╝   ╚════██║    
+> ██║  ██║ ██║ ╚████║ ██║  ██║ ██║ ╚═╝ ██║ ╚██████╔╝    ██║    ██║ ██║      ███████║    
+> ╚═╝  ╚═╝ ╚═╝  ╚═══╝ ╚═╝  ╚═╝ ╚═╝     ╚═╝  ╚═════╝     ╚═╝    ╚═╝ ╚═╝      ╚══════╝    
+>                                                                               
+> 
+> Selecting significantly enriched motifs... 
+
+as well as a copy of stderr:
+
+> Traceback (most recent call last):
+>   File ""/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/m3_light/regions/merge_overlapping_regions.py"", line 87, in <module>
+>     for rid, (chr, strand, list_start, list_stop) in regions.iteritems():
+> AttributeError: 'dict' object has no attribute 'iteritems'
+> Traceback (most recent call last):
+>   File ""/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tmp.py"", line 1, in <module>
+>     import m3_light
+>   File ""/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/m3_light/__init__.py"", line 31
+>     print index+1, motif
+>     ^^^^^^^^^^^^^^^^^^^^
+> SyntaxError: Missing parentheses in call to 'print'. Did you mean print(...)?
+> mkdir: impossible de créer le répertoire «tetramers»: Le fichier existe
+> mkdir: impossible de créer le répertoire «tetramers/NOVA_regulation»: Le fichier existe
+> mkdir: impossible de créer le répertoire «tetramers/NOVA_regulation/r»: Le fichier existe
+> mkdir: impossible de créer le répertoire «tetramers/NOVA_regulation/nr»: Le fichier existe
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/A*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/C*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/T*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/G*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/W*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/Y*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/S*': Aucun fichier ou dossier de ce nom
+> cp: impossible d'évaluer 'm3_light/results/NOVA_regulation/motifs.final/pth_0.5/R*': Aucun fichier ou dossier de ce nom
+> mkdir: impossible de créer le répertoire «results»: Le fichier existe
+> mkdir: impossible de créer le répertoire «results/NOVA_regulation»: Le fichier existe
+> wc: '/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/nr/*.bed': Aucun fichier ou dossier de ce nom
+> wc: '/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/nr/*.bed': Aucun fichier ou dossier de ce nom
+> wc: '/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/r/*.bed': Aucun fichier ou dossier de ce nom
+> wc: '/mnt/crct-share/CRCT21/Private/Yann/Tools/RNAmotifs/tetramers/NOVA_regulation/r/*.bed': Aucun fichier ou dossier de ce nom
+> Erreur dans strsplit(sapply(strsplit(res[, 1], ""/""), function(x) x[length(x)]),  : 
+>   l'argument n'est pas une chaîne de caractères
+> Appels : sapply -> lapply -> strsplit
+> Exécution arrêtée
+
+Not sure if this error has is origin from the faulty mm9.downlaod.sh script or if this is unrelated. 
+
+Final point, is there any plans to update RNAmotifs to accomodate more recent mouse and human genome build ? (i.e. GRCm39/mm39; GRCh38) ?    
+
+Looking forward for your answer. ",yannaubertcrct,https://github.com/matteocereda/RNAmotifs/issues/3

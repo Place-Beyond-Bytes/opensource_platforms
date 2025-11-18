@@ -1,0 +1,20 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOIJbMPc59zLuV,Using chrR ref genome with STAR,OPEN,2024-01-31T17:06:06Z,2024-11-16T22:24:43Z,,"Hi,
+Thank you for putting these reference genomes together! They've been very helpful for my work.
+
+I'd like to use hg38-rDNA_v1.0.fa to map an RNAseq dataset using STAR. How should the annotation file, hg38-rDNA_v1.0.bed, be adapted for compatibility with STAR's .gtf format?
+
+Best",LucasMcNU,https://github.com/vikramparalkar/rDNA-Mapping-Genomes/issues/1
+I_kwDOIJbMPc6WRDY_,Some rRNA not mapped to the reference genome,OPEN,2024-09-12T00:21:02Z,2024-09-26T00:51:29Z,,"Dear team;
+Thanks for providing those wonderful reference genome. It helps me a lot in my research. I met a problem that many of my reads could mapped to rrna region but was classified to not aligned when using bowtie2 alignment. Here is the details:
+I used  `bowtie2     -x rRNA_mm10_reference_genome/bowtie2_index/rRNA     -U ../clean_Sample_1_R1.fastq.gz   -S rRNA_trash.sam   --un mrna_sample1.fastq` And I assume unmapped as normal mrna. 
+ For the next step, I put the unmapped reads to STARaligner, and got the mapped mrna reads. 
+```
+STAR --genomeDir reference_genome/mm10_Gencode_STAR \
+	--runThreadN 40 \
+	--readFilesIn mrna_sample1.fastq \
+	--outFileNamePrefix sample1_mRNA_R1 \
+	--outSAMtype BAM SortedByCoordinate
+```
+Later, I used feature count to get the count matrix `featureCounts -a gencode.vM10.annotation.gtf -g gene_name -o count_sample1_R1_ds sample1_mRNA_R1Aligned.sortedByCoord.out.bam` And I found there are huge numbers of Rn18s-rs5 gene, which is a typical 18s rRNA. But it show up in the mrna files (All rRNA should be filter out) that should not contain any rRNA. I double check those reads  in the genome browser(IGV) and majority of them does not have splice sites. Could you help me check this issue? Thanks a lot.
+Yuchen",Xuyuch,https://github.com/vikramparalkar/rDNA-Mapping-Genomes/issues/2

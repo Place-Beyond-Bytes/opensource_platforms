@@ -1,0 +1,172 @@
+id,title,state,created_at,updated_at,closed_at,body,user,url
+I_kwDOHgnKgM5TrjMX,Manta process --callRegions specification,CLOSED,2022-10-11T02:52:05Z,2023-01-12T04:05:32Z,2023-01-12T04:05:32Z,Add optional use of --callRegions bed file in modules/manta.nf,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/2
+I_kwDOHgnKgM5Trlj-,Build individual SV subworkflows as modules,CLOSED,2022-10-11T03:09:09Z,2022-10-19T03:23:43Z,2022-10-19T03:23:43Z,"- [x] smoove
+- [x] manta
+- [x] tiddit cov
+- [x] tiddit sv ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/3
+I_kwDOHgnKgM5US5ds,SURVIVOR merging of vcfs with nextflow,CLOSED,2022-10-19T03:56:25Z,2022-10-21T00:53:09Z,2022-10-21T00:53:09Z,"Write nextflow module and process for merging vcfs from all callers/sample and outputting merged vcf. 
+
+- [x] modules/survivor.nf written 
+- [x] survivor process ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/9
+I_kwDOHgnKgM5UfeQO,VEP annotation troubleshooting,CLOSED,2022-10-21T00:57:57Z,2023-01-11T02:56:17Z,2023-01-11T02:56:08Z,"# Variant annotation with Variant effect predictor 
+
+Variant annotation should be a flexible option that allows for different organisms, databases, online and offline use of pipeline. VEP can use [multiple annotation sources](https://asia.ensembl.org/info/docs/tools/vep/script/vep_cache.html). This includes:
+
+- VEP cache: all transcript models, regulatory features, variant data for a species 
+- GFF/GTF: transcript models (tabix indexed)  
+- Database: MySQL database 
+
+**Complications/issues**
+
+- Cache dir should correspond to VEP tool version. 
+- Using the database or cache options require external network access as users need to either download the data (cache) or access the Ensembl server 
+-  Downloading cache is time consuming and requires lots of disk (HG38 release 108 21GB) 
+-  Could run process to download but cost $$$ and how to be flexible for different organisms
+
+**Info**
+- VEP variant [classification](https://www.ensembl.org/info/genome/variation/prediction/classification.html)
+- Currently recognise CNVs, INVs, TRAs. See [here](https://www.ensembl.info/2020/03/27/cool-stuff-the-ensembl-vep-can-do-annotating-structural-variants/)
+
+## Test run modes
+
+- [x] test cache 
+- [x] test database
+- [x] test gtf/gff
+
+**Flags to test in the VEP run command with cache/database**
+- [x] `--overlaps` for proportion and length of transcript overlapped by SV 
+- [x] `--check_svs` existing SVs overlapping input, required db access (incompatible with `--offline`)  
+- [x] `--af_gnomadg` [see here](http://asia.ensembl.org/info/docs/tools/vep/script/vep_example.html#gnomad)
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/10
+I_kwDOHgnKgM5XkAnn,Test with use case dataset (PIPE-2988),CLOSED,2022-11-30T05:11:08Z,2022-11-30T05:13:56Z,2022-11-30T05:13:56Z,"Test run pipeline with 10 WGS human samples 
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/13
+I_kwDOHgnKgM5a4TdA,Optional AnnotSV integration (human/mouse only),CLOSED,2023-01-08T22:31:33Z,2023-01-12T04:05:32Z,2023-01-12T04:05:32Z,"[AnnotSV](https://github.com/lgmgeo/AnnotSV) is a great tool for human structural variation annotation, ranking and analysis. It integrates public datasets, SV ranking and phenotypic data to aid variant prioritisation unlike other SV annotation tools. 
+
+Including it in the GermlineStructuralV workflow requires: 
+
+- [x] Containerisation of annotSV and its dependencies @ https://github.com/georgiesamaha/MyDockerfiles/blob/main/AnnotSV/Dockerfile
+- [x] Test with manually downloaded data
+- [x] Published Docker container (DockerHub?)   
+- [x] Reference database download step (should this be included in the SIH hg38 reference data?) 
+- [x] Optional run step 
+- [x] Benchmarking and optimisation 
+
+Input, output and run requirements: 
+- default run: vcf in, tsv out, annotation mode: full, genomeBuild: hg38, mm10 
+- vcf2circos? 
+
+Publications and resources: 
+
+- https://academic.oup.com/nar/article/49/W1/W21/6281473
+- https://lbgi.fr/AnnotSV/ ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/14
+I_kwDOHgnKgM5dMOxe,Merging stringency evaluation,CLOSED,2023-01-31T02:00:49Z,2023-05-09T05:38:09Z,2023-05-09T05:38:09Z,"Currently using SURVIVOR merge to combine caller VCFs for each sample using minimal filtering:
+- 1kb distance between pairwise breakpoints 
+- Include calls only supported by one caller (higher sensitivity at expense of specificity) 
+- Callers do not have to agree on the event type 
+- Callers do not have to agree on the strand 
+
+Investigate how adjusting these parameters may help with reducing number of false positives. ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/16
+I_kwDOHgnKgM5dM_V2,Add infrastructure-specific configs ,CLOSED,2023-01-31T05:36:36Z,2023-04-20T00:43:41Z,2023-04-20T00:43:40Z,"Testing and addition of configs from https://github.com/AustralianBioCommons/Nextflow_DSL2_template 
+
+- [x] Nimbus 
+- [x] Setonix
+- [x] Gadi
+- [ ] Local ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/17
+I_kwDOHgnKgM5dZnol,Explore variant prioritisation features,CLOSED,2023-02-01T23:10:31Z,2023-04-20T00:37:00Z,2023-04-20T00:37:00Z,"Must be dataset/experiment specific. Should include a summary report? 
+
+Could include:
+- candidate gene extraction (Custom script)
+- mode of inheritance based filtering (Slivar?) 
+- common variant extraction (Custom script)
+- HPO term filtering of AnnotSV 
+
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/18
+I_kwDOHgnKgM5dh36V,CITATION file,CLOSED,2023-02-03T03:43:04Z,2023-02-05T21:42:57Z,2023-02-05T21:42:57Z,Add `CITATION.cff` with DOI and coauthors. ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/19
+I_kwDOHgnKgM5dsXXL,Bug in Tiddit when using alt-contigs,CLOSED,2023-02-06T04:48:58Z,2023-04-19T23:05:51Z,2023-04-19T23:05:50Z,"Some samples will fail when using alt-contigs (as opposed to just chromosomes) with the Tiddit-sc step. The specific error I found:
+
+```
+Traceback (most recent call last):
+    File ""/usr/local/bin/tiddit"", line 11, in <module>
+      sys.exit(main())
+    File ""/usr/local/lib/python3.9/site-packages/tiddit/__main__.py"", line 151, in main
+      tiddit_contig_analysis.main(prefix,sample_id,library,contigs,coverage_data,args)
+    File ""tiddit/tiddit_contig_analysis.pyx"", line 133, in tiddit.tiddit_contig_analysis.main
+    File ""tiddit/tiddit_contig_analysis.pyx"", line 57, in tiddit.tiddit_contig_analysis.read_contigs
+  KeyError: 'HLADRB1*04:03:01'
+```
+
+It looks like there might be some parsing error, because this should be formatted as HLA-DRB1*04:03:01 (i.e. it's missing a dash). For testing purposes I've added `errorStrategy 'ignore'` to the tiddit-sv module file so the pipeline can keep going. The failed sample was Platinum genome ERR194159, using the fasta reference from Sarek iGenome `Homo_sapiens_assembly38.fasta`. ",SarahBeecroft,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/20
+I_kwDOHgnKgM5eHLGr,Run scripts for Setonix and Gadi,CLOSED,2023-02-10T03:50:44Z,2023-04-04T23:17:06Z,2023-04-04T23:17:06Z,Provide run scripts for both NCI Gadi and Pawsey Setonix users ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/26
+I_kwDOHgnKgM5eHVU8,Portability testing @ Pawsey Setonix,CLOSED,2023-02-10T04:53:38Z,2023-02-10T05:21:12Z,2023-02-10T05:21:12Z,"SB ran pipeline at Setonix, successfully on Platinum Genomes samples. Outcomes: 
+
+- [x]  Provided trace, reports 
+- [x] Setonix run script 
+- [x] Setonix.config
+
+TODO
+- GS to compare performance at NCI Gadi 
+",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/27
+I_kwDOHgnKgM5jSFhG,Pipeline feedback,CLOSED,2023-04-13T04:28:18Z,2023-11-21T22:32:16Z,2023-11-21T22:32:16Z,"Hi!
+I'm running this pipeline on Setonix and I'm enjoying it so far 😀
+Not so much an issue but I had a few things I wanted to mention/request regarding the pipeline/AnnotSV output, mostly based on my experience using manta + AnnotSV -
+
+1. Gene annotations are set to full - this removes the 'split' lines containing transcript specific information which is needed for prioritising variants, in particular the frameshift column. The drawback is it will add at least one extra line per entry.
+2. Merging all of the cohort samples before annotating would be beneficial, as this would make filtering based on pedigree much easier. I think this is something you are already looking at, but I generally just do this in excel with the merged cohort AnnotSV outputs. A better way for merging and filtering these could also help to find compount het variants. This would also make it easier to remove false positive SVs and result in a smaller overall output and AnnotSV runtime.
+[JasmineSV ](https://github.com/mkirsche/Jasmine) could be useful here.
+3. Similar to above, I think it could also be beneficial to run manta as a whole cohort rather than individually as it can then genotype each family/cohort member at each variant and provide quality scores for these, which is missing if they are all called individually, and also reduce some false positives. I'm not sure if it's possible to do this with other callers?
+I previously ran manta using `--bam` (joint diploid analysis) rather than `--normalbam` which I believe is for tumor analysis.
+
+Thanks for making such a fast, comprehensive, and easy to use pipeline!
+Cheers,
+Gavin 😊",gavinmonahan,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/30
+I_kwDOHgnKgM5j4uhl,-SVminSize flag for AnnotSV,CLOSED,2023-04-20T00:38:23Z,2023-04-27T06:01:26Z,2023-04-27T06:01:26Z,Requested by #30 ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/33
+I_kwDOHgnKgM5j4um1,Annotation type flag for AnnotSV,CLOSED,2023-04-20T00:39:01Z,2023-04-27T04:57:29Z,2023-04-27T04:57:29Z,Requested by #30 ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/34
+I_kwDOHgnKgM5j4uuz,Add CNV module,CLOSED,2023-04-20T00:39:55Z,2023-04-20T07:24:13Z,2023-04-20T07:24:13Z,"Following feedback on validation of known SV, will need to add CNV module to workflow. Exploring:
+
+- CNVkit
+- CNVnator",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/35
+I_kwDOHgnKgM5mcVf0,nextflow_schema.json,CLOSED,2023-05-22T00:45:39Z,2023-05-29T07:16:57Z,2023-05-29T07:16:57Z,"For integration with Nextflow Tower, require the schema to populate params page. ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/43
+I_kwDOHgnKgM5w-bkN,Add Tower.yaml for report exposure on interface,CLOSED,2023-09-13T23:57:24Z,2023-10-31T03:38:00Z,2023-10-31T03:38:00Z,i.e https://github.com/nf-core/rnaseq/blob/master/tower.yml,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/57
+I_kwDOHgnKgM51QRWZ,Tower integration,CLOSED,2023-10-29T22:57:58Z,2023-10-31T04:23:53Z,2023-10-31T04:23:53Z,"Testing at scale
+- [x] Fixes for schema json
+- [x] Report yaml POSTPONED
+- [x] Gadi configurations  ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/60
+I_kwDOHgnKgM52KweZ,Add KSU usage estimates for resource management,CLOSED,2023-11-08T01:10:52Z,2023-12-18T05:48:03Z,2023-12-18T05:48:03Z,"Some guidelines as to how many KSU are required to run the pipeline per sample would be helpful, based on say 30X, 60X. Would like to know if I have enough KSU before commiting to run. ",calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/62
+I_kwDOHgnKgM52KxXw,Pre-download images,CLOSED,2023-11-08T01:15:29Z,2023-11-29T19:47:52Z,2023-11-29T19:47:52Z,"Copyq has maximum walltime of 10 hours. I would like to be able to pull the containers first using copyq, and then run the head job on the normal queue. Similar to nf-core download tool, or a test profile perhaps. ",calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/63
+I_kwDOHgnKgM52SmT_,pullContainers.sh not utilising specified cachedir ,CLOSED,2023-11-09T00:01:02Z,2023-11-29T19:47:53Z,2023-11-29T19:47:52Z,"Job fails with:
+
+```
+Job <jobID> killed due to exceeding jobfs quota
+```
+
+Script needs the following line added:
+
+```
+export SINGULARITY_TMPDIR=<existing-dir>
+```
+
+OR, instructions in README for user to set `SINGULARITY_TMPDIR` in `~/.bashrc`
+",calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/64
+I_kwDOHgnKgM53he6l,Inconsistent parameter definition and application for gadi account,CLOSED,2023-11-21T22:40:23Z,2023-11-29T01:18:29Z,2023-11-29T01:16:26Z,"Project account has been defined and applied inconsistently between `nextflow.config` and `configs/gadi.config`: 
+
+In nextflow.config it is defined as: 
+```
+gadi_account = false
+```
+
+In gadi.config, it is applied as: 
+```
+storage = ""scratch/${params.pbs_account}+gdata/${params.pbs_account}""
+```
+
+storage variable needs to call the correct parameter as defined in nextflow.config. Currently failing to apply correct storage access permissions. ",georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/65
+I_kwDOHgnKgM54R1n8,Reference fasta is staged by tiddit module but not used ,OPEN,2023-11-30T06:03:59Z,2023-11-30T06:03:59Z,,Command runs uses `--ref ${params.ref}` instead of `--ref ${ref},calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/69
+I_kwDOHgnKgM54YxMZ,Add additional checks to check_cohort.nf,OPEN,2023-12-01T00:18:24Z,2023-12-01T00:18:24Z,,"- [ ] write script to check integrity of file
+- [ ]  confirm tab separated
+- [ ] confirm correct number of columns
+- [ ]  Confirm bams and BAI exist
+- [ ] Check the time stamp of the BAI vs BAM (to avoid Manta error 'The index file is older than the data file')",calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/70
+I_kwDOHgnKgM54aXRd,Read samplesheet via column position not header label ,OPEN,2023-12-01T06:13:19Z,2023-12-01T06:13:19Z,,"To ensure flexibility in header field spelling/capitalisation. Sample sheet will be OK if the header exists, and the data fields are in the right order, and it won't matter if 'sampleID' or 'SampleID' for example is used. ",calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/71
+I_kwDOHgnKgM54lSsG,Feature request: check bam index age or presence and reindex if needed,OPEN,2023-12-04T05:11:01Z,2023-12-04T05:11:12Z,,Tiddit SV process will throw error if `.bam.bai` is older than the `.bam` and workflow will fail to run. Would be helpful to add a process to check indexes (age and presence) and reindex bams as required before proceeding with sv calling. ,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/72
+I_kwDOHgnKgM558DRb,Final release,CLOSED,2023-12-18T05:44:35Z,2023-12-18T05:48:29Z,2023-12-18T05:48:29Z,,georgiesamaha,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/74
+I_kwDOHgnKgM56LPD3,Add Picard ValidateSamFile module,OPEN,2023-12-20T03:24:22Z,2023-12-20T03:24:22Z,,Add validate module to optionally check all BAMs before proceeding. This can help prevent unexpected failures mid workflow. ,calizilla,https://github.com/Sydney-Informatics-Hub/Germline-StructuralV-nf/issues/75
